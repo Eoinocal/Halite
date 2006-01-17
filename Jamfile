@@ -1,0 +1,67 @@
+
+
+project Halite
+
+	: requirements
+
+	<include>.
+	
+	<library>/WTL
+    <library>/XmlRpc//XmlRpc/<link>static
+    <library>/libtorrent//torrent/<link>static
+    <library>/TinyXMLSTL//TinyXMLSTL/<link>static
+	
+	<variant>release:<define>NDEBUG
+	
+	<toolset>msvc:<define>_UNICODE
+	<toolset>msvc:<define>WIN32
+	<toolset>msvc:<define>_WINDOWS
+	
+	<link>static
+	
+	<toolset>msvc:<linkflags>/SUBSYSTEM:WINDOWS
+	;
+
+SOURCES =
+	Halite.cpp
+	Halite.rc
+	stdafx.cpp
+	stdafx.h
+	HaliteWindow.cpp
+	HaliteWindow.hpp
+	HaliteDialog.cpp
+	HaliteDialog.hpp
+	ConfigOptions.cpp
+	ConfigOptions.hpp
+	halTorrent.cpp
+	halTorrent.h
+	GlobalIni.cpp
+	GlobalIni.h
+	resource.h
+	;
+
+LIBS = 
+	comctl32
+	user32
+	kernel32
+	comdlg32
+	advapi32
+	gdi32	
+	;
+
+
+lib comctl32 : : <name>comctl32.lib ;
+lib user32 : : <name>user32.lib ;
+lib kernel32 : : <name>kernel32.lib ;
+lib comdlg32 : : <name>comdlg32.lib ;
+lib advapi32 : : <name>advapi32.lib ;
+lib gdi32 : : <name>gdi32.lib ;
+lib bufferoverflowU : : <name>bufferoverflowU.lib ;
+
+
+exe Halite
+	:
+	$(SOURCES)
+	$(LIBS)
+	;
+
