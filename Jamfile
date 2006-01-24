@@ -3,8 +3,6 @@
 project Halite
 
 	: requirements
-
-	<include>./src
 	
 	<library>/WTL
     <library>/XmlRpc//XmlRpc/<link>static
