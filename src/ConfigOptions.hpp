@@ -7,7 +7,6 @@
 using namespace std;
 using namespace boost;
 
-
 class BitTorrentOptions :
     public CPropertyPageImpl<BitTorrentOptions>,
     public CWinDataExchange<BitTorrentOptions>
@@ -43,6 +42,46 @@ public:
 	}
 };
 
+class RemoteOptions :
+    public CPropertyPageImpl<RemoteOptions>,
+    public CWinDataExchange<RemoteOptions>
+{
+public:
+    enum { IDD = IDD_CONFIGREMOTE };
+
+	RemoteOptions() 
+	{}	
+	
+	~RemoteOptions()
+	{}
+ 
+    BEGIN_MSG_MAP(RemoteOptions)
+		MSG_WM_INITDIALOG(OnInitDialog)
+     	CHAIN_MSG_MAP(CPropertyPageImpl<RemoteOptions>)
+    END_MSG_MAP()
+ 
+    BEGIN_DDX_MAP(RemoteOptions)
+    	DDX_CHECK(IDC_REMOTECTRL, INI->remoteConfig.isEnabled)
+    	DDX_INT(IDC_REMOTEPORT, INI->remoteConfig.port)
+    END_DDX_MAP()
+ 
+    BOOL OnInitDialog ( HWND hwndFocus, LPARAM lParam )
+	{
+		return DoDataExchange(false);
+	}	
+    int OnApply()
+	{
+		return DoDataExchange(true);
+	}
+};
+
+class AboutOptions :
+    public CPropertyPageImpl<AboutOptions>
+{
+public:
+    enum { IDD = IDD_ABOUT };
+};
+
 class ConfigOptionsProp : 
 	public CPropertySheet
 {
@@ -54,6 +93,8 @@ public:
         : CPropertySheet(title, uStartPage, hWndParent), m_bCentered(false)
     {
 		AddPage(bitTorrentOptions);
+		AddPage(remoteControlOptions);
+		AddPage(aboutOptions);
     }
     
     BEGIN_MSG_MAP(ConfigOptionsProp)
@@ -79,4 +120,6 @@ public:
     }
 	
 	BitTorrentOptions bitTorrentOptions;
+	RemoteOptions remoteControlOptions;
+	AboutOptions aboutOptions;
 };

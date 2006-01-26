@@ -1,4 +1,5 @@
 
+#include "WTL.hpp"
 #include "halTorrent.h"
 
 #include <libtorrent/entry.hpp>
@@ -6,7 +7,6 @@
 #include <libtorrent/session.hpp>
 #include <libtorrent/torrent_handle.hpp>
 #include <libtorrent/peer_connection.hpp>
-
 
 namespace halite 
 {
@@ -74,17 +74,43 @@ namespace halite
 		return string(buf.get(), len);
 	}
 
+	bool initSession()
+	{
+		try
+		{
+			LPSTR pathBuffer = static_cast<LPSTR>(malloc(1024));
+			GetCurrentDirectoryA(1024,pathBuffer);
+			workingDirectory = path(pathBuffer,native);
+			free(static_cast<void*>(pathBuffer));
+				
+			session = new libtorrent::session();
+			
+			return true;
+		}
+		catch(...)
+		{
+			return false;
+		}
+	}
+	
 	bool listenOn(pair<int,int> range) 
 	{
-		LPSTR pathBuffer = static_cast<LPSTR>(malloc(1024));
-		GetCurrentDirectoryA(1024,pathBuffer);
-		workingDirectory = path(pathBuffer,native);
-		free(static_cast<void*>(pathBuffer));
-			
-		session = new libtorrent::session();
-		return session->listen_on(range);
-		
-		
+		if (!session->is_listening())
+		{
+			return session->listen_on(range);	
+		}
+		else
+		{
+			int port = session->listen_port();
+			if (port > range.second || port < range.first)
+			{
+				return session->listen_on(range);	
+			}
+			else
+			{
+				return true;
+			}
+		}
 	}
 	
 	bool closeDown() 
@@ -398,7 +424,7 @@ namespace halite
 			}
 			catch(exception &ex) 
 			{			
-				MessageBox(0, mbstowcs(ex.what()).c_str(), L"Exception", MB_ICONERROR|MB_OK);
+				::MessageBoxW(0, mbstowcs(ex.what()).c_str(), L"Exception", MB_ICONERROR|MB_OK);
 				remove(rfile);
 			}
 		}

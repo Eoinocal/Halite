@@ -3,7 +3,7 @@
 	<assemblyIdentity 
 		version="1.0.0.0" 
 		processorArchitecture="*" 
-		name="ETPOC.CPlusPlus.LeanShell" 
+		name="ETPOC.CPlusPlus.wtlDialogShell" 
 		type="win32" 
 	/> 
 	<description>A shell app which demos some Boost libraries.</description> 

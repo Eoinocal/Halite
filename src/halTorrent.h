@@ -30,6 +30,7 @@ namespace halite {
 	wstring mbstowcs(const string &str);
 	string wcstombs(const wstring &str);
 	
+	bool initSession();
 	bool listenOn(pair<int,int>);
 	bool closeDown();
 	void resumeAll();

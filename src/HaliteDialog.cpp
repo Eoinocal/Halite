@@ -1,4 +1,5 @@
 
+#include "WTL.hpp"
 #include "HaliteDialog.hpp"
 
 void HaliteDialog::setSelectedTorrent(wstring torrent)

@@ -1,4 +1,5 @@
 
+#include "WTL.hpp"
 #include "HaliteWindow.hpp"
 
 LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
@@ -6,10 +7,19 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	INI = new ArchivalData("Halite.ini");
 	INI->LoadData();
 	
-	bool success = halite::listenOn(std::make_pair(INI->bitTConfig.portFrom,INI->bitTConfig.portTo));
+	bool success = halite::initSession();
+	assert(success);
+	
+	success = halite::listenOn(std::make_pair(INI->bitTConfig.portFrom,INI->bitTConfig.portTo));
 	assert(success);	
+	
 	halite::setLimits(INI->bitTConfig.maxConnections,INI->bitTConfig.maxUploads);
 	halite::resumeAll();
+	
+	if (INI->remoteConfig.isEnabled)
+	{
+		remote::initServer(INI->remoteConfig.port);
+	}
 	
 	// Init the Menu and attach to CmdBar
 	//HWND hWndCmdBar = m_CmdBar.Create(m_hWnd, rcDefault, NULL, ATL_SIMPLE_CMDBAR_PANE_STYLE);
@@ -240,9 +250,19 @@ LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	ConfigOptionsProp sheet(L"Settings");
-	
+	ConfigOptionsProp sheet(L"Settings");	
     sheet.DoModal();
+	
+	halite::listenOn(std::make_pair(INI->bitTConfig.portFrom,INI->bitTConfig.portTo));
+	
+	if (INI->remoteConfig.isEnabled)
+	{
+		remote::initServer(INI->remoteConfig.port);
+	}
+	else
+	{
+		remote::exitServer();
+	}
 	return 0;
 }
 

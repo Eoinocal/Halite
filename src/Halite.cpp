@@ -1,4 +1,5 @@
 
+#include "WTL.hpp"
 #include "stdafx.h"
 #include "Halite.h"
 

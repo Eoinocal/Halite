@@ -1,9 +1,16 @@
 
 #pragma once
 
-#include "stdafx.h"
+#include "WTL.hpp"
 #include <string>
 #include <tinyxml.h>
+
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/fstream.hpp>  
+
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 
 extern TiXmlDocument GlobalIni;
 
@@ -74,6 +81,26 @@ struct HaliteWindowConfig
 	unsigned int mainListColWidth[7];
 };
 
+
+struct HaliteRemoteConfig
+{
+	HaliteRemoteConfig() :
+		isEnabled(false),
+		port(80)
+	{}
+	
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+        ar & isEnabled;
+		ar & port;
+    }
+	
+	bool isEnabled;
+	unsigned int port;
+};
+
 class ArchivalData
 {
 public:
@@ -90,6 +117,7 @@ public:
 				
 				ia >> bitTConfig;
 				ia >> haliteWindow;
+				ia >> remoteConfig;
 			}
 			return true;
 		}
@@ -108,7 +136,8 @@ public:
 			archive::text_oarchive oa(ofs);
 			
 			oa << const_save(bitTConfig);
-			oa << const_save(haliteWindow);			
+			oa << const_save(haliteWindow);
+			oa << const_save(remoteConfig);			
 			return true;
 		}
 		catch(exception& e)
@@ -118,6 +147,7 @@ public:
 		}
 	}
 	
+	HaliteRemoteConfig remoteConfig;
 	BitTConfig bitTConfig;
 	HaliteWindowConfig haliteWindow;
 	
