@@ -8,7 +8,7 @@ use-project /osLibs : $(/osLibs) ;
 
 SOURCES =
 	Halite.cpp
-	stdafx.cpp
+	stdAfx.cpp
 	HaliteWindow.cpp
 	HaliteListViewCtrl.cpp
 	HaliteDialog.cpp
