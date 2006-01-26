@@ -1,12 +1,12 @@
 #pragma once
  
-#include "stdafx.h"
-#include "Halite.h"
+#include "stdAfx.hpp"
+#include "Halite.hpp"
 
 using namespace std;
 using namespace boost;
 
-#define WM_UPDATEUIINFO  WM_USER+13
+class HaliteWindow;
  
 class HaliteDialog :
 	public CDialogImpl<HaliteDialog>,
@@ -18,7 +18,6 @@ protected:
 	typedef CDialogImpl<HaliteDialog> baseClass;
 	typedef CDialogResize<HaliteDialog> resizeClass;
 
-protected:
 	CButton m_btn_start;
 	CListViewCtrl m_list;
 	CContainedWindow m_wndNCD;
@@ -27,13 +26,14 @@ protected:
 	float TranLimitDown, TranLimitUp;
 	
 	wstring selectedTorrent;
+	HaliteWindow* mainHaliteWindow;
 
 public:
 	enum { IDD = HALITEDLG };
 	
-	/******* Messy hack here *******/
-	CListViewCtrl torrentsLVC;
-	HWND mainHaliteWindow;
+	HaliteDialog(HaliteWindow* halWnd)
+		: mainHaliteWindow(halWnd)
+	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)
 	{
@@ -90,17 +90,18 @@ public:
 		DLGRESIZE_CONTROL(LISTPEERS, (DLSZ_SIZE_X | DLSZ_SIZE_Y))
 	END_DLGRESIZE_MAP()
 	
-	LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);	
-	LRESULT OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled);	
-	LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled);	
+	LRESULT OnInitDialog(UINT, WPARAM, LPARAM, BOOL&);	
+	LRESULT OnClose(UINT, WPARAM, LPARAM, BOOL&);	
+	LRESULT OnDestroy(UINT, WPARAM, LPARAM, BOOL&);	
 	
-	LRESULT OnPause(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);	
-	LRESULT OnReannounce(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
-	LRESULT OnRemove(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	LRESULT OnPause(WORD, WORD, HWND, BOOL&);	
+	LRESULT OnReannounce(WORD, WORD, HWND, BOOL&);	
+	LRESULT OnRemove(WORD, WORD, HWND, BOOL&);	;
 	
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl );
 	
-	void setSelectedTorrent(wstring torrent);
+	void setSelectedTorrent(wstring torrent);	
+	void updateDialog();
 				
 protected:
 	void InitializeControls(void);

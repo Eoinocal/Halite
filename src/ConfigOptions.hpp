@@ -1,8 +1,7 @@
 #pragma once
  
-#include "stdafx.h"
-#include "Halite.h"
-#include "GlobalIni.h"
+#include "stdAfx.hpp"
+#include "GlobalIni.hpp"
 
 using namespace std;
 using namespace boost;

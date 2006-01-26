@@ -1,6 +1,5 @@
 
-#include "WTL.hpp"
-#include "halTorrent.h"
+#include "halTorrent.hpp"
 
 #include <libtorrent/entry.hpp>
 #include <libtorrent/bencode.hpp>

@@ -1,16 +1,16 @@
 
 #pragma once
 
-#include "stdafx.h"
-#include "Halite.h"
-#include "GlobalIni.h"
+#include "stdAfx.hpp"
+#include "Halite.hpp"
+#include "GlobalIni.hpp"
+
+#include <boost/signals.hpp>
 
 using namespace std;
 using namespace boost;
-	
-#define WM_UPDATEUIINFO  WM_USER+13
-const size_t numMainCols = 7;
 
+#include "HaliteListViewCtrl.hpp"
 #include "HaliteDialog.hpp"
 #include "ConfigOptions.hpp"
 
@@ -22,6 +22,10 @@ class HaliteWindow :
 {
 public:	
 
+	HaliteWindow()
+		:m_hdlg(this)
+	{}
+	
 	virtual BOOL PreTranslateMessage(MSG* pMsg)
 	{
 		if(CFrameWindowImpl<HaliteWindow>::PreTranslateMessage(pMsg))
@@ -40,7 +44,6 @@ public:
 	DECLARE_FRAME_WND_CLASS(NULL, IDR_MAINFRAME);
 	
 	BEGIN_MSG_MAP(HaliteWindow)
-		MESSAGE_HANDLER(WM_UPDATEUIINFO, OnUpdateUIInfo)
 		MSG_WM_NOTIFY(OnNotify)
 		MSG_WM_CREATE(OnCreate)
 		MSG_WM_CLOSE(OnClose)
@@ -74,11 +77,20 @@ public:
 	LRESULT OnViewStatusBar(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnEraseBkgnd(HDC hdc);
 	
+	void attachUIEvent(function<void ()> fn);
+	void updateUI();
+	void updateStatusbar();
+	
+	friend HaliteDialog;
+	friend HaliteListViewCtrl;
+	
 protected:	
 	CCommandBarCtrl m_CmdBar;
 	CHorSplitterWindow m_hzSplit;
-	CListViewCtrl m_list;
+	HaliteListViewCtrl m_list;
 	CEdit m_edit;
 	HaliteDialog m_hdlg;
     CMultiPaneStatusBarCtrl m_wndStatusBar;
+	
+	signal<void ()> updateUI_;	
 };

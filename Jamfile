@@ -9,24 +9,17 @@ use-project /osLibs : $(/osLibs) ;
 SOURCES =
 	Halite.cpp
 	stdafx.cpp
-	stdafx.h
 	HaliteWindow.cpp
-	HaliteWindow.hpp
+	HaliteListViewCtrl.cpp
 	HaliteDialog.cpp
-	HaliteDialog.hpp
 	ConfigOptions.cpp
-	ConfigOptions.hpp
 	halTorrent.cpp
-	halTorrent.h
 	GlobalIni.cpp
-	GlobalIni.h
 	halXmlRpc.cpp
-	halXmlRpc.hpp
 	;
 	
 RESOURCES =
 	Halite.rc
-	resource.h
 	;
 
 LIBS = 

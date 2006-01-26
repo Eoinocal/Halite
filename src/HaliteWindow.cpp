@@ -1,6 +1,10 @@
 
-#include "WTL.hpp"
+#include "stdAfx.hpp"
 #include "HaliteWindow.hpp"
+
+#include <string>
+#include <boost/format.hpp>
+#include <boost/bind.hpp>
 
 LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 {
@@ -20,11 +24,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	{
 		remote::initServer(INI->remoteConfig.port);
 	}
-	
-	// Init the Menu and attach to CmdBar
-	//HWND hWndCmdBar = m_CmdBar.Create(m_hWnd, rcDefault, NULL, ATL_SIMPLE_CMDBAR_PANE_STYLE);
-	//m_CmdBar.AttachMenu(GetMenu());
-	//m_CmdBar.LoadImages(IDR_MAINFRAME+1);
+
 	SetMenu(NULL);
 	
 	//Init ToolBar
@@ -51,16 +51,13 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 		m_hzSplit.SetSplitterPos();
 	}
 	
-	// Create ListView and Edit Controls
+	// Create ListView and Dialog
 	m_list.Create(m_hzSplit.m_hWnd, rcDefault, NULL, LVS_REPORT | LVS_SINGLESEL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, WS_EX_CLIENTEDGE);
-	//m_edit.Create(m_hzSplit.m_hWnd, rcDefault, NULL, WS_VSCROLL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | ES_MULTILINE | ES_AUTOVSCROLL, WS_EX_CLIENTEDGE);
+
 	m_hdlg.Create(m_hzSplit.m_hWnd);
 	m_hdlg.ShowWindow(true);
+	
 	m_hzSplit.SetSplitterPanes(m_list, m_hdlg);
-
-	/******* Messy hack here *******/
-	m_hdlg.torrentsLVC = m_list;
-	m_hdlg.mainHaliteWindow = m_hWnd;
 	
 	// Add columns to ListView
 	CHeaderCtrl hdr = m_list.GetHeader();
@@ -83,6 +80,9 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	UISetCheck(ID_VIEW_STATUS_BAR, 1);
 	
 	SetTimer (1, 1500 );
+	attachUIEvent(bind(&HaliteWindow::updateStatusbar,this));
+	attachUIEvent(bind(&HaliteListViewCtrl::updateListView,&m_list));
+	attachUIEvent(bind(&HaliteDialog::updateDialog,&m_hdlg));
 		
 	// Register object for message filtering and idle updates
 	CMessageLoop* pLoop = _Module.GetMessageLoop();
@@ -90,7 +90,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	pLoop->AddMessageFilter(this);
 	pLoop->AddIdleHandler(this);
 	
-	SendMessage(WM_UPDATEUIINFO,0,0);	
+	updateUI();	
 	
 	return 0;
 }
@@ -99,7 +99,7 @@ LRESULT HaliteWindow::OnNotify(int wParam, LPNMHDR lParam)
 {
 	if (lParam->hwndFrom == m_list && lParam->code == NM_CLICK)
 	{
-		SendMessage(WM_UPDATEUIINFO,0,0);	
+		updateUI();	
 			
 		int itemPos = m_list.GetSelectionMark();
 	
@@ -114,7 +114,18 @@ LRESULT HaliteWindow::OnNotify(int wParam, LPNMHDR lParam)
 	return 0;
 }
 
-LRESULT HaliteWindow::OnUpdateUIInfo(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+// UI update signal and Halite Window specific functions.
+
+void HaliteWindow::attachUIEvent(function<void ()> fn)
+{
+	updateUI_.connect(fn);
+}
+void HaliteWindow::updateUI()
+{
+	updateUI_();
+}
+
+void HaliteWindow::updateStatusbar()
 {
 	pair<float,float> speed = halite::sessionSpeed();
 	UISetText (1, 
@@ -122,93 +133,13 @@ LRESULT HaliteWindow::OnUpdateUIInfo(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*
 			% (speed.first/1000) 
 			% (speed.second/1000)
 		).str().c_str());
-		
-
-	halite::torrentBriefDetails tbd = halite::getTorrents();
-	if (tbd) {
-		
-		for(size_t i=0; i<tbd->size(); i++) 
-		{
-			LV_FINDINFO findInfo; 
-			findInfo.flags = LVFI_STRING;
-			findInfo.psz = const_cast<LPTSTR>((*tbd)[i].filename.c_str());
-			
-			int itemPos = m_list.FindItem(&findInfo, -1);
-			if (itemPos < 0)
-				int itemPos = m_list.AddItem(0,0,(*tbd)[i].filename.c_str(),0);
-			
-			m_list.SetItemText(itemPos,1,(*tbd)[i].status.c_str());
-			
-			m_list.SetItemText(itemPos,2,
-				(wformat(L"%1$.2f%%") 
-					% ((*tbd)[i].completion * 100)
-				).str().c_str());
-			
-			m_list.SetItemText(itemPos,3,
-				(wformat(L"%1$.2fkb/s") 
-					% ((*tbd)[i].speed.first/1000)
-				).str().c_str());	
-			
-			m_list.SetItemText(itemPos,4,
-				(wformat(L"%1$.2fkb/s") 
-					% ((*tbd)[i].speed.second/1000)
-				).str().c_str());	
-			
-			m_list.SetItemText(itemPos,5,
-				(lexical_cast<wstring>((*tbd)[i].peers)).c_str()
-				);
-			
-			m_list.SetItemText(itemPos,6,
-				(lexical_cast<wstring>((*tbd)[i].seeds)).c_str()
-				);
-		}
-	}	
-	int itemPos = m_list.GetSelectionMark();
-	
-	if (itemPos != -1)
-	{
-		wchar_t filenameBuffer[256];
-		format tmpStr;
-		
-		m_list.GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),256);		
-		halite::torrentDetails pTD = halite::getTorrentDetails(filenameBuffer);
-		
-		m_hdlg.SetDlgItemText(IDC_NAME,filenameBuffer);
-		m_hdlg.SetDlgItemText(IDC_TRACKER,pTD->current_tracker.c_str());
-		m_hdlg.SetDlgItemText(IDC_STATUS,pTD->status.c_str());
-		
-		m_hdlg.SetDlgItemText(IDC_AVAIL,
-			(wformat(L"%1$.2f%%") 
-				% (pTD->available*100)
-			).str().c_str());		
-	}
-	else
-	{
-		m_hdlg.SetDlgItemText(IDC_NAME,L"N/A");
-		m_hdlg.SetDlgItemText(IDC_TRACKER,L"N/A");
-		m_hdlg.SetDlgItemText(IDC_STATUS,L"N/A");
-		m_hdlg.SetDlgItemText(IDC_AVAIL,L"N/A");
-		
-		m_hdlg.SetDlgItemText(BTNPAUSE,L"Pause");
-		
-		::EnableWindow(m_hdlg.GetDlgItem(BTNPAUSE),false);
-		::EnableWindow(m_hdlg.GetDlgItem(BTNREANNOUNCE),false);
-		::EnableWindow(m_hdlg.GetDlgItem(BTNREMOVE),false);
-		
-		::EnableWindow(m_hdlg.GetDlgItem(IDC_EDITTLD),false);
-		::EnableWindow(m_hdlg.GetDlgItem(IDC_EDITTLU),false);
-		::EnableWindow(m_hdlg.GetDlgItem(IDC_EDITNCD),false);
-		::EnableWindow(m_hdlg.GetDlgItem(IDC_EDITNCU),false);
-	}
-	
-	return TRUE;
 }
-	
+
 void HaliteWindow::OnTimer ( UINT uTimerID, TIMERPROC pTimerProc )
 {
 	if ( 1 == uTimerID ) 
 	{
-		SendMessage(WM_UPDATEUIINFO,0,0);
+		updateUI();
 	}
 	else if ( 2 == uTimerID )
 	{
@@ -243,7 +174,7 @@ LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 		wstring filename = dlgOpen.m_ofn.lpstrFile;
 		halite::addTorrent(path(halite::wcstombs(filename),native));
 	}
-	SendMessage(WM_UPDATEUIINFO,0,0);
+	updateUI();
 		
 	return 0;
 }	
@@ -269,14 +200,14 @@ LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 LRESULT HaliteWindow::OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	halite::pauseTorrents();
-	SendMessage(WM_UPDATEUIINFO,0,0);
+	updateUI();
 	return 0;
 }
 
 LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	halite::resumeTorrents();
-	SendMessage(WM_UPDATEUIINFO,0,0);
+	updateUI();
 	return 0;
 }
 

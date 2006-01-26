@@ -1,14 +1,11 @@
 
-#include "WTL.hpp"
-#include "stdafx.h"
-#include "Halite.h"
+#include "stdAfx.hpp"
+#include "Halite.hpp"
 
 using namespace std;
 using namespace boost;
 			
 #include "HaliteWindow.hpp"
-
-CAppModule _Module;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
