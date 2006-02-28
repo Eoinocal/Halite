@@ -7,13 +7,47 @@
 #include <boost/thread/xtime.hpp>
 #include <boost/thread/condition.hpp>
 #include <boost/thread/tss.hpp>
+#include <boost/format.hpp>
 
 #include "halXmlRpc.hpp"
+#include "halTorrent.hpp"
 
 namespace remote
 {
 	XmlRpcServer Server;
 	static int Port;
+	
+	class GetTorrentDetails : public XmlRpcServerMethod
+	{
+	public:
+		GetTorrentDetails(XmlRpcServer* s) : 
+			XmlRpcServerMethod("getTorrentDetails", s) 
+		{}
+	
+		void execute(XmlRpcValue& params, XmlRpcValue& result)
+		{
+			int nArgs = params.size();
+			
+			halite::torrentBriefDetails tbd = halite::getTorrents();
+			if (tbd) 
+			{				
+				for(size_t i=0; i<tbd->size(); i++) 
+				{
+					wstring details = (wformat(L"%1$.2f%%, (D-U) %2$.2f-%3$.2f kb/s")
+						% ((*tbd)[i].completion * 100)
+						% ((*tbd)[i].speed.first/1024)
+						% ((*tbd)[i].speed.second/1024)
+						).str();
+						
+					result[i][0] = halite::wcstombs((*tbd)[i].filename);
+					result[i][1] = halite::wcstombs(details);
+				}
+			}
+		}
+	
+		std::string help() { return std::string("Get Torrent Details"); }
+	
+	} getTorrentDetails(&Server);
 	
 	class Hello : public XmlRpcServerMethod
 	{

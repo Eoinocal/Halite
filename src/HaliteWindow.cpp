@@ -108,6 +108,7 @@ LRESULT HaliteWindow::OnNotify(int wParam, LPNMHDR lParam)
 			wchar_t filenameBuffer[256];		
 			m_list.GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),256);		
 			m_hdlg.setSelectedTorrent(filenameBuffer);
+			m_hdlg.getPeerList().DeleteAllItems();
 		}
 	}
 	
@@ -127,25 +128,38 @@ void HaliteWindow::updateUI()
 
 void HaliteWindow::updateStatusbar()
 {
+	int port = halite::isListeningOn();
+	if (port > -1)
+	{
+		UISetText (0, 
+			(wformat(L"Listening on port %1%") 
+				% port 
+			).str().c_str());	
+	}
+	else
+		UISetText (0,L"Halite not listening, try adjusting the port range");	
+			
+	
 	pair<float,float> speed = halite::sessionSpeed();
 	UISetText (1, 
-		(wformat(L"(U-D) %1$.2fkb/s - %2$.2fkb/s") 
-			% (speed.first/1000) 
-			% (speed.second/1000)
+		(wformat(L"(D-U) %1$.2fkb/s - %2$.2fkb/s") 
+			% (speed.first/1024) 
+			% (speed.second/1024)
 		).str().c_str());
 }
 
-void HaliteWindow::OnTimer ( UINT uTimerID, TIMERPROC pTimerProc )
+void HaliteWindow::OnTimer (UINT uTimerID, TIMERPROC pTimerProc)
 {
-	if ( 1 == uTimerID ) 
+	if (1 == uTimerID) 
 	{
 		updateUI();
 	}
-	else if ( 2 == uTimerID )
+	else if (2 == uTimerID)
 	{
 		halite::reannounceAll();
 	}
-	else {		
+	else 
+	{		
 		SetMsgHandled(false);
 	}
 }	
@@ -160,6 +174,9 @@ void HaliteWindow::OnClose()
 	for (size_t i=0; i<numMainCols; ++i)
 		INI->haliteWindow.mainListColWidth[i] = m_list.GetColumnWidth(i);
 	
+	for (size_t i=0; i<4; ++i)
+		INI->haliteDialog.peerListColWidth[i] = m_hdlg.getPeerList().GetColumnWidth(i);
+		
 	INI->SaveData();
 	
 	SetMsgHandled(false);

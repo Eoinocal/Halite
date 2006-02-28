@@ -37,6 +37,19 @@ LRESULT HaliteDialog::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lP
 {
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
+	HWND hwndList = GetDlgItem(LISTPEERS);
+	m_list.Attach(hwndList);
+	CHeaderCtrl hdr = m_list.GetHeader();
+	hdr.ModifyStyle(HDS_BUTTONS, 0);
+	
+	m_list.AddColumn(L"Peer", hdr.GetItemCount());
+	m_list.AddColumn(L"Download", hdr.GetItemCount());
+	m_list.AddColumn(L"Upload", hdr.GetItemCount());
+	m_list.AddColumn(L"Status", hdr.GetItemCount());
+
+	for (size_t i=0; i<4; ++i)
+		m_list.SetColumnWidth(i, INI->haliteDialog.peerListColWidth[i]);
+	
 	selectedTorrent = L"";
 	
 	NoConnDown = 0;
@@ -48,8 +61,14 @@ LRESULT HaliteDialog::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lP
 	return TRUE;
 }
 
+CListViewCtrl& HaliteDialog::getPeerList()
+{
+	return m_list;
+}
+
 LRESULT HaliteDialog::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
 {
+		
 	if(::IsWindow(m_hWnd)) {
 		::DestroyWindow(m_hWnd);
 	}
@@ -110,6 +129,7 @@ LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl )
 	return 0;
 }
 
+
 void HaliteDialog::updateDialog()
 {
 	int itemPos = mainHaliteWindow->m_list.GetSelectionMark();
@@ -130,6 +150,42 @@ void HaliteDialog::updateDialog()
 			(wformat(L"%1$.2f%%") 
 				% (pTD->available*100)
 			).str().c_str());		
+		
+		SetDlgItemText(IDC_COMPLETE,
+			(wformat(L"%1$.2fmb of %2$.2fmb") 
+				% (static_cast<float>(pTD->total_wanted_done)/(1024*1024))
+				% (static_cast<float>(pTD->total_wanted)/(1024*1024))
+			).str().c_str());
+					
+		vector<halite::PeerDetail> peerDetails;
+		halite::getTorrentPeerDetails(filenameBuffer,peerDetails);
+		
+		if (!peerDetails.empty())
+		{
+			for(size_t i=0; i<peerDetails.size(); ++i)
+			{						
+				LV_FINDINFO findInfo; 
+				findInfo.flags = LVFI_STRING;
+				findInfo.psz = const_cast<LPTSTR>(peerDetails[i].ipAddress.c_str());
+				
+				int itemPos = m_list.FindItem(&findInfo, -1);
+				if (itemPos < 0)
+					itemPos = m_list.AddItem(0,0,peerDetails[i].ipAddress.c_str(),0);
+				
+				m_list.SetItemText(itemPos,1,
+					(wformat(L"%1$.2fkb/s") 
+						% (peerDetails[i].speed.first/1024)
+					).str().c_str());	
+					
+				m_list.SetItemText(itemPos,2,
+					(wformat(L"%1$.2fkb/s") 
+						% (peerDetails[i].speed.second/1024)
+					).str().c_str());	
+					
+				if (peerDetails[i].seed)
+					m_list.SetItemText(itemPos,3,L"Seed");
+			}
+		}
 	}
 	else
 	{
@@ -137,6 +193,7 @@ void HaliteDialog::updateDialog()
 		SetDlgItemText(IDC_TRACKER,L"N/A");
 		SetDlgItemText(IDC_STATUS,L"N/A");
 		SetDlgItemText(IDC_AVAIL,L"N/A");
+		SetDlgItemText(IDC_COMPLETE,L"N/A");
 		
 		SetDlgItemText(BTNPAUSE,L"Pause");
 		
@@ -148,5 +205,7 @@ void HaliteDialog::updateDialog()
 		::EnableWindow(GetDlgItem(IDC_EDITTLU),false);
 		::EnableWindow(GetDlgItem(IDC_EDITNCD),false);
 		::EnableWindow(GetDlgItem(IDC_EDITNCU),false);
+		
+		m_list.DeleteAllItems();
 	}
 }

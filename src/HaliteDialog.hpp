@@ -85,7 +85,7 @@ public:
 		DLGRESIZE_CONTROL(IDC_NAME, (DLSZ_SIZE_X))
 		DLGRESIZE_CONTROL(IDC_TRACKER, (DLSZ_SIZE_X))
 		DLGRESIZE_CONTROL(IDC_STATUS, (DLSZ_SIZE_X))
-		DLGRESIZE_CONTROL(IDC_AVAIL, (DLSZ_SIZE_X))
+		DLGRESIZE_CONTROL(IDC_COMPLETE, (DLSZ_SIZE_X))
 		
 		DLGRESIZE_CONTROL(LISTPEERS, (DLSZ_SIZE_X | DLSZ_SIZE_Y))
 	END_DLGRESIZE_MAP()
@@ -102,6 +102,7 @@ public:
 	
 	void setSelectedTorrent(wstring torrent);	
 	void updateDialog();
+	CListViewCtrl& getPeerList();
 				
 protected:
 	void InitializeControls(void);

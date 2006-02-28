@@ -58,6 +58,21 @@ struct HaliteWindowConfig
 	unsigned int mainListColWidth[numMainCols];
 };
 
+struct HaliteDialogConfig
+{
+	HaliteDialogConfig()
+	{
+		for(size_t i=0; i<4; ++i)
+			peerListColWidth[i] = 70;
+	}
+	
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version);
+	
+	unsigned int peerListColWidth[4];
+};
+
 
 struct HaliteRemoteConfig
 {
@@ -89,6 +104,7 @@ public:
 	HaliteRemoteConfig remoteConfig;
 	BitTConfig bitTConfig;
 	HaliteWindowConfig haliteWindow;
+	HaliteDialogConfig haliteDialog;
 	
 private:
 	template<class T>

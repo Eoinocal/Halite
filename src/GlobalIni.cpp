@@ -37,6 +37,12 @@ void HaliteWindowConfig::serialize(Archive& ar, const unsigned int version)
 	ar & mainListColWidth;
 }
 
+template<class Archive>
+void HaliteDialogConfig::serialize(Archive& ar, const unsigned int version)
+{
+	ar & peerListColWidth;
+}
+
 bool ArchivalData::LoadData()
 {	
 	try
@@ -48,6 +54,7 @@ bool ArchivalData::LoadData()
 			
 			ia >> bitTConfig;
 			ia >> haliteWindow;
+			ia >> haliteDialog;
 			ia >> remoteConfig;
 		}
 		return true;
@@ -68,6 +75,7 @@ bool ArchivalData::SaveData()
 		
 		oa << const_save(bitTConfig);
 		oa << const_save(haliteWindow);
+		oa << const_save(haliteDialog);
 		oa << const_save(remoteConfig);			
 		return true;
 	}

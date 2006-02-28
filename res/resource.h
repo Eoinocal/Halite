@@ -18,6 +18,7 @@
 #define ID_CAIRO                        1003
 #define TORRENTPROG                     1003
 #define ID_SETTINGS                     1004
+#define IDC_COMPLETE                    1004
 #define ID_RESUME                       1005
 #define ID_PAUSE                        1006
 #define IDC_NAME                        1008
@@ -36,6 +37,7 @@
 #define IDC_TL                          1021
 #define IDC_NCU                         1022
 #define IDC_NCD                         1023
+#define IDC_AVAIL2                      1024
 #define IDC_BC_MAXCONN                  1025
 #define IDC_REMOTECTRL                  1026
 #define IDC_BC_MAXUP                    1026
@@ -50,7 +52,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        103
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1004
+#define _APS_NEXT_CONTROL_VALUE         1005
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

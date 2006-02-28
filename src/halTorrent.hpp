@@ -30,6 +30,20 @@ namespace halite {
 		wstring current_tracker;
 		float completion;	
 		float available;
+		size_t total_wanted_done;
+		size_t total_wanted;
+	};
+	
+	struct PeerDetail {
+		PeerDetail(wstring ip_address, pair<float,float> Speed, bool Seed)	:
+			ipAddress(ip_address),
+			speed(Speed),
+			seed(Seed)
+		{}
+		
+		wstring ipAddress;
+		pair<float,float> speed;
+		bool seed;
 	};
 	
 	typedef shared_ptr<vector<torrentBriefDetail> > torrentBriefDetails;
@@ -40,6 +54,7 @@ namespace halite {
 	
 	bool initSession();
 	bool listenOn(pair<int,int>);
+	int isListeningOn();
 	bool closeDown();
 	void resumeAll();
 	
@@ -62,6 +77,8 @@ namespace halite {
 	pair<float,float> getTorrentTransferLimits(wstring filename);
 	void setTorrentConnectionLimits(wstring filename, int, int);
 	pair<int,int> getTorrentConnectionLimits(wstring filename);
+	
+	void getTorrentPeerDetails(wstring filename, vector<PeerDetail>& peerDetails);
 	
 	void closeTorrents();
 	void setLimits(int download, int uploads);

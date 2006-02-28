@@ -178,34 +178,36 @@ BEGIN
                     IDC_STATIC,12,18,216,24
 END
 
-HALITEDLG DIALOGEX 0, 0, 229, 99
+HALITEDLG DIALOGEX 0, 0, 313, 99
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "Pause",BTNPAUSE,176,0,53,14
-    CONTROL         "",TORRENTPROG,"msctls_progress32",WS_BORDER,0,48,229,8
-    PUSHBUTTON      "Reannounce",BTNREANNOUNCE,176,16,53,14
-    PUSHBUTTON      "Remove",BTNREMOVE,176,32,53,14
+    DEFPUSHBUTTON   "Pause",BTNPAUSE,260,0,53,14
+    CONTROL         "",TORRENTPROG,"msctls_progress32",WS_BORDER,0,48,313,8
+    PUSHBUTTON      "Reannounce",BTNREANNOUNCE,260,16,53,14
+    PUSHBUTTON      "Remove",BTNREMOVE,260,32,53,14
     RTEXT           "Name:",IDC_STATIC,6,0,30,8
     LTEXT           "N/A",IDC_AVAIL,38,36,50,8
     RTEXT           "Status:",IDC_STATIC,6,24,30,8
     RTEXT           "Available:",IDC_STATIC,0,36,36,8
     RTEXT           "Tracker:",IDC_STATIC,6,12,30,8
-    LTEXT           "N/A",IDC_STATUS,38,24,50,8
-    LTEXT           "N/A",IDC_TRACKER,38,12,50,8
-    LTEXT           "N/A",IDC_NAME,38,0,50,8
+    LTEXT           "N/A",IDC_STATUS,38,24,136,8
+    LTEXT           "N/A",IDC_TRACKER,38,12,140,8
+    LTEXT           "N/A",IDC_NAME,38,0,136,8
     CONTROL         "",LISTPEERS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | 
-                    WS_BORDER | WS_TABSTOP,0,60,229,39
-    EDITTEXT        IDC_EDITTLU,142,33,27,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDITTLD,102,33,27,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDITNCD,102,11,28,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDITNCU,142,11,27,12,ES_AUTOHSCROLL
-    RTEXT           "No. connections:",IDC_NC,91,2,55,8
-    RTEXT           "Transfer limit (kb/s):",IDC_TL,91,24,66,8
-    RTEXT           "D",IDC_NCD,89,12,8,8
-    RTEXT           "U",IDC_NCU,131,13,8,8
-    RTEXT           "U",IDC_TLU,131,35,8,8
-    RTEXT           "D",IDC_TLD,89,35,8,8
+                    WS_BORDER | WS_TABSTOP,0,60,313,39
+    EDITTEXT        IDC_EDITTLU,227,33,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDITTLD,187,33,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDITNCD,187,11,28,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDITNCU,227,11,27,12,ES_AUTOHSCROLL
+    RTEXT           "No. connections:",IDC_NC,176,2,55,8
+    RTEXT           "Transfer limit (kb/s):",IDC_TL,176,24,66,8
+    RTEXT           "D",IDC_NCD,177,13,8,8
+    RTEXT           "U",IDC_NCU,216,13,8,8
+    RTEXT           "U",IDC_TLU,216,36,8,8
+    RTEXT           "D",IDC_TLD,177,35,8,8
+    RTEXT           "Completed:",IDC_STATIC,92,36,39,8
+    LTEXT           "N/A",IDC_COMPLETE,133,36,43,8
 END
 
 
@@ -276,7 +278,7 @@ BEGIN
 
     HALITEDLG, DIALOG
     BEGIN
-        RIGHTMARGIN, 195
+        RIGHTMARGIN, 229
     END
 END
 #endif    // APSTUDIO_INVOKED

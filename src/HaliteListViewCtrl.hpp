@@ -13,6 +13,7 @@ public:
 	void OnLButtonDown(UINT /*wParam*/, CPoint /*point*/) 
 	{
 		//::PostMessage(UIUpdateMsgWnd,WM_UPDATEUIINFO,0,0);
+		
 		SetMsgHandled(false);
 	}
 

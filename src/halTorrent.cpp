@@ -111,6 +111,18 @@ namespace halite
 			}
 		}
 	}
+		
+	int isListeningOn() 
+	{
+		if (!session->is_listening())
+		{
+			return -1;	
+		}
+		else
+		{
+			return session->listen_port();	
+		}
+	}
 	
 	bool closeDown() 
 	{
@@ -226,8 +238,13 @@ namespace halite
 				
 				if (connections > 0) 
 					existing->second.handle.set_max_connections(connections);
+				else
+					existing->second.handle.set_max_connections(200);
+					
 				if (uploads > 0)
 					existing->second.handle.set_max_uploads(uploads);
+				else
+					existing->second.handle.set_max_uploads(200);
 			}
 		}				
 	}
@@ -242,6 +259,30 @@ namespace halite
 			}
 		}	
 		return pair<int,int>(0,0);			
+	}	
+	
+	void getTorrentPeerDetails(wstring filename, vector<PeerDetail>& peerDetails)
+	{
+		if (filename != L"") {
+			torrentIter existing = torrents.find(filename);		
+			if (existing != torrents.end());
+			{
+				peerDetails.clear();
+				std::vector<peer_info> peer_infos_;
+				existing->second.handle.get_peer_info(peer_infos_);
+				
+				for(vector<peer_info>::iterator i=peer_infos_.begin(); i != peer_infos_.end(); ++i)
+				{
+					peerDetails.push_back(PeerDetail(
+						mbstowcs((*i).ip.as_string()),
+						std::make_pair((*i).payload_down_speed, (*i).payload_up_speed),
+						(*i).seed)
+						);
+				}
+				
+			}
+		}	
+		return;			
 	}
 	
 	void setTorrentTransferLimits(wstring filename, float down, float up)
@@ -254,8 +295,13 @@ namespace halite
 				
 				if (down > 0) 
 					existing->second.handle.set_download_limit(static_cast<int>(down*1024));
+				else
+					existing->second.handle.set_download_limit(-1);
+					
 				if (up > 0)
 					existing->second.handle.set_upload_limit(static_cast<int>(up*1024));
+				else
+					existing->second.handle.set_upload_limit(-1);
 			}
 		}				
 	}
@@ -315,6 +361,8 @@ namespace halite
 
 			pTD->current_tracker = mbstowcs(ts.current_tracker);
 			pTD->available = ts.distributed_copies;
+			pTD->total_wanted_done = ts.total_wanted_done;
+			pTD->total_wanted = ts.total_wanted;
 			
 		}		
 		return pTD;
