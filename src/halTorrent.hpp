@@ -41,6 +41,11 @@ namespace halite {
 			seed(Seed)
 		{}
 		
+		bool operator==(wstring ip_address)
+		{
+			return (ipAddress == ip_address);
+		}
+		
 		wstring ipAddress;
 		pair<float,float> speed;
 		bool seed;

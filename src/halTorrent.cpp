@@ -359,6 +359,7 @@ namespace halite
 			if (existing->second.handle.is_paused())
 				pTD->status = L"Paused";
 
+			pTD->completion = ts.progress;
 			pTD->current_tracker = mbstowcs(ts.current_tracker);
 			pTD->available = ts.distributed_copies;
 			pTD->total_wanted_done = ts.total_wanted_done;

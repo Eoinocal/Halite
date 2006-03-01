@@ -21,6 +21,7 @@ protected:
 	CButton m_btn_start;
 	CListViewCtrl m_list;
 	CContainedWindow m_wndNCD;
+	CProgressBarCtrl m_prog;
 	
 	float NoConnDown, NoConnUp;
 	float TranLimitDown, TranLimitUp;

@@ -31,11 +31,16 @@ void HaliteDialog::setSelectedTorrent(wstring torrent)
 	::EnableWindow(GetDlgItem(IDC_EDITTLU),true);
 	::EnableWindow(GetDlgItem(IDC_EDITNCD),true);
 	::EnableWindow(GetDlgItem(IDC_EDITNCU),true);
+	
+	mainHaliteWindow->updateUI();
 }
 
 LRESULT HaliteDialog::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
+	
+	m_prog.Attach(GetDlgItem(TORRENTPROG));
+	m_prog.SetRange(0,100);
 	
 	HWND hwndList = GetDlgItem(LISTPEERS);
 	m_list.Attach(hwndList);
@@ -136,7 +141,7 @@ void HaliteDialog::updateDialog()
 	
 	if (itemPos != -1)
 	{
-		wchar_t filenameBuffer[256];
+		wchar_t filenameBuffer[MAX_PATH];
 		format tmpStr;
 		
 		mainHaliteWindow->m_list.GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),256);		
@@ -145,6 +150,7 @@ void HaliteDialog::updateDialog()
 		SetDlgItemText(IDC_NAME,filenameBuffer);
 		SetDlgItemText(IDC_TRACKER,pTD->current_tracker.c_str());
 		SetDlgItemText(IDC_STATUS,pTD->status.c_str());
+		m_prog.SetPos(static_cast<int>(pTD->completion*100));
 		
 		SetDlgItemText(IDC_AVAIL,
 			(wformat(L"%1$.2f%%") 
@@ -162,8 +168,21 @@ void HaliteDialog::updateDialog()
 		
 		if (!peerDetails.empty())
 		{
+			
+			int j = m_list.GetItemCount();
+			for(size_t i=0; i<j; ++i)
+			{
+				wchar_t ip_address[256];
+				m_list.GetItemText(i,0,static_cast<LPTSTR>(ip_address),256);
+				
+				vector<halite::PeerDetail>::iterator it = 
+					find(peerDetails.begin(), peerDetails.end(), ip_address);
+				if (it ==  peerDetails.end())
+					m_list.DeleteItem(i);
+			}
+			
 			for(size_t i=0; i<peerDetails.size(); ++i)
-			{						
+			{				
 				LV_FINDINFO findInfo; 
 				findInfo.flags = LVFI_STRING;
 				findInfo.psz = const_cast<LPTSTR>(peerDetails[i].ipAddress.c_str());

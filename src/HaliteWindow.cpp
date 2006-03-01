@@ -79,7 +79,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	UISetCheck(ID_VIEW_TOOLBAR, 1);
 	UISetCheck(ID_VIEW_STATUS_BAR, 1);
 	
-	SetTimer (1, 1500 );
+	SetTimer (1, 3500 );
 	attachUIEvent(bind(&HaliteWindow::updateStatusbar,this));
 	attachUIEvent(bind(&HaliteListViewCtrl::updateListView,&m_list));
 	attachUIEvent(bind(&HaliteDialog::updateDialog,&m_hdlg));
@@ -105,7 +105,7 @@ LRESULT HaliteWindow::OnNotify(int wParam, LPNMHDR lParam)
 	
 		if (itemPos != -1)
 		{
-			wchar_t filenameBuffer[256];		
+			wchar_t filenameBuffer[MAX_PATH];		
 			m_list.GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),256);		
 			m_hdlg.setSelectedTorrent(filenameBuffer);
 			m_hdlg.getPeerList().DeleteAllItems();
