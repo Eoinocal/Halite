@@ -103,9 +103,9 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "Comments", "libTorrrent based client"
-            VALUE "CompanyName", "BinaryNotions"
+            VALUE "CompanyName", "BinaryNotions.com"
             VALUE "FileDescription", "Halite BitTorrent Client"
-            VALUE "FileVersion", "0, 2, 0, 0"
+            VALUE "FileVersion", "0, 5, 0, 0"
             VALUE "InternalName", "Halite"
             VALUE "LegalCopyright", "Copyright Eoin O'Callaghan 2006"
             VALUE "OriginalFilename", "Halite.exe"
