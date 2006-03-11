@@ -49,6 +49,102 @@ namespace remote
 	
 	} getTorrentDetails(&Server);
 	
+	class GetPausedTorrents : public XmlRpcServerMethod
+	{
+	public:
+		GetPausedTorrents(XmlRpcServer* s) : 
+			XmlRpcServerMethod("getPausedTorrents", s) 
+		{}
+	
+		void execute(XmlRpcValue& params, XmlRpcValue& result)
+		{
+			int nArgs = params.size();
+			
+			halite::torrentBriefDetails tbd = halite::getTorrents();
+			if (tbd) 
+			{		
+				size_t j = 0;				
+				for(size_t i=0; i<tbd->size(); i++) 
+				{
+					if ((*tbd)[i].status == L"Paused")					
+						result[j++] = halite::wcstombs((*tbd)[i].filename);
+				}
+			}
+		}
+	
+		std::string help() { return std::string("Get Paused Torrents"); }
+	
+	} getPausedTorrents(&Server);
+	
+	class GetActiveTorrents : public XmlRpcServerMethod
+	{
+	public:
+		GetActiveTorrents(XmlRpcServer* s) : 
+			XmlRpcServerMethod("getActiveTorrents", s) 
+		{}
+	
+		void execute(XmlRpcValue& params, XmlRpcValue& result)
+		{
+			int nArgs = params.size();
+			
+			halite::torrentBriefDetails tbd = halite::getTorrents();
+			if (tbd) 
+			{		
+				size_t j = 0;				
+				for(size_t i=0; i<tbd->size(); i++) 
+				{
+					if ((*tbd)[i].status != L"Paused")					
+						result[j++] = halite::wcstombs((*tbd)[i].filename);
+				}
+			}
+		}
+	
+		std::string help() { return std::string("Get Active Torrents"); }
+	
+	} getActiveTorrents(&Server);
+	
+	class ResumeTorrent : public XmlRpcServerMethod
+	{
+	public:
+		ResumeTorrent(XmlRpcServer* s) : 
+			XmlRpcServerMethod("resumeTorrent", s) 
+		{}
+	
+		void execute(XmlRpcValue& params, XmlRpcValue& result)
+		{
+			int nArgs = params.size();
+			if (nArgs >= 2)
+			{
+				string filename = params[1];
+				halite::resumeTorrent(halite::mbstowcs(filename));
+			}			
+		}
+	
+		std::string help() { return std::string("Resume Torrent"); }
+	
+	} resumeTorrent(&Server);
+	
+	class PauseTorrent : public XmlRpcServerMethod
+	{
+	public:
+		PauseTorrent(XmlRpcServer* s) : 
+			XmlRpcServerMethod("pauseTorrent", s) 
+		{}
+	
+		void execute(XmlRpcValue& params, XmlRpcValue& result)
+		{
+			int nArgs = params.size();
+			if (nArgs >= 2)
+			{
+				string filename = params[1];
+				halite::pauseTorrent(halite::mbstowcs(filename));
+			}			
+		}
+	
+		std::string help() { return std::string("Pause Torrent"); }
+	
+	} pauseTorrent(&Server);
+	
 	class Hello : public XmlRpcServerMethod
 	{
 	public:
