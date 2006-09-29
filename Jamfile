@@ -1,8 +1,8 @@
 
 use-project /boost : $(/boost) ;
-use-project /XmlRpc : $(/XmlRpc) ;
+use-project /http : $(/http) ;
 use-project /libtorrent : $(/libtorrent) ;
-use-project /TinyXMLSTL : $(/TinyXMLSTL) ;
+use-project /tinyxmlstl : $(/tinyxmlstl) ;
 use-project /WTL : $(/WTL) ;
 use-project /osLibs : $(/osLibs) ;
 
@@ -35,9 +35,11 @@ project Halite
 
 	: requirements
 	
-    <library>/XmlRpc//XmlRpc/<link>static
+	<library>/boost/signals//boost_signals/<link>static
+	<library>/boost/serialization//boost_serialization/<link>static
+	<library>/http//http/<link>static
     <library>/libtorrent//torrent/<link>static
-    <library>/TinyXMLSTL/<link>static
+    <library>/tinyxmlstl/<link>static
 	
 	<library>/WTL
 	<library>/osLibs//$(LIBS)
@@ -47,8 +49,9 @@ project Halite
 	<toolset>msvc:<define>_UNICODE
 	<toolset>msvc:<define>WIN32
 	<toolset>msvc:<define>_WINDOWS
+	<toolset>msvc:<asynch-exceptions>on
 	
-	<link>static
+	<runtime-link>static
 	
 	<toolset>msvc:<linkflags>/SUBSYSTEM:WINDOWS
 	;

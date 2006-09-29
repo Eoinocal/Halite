@@ -8,8 +8,8 @@ void HaliteDialog::setSelectedTorrent(wstring torrent)
 {
 	selectedTorrent = torrent;
 	
-	pair<float,float> tranLimit = halite::getTorrentTransferLimits(torrent);
-	pair<int,int> connLimit = halite::getTorrentConnectionLimits(torrent);
+	pair<float,float> tranLimit(0,0);// = halite::getTorrentTransferLimits(torrent);
+	pair<int,int> connLimit(0,0);// = halite::getTorrentConnectionLimits(torrent);
 	
 	NoConnDown = connLimit.first;
 	NoConnUp = connLimit.second;
@@ -18,7 +18,7 @@ void HaliteDialog::setSelectedTorrent(wstring torrent)
 	
 	DoDataExchange(false);
 	
-	if(halite::isPausedTorrent(selectedTorrent))
+	if(false)//halite::isPausedTorrent(selectedTorrent))
 		SetDlgItemText(BTNPAUSE,L"Resume");
 	else		
 		SetDlgItemText(BTNPAUSE,L"Pause");
@@ -89,15 +89,15 @@ LRESULT HaliteDialog::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPara
 
 LRESULT HaliteDialog::OnPause(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-	if(halite::isPausedTorrent(selectedTorrent))
+	if(false)//halite::isPausedTorrent(selectedTorrent))
 	{
 		SetDlgItemText(BTNPAUSE,L"Pause");
-		halite::resumeTorrent(selectedTorrent);
+//		halite::resumeTorrent(selectedTorrent);
 	}
 	else
 	{
 		SetDlgItemText(BTNPAUSE,L"Resume");
-		halite::pauseTorrent(selectedTorrent);
+//		halite::pauseTorrent(selectedTorrent);
 	}
 	
 	mainHaliteWindow->updateUI();
@@ -110,7 +110,7 @@ LRESULT HaliteDialog::OnReannounce(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hW
 }	
 LRESULT HaliteDialog::OnRemove(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-	halite::removeTorrent(selectedTorrent);
+//	halite::removeTorrent(selectedTorrent);
 		   
 	LV_FINDINFO findInfo; 
 	findInfo.flags = LVFI_STRING;
@@ -128,8 +128,8 @@ LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl )
 {
 	DoDataExchange(true);
 	
-	halite::setTorrentTransferLimits(selectedTorrent,TranLimitDown,TranLimitUp);
-	halite::setTorrentConnectionLimits(selectedTorrent,NoConnDown,NoConnUp);
+//	halite::setTorrentTransferLimits(selectedTorrent,TranLimitDown,TranLimitUp);
+//	halite::setTorrentConnectionLimits(selectedTorrent,NoConnDown,NoConnUp);
 	
 	return 0;
 }
@@ -145,10 +145,10 @@ void HaliteDialog::updateDialog()
 		format tmpStr;
 		
 		mainHaliteWindow->m_list.GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),256);		
-		halite::torrentDetails pTD = halite::getTorrentDetails(filenameBuffer);
+/*		halite::torrentDetails pTD = halite::getTorrentDetails(filenameBuffer);
 		
 		SetDlgItemText(IDC_NAME,filenameBuffer);
-		SetDlgItemText(IDC_TRACKER,pTD->current_tracker.c_str());
+		SetDlgItemText(IDC_TRACKER,pTD->currentTracker.c_str());
 		SetDlgItemText(IDC_STATUS,pTD->status.c_str());
 		m_prog.SetPos(static_cast<int>(pTD->completion*100));
 		
@@ -159,18 +159,18 @@ void HaliteDialog::updateDialog()
 		
 		SetDlgItemText(IDC_COMPLETE,
 			(wformat(L"%1$.2fmb of %2$.2fmb") 
-				% (static_cast<float>(pTD->total_wanted_done)/(1024*1024))
-				% (static_cast<float>(pTD->total_wanted)/(1024*1024))
+				% (static_cast<float>(pTD->totalWantedDone)/(1024*1024))
+				% (static_cast<float>(pTD->totalWanted)/(1024*1024))
 			).str().c_str());
-					
+*/					
 		vector<halite::PeerDetail> peerDetails;
-		halite::getTorrentPeerDetails(filenameBuffer,peerDetails);
+//		halite::getTorrentPeerDetails(filenameBuffer,peerDetails);
 		
 		if (!peerDetails.empty())
 		{
 			
 			int j = m_list.GetItemCount();
-			for(size_t i=0; i<j; ++i)
+			for(int i=0; i<j; ++i)
 			{
 				wchar_t ip_address[256];
 				m_list.GetItemText(i,0,static_cast<LPTSTR>(ip_address),256);

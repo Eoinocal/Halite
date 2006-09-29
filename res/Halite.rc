@@ -173,9 +173,11 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION |
 CAPTION "About"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    GROUPBOX        "Program Information",IDC_STATIC,6,6,228,42
+    GROUPBOX        "Program Information",IDC_STATIC,6,6,228,81
     LTEXT           "Halite Torrent is a BitTorrent client based on the libtorrent library by Arvid from Raserber software. It also relies heavily on the Boost libraries and xmlrpc++.",
                     IDC_STATIC,12,18,216,24
+    CONTROL         "",IDC_RICHEDIT22,"RichEdit20A",ES_AUTOHSCROLL | 
+                    WS_TABSTOP,7,50,228,37,WS_EX_TRANSPARENT
 END
 
 HALITEDLG DIALOGEX 0, 0, 313, 99

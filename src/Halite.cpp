@@ -1,10 +1,11 @@
 
 #include "stdAfx.hpp"
 #include "Halite.hpp"
+#include <http/xmlrpc/server.hpp>
 
 using namespace std;
 using namespace boost;
-			
+
 #include "HaliteWindow.hpp"
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -17,6 +18,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	int nRet;
 	{
 		AtlInitCommonControls(ICC_COOL_CLASSES | ICC_BAR_CLASSES);	
+		HINSTANCE hInstRich = ::LoadLibrary(CRichEditCtrl::GetLibraryName());
+	   
 		HRESULT hRes = _Module.Init(NULL, hInstance);
 		assert (SUCCEEDED(hRes));	
 		{	
@@ -42,9 +45,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		_Module.Term();
 	}//::CoUninitialize();	
 			
-	halite::closeTorrents();
-	bool success = halite::closeDown();
-	assert(success);	
+//	halite::closeTorrents();
+//	bool success = halite::closeDown();
+//	assert(success);	
 	
 	return nRet;
 }

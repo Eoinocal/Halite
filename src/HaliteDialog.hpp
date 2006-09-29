@@ -23,7 +23,7 @@ protected:
 	CContainedWindow m_wndNCD;
 	CProgressBarCtrl m_prog;
 	
-	float NoConnDown, NoConnUp;
+	int NoConnDown, NoConnUp;
 	float TranLimitDown, TranLimitUp;
 	
 	wstring selectedTorrent;
@@ -58,8 +58,8 @@ public:
 	END_MSG_MAP()
 	
 	BEGIN_DDX_MAP(CMainDlg)
-        DDX_FLOAT(IDC_EDITNCD, NoConnDown)
-        DDX_FLOAT(IDC_EDITNCU, NoConnUp)
+        DDX_INT(IDC_EDITNCD, NoConnDown)
+        DDX_INT(IDC_EDITNCU, NoConnUp)
         DDX_FLOAT(IDC_EDITTLD, TranLimitDown)
         DDX_FLOAT(IDC_EDITTLU, TranLimitUp)
     END_DDX_MAP()

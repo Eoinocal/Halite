@@ -11,18 +11,16 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	INI = new ArchivalData("Halite.ini");
 	INI->LoadData();
 	
-	bool success = halite::initSession();
-	assert(success);
-	
-	success = halite::listenOn(std::make_pair(INI->bitTConfig.portFrom,INI->bitTConfig.portTo));
+	bool success = halite::bittorrent().listenOn(
+		std::make_pair(INI->bitTConfig.portFrom, INI->bitTConfig.portTo));
 	assert(success);	
 	
-	halite::setLimits(INI->bitTConfig.maxConnections,INI->bitTConfig.maxUploads);
-	halite::resumeAll();
+//	halite::setLimits(INI->bitTConfig.maxConnections,INI->bitTConfig.maxUploads);
+//	halite::resumeAll();
 	
 	if (INI->remoteConfig.isEnabled)
 	{
-		remote::initServer(INI->remoteConfig.port);
+		halite::xmlRpc().bindHost(INI->remoteConfig.port);
 	}
 
 	SetMenu(NULL);
@@ -128,7 +126,7 @@ void HaliteWindow::updateUI()
 
 void HaliteWindow::updateStatusbar()
 {
-	int port = halite::isListeningOn();
+	int port = halite::bittorrent().isListeningOn();
 	if (port > -1)
 	{
 		UISetText (0, 
@@ -140,7 +138,7 @@ void HaliteWindow::updateStatusbar()
 		UISetText (0,L"Halite not listening, try adjusting the port range");	
 			
 	
-	pair<float,float> speed = halite::sessionSpeed();
+	pair<float, float> speed = halite::bittorrent().sessionSpeed();
 	UISetText (1, 
 		(wformat(L"(D-U) %1$.2fkb/s - %2$.2fkb/s") 
 			% (speed.first/1024) 
@@ -156,7 +154,7 @@ void HaliteWindow::OnTimer (UINT uTimerID, TIMERPROC pTimerProc)
 	}
 	else if (2 == uTimerID)
 	{
-		halite::reannounceAll();
+//		halite::reannounceAll();
 	}
 	else 
 	{		
@@ -189,7 +187,7 @@ LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	if (dlgOpen.DoModal() == IDOK) 
 	{
 		wstring filename = dlgOpen.m_ofn.lpstrFile;
-		halite::addTorrent(path(halite::wcstombs(filename),native));
+		halite::bittorrent().addTorrent(path(halite::wcstombs(filename),native));
 	}
 	updateUI();
 		
@@ -201,29 +199,29 @@ LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	ConfigOptionsProp sheet(L"Settings");	
     sheet.DoModal();
 	
-	halite::listenOn(std::make_pair(INI->bitTConfig.portFrom,INI->bitTConfig.portTo));
+	halite::bittorrent().listenOn(std::make_pair(INI->bitTConfig.portFrom, INI->bitTConfig.portTo));
 	
 	if (INI->remoteConfig.isEnabled)
 	{
-		remote::initServer(INI->remoteConfig.port);
+		halite::xmlRpc().bindHost(INI->remoteConfig.port);
 	}
 	else
 	{
-		remote::exitServer();
+		halite::xmlRpc().stopHost();
 	}
 	return 0;
 }
 
 LRESULT HaliteWindow::OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	halite::pauseTorrents();
+//	halite::pauseTorrents();
 	updateUI();
 	return 0;
 }
 
 LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	halite::resumeTorrents();
+//	halite::resumeTorrents();
 	updateUI();
 	return 0;
 }

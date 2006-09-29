@@ -1,4 +1,6 @@
 
+#include "stdAfx.hpp"
+
 #include <string>
 
 #include <boost/thread/thread.hpp>
@@ -8,16 +10,87 @@
 #include <boost/thread/condition.hpp>
 #include <boost/thread/tss.hpp>
 #include <boost/format.hpp>
+#include <boost/bind.hpp>
+
+#include <http/xmlrpc/server.hpp>
 
 #include "halXmlRpc.hpp"
 #include "halTorrent.hpp"
 
-namespace remote
+using namespace std;
+using namespace boost;
+using namespace http;
+using namespace http::xmlrpc;
+
+namespace halite
 {
-	XmlRpcServer Server;
-	static int Port;
+
+	XmlRpc& xmlRpc()
+	{
+		static XmlRpc x;
+		return x;
+	}
 	
-	class GetTorrentDetails : public XmlRpcServerMethod
+	class XmlRpc::XmlRpc_impl
+	{
+		friend class XmlRpc;
+		
+	private:
+		XmlRpc_impl() :
+			hostRunning(false)
+		{}
+		
+		void host_procedure()
+		{
+			try
+			{		
+			hostRunning = true;
+			theHost.run();
+			hostRunning = false;		
+			}
+			catch(const exception& e)
+			{
+			
+			}	
+		}
+		
+		host theHost;
+		bool hostRunning;
+		scoped_ptr<thread> hostThread;
+	};
+	
+	XmlRpc::XmlRpc() :
+		pimpl(new XmlRpc::XmlRpc_impl())
+	{}
+	
+	void XmlRpc::bindHost(short port)
+	{
+		if (!pimpl->hostRunning)
+		{
+			pimpl->theHost.bind_to(port);
+			pimpl->theHost.run();
+		}
+		else
+		{
+			rebindHost(port);
+		}
+	}
+	
+	void XmlRpc::rebindHost(short port)
+	{
+		pimpl->theHost.unbind();
+		pimpl->theHost.bind_to(port);
+	}
+	
+	void XmlRpc::stopHost()
+	{
+		pimpl->theHost.stop();
+	}
+	
+//	static http::host host(80, 443);
+//	static shared_ptr<thread> host_thread;
+	
+/*	class GetTorrentDetails : public XmlRpcServerMethod
 	{
 	public:
 		GetTorrentDetails(XmlRpcServer* s) : 
@@ -213,24 +286,49 @@ namespace remote
 	  
 //		Log(wformat(L"Shutting down server.\r\n"));	
 	}
+*/
+
+	void host_procedure()
+	{
+		try
+		{
+		
+		cout << "Running server...\r\n";
+//		host.run();
+	
+		cout << "Finished\r\n";
+		
+		}
+		catch(const exception& e)
+		{
+//		cout << format("Thread Error: %1%.\r\n") % e.what();
+		}	
+	}
 	
 	bool initServer(int port)
 	{
 		try
 		{
-			Port = port;
-			thread ServerThread(&RunServer);
-			
-			return true;
+		
+/*		http::xmlrpc::procedure_manager& man = http::server::add_xmlrpc_handler(host, "/xmlrpc");
+		man.add_procedure("RemoteMethod", &remote_method);
+		
+		cout << "Initializing Host thread.\r\n";	
+		
+		host_tread.reset(new thread(&host_procedure));
+*/		
 		}
-		catch (...)
+		catch(const exception& e)
 		{
-			return false;
+//		cout << format("Main Error: %1%.\r\n") % e.what();
 		}		
+		
+		return true;
 	}
 	
 	void exitServer()
 	{
-		Server.exit();
+//		host_tread.reset();
 	}
+	
 }
