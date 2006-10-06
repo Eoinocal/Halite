@@ -1,8 +1,11 @@
 
+#include <boost/format.hpp>
+
 #include "stdAfx.hpp"
 #include "HaliteDialog.hpp"
 #include "HaliteWindow.hpp"
-#include <boost/format.hpp>
+#include "GlobalIni.hpp"
+#include "ini/Dialog.hpp"
 
 void HaliteDialog::setSelectedTorrent(wstring torrent)
 {
@@ -32,6 +35,8 @@ void HaliteDialog::setSelectedTorrent(wstring torrent)
 	::EnableWindow(GetDlgItem(IDC_EDITNCD),true);
 	::EnableWindow(GetDlgItem(IDC_EDITNCU),true);
 	
+	m_list.DeleteAllItems();
+	
 	mainHaliteWindow->updateUI();
 }
 
@@ -53,7 +58,7 @@ LRESULT HaliteDialog::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lP
 	m_list.AddColumn(L"Status", hdr.GetItemCount());
 
 	for (size_t i=0; i<4; ++i)
-		m_list.SetColumnWidth(i, INI->haliteDialog.peerListColWidth[i]);
+		m_list.SetColumnWidth(i, INI().dialogConfig().peerListColWidth[i]);
 	
 	selectedTorrent = L"";
 	
@@ -66,14 +71,14 @@ LRESULT HaliteDialog::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lP
 	return TRUE;
 }
 
-CListViewCtrl& HaliteDialog::getPeerList()
+void HaliteDialog::saveStatus()
 {
-	return m_list;
+	for (size_t i=0; i<4; ++i)
+		INI().dialogConfig().peerListColWidth[i] = m_list.GetColumnWidth(i);
 }
 
 LRESULT HaliteDialog::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
 {
-		
 	if(::IsWindow(m_hWnd)) {
 		::DestroyWindow(m_hWnd);
 	}

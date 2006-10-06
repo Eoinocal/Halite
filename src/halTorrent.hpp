@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include <string>
 #include <vector>
 
@@ -14,8 +16,8 @@ using namespace boost::filesystem;
 
 namespace halite 
 {
-		
-	struct torrentBriefDetail {
+	struct torrentBriefDetail 
+	{
 		wstring filename;
 		wstring status;
 		pair<float,float> speed;
@@ -27,8 +29,8 @@ namespace halite
 	class torrentDetail 
 	{
 	public:
-		torrentDetail(std::wstring f, std::wstring s, std::wstring cT, std::pair<float,float> sp,
-				float c, float a, size_t tWD, size_t tW, int p, int sd) :
+		torrentDetail(std::wstring f, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
+				float c=0, float a=0, boost::int64_t tWD=0, boost::int64_t tW=0, int p=0, int sd=0) :
 			filename_(f),
 			state_(s),
 			currentTracker_(cT),
@@ -43,19 +45,19 @@ namespace halite
 
 		torrentDetail() {};
 		
-		const std::wstring& filename() { return filename_; }
-		const std::wstring& state() { return state_; }
+		const std::wstring& filename() const { return filename_; }
+		const std::wstring& state() const { return state_; }
 		const std::wstring& currentTracker() { return currentTracker_; }
 		
-		std::pair<float,float> speed() { return speed_; }
-		const float& completion() { return completion_; }
-		const float& available() { return available_; }
+		std::pair<float,float> speed() const { return speed_; }
+		const float& completion() const { return completion_; }
+		const float& available() const { return available_; }
 		
-		const boost::int64_t& totalWantedDone() { return totalWantedDone_; }
-		const boost::int64_t& totalWanted() { return totalWanted_; }
+		const boost::int64_t& totalWantedDone() const { return totalWantedDone_; }
+		const boost::int64_t& totalWanted() const { return totalWanted_; }
 		
-		const int& peers() { return peers_; }
-		const int& seeds() { return seeds_; }
+		const int& peers() const { return peers_; }
+		const int& seeds() const { return seeds_; }
 	
 	public:
 		std::wstring filename_;
@@ -95,6 +97,8 @@ namespace halite
 	typedef shared_ptr<torrentDetail> torrentDetails;
 	typedef std::vector<torrentDetails> vecTorrentDetails;
 	
+	class BitTorrent_impl;
+	
 	class BitTorrent
 	{
 	public:		
@@ -106,19 +110,17 @@ namespace halite
 		
 		void addTorrent(boost::filesystem::path file);
 		vecTorrentDetails getAllTorrentDetails();
+		void resumeAll();
 		
 		friend BitTorrent& bittorrent();
 		
 	private:
 		BitTorrent();
 		
-		class BitTorrent_impl;
 		boost::scoped_ptr<BitTorrent_impl> pimpl;
 	};
 	
 	BitTorrent& bittorrent();
-
-
 	
 	wstring mbstowcs(const string &str);
 	string wcstombs(const wstring &str);

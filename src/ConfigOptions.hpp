@@ -2,6 +2,8 @@
  
 #include "stdAfx.hpp"
 #include "GlobalIni.hpp"
+#include "ini/Remote.hpp"
+#include "ini/BitTConfig.hpp"
 
 using namespace std;
 using namespace boost;
@@ -25,10 +27,10 @@ public:
     END_MSG_MAP()
  
     BEGIN_DDX_MAP(BitTorrentOptions)
-        DDX_INT(IDC_BC_MAXCONN, INI->bitTConfig.maxConnections)
-        DDX_INT(IDC_BC_MAXUP, INI->bitTConfig.maxUploads)
-        DDX_INT(IDC_BC_PORTFROM, INI->bitTConfig.portFrom)
-        DDX_INT(IDC_BC_PORTTO, INI->bitTConfig.portTo)
+        DDX_INT(IDC_BC_MAXCONN, INI().bitTConfig().maxConnections)
+        DDX_INT(IDC_BC_MAXUP, INI().bitTConfig().maxUploads)
+        DDX_INT(IDC_BC_PORTFROM, INI().bitTConfig().portFrom)
+        DDX_INT(IDC_BC_PORTTO, INI().bitTConfig().portTo)
     END_DDX_MAP()
  
     BOOL OnInitDialog ( HWND hwndFocus, LPARAM lParam )
@@ -60,14 +62,15 @@ public:
     END_MSG_MAP()
  
     BEGIN_DDX_MAP(RemoteOptions)
-    	DDX_CHECK(IDC_REMOTECTRL, INI->remoteConfig.isEnabled)
-    	DDX_INT(IDC_REMOTEPORT, INI->remoteConfig.port)
+    	DDX_CHECK(IDC_REMOTECTRL, INI().remoteConfig().isEnabled)
+    	DDX_INT(IDC_REMOTEPORT, INI().remoteConfig().port)
     END_DDX_MAP()
  
     BOOL OnInitDialog ( HWND hwndFocus, LPARAM lParam )
 	{
 		return DoDataExchange(false);
 	}	
+	
     int OnApply()
 	{
 		return DoDataExchange(true);
@@ -86,6 +89,7 @@ class ConfigOptionsProp :
 {
 private:
     bool m_bCentered;
+	
 public:    
     ConfigOptionsProp(LPCTSTR title = 
           (LPCTSTR)NULL, UINT uStartPage = 0, HWND hWndParent = NULL)

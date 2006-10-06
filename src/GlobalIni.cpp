@@ -1,61 +1,58 @@
 
-#include "GlobalIni.hpp"
+#include <boost/array.hpp>
 
-ArchivalData* INI;
+#include "GlobalIni.hpp"
+#include "ini/Remote.hpp"
+#include "ini/Dialog.hpp"
+#include "ini/Window.hpp"
+#include "ini/BitTConfig.hpp"
+#include "ini/Torrent.hpp"
+
+using namespace std;
+using namespace boost;
+using namespace boost::filesystem;
+
+ArchivalData& INI()
+{
+	static ArchivalData ini;
+	return ini;
+}
+
+ArchivalData::ArchivalData() :
+	bitTConfig_(new BitTConfig()),
+	haliteWindow_(new WindowConfig()),
+	haliteDialog_(new DialogConfig()),
+	torrentConfig_(new halite::TorrentConfig()),
+	remoteConfig_(new RemoteConfig())	
+{
+	array<char, MAX_PATH> pathBuffer;
+	GetCurrentDirectoryA(MAX_PATH, pathBuffer.c_array());
+	workingFile_ = path(pathBuffer.data(), native)/"Halite.ini.xml";
+}
 
 template<class Archive>
 void serialize(Archive& ar, CRect& rect, const unsigned int version)
 {	
-	ar & rect.top;
-	ar & rect.bottom;		
-	ar & rect.left;
-	ar & rect.right;
-}
-
-ArchivalData::ArchivalData(path filename)
-{
-	LPSTR pathBuffer = static_cast<LPSTR>(malloc(1024));
-	GetCurrentDirectoryA(1024,pathBuffer);
-	workingFile = path(pathBuffer,native)/filename;
-	free(static_cast<void*>(pathBuffer));
-}
-
-template<class Archive>
-void BitTConfig::serialize(Archive& ar, const unsigned int version)
-{
-	ar & maxConnections;
-	ar & maxUploads;
-	ar & portFrom;
-	ar & portTo;
-}
-
-template<class Archive>
-void HaliteWindowConfig::serialize(Archive& ar, const unsigned int version)
-{
-	ar & rect;
-	ar & splitterPos;
-	ar & mainListColWidth;
-}
-
-template<class Archive>
-void HaliteDialogConfig::serialize(Archive& ar, const unsigned int version)
-{
-	ar & peerListColWidth;
+	ar & BOOST_SERIALIZATION_NVP(rect.top);
+	ar & BOOST_SERIALIZATION_NVP(rect.bottom);		
+	ar & BOOST_SERIALIZATION_NVP(rect.left);
+	ar & BOOST_SERIALIZATION_NVP(rect.right);
 }
 
 bool ArchivalData::LoadData()
 {	
 	try
 	{
-		boost::filesystem::ifstream ifs(workingFile);
+		boost::filesystem::ifstream ifs(workingFile_);
 		if (ifs)
 		{
-			archive::text_iarchive ia(ifs);
+			archive::xml_iarchive ia(ifs);
 			
-			ia >> bitTConfig;
-			ia >> haliteWindow;
-			ia >> haliteDialog;
-			ia >> remoteConfig;
+			ia >> serialization::make_nvp("bitConfig", *bitTConfig_);
+			ia >> serialization::make_nvp("haliteWindow", *haliteWindow_);
+			ia >> serialization::make_nvp("haliteDialog", *haliteDialog_);
+			ia >> serialization::make_nvp("remoteConfig", *remoteConfig_);
+			ia >> serialization::make_nvp("torrentConfig", *torrentConfig_);
 		}
 		return true;
 	}
@@ -70,13 +67,14 @@ bool ArchivalData::SaveData()
 {
 	try
 	{
-		boost::filesystem::ofstream ofs(workingFile);
-		archive::text_oarchive oa(ofs);
+		boost::filesystem::ofstream ofs(workingFile_);
+		archive::xml_oarchive oa(ofs);
 		
-		oa << const_save(bitTConfig);
-		oa << const_save(haliteWindow);
-		oa << const_save(haliteDialog);
-		oa << const_save(remoteConfig);			
+		oa << serialization::make_nvp("bitConfig", *bitTConfig_);
+		oa << serialization::make_nvp("haliteWindow", *haliteWindow_);
+		oa << serialization::make_nvp("haliteDialog", *haliteDialog_);
+		oa << serialization::make_nvp("remoteConfig", *remoteConfig_);	
+		oa << serialization::make_nvp("torrentConfig", *torrentConfig_);			
 		return true;
 	}
 	catch(exception& e)

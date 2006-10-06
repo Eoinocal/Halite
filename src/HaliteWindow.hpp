@@ -3,7 +3,6 @@
 
 #include "stdAfx.hpp"
 #include "Halite.hpp"
-#include "GlobalIni.hpp"
 
 #include <boost/signals.hpp>
 
@@ -12,7 +11,6 @@ using namespace boost;
 
 #include "HaliteListViewCtrl.hpp"
 #include "HaliteDialog.hpp"
-#include "ConfigOptions.hpp"
 
 class HaliteWindow : 
 	public CFrameWindowImpl<HaliteWindow>,

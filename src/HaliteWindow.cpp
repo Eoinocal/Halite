@@ -1,26 +1,26 @@
 
-#include "stdAfx.hpp"
-#include "HaliteWindow.hpp"
-
 #include <string>
 #include <boost/format.hpp>
 #include <boost/bind.hpp>
 
+#include "stdAfx.hpp"
+#include "HaliteWindow.hpp"
+#include "ConfigOptions.hpp"
+#include "GlobalIni.hpp"
+#include "ini/Window.hpp"
+
 LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
-{
-	INI = new ArchivalData("Halite.ini");
-	INI->LoadData();
-	
+{	
 	bool success = halite::bittorrent().listenOn(
-		std::make_pair(INI->bitTConfig.portFrom, INI->bitTConfig.portTo));
+		std::make_pair(INI().bitTConfig().portFrom, INI().bitTConfig().portTo));
 	assert(success);	
 	
 //	halite::setLimits(INI->bitTConfig.maxConnections,INI->bitTConfig.maxUploads);
-//	halite::resumeAll();
+	halite::bittorrent().resumeAll();
 	
-	if (INI->remoteConfig.isEnabled)
+	if (INI().remoteConfig().isEnabled)
 	{
-		halite::xmlRpc().bindHost(INI->remoteConfig.port);
+		halite::xmlRpc().bindHost(INI().remoteConfig().port);
 	}
 
 	SetMenu(NULL);
@@ -69,8 +69,8 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	m_list.AddColumn(L"Peers", hdr.GetItemCount());
 	m_list.AddColumn(L"Seeds", hdr.GetItemCount());
 
-	for (size_t i=0; i<numMainCols; ++i)
-		m_list.SetColumnWidth(i, INI->haliteWindow.mainListColWidth[i]);
+	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
+		m_list.SetColumnWidth(i, INI().windowConfig().mainListColWidth[i]);
 	
 	// Add ToolBar and register it and StatusBar for UIUpdates
 	UIAddToolBar(hWndToolBar);
@@ -106,7 +106,6 @@ LRESULT HaliteWindow::OnNotify(int wParam, LPNMHDR lParam)
 			wchar_t filenameBuffer[MAX_PATH];		
 			m_list.GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),256);		
 			m_hdlg.setSelectedTorrent(filenameBuffer);
-			m_hdlg.getPeerList().DeleteAllItems();
 		}
 	}
 	
@@ -164,18 +163,16 @@ void HaliteWindow::OnTimer (UINT uTimerID, TIMERPROC pTimerProc)
 
 void HaliteWindow::OnClose()
 {
-	GetWindowRect(INI->haliteWindow.rect);
-	INI->haliteWindow.splitterPos = m_hzSplit.GetSplitterPos() + 101;
+	GetWindowRect(INI().windowConfig().rect);
+	INI().windowConfig().splitterPos = m_hzSplit.GetSplitterPos() + 101;
 	
 //	::MessageBoxA(0,lexical_cast<string>(INI->haliteWindow.splitterPos).c_str(),"Error",0);
 
-	for (size_t i=0; i<numMainCols; ++i)
-		INI->haliteWindow.mainListColWidth[i] = m_list.GetColumnWidth(i);
+	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
+		INI().windowConfig().mainListColWidth[i] = m_list.GetColumnWidth(i);
 	
-	for (size_t i=0; i<4; ++i)
-		INI->haliteDialog.peerListColWidth[i] = m_hdlg.getPeerList().GetColumnWidth(i);
-		
-	INI->SaveData();
+	m_hdlg.saveStatus();	
+
 	
 	SetMsgHandled(false);
 }	
@@ -199,11 +196,11 @@ LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	ConfigOptionsProp sheet(L"Settings");	
     sheet.DoModal();
 	
-	halite::bittorrent().listenOn(std::make_pair(INI->bitTConfig.portFrom, INI->bitTConfig.portTo));
+	halite::bittorrent().listenOn(std::make_pair(INI().bitTConfig().portFrom, INI().bitTConfig().portTo));
 	
-	if (INI->remoteConfig.isEnabled)
+	if (INI().remoteConfig().isEnabled)
 	{
-		halite::xmlRpc().bindHost(INI->remoteConfig.port);
+		halite::xmlRpc().bindHost(INI().remoteConfig().port);
 	}
 	else
 	{
@@ -221,7 +218,7 @@ LRESULT HaliteWindow::OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-//	halite::resumeTorrents();
+//	halite::bittorrent().resumeAllTorrents();
 	updateUI();
 	return 0;
 }

@@ -103,7 +103,7 @@ public:
 	
 	void setSelectedTorrent(wstring torrent);	
 	void updateDialog();
-	CListViewCtrl& getPeerList();
+	void saveStatus();
 				
 protected:
 	void InitializeControls(void);

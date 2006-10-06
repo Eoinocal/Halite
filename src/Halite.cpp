@@ -1,7 +1,8 @@
 
 #include "stdAfx.hpp"
 #include "Halite.hpp"
-#include <http/xmlrpc/server.hpp>
+#include "GlobalIni.hpp"
+#include "ini/Window.hpp"
 
 using namespace std;
 using namespace boost;
@@ -14,6 +15,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	//assert (SUCCEEDED(hRes));	
 
 	boost::filesystem::path::default_name_check(boost::filesystem::native);
+	
+	INI().LoadData();
 	
 	int nRet;
 	{
@@ -32,14 +35,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				
 				wndMain.SetWindowText(L"Halite");		
 				wndMain.MoveWindow(
-					INI->haliteWindow.rect.left,
-					INI->haliteWindow.rect.top,
-					INI->haliteWindow.rect.right-INI->haliteWindow.rect.left,
-					INI->haliteWindow.rect.bottom-INI->haliteWindow.rect.top,
+					INI().windowConfig().rect.left,
+					INI().windowConfig().rect.top,
+					INI().windowConfig().rect.right-INI().windowConfig().rect.left,
+					INI().windowConfig().rect.bottom-INI().windowConfig().rect.top,
 					false);
 				wndMain.ShowWindow(nCmdShow);
 				
 				nRet = theLoop.Run();
+				
 			}	
 		}	_Module.RemoveMessageLoop();
 		_Module.Term();
@@ -48,6 +52,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 //	halite::closeTorrents();
 //	bool success = halite::closeDown();
 //	assert(success);	
+
+	INI().SaveData();
 	
 	return nRet;
 }
