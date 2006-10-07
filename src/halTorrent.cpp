@@ -134,6 +134,11 @@ torrentDetails TorrentInternal::getTorrentDetails() const
 	}
 }
 
+void TorrentInternal::pause()
+{
+	if (inSession) handle_.pause();
+}
+
 class BitTorrent_impl
 {
 	friend class BitTorrent;
@@ -179,7 +184,7 @@ bool BitTorrent::listenOn(pair<int, int> const& range)
 int BitTorrent::isListeningOn() 
 {
 	if (!pimpl->theSession.is_listening())
-		return 0;	
+		return -1;	
 	else
 		return pimpl->theSession.listen_port();
 }
@@ -268,7 +273,7 @@ vecTorrentDetails BitTorrent::getAllTorrentDetails()
 void BitTorrent::resumeAll()
 {
 	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
-		iter != pimpl->torrents.end(); ++iter)
+		iter != pimpl->torrents.end(); )
 	{
 		path file = pimpl->workingDirectory/"torrents"/(*iter).first;
 		
@@ -281,6 +286,7 @@ void BitTorrent::resumeAll()
 			
 			(*iter).second.setHandle(pimpl->theSession.add_torrent(metadata,
 				pimpl->workingDirectory/"incoming", resumedata));
+			(*iter).second.setInSession(true);
 		
 			}
 			catch(exception &ex) 
@@ -289,14 +295,33 @@ void BitTorrent::resumeAll()
 				
 				MessageBox(0, mbstowcs(ex.what()).c_str(), caption.c_str(), MB_ICONERROR|MB_OK);
 			}
+			
+			++iter;
 		}
 		else
 		{
-		//	pimpl->torrents.erase(iter);
+			pimpl->torrents.erase(iter++);
 		}
 	}
 }
 
+void BitTorrent::closeAll()
+{
+	path resumeDir=pimpl->workingDirectory/"resume";
+	
+	if(!exists(resumeDir))
+		create_directory(resumeDir);
+		
+	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
+		iter != pimpl->torrents.end(); ++iter)
+	{
+		(*iter).second.pause();
+		entry resumedata = (*iter).second.handle().write_resume_data();
+		pimpl->theSession.remove_torrent((*iter).second.handle());
+		
+		halencode(resumeDir/(*iter).first, resumedata);
+	}
+}
 
 //	bool Torrent::closeDown() 
 //	{

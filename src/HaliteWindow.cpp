@@ -46,7 +46,8 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 		GetClientRect(&rc);
 		m_hzSplit.Create(m_hWnd, rc, NULL, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
 		m_hWndClient = m_hzSplit.m_hWnd;
-		m_hzSplit.SetSplitterPos();
+		m_hzSplit.SetSplitterExtendedStyle(0);
+		m_hzSplit.SetSplitterPos(INI().windowConfig().splitterPos);
 	}
 	
 	// Create ListView and Dialog
@@ -77,7 +78,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	UISetCheck(ID_VIEW_TOOLBAR, 1);
 	UISetCheck(ID_VIEW_STATUS_BAR, 1);
 	
-	SetTimer (1, 3500 );
+	SetTimer (1, 1000);
 	attachUIEvent(bind(&HaliteWindow::updateStatusbar,this));
 	attachUIEvent(bind(&HaliteListViewCtrl::updateListView,&m_list));
 	attachUIEvent(bind(&HaliteDialog::updateDialog,&m_hdlg));
@@ -128,14 +129,13 @@ void HaliteWindow::updateStatusbar()
 	int port = halite::bittorrent().isListeningOn();
 	if (port > -1)
 	{
-		UISetText (0, 
+		UISetText(0, 
 			(wformat(L"Listening on port %1%") 
 				% port 
 			).str().c_str());	
 	}
 	else
-		UISetText (0,L"Halite not listening, try adjusting the port range");	
-			
+		UISetText(0,L"Halite not listening, try adjusting the port range");	
 	
 	pair<float, float> speed = halite::bittorrent().sessionSpeed();
 	UISetText (1, 
@@ -164,15 +164,16 @@ void HaliteWindow::OnTimer (UINT uTimerID, TIMERPROC pTimerProc)
 void HaliteWindow::OnClose()
 {
 	GetWindowRect(INI().windowConfig().rect);
-	INI().windowConfig().splitterPos = m_hzSplit.GetSplitterPos() + 101;
+	INI().windowConfig().splitterPos = m_hzSplit.GetSplitterPos();
 	
 //	::MessageBoxA(0,lexical_cast<string>(INI->haliteWindow.splitterPos).c_str(),"Error",0);
 
 	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
 		INI().windowConfig().mainListColWidth[i] = m_list.GetColumnWidth(i);
 	
-	m_hdlg.saveStatus();	
+	m_hdlg.saveStatus();
 
+	halite::bittorrent().closeAll();
 	
 	SetMsgHandled(false);
 }	

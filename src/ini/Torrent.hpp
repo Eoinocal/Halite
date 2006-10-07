@@ -46,9 +46,10 @@ public:
 	
 	torrentDetails getTorrentDetails() const;
 	void setTransferLimit(float down, float up);
-	void setHandle(libtorrent::torrent_handle h) { handle_ = h; }
-	
+	void setHandle(libtorrent::torrent_handle h) { handle_ = h; }	
 	const libtorrent::torrent_handle& handle() const { return handle_; } 
+	void setInSession(bool s) { inSession = s; }
+	void pause();
 	
     friend class boost::serialization::access;
     template<class Archive>

@@ -8,7 +8,7 @@ class WindowConfig
 {
 public:
 	WindowConfig() :
-		splitterPos(300)
+		splitterPos(150)
 	{
 		rect.top = 10;
 		rect.left = 10;

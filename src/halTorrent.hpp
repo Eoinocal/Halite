@@ -111,6 +111,7 @@ namespace halite
 		void addTorrent(boost::filesystem::path file);
 		vecTorrentDetails getAllTorrentDetails();
 		void resumeAll();
+		void closeAll();
 		
 		friend BitTorrent& bittorrent();
 		
