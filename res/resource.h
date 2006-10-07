@@ -7,6 +7,7 @@
 #define IDD_CONFIGBIT                   102
 #define IDD_CONFIGREMOTE                103
 #define IDD_ABOUT                       104
+#define IDD_CLOSESPLASH                 105
 #define IDR_MAINFRAME                   128
 #define IDPANE_STATUS                   200
 #define IDPANE_CAP_INDCIATOR            201
@@ -22,6 +23,8 @@
 #define ID_RESUME                       1005
 #define ID_PAUSE                        1006
 #define IDC_RICHEDIT22                  1006
+#define IDC_CHECK1                      1007
+#define IDC_SPLASH_MSG                  1007
 #define IDC_NAME                        1008
 #define IDC_TRACKER                     1009
 #define IDC_STATUS                      1010
@@ -52,9 +55,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        103
+#define _APS_NEXT_RESOURCE_VALUE        106
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1007
+#define _APS_NEXT_CONTROL_VALUE         1008
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

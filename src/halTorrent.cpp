@@ -90,38 +90,43 @@ void TorrentInternal::setTransferLimit(float down, float up)
 		
 torrentDetails TorrentInternal::getTorrentDetails() const
 {
-	if (inSession)
+	if (inSession())
 	{
 		torrent_status tS = handle_.status();
 		wstring state;
-	
-		switch (tS.state)
+		
+		if (handle_.is_paused())
+			state = L"Paused";
+		else
 		{
-			case torrent_status::queued_for_checking:
-				state = L"Queued For Checking";
-				break;
-			case torrent_status::checking_files:
-				state = L"Checking Files";
-				break;
-			case torrent_status::connecting_to_tracker:
-				state = L"Connecting To Tracker";
-				break;
-			case torrent_status::downloading_metadata:
-				state = L"Downloading Metadata";
-				break;
-			case torrent_status::downloading:
-				state = L"Downloading";
-				break;
-			case torrent_status::finished:
-				state = L"Finished";
-				break;
-			case torrent_status::seeding:
-				state = L"Seeding";
-				break;
-			case torrent_status::allocating:
-				state = L"Allocating";
-				break;
-		}	
+			switch (tS.state)
+			{
+				case torrent_status::queued_for_checking:
+					state = L"Queued For Checking";
+					break;
+				case torrent_status::checking_files:
+					state = L"Checking Files";
+					break;
+				case torrent_status::connecting_to_tracker:
+					state = L"Connecting To Tracker";
+					break;
+				case torrent_status::downloading_metadata:
+					state = L"Downloading Metadata";
+					break;
+				case torrent_status::downloading:
+					state = L"Downloading";
+					break;
+				case torrent_status::finished:
+					state = L"Finished";
+					break;
+				case torrent_status::seeding:
+					state = L"Seeding";
+					break;
+				case torrent_status::allocating:
+					state = L"Allocating";
+					break;
+			}	
+		}
 			
 		return torrentDetails(new torrentDetail(filename_, state, mbstowcs(tS.current_tracker), 
 			pair<float, float>(tS.download_payload_rate, tS.upload_payload_rate),
@@ -136,7 +141,7 @@ torrentDetails TorrentInternal::getTorrentDetails() const
 
 void TorrentInternal::pause()
 {
-	if (inSession) handle_.pause();
+	if (inSession()) handle_.pause();
 }
 
 class BitTorrent_impl
@@ -154,6 +159,7 @@ private:
 	}
 	
 	entry prepTorrent(path filename);
+	torrent_handle addTorrent(entry metadata, entry resumedata);
 	
 	session theSession;
 	path workingDirectory;
@@ -163,6 +169,11 @@ private:
 BitTorrent::BitTorrent() :
 	pimpl(new BitTorrent_impl())
 {}
+
+void BitTorrent::shutDownSession()
+{
+	pimpl.reset();
+}
 
 bool BitTorrent::listenOn(pair<int, int> const& range)
 {
@@ -230,6 +241,12 @@ entry BitTorrent_impl::prepTorrent(path filename)
 	return resumeData;
 }
 
+torrent_handle BitTorrent_impl::addTorrent(entry metadata, entry resumedata)
+{
+
+	return theSession.add_torrent(metadata, workingDirectory/"incoming", resumedata);
+}
+
 void BitTorrent::addTorrent(path file) 
 {
 	try 
@@ -241,11 +258,13 @@ void BitTorrent::addTorrent(path file)
 	
 	if (existing == pimpl->torrents.end())
 	{
+	//	TorrentInternal torrent(mbstowcs(file.leaf()));
+		
 		torrent_handle handle = pimpl->theSession.add_torrent(metadata,
 			pimpl->workingDirectory/"incoming", resumedata);
 		
-		pimpl->torrents.insert(TorrentMap::value_type(file.leaf(),
-			TorrentInternal(pair<float, float>(0, 0), 0, 0, false, true, mbstowcs(file.leaf()), handle)));
+		pimpl->torrents.insert(TorrentMap::value_type(file.leaf(), 
+			TorrentInternal(handle, mbstowcs(file.leaf()))));
 	}
 
 	}
@@ -286,7 +305,6 @@ void BitTorrent::resumeAll()
 			
 			(*iter).second.setHandle(pimpl->theSession.add_torrent(metadata,
 				pimpl->workingDirectory/"incoming", resumedata));
-			(*iter).second.setInSession(true);
 		
 			}
 			catch(exception &ex) 

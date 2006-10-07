@@ -7,6 +7,7 @@
 #include "ini/Window.hpp"
 #include "ini/BitTConfig.hpp"
 #include "ini/Torrent.hpp"
+#include "ini/Splash.hpp"
 
 using namespace std;
 using namespace boost;
@@ -23,7 +24,8 @@ ArchivalData::ArchivalData() :
 	haliteWindow_(new WindowConfig()),
 	haliteDialog_(new DialogConfig()),
 	torrentConfig_(new halite::TorrentConfig()),
-	remoteConfig_(new RemoteConfig())	
+	remoteConfig_(new RemoteConfig()),
+	splashConfig_(new SplashConfig())	
 {
 	array<char, MAX_PATH> pathBuffer;
 	GetCurrentDirectoryA(MAX_PATH, pathBuffer.c_array());
@@ -52,6 +54,7 @@ bool ArchivalData::LoadData()
 			ia >> serialization::make_nvp("haliteWindow", *haliteWindow_);
 			ia >> serialization::make_nvp("haliteDialog", *haliteDialog_);
 			ia >> serialization::make_nvp("remoteConfig", *remoteConfig_);
+			ia >> serialization::make_nvp("splashConfig", *splashConfig_);
 			ia >> serialization::make_nvp("torrentConfig", *torrentConfig_);
 		}
 		return true;
@@ -74,6 +77,7 @@ bool ArchivalData::SaveData()
 		oa << serialization::make_nvp("haliteWindow", *haliteWindow_);
 		oa << serialization::make_nvp("haliteDialog", *haliteDialog_);
 		oa << serialization::make_nvp("remoteConfig", *remoteConfig_);	
+		oa << serialization::make_nvp("splashConfig", *splashConfig_);
 		oa << serialization::make_nvp("torrentConfig", *torrentConfig_);			
 		return true;
 	}

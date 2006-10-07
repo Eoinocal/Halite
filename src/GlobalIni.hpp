@@ -14,6 +14,7 @@ class BitTConfig;
 class WindowConfig;
 class DialogConfig;
 class RemoteConfig;
+class SplashConfig;
 
 namespace halite
 {
@@ -27,6 +28,7 @@ public:
 	bool SaveData();
 	
 	RemoteConfig& remoteConfig() { return *remoteConfig_; }
+	SplashConfig& splashConfig() { return *splashConfig_; }
 	BitTConfig& bitTConfig() { return *bitTConfig_; }
 	WindowConfig& windowConfig() { return *haliteWindow_; }
 	DialogConfig& dialogConfig() { return *haliteDialog_; }
@@ -40,6 +42,7 @@ private:
 	ArchivalData();
 	
 	boost::scoped_ptr<RemoteConfig> remoteConfig_;
+	boost::scoped_ptr<SplashConfig> splashConfig_;
 	boost::scoped_ptr<BitTConfig> bitTConfig_;
 	boost::scoped_ptr<WindowConfig> haliteWindow_;
 	boost::scoped_ptr<DialogConfig> haliteDialog_;

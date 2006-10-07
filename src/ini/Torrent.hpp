@@ -7,6 +7,7 @@
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/map.hpp>
+#include <boost/serialization/split_free.hpp>
 #include <boost/filesystem/path.hpp>
 
 #include <libtorrent/entry.hpp>
@@ -24,32 +25,37 @@ typedef boost::shared_ptr<torrentDetail> torrentDetails;
 class TorrentInternal
 {
 public:
+	
 	TorrentInternal() :		
 		transferLimit_(std::pair<float, float>(0, 0)),
 		connections_(0),
 		uploads_(0),
 		paused_(false),
-		filename_(),
-		inSession(false)
+		inSession_(false)
 	{}
-
-	TorrentInternal(std::pair<float, float> tL, int c, int u, bool p, bool inS,
-			std::wstring f, libtorrent::torrent_handle h) :
-		transferLimit_(tL),
-		connections_(c),
-		uploads_(u),
-		paused_(p),
-		inSession(inS),
+	
+	TorrentInternal(libtorrent::torrent_handle h, std::wstring f) :		
+		transferLimit_(std::pair<float, float>(0, 0)),
+		connections_(0),
+		uploads_(0),
+		paused_(false),
 		filename_(f),
+		inSession_(true),
 		handle_(h)
 	{}
 	
 	torrentDetails getTorrentDetails() const;
 	void setTransferLimit(float down, float up);
-	void setHandle(libtorrent::torrent_handle h) { handle_ = h; }	
-	const libtorrent::torrent_handle& handle() const { return handle_; } 
-	void setInSession(bool s) { inSession = s; }
 	void pause();
+	
+	const libtorrent::torrent_handle& handle() const { return handle_; }
+	void setHandle(libtorrent::torrent_handle h) 
+	{ 
+		handle_ = h; 
+		inSession_ = true;
+	}	 
+	
+	bool inSession() const { return inSession_; }
 	
     friend class boost::serialization::access;
     template<class Archive>
@@ -68,7 +74,7 @@ private:
 	int connections_;
 	int uploads_;
 	bool paused_;
-	bool inSession;
+	bool inSession_;
 	
 	std::wstring filename_;
 	libtorrent::torrent_handle handle_;	

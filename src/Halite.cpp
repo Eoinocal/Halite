@@ -8,12 +8,10 @@ using namespace std;
 using namespace boost;
 
 #include "HaliteWindow.hpp"
+#include "SplashDialog.hpp"
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	//HRESULT hRes = ::CoInitialize(NULL);
-	//assert (SUCCEEDED(hRes));	
-
 	boost::filesystem::path::default_name_check(boost::filesystem::native);
 	
 	INI().LoadData();
@@ -25,6 +23,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	   
 		HRESULT hRes = _Module.Init(NULL, hInstance);
 		assert (SUCCEEDED(hRes));	
+		
 		{	
 			CMessageLoop theLoop;
 			_Module.AddMessageLoop(&theLoop);
@@ -46,13 +45,21 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				
 			}	
 		}	_Module.RemoveMessageLoop();
+		
+		if (INI().splashConfig().showMessage)
+		{
+			SplashDialog splDlg;
+			splDlg.DoModal();
+		}
+		else
+		{
+			halite::bittorrent().closeAll();
+			halite::bittorrent().shutDownSession();		
+		}
+		
 		_Module.Term();
-	}//::CoUninitialize();	
-			
-//	halite::closeTorrents();
-//	bool success = halite::closeDown();
-//	assert(success);	
-
+	}	
+	
 	INI().SaveData();
 	
 	return nRet;

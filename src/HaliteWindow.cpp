@@ -166,14 +166,10 @@ void HaliteWindow::OnClose()
 	GetWindowRect(INI().windowConfig().rect);
 	INI().windowConfig().splitterPos = m_hzSplit.GetSplitterPos();
 	
-//	::MessageBoxA(0,lexical_cast<string>(INI->haliteWindow.splitterPos).c_str(),"Error",0);
-
 	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
 		INI().windowConfig().mainListColWidth[i] = m_list.GetColumnWidth(i);
 	
 	m_hdlg.saveStatus();
-
-	halite::bittorrent().closeAll();
 	
 	SetMsgHandled(false);
 }	

@@ -212,6 +212,19 @@ BEGIN
     LTEXT           "N/A",IDC_COMPLETE,133,36,43,8
 END
 
+IDD_CLOSESPLASH DIALOGEX 0, 0, 202, 54
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+EXSTYLE WS_EX_STATICEDGE
+CAPTION "Halite Shutting down..."
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,21,20
+    LTEXT           "The BitTorrent Session will shutdown momentarly. You can continue to work away, this message will dissappear when shutdown is complete.",
+                    IDC_STATIC,34,7,161,27
+    CONTROL         "Show this message in future.",IDC_SPLASH_MSG,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,88,35,107,12
+END
+
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -281,6 +294,14 @@ BEGIN
     HALITEDLG, DIALOG
     BEGIN
         RIGHTMARGIN, 229
+    END
+
+    IDD_CLOSESPLASH, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 195
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 47
     END
 END
 #endif    // APSTUDIO_INVOKED
