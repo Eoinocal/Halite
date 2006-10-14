@@ -30,7 +30,7 @@ protected:
 	HaliteWindow* mainHaliteWindow;
 
 public:
-	enum { IDD = HALITEDLG };
+	enum { IDD = IDD_HALITEDLG };
 	
 	HaliteDialog(HaliteWindow* halWnd)
 		: mainHaliteWindow(halWnd)
@@ -40,19 +40,18 @@ public:
 	{
 		return this->IsDialogMessage(pMsg);
 	}
-  				
+  	
 	BEGIN_MSG_MAP(thisClass)
-		MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-		MESSAGE_HANDLER(WM_CLOSE, OnClose)
-		MESSAGE_HANDLER(WM_DESTROY, OnDestroy)		
+		MSG_WM_INITDIALOG(onInitDialog)
+		MSG_WM_CLOSE(onClose)	
 		COMMAND_RANGE_CODE_HANDLER_EX(IDC_EDITTLU, IDC_EDITNCU, EN_KILLFOCUS, OnEditKillFocus)
 		
 		if(uMsg == WM_FORWARDMSG)
 			if(PreTranslateMessage((LPMSG)lParam)) return TRUE;
 
-		COMMAND_ID_HANDLER(BTNPAUSE, OnPause)		
-		COMMAND_ID_HANDLER(BTNREANNOUNCE, OnReannounce)
-		COMMAND_ID_HANDLER(BTNREMOVE, OnRemove)
+		COMMAND_ID_HANDLER_EX(BTNPAUSE, onPause)		
+		COMMAND_ID_HANDLER_EX(BTNREANNOUNCE, onReannounce)
+		COMMAND_ID_HANDLER_EX(BTNREMOVE, onRemove)
 		
 		CHAIN_MSG_MAP(resizeClass)
 	END_MSG_MAP()
@@ -91,13 +90,12 @@ public:
 		DLGRESIZE_CONTROL(LISTPEERS, (DLSZ_SIZE_X | DLSZ_SIZE_Y))
 	END_DLGRESIZE_MAP()
 	
-	LRESULT OnInitDialog(UINT, WPARAM, LPARAM, BOOL&);	
-	LRESULT OnClose(UINT, WPARAM, LPARAM, BOOL&);	
-	LRESULT OnDestroy(UINT, WPARAM, LPARAM, BOOL&);	
+	LRESULT onInitDialog(HWND, LPARAM);	
+	void onClose();	
 	
-	LRESULT OnPause(WORD, WORD, HWND, BOOL&);	
-	LRESULT OnReannounce(WORD, WORD, HWND, BOOL&);	
-	LRESULT OnRemove(WORD, WORD, HWND, BOOL&);	;
+	void onPause(UINT, int, HWND);	
+	void onReannounce(UINT, int, HWND);	
+	void onRemove(UINT, int, HWND);
 	
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl );
 	

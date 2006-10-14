@@ -2,35 +2,30 @@
 #pragma once
 
 #include "stdAfx.hpp"
-#include "Halite.hpp"
+#include "DropFileTarget.h"
+#include "NTray.hpp"
 
 #include <boost/signals.hpp>
+#include <boost/smart_ptr.hpp>
 
 using namespace std;
 using namespace boost;
 
-#include "HaliteListViewCtrl.hpp"
-#include "HaliteDialog.hpp"
+class HaliteListViewCtrl;
+class HaliteDialog;
 
 class HaliteWindow : 
 	public CFrameWindowImpl<HaliteWindow>,
 	public CUpdateUI<HaliteWindow>,
+	public CDropFileTarget<HaliteWindow>,
 	public CMessageFilter,
 	public CIdleHandler
 {
 public:	
-
-	HaliteWindow()
-		:m_hdlg(this)
-	{}
+	HaliteWindow();
+	~HaliteWindow();
 	
-	virtual BOOL PreTranslateMessage(MSG* pMsg)
-	{
-		if(CFrameWindowImpl<HaliteWindow>::PreTranslateMessage(pMsg))
-			return TRUE;
-
-		return m_hdlg.PreTranslateMessage(pMsg);
-	}
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	
 	virtual BOOL OnIdle()
 	{
@@ -39,6 +34,11 @@ public:
 		return FALSE;
 	}
 	
+	enum { 
+		ID_UPDATE_TIMER = 1,
+		WM_TRAYNOTIFY = WM_USER+123
+	};
+	
 	DECLARE_FRAME_WND_CLASS(NULL, IDR_MAINFRAME);
 	
 	BEGIN_MSG_MAP(HaliteWindow)
@@ -46,7 +46,8 @@ public:
 		MSG_WM_CREATE(OnCreate)
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_ERASEBKGND(OnEraseBkgnd)
-		MSG_WM_TIMER(OnTimer)
+		MSG_WM_TIMER(OnTimer)		
+		MESSAGE_HANDLER_EX(WM_TRAYNOTIFY, OnTrayNotification)
 		COMMAND_ID_HANDLER(ID_RESUME, OnResumeAll)
 		COMMAND_ID_HANDLER(ID_PAUSE, OnPauseAll)
 		COMMAND_ID_HANDLER(ID_FILE_OPEN, OnFileOpen)
@@ -54,11 +55,13 @@ public:
 		COMMAND_ID_HANDLER(ID_VIEW_STATUS_BAR, OnViewStatusBar)
 		CHAIN_MSG_MAP(CUpdateUI<HaliteWindow>)
 		CHAIN_MSG_MAP(CFrameWindowImpl<HaliteWindow>)
+		CHAIN_MSG_MAP(CDropFileTarget<HaliteWindow>)
 	END_MSG_MAP()
 	
 	BEGIN_UPDATE_UI_MAP(HaliteWindow)
 		UPDATE_ELEMENT(ID_VIEW_TOOLBAR, UPDUI_MENUPOPUP)
 		UPDATE_ELEMENT(ID_VIEW_STATUS_BAR, UPDUI_MENUPOPUP)
+		UPDATE_ELEMENT(IDR_TRAY_MENU, UPDUI_MENUPOPUP)
         UPDATE_ELEMENT(0, UPDUI_STATUSBAR)
         UPDATE_ELEMENT(1, UPDUI_STATUSBAR)
         UPDATE_ELEMENT(2, UPDUI_STATUSBAR)
@@ -69,6 +72,7 @@ public:
 	LRESULT OnCreate(LPCREATESTRUCT lpcs);	
     void OnTimer(UINT uTimerID, TIMERPROC pTimerProc);
 	void OnClose();
+	LRESULT OnTrayNotification(UINT, WPARAM wParam, LPARAM lParam);
 	LRESULT OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
@@ -79,17 +83,19 @@ public:
 	void attachUIEvent(function<void ()> fn);
 	void updateUI();
 	void updateStatusbar();
+	void ProcessFile(LPCTSTR lpszPath);
 	
 	friend HaliteDialog;
 	friend HaliteListViewCtrl;
 	
 protected:	
 	CCommandBarCtrl m_CmdBar;
-	CHorSplitterWindow m_hzSplit;
-	HaliteListViewCtrl m_list;
-	CEdit m_edit;
-	HaliteDialog m_hdlg;
-    CMultiPaneStatusBarCtrl m_wndStatusBar;
+	CHorSplitterWindow m_Split;
+    CMultiPaneStatusBarCtrl m_StatusBar;
+	CTrayNotifyIcon m_trayIcon;
+	
+	boost::scoped_ptr<HaliteListViewCtrl> mp_list;
+	boost::scoped_ptr<HaliteDialog> mp_dlg;
 	
 	signal<void ()> updateUI_;	
 };

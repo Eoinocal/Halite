@@ -29,6 +29,7 @@ public:
 	}
 	
 	friend class HaliteWindow;
+	friend class HaliteListViewCtrl;
 	friend int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 	
 private:	

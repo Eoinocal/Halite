@@ -19,13 +19,12 @@
 namespace halite
 {
 
-class torrentDetail;
-typedef boost::shared_ptr<torrentDetail> torrentDetails;
+class TorrentDetail;
+typedef boost::shared_ptr<TorrentDetail> TorrentDetail_ptr;
 
 class TorrentInternal
 {
 public:
-	
 	TorrentInternal() :		
 		transferLimit_(std::pair<float, float>(0, 0)),
 		connections_(0),
@@ -44,7 +43,7 @@ public:
 		handle_(h)
 	{}
 	
-	torrentDetails getTorrentDetails() const;
+	TorrentDetail_ptr getTorrentDetails() const;
 	void setTransferLimit(float down, float up);
 	void pause();
 	

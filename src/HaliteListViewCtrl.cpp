@@ -3,17 +3,37 @@
 #include <boost/lexical_cast.hpp>
 
 #include "HaliteListViewCtrl.hpp"
+#include "GlobalIni.hpp"
+#include "ini/Window.hpp"
 #include "halTorrent.hpp"
 
 using namespace std;
 using namespace boost;
 
+void HaliteListViewCtrl::onShowWIndow(UINT, INT)
+{
+	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT);
+
+	CHeaderCtrl hdr = GetHeader();
+	hdr.ModifyStyle(HDS_BUTTONS, 0);
+
+	AddColumn(L"Name", hdr.GetItemCount());
+	AddColumn(L"Status", hdr.GetItemCount());
+	AddColumn(L"Completed", hdr.GetItemCount());
+	AddColumn(L"Download", hdr.GetItemCount());
+	AddColumn(L"Upload", hdr.GetItemCount());
+	AddColumn(L"Peers", hdr.GetItemCount());
+	AddColumn(L"Seeds", hdr.GetItemCount());
+
+	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
+		SetColumnWidth(i, INI().windowConfig().mainListColWidth[i]);
+}
+
 void HaliteListViewCtrl::updateListView()
 {
-	halite::vecTorrentDetails vTD = halite::bittorrent().getAllTorrentDetails();
+	halite::TorrentDetails TD = halite::bittorrent().getAllTorrentDetails();
 	
-	for (halite::vecTorrentDetails::const_iterator i = vTD.begin(); 
-		i != vTD.end(); ++i) 
+	for (halite::TorrentDetails::const_iterator i = TD.begin(); i != TD.end(); ++i) 
 	{
 		LV_FINDINFO findInfo; 
 		findInfo.flags = LVFI_STRING;
@@ -38,4 +58,10 @@ void HaliteListViewCtrl::updateListView()
 		
 		SetItemText(itemPos, 6,	(lexical_cast<wstring>((*i)->seeds())).c_str());	
 	}	
+}
+
+void HaliteListViewCtrl::saveStatus()
+{
+	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
+		INI().windowConfig().mainListColWidth[i] = GetColumnWidth(i);
 }

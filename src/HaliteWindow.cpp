@@ -4,10 +4,32 @@
 #include <boost/bind.hpp>
 
 #include "stdAfx.hpp"
+#include "Halite.hpp"
 #include "HaliteWindow.hpp"
+
+#include "CSSFileDialog.hpp"
+#include "HaliteListViewCtrl.hpp"
+#include "HaliteDialog.hpp"
+
 #include "ConfigOptions.hpp"
 #include "GlobalIni.hpp"
 #include "ini/Window.hpp"
+
+HaliteWindow::HaliteWindow() :
+	mp_list(new HaliteListViewCtrl()),
+	mp_dlg(new HaliteDialog(this))
+{}
+
+HaliteWindow::~HaliteWindow()
+{}
+
+BOOL HaliteWindow::PreTranslateMessage(MSG* pMsg)
+{
+	if(CFrameWindowImpl<HaliteWindow>::PreTranslateMessage(pMsg))
+		return TRUE;
+
+	return mp_dlg->PreTranslateMessage(pMsg);
+}
 
 LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 {	
@@ -22,67 +44,59 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	{
 		halite::xmlRpc().bindHost(INI().remoteConfig().port);
 	}
+	
+	halite::bittorrent().setSessionSpeed(std::make_pair(500.0, 20.0));
 
-	SetMenu(NULL);
+	RECT rc; GetClientRect(&rc);
+	SetMenu(0);
 	
 	//Init ToolBar
 	HWND hWndToolBar = CreateSimpleToolBarCtrl(m_hWnd, IDR_MAINFRAME, FALSE, ATL_SIMPLE_TOOLBAR_PANE_STYLE);
 	
 	// Init ReBar
 	CreateSimpleReBar(ATL_SIMPLE_REBAR_NOBORDER_STYLE);
-	//AddSimpleReBarBand(hWndCmdBar);
 	AddSimpleReBarBand(hWndToolBar, NULL, TRUE);
 	
 	// Init the StatusBar	
-	m_hWndStatusBar = m_wndStatusBar.Create(*this);
-	UIAddStatusBar (m_hWndStatusBar);
+	m_hWndStatusBar = m_StatusBar.Create(*this);
+	UIAddStatusBar(m_hWndStatusBar);
 	
-	int anPanes[] = { ID_DEFAULT_PANE, IDPANE_STATUS, IDPANE_CAPS_INDICATOR };
-	m_wndStatusBar.SetPanes ( anPanes, 3, false );
+	int panes[] = {ID_DEFAULT_PANE, IDPANE_STATUS, IDPANE_CAPS_INDICATOR};
+	m_StatusBar.SetPanes(panes, 3, false);
 	
 	// Create the Splitter Control
-	{
-		RECT rc;
-		GetClientRect(&rc);
-		m_hzSplit.Create(m_hWnd, rc, NULL, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
-		m_hWndClient = m_hzSplit.m_hWnd;
-		m_hzSplit.SetSplitterExtendedStyle(0);
-		m_hzSplit.SetSplitterPos(INI().windowConfig().splitterPos);
-	}
+	m_Split.Create(m_hWnd, rc, NULL, WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN);
+	m_Split.SetSplitterExtendedStyle(!SPLIT_PROPORTIONAL, SPLIT_PROPORTIONAL);
+	m_Split.SetSplitterPos(INI().windowConfig().splitterPos);
+	
+	m_hWndClient = m_Split.m_hWnd;
 	
 	// Create ListView and Dialog
-	m_list.Create(m_hzSplit.m_hWnd, rcDefault, NULL, LVS_REPORT | LVS_SINGLESEL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, WS_EX_CLIENTEDGE);
-
-	m_hdlg.Create(m_hzSplit.m_hWnd);
-	m_hdlg.ShowWindow(true);
+	mp_list->Create(m_Split.m_hWnd, rc, NULL, 
+		LVS_REPORT|LVS_SINGLESEL|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS);
 	
-	m_hzSplit.SetSplitterPanes(m_list, m_hdlg);
+	mp_dlg->Create(m_Split.m_hWnd);
+	mp_dlg->ShowWindow(true);
 	
-	// Add columns to ListView
-	CHeaderCtrl hdr = m_list.GetHeader();
-	hdr.ModifyStyle(HDS_BUTTONS, 0);
-
-	m_list.AddColumn(L"Name", hdr.GetItemCount());
-	m_list.AddColumn(L"Status", hdr.GetItemCount());
-	m_list.AddColumn(L"Completed", hdr.GetItemCount());
-	m_list.AddColumn(L"Download", hdr.GetItemCount());
-	m_list.AddColumn(L"Upload", hdr.GetItemCount());
-	m_list.AddColumn(L"Peers", hdr.GetItemCount());
-	m_list.AddColumn(L"Seeds", hdr.GetItemCount());
-
-	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
-		m_list.SetColumnWidth(i, INI().windowConfig().mainListColWidth[i]);
+	m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
 	
-	// Add ToolBar and register it and StatusBar for UIUpdates
+	// Create the tray icon.
+	m_trayIcon.Create(this, IDR_TRAY_MENU, L"First Tray Icon", CTrayNotifyIcon::LoadIconResource(IDR_APP_ICON), WM_TRAYNOTIFY, IDR_TRAY_MENU);
+	
+	// Add ToolBar and register it along with StatusBar for UIUpdates
 	UIAddToolBar(hWndToolBar);
 	UISetCheck(ID_VIEW_TOOLBAR, 1);
 	UISetCheck(ID_VIEW_STATUS_BAR, 1);
+	UISetCheck(IDR_TRAY_MENU, 1);
 	
-	SetTimer (1, 1000);
-	attachUIEvent(bind(&HaliteWindow::updateStatusbar,this));
-	attachUIEvent(bind(&HaliteListViewCtrl::updateListView,&m_list));
-	attachUIEvent(bind(&HaliteDialog::updateDialog,&m_hdlg));
-		
+	// Register UIEvents and the timer for the monitoring interval
+	SetTimer(ID_UPDATE_TIMER, 1000);
+	attachUIEvent(bind(&HaliteWindow::updateStatusbar, this));
+	attachUIEvent(bind(&HaliteListViewCtrl::updateListView, &*mp_list));
+	attachUIEvent(bind(&HaliteDialog::updateDialog, &*mp_dlg));
+	
+	RegisterDropTarget();
+	
 	// Register object for message filtering and idle updates
 	CMessageLoop* pLoop = _Module.GetMessageLoop();
 	assert(pLoop != NULL);
@@ -96,21 +110,27 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 
 LRESULT HaliteWindow::OnNotify(int wParam, LPNMHDR lParam)
 {
-	if (lParam->hwndFrom == m_list && lParam->code == NM_CLICK)
+	if (lParam->hwndFrom == *mp_list && lParam->code == NM_CLICK)
 	{
 		updateUI();	
-			
-		int itemPos = m_list.GetSelectionMark();
-	
+		
+		int itemPos = mp_list->GetSelectionMark();
+		
 		if (itemPos != -1)
 		{
 			wchar_t filenameBuffer[MAX_PATH];		
-			m_list.GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),256);		
-			m_hdlg.setSelectedTorrent(filenameBuffer);
+			mp_list->GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),256);		
+			mp_dlg->setSelectedTorrent(filenameBuffer);
 		}
 	}
-	
 	return 0;
+}
+
+LRESULT HaliteWindow::OnTrayNotification(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam)
+{
+    m_trayIcon.OnTrayNotification(wParam, lParam);
+    
+    return 0;
 }
 
 // UI update signal and Halite Window specific functions.
@@ -137,7 +157,7 @@ void HaliteWindow::updateStatusbar()
 	else
 		UISetText(0,L"Halite not listening, try adjusting the port range");	
 	
-	pair<float, float> speed = halite::bittorrent().sessionSpeed();
+	pair<double, double> speed = halite::bittorrent().sessionSpeed();
 	UISetText (1, 
 		(wformat(L"(D-U) %1$.2fkb/s - %2$.2fkb/s") 
 			% (speed.first/1024) 
@@ -147,13 +167,9 @@ void HaliteWindow::updateStatusbar()
 
 void HaliteWindow::OnTimer (UINT uTimerID, TIMERPROC pTimerProc)
 {
-	if (1 == uTimerID) 
+	if (uTimerID == ID_UPDATE_TIMER) 
 	{
 		updateUI();
-	}
-	else if (2 == uTimerID)
-	{
-//		halite::reannounceAll();
 	}
 	else 
 	{		
@@ -161,15 +177,18 @@ void HaliteWindow::OnTimer (UINT uTimerID, TIMERPROC pTimerProc)
 	}
 }	
 
+void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
+{
+    halite::bittorrent().addTorrent(path(halite::wcstombs(lpszPath), native));
+}
+
 void HaliteWindow::OnClose()
 {
 	GetWindowRect(INI().windowConfig().rect);
-	INI().windowConfig().splitterPos = m_hzSplit.GetSplitterPos();
+	INI().windowConfig().splitterPos = m_Split.GetSplitterPos();
 	
-	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
-		INI().windowConfig().mainListColWidth[i] = m_list.GetColumnWidth(i);
-	
-	m_hdlg.saveStatus();
+	mp_list->saveStatus();	
+	mp_dlg->saveStatus();
 	
 	SetMsgHandled(false);
 }	
@@ -234,4 +253,3 @@ LRESULT HaliteWindow::OnEraseBkgnd(HDC hdc)
 
 	return 1;
 }
-

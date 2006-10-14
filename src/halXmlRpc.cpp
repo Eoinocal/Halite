@@ -48,7 +48,7 @@ namespace halite
 			theHost.run();
 			hostRunning = false;		
 			}
-			catch(const exception& e)
+			catch(const exception&)
 			{
 			
 			}	
@@ -299,7 +299,7 @@ namespace halite
 		cout << "Finished\r\n";
 		
 		}
-		catch(const exception& e)
+		catch(const exception&)
 		{
 //		cout << format("Thread Error: %1%.\r\n") % e.what();
 		}	
@@ -318,7 +318,7 @@ namespace halite
 		host_tread.reset(new thread(&host_procedure));
 */		
 		}
-		catch(const exception& e)
+		catch(const exception&)
 		{
 //		cout << format("Main Error: %1%.\r\n") % e.what();
 		}		

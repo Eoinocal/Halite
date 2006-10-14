@@ -88,7 +88,7 @@ void TorrentInternal::setTransferLimit(float down, float up)
 		handle_.set_upload_limit(-1);
 }
 		
-torrentDetails TorrentInternal::getTorrentDetails() const
+TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
 {
 	if (inSession())
 	{
@@ -128,14 +128,14 @@ torrentDetails TorrentInternal::getTorrentDetails() const
 			}	
 		}
 			
-		return torrentDetails(new torrentDetail(filename_, state, mbstowcs(tS.current_tracker), 
+		return TorrentDetail_ptr(new TorrentDetail(filename_, state, mbstowcs(tS.current_tracker), 
 			pair<float, float>(tS.download_payload_rate, tS.upload_payload_rate),
 			tS.progress, tS.distributed_copies, tS.total_wanted_done, tS.total_wanted,
 			tS.num_peers, tS.num_seeds));
 	}
 	else
 	{
-		return torrentDetails(new torrentDetail(filename_, L"Not in Session", L"No tracker"));
+		return TorrentDetail_ptr(new TorrentDetail(filename_, L"Not in Session", L"No tracker"));
 	}
 }
 
@@ -205,10 +205,16 @@ void BitTorrent::stopListening()
 	pimpl->theSession.listen_on(make_pair(0, 0));
 }
 
-pair<float, float> BitTorrent::sessionSpeed() 
+void BitTorrent::setSessionSpeed(pair<double, double> kilobyteRate)
+{
+	pimpl->theSession.set_download_rate_limit(static_cast<int>(kilobyteRate.first*1024));
+	pimpl->theSession.set_upload_rate_limit(static_cast<int>(kilobyteRate.second*1024));
+}
+
+pair<double, double> BitTorrent::sessionSpeed() 
 {
 	session_status sStatus = pimpl->theSession.status();		
-	return pair<float,float>(sStatus.download_rate, sStatus.upload_rate);
+	return pair<double, double>(sStatus.download_rate, sStatus.upload_rate);
 }
 
 entry BitTorrent_impl::prepTorrent(path filename)
@@ -257,9 +263,7 @@ void BitTorrent::addTorrent(path file)
 	TorrentMap::const_iterator existing = pimpl->torrents.find(file.leaf());
 	
 	if (existing == pimpl->torrents.end())
-	{
-	//	TorrentInternal torrent(mbstowcs(file.leaf()));
-		
+	{		
 		torrent_handle handle = pimpl->theSession.add_torrent(metadata,
 			pimpl->workingDirectory/"incoming", resumedata);
 		
@@ -276,23 +280,23 @@ void BitTorrent::addTorrent(path file)
 	}
 }
 
-vecTorrentDetails BitTorrent::getAllTorrentDetails()
+TorrentDetails BitTorrent::getAllTorrentDetails()
 {
-	vecTorrentDetails vTorrents;
+	TorrentDetails torrentsContainer;
 	
 	for (TorrentMap::const_iterator iter = pimpl->torrents.begin(); 
 		iter != pimpl->torrents.end(); ++iter)
 	{
-		vTorrents.push_back(iter->second.getTorrentDetails());
+		torrentsContainer.push_back(iter->second.getTorrentDetails());
 	}
 	
-	return vTorrents;
+	return torrentsContainer;
 }
 
 void BitTorrent::resumeAll()
 {
 	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
-		iter != pimpl->torrents.end(); )
+		iter != pimpl->torrents.end(); /*Nothing here*/)
 	{
 		path file = pimpl->workingDirectory/"torrents"/(*iter).first;
 		
@@ -306,15 +310,15 @@ void BitTorrent::resumeAll()
 			(*iter).second.setHandle(pimpl->theSession.add_torrent(metadata,
 				pimpl->workingDirectory/"incoming", resumedata));
 		
+			++iter;
 			}
 			catch(exception &ex) 
 			{
-				wstring caption=L"Resume Torrent Exception";
+				MessageBox(0, mbstowcs(ex.what()).c_str(), L"Resume Torrent Exception", MB_ICONERROR|MB_OK);
 				
-				MessageBox(0, mbstowcs(ex.what()).c_str(), caption.c_str(), MB_ICONERROR|MB_OK);
+				pimpl->torrents.erase(iter++);
 			}
 			
-			++iter;
 		}
 		else
 		{
@@ -468,61 +472,6 @@ pair<float,float> sessionSpeed()
 	}
 }
 
-torrentBriefDetails getTorrents() {
-	
-	shared_ptr<vector<torrentBriefDetail> > spTbd;
-	
-	if (!torrents.empty()) 
-	{
-		spTbd.reset(new vector<torrentBriefDetail>);
-		for(torrentIter i=torrents.begin(); i!=torrents.end(); ++i)
-		{
-			torrentBriefDetail tbd;
-			torrent_status ts = i->second.handle.status();
-			
-			switch (ts.state)
-			{
-				case torrent_status::state_t::queued_for_checking:
-					tbd.status = L"Queued For Checking";
-					break;
-				case torrent_status::state_t::checking_files:
-					tbd.status = L"Checking Files";
-					break;
-				case torrent_status::state_t::connecting_to_tracker:
-					tbd.status = L"Connecting To Tracker";
-					break;
-				case torrent_status::state_t::downloading_metadata:
-					tbd.status = L"Downloading Metadata";
-					break;
-				case torrent_status::state_t::downloading:
-					tbd.status = L"Downloading";
-					break;
-				case torrent_status::state_t::finished:
-					tbd.status = L"Finished";
-					break;
-				case torrent_status::state_t::seeding:
-					tbd.status = L"Seeding";
-					break;
-				case torrent_status::state_t::allocating:
-					tbd.status = L"Allocating";
-					break;
-			}
-			tbd.filename = i->second.file;
-			
-			if (i->second.handle.is_paused())
-				tbd.status = L"Paused";
-			
-			tbd.speed = pair<float,float>(ts.download_rate,ts.upload_rate);
-			tbd.completion = ts.progress;
-			tbd.seeds = ts.num_seeds;
-			tbd.peers = ts.num_peers;
-			
-			spTbd->push_back(tbd);
-		}
-	}
-	return spTbd;
-}	
-
 void setTorrentConnectionLimits(wstring filename, int connections, int uploads)
 {
 	if (filename != L"") {
@@ -613,10 +562,10 @@ pair<float,float> getTorrentTransferLimits(wstring filename)
 	return pair<float, float>(0, 0);			
 }
 /*
-torrentDetails getTorrentDetails(wstring filename)
+TorrentDetails getTorrentDetails(wstring filename)
 {
 	torrentIter existing = torrents.find(filename);
-	torrentDetails pTD;
+	TorrentDetails pTD;
 	
 	if (existing != torrents.end())
 	{	

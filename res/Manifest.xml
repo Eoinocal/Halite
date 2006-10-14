@@ -3,10 +3,10 @@
 	<assemblyIdentity 
 		version="1.0.0.0" 
 		processorArchitecture="*" 
-		name="ETPOC.CPlusPlus.wtlDialogShell" 
+		name="BinaryNotions.com.Halite" 
 		type="win32" 
 	/> 
-	<description>A shell app which demos some Boost libraries.</description> 
+	<description>Halite BitTorrent Client.</description> 
 	<dependency> 
 		<dependentAssembly> 
 			<assemblyIdentity 

@@ -2,7 +2,7 @@
 use-project /boost : $(/boost) ;
 use-project /http : $(/http) ;
 use-project /libtorrent : $(/libtorrent) ;
-use-project /tinyxmlstl : $(/tinyxmlstl) ;
+#use-project /tinyxmlstl : $(/tinyxmlstl) ;
 use-project /WTL : $(/WTL) ;
 use-project /osLibs : $(/osLibs) ;
 
@@ -16,6 +16,7 @@ SOURCES =
 	halTorrent.cpp
 	GlobalIni.cpp
 	halXmlRpc.cpp
+	NTray.cpp
 	;
 	
 RESOURCES =
@@ -39,7 +40,7 @@ project Halite
 	<library>/boost/serialization//boost_serialization/<link>static
 	<library>/http//http/<link>static
     <library>/libtorrent//torrent/<link>static
-    <library>/tinyxmlstl/<link>static
+#    <library>/tinyxmlstl/<link>static
 	
 	<library>/WTL
 	<library>/osLibs//$(LIBS)

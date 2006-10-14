@@ -4,6 +4,9 @@
 #include "stdAfx.hpp"
 #include "HaliteDialog.hpp"
 #include "HaliteWindow.hpp"
+
+#include "HaliteListViewCtrl.hpp"
+
 #include "GlobalIni.hpp"
 #include "ini/Dialog.hpp"
 
@@ -40,15 +43,16 @@ void HaliteDialog::setSelectedTorrent(wstring torrent)
 	mainHaliteWindow->updateUI();
 }
 
-LRESULT HaliteDialog::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+LRESULT HaliteDialog::onInitDialog(HWND, LPARAM)
 {
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
-	m_prog.Attach(GetDlgItem(TORRENTPROG));
+{	m_prog.Attach(GetDlgItem(TORRENTPROG));
 	m_prog.SetRange(0,100);
+}	
+{	m_list.Attach(GetDlgItem(LISTPEERS));
+	m_list.SetExtendedListViewStyle(LVS_EX_FULLROWSELECT);
 	
-	HWND hwndList = GetDlgItem(LISTPEERS);
-	m_list.Attach(hwndList);
 	CHeaderCtrl hdr = m_list.GetHeader();
 	hdr.ModifyStyle(HDS_BUTTONS, 0);
 	
@@ -59,7 +63,7 @@ LRESULT HaliteDialog::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lP
 
 	for (size_t i=0; i<4; ++i)
 		m_list.SetColumnWidth(i, INI().dialogConfig().peerListColWidth[i]);
-	
+}	
 	selectedTorrent = L"";
 	
 	NoConnDown = 0;
@@ -68,7 +72,7 @@ LRESULT HaliteDialog::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lP
 	TranLimitUp = 0;	
 	
 	DoDataExchange(false);
-	return TRUE;
+	return 0;
 }
 
 void HaliteDialog::saveStatus()
@@ -77,22 +81,14 @@ void HaliteDialog::saveStatus()
 		INI().dialogConfig().peerListColWidth[i] = m_list.GetColumnWidth(i);
 }
 
-LRESULT HaliteDialog::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
+void HaliteDialog::onClose()
 {
 	if(::IsWindow(m_hWnd)) {
 		::DestroyWindow(m_hWnd);
 	}
-	bHandled = TRUE;
-	return 0;
 }
 
-LRESULT HaliteDialog::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
-{	
-	bHandled = FALSE;
-	return 0;
-}
-
-LRESULT HaliteDialog::OnPause(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+void HaliteDialog::onPause(UINT, int, HWND)
 {
 	if(false)//halite::isPausedTorrent(selectedTorrent))
 	{
@@ -106,14 +102,14 @@ LRESULT HaliteDialog::OnPause(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
 	}
 	
 	mainHaliteWindow->updateUI();
-	return 0;	
-}	
-LRESULT HaliteDialog::OnReannounce(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+}
+
+void HaliteDialog::onReannounce(UINT, int, HWND)
 {
-		
-	return 0;	
-}	
-LRESULT HaliteDialog::OnRemove(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+
+}
+
+void HaliteDialog::onRemove(UINT, int, HWND)
 {
 //	halite::removeTorrent(selectedTorrent);
 		   
@@ -121,12 +117,11 @@ LRESULT HaliteDialog::OnRemove(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
 	findInfo.flags = LVFI_STRING;
 	findInfo.psz = const_cast<LPTSTR>(selectedTorrent.c_str());
 			
-	int itemPos = mainHaliteWindow->m_list.FindItem(&findInfo, -1);
+	int itemPos = mainHaliteWindow->mp_list->FindItem(&findInfo, -1);
 	if (itemPos >= 0)
-		mainHaliteWindow->m_list.DeleteItem(itemPos);		
+		mainHaliteWindow->mp_list->DeleteItem(itemPos);		
 		
 	mainHaliteWindow->updateUI();	
-	return 0;	
 }
 
 LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl )
@@ -142,14 +137,14 @@ LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl )
 
 void HaliteDialog::updateDialog()
 {
-	int itemPos = mainHaliteWindow->m_list.GetSelectionMark();
+	int itemPos = mainHaliteWindow->mp_list->GetSelectionMark();
 	
 	if (itemPos != -1)
 	{
 		wchar_t filenameBuffer[MAX_PATH];
 		format tmpStr;
 		
-		mainHaliteWindow->m_list.GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),256);		
+		mainHaliteWindow->mp_list->GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),256);		
 /*		halite::torrentDetails pTD = halite::getTorrentDetails(filenameBuffer);
 		
 		SetDlgItemText(IDC_NAME,filenameBuffer);

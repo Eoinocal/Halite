@@ -28,7 +28,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "Halite.ico"
+IDR_APP_ICON            ICON                    "Halite.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -138,21 +138,18 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_EIRE
 //
 
 IDD_CONFIGREMOTE DIALOGEX 0, 0, 242, 94
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Remot Control"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Remote Control Options",IDC_STATIC,6,6,228,30
-    CONTROL         "Enable Remote Control",IDC_REMOTECTRL,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,12,18,96,12
+    CONTROL         "Enable Remote Control",IDC_REMOTECTRL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,18,96,12
     RTEXT           "Port to listen on : ",IDC_STATIC,114,19,66,11
     EDITTEXT        IDC_REMOTEPORT,180,18,42,12,ES_AUTOHSCROLL
 END
 
 IDD_CONFIGBIT DIALOGEX 0, 0, 242, 94
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "BitTorrent"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
@@ -168,26 +165,23 @@ BEGIN
 END
 
 IDD_ABOUT DIALOGEX 0, 0, 242, 94
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Program Information",IDC_STATIC,6,6,228,81
-    LTEXT           "Halite Torrent is a BitTorrent client based on the libtorrent library by Arvid from Raserber software. It also relies heavily on the Boost libraries and xmlrpc++.",
-                    IDC_STATIC,12,18,216,24
-    CONTROL         "",IDC_RICHEDIT22,"RichEdit20A",ES_AUTOHSCROLL | 
-                    WS_TABSTOP,7,50,228,37,WS_EX_TRANSPARENT
+    LTEXT           "Halite Torrent is a BitTorrent client based on the libtorrent library by Arvid from Raserber software. It also relies heavily on the Boost libraries and xmlrpc++.",IDC_STATIC,12,18,216,24
+    CONTROL         "",IDC_RICHEDIT22,"RichEdit20A",ES_AUTOHSCROLL | WS_TABSTOP,7,50,228,37,WS_EX_TRANSPARENT
 END
 
-HALITEDLG DIALOGEX 0, 0, 313, 99
+IDD_HALITEDLG DIALOGEX 0, 0, 313, 68
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "Pause",BTNPAUSE,260,0,53,14
-    CONTROL         "",TORRENTPROG,"msctls_progress32",WS_BORDER,0,48,313,8
-    PUSHBUTTON      "Reannounce",BTNREANNOUNCE,260,16,53,14
-    PUSHBUTTON      "Remove",BTNREMOVE,260,32,53,14
+    DEFPUSHBUTTON   "Pause",BTNPAUSE,260,0,51,14
+    CONTROL         "",TORRENTPROG,"msctls_progress32",WS_BORDER,2,48,309,8
+    PUSHBUTTON      "Reannounce",BTNREANNOUNCE,260,16,51,14
+    PUSHBUTTON      "Remove",BTNREMOVE,260,32,51,14
     RTEXT           "Name:",IDC_STATIC,6,0,30,8
     LTEXT           "N/A",IDC_AVAIL,38,36,50,8
     RTEXT           "Status:",IDC_STATIC,6,24,30,8
@@ -196,8 +190,7 @@ BEGIN
     LTEXT           "N/A",IDC_STATUS,38,24,136,8
     LTEXT           "N/A",IDC_TRACKER,38,12,140,8
     LTEXT           "N/A",IDC_NAME,38,0,136,8
-    CONTROL         "",LISTPEERS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | 
-                    WS_BORDER | WS_TABSTOP,0,60,313,39
+    CONTROL         "",LISTPEERS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,2,60,309,6
     EDITTEXT        IDC_EDITTLU,227,33,27,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDITTLD,187,33,27,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDITNCD,187,11,28,12,ES_AUTOHSCROLL
@@ -212,17 +205,15 @@ BEGIN
     LTEXT           "N/A",IDC_COMPLETE,133,36,43,8
 END
 
-IDD_CLOSESPLASH DIALOGEX 0, 0, 202, 54
+IDD_CLOSESPLASH DIALOGEX 0, 0, 191, 54
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
 EXSTYLE WS_EX_STATICEDGE
 CAPTION "Halite Shutting down..."
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,21,20
-    LTEXT           "The BitTorrent Session will shutdown momentarly. You can continue to work away, this message will dissappear when shutdown is complete.",
-                    IDC_STATIC,34,7,161,27
-    CONTROL         "Show this message in future.",IDC_SPLASH_MSG,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,88,35,107,12
+    ICON            IDR_APP_ICON,IDC_STATIC,7,10,21,20
+    LTEXT           "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close.",IDC_STATIC,35,7,149,27
+    CONTROL         "Show this message in future.",IDC_SPLASH_MSG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,77,35,107,12
 END
 
 
@@ -291,7 +282,7 @@ BEGIN
         BOTTOMMARGIN, 87
     END
 
-    HALITEDLG, DIALOG
+    IDD_HALITEDLG, DIALOG
     BEGIN
         RIGHTMARGIN, 229
     END
@@ -299,13 +290,29 @@ BEGIN
     IDD_CLOSESPLASH, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 195
+        RIGHTMARGIN, 184
         TOPMARGIN, 7
         BOTTOMMARGIN, 47
     END
 END
 #endif    // APSTUDIO_INVOKED
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_TRAY_MENU MENU 
+BEGIN
+    POPUP "_POPUP_"
+	BEGIN
+		MENUITEM "Open &Halite",                ID_TRAY_OPENHALITE
+		MENUITEM SEPARATOR
+		MENUITEM "&Pause All",                  ID_TRAY_PAUSEALL
+		MENUITEM "&Resume All",                 ID_TRAY_RESUMEALL
+	END
+END
 
 /////////////////////////////////////////////////////////////////////////////
 //

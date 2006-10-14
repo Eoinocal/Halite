@@ -27,10 +27,10 @@ struct torrentBriefDetail
 	int seeds;
 };
 
-class torrentDetail 
+class TorrentDetail 
 {
 public:
-	torrentDetail(std::wstring f, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
+	TorrentDetail(std::wstring f, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
 			float c=0, float a=0, boost::int64_t tWD=0, boost::int64_t tW=0, int p=0, int sd=0) :
 		filename_(f),
 		state_(s),
@@ -44,7 +44,7 @@ public:
 		seeds_(sd)
 	{}		
 
-	torrentDetail() {};
+	TorrentDetail() {};
 	
 	const std::wstring& filename() const { return filename_; }
 	const std::wstring& state() const { return state_; }
@@ -94,8 +94,8 @@ struct PeerDetail {
 };
 
 typedef shared_ptr<vector<torrentBriefDetail> > torrentBriefDetails;
-typedef shared_ptr<torrentDetail> torrentDetails;
-typedef std::vector<torrentDetails> vecTorrentDetails;
+typedef shared_ptr<TorrentDetail> TorrentDetail_ptr;
+typedef std::vector<TorrentDetail_ptr> TorrentDetails;
 
 class BitTorrent_impl;
 
@@ -108,10 +108,11 @@ public:
 	int isListeningOn();
 	void stopListening();
 	
-	pair<float, float> sessionSpeed();
+	void setSessionSpeed(pair<double, double> kilobyteRate);	
+	pair<double, double> sessionSpeed();
 	
 	void addTorrent(boost::filesystem::path file);
-	vecTorrentDetails getAllTorrentDetails();
+	TorrentDetails getAllTorrentDetails();
 	void resumeAll();
 	void closeAll();
 	

@@ -24,5 +24,4 @@ extern CAppModule _Module;
 #include <atlddx.h>
 
 #include "..\res\resource.h"
-#include "ssfiledialog.hpp"
 

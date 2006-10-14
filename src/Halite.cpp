@@ -41,8 +41,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 					false);
 				wndMain.ShowWindow(nCmdShow);
 				
-				nRet = theLoop.Run();
-				
+				nRet = theLoop.Run();				
 			}	
 		}	_Module.RemoveMessageLoop();
 		
