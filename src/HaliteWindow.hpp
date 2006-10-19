@@ -45,6 +45,7 @@ public:
 		MSG_WM_NOTIFY(OnNotify)
 		MSG_WM_CREATE(OnCreate)
 		MSG_WM_CLOSE(OnClose)
+		MSG_WM_SIZE(OnSize)
 		MSG_WM_ERASEBKGND(OnEraseBkgnd)
 		MSG_WM_TIMER(OnTimer)		
 		MESSAGE_HANDLER_EX(WM_TRAYNOTIFY, OnTrayNotification)
@@ -53,6 +54,8 @@ public:
 		COMMAND_ID_HANDLER(ID_FILE_OPEN, OnFileOpen)
 		COMMAND_ID_HANDLER(ID_SETTINGS, OnSettings)
 		COMMAND_ID_HANDLER(ID_VIEW_STATUS_BAR, OnViewStatusBar)
+		COMMAND_ID_HANDLER(ID_TRAY_OPENHALITE, OnTrayOpenHalite)
+		COMMAND_ID_HANDLER(ID_TRAY_EXIT, OnTrayExit)
 		CHAIN_MSG_MAP(CUpdateUI<HaliteWindow>)
 		CHAIN_MSG_MAP(CFrameWindowImpl<HaliteWindow>)
 		CHAIN_MSG_MAP(CDropFileTarget<HaliteWindow>)
@@ -72,17 +75,21 @@ public:
 	LRESULT OnCreate(LPCREATESTRUCT lpcs);	
     void OnTimer(UINT uTimerID, TIMERPROC pTimerProc);
 	void OnClose();
+	void OnSize(UINT, CSize);
 	LRESULT OnTrayNotification(UINT, WPARAM wParam, LPARAM lParam);
 	LRESULT OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnTrayOpenHalite(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnTrayExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnViewStatusBar(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnEraseBkgnd(HDC hdc);
 	
-	void attachUIEvent(function<void ()> fn);
-	void updateUI();
-	void updateStatusbar();
+	void attachUIEvent(function<void ()> fn) { updateUI_.connect(fn); }
+	void updateUI() { updateUI_(); }
+	
+	void updateWindow();
 	void ProcessFile(LPCTSTR lpszPath);
 	
 	friend HaliteDialog;

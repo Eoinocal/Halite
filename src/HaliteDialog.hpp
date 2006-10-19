@@ -26,7 +26,7 @@ protected:
 	int NoConnDown, NoConnUp;
 	float TranLimitDown, TranLimitUp;
 	
-	wstring selectedTorrent;
+	std::string selectedTorrent;
 	HaliteWindow* mainHaliteWindow;
 
 public:
@@ -88,6 +88,7 @@ public:
 		DLGRESIZE_CONTROL(IDC_COMPLETE, (DLSZ_SIZE_X))
 		
 		DLGRESIZE_CONTROL(LISTPEERS, (DLSZ_SIZE_X | DLSZ_SIZE_Y))
+		DLGRESIZE_CONTROL(IDC_DETAILS_GROUP, (DLSZ_SIZE_X | DLSZ_SIZE_Y))
 	END_DLGRESIZE_MAP()
 	
 	LRESULT onInitDialog(HWND, LPARAM);	
@@ -99,7 +100,7 @@ public:
 	
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl );
 	
-	void setSelectedTorrent(wstring torrent);	
+	void setSelectedTorrent(string torrent);	
 	void updateDialog();
 	void saveStatus();
 				

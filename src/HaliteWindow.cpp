@@ -81,7 +81,8 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
 	
 	// Create the tray icon.
-	m_trayIcon.Create(this, IDR_TRAY_MENU, L"First Tray Icon", CTrayNotifyIcon::LoadIconResource(IDR_APP_ICON), WM_TRAYNOTIFY, IDR_TRAY_MENU);
+	m_trayIcon.Create(this, IDR_TRAY_MENU, L"Halite", CTrayNotifyIcon::LoadIconResource(IDR_APP_ICON), WM_TRAYNOTIFY, IDR_TRAY_MENU);
+	m_trayIcon.Hide();
 	
 	// Add ToolBar and register it along with StatusBar for UIUpdates
 	UIAddToolBar(hWndToolBar);
@@ -91,7 +92,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	
 	// Register UIEvents and the timer for the monitoring interval
 	SetTimer(ID_UPDATE_TIMER, 1000);
-	attachUIEvent(bind(&HaliteWindow::updateStatusbar, this));
+	attachUIEvent(bind(&HaliteWindow::updateWindow, this));
 	attachUIEvent(bind(&HaliteListViewCtrl::updateListView, &*mp_list));
 	attachUIEvent(bind(&HaliteDialog::updateDialog, &*mp_dlg));
 	
@@ -120,7 +121,7 @@ LRESULT HaliteWindow::OnNotify(int wParam, LPNMHDR lParam)
 		{
 			wchar_t filenameBuffer[MAX_PATH];		
 			mp_list->GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),256);		
-			mp_dlg->setSelectedTorrent(filenameBuffer);
+			mp_dlg->setSelectedTorrent(halite::wcstombs(filenameBuffer));
 		}
 	}
 	return 0;
@@ -133,39 +134,27 @@ LRESULT HaliteWindow::OnTrayNotification(UINT /*uMsg*/, WPARAM wParam, LPARAM lP
     return 0;
 }
 
-// UI update signal and Halite Window specific functions.
-
-void HaliteWindow::attachUIEvent(function<void ()> fn)
-{
-	updateUI_.connect(fn);
-}
-void HaliteWindow::updateUI()
-{
-	updateUI_();
-}
-
-void HaliteWindow::updateStatusbar()
+void HaliteWindow::updateWindow()
 {
 	int port = halite::bittorrent().isListeningOn();
 	if (port > -1)
 	{
 		UISetText(0, 
-			(wformat(L"Listening on port %1%") 
-				% port 
-			).str().c_str());	
+			(wformat(L"Listening on port %1%") % port ).str().c_str());	
 	}
 	else
-		UISetText(0,L"Halite not listening, try adjusting the port range");	
+		UISetText(0,L"Halite not listening, try adjusting the port range");
 	
 	pair<double, double> speed = halite::bittorrent().sessionSpeed();
-	UISetText (1, 
-		(wformat(L"(D-U) %1$.2fkb/s - %2$.2fkb/s") 
+	wstring downloadRates = (wformat(L"(D-U) %1$.2fkb/s - %2$.2fkb/s") 
 			% (speed.first/1024) 
-			% (speed.second/1024)
-		).str().c_str());
+			% (speed.second/1024)).str();
+	
+	UISetText(1, downloadRates.c_str());	
+	m_trayIcon.SetTooltipText(downloadRates.c_str());
 }
 
-void HaliteWindow::OnTimer (UINT uTimerID, TIMERPROC pTimerProc)
+void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)
 {
 	if (uTimerID == ID_UPDATE_TIMER) 
 	{
@@ -184,7 +173,6 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 
 void HaliteWindow::OnClose()
 {
-	GetWindowRect(INI().windowConfig().rect);
 	INI().windowConfig().splitterPos = m_Split.GetSplitterPos();
 	
 	mp_list->saveStatus();	
@@ -192,6 +180,36 @@ void HaliteWindow::OnClose()
 	
 	SetMsgHandled(false);
 }	
+
+void HaliteWindow::OnSize(UINT type, CSize)
+{
+	SetMsgHandled(false);
+	
+	if (type == SIZE_MINIMIZED)
+	{
+		ShowWindow(SW_HIDE);
+		m_trayIcon.Show();
+	}
+	else
+	{
+		GetWindowRect(INI().windowConfig().rect);
+	}
+}
+
+LRESULT HaliteWindow::OnTrayOpenHalite(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	ShowWindow(SW_RESTORE);
+	m_trayIcon.Hide();
+	
+	return 0;
+}
+
+LRESULT HaliteWindow::OnTrayExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	PostMessage(WM_CLOSE, 0, 0);
+	
+	return 0;
+}
 
 LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
@@ -244,7 +262,9 @@ LRESULT HaliteWindow::OnViewStatusBar(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 	BOOL bVisible = !::IsWindowVisible(m_hWndStatusBar);
 	::ShowWindow(m_hWndStatusBar, bVisible ? SW_SHOWNOACTIVATE : SW_HIDE);
 	UISetCheck(ID_VIEW_STATUS_BAR, bVisible);
+	
 	UpdateLayout();
+	
 	return 0;
 }	
 

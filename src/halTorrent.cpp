@@ -87,7 +87,7 @@ void TorrentInternal::setTransferLimit(float down, float up)
 	else
 		handle_.set_upload_limit(-1);
 }
-		
+
 TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
 {
 	if (inSession())
@@ -95,7 +95,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
 		torrent_status tS = handle_.status();
 		wstring state;
 		
-		if (handle_.is_paused())
+		if (paused_)
 			state = L"Paused";
 		else
 		{
@@ -142,6 +142,18 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
 void TorrentInternal::pause()
 {
 	if (inSession()) handle_.pause();
+	paused_ = true;
+}
+
+void TorrentInternal::resume()
+{
+	if (inSession()) handle_.resume();
+	paused_ = false;
+}
+
+bool TorrentInternal::isPaused()
+{
+	return paused_;
 }
 
 class BitTorrent_impl
@@ -243,13 +255,12 @@ entry BitTorrent_impl::prepTorrent(path filename)
 
 	if (!exists(workingDirectory/"incoming"))
 		create_directory(workingDirectory/"incoming");
-		
+	
 	return resumeData;
 }
 
 torrent_handle BitTorrent_impl::addTorrent(entry metadata, entry resumedata)
 {
-
 	return theSession.add_torrent(metadata, workingDirectory/"incoming", resumedata);
 }
 
@@ -293,6 +304,18 @@ TorrentDetails BitTorrent::getAllTorrentDetails()
 	return torrentsContainer;
 }
 
+TorrentDetail_ptr BitTorrent::getTorrentDetails(string filename)
+{
+	TorrentMap::const_iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		return i->second.getTorrentDetails();
+	}
+	
+	return TorrentDetail_ptr();
+}
+
 void BitTorrent::resumeAll()
 {
 	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
@@ -310,6 +333,9 @@ void BitTorrent::resumeAll()
 			(*iter).second.setHandle(pimpl->theSession.add_torrent(metadata,
 				pimpl->workingDirectory/"incoming", resumedata));
 		
+			if ((*iter).second.isPaused())
+				(*iter).second.pause();
+			
 			++iter;
 			}
 			catch(exception &ex) 
@@ -337,12 +363,43 @@ void BitTorrent::closeAll()
 	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
 		iter != pimpl->torrents.end(); ++iter)
 	{
-		(*iter).second.pause();
 		entry resumedata = (*iter).second.handle().write_resume_data();
 		pimpl->theSession.remove_torrent((*iter).second.handle());
 		
 		halencode(resumeDir/(*iter).first, resumedata);
 	}
+}
+
+void BitTorrent::pauseTorrent(string filename)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		(*i).second.pause();
+	}
+}
+
+void BitTorrent::resumeTorrent(string filename)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		(*i).second.resume();
+	}
+}
+
+bool BitTorrent::isTorrentPaused(string filename)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		return (*i).second.isPaused();
+	}
+	
+	return false; // ??? is this correct
 }
 
 //	bool Torrent::closeDown() 

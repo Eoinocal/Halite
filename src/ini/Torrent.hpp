@@ -46,6 +46,8 @@ public:
 	TorrentDetail_ptr getTorrentDetails() const;
 	void setTransferLimit(float down, float up);
 	void pause();
+	void resume();
+	bool isPaused();
 	
 	const libtorrent::torrent_handle& handle() const { return handle_; }
 	void setHandle(libtorrent::torrent_handle h) 

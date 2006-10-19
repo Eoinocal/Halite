@@ -113,8 +113,12 @@ public:
 	
 	void addTorrent(boost::filesystem::path file);
 	TorrentDetails getAllTorrentDetails();
+	TorrentDetail_ptr getTorrentDetails(std::string filename);
 	void resumeAll();
 	void closeAll();
+	void pauseTorrent(std::string filename);
+	void resumeTorrent(std::string filename);
+	bool isTorrentPaused(std::string filename);
 	
 	friend BitTorrent& bittorrent();
 	

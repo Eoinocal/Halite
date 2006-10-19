@@ -10,12 +10,12 @@
 #include "GlobalIni.hpp"
 #include "ini/Dialog.hpp"
 
-void HaliteDialog::setSelectedTorrent(wstring torrent)
+void HaliteDialog::setSelectedTorrent(string torrent)
 {
 	selectedTorrent = torrent;
 	
-	pair<float,float> tranLimit(0,0);// = halite::getTorrentTransferLimits(torrent);
-	pair<int,int> connLimit(0,0);// = halite::getTorrentConnectionLimits(torrent);
+	pair<float,float> tranLimit(0, 0); // = halite::getTorrentTransferLimits(torrent);
+	pair<int,int> connLimit(0, 0); // = halite::getTorrentConnectionLimits(torrent);
 	
 	NoConnDown = connLimit.first;
 	NoConnUp = connLimit.second;
@@ -24,7 +24,7 @@ void HaliteDialog::setSelectedTorrent(wstring torrent)
 	
 	DoDataExchange(false);
 	
-	if(false)//halite::isPausedTorrent(selectedTorrent))
+	if (halite::bittorrent().isTorrentPaused(selectedTorrent))
 		SetDlgItemText(BTNPAUSE,L"Resume");
 	else		
 		SetDlgItemText(BTNPAUSE,L"Pause");
@@ -64,7 +64,7 @@ LRESULT HaliteDialog::onInitDialog(HWND, LPARAM)
 	for (size_t i=0; i<4; ++i)
 		m_list.SetColumnWidth(i, INI().dialogConfig().peerListColWidth[i]);
 }	
-	selectedTorrent = L"";
+	selectedTorrent = "";
 	
 	NoConnDown = 0;
 	NoConnUp = 0;
@@ -90,15 +90,15 @@ void HaliteDialog::onClose()
 
 void HaliteDialog::onPause(UINT, int, HWND)
 {
-	if(false)//halite::isPausedTorrent(selectedTorrent))
+	if (halite::bittorrent().isTorrentPaused(selectedTorrent))
 	{
 		SetDlgItemText(BTNPAUSE,L"Pause");
-//		halite::resumeTorrent(selectedTorrent);
+		halite::bittorrent().resumeTorrent(selectedTorrent);
 	}
 	else
 	{
 		SetDlgItemText(BTNPAUSE,L"Resume");
-//		halite::pauseTorrent(selectedTorrent);
+		halite::bittorrent().pauseTorrent(selectedTorrent);
 	}
 	
 	mainHaliteWindow->updateUI();
@@ -115,7 +115,7 @@ void HaliteDialog::onRemove(UINT, int, HWND)
 		   
 	LV_FINDINFO findInfo; 
 	findInfo.flags = LVFI_STRING;
-	findInfo.psz = const_cast<LPTSTR>(selectedTorrent.c_str());
+	findInfo.psz = const_cast<LPTSTR>(halite::mbstowcs(selectedTorrent).c_str());
 			
 	int itemPos = mainHaliteWindow->mp_list->FindItem(&findInfo, -1);
 	if (itemPos >= 0)
@@ -137,94 +137,100 @@ LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl )
 
 void HaliteDialog::updateDialog()
 {
-	int itemPos = mainHaliteWindow->mp_list->GetSelectionMark();
+	wchar_t filenameBuffer[MAX_PATH];
+	format tmpStr;
+	halite::TorrentDetail_ptr pTD;
+
+	int itemPos = mainHaliteWindow->mp_list->GetSelectionMark();	
+	if (itemPos == -1) goto invalid_selection;
 	
-	if (itemPos != -1)
+	mainHaliteWindow->mp_list->GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),MAX_PATH);
+	
+	pTD = halite::bittorrent().getTorrentDetails(halite::wcstombs(filenameBuffer));
+	if (!pTD) goto invalid_selection;
+	
 	{
-		wchar_t filenameBuffer[MAX_PATH];
-		format tmpStr;
-		
-		mainHaliteWindow->mp_list->GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),256);		
-/*		halite::torrentDetails pTD = halite::getTorrentDetails(filenameBuffer);
-		
-		SetDlgItemText(IDC_NAME,filenameBuffer);
-		SetDlgItemText(IDC_TRACKER,pTD->currentTracker.c_str());
-		SetDlgItemText(IDC_STATUS,pTD->status.c_str());
-		m_prog.SetPos(static_cast<int>(pTD->completion*100));
-		
+		SetDlgItemText(IDC_NAME, pTD->filename().c_str());
+		SetDlgItemText(IDC_TRACKER, pTD->currentTracker().c_str());
+		SetDlgItemText(IDC_STATUS, pTD->state().c_str());
+		m_prog.SetPos(static_cast<int>(pTD->completion()*100));
+			
 		SetDlgItemText(IDC_AVAIL,
 			(wformat(L"%1$.2f%%") 
-				% (pTD->available*100)
+				% (pTD->available()*100)
 			).str().c_str());		
 		
 		SetDlgItemText(IDC_COMPLETE,
 			(wformat(L"%1$.2fmb of %2$.2fmb") 
-				% (static_cast<float>(pTD->totalWantedDone)/(1024*1024))
-				% (static_cast<float>(pTD->totalWanted)/(1024*1024))
+				% (static_cast<float>(pTD->totalWantedDone())/(1024*1024))
+				% (static_cast<float>(pTD->totalWanted())/(1024*1024))
 			).str().c_str());
-*/					
-		vector<halite::PeerDetail> peerDetails;
-//		halite::getTorrentPeerDetails(filenameBuffer,peerDetails);
-		
-		if (!peerDetails.empty())
-		{
+						
+			vector<halite::PeerDetail> peerDetails;
+	//		halite::getTorrentPeerDetails(filenameBuffer,peerDetails);
 			
-			int j = m_list.GetItemCount();
-			for(int i=0; i<j; ++i)
+	/*		if (!peerDetails.empty())
 			{
-				wchar_t ip_address[256];
-				m_list.GetItemText(i,0,static_cast<LPTSTR>(ip_address),256);
 				
-				vector<halite::PeerDetail>::iterator it = 
-					find(peerDetails.begin(), peerDetails.end(), ip_address);
-				if (it ==  peerDetails.end())
-					m_list.DeleteItem(i);
-			}
-			
-			for(size_t i=0; i<peerDetails.size(); ++i)
-			{				
-				LV_FINDINFO findInfo; 
-				findInfo.flags = LVFI_STRING;
-				findInfo.psz = const_cast<LPTSTR>(peerDetails[i].ipAddress.c_str());
-				
-				int itemPos = m_list.FindItem(&findInfo, -1);
-				if (itemPos < 0)
-					itemPos = m_list.AddItem(0,0,peerDetails[i].ipAddress.c_str(),0);
-				
-				m_list.SetItemText(itemPos,1,
-					(wformat(L"%1$.2fkb/s") 
-						% (peerDetails[i].speed.first/1024)
-					).str().c_str());	
+				int j = m_list.GetItemCount();
+				for(int i=0; i<j; ++i)
+				{
+					wchar_t ip_address[256];
+					m_list.GetItemText(i,0,static_cast<LPTSTR>(ip_address),256);
 					
-				m_list.SetItemText(itemPos,2,
-					(wformat(L"%1$.2fkb/s") 
-						% (peerDetails[i].speed.second/1024)
-					).str().c_str());	
+					vector<halite::PeerDetail>::iterator it = 
+						find(peerDetails.begin(), peerDetails.end(), ip_address);
+					if (it ==  peerDetails.end())
+						m_list.DeleteItem(i);
+				}
+				
+				for(size_t i=0; i<peerDetails.size(); ++i)
+				{				
+					LV_FINDINFO findInfo; 
+					findInfo.flags = LVFI_STRING;
+					findInfo.psz = const_cast<LPTSTR>(peerDetails[i].ipAddress.c_str());
 					
-				if (peerDetails[i].seed)
-					m_list.SetItemText(itemPos,3,L"Seed");
+					int itemPos = m_list.FindItem(&findInfo, -1);
+					if (itemPos < 0)
+						itemPos = m_list.AddItem(0,0,peerDetails[i].ipAddress.c_str(),0);
+					
+					m_list.SetItemText(itemPos,1,
+						(wformat(L"%1$.2fkb/s") 
+							% (peerDetails[i].speed.first/1024)
+						).str().c_str());	
+						
+					m_list.SetItemText(itemPos,2,
+						(wformat(L"%1$.2fkb/s") 
+							% (peerDetails[i].speed.second/1024)
+						).str().c_str());	
+						
+					if (peerDetails[i].seed)
+						m_list.SetItemText(itemPos,3,L"Seed");
+				}
 			}
-		}
+		}*/
+		
+		return;
 	}
-	else
-	{
-		SetDlgItemText(IDC_NAME,L"N/A");
-		SetDlgItemText(IDC_TRACKER,L"N/A");
-		SetDlgItemText(IDC_STATUS,L"N/A");
-		SetDlgItemText(IDC_AVAIL,L"N/A");
-		SetDlgItemText(IDC_COMPLETE,L"N/A");
-		
-		SetDlgItemText(BTNPAUSE,L"Pause");
-		
-		::EnableWindow(GetDlgItem(BTNPAUSE),false);
-		::EnableWindow(GetDlgItem(BTNREANNOUNCE),false);
-		::EnableWindow(GetDlgItem(BTNREMOVE),false);
-		
-		::EnableWindow(GetDlgItem(IDC_EDITTLD),false);
-		::EnableWindow(GetDlgItem(IDC_EDITTLU),false);
-		::EnableWindow(GetDlgItem(IDC_EDITNCD),false);
-		::EnableWindow(GetDlgItem(IDC_EDITNCU),false);
-		
-		m_list.DeleteAllItems();
-	}
+
+invalid_selection:
+
+	SetDlgItemText(IDC_NAME,L"N/A");
+	SetDlgItemText(IDC_TRACKER,L"N/A");
+	SetDlgItemText(IDC_STATUS,L"N/A");
+	SetDlgItemText(IDC_AVAIL,L"N/A");
+	SetDlgItemText(IDC_COMPLETE,L"N/A");
+	
+	SetDlgItemText(BTNPAUSE,L"Pause");
+	
+	::EnableWindow(GetDlgItem(BTNPAUSE),false);
+	::EnableWindow(GetDlgItem(BTNREANNOUNCE),false);
+	::EnableWindow(GetDlgItem(BTNREMOVE),false);
+	
+	::EnableWindow(GetDlgItem(IDC_EDITTLD),false);
+	::EnableWindow(GetDlgItem(IDC_EDITTLU),false);
+	::EnableWindow(GetDlgItem(IDC_EDITNCD),false);
+	::EnableWindow(GetDlgItem(IDC_EDITNCU),false);
+	
+	m_list.DeleteAllItems();
 }

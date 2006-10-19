@@ -138,18 +138,21 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_EIRE
 //
 
 IDD_CONFIGREMOTE DIALOGEX 0, 0, 242, 94
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
 CAPTION "Remot Control"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Remote Control Options",IDC_STATIC,6,6,228,30
-    CONTROL         "Enable Remote Control",IDC_REMOTECTRL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,18,96,12
+    CONTROL         "Enable Remote Control",IDC_REMOTECTRL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,18,96,12
     RTEXT           "Port to listen on : ",IDC_STATIC,114,19,66,11
     EDITTEXT        IDC_REMOTEPORT,180,18,42,12,ES_AUTOHSCROLL
 END
 
 IDD_CONFIGBIT DIALOGEX 0, 0, 242, 94
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
 CAPTION "BitTorrent"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
@@ -165,44 +168,49 @@ BEGIN
 END
 
 IDD_ABOUT DIALOGEX 0, 0, 242, 94
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
 CAPTION "About"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Program Information",IDC_STATIC,6,6,228,81
-    LTEXT           "Halite Torrent is a BitTorrent client based on the libtorrent library by Arvid from Raserber software. It also relies heavily on the Boost libraries and xmlrpc++.",IDC_STATIC,12,18,216,24
-    CONTROL         "",IDC_RICHEDIT22,"RichEdit20A",ES_AUTOHSCROLL | WS_TABSTOP,7,50,228,37,WS_EX_TRANSPARENT
+    LTEXT           "Halite Torrent is a BitTorrent client based on the libtorrent library by Arvid from Raserber software. It also relies heavily on the Boost libraries and xmlrpc++.",
+                    IDC_STATIC,12,18,216,24
+    CONTROL         "",IDC_RICHEDIT22,"RichEdit20A",ES_AUTOHSCROLL | 
+                    WS_TABSTOP,7,50,228,37,WS_EX_TRANSPARENT
 END
 
-IDD_HALITEDLG DIALOGEX 0, 0, 313, 68
+IDD_HALITEDLG DIALOGEX 0, 0, 318, 73
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "Pause",BTNPAUSE,260,0,51,14
-    CONTROL         "",TORRENTPROG,"msctls_progress32",WS_BORDER,2,48,309,8
-    PUSHBUTTON      "Reannounce",BTNREANNOUNCE,260,16,51,14
-    PUSHBUTTON      "Remove",BTNREMOVE,260,32,51,14
-    RTEXT           "Name:",IDC_STATIC,6,0,30,8
-    LTEXT           "N/A",IDC_AVAIL,38,36,50,8
-    RTEXT           "Status:",IDC_STATIC,6,24,30,8
-    RTEXT           "Available:",IDC_STATIC,0,36,36,8
-    RTEXT           "Tracker:",IDC_STATIC,6,12,30,8
-    LTEXT           "N/A",IDC_STATUS,38,24,136,8
-    LTEXT           "N/A",IDC_TRACKER,38,12,140,8
-    LTEXT           "N/A",IDC_NAME,38,0,136,8
-    CONTROL         "",LISTPEERS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,2,60,309,6
-    EDITTEXT        IDC_EDITTLU,227,33,27,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDITTLD,187,33,27,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDITNCD,187,11,28,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDITNCU,227,11,27,12,ES_AUTOHSCROLL
-    RTEXT           "No. connections:",IDC_NC,176,2,55,8
-    RTEXT           "Transfer limit (kb/s):",IDC_TL,176,24,66,8
-    RTEXT           "D",IDC_NCD,177,13,8,8
-    RTEXT           "U",IDC_NCU,216,13,8,8
-    RTEXT           "U",IDC_TLU,216,36,8,8
-    RTEXT           "D",IDC_TLD,177,35,8,8
-    RTEXT           "Completed:",IDC_STATIC,92,36,39,8
-    LTEXT           "N/A",IDC_COMPLETE,133,36,43,8
+    DEFPUSHBUTTON   "Pause",BTNPAUSE,262,3,51,14
+    CONTROL         "",TORRENTPROG,"msctls_progress32",WS_BORDER,4,52,309,8
+    PUSHBUTTON      "Reannounce",BTNREANNOUNCE,262,19,51,14
+    PUSHBUTTON      "Remove",BTNREMOVE,262,35,51,14
+    RTEXT           "Name:",IDC_STATIC,8,3,30,8
+    LTEXT           "N/A",IDC_AVAIL,40,39,50,8
+    RTEXT           "Status:",IDC_STATIC,8,27,30,8
+    RTEXT           "Available:",IDC_STATIC,2,39,36,8
+    RTEXT           "Tracker:",IDC_STATIC,8,15,30,8
+    LTEXT           "N/A",IDC_STATUS,40,27,136,8
+    LTEXT           "N/A",IDC_TRACKER,40,15,140,8
+    LTEXT           "N/A",IDC_NAME,40,3,136,8
+    CONTROL         "",LISTPEERS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | 
+                    WS_BORDER | WS_TABSTOP,4,64,309,6
+    EDITTEXT        IDC_EDITTLU,229,35,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDITTLD,189,35,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDITNCD,189,14,28,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDITNCU,229,14,27,12,ES_AUTOHSCROLL
+    RTEXT           "No. connections:",IDC_NC,178,5,55,8
+    RTEXT           "Transfer limit (kb/s):",IDC_TL,178,27,66,8
+    RTEXT           "D",IDC_NCD,179,16,8,8
+    RTEXT           "U",IDC_NCU,218,16,8,8
+    RTEXT           "U",IDC_TLU,218,39,8,8
+    RTEXT           "D",IDC_TLD,179,38,8,8
+    RTEXT           "Completed:",IDC_STATIC,94,39,39,8
+    LTEXT           "N/A",IDC_COMPLETE,135,39,43,8
+    GROUPBOX        "",IDC_DETAILS_GROUP,1,-4,315,77,0,WS_EX_TRANSPARENT
 END
 
 IDD_CLOSESPLASH DIALOGEX 0, 0, 191, 54
@@ -212,8 +220,10 @@ CAPTION "Halite Shutting down..."
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     ICON            IDR_APP_ICON,IDC_STATIC,7,10,21,20
-    LTEXT           "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close.",IDC_STATIC,35,7,149,27
-    CONTROL         "Show this message in future.",IDC_SPLASH_MSG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,77,35,107,12
+    LTEXT           "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close.",
+                    IDC_STATIC,35,7,149,27
+    CONTROL         "Show this message in future.",IDC_SPLASH_MSG,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,77,35,107,12
 END
 
 
@@ -282,11 +292,6 @@ BEGIN
         BOTTOMMARGIN, 87
     END
 
-    IDD_HALITEDLG, DIALOG
-    BEGIN
-        RIGHTMARGIN, 229
-    END
-
     IDD_CLOSESPLASH, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -306,13 +311,16 @@ END
 IDR_TRAY_MENU MENU 
 BEGIN
     POPUP "_POPUP_"
-	BEGIN
-		MENUITEM "Open &Halite",                ID_TRAY_OPENHALITE
-		MENUITEM SEPARATOR
-		MENUITEM "&Pause All",                  ID_TRAY_PAUSEALL
-		MENUITEM "&Resume All",                 ID_TRAY_RESUMEALL
-	END
+    BEGIN
+        MENUITEM "Open &Halite",                ID_TRAY_OPENHALITE
+        MENUITEM SEPARATOR
+        MENUITEM "&Pause All",                  ID_TRAY_PAUSEALL
+        MENUITEM "&Resume All",                 ID_TRAY_RESUMEALL
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_TRAY_EXIT
+    END
 END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
