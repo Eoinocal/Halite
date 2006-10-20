@@ -3,9 +3,6 @@
 #include "stdAfx.hpp"
 #include "Halite.hpp"
 
-using namespace std;
-using namespace boost;
-
 class HaliteWindow;
  
 class HaliteDialog :

@@ -166,7 +166,7 @@ void HaliteDialog::updateDialog()
 				% (static_cast<float>(pTD->totalWanted())/(1024*1024))
 			).str().c_str());
 						
-			vector<halite::PeerDetail> peerDetails;
+			std::vector<halite::PeerDetail> peerDetails;
 	//		halite::getTorrentPeerDetails(filenameBuffer,peerDetails);
 			
 	/*		if (!peerDetails.empty())

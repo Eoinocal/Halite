@@ -10,9 +10,7 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/fstream.hpp>  
 
-using namespace std;
-using namespace boost;
-using namespace boost::filesystem;
+using boost::filesystem::path;
 
 namespace halite 
 {
@@ -93,7 +91,7 @@ struct PeerDetail {
 	bool seed;
 };
 
-typedef shared_ptr<vector<torrentBriefDetail> > torrentBriefDetails;
+typedef shared_ptr<std::vector<torrentBriefDetail> > torrentBriefDetails;
 typedef shared_ptr<TorrentDetail> TorrentDetail_ptr;
 typedef std::vector<TorrentDetail_ptr> TorrentDetails;
 

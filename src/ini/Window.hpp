@@ -8,15 +8,20 @@ class WindowConfig
 {
 public:
 	WindowConfig() :
-		splitterPos(150)
+		splitterPos(100)
 	{
 		rect.top = 10;
 		rect.left = 10;
 		rect.bottom = 400;
 		rect.right = 500;
 		
-		for(size_t i=0; i<numMainCols; ++i)
-			mainListColWidth[i] = 50;
+		mainListColWidth[0] = 100;
+		mainListColWidth[1] = 110;
+		mainListColWidth[2] = 60;
+		mainListColWidth[3] = 60;
+		mainListColWidth[4] = 60;
+		mainListColWidth[5] = 42;
+		mainListColWidth[6] = 45;
 	}
 	
     friend class boost::serialization::access;

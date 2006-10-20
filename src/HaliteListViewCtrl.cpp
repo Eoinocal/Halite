@@ -1,14 +1,9 @@
 
-#include <boost/format.hpp>
-#include <boost/lexical_cast.hpp>
-
 #include "HaliteListViewCtrl.hpp"
+
 #include "GlobalIni.hpp"
 #include "ini/Window.hpp"
 #include "halTorrent.hpp"
-
-using namespace std;
-using namespace boost;
 
 void HaliteListViewCtrl::onShowWIndow(UINT, INT)
 {

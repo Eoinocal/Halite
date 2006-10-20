@@ -25,3 +25,25 @@ extern CAppModule _Module;
 
 #include "..\res\resource.h"
 
+// Include very common C++ and Boost libraries
+
+#include <string>
+#include <boost/format.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/bind.hpp>
+#include <boost/thread/thread.hpp>
+#include <boost/smart_ptr.hpp>
+
+using std::string;
+using std::wstring;
+using std::pair;
+using std::make_pair;
+
+using boost::lexical_cast;
+using boost::format;
+using boost::wformat;
+using boost::bind;
+using boost::thread;
+using boost::shared_ptr;
+using boost::scoped_ptr;
+

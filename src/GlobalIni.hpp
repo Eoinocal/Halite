@@ -10,6 +10,7 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/fstream.hpp>  
 
+
 class BitTConfig;
 class WindowConfig;
 class DialogConfig;

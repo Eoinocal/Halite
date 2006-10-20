@@ -5,9 +5,6 @@
 #include "ini/Remote.hpp"
 #include "ini/BitTConfig.hpp"
 
-using namespace std;
-using namespace boost;
-
 class BitTorrentOptions :
     public CPropertyPageImpl<BitTorrentOptions>,
     public CWinDataExchange<BitTorrentOptions>

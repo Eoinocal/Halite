@@ -1,11 +1,8 @@
 
 #include "stdAfx.hpp"
-#include "Halite.hpp"
+//#include "Halite.hpp"
 #include "GlobalIni.hpp"
 #include "ini/Window.hpp"
-
-using namespace std;
-using namespace boost;
 
 #include "HaliteWindow.hpp"
 #include "SplashDialog.hpp"

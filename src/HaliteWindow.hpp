@@ -6,10 +6,6 @@
 #include "NTray.hpp"
 
 #include <boost/signals.hpp>
-#include <boost/smart_ptr.hpp>
-
-using namespace std;
-using namespace boost;
 
 class HaliteListViewCtrl;
 class HaliteDialog;
@@ -86,7 +82,7 @@ public:
 	LRESULT OnViewStatusBar(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnEraseBkgnd(HDC hdc);
 	
-	void attachUIEvent(function<void ()> fn) { updateUI_.connect(fn); }
+	void attachUIEvent(boost::function<void ()> fn) { updateUI_.connect(fn); }
 	void updateUI() { updateUI_(); }
 	
 	void updateWindow();
@@ -104,5 +100,5 @@ protected:
 	boost::scoped_ptr<HaliteListViewCtrl> mp_list;
 	boost::scoped_ptr<HaliteDialog> mp_dlg;
 	
-	signal<void ()> updateUI_;	
+	boost::signal<void ()> updateUI_;	
 };

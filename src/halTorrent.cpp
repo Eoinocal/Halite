@@ -16,30 +16,28 @@
 namespace halite 
 {
 
-using namespace std;
-using namespace boost;
-using namespace libtorrent;
+namespace lbt = libtorrent;
 using boost::filesystem::ifstream;
 using boost::filesystem::ofstream;
 
-entry haldecode(const path &file) 
+lbt::entry haldecode(const path &file) 
 {
 	ifstream fs(file, ifstream::binary);
-	if(fs.is_open()) 
+	if (fs.is_open()) 
 	{
 		fs.unsetf(ifstream::skipws);
-		return bdecode(istream_iterator<char>(fs), istream_iterator<char>());
+		return lbt::bdecode(std::istream_iterator<char>(fs), std::istream_iterator<char>());
 	}
-	else return entry();
+	else return lbt::entry();
 }
 
-bool halencode(const path &file, const entry &e) 
+bool halencode(const path &file, const lbt::entry &e) 
 {
 	ofstream fs(file, ofstream::binary);
-	if(!fs.is_open()) 
+	if (!fs.is_open()) 
 		return false;
-		
-	bencode(ostream_iterator<char>(fs), e);
+	
+	lbt::bencode(std::ostream_iterator<char>(fs), e);
 	return true;
 }
 
@@ -50,7 +48,7 @@ wstring mbstowcs(const string &str)
 
 	len=::mbstowcs(buf.get(), str.c_str(), str.length());
 	if(len==static_cast<size_t>(-1)) 
-		throw runtime_error("mbstowcs(): invalid multi-byte character");
+		throw std::runtime_error("mbstowcs(): invalid multi-byte character");
 
 	return wstring(buf.get(), len);
 }
@@ -62,7 +60,7 @@ string wcstombs(const wstring &str)
 
 	len=::wcstombs(buf.get(), str.c_str(), len);
 	if(len==static_cast<size_t>(-1)) 
-		throw runtime_error("wcstombs(): unable to convert character");
+		throw std::runtime_error("wcstombs(): unable to convert character");
 
 	return string(buf.get(), len);
 }
@@ -92,7 +90,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
 {
 	if (inSession())
 	{
-		torrent_status tS = handle_.status();
+		lbt::torrent_status tS = handle_.status();
 		wstring state;
 		
 		if (paused_)
@@ -101,30 +99,30 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
 		{
 			switch (tS.state)
 			{
-				case torrent_status::queued_for_checking:
-					state = L"Queued For Checking";
-					break;
-				case torrent_status::checking_files:
-					state = L"Checking Files";
-					break;
-				case torrent_status::connecting_to_tracker:
-					state = L"Connecting To Tracker";
-					break;
-				case torrent_status::downloading_metadata:
-					state = L"Downloading Metadata";
-					break;
-				case torrent_status::downloading:
-					state = L"Downloading";
-					break;
-				case torrent_status::finished:
-					state = L"Finished";
-					break;
-				case torrent_status::seeding:
-					state = L"Seeding";
-					break;
-				case torrent_status::allocating:
-					state = L"Allocating";
-					break;
+			case lbt::torrent_status::queued_for_checking:
+				state = L"Queued For Checking";
+				break;
+			case lbt::torrent_status::checking_files:
+				state = L"Checking Files";
+				break;
+			case lbt::torrent_status::connecting_to_tracker:
+				state = L"Connecting To Tracker";
+				break;
+			case lbt::torrent_status::downloading_metadata:
+				state = L"Downloading Metadata";
+				break;
+			case lbt::torrent_status::downloading:
+				state = L"Downloading";
+				break;
+			case lbt::torrent_status::finished:
+				state = L"Finished";
+				break;
+			case lbt::torrent_status::seeding:
+				state = L"Seeding";
+				break;
+			case lbt::torrent_status::allocating:
+				state = L"Allocating";
+				break;
 			}	
 		}
 			
@@ -162,18 +160,18 @@ class BitTorrent_impl
 	
 private:
 	BitTorrent_impl() :
-		theSession(fingerprint("HL", 0, 2, 0, 0)),
+		theSession(lbt::fingerprint("HL", 0, 2, 0, 0)),
 		torrents(INI().torrentConfig().torrents)
 	{
-		array<char, MAX_PATH> pathBuffer;
+		boost::array<char, MAX_PATH> pathBuffer;
 		GetCurrentDirectoryA(MAX_PATH, pathBuffer.c_array());
-		workingDirectory = path(pathBuffer.data(), native);
+		workingDirectory = path(pathBuffer.data(), boost::filesystem::native);
 	}
 	
-	entry prepTorrent(path filename);
-	torrent_handle addTorrent(entry metadata, entry resumedata);
+	lbt::entry prepTorrent(path filename);
+	lbt::torrent_handle addTorrent(lbt::entry metadata, lbt::entry resumedata);
 	
-	session theSession;
+	lbt::session theSession;
 	path workingDirectory;
 	TorrentMap& torrents;
 };
@@ -225,13 +223,13 @@ void BitTorrent::setSessionSpeed(pair<double, double> kilobyteRate)
 
 pair<double, double> BitTorrent::sessionSpeed() 
 {
-	session_status sStatus = pimpl->theSession.status();		
+	lbt::session_status sStatus = pimpl->theSession.status();		
 	return pair<double, double>(sStatus.download_rate, sStatus.upload_rate);
 }
 
-entry BitTorrent_impl::prepTorrent(path filename)
+lbt::entry BitTorrent_impl::prepTorrent(path filename)
 {
-	entry resumeData;	
+	lbt::entry resumeData;	
 	const path resumeFile = workingDirectory/"resume"/filename.leaf();
 	
 	if (exists(resumeFile)) 
@@ -240,7 +238,7 @@ entry BitTorrent_impl::prepTorrent(path filename)
 		{
 			resumeData = haldecode(resumeFile);
 		}
-		catch(exception &ex) 
+		catch(std::exception &ex) 
 		{			
 			::MessageBoxW(0, mbstowcs(ex.what()).c_str(), L"Resume Exception", MB_ICONERROR|MB_OK);
 			remove(resumeFile);
@@ -259,7 +257,7 @@ entry BitTorrent_impl::prepTorrent(path filename)
 	return resumeData;
 }
 
-torrent_handle BitTorrent_impl::addTorrent(entry metadata, entry resumedata)
+lbt::torrent_handle BitTorrent_impl::addTorrent(lbt::entry metadata, lbt::entry resumedata)
 {
 	return theSession.add_torrent(metadata, workingDirectory/"incoming", resumedata);
 }
@@ -268,14 +266,14 @@ void BitTorrent::addTorrent(path file)
 {
 	try 
 	{	
-	entry metadata = haldecode(file);
-	entry resumedata = pimpl->prepTorrent(file);
+	lbt::entry metadata = haldecode(file);
+	lbt::entry resumedata = pimpl->prepTorrent(file);
 	
 	TorrentMap::const_iterator existing = pimpl->torrents.find(file.leaf());
 	
 	if (existing == pimpl->torrents.end())
 	{		
-		torrent_handle handle = pimpl->theSession.add_torrent(metadata,
+		lbt::torrent_handle handle = pimpl->theSession.add_torrent(metadata,
 			pimpl->workingDirectory/"incoming", resumedata);
 		
 		pimpl->torrents.insert(TorrentMap::value_type(file.leaf(), 
@@ -283,7 +281,7 @@ void BitTorrent::addTorrent(path file)
 	}
 
 	}
-	catch(exception &ex) 
+	catch(std::exception &ex) 
 	{
 		wstring caption=L"Add Torrent Exception";
 		
@@ -327,8 +325,8 @@ void BitTorrent::resumeAll()
 		{		
 			try 
 			{	
-			entry metadata = haldecode(file);
-			entry resumedata = pimpl->prepTorrent(file);
+			lbt::entry metadata = haldecode(file);
+			lbt::entry resumedata = pimpl->prepTorrent(file);
 			
 			(*iter).second.setHandle(pimpl->theSession.add_torrent(metadata,
 				pimpl->workingDirectory/"incoming", resumedata));
@@ -338,7 +336,7 @@ void BitTorrent::resumeAll()
 			
 			++iter;
 			}
-			catch(exception &ex) 
+			catch(std::exception &ex) 
 			{
 				MessageBox(0, mbstowcs(ex.what()).c_str(), L"Resume Torrent Exception", MB_ICONERROR|MB_OK);
 				
@@ -363,7 +361,7 @@ void BitTorrent::closeAll()
 	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
 		iter != pimpl->torrents.end(); ++iter)
 	{
-		entry resumedata = (*iter).second.handle().write_resume_data();
+		lbt::entry resumedata = (*iter).second.handle().write_resume_data();
 		pimpl->theSession.remove_torrent((*iter).second.handle());
 		
 		halencode(resumeDir/(*iter).first, resumedata);
@@ -409,6 +407,7 @@ bool BitTorrent::isTorrentPaused(string filename)
 //		return true;
 //	}
 
+/*
 struct Torrent_ 
 {
 	wstring file;
@@ -422,7 +421,7 @@ struct Torrent_
 };	
 
 static libtorrent::session* session = NULL;
-static map<wstring,Torrent_> torrents;
+static std::map<wstring,Torrent_> torrents;
 static path workingDirectory;
 static bool pauseAll = false;
 
@@ -618,7 +617,7 @@ pair<float,float> getTorrentTransferLimits(wstring filename)
 	}	
 	return pair<float, float>(0, 0);			
 }
-/*
+
 TorrentDetails getTorrentDetails(wstring filename)
 {
 	torrentIter existing = torrents.find(filename);
@@ -669,7 +668,7 @@ TorrentDetails getTorrentDetails(wstring filename)
 	}		
 	return pTD;
 }
-*/	
+
 void reannounceAll() 
 {		
 	if (!torrents.empty()) 
@@ -828,5 +827,6 @@ void closeTorrents()
 	}
 	torrents.erase(torrents.begin(), torrents.end());
 }
+*/
 
 };

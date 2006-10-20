@@ -1,9 +1,7 @@
 
 #pragma once
 
-#include <string>
 #include <map>
-#include <boost/smart_ptr.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/map.hpp>

@@ -168,7 +168,7 @@ void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)
 
 void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 {
-    halite::bittorrent().addTorrent(path(halite::wcstombs(lpszPath), native));
+    halite::bittorrent().addTorrent(path(halite::wcstombs(lpszPath), boost::filesystem::native));
 }
 
 void HaliteWindow::OnClose()
@@ -218,7 +218,7 @@ LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	if (dlgOpen.DoModal() == IDOK) 
 	{
 		wstring filename = dlgOpen.m_ofn.lpstrFile;
-		halite::bittorrent().addTorrent(path(halite::wcstombs(filename),native));
+		halite::bittorrent().addTorrent(path(halite::wcstombs(filename),boost::filesystem::native));
 	}
 	updateUI();
 		

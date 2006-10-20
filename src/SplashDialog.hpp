@@ -1,11 +1,8 @@
 
 #pragma once
 
-#include <boost/smart_ptr.hpp>
-#include <boost/thread/thread.hpp>
-#include <boost/bind.hpp>
-
 #include "ini/Splash.hpp"
+#include "halTorrent.hpp"
 
 class SplashDialog :
 	public CDialogImpl<SplashDialog>,

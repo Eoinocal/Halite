@@ -9,9 +9,8 @@
 #include "ini/Torrent.hpp"
 #include "ini/Splash.hpp"
 
-using namespace std;
-using namespace boost;
-using namespace boost::filesystem;
+using boost::filesystem::path;
+using boost::serialization::make_nvp;
 
 ArchivalData& INI()
 {
@@ -27,9 +26,9 @@ ArchivalData::ArchivalData() :
 	remoteConfig_(new RemoteConfig()),
 	splashConfig_(new SplashConfig())	
 {
-	array<char, MAX_PATH> pathBuffer;
+	boost::array<char, MAX_PATH> pathBuffer;
 	GetCurrentDirectoryA(MAX_PATH, pathBuffer.c_array());
-	workingFile_ = path(pathBuffer.data(), native)/"Halite.ini.xml";
+	workingFile_ = path(pathBuffer.data(), boost::filesystem::native)/"Halite.ini.xml";
 }
 
 template<class Archive>
@@ -48,20 +47,20 @@ bool ArchivalData::LoadData()
 		boost::filesystem::ifstream ifs(workingFile_);
 		if (ifs)
 		{
-			archive::xml_iarchive ia(ifs);
+			boost::archive::xml_iarchive ia(ifs);
 			
-			ia >> serialization::make_nvp("bitConfig", *bitTConfig_);
-			ia >> serialization::make_nvp("haliteWindow", *haliteWindow_);
-			ia >> serialization::make_nvp("haliteDialog", *haliteDialog_);
-			ia >> serialization::make_nvp("remoteConfig", *remoteConfig_);
-			ia >> serialization::make_nvp("splashConfig", *splashConfig_);
-			ia >> serialization::make_nvp("torrentConfig", *torrentConfig_);
+			ia >> make_nvp("bitConfig", *bitTConfig_);
+			ia >> make_nvp("haliteWindow", *haliteWindow_);
+			ia >> make_nvp("haliteDialog", *haliteDialog_);
+			ia >> make_nvp("remoteConfig", *remoteConfig_);
+			ia >> make_nvp("splashConfig", *splashConfig_);
+			ia >> make_nvp("torrentConfig", *torrentConfig_);
 		}
 		return true;
 	}
-	catch(exception& e)
+	catch(std::exception& e)
 	{
-		::MessageBoxA(0,e.what(),"Error",0);
+		::MessageBoxA(0, e.what(), "Load INI data exception.", 0);
 		return false;
 	}
 }
@@ -71,19 +70,19 @@ bool ArchivalData::SaveData()
 	try
 	{
 		boost::filesystem::ofstream ofs(workingFile_);
-		archive::xml_oarchive oa(ofs);
+		boost::archive::xml_oarchive oa(ofs);
 		
-		oa << serialization::make_nvp("bitConfig", *bitTConfig_);
-		oa << serialization::make_nvp("haliteWindow", *haliteWindow_);
-		oa << serialization::make_nvp("haliteDialog", *haliteDialog_);
-		oa << serialization::make_nvp("remoteConfig", *remoteConfig_);	
-		oa << serialization::make_nvp("splashConfig", *splashConfig_);
-		oa << serialization::make_nvp("torrentConfig", *torrentConfig_);			
+		oa << make_nvp("bitConfig", *bitTConfig_);
+		oa << make_nvp("haliteWindow", *haliteWindow_);
+		oa << make_nvp("haliteDialog", *haliteDialog_);
+		oa << make_nvp("remoteConfig", *remoteConfig_);	
+		oa << make_nvp("splashConfig", *splashConfig_);
+		oa << make_nvp("torrentConfig", *torrentConfig_);			
 		return true;
 	}
-	catch(exception& e)
+	catch(std::exception& e)
 	{
-		::MessageBoxA(0,e.what(),"Error",0);
+		::MessageBoxA(0, e.what(), "Save INI data exception.", 0);
 		return false;
 	}
 }
