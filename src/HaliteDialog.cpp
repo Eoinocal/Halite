@@ -14,8 +14,8 @@ void HaliteDialog::setSelectedTorrent(string torrent)
 {
 	selectedTorrent = torrent;
 	
-	pair<float,float> tranLimit(0, 0); // = halite::getTorrentTransferLimits(torrent);
-	pair<int,int> connLimit(0, 0); // = halite::getTorrentConnectionLimits(torrent);
+	pair<float,float> tranLimit = halite::bittorrent().getTorrentSpeed(selectedTorrent);
+	pair<int,int> connLimit = halite::bittorrent().getTorrentLimit(selectedTorrent);
 	
 	NoConnDown = connLimit.first;
 	NoConnUp = connLimit.second;
@@ -112,29 +112,18 @@ void HaliteDialog::onReannounce(UINT, int, HWND)
 void HaliteDialog::onRemove(UINT, int, HWND)
 {
 	halite::bittorrent().removeTorrent(selectedTorrent);
-	
-	// For some reason this ain't disappearing from the list
-	
-	LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
-	findInfo.flags = LVFI_STRING;
-	findInfo.psz = L"DISTRICT_B13.torrent";
-	
-	int itemPos = mainHaliteWindow->mp_list->FindItem(&findInfo, -1);
-	
-	MessageBox(L"Hi", halite::mbstowcs(selectedTorrent).c_str(), 0);
-	
-	if (itemPos >= 0)
-		mainHaliteWindow->mp_list->DeleteItem(itemPos);		
+
+	mainHaliteWindow->mp_list->DeleteItem(mainHaliteWindow->mp_list->GetSelectedIndex());		
 		
 	mainHaliteWindow->updateUI();
 }
 
-LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl )
+LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {
 	DoDataExchange(true);
 	
-//	halite::setTorrentTransferLimits(selectedTorrent,TranLimitDown,TranLimitUp);
-//	halite::setTorrentConnectionLimits(selectedTorrent,NoConnDown,NoConnUp);
+	halite::bittorrent().setTorrentSpeed(selectedTorrent, TranLimitDown, TranLimitUp);
+	halite::bittorrent().setTorrentLimit(selectedTorrent, NoConnDown, NoConnUp);
 	
 	return 0;
 }

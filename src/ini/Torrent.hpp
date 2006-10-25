@@ -24,17 +24,17 @@ class TorrentInternal
 {
 public:
 	TorrentInternal() :		
-		transferLimit_(std::pair<float, float>(0, 0)),
-		connections_(0),
-		uploads_(0),
+		transferLimit_(std::pair<float, float>(-1, -1)),
+		connections_(-1),
+		uploads_(-1),
 		paused_(false),
 		inSession_(false)
 	{}
 	
 	TorrentInternal(libtorrent::torrent_handle h, std::wstring f) :		
-		transferLimit_(std::pair<float, float>(0, 0)),
-		connections_(0),
-		uploads_(0),
+		transferLimit_(std::pair<float, float>(-1, -1)),
+		connections_(-1),
+		uploads_(-1),
 		paused_(false),
 		filename_(f),
 		inSession_(true),
@@ -42,7 +42,12 @@ public:
 	{}
 	
 	TorrentDetail_ptr getTorrentDetails() const;
-	void setTransferLimit(float down, float up);
+	void setTransferSpeed(float down, float up);
+	void setConnectionLimit(int maxConn, int maxUpload);
+	void setTransferSpeed();
+	void setConnectionLimit();
+	pair<float, float> getTransferSpeed();
+	pair<int, int> getConnectionLimit();
 	void pause();
 	void resume();
 	bool isPaused() const;

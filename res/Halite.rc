@@ -184,7 +184,7 @@ BEGIN
                     WS_TABSTOP,7,50,228,37,WS_EX_TRANSPARENT
 END
 
-IDD_HALITEDLG DIALOGEX 0, 0, 318, 73
+40001 DIALOGEX 0, 0, 318, 73
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
@@ -206,8 +206,8 @@ BEGIN
     EDITTEXT        IDC_EDITTLD,189,36,27,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDITNCD,189,12,28,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDITNCU,229,12,27,12,ES_AUTOHSCROLL
-    RTEXT           "No. connections:",IDC_NC,178,3,55,8
-    RTEXT           "Transfer limit (kb/s):",IDC_TL,178,27,66,8
+    RTEXT           "Max connection Limits:",IDC_NC,178,3,73,8
+    RTEXT           "Transfer rates (kb/s):",IDC_TL,178,27,70,8
     RTEXT           "D",IDC_NCD,179,14,8,8
     RTEXT           "U",IDC_NCU,218,14,8,8
     RTEXT           "U",IDC_TLU,218,39,8,8

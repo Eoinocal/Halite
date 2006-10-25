@@ -71,19 +71,47 @@ BitTorrent& bittorrent()
 	return t;
 }
 
-void TorrentInternal::setTransferLimit(float down, float up)
+void TorrentInternal::setConnectionLimit(int maxConn, int maxUpload)
 {
-	transferLimit_ = pair<float, float>(down, up);
+	handle_.set_max_connections(maxConn);
+	handle_.set_max_uploads(maxUpload);
+
+	connections_ = 	maxConn;
+	uploads_ = maxUpload;
+}
+
+void TorrentInternal::setConnectionLimit()
+{
+	handle_.set_max_connections(connections_);
+	handle_.set_max_uploads(uploads_);
+}
+
+pair<int, int> TorrentInternal::getConnectionLimit()
+{
+	return make_pair(connections_, uploads_);
+}
+
+void TorrentInternal::setTransferSpeed(float download, float upload)
+{
+	int down = (download > 0) ? static_cast<int>(download*1024) : -1;
+	handle_.set_download_limit(down);
+	int up = (upload > 0) ? static_cast<int>(upload*1024) : -1;
+	handle_.set_upload_limit(up);
 	
-	if (down > 0) 
-		handle_.set_download_limit(static_cast<int>(down*1024));
-	else
-		handle_.set_download_limit(-1);
-		
-	if (up > 0)
-		handle_.set_upload_limit(static_cast<int>(up*1024));
-	else
-		handle_.set_upload_limit(-1);
+	transferLimit_ = make_pair(download, upload);
+}
+
+void TorrentInternal::setTransferSpeed()
+{
+	int down = (transferLimit_.first > 0) ? static_cast<int>(transferLimit_.first*1024) : -1;
+	handle_.set_download_limit(down);
+	int up = (transferLimit_.second > 0) ? static_cast<int>(transferLimit_.second*1024) : -1;
+	handle_.set_upload_limit(up);
+}
+
+pair<float, float> TorrentInternal::getTransferSpeed()
+{
+	return transferLimit_;
 }
 
 TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
@@ -338,9 +366,12 @@ void BitTorrent::resumeAll()
 			
 			(*iter).second.setHandle(pimpl->theSession.add_torrent(metadata,
 				pimpl->workingDirectory/"incoming", resumedata));
-		
+			
 			if ((*iter).second.isPaused())
 				(*iter).second.pause();
+			
+			(*iter).second.setTransferSpeed();
+			(*iter).second.setConnectionLimit();
 			
 			++iter;
 			}
@@ -445,6 +476,48 @@ void BitTorrent::resumeAllTorrents()
 	{
 		(*iter).second.resume();
 	}
+}
+
+void BitTorrent::setTorrentLimit(string filename, int maxConn, int maxUpload)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		(*i).second.setConnectionLimit(maxConn, maxUpload);
+	}
+}
+
+void BitTorrent::setTorrentSpeed(string filename, float download, float upload)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		(*i).second.setTransferSpeed(download, upload);
+	}
+}
+
+pair<int, int> BitTorrent::getTorrentLimit(string filename)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		return (*i).second.getConnectionLimit();
+	}
+	return pair<int, int>(0, 0);
+}
+
+pair<float, float> BitTorrent::getTorrentSpeed(string filename)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		return (*i).second.getTransferSpeed();
+	}
+	return pair<float, float>(0, 0);
 }
 
 //	bool Torrent::closeDown() 
