@@ -8,8 +8,10 @@ class BitTConfig
 {
 public:
 	BitTConfig() :
-		maxConnections(50),
-		maxUploads(50),
+		maxConnections(-1),
+		maxUploads(-1),
+		downRate(-1),
+		upRate(-1),
 		portFrom(6881),
 		portTo(6889)
 	{}
@@ -20,6 +22,8 @@ public:
 	{	
 		ar & BOOST_SERIALIZATION_NVP(maxConnections);
 		ar & BOOST_SERIALIZATION_NVP(maxUploads);
+		ar & BOOST_SERIALIZATION_NVP(downRate);
+		ar & BOOST_SERIALIZATION_NVP(upRate);
 		ar & BOOST_SERIALIZATION_NVP(portFrom);
 		ar & BOOST_SERIALIZATION_NVP(portTo);
 	}
@@ -30,6 +34,9 @@ public:
 private:
 	int maxConnections;
 	int maxUploads;
+	
+	float downRate;
+	float upRate;
 	
 	int portFrom;
 	int portTo;

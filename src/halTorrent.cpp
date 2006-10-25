@@ -149,7 +149,7 @@ void TorrentInternal::resume()
 	paused_ = false;
 }
 
-bool TorrentInternal::isPaused()
+bool TorrentInternal::isPaused() const
 {
 	return paused_;
 }
@@ -215,10 +215,18 @@ void BitTorrent::stopListening()
 	pimpl->theSession.listen_on(make_pair(0, 0));
 }
 
-void BitTorrent::setSessionSpeed(pair<double, double> kilobyteRate)
+void BitTorrent::setSessionLimits(int maxConn, int maxUpload)
+{		
+	pimpl->theSession.set_max_uploads(maxUpload);
+	pimpl->theSession.set_max_connections(maxConn);
+}
+
+void BitTorrent::setSessionSpeed(float download, float upload)
 {
-	pimpl->theSession.set_download_rate_limit(static_cast<int>(kilobyteRate.first*1024));
-	pimpl->theSession.set_upload_rate_limit(static_cast<int>(kilobyteRate.second*1024));
+	int down = (download > 0) ? static_cast<int>(download*1024) : -1;
+	pimpl->theSession.set_download_rate_limit(down);
+	int up = (upload > 0) ? static_cast<int>(upload*1024) : -1;
+	pimpl->theSession.set_upload_rate_limit(up);
 }
 
 pair<double, double> BitTorrent::sessionSpeed() 
@@ -390,7 +398,7 @@ void BitTorrent::resumeTorrent(string filename)
 
 bool BitTorrent::isTorrentPaused(string filename)
 {
-	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	TorrentMap::const_iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
 	{
@@ -398,6 +406,45 @@ bool BitTorrent::isTorrentPaused(string filename)
 	}
 	
 	return false; // ??? is this correct
+}
+
+void BitTorrent::removeTorrent(string filename)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		pimpl->theSession.remove_torrent((*i).second.handle());
+		pimpl->torrents.erase(i);
+	}
+}
+
+void BitTorrent::reannounceTorrent(string filename)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		(*i).second.handle().force_reannounce();
+	}
+}
+
+void BitTorrent::pauseAllTorrents()
+{	
+	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
+		iter != pimpl->torrents.end(); ++iter)
+	{
+		(*iter).second.pause();
+	}
+}
+
+void BitTorrent::resumeAllTorrents()
+{	
+	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
+		iter != pimpl->torrents.end(); ++iter)
+	{
+		(*iter).second.resume();
+	}
 }
 
 //	bool Torrent::closeDown() 

@@ -39,10 +39,13 @@
 #define IDC_DETAILS_GROUP               1024
 #define IDC_BC_MAXCONN                  1025
 #define IDC_REMOTECTRL                  1026
-#define IDC_BC_MAXUP                    1026
-#define IDC_REMOTEPORT                  1027
-#define IDC_BC_PORTFROM                 1027
-#define IDC_BC_PORTTO                   1028
+#define IDC_BC_MAXUP                    1027
+#define IDC_REMOTEPORT                  1028
+#define IDC_BC_PORTFROM                 1029
+#define IDC_BC_PORTTO                   1030
+#define IDC_BC_DOWNRATE                 1031
+#define IDC_BC_MAXUP2                   1032
+#define IDC_BC_UPRATE                   1033
 #define ID_ABOUT_OPENHALITE             40001
 #define IDD_HALITEDLG                   40001
 #define ID_ABOUT_PAUSEALL               40002
@@ -59,7 +62,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        107
 #define _APS_NEXT_COMMAND_VALUE         40010
-#define _APS_NEXT_CONTROL_VALUE         1025
+#define _APS_NEXT_CONTROL_VALUE         1034
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

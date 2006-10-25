@@ -37,15 +37,18 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 		std::make_pair(INI().bitTConfig().portFrom, INI().bitTConfig().portTo));
 	assert(success);	
 	
-//	halite::setLimits(INI->bitTConfig.maxConnections,INI->bitTConfig.maxUploads);
 	halite::bittorrent().resumeAll();
+	
+	halite::bittorrent().setSessionLimits(
+		INI().bitTConfig().maxConnections, INI().bitTConfig().maxUploads);
+	halite::bittorrent().setSessionSpeed(
+		INI().bitTConfig().downRate, INI().bitTConfig().upRate);
 	
 	if (INI().remoteConfig().isEnabled)
 	{
 		halite::xmlRpc().bindHost(INI().remoteConfig().port);
 	}
 	
-	halite::bittorrent().setSessionSpeed(std::make_pair(500.0, 20.0));
 
 	RECT rc; GetClientRect(&rc);
 	SetMenu(0);
@@ -230,29 +233,33 @@ LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	ConfigOptionsProp sheet(L"Settings");	
     sheet.DoModal();
 	
-	halite::bittorrent().listenOn(std::make_pair(INI().bitTConfig().portFrom, INI().bitTConfig().portTo));
+	// Update any changed settings
+	halite::bittorrent().listenOn(
+		std::make_pair(INI().bitTConfig().portFrom, INI().bitTConfig().portTo));
+	
+	halite::bittorrent().setSessionLimits(
+		INI().bitTConfig().maxConnections, INI().bitTConfig().maxUploads);
+	halite::bittorrent().setSessionSpeed(
+		INI().bitTConfig().downRate, INI().bitTConfig().upRate);
 	
 	if (INI().remoteConfig().isEnabled)
-	{
 		halite::xmlRpc().bindHost(INI().remoteConfig().port);
-	}
 	else
-	{
 		halite::xmlRpc().stopHost();
-	}
+		
 	return 0;
 }
 
 LRESULT HaliteWindow::OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-//	halite::pauseTorrents();
+	halite::bittorrent().pauseAllTorrents();
 	updateUI();
 	return 0;
 }
 
 LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-//	halite::bittorrent().resumeAllTorrents();
+	halite::bittorrent().resumeAllTorrents();
 	updateUI();
 	return 0;
 }

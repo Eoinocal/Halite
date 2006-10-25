@@ -26,6 +26,8 @@ public:
     BEGIN_DDX_MAP(BitTorrentOptions)
         DDX_INT(IDC_BC_MAXCONN, INI().bitTConfig().maxConnections)
         DDX_INT(IDC_BC_MAXUP, INI().bitTConfig().maxUploads)
+        DDX_FLOAT(IDC_BC_DOWNRATE, INI().bitTConfig().downRate)
+        DDX_FLOAT(IDC_BC_UPRATE, INI().bitTConfig().upRate)
         DDX_INT(IDC_BC_PORTFROM, INI().bitTConfig().portFrom)
         DDX_INT(IDC_BC_PORTTO, INI().bitTConfig().portTo)
     END_DDX_MAP()

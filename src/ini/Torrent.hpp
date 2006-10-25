@@ -45,7 +45,7 @@ public:
 	void setTransferLimit(float down, float up);
 	void pause();
 	void resume();
-	bool isPaused();
+	bool isPaused() const;
 	
 	const libtorrent::torrent_handle& handle() const { return handle_; }
 	void setHandle(libtorrent::torrent_handle h) 

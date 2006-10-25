@@ -106,7 +106,8 @@ public:
 	int isListeningOn();
 	void stopListening();
 	
-	void setSessionSpeed(pair<double, double> kilobyteRate);	
+	void setSessionLimits(int maxConn, int maxUpload);
+	void setSessionSpeed(float download, float upload);
 	pair<double, double> sessionSpeed();
 	
 	void addTorrent(boost::filesystem::path file);
@@ -117,6 +118,10 @@ public:
 	void pauseTorrent(std::string filename);
 	void resumeTorrent(std::string filename);
 	bool isTorrentPaused(std::string filename);
+	void removeTorrent(std::string filename);
+	void reannounceTorrent(string filename);
+	void pauseAllTorrents();
+	void resumeAllTorrents();
 	
 	friend BitTorrent& bittorrent();
 	

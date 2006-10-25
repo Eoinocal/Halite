@@ -106,22 +106,27 @@ void HaliteDialog::onPause(UINT, int, HWND)
 
 void HaliteDialog::onReannounce(UINT, int, HWND)
 {
-
+	halite::bittorrent().reannounceTorrent(selectedTorrent);
 }
 
 void HaliteDialog::onRemove(UINT, int, HWND)
 {
-//	halite::removeTorrent(selectedTorrent);
-		   
-	LV_FINDINFO findInfo; 
+	halite::bittorrent().removeTorrent(selectedTorrent);
+	
+	// For some reason this ain't disappearing from the list
+	
+	LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
 	findInfo.flags = LVFI_STRING;
-	findInfo.psz = const_cast<LPTSTR>(halite::mbstowcs(selectedTorrent).c_str());
-			
+	findInfo.psz = L"DISTRICT_B13.torrent";
+	
 	int itemPos = mainHaliteWindow->mp_list->FindItem(&findInfo, -1);
+	
+	MessageBox(L"Hi", halite::mbstowcs(selectedTorrent).c_str(), 0);
+	
 	if (itemPos >= 0)
 		mainHaliteWindow->mp_list->DeleteItem(itemPos);		
 		
-	mainHaliteWindow->updateUI();	
+	mainHaliteWindow->updateUI();
 }
 
 LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl )
