@@ -197,6 +197,13 @@ void HaliteWindow::OnSize(UINT type, CSize)
 	{
 		GetWindowRect(INI().windowConfig().rect);
 	}
+}	
+
+void HaliteWindow::OnMove(CSize)
+{
+	SetMsgHandled(false);
+	
+	GetWindowRect(INI().windowConfig().rect);
 }
 
 LRESULT HaliteWindow::OnTrayOpenHalite(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)

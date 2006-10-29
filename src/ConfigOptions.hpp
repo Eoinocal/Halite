@@ -1,13 +1,15 @@
 #pragma once
  
 #include "stdAfx.hpp"
+#include "DdxEx.hpp"
+
 #include "GlobalIni.hpp"
 #include "ini/Remote.hpp"
 #include "ini/BitTConfig.hpp"
 
 class BitTorrentOptions :
     public CPropertyPageImpl<BitTorrentOptions>,
-    public CWinDataExchange<BitTorrentOptions>
+    public CWinDataExchangeEx<BitTorrentOptions>
 {
 public:
     enum { IDD = IDD_CONFIGBIT };
@@ -24,10 +26,10 @@ public:
     END_MSG_MAP()
  
     BEGIN_DDX_MAP(BitTorrentOptions)
-        DDX_INT(IDC_BC_MAXCONN, INI().bitTConfig().maxConnections)
-        DDX_INT(IDC_BC_MAXUP, INI().bitTConfig().maxUploads)
-        DDX_FLOAT(IDC_BC_DOWNRATE, INI().bitTConfig().downRate)
-        DDX_FLOAT(IDC_BC_UPRATE, INI().bitTConfig().upRate)
+        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_MAXCONN, INI().bitTConfig().maxConnections, 2, true)
+        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_MAXUP, INI().bitTConfig().maxUploads, 2, true)
+        DDX_EX_FLOAT_POSITIVE(IDC_BC_DOWNRATE, INI().bitTConfig().downRate)
+        DDX_EX_FLOAT_POSITIVE(IDC_BC_UPRATE, INI().bitTConfig().upRate)
         DDX_INT(IDC_BC_PORTFROM, INI().bitTConfig().portFrom)
         DDX_INT(IDC_BC_PORTTO, INI().bitTConfig().portTo)
     END_DDX_MAP()

@@ -66,10 +66,10 @@ LRESULT HaliteDialog::onInitDialog(HWND, LPARAM)
 }	
 	selectedTorrent = "";
 	
-	NoConnDown = 0;
-	NoConnUp = 0;
-	TranLimitDown = 0;
-	TranLimitUp = 0;	
+	NoConnDown = -1;
+	NoConnUp = -1;
+	TranLimitDown = -1;
+	TranLimitUp = -1;	
 	
 	DoDataExchange(false);
 	return 0;

@@ -42,6 +42,7 @@ public:
 		MSG_WM_CREATE(OnCreate)
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_SIZE(OnSize)
+		MSG_WM_MOVE(OnMove)
 		MSG_WM_ERASEBKGND(OnEraseBkgnd)
 		MSG_WM_TIMER(OnTimer)		
 		MESSAGE_HANDLER_EX(WM_TRAYNOTIFY, OnTrayNotification)
@@ -72,6 +73,7 @@ public:
     void OnTimer(UINT uTimerID, TIMERPROC pTimerProc);
 	void OnClose();
 	void OnSize(UINT, CSize);
+	void OnMove(CSize);
 	LRESULT OnTrayNotification(UINT, WPARAM wParam, LPARAM lParam);
 	LRESULT OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnTrayOpenHalite(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);

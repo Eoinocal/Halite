@@ -2,14 +2,15 @@
 #pragma once
  
 #include "stdAfx.hpp"
+#include "DdxEx.hpp"
 #include "Halite.hpp"
 
 class HaliteWindow;
- 
+
 class HaliteDialog :
 	public CDialogImpl<HaliteDialog>,
 	public CDialogResize<HaliteDialog>,
-	public CWinDataExchange<HaliteDialog>
+	public CWinDataExchangeEx<HaliteDialog>
 {
 protected:
 	typedef HaliteDialog thisClass;
@@ -54,11 +55,11 @@ public:
 		CHAIN_MSG_MAP(resizeClass)
 	END_MSG_MAP()
 	
-	BEGIN_DDX_MAP(CMainDlg)
-        DDX_INT(IDC_EDITNCD, NoConnDown)
-        DDX_INT(IDC_EDITNCU, NoConnUp)
-        DDX_FLOAT(IDC_EDITTLD, TranLimitDown)
-        DDX_FLOAT(IDC_EDITTLU, TranLimitUp)
+	BEGIN_DDX_MAP(thisClass)
+        DDX_EX_INT_POSITIVE_LIMIT(IDC_EDITNCD, NoConnDown, 2, true)
+        DDX_EX_INT_POSITIVE_LIMIT(IDC_EDITNCU, NoConnUp, 2, true)
+        DDX_EX_FLOAT_POSITIVE(IDC_EDITTLD, TranLimitDown)
+        DDX_EX_FLOAT_POSITIVE(IDC_EDITTLU, TranLimitUp)
     END_DDX_MAP()
 
 	BEGIN_DLGRESIZE_MAP(thisClass)
@@ -101,7 +102,7 @@ public:
 	void setSelectedTorrent(string torrent);	
 	void updateDialog();
 	void saveStatus();
-				
+	
 protected:
 	void InitializeControls(void);
 	void InitializeValues(void);
