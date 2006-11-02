@@ -35,7 +35,7 @@ public:
 		bool bSuccess = true;
 		const int cchBuff = 128;
 		wchar_t szBuff[cchBuff] = { 0 };
-	
+		
 		if(bSave)
 		{
 			pT->GetDlgItemText(nID, szBuff, cchBuff);

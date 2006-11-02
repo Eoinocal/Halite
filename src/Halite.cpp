@@ -1,6 +1,6 @@
 
 #include "stdAfx.hpp"
-//#include "Halite.hpp"
+
 #include "GlobalIni.hpp"
 #include "ini/Window.hpp"
 
@@ -16,7 +16,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	int nRet;
 	{
 		AtlInitCommonControls(ICC_COOL_CLASSES | ICC_BAR_CLASSES);	
-		HINSTANCE hInstRich = ::LoadLibrary(CRichEditCtrl::GetLibraryName());
+//		HINSTANCE hInstRich = ::LoadLibrary(CRichEditCtrl::GetLibraryName());
 	   
 		HRESULT hRes = _Module.Init(NULL, hInstance);
 		assert (SUCCEEDED(hRes));	
@@ -29,7 +29,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				if (wndMain.CreateEx() == NULL)
 					return 1;
 				
-				wndMain.SetWindowText(L"Halite");		
+				wndMain.SetWindowText(L"Halite");
 				wndMain.MoveWindow(
 					INI().windowConfig().rect.left,
 					INI().windowConfig().rect.top,

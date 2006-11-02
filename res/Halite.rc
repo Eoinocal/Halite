@@ -13,11 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (Ireland) resources
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENI)
 #ifdef _WIN32
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_EIRE
 #pragma code_page(1252)
 #endif //_WIN32
 
@@ -86,51 +86,39 @@ IDR_MAINFRAME           BITMAP                  "toolbar.bmp"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,2,0,0
- PRODUCTVERSION 0,2,0,0
+ FILEVERSION 0,2,5,96
+ PRODUCTVERSION 0,2,5,96
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
 #else
  FILEFLAGS 0x0L
 #endif
- FILEOS 0x4L
- FILETYPE 0x2L
+ FILEOS 0x40004L
+ FILETYPE 0x1L
  FILESUBTYPE 0x0L
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040904b0"
+        BLOCK "180904b0"
         BEGIN
-            VALUE "Comments", "libTorrrent based client"
+            VALUE "Comments", "libTorrrent based client. Revision 96."
             VALUE "CompanyName", "BinaryNotions.com"
             VALUE "FileDescription", "Halite BitTorrent Client"
-            VALUE "FileVersion", "0, 5, 0, 0"
+            VALUE "FileVersion", "0, 2, 5, 96"
             VALUE "InternalName", "Halite"
-            VALUE "LegalCopyright", "Copyright Eoin O'Callaghan 2006"
+            VALUE "LegalCopyright", "(C) Eoin O'Callaghan 2006"
             VALUE "OriginalFilename", "Halite.exe"
             VALUE "ProductName", "Halite"
-            VALUE "ProductVersion", "0, 2, 0, 0"
+            VALUE "ProductVersion", "0, 2, 5, 96"
         END
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x409, 1200
+        VALUE "Translation", 0x1809, 1200
     END
 END
 
-#endif    // English (U.S.) resources
-/////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////
-// English (Ireland) resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENI)
-#ifdef _WIN32
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_EIRE
-#pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -138,18 +126,22 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_EIRE
 //
 
 IDD_CONFIGREMOTE DIALOGEX 0, 0, 242, 94
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
 CAPTION "Remote Control"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Remote Control Options",IDC_STATIC,6,6,228,30
-    CONTROL         "Enable Remote Control",IDC_REMOTECTRL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,18,96,12
+    CONTROL         "Enable Remote Control",IDC_REMOTECTRL,"Button",
+                    BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,12,18,96,12
     RTEXT           "Port to listen on : ",IDC_STATIC,114,19,66,11
-    EDITTEXT        IDC_REMOTEPORT,180,18,42,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_REMOTEPORT,180,18,42,12,ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "Disabled",IDC_STATIC,103,47,72,22
 END
 
 IDD_CONFIGBIT DIALOGEX 0, 0, 242, 94
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
 CAPTION "BitTorrent"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
@@ -169,13 +161,16 @@ BEGIN
 END
 
 IDD_ABOUT DIALOGEX 0, 0, 242, 94
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
 CAPTION "About"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    GROUPBOX        "Program Information",IDC_STATIC,6,6,228,81
-    LTEXT           "Halite Torrent is a BitTorrent client based on the libtorrent library by Arvid from Raserber software. It also relies heavily on the Boost libraries and xmlrpc++.",IDC_STATIC,12,18,216,24
-    CONTROL         "",IDC_RICHEDIT22,"RichEdit20A",ES_AUTOHSCROLL | WS_TABSTOP,7,50,228,37,WS_EX_TRANSPARENT
+    GROUPBOX        "Program Information",IDC_STATIC,5,6,228,81
+    LTEXT           "Halite is a BitTorrent client based on the excellent libtorrent library written by Arvid Norberg of Rasterbar Software. The program is written in C++ and is open sourced under a BSD and/or Boost software licence.",
+                    IDC_STATIC,12,16,216,33
+    LTEXT           "In addition the program makes use of a number of third party opensource libraries, notably the Boost libraries a part of which; ASIO by Christopher Kohlhoff deserves special mention, the WTL and my own libHTTP library.",
+                    IDC_STATIC,12,49,216,33
 END
 
 IDD_HALITEDLG DIALOGEX 0, 0, 318, 73
@@ -194,15 +189,16 @@ BEGIN
     LTEXT           "N/A",IDC_STATUS,40,27,136,8
     LTEXT           "N/A",IDC_TRACKER,40,15,140,8
     LTEXT           "N/A",IDC_NAME,40,3,136,8
-    CONTROL         "",LISTPEERS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,4,64,309,6
+    CONTROL         "",LISTPEERS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | 
+                    WS_BORDER | WS_TABSTOP,4,64,309,6
     EDITTEXT        IDC_EDITTLU,229,36,27,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDITTLD,189,36,27,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDITNCD,189,12,28,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDITNCU,229,12,27,12,ES_AUTOHSCROLL
     RTEXT           "Max connection Limits:",IDC_NC,178,3,73,8
     RTEXT           "Transfer rates (kb/s):",IDC_TL,178,27,70,8
-    RTEXT           "D",IDC_NCD,179,14,8,8
-    RTEXT           "U",IDC_NCU,218,14,8,8
+    RTEXT           "T",IDC_NCD,179,15,8,8
+    RTEXT           "U",IDC_NCU,218,15,8,8
     RTEXT           "U",IDC_TLU,218,39,8,8
     RTEXT           "D",IDC_TLD,179,39,8,8
     RTEXT           "Completed:",IDC_STATIC,75,39,39,8
@@ -217,8 +213,10 @@ CAPTION "Halite Shutting down..."
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     ICON            IDR_APP_ICON,IDC_STATIC,7,10,21,20
-    LTEXT           "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close.",IDC_STATIC,35,7,149,27
-    CONTROL         "Show this message in future.",IDC_SPLASH_MSG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,77,35,107,12
+    LTEXT           "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close.",
+                    IDC_STATIC,35,7,149,27
+    CONTROL         "Show this message in future.",IDC_SPLASH_MSG,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,77,35,107,12
 END
 
 

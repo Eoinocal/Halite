@@ -6,13 +6,6 @@
 
 namespace halite 
 {
-//	using namespace std;
-//	using namespace boost;
-//	using namespace http;
-//	using namespace http::xmlrpc;
-	
-//	extern XmlRpcServer Server;
-//	void RunServer();
 	bool initServer(int port);
 	void exitServer();
 	

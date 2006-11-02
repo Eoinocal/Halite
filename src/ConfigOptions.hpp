@@ -1,3 +1,4 @@
+
 #pragma once
  
 #include "stdAfx.hpp"
@@ -110,6 +111,7 @@ public:
     {
         if (wParam == TRUE)
             Center();
+		
         bHandled = FALSE;
         return 0;
     }

@@ -46,10 +46,11 @@ public:
 		MSG_WM_ERASEBKGND(OnEraseBkgnd)
 		MSG_WM_TIMER(OnTimer)		
 		MESSAGE_HANDLER_EX(WM_TRAYNOTIFY, OnTrayNotification)
+		COMMAND_ID_HANDLER(ID_FILE_OPEN, OnFileOpen)
 		COMMAND_ID_HANDLER(ID_RESUME, OnResumeAll)
 		COMMAND_ID_HANDLER(ID_PAUSE, OnPauseAll)
-		COMMAND_ID_HANDLER(ID_FILE_OPEN, OnFileOpen)
 		COMMAND_ID_HANDLER(ID_SETTINGS, OnSettings)
+		COMMAND_ID_HANDLER(ID_HELP, OnHelp)
 		COMMAND_ID_HANDLER(ID_VIEW_STATUS_BAR, OnViewStatusBar)
 		COMMAND_ID_HANDLER(ID_TRAY_OPENHALITE, OnTrayOpenHalite)
 		COMMAND_ID_HANDLER(ID_TRAY_EXIT, OnTrayExit)
@@ -77,10 +78,13 @@ public:
 	LRESULT OnTrayNotification(UINT, WPARAM wParam, LPARAM lParam);
 	LRESULT OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnTrayOpenHalite(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	
 	LRESULT OnTrayExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-	LRESULT OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnHelp(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	
 	LRESULT OnViewStatusBar(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnEraseBkgnd(HDC hdc);
 	
@@ -102,5 +106,7 @@ protected:
 	boost::scoped_ptr<HaliteListViewCtrl> mp_list;
 	boost::scoped_ptr<HaliteDialog> mp_dlg;
 	
-	boost::signal<void ()> updateUI_;	
+	boost::signal<void ()> updateUI_;
+	
+	void updateConfigSettings();
 };

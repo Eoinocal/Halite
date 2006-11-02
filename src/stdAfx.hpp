@@ -1,3 +1,4 @@
+
 #pragma once
 
 #define WINVER 0x0500
@@ -46,4 +47,3 @@ using boost::bind;
 using boost::thread;
 using boost::shared_ptr;
 using boost::scoped_ptr;
-

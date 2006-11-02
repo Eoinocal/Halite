@@ -50,7 +50,7 @@ project Halite
 	<toolset>msvc:<define>_WINDOWS
 	<toolset>msvc:<asynch-exceptions>on
 	
-	<runtime-link>static
+#	<runtime-link>static
 	
 	<toolset>msvc:<linkflags>/SUBSYSTEM:WINDOWS
 	;

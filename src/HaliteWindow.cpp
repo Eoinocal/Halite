@@ -84,7 +84,8 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
 	
 	// Create the tray icon.
-	m_trayIcon.Create(this, IDR_TRAY_MENU, L"Halite", CTrayNotifyIcon::LoadIconResource(IDR_APP_ICON), WM_TRAYNOTIFY, IDR_TRAY_MENU);
+	m_trayIcon.Create(this, IDR_TRAY_MENU, L"Halite", 
+		CTrayNotifyIcon::LoadIconResource(IDR_APP_ICON), WM_TRAYNOTIFY, IDR_TRAY_MENU);
 	m_trayIcon.Hide();
 	
 	// Add ToolBar and register it along with StatusBar for UIUpdates
@@ -155,6 +156,22 @@ void HaliteWindow::updateWindow()
 	
 	UISetText(1, downloadRates.c_str());	
 	m_trayIcon.SetTooltipText(downloadRates.c_str());
+}
+
+void HaliteWindow::updateConfigSettings()
+{
+	halite::bittorrent().listenOn(
+		std::make_pair(INI().bitTConfig().portFrom, INI().bitTConfig().portTo));
+	
+	halite::bittorrent().setSessionLimits(
+		INI().bitTConfig().maxConnections, INI().bitTConfig().maxUploads);
+	halite::bittorrent().setSessionSpeed(
+		INI().bitTConfig().downRate, INI().bitTConfig().upRate);
+	
+	if (INI().remoteConfig().isEnabled)
+		halite::xmlRpc().bindHost(INI().remoteConfig().port);
+	else
+		halite::xmlRpc().stopHost();
 }
 
 void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)
@@ -240,20 +257,8 @@ LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	ConfigOptionsProp sheet(L"Settings");	
     sheet.DoModal();
 	
-	// Update any changed settings
-	halite::bittorrent().listenOn(
-		std::make_pair(INI().bitTConfig().portFrom, INI().bitTConfig().portTo));
+	updateConfigSettings();
 	
-	halite::bittorrent().setSessionLimits(
-		INI().bitTConfig().maxConnections, INI().bitTConfig().maxUploads);
-	halite::bittorrent().setSessionSpeed(
-		INI().bitTConfig().downRate, INI().bitTConfig().upRate);
-	
-	if (INI().remoteConfig().isEnabled)
-		halite::xmlRpc().bindHost(INI().remoteConfig().port);
-	else
-		halite::xmlRpc().stopHost();
-		
 	return 0;
 }
 
@@ -268,6 +273,17 @@ LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL
 {
 	halite::bittorrent().resumeAllTorrents();
 	updateUI();
+	return 0;
+}
+
+
+LRESULT HaliteWindow::OnHelp(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	ConfigOptionsProp sheet(L"Settings", 2);	
+    sheet.DoModal();
+	
+	updateConfigSettings();
+	
 	return 0;
 }
 

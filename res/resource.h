@@ -2,16 +2,16 @@
 // Microsoft Visual C++ generated include file.
 // Used by Halite.rc
 //
-#define BTNPAUSE                        3
 #define IDD_CONFIGBIT                   102
 #define IDD_CONFIGREMOTE                103
 #define IDD_ABOUT                       104
 #define IDD_CLOSESPLASH                 105
-#define IDR_TRAY_MENU                   106
+#define IDD_HALITEDLG                   106
+#define IDR_TRAY_MENU                   107
 #define IDR_MAINFRAME                   128
 #define IDR_APP_ICON                    128
-#define IDPANE_STATUS                   200
-#define IDPANE_CAPS_INDICATOR           201
+#define IDPANE_STATUS                   109
+#define IDPANE_CAPS_INDICATOR           110
 #define LISTPEERS                       1000
 #define TORRENTPROG                     1003
 #define ID_SETTINGS                     1004
@@ -24,6 +24,7 @@
 #define IDC_TRACKER                     1009
 #define IDC_STATUS                      1010
 #define IDC_AVAIL                       1011
+#define BTNPAUSE                        1034
 #define BTNREMOVE                       1012
 #define BTNREANNOUNCE                   1013
 #define IDC_EDITTLU                     1014
@@ -53,16 +54,15 @@
 #define ID_TRAY_PAUSEALL                40005
 #define ID_TRAY_RESUMEALL               40006
 #define ID_TRAY_EXIT                    40009
-#define IDD_HALITEDLG                   40010
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        107
-#define _APS_NEXT_COMMAND_VALUE         40011
+#define _APS_NEXT_RESOURCE_VALUE        111
+#define _APS_NEXT_COMMAND_VALUE         40010
 #define _APS_NEXT_CONTROL_VALUE         1034
-#define _APS_NEXT_SYMED_VALUE           101
+#define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif
