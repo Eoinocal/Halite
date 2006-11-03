@@ -325,17 +325,13 @@ void BitTorrent::addTorrent(path file)
 	}
 }
 
-TorrentDetails BitTorrent::getAllTorrentDetails()
+void BitTorrent::getAllTorrentDetails(TorrentDetails& torrentsContainer)
 {
-	TorrentDetails torrentsContainer;
-	
 	for (TorrentMap::const_iterator iter = pimpl->torrents.begin(); 
 		iter != pimpl->torrents.end(); ++iter)
 	{
 		torrentsContainer.push_back(iter->second.getTorrentDetails());
 	}
-	
-	return torrentsContainer;
 }
 
 TorrentDetail_ptr BitTorrent::getTorrentDetails(string filename)
@@ -396,7 +392,7 @@ void BitTorrent::closeAll()
 	
 	if(!exists(resumeDir))
 		create_directory(resumeDir);
-		
+	
 	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
 		iter != pimpl->torrents.end(); ++iter)
 	{
@@ -404,6 +400,30 @@ void BitTorrent::closeAll()
 		pimpl->theSession.remove_torrent((*iter).second.handle());
 		
 		halencode(resumeDir/(*iter).first, resumedata);
+	}
+}
+
+PeerDetail::PeerDetail(lbt::peer_info& peerInfo) :
+	ipAddress(mbstowcs(peerInfo.ip.address().to_string())),
+	speed(make_pair(peerInfo.payload_down_speed, peerInfo.payload_up_speed)),
+	seed(peerInfo.seed),
+	client(mbstowcs(peerInfo.client))
+{}
+
+void BitTorrent::getAllPeerDetails(string filename, PeerDetails& peerContainer)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		std::vector<lbt::peer_info> peerInfo;
+		(*i).second.handle().get_peer_info(peerInfo);
+		
+		for (std::vector<lbt::peer_info>::iterator j = peerInfo.begin(); 
+			j != peerInfo.end(); ++j)
+		{
+			peerContainer.push_back(PeerDetail(*j));
+		}		
 	}
 }
 

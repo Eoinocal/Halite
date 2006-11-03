@@ -12,6 +12,8 @@
 
 using boost::filesystem::path;
 
+namespace libtorrent { struct peer_info; }
+
 namespace halite 
 {
 
@@ -74,26 +76,34 @@ public:
 	int seeds_;
 };
 
-struct PeerDetail {
-	PeerDetail(wstring ip_address, pair<float,float> Speed, bool Seed)	:
-		ipAddress(ip_address),
-		speed(Speed),
-		seed(Seed)
+typedef shared_ptr<TorrentDetail> TorrentDetail_ptr;
+typedef std::vector<TorrentDetail_ptr> TorrentDetails;
+
+struct PeerDetail 
+{
+	PeerDetail(const wstring& ip_address) :
+		ipAddress(ip_address)
 	{}
+	PeerDetail(libtorrent::peer_info& peerInfo);
 	
-	bool operator==(wstring ip_address)
+	bool operator==(const PeerDetail& peer) const
 	{
-		return (ipAddress == ip_address);
+		return (ipAddress == peer.ipAddress);
+	}
+	
+	bool operator<(const PeerDetail& peer) const
+	{
+		return (ipAddress < peer.ipAddress);
 	}
 	
 	wstring ipAddress;
 	pair<float,float> speed;
 	bool seed;
+	wstring client;
 };
 
-typedef shared_ptr<std::vector<torrentBriefDetail> > torrentBriefDetails;
-typedef shared_ptr<TorrentDetail> TorrentDetail_ptr;
-typedef std::vector<TorrentDetail_ptr> TorrentDetails;
+typedef shared_ptr<PeerDetail> PeerDetail_ptr;
+typedef std::vector<PeerDetail> PeerDetails;
 
 class BitTorrent_impl;
 
@@ -102,7 +112,7 @@ class BitTorrent
 public:
 	void shutDownSession();
 	
-	bool listenOn(std::pair<int, int> const& portRange);
+	bool listenOn(pair<int, int> const& portRange);
 	int isListeningOn();
 	void stopListening();
 	
@@ -111,20 +121,22 @@ public:
 	pair<double, double> sessionSpeed();
 	
 	void addTorrent(boost::filesystem::path file);
-	TorrentDetails getAllTorrentDetails();
-	TorrentDetail_ptr getTorrentDetails(std::string filename);
+	void getAllTorrentDetails(TorrentDetails& torrentsContainer);
+	TorrentDetail_ptr getTorrentDetails(string filename);
+	
+	void getAllPeerDetails(string filename, PeerDetails& peerContainer);
 	
 	void resumeAll();
 	void closeAll();
 	
-	void pauseTorrent(std::string filename);
-	void resumeTorrent(std::string filename);
-	bool isTorrentPaused(std::string filename);
+	void pauseTorrent(string filename);
+	void resumeTorrent(string filename);
+	bool isTorrentPaused(string filename);
 	
 	void pauseAllTorrents();
 	void resumeAllTorrents();
 	
-	void removeTorrent(std::string filename);
+	void removeTorrent(string filename);
 	void reannounceTorrent(string filename);
 	
 	void setTorrentLimit(string filename, int maxConn, int maxUpload);

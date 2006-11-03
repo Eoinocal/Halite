@@ -9,8 +9,11 @@ class DialogConfig
 public:
 	DialogConfig()
 	{
-		for(size_t i=0; i<numPeers; ++i)
-			peerListColWidth[i] = 70;
+		peerListColWidth[0] = 100;
+		peerListColWidth[1] = 70;
+		peerListColWidth[2] = 70;
+		peerListColWidth[3] = 70;
+		peerListColWidth[4] = 100;
 	}
 	
     friend class boost::serialization::access;
@@ -23,6 +26,6 @@ public:
 	friend class HaliteDialog;
 
 private:
-	static const unsigned numPeers = 4;	
+	static const unsigned numPeers = 5;	
 	unsigned int peerListColWidth[numPeers];
 };

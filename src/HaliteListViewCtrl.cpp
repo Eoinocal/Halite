@@ -26,7 +26,8 @@ void HaliteListViewCtrl::onShowWIndow(UINT, INT)
 
 void HaliteListViewCtrl::updateListView()
 {
-	halite::TorrentDetails TD = halite::bittorrent().getAllTorrentDetails();
+	halite::TorrentDetails TD;
+	halite::bittorrent().getAllTorrentDetails(TD);
 	
 	for (halite::TorrentDetails::const_iterator i = TD.begin(); i != TD.end(); ++i) 
 	{
