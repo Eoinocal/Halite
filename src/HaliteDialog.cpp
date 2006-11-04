@@ -210,7 +210,7 @@ void HaliteDialog::updateDialog()
 				
 				if ((*i).seed)
 					m_list.SetItemText(itemPos, 3, L"Seed");
-					
+				
 				m_list.SetItemText(itemPos, 4, (*i).client.c_str());
 			}			
 		}

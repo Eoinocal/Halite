@@ -13,7 +13,7 @@ public:
 		rect.top = 10;
 		rect.left = 10;
 		rect.bottom = 400;
-		rect.right = 500;
+		rect.right = 520;
 		
 		mainListColWidth[0] = 100;
 		mainListColWidth[1] = 110;

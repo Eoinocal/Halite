@@ -126,22 +126,19 @@ END
 //
 
 IDD_CONFIGREMOTE DIALOGEX 0, 0, 242, 94
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Remote Control"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Remote Control Options",IDC_STATIC,6,6,228,30
-    CONTROL         "Enable Remote Control",IDC_REMOTECTRL,"Button",
-                    BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,12,18,96,12
+    CONTROL         "Enable Remote Control",IDC_REMOTECTRL,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,12,18,96,12
     RTEXT           "Port to listen on : ",IDC_STATIC,114,19,66,11
     EDITTEXT        IDC_REMOTEPORT,180,18,42,12,ES_AUTOHSCROLL | WS_DISABLED
     LTEXT           "Disabled",IDC_STATIC,103,47,72,22
 END
 
 IDD_CONFIGBIT DIALOGEX 0, 0, 242, 94
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "BitTorrent"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
@@ -161,16 +158,14 @@ BEGIN
 END
 
 IDD_ABOUT DIALOGEX 0, 0, 242, 94
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Program Information",IDC_STATIC,5,6,228,81
-    LTEXT           "Halite is a BitTorrent client based on the excellent libtorrent library written by Arvid Norberg of Rasterbar Software. The program is written in C++ and is open sourced under a BSD and/or Boost software licence.",
-                    IDC_STATIC,12,16,216,33
-    LTEXT           "In addition the program makes use of a number of third party opensource libraries, notably the Boost libraries a part of which; ASIO by Christopher Kohlhoff deserves special mention, the WTL and my own libHTTP library.",
-                    IDC_STATIC,12,49,216,33
+    LTEXT           "Halite is a BitTorrent client based on the excellent libtorrent library written by Arvid Norberg of Rasterbar Software. The program is written in C++ and is open sourced under a BSD and/or Boost software licence.",IDC_STATIC,12,16,216,33
+    LTEXT           "Some important acknowledgements to the authors whose work contributed to Halite; Arvid Norbery for libTorrent, Christopher Kohlhoff for Boost.ASIO and Paul Davey (mattahan) for the icon.",IDC_STATIC,12,50,216,25
+    RTEXT           "Alpha release of v 0.3, Revision 98.",IDC_STATIC,114,76,117,9
 END
 
 IDD_HALITEDLG DIALOGEX 0, 0, 318, 73
@@ -189,8 +184,7 @@ BEGIN
     LTEXT           "N/A",IDC_STATUS,40,27,136,8
     LTEXT           "N/A",IDC_TRACKER,40,15,140,8
     LTEXT           "N/A",IDC_NAME,40,3,136,8
-    CONTROL         "",LISTPEERS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | 
-                    WS_BORDER | WS_TABSTOP,4,64,309,6
+    CONTROL         "",LISTPEERS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,4,64,309,6
     EDITTEXT        IDC_EDITTLU,229,36,27,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDITTLD,189,36,27,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDITNCD,189,12,28,12,ES_AUTOHSCROLL
@@ -213,10 +207,8 @@ CAPTION "Halite Shutting down..."
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     ICON            IDR_APP_ICON,IDC_STATIC,7,10,21,20
-    LTEXT           "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close.",
-                    IDC_STATIC,35,7,149,27
-    CONTROL         "Show this message in future.",IDC_SPLASH_MSG,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,77,35,107,12
+    LTEXT           "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close.",IDC_STATIC,35,7,149,27
+    CONTROL         "Show this message in future.",IDC_SPLASH_MSG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,77,35,107,12
 END
 
 
