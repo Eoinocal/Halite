@@ -188,7 +188,7 @@ class BitTorrent_impl
 	
 private:
 	BitTorrent_impl() :
-		theSession(lbt::fingerprint("HL", 0, 2, 0, 0)),
+		theSession(lbt::fingerprint("HL", 0, 3, 0, 0)),
 		torrents(INI().torrentConfig().torrents)
 	{
 		boost::array<char, MAX_PATH> pathBuffer;
@@ -322,6 +322,65 @@ void BitTorrent::addTorrent(path file)
 		wstring caption=L"Add Torrent Exception";
 		
 		MessageBox(0, mbstowcs(ex.what()).c_str(), caption.c_str(), MB_ICONERROR|MB_OK);
+	}
+}
+
+void add_files(torrent_info& t, boost::filesystem::path const& p, boost::filesystem::path const& l)
+{
+	boost::filesystem::path f(p / l);
+	if (boost::filesystem::is_directory(f))
+	{
+		for (boost::filesystem::directory_iterator i(f), end; i != end; ++i)
+			add_files(t, p, l / i->leaf());
+	}
+	else
+	{
+	//	std::cerr << "adding \"" << l.string() << "\"\n";
+		boost::filesystem::file fi(f, file::in);
+		fi.seek(0, file::end);
+		libtorrent::size_type size = fi.tell();
+		t.add_file(l, size);
+	}
+}
+
+void BitTorrent::newTorrent(boost::filesystem::path filename, 
+	boost::filesystem::path files)
+{
+	try
+	{
+	libtorrent::torrent_info t;
+	path full_path = boost::filesystem::initial_path() / files);
+	ofstream out(boost::filesystem::initial_path() / filename, std::ios_base::binary);
+
+	int piece_size = 256 * 1024;
+	char const* creator_str = "libtorrent";
+
+	add_files(t, full_path.branch_path(), full_path.leaf());
+	t.set_piece_size(piece_size);
+
+	libtorrent::storage st(t, full_path.branch_path());
+	t.add_tracker("http://127.0.0.1:6881");
+
+	// calculate the hash for all pieces
+	int num = t.num_pieces();
+	std::vector<char> buf(piece_size);
+	for (int i = 0; i < num; ++i)
+	{
+			st.read(&buf[0], i, 0, t.piece_size(i));
+			libtorrent::hasher h(&buf[0], t.piece_size(i));
+			t.set_hash(i, h.final());
+		//	std::cerr << (i+1) << "/" << num << "\r";
+	}
+
+	t.set_creator(creator_str);
+
+	// create the torrent and print it to out
+	lbt::entry e = t.create_torrent();
+	lbt::bencode(std::ostream_iterator<char>(out), e);
+	}
+	catch (std::exception& e)
+	{
+			std::cerr << e.what() << "\n";
 	}
 }
 

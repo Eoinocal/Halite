@@ -48,7 +48,6 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	{
 		halite::xmlRpc().bindHost(INI().remoteConfig().port);
 	}
-	
 
 	RECT rc; GetClientRect(&rc);
 	SetMenu(0);
@@ -189,6 +188,8 @@ void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)
 void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 {
     halite::bittorrent().addTorrent(path(halite::wcstombs(lpszPath), boost::filesystem::native));
+
+	updateUI();
 }
 
 void HaliteWindow::OnClose()
@@ -203,24 +204,26 @@ void HaliteWindow::OnClose()
 
 void HaliteWindow::OnSize(UINT type, CSize)
 {
-	SetMsgHandled(false);
-	
 	if (type == SIZE_MINIMIZED)
 	{
 		ShowWindow(SW_HIDE);
 		m_trayIcon.Show();
 	}
 	else
-	{
 		GetWindowRect(INI().windowConfig().rect);
-	}
+	
+	SetMsgHandled(false);
 }	
 
 void HaliteWindow::OnMove(CSize)
 {
-	SetMsgHandled(false);
+	WINDOWPLACEMENT wnd = { sizeof(WINDOWPLACEMENT ) };
+	GetWindowPlacement(&wnd);
 	
-	GetWindowRect(INI().windowConfig().rect);
+	if (wnd.showCmd != SW_SHOWMINIMIZED)
+		GetWindowRect(INI().windowConfig().rect);
+
+	SetMsgHandled(false);	
 }
 
 LRESULT HaliteWindow::OnTrayOpenHalite(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
@@ -248,9 +251,23 @@ LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 		halite::bittorrent().addTorrent(path(halite::wcstombs(filename),boost::filesystem::native));
 	}
 	updateUI();
-		
+	
 	return 0;
-}	
+	
+}
+LRESULT HaliteWindow::OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	CSSFileDialog dlgOpen(TRUE, NULL, NULL, OFN_HIDEREADONLY, L"Torrents (*.*)|*.torrent|", m_hWnd);
+
+	if (dlgOpen.DoModal() == IDOK) 
+	{
+		wstring filename = dlgOpen.m_ofn.lpstrFile;
+	//	halite::bittorrent().addTorrent(path(halite::wcstombs(filename),boost::filesystem::native));
+	}
+	updateUI();
+	
+	return 0;
+}
 
 LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {

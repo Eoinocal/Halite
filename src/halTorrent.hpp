@@ -120,6 +120,7 @@ public:
 	void setSessionSpeed(float download, float upload);
 	pair<double, double> sessionSpeed();
 	
+	void newTorrent(boost::filesystem::path filename, boost::filesystem::path files);
 	void addTorrent(boost::filesystem::path file);
 	void getAllTorrentDetails(TorrentDetails& torrentsContainer);
 	TorrentDetail_ptr getTorrentDetails(string filename);

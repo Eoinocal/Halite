@@ -46,6 +46,7 @@ public:
 		MSG_WM_ERASEBKGND(OnEraseBkgnd)
 		MSG_WM_TIMER(OnTimer)		
 		MESSAGE_HANDLER_EX(WM_TRAYNOTIFY, OnTrayNotification)
+		COMMAND_ID_HANDLER(ID_FILE_NEW, OnFileNew)
 		COMMAND_ID_HANDLER(ID_FILE_OPEN, OnFileOpen)
 		COMMAND_ID_HANDLER(ID_RESUME, OnResumeAll)
 		COMMAND_ID_HANDLER(ID_PAUSE, OnPauseAll)
@@ -80,6 +81,7 @@ public:
 	LRESULT OnTrayOpenHalite(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	
 	LRESULT OnTrayExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
