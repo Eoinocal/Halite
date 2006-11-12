@@ -76,6 +76,7 @@ public:
 	void OnClose();
 	void OnSize(UINT, CSize);
 	void OnMove(CSize);
+	void ListSelectionChanged();
 	LRESULT OnTrayNotification(UINT, WPARAM wParam, LPARAM lParam);
 	LRESULT OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnTrayOpenHalite(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);

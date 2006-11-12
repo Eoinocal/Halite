@@ -1,8 +1,14 @@
 
 #include "stdAfx.hpp"
 
+#include <iostream>
+#include <fstream>
+#include <iterator>
+#include <iomanip>
 #include <boost/array.hpp>
 
+#include <libtorrent/file.hpp>
+#include "libtorrent/hasher.hpp"
 #include <libtorrent/entry.hpp>
 #include <libtorrent/bencode.hpp>
 #include <libtorrent/session.hpp>
@@ -17,8 +23,11 @@ namespace halite
 {
 
 namespace lbt = libtorrent;
-using boost::filesystem::ifstream;
-using boost::filesystem::ofstream;
+namespace fs = boost::filesystem;
+
+using fs::path;
+using fs::ifstream;
+using fs::ofstream;
 
 lbt::entry haldecode(const path &file) 
 {
@@ -193,7 +202,7 @@ private:
 	{
 		boost::array<char, MAX_PATH> pathBuffer;
 		GetCurrentDirectoryA(MAX_PATH, pathBuffer.c_array());
-		workingDirectory = path(pathBuffer.data(), boost::filesystem::native);
+		workingDirectory = path(pathBuffer.data(), fs::native);
 	}
 	
 	lbt::entry prepTorrent(path filename);
@@ -217,6 +226,7 @@ bool BitTorrent::listenOn(pair<int, int> const& range)
 {
 	if (!pimpl->theSession.is_listening())
 	{
+//		pimpl->theSession.start_dht();
 		return pimpl->theSession.listen_on(range);	
 	}
 	else
@@ -240,6 +250,7 @@ int BitTorrent::isListeningOn()
 
 void BitTorrent::stopListening()
 {
+//	pimpl->theSession.stop_dht();
 	pimpl->theSession.listen_on(make_pair(0, 0));
 }
 
@@ -325,41 +336,44 @@ void BitTorrent::addTorrent(path file)
 	}
 }
 
-void add_files(torrent_info& t, boost::filesystem::path const& p, boost::filesystem::path const& l)
+void add_files(lbt::torrent_info& t, fs::path const& p, fs::path const& l)
 {
-	boost::filesystem::path f(p / l);
-	if (boost::filesystem::is_directory(f))
+	fs::path f(p / l);
+	if (fs::is_directory(f))
 	{
-		for (boost::filesystem::directory_iterator i(f), end; i != end; ++i)
+		for (fs::directory_iterator i(f), end; i != end; ++i)
 			add_files(t, p, l / i->leaf());
 	}
 	else
 	{
 	//	std::cerr << "adding \"" << l.string() << "\"\n";
-		boost::filesystem::file fi(f, file::in);
-		fi.seek(0, file::end);
+		lbt::file fi(f, lbt::file::in);
+		fi.seek(0, lbt::file::end);
 		libtorrent::size_type size = fi.tell();
 		t.add_file(l, size);
 	}
 }
 
-void BitTorrent::newTorrent(boost::filesystem::path filename, 
-	boost::filesystem::path files)
+void BitTorrent::newTorrent(fs::path filename, fs::path files)
 {
 	try
 	{
+	
 	libtorrent::torrent_info t;
-	path full_path = boost::filesystem::initial_path() / files);
-	ofstream out(boost::filesystem::initial_path() / filename, std::ios_base::binary);
-
+	path full_path = pimpl->workingDirectory/"incoming"/files.leaf();
+	
+	ofstream out(filename, std::ios_base::binary);
+	
 	int piece_size = 256 * 1024;
-	char const* creator_str = "libtorrent";
+	char const* creator_str = "Halite v0.3 (libtorrent v0.11)";
 
 	add_files(t, full_path.branch_path(), full_path.leaf());
 	t.set_piece_size(piece_size);
 
-	libtorrent::storage st(t, full_path.branch_path());
-	t.add_tracker("http://127.0.0.1:6881");
+	lbt::storage st(t, full_path.branch_path());
+//	t.add_tracker("http://www.nitcom.com.au/announce.php");
+	t.set_priv(false);
+	t.add_node(make_pair("127.0.0.1", 6882));
 
 	// calculate the hash for all pieces
 	int num = t.num_pieces();
@@ -380,7 +394,7 @@ void BitTorrent::newTorrent(boost::filesystem::path filename,
 	}
 	catch (std::exception& e)
 	{
-			std::cerr << e.what() << "\n";
+		::MessageBoxA(0, e.what(), "Create Torrent exception.", 0);
 	}
 }
 
@@ -1014,8 +1028,8 @@ void closeTorrents()
 {
 	path p=workingDirectory/"resume";
 	
-	if(!boost::filesystem::exists(p))
-		boost::filesystem::create_directory(p);
+	if(!fs::exists(p))
+		fs::create_directory(p);
 		
 	for(torrentIter i=torrents.begin(); i!=torrents.end(); ++i)
 	{

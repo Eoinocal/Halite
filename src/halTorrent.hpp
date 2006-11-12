@@ -158,36 +158,4 @@ BitTorrent& bittorrent();
 wstring mbstowcs(const string &str);
 string wcstombs(const wstring &str);
 
-/*	bool initSession();
-bool listenOn(pair<int,int>);
-int isListeningOn();
-bool closeDown();
-void resumeAll();
-
-pair<float,float> sessionSpeed();
-void addTorrent(path file);
-void reannounceAll();
-torrentBriefDetails getTorrents();
-torrentDetails getTorrentDetails(wstring filename);
-
-void pauseTorrent(wstring filename);
-void resumeTorrent(wstring filename);
-bool isPausedTorrent(wstring filename);
-void reannounceTorrent(wstring filename);
-void removeTorrent(wstring filename);
-
-void pauseTorrents();
-void resumeTorrents();
-
-void setTorrentTransferLimits(wstring filename, float down, float up);
-pair<float,float> getTorrentTransferLimits(wstring filename);
-void setTorrentConnectionLimits(wstring filename, int, int);
-pair<int,int> getTorrentConnectionLimits(wstring filename);
-
-void getTorrentPeerDetails(wstring filename, vector<PeerDetail>& peerDetails);
-
-void closeTorrents();
-void setLimits(int download, int uploads);
-*/
-
 };

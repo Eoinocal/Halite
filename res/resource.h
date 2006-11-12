@@ -8,10 +8,11 @@
 #define IDD_CLOSESPLASH                 105
 #define IDD_HALITEDLG                   106
 #define IDR_TRAY_MENU                   107
-#define IDR_MAINFRAME                   128
-#define IDR_APP_ICON                    128
 #define IDPANE_STATUS                   109
 #define IDPANE_CAPS_INDICATOR           110
+#define IDD_NEWTORRENT                  111
+#define IDR_MAINFRAME                   128
+#define IDR_APP_ICON                    128
 #define LISTPEERS                       1000
 #define TORRENTPROG                     1003
 #define ID_SETTINGS                     1004
@@ -24,7 +25,6 @@
 #define IDC_TRACKER                     1009
 #define IDC_STATUS                      1010
 #define IDC_AVAIL                       1011
-#define BTNPAUSE                        1034
 #define BTNREMOVE                       1012
 #define BTNREANNOUNCE                   1013
 #define IDC_EDITTLU                     1014
@@ -47,6 +47,14 @@
 #define IDC_BC_DOWNRATE                 1031
 #define IDC_BC_MAXUP2                   1032
 #define IDC_BC_UPRATE                   1033
+#define BTNPAUSE                        1034
+#define IDC_NEWT_BROWSE                 1035
+#define IDC_NEWT_FILE                   1036
+#define IDC_NEWT_TRACKER                1037
+#define IDC_NEWT_LISTTRACKERS           1038
+#define IDC_NEWT_DHTNODE                1039
+#define IDC_NEWT_ADDTRACKER             1040
+#define IDC_BUTTON1                     1041
 #define ID_ABOUT_OPENHALITE             40001
 #define ID_ABOUT_PAUSEALL               40002
 #define ID_ABOUT_RESUMEALL              40003
@@ -60,9 +68,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        111
+#define _APS_NEXT_RESOURCE_VALUE        112
 #define _APS_NEXT_COMMAND_VALUE         40010
-#define _APS_NEXT_CONTROL_VALUE         1034
+#define _APS_NEXT_CONTROL_VALUE         1042
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

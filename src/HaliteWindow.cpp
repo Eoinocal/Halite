@@ -107,25 +107,33 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	pLoop->AddMessageFilter(this);
 	pLoop->AddIdleHandler(this);
 	
-	updateUI();	
+	updateUI();
+	
+	mp_list->SelectItem(0);
+	ListSelectionChanged();
 	
 	return 0;
+}
+
+void HaliteWindow::ListSelectionChanged()
+{
+	int itemPos = mp_list->GetSelectionMark();
+	
+	if (itemPos != -1)
+	{
+		wchar_t filenameBuffer[MAX_PATH];		
+		mp_list->GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),256);		
+		mp_dlg->setSelectedTorrent(halite::wcstombs(filenameBuffer));
+		
+		updateUI();	
+	}
 }
 
 LRESULT HaliteWindow::OnNotify(int wParam, LPNMHDR lParam)
 {
 	if (lParam->hwndFrom == *mp_list && lParam->code == NM_CLICK)
 	{
-		updateUI();	
-		
-		int itemPos = mp_list->GetSelectionMark();
-		
-		if (itemPos != -1)
-		{
-			wchar_t filenameBuffer[MAX_PATH];		
-			mp_list->GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),256);		
-			mp_dlg->setSelectedTorrent(halite::wcstombs(filenameBuffer));
-		}
+		ListSelectionChanged();
 	}
 	return 0;
 }
@@ -243,7 +251,7 @@ LRESULT HaliteWindow::OnTrayExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	CSSFileDialog dlgOpen(TRUE, NULL, NULL, OFN_HIDEREADONLY, L"Torrents (*.*)|*.torrent|", m_hWnd);
+	CSSFileDialog dlgOpen(TRUE, NULL, NULL, OFN_HIDEREADONLY, L"Torrents (*.torrent)|*.torrent|", m_hWnd);
 
 	if (dlgOpen.DoModal() == IDOK) 
 	{
@@ -255,15 +263,30 @@ LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	return 0;
 	
 }
+
 LRESULT HaliteWindow::OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	CSSFileDialog dlgOpen(TRUE, NULL, NULL, OFN_HIDEREADONLY, L"Torrents (*.*)|*.torrent|", m_hWnd);
+	MessageBox(L"This feature is under development and currently disabled", 
+		L"Feature not availible", 0);
+	return 0;
+	
+	CSSFileDialog dlgOpen(TRUE, NULL, NULL, OFN_HIDEREADONLY, L"All Files|*.*|", m_hWnd);
 
-	if (dlgOpen.DoModal() == IDOK) 
-	{
-		wstring filename = dlgOpen.m_ofn.lpstrFile;
-	//	halite::bittorrent().addTorrent(path(halite::wcstombs(filename),boost::filesystem::native));
-	}
+	if (dlgOpen.DoModal() != IDOK) 
+		return 0;
+	
+	wstring files = dlgOpen.m_ofn.lpstrFile;
+	
+	CSSFileDialog dlgSave(FALSE, NULL, NULL, OFN_HIDEREADONLY, L"Torrents (*.torrent)|*.torrent|", m_hWnd);
+	
+	if (dlgSave.DoModal() != IDOK) 
+		return 0;
+	
+	wstring torrent_filename = dlgSave.m_ofn.lpstrFile;
+	
+	halite::bittorrent().newTorrent(path(halite::wcstombs(torrent_filename),boost::filesystem::native),
+		path(halite::wcstombs(files),boost::filesystem::native));
+	
 	updateUI();
 	
 	return 0;
