@@ -226,8 +226,20 @@ bool BitTorrent::listenOn(pair<int, int> const& range)
 {
 	if (!pimpl->theSession.is_listening())
 	{
-//		pimpl->theSession.start_dht();
-		return pimpl->theSession.listen_on(range);	
+		bool result = pimpl->theSession.listen_on(range);
+		
+/*		libtorrent::dht_settings settings;
+		settings.service_port = pimpl->theSession.listen_port()+10;
+		
+		pimpl->theSession.set_dht_settings(settings);
+		pimpl->theSession.start_dht();
+		
+		pimpl->theSession.add_dht_node(make_pair("192.168.11.12", 6891));
+		pimpl->theSession.add_dht_node(make_pair("192.168.11.12", 6892));
+		pimpl->theSession.add_dht_node(make_pair("192.168.11.12", 6893));
+		pimpl->theSession.add_dht_node(make_pair("192.168.11.12", 6894));
+*/		
+		return result;	
 	}
 	else
 	{
@@ -371,9 +383,9 @@ void BitTorrent::newTorrent(fs::path filename, fs::path files)
 	t.set_piece_size(piece_size);
 
 	lbt::storage st(t, full_path.branch_path());
-//	t.add_tracker("http://www.nitcom.com.au/announce.php");
+	t.add_tracker("http://www.nitcom.com.au/announce.php");
 	t.set_priv(false);
-	t.add_node(make_pair("127.0.0.1", 6882));
+	t.add_node(make_pair("192.168.11.12", 6881));
 
 	// calculate the hash for all pieces
 	int num = t.num_pieces();
@@ -551,6 +563,20 @@ void BitTorrent::reannounceTorrent(string filename)
 	{
 		(*i).second.handle().force_reannounce();
 	}
+
+//	Temporary Hijack
+
+/*	ofstream out("dump.txt");
+	
+	lbt::entry ent = pimpl->theSession.dht_state();
+	lbt::entry::dictionary_type dic = ent.dict();
+	
+	for (lbt::entry::dictionary_type::iterator j = dic.begin(); 
+		j != dic.end(); ++j)
+	{
+		out << (*j).first << " " << (*j).second << std::endl;
+	}		
+*/	
 }
 
 void BitTorrent::pauseAllTorrents()
@@ -612,434 +638,5 @@ pair<float, float> BitTorrent::getTorrentSpeed(string filename)
 	}
 	return pair<float, float>(0, 0);
 }
-
-//	bool Torrent::closeDown() 
-//	{
-//	delete session;
-//	session = NULL;
-//		return true;
-//	}
-
-/*
-struct Torrent_ 
-{
-	wstring file;
-	
-	pair<float,float> transferLimit;
-	
-	int connections;
-	int uploads;
-	
-	torrent_handle handle;
-};	
-
-static libtorrent::session* session = NULL;
-static std::map<wstring,Torrent_> torrents;
-static path workingDirectory;
-static bool pauseAll = false;
-
-typedef map<wstring,Torrent_>::iterator torrentIter;
-
-
-
-bool initSession()
-{
-	try
-	{
-		LPSTR pathBuffer = static_cast<LPSTR>(malloc(1024));
-		GetCurrentDirectoryA(1024,pathBuffer);
-		workingDirectory = path(pathBuffer,native);
-		free(static_cast<void*>(pathBuffer));
-			
-		session = new libtorrent::session();
-		
-		return true;
-	}
-	catch(...)
-	{
-		return false;
-	}
-}
-
-bool listenOn(pair<int,int> range) 
-{
-	if (!session->is_listening())
-	{
-		return session->listen_on(range);	
-	}
-	else
-	{
-		int port = session->listen_port();
-		if (port > range.second || port < range.first)
-		{
-			return session->listen_on(range);	
-		}
-		else
-		{
-			return true;
-		}
-	}
-}
-	
-int isListeningOn() 
-{
-	if (!session->is_listening())
-	{
-		return -1;	
-	}
-	else
-	{
-		return session->listen_port();	
-	}
-}
-
-bool closeDown() 
-{
-	delete session;
-	session = NULL;
-	return true;
-}
-
-void resumeAll()
-{
-	path resume = workingDirectory/"torrents";
-	if (!exists(resume)) 
-		return;
-		
-	directory_iterator end_itr;			
-	for (directory_iterator itr(resume); itr != end_itr; ++itr ) 
-	{
-		if (!is_directory(*itr)) 
-		{
-			if(iends_with(itr->leaf(),".torrent")) 
-			{
-//					addTorrent(*itr);
-			}
-		}
-	}
-}
-
-void setLimits(int downloads, int uploads)
-{
-	if (session)
-	{
-		session->set_max_uploads(uploads);
-		session->set_max_connections(downloads);
-	}
-}
-
-pair<float,float> sessionSpeed() 
-{
-	if (session)
-	{	
-		session_status sStatus = session->status();		
-		return pair<float,float>(sStatus.download_rate, sStatus.upload_rate);
-	} 
-	else
-	{
-		return pair<float,float>(0,0);
-	}
-}
-
-void setTorrentConnectionLimits(wstring filename, int connections, int uploads)
-{
-	if (filename != L"") {
-		torrentIter existing = torrents.find(filename);		
-		if (existing != torrents.end())
-		{
-			existing->second.connections = connections;
-			existing->second.uploads = uploads;
-			
-			if (connections > 0) 
-				existing->second.handle.set_max_connections(connections);
-			else
-				existing->second.handle.set_max_connections(200);
-				
-			if (uploads > 0)
-				existing->second.handle.set_max_uploads(uploads);
-			else
-				existing->second.handle.set_max_uploads(200);
-		}
-	}				
-}
-
-pair<int,int> getTorrentConnectionLimits(wstring filename)
-{
-	if (filename != L"") {
-		torrentIter existing = torrents.find(filename);		
-		if (existing != torrents.end())
-		{
-			return pair<int,int>(existing->second.connections,existing->second.uploads);
-		}
-	}	
-	return pair<int,int>(0,0);			
-}	
-
-void getTorrentPeerDetails(wstring filename, vector<PeerDetail>& peerDetails)
-{
-	if (filename != L"") {
-		torrentIter existing = torrents.find(filename);		
-		if (existing != torrents.end())
-		{
-			peerDetails.clear();
-			std::vector<peer_info> peer_infos_;
-			existing->second.handle.get_peer_info(peer_infos_);
-			
-			for(vector<peer_info>::iterator i=peer_infos_.begin(); i != peer_infos_.end(); ++i)
-			{
-				peerDetails.push_back(PeerDetail(
-					mbstowcs((*i).ip.address().to_string()),
-					std::make_pair((*i).payload_down_speed, (*i).payload_up_speed),
-					(*i).seed)
-					);
-			}
-		}
-	}	
-	return;			
-}
-
-void setTorrentTransferLimits(wstring filename, float down, float up)
-{
-	if (filename != L"") {
-		torrentIter existing = torrents.find(filename);		
-		if (existing != torrents.end())
-		{
-			existing->second.transferLimit = pair<float,float>(down,up);
-			
-			if (down > 0) 
-				existing->second.handle.set_download_limit(static_cast<int>(down*1024));
-			else
-				existing->second.handle.set_download_limit(-1);
-				
-			if (up > 0)
-				existing->second.handle.set_upload_limit(static_cast<int>(up*1024));
-			else
-				existing->second.handle.set_upload_limit(-1);
-		}
-	}				
-}
-
-pair<float,float> getTorrentTransferLimits(wstring filename)
-{
-	if (filename != L"") {
-		torrentIter existing = torrents.find(filename);		
-		if (existing != torrents.end())
-		{
-			return existing->second.transferLimit;
-		}
-	}	
-	return pair<float, float>(0, 0);			
-}
-
-TorrentDetails getTorrentDetails(wstring filename)
-{
-	torrentIter existing = torrents.find(filename);
-	TorrentDetails pTD;
-	
-	if (existing != torrents.end())
-	{	
-		pTD.reset(new torrentDetail);
-		torrent_status ts = existing->second.handle.status();
-		
-		switch (ts.state)
-		{
-			case torrent_status::state_t::queued_for_checking:
-				pTD->status = L"Queued For Checking";
-				break;
-			case torrent_status::state_t::checking_files:
-				pTD->status = L"Checking Files";
-				break;
-			case torrent_status::state_t::connecting_to_tracker:
-				pTD->status = L"Connecting To Tracker";
-				break;
-			case torrent_status::state_t::downloading_metadata:
-				pTD->status = L"Downloading Metadata";
-				break;
-			case torrent_status::state_t::downloading:
-				pTD->status = L"Downloading";
-				break;
-			case torrent_status::state_t::finished:
-				pTD->status = L"Finished";
-				break;
-			case torrent_status::state_t::seeding:
-				pTD->status = L"Seeding";
-				break;
-			case torrent_status::state_t::allocating:
-				pTD->status = L"Allocating";
-				break;
-		}	
-		
-		if (existing->second.handle.is_paused())
-			pTD->status = L"Paused";
-
-		pTD->completion = ts.progress;
-		pTD->currentTracker = mbstowcs(ts.current_tracker);
-		pTD->available = ts.distributed_copies;
-		pTD->totalWantedDone = ts.total_wanted_done;
-		pTD->totalWanted = ts.total_wanted;
-		
-	}		
-	return pTD;
-}
-
-void reannounceAll() 
-{		
-	if (!torrents.empty()) 
-	{
-		for(torrentIter i=torrents.begin(); i!=torrents.end(); ++i)
-		{	
-			i->second.handle.force_reannounce();
-		}
-	}
-}
-
-void removeTorrent(wstring filename)
-{
-	if (filename != L"") {
-		torrentIter existing = torrents.find(filename);		
-		if (existing != torrents.end())
-		{
-			session->remove_torrent(existing->second.handle);
-			torrents.erase(existing);
-			
-			if(exists(workingDirectory/"torrents"/wcstombs(filename)))
-				remove(workingDirectory/"torrents"/wcstombs(filename));
-		}
-	}			
-}	
-
-void reannounceTorrent(wstring filename)
-{
-	if (filename != L"") {
-		torrentIter existing = torrents.find(filename);		
-		if (existing != torrents.end())
-		{
-			existing->second.handle.force_reannounce();
-		}
-	}			
-}
-
-void pauseTorrent(wstring filename)
-{
-	if (filename != L"") {
-		torrentIter existing = torrents.find(filename);		
-		if (existing != torrents.end())
-		{
-			existing->second.handle.pause();
-		}
-	}			
-}	
-
-void pauseTorrents() 
-{			
-	for(torrentIter i=torrents.begin(); i!=torrents.end(); ++i)
-	{
-		i->second.handle.pause();
-	}
-	pauseAll = true;
-}	
-
-void resumeTorrents() 
-{			
-	for(torrentIter i=torrents.begin(); i!=torrents.end(); ++i)
-	{
-		i->second.handle.resume();
-	}
-	pauseAll = false;
-}
-	
-bool isPausedTorrent(wstring filename)
-{
-	if (filename != L"") {
-		torrentIter existing = torrents.find(filename);		
-		if (existing != torrents.end())
-		{
-			return existing->second.handle.is_paused();
-		}
-	}	
-	return true;		
-}	
-
-void resumeTorrent(wstring filename)
-{
-	if (filename != L"") {
-		torrentIter existing = torrents.find(filename);		
-		if (existing != torrents.end())
-		{
-			existing->second.handle.resume();
-		}
-	}			
-}
-
-void addTorrent(path file) {
-try {
-	const path rfile=workingDirectory/"resume"/file.leaf();
-	const wstring filename = mbstowcs(file.leaf());
-
-	entry metadata = haldecode(file);
-	entry resumedata;
-	
-	if(exists(rfile)) {
-		try {
-			resumedata = haldecode(rfile);
-		}
-		catch(exception &ex) 
-		{			
-			::MessageBoxW(0, mbstowcs(ex.what()).c_str(), L"Exception", MB_ICONERROR|MB_OK);
-			remove(rfile);
-		}
-	}
-
-	if(!exists(workingDirectory/"torrents"))
-		create_directory(workingDirectory/"torrents");
-
-	if(!exists(workingDirectory/"torrents"/file.leaf()))
-		copy_file(file, workingDirectory/"torrents"/file.leaf());
-
-	if(!exists(workingDirectory/"incoming"))
-		create_directory(workingDirectory/"incoming");
-
-	Torrent_ t;
-	
-	t.file = filename;
-	t.handle = session->add_torrent(metadata, workingDirectory/"incoming", resumedata);
-	
-	t.transferLimit = pair<float,float>(0,0);		
-	t.connections = 0;
-	t.uploads = 0;
-
-//		const torrent_info& info = t.handle.get_torrent_info();
-	torrentIter existing = torrents.find(filename);
-	
-	if (existing == torrents.end())
-		torrents.insert(pair<wstring,Torrent_>(filename,t));
-		
-	if(pauseAll) t.handle.pause();
-}
-	catch(exception &ex) 
-	{
-		wstring caption=L"Error";//loadstring(IDS_EXCEPTION);
-		
-		MessageBox(0, mbstowcs(ex.what()).c_str(), caption.c_str(), MB_ICONERROR|MB_OK);
-	}
-}
-
-void closeTorrents() 
-{
-	path p=workingDirectory/"resume";
-	
-	if(!fs::exists(p))
-		fs::create_directory(p);
-		
-	for(torrentIter i=torrents.begin(); i!=torrents.end(); ++i)
-	{
-		i->second.handle.pause();
-		entry e = i->second.handle.write_resume_data();
-		
-		halencode(p/wcstombs(i->second.file), e);
-	}
-	torrents.erase(torrents.begin(), torrents.end());
-}
-*/
 
 };

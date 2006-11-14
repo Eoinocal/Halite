@@ -33,9 +33,16 @@ BOOL HaliteWindow::PreTranslateMessage(MSG* pMsg)
 
 LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 {	
+	try
+	{
 	bool success = halite::bittorrent().listenOn(
 		std::make_pair(INI().bitTConfig().portFrom, INI().bitTConfig().portTo));
 	assert(success);	
+	}
+	catch(const std::exception& ex)
+	{
+		::MessageBoxA(0, ex.what(), "Init Exception", MB_ICONERROR|MB_OK);
+	}
 	
 	halite::bittorrent().resumeAll();
 	
