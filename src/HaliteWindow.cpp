@@ -202,9 +202,22 @@ void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)
 
 void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 {
-    halite::bittorrent().addTorrent(path(halite::wcstombs(lpszPath), boost::filesystem::native));
+    path filename(halite::wcstombs(lpszPath), boost::filesystem::native);	
+	halite::bittorrent().addTorrent(filename);
 
 	updateUI();
+	
+	int itemPos = mp_list->GetSelectionMark();
+	if (itemPos == -1)
+	{
+		LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
+		findInfo.flags = LVFI_STRING;
+		findInfo.psz = halite::mbstowcs(filename.leaf()).c_str();
+		
+		int itemPos = mp_list->FindItem(&findInfo, -1);	
+		mp_list->SelectItem(itemPos);
+		ListSelectionChanged();
+	}	
 }
 
 void HaliteWindow::OnClose()
@@ -262,13 +275,10 @@ LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 	if (dlgOpen.DoModal() == IDOK) 
 	{
-		wstring filename = dlgOpen.m_ofn.lpstrFile;
-		halite::bittorrent().addTorrent(path(halite::wcstombs(filename),boost::filesystem::native));
+		ProcessFile(dlgOpen.m_ofn.lpstrFile);
 	}
-	updateUI();
 	
-	return 0;
-	
+	return 0;	
 }
 
 LRESULT HaliteWindow::OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
