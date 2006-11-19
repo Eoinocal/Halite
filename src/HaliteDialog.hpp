@@ -17,17 +17,6 @@ protected:
 	typedef CDialogImpl<HaliteDialog> baseClass;
 	typedef CDialogResize<HaliteDialog> resizeClass;
 
-	CButton m_btn_start;
-	CListViewCtrl m_list;
-	CContainedWindow m_wndNCD;
-	CProgressBarCtrl m_prog;
-	
-	int NoConnDown, NoConnUp;
-	float TranLimitDown, TranLimitUp;
-	
-	std::string selectedTorrent;
-	HaliteWindow* mainHaliteWindow;
-
 public:
 	enum { IDD = IDD_HALITEDLG };
 	
@@ -99,11 +88,21 @@ public:
 	
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl );
 	
-	void setSelectedTorrent(string torrent);	
+	void selectionChanged();	
 	void updateDialog();
 	void saveStatus();
 	
 protected:
 	void InitializeControls(void);
 	void InitializeValues(void);
+
+	CButton m_btn_start;
+	CListViewCtrl m_list;
+	CContainedWindow m_wndNCD;
+	CProgressBarCtrl m_prog;
+	
+	int NoConnDown, NoConnUp;
+	float TranLimitDown, TranLimitUp;
+	
+	HaliteWindow* mainHaliteWindow;	
 };

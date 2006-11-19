@@ -101,7 +101,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	UISetCheck(IDR_TRAY_MENU, 1);
 	
 	// Register UIEvents and the timer for the monitoring interval
-	SetTimer(ID_UPDATE_TIMER, 1000);
+	SetTimer(ID_UPDATE_TIMER, 500);
 	attachUIEvent(bind(&HaliteWindow::updateWindow, this));
 	attachUIEvent(bind(&HaliteListViewCtrl::updateListView, &*mp_list));
 	attachUIEvent(bind(&HaliteDialog::updateDialog, &*mp_dlg));
@@ -115,32 +115,51 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	pLoop->AddIdleHandler(this);
 	
 	updateUI();
-	
-	mp_list->SelectItem(0);
-	ListSelectionChanged();
+	setSelected(0);
+	selectionChanged();
 	
 	return 0;
 }
 
-void HaliteWindow::ListSelectionChanged()
+const string& HaliteWindow::getSelected() const 
+{
+	return selectedTorrent_; 
+}
+
+void HaliteWindow::setSelected(int index) 
+{
+	mp_list->SetSelectionMark(index);
+	selectionChanged();
+}
+
+void HaliteWindow::clearSelected()
+{
+	mp_list->DeleteItem(mp_list->GetSelectionMark());
+	halite::bittorrent().removeTorrent(selectedTorrent_);
+	selectedTorrent_ = "";	
+	
+	selectionChanged();
+}
+
+void HaliteWindow::selectionChanged()
 {
 	int itemPos = mp_list->GetSelectionMark();
 	
 	if (itemPos != -1)
 	{
-		wchar_t filenameBuffer[MAX_PATH];		
-		mp_list->GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),256);		
-		mp_dlg->setSelectedTorrent(halite::wcstombs(filenameBuffer));
-		
-		updateUI();	
+		boost::array<wchar_t, MAX_PATH> pathBuffer;
+		mp_list->GetItemText(itemPos, 0, pathBuffer.c_array(), pathBuffer.size());	
+		selectedTorrent_ = halite::wcstombs(pathBuffer.data());
 	}
+	
+	mp_dlg->selectionChanged();
 }
 
 LRESULT HaliteWindow::OnNotify(int wParam, LPNMHDR lParam)
 {
 	if (lParam->hwndFrom == *mp_list && lParam->code == NM_CLICK)
 	{
-		ListSelectionChanged();
+		selectionChanged();
 	}
 	return 0;
 }
@@ -202,8 +221,8 @@ void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)
 
 void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 {
-    path filename(halite::wcstombs(lpszPath), boost::filesystem::native);	
-	halite::bittorrent().addTorrent(filename);
+    path file(halite::wcstombs(lpszPath), boost::filesystem::native);	
+	halite::bittorrent().addTorrent(file);
 
 	updateUI();
 	
@@ -212,11 +231,13 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	{
 		LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
 		findInfo.flags = LVFI_STRING;
-		findInfo.psz = halite::mbstowcs(filename.leaf()).c_str();
+		
+		wstring filename = halite::mbstowcs(file.leaf());		
+		findInfo.psz = filename.c_str();
 		
 		int itemPos = mp_list->FindItem(&findInfo, -1);	
 		mp_list->SelectItem(itemPos);
-		ListSelectionChanged();
+		selectionChanged();
 	}	
 }
 

@@ -5,6 +5,7 @@
 #include "DropFileTarget.h"
 #include "NTray.hpp"
 
+#include <boost/array.hpp>
 #include <boost/signals.hpp>
 
 class HaliteListViewCtrl;
@@ -16,7 +17,7 @@ class HaliteWindow :
 	public CDropFileTarget<HaliteWindow>,
 	public CMessageFilter,
 	public CIdleHandler
-{
+{	
 public:	
 	HaliteWindow();
 	~HaliteWindow();
@@ -76,7 +77,6 @@ public:
 	void OnClose();
 	void OnSize(UINT, CSize);
 	void OnMove(CSize);
-	void ListSelectionChanged();
 	LRESULT OnTrayNotification(UINT, WPARAM wParam, LPARAM lParam);
 	LRESULT OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnTrayOpenHalite(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
@@ -97,10 +97,15 @@ public:
 	void updateWindow();
 	void ProcessFile(LPCTSTR lpszPath);
 	
+	const string& getSelected() const;
+	void setSelected(int index);
+	void selectionChanged();
+	void clearSelected();
+	
 	friend HaliteDialog;
 	friend HaliteListViewCtrl;
 	
-protected:	
+protected:		
 	CCommandBarCtrl m_CmdBar;
 	CHorSplitterWindow m_Split;
     CMultiPaneStatusBarCtrl m_StatusBar;
@@ -110,6 +115,7 @@ protected:
 	boost::scoped_ptr<HaliteDialog> mp_dlg;
 	
 	boost::signal<void ()> updateUI_;
+	string selectedTorrent_;
 	
 	void updateConfigSettings();
 };

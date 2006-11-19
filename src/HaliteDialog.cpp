@@ -12,36 +12,61 @@
 #include "GlobalIni.hpp"
 #include "ini/Dialog.hpp"
 
-void HaliteDialog::setSelectedTorrent(string torrent)
+void HaliteDialog::selectionChanged()
 {
-	selectedTorrent = torrent;
+	string torrentName = mainHaliteWindow->getSelected();
 	
-	pair<float,float> tranLimit = halite::bittorrent().getTorrentSpeed(selectedTorrent);
-	pair<int,int> connLimit = halite::bittorrent().getTorrentLimit(selectedTorrent);
+	pair<float, float> tranLimit(-1.0, -1.0);
+	pair<int, int> connLimit(-1, -1);
+		
+	if (halite::bittorrent().isTorrent(torrentName))
+	{
+		tranLimit = halite::bittorrent().getTorrentSpeed(torrentName);
+		connLimit = halite::bittorrent().getTorrentLimit(torrentName);
+		
+		if (halite::bittorrent().isTorrentPaused(torrentName))
+			SetDlgItemText(BTNPAUSE, L"Resume");
+		else		
+			SetDlgItemText(BTNPAUSE, L"Pause");
+		
+		::EnableWindow(GetDlgItem(BTNPAUSE), true);
+		::EnableWindow(GetDlgItem(BTNREANNOUNCE), true);
+		::EnableWindow(GetDlgItem(BTNREMOVE), true);
+		
+		::EnableWindow(GetDlgItem(IDC_EDITTLD), true);
+		::EnableWindow(GetDlgItem(IDC_EDITTLU), true);
+		::EnableWindow(GetDlgItem(IDC_EDITNCD), true);
+		::EnableWindow(GetDlgItem(IDC_EDITNCU), true);
+	}
+	else
+	{
+		SetDlgItemText(IDC_NAME, L"N/A");
+		SetDlgItemText(IDC_TRACKER, L"N/A");
+		SetDlgItemText(IDC_STATUS, L"N/A");
+		SetDlgItemText(IDC_AVAIL, L"N/A");
+		SetDlgItemText(IDC_COMPLETE, L"N/A");
+		
+		SetDlgItemText(BTNPAUSE, L"Pause");		
+		m_prog.SetPos(0);
+		
+		::EnableWindow(GetDlgItem(BTNPAUSE), false);
+		::EnableWindow(GetDlgItem(BTNREANNOUNCE), false);
+		::EnableWindow(GetDlgItem(BTNREMOVE), false);
+		
+		::EnableWindow(GetDlgItem(IDC_EDITTLD), false);
+		::EnableWindow(GetDlgItem(IDC_EDITTLU), false);
+		::EnableWindow(GetDlgItem(IDC_EDITNCD), false);
+		::EnableWindow(GetDlgItem(IDC_EDITNCU), false);
+	}
 	
 	NoConnDown = connLimit.first;
 	NoConnUp = connLimit.second;
 	TranLimitDown = tranLimit.first;
 	TranLimitUp = tranLimit.second;
 	
-	DoDataExchange(false);
+	DoDataExchange(false);	
 	
-	if (halite::bittorrent().isTorrentPaused(selectedTorrent))
-		SetDlgItemText(BTNPAUSE,L"Resume");
-	else		
-		SetDlgItemText(BTNPAUSE,L"Pause");
-		
-	::EnableWindow(GetDlgItem(BTNPAUSE),true);
-	::EnableWindow(GetDlgItem(BTNREANNOUNCE),true);
-	::EnableWindow(GetDlgItem(BTNREMOVE),true);
-	
-	::EnableWindow(GetDlgItem(IDC_EDITTLD),true);
-	::EnableWindow(GetDlgItem(IDC_EDITTLU),true);
-	::EnableWindow(GetDlgItem(IDC_EDITNCD),true);
-	::EnableWindow(GetDlgItem(IDC_EDITNCU),true);
-	
-	m_list.DeleteAllItems();
-	
+	m_list.DeleteAllItems();	
 	mainHaliteWindow->updateUI();
 }
 
@@ -66,9 +91,7 @@ LRESULT HaliteDialog::onInitDialog(HWND, LPARAM)
 
 	for (size_t i=0; i<DialogConfig::numPeers; ++i)
 		m_list.SetColumnWidth(i, INI().dialogConfig().peerListColWidth[i]);
-}	
-	selectedTorrent = "";
-	
+}		
 	NoConnDown = -1;
 	NoConnUp = -1;
 	TranLimitDown = -1;
@@ -93,15 +116,16 @@ void HaliteDialog::onClose()
 
 void HaliteDialog::onPause(UINT, int, HWND)
 {
-	if (halite::bittorrent().isTorrentPaused(selectedTorrent))
+	string torrentName = mainHaliteWindow->getSelected();
+	if (halite::bittorrent().isTorrentPaused(torrentName))
 	{
 		SetDlgItemText(BTNPAUSE,L"Pause");
-		halite::bittorrent().resumeTorrent(selectedTorrent);
+		halite::bittorrent().resumeTorrent(torrentName);
 	}
 	else
 	{
 		SetDlgItemText(BTNPAUSE,L"Resume");
-		halite::bittorrent().pauseTorrent(selectedTorrent);
+		halite::bittorrent().pauseTorrent(torrentName);
 	}
 	
 	mainHaliteWindow->updateUI();
@@ -109,15 +133,13 @@ void HaliteDialog::onPause(UINT, int, HWND)
 
 void HaliteDialog::onReannounce(UINT, int, HWND)
 {
-	halite::bittorrent().reannounceTorrent(selectedTorrent);
+	halite::bittorrent().reannounceTorrent(mainHaliteWindow->getSelected());
 }
 
 void HaliteDialog::onRemove(UINT, int, HWND)
 {
-	halite::bittorrent().removeTorrent(selectedTorrent);
-
-	mainHaliteWindow->mp_list->DeleteItem(mainHaliteWindow->mp_list->GetSelectedIndex());		
-		
+	mainHaliteWindow->clearSelected();		
+	
 	mainHaliteWindow->updateUI();
 }
 
@@ -125,25 +147,18 @@ LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {
 	DoDataExchange(true);
 	
-	halite::bittorrent().setTorrentSpeed(selectedTorrent, TranLimitDown, TranLimitUp);
-	halite::bittorrent().setTorrentLimit(selectedTorrent, NoConnDown, NoConnUp);
+	halite::bittorrent().setTorrentSpeed(mainHaliteWindow->getSelected(), TranLimitDown, TranLimitUp);
+	halite::bittorrent().setTorrentLimit(mainHaliteWindow->getSelected(), NoConnDown, NoConnUp);
 	
 	return 0;
 }
 
 void HaliteDialog::updateDialog()
 {
-	wchar_t filenameBuffer[MAX_PATH];
-	halite::TorrentDetail_ptr pTD;
-
-	int itemPos = mainHaliteWindow->mp_list->GetSelectionMark();	
-	if (itemPos == -1) goto invalid_selection;
+	halite::TorrentDetail_ptr pTD = halite::bittorrent().getTorrentDetails(
+		mainHaliteWindow->getSelected());
 	
-	mainHaliteWindow->mp_list->GetItemText(itemPos,0,static_cast<LPTSTR>(filenameBuffer),MAX_PATH);
-	
-	pTD = halite::bittorrent().getTorrentDetails(halite::wcstombs(filenameBuffer));
-	if (!pTD) goto invalid_selection;
-	
+	if (pTD) 	
 	{
 		SetDlgItemText(IDC_NAME, pTD->filename().c_str());
 		SetDlgItemText(IDC_TRACKER, pTD->currentTracker().c_str());
@@ -162,11 +177,11 @@ void HaliteDialog::updateDialog()
 			).str().c_str());
 		
 		halite::PeerDetails peerDetails;
-		halite::bittorrent().getAllPeerDetails(halite::wcstombs(filenameBuffer), peerDetails);
+		halite::bittorrent().getAllPeerDetails(mainHaliteWindow->getSelected(), peerDetails);
 		
 		if (!peerDetails.empty())
 		{
-			// Here we remove any peers no longer connect.
+			// Here we remove any peers no longer connected.
 			
 			std::sort(peerDetails.begin(), peerDetails.end());
 			
@@ -214,27 +229,28 @@ void HaliteDialog::updateDialog()
 				m_list.SetItemText(itemPos, 4, (*i).client.c_str());
 			}			
 		}
-		return;
 	}
-
-invalid_selection:
-
-	SetDlgItemText(IDC_NAME, L"N/A");
-	SetDlgItemText(IDC_TRACKER, L"N/A");
-	SetDlgItemText(IDC_STATUS, L"N/A");
-	SetDlgItemText(IDC_AVAIL, L"N/A");
-	SetDlgItemText(IDC_COMPLETE, L"N/A");
-	
-	SetDlgItemText(BTNPAUSE, L"Pause");
-	
-	::EnableWindow(GetDlgItem(BTNPAUSE), false);
-	::EnableWindow(GetDlgItem(BTNREANNOUNCE), false);
-	::EnableWindow(GetDlgItem(BTNREMOVE), false);
-	
-	::EnableWindow(GetDlgItem(IDC_EDITTLD), false);
-	::EnableWindow(GetDlgItem(IDC_EDITTLU), false);
-	::EnableWindow(GetDlgItem(IDC_EDITNCD), false);
-	::EnableWindow(GetDlgItem(IDC_EDITNCU), false);
-	
-	m_list.DeleteAllItems();
+	else
+	{
+		
+/*		SetDlgItemText(IDC_NAME, L"N/A");
+		SetDlgItemText(IDC_TRACKER, L"N/A");
+		SetDlgItemText(IDC_STATUS, L"N/A");
+		SetDlgItemText(IDC_AVAIL, L"N/A");
+		SetDlgItemText(IDC_COMPLETE, L"N/A");
+		
+		SetDlgItemText(BTNPAUSE, L"Pause");
+		
+		::EnableWindow(GetDlgItem(BTNPAUSE), false);
+		::EnableWindow(GetDlgItem(BTNREANNOUNCE), false);
+		::EnableWindow(GetDlgItem(BTNREMOVE), false);
+		
+		::EnableWindow(GetDlgItem(IDC_EDITTLD), false);
+		::EnableWindow(GetDlgItem(IDC_EDITTLU), false);
+		::EnableWindow(GetDlgItem(IDC_EDITNCD), false);
+		::EnableWindow(GetDlgItem(IDC_EDITNCU), false);
+		
+		m_list.DeleteAllItems();
+*/
+	}
 }

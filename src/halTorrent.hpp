@@ -130,6 +130,8 @@ public:
 	void resumeAll();
 	void closeAll();
 	
+	bool isTorrent(string filename);
+	
 	void pauseTorrent(string filename);
 	void resumeTorrent(string filename);
 	bool isTorrentPaused(string filename);

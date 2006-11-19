@@ -55,6 +55,7 @@
 #define IDC_NEWT_DHTNODE                1039
 #define IDC_NEWT_ADDTRACKER             1040
 #define IDC_BUTTON1                     1041
+#define IDC_EDIT1                       1042
 #define ID_ABOUT_OPENHALITE             40001
 #define ID_ABOUT_PAUSEALL               40002
 #define ID_ABOUT_RESUMEALL              40003
@@ -70,7 +71,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        112
 #define _APS_NEXT_COMMAND_VALUE         40010
-#define _APS_NEXT_CONTROL_VALUE         1042
+#define _APS_NEXT_CONTROL_VALUE         1043
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

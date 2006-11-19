@@ -28,7 +28,7 @@ public:
 		CenterWindow();
 		DoDataExchange(false);
 		
-		thread_ptr.reset(new boost::thread(boost::bind(&SplashDialog::SplashThread, this)));
+		thread_ptr.reset(new thread(bind(&SplashDialog::SplashThread, this)));
 		
 		return TRUE;
 	}
@@ -48,5 +48,5 @@ public:
 	}
 	
 private:
-	boost::scoped_ptr<boost::thread> thread_ptr;
+	boost::scoped_ptr<thread> thread_ptr;
 };

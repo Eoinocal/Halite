@@ -207,6 +207,7 @@ private:
 	
 	lbt::entry prepTorrent(path filename);
 	lbt::torrent_handle addTorrent(lbt::entry metadata, lbt::entry resumedata);
+	void removalThread(lbt::torrent_handle handle);
 	
 	lbt::session theSession;
 	path workingDirectory;
@@ -512,6 +513,11 @@ void BitTorrent::getAllPeerDetails(string filename, PeerDetails& peerContainer)
 	}
 }
 
+bool BitTorrent::isTorrent(string filename)
+{	
+	return (pimpl->torrents.find(filename) != pimpl->torrents.end());
+}
+
 void BitTorrent::pauseTorrent(string filename)
 {
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
@@ -544,14 +550,20 @@ bool BitTorrent::isTorrentPaused(string filename)
 	return false; // ??? is this correct
 }
 
+void BitTorrent_impl::removalThread(lbt::torrent_handle handle)
+{
+	theSession.remove_torrent(handle);
+}
+
 void BitTorrent::removeTorrent(string filename)
 {
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
 	{
-		pimpl->theSession.remove_torrent((*i).second.handle());
+		lbt::torrent_handle handle = (*i).second.handle();
 		pimpl->torrents.erase(i);
+		thread t(bind(&BitTorrent_impl::removalThread, &*pimpl, handle));
 	}
 }
 
