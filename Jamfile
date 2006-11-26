@@ -48,7 +48,6 @@ project Halite
 	<toolset>msvc:<define>_UNICODE
 	<toolset>msvc:<define>WIN32
 	<toolset>msvc:<define>_WINDOWS
-	<toolset>msvc:<asynch-exceptions>on
 	
 	<runtime-link>static
 	

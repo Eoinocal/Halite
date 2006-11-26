@@ -15,7 +15,7 @@
 #include <http/xmlrpc/server.hpp>
 
 #include "halXmlRpc.hpp"
-#include "halTorrent.hpp"
+//#include "halTorrent.hpp"
 
 using namespace std;
 using namespace boost;
