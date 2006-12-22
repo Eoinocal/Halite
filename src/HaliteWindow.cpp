@@ -10,14 +10,16 @@
 #include "CSSFileDialog.hpp"
 #include "HaliteListViewCtrl.hpp"
 #include "HaliteDialog.hpp"
+#include "AdvHaliteDialog.hpp"
 
 #include "ConfigOptions.hpp"
 #include "GlobalIni.hpp"
 #include "ini/Window.hpp"
 
-HaliteWindow::HaliteWindow() :
+HaliteWindow::HaliteWindow(unsigned areYouMe = 0) :
 	mp_list(new HaliteListViewCtrl()),
-	mp_dlg(new HaliteDialog(this))
+	mp_dlg(new HaliteDialog(this)),
+	WM_AreYouMe_(areYouMe)
 {}
 
 HaliteWindow::~HaliteWindow()
@@ -51,11 +53,11 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	halite::bittorrent().setSessionSpeed(
 		INI().bitTConfig().downRate, INI().bitTConfig().upRate);
 	
-	if (INI().remoteConfig().isEnabled)
+/*	if (INI().remoteConfig().isEnabled)
 	{
 		halite::xmlRpc().bindHost(INI().remoteConfig().port);
 	}
-
+*/
 	RECT rc; GetClientRect(&rc);
 	SetMenu(0);
 	
@@ -85,9 +87,13 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 		LVS_REPORT|LVS_SINGLESEL|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS);
 	
 	mp_dlg->Create(m_Split.m_hWnd);
-	mp_dlg->ShowWindow(true);
+//	mp_dlg->ShowWindow(true);
 	
-	m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
+	mp_advDlg.reset(new AdvHaliteDialog(this));
+	mp_advDlg->Create(m_Split.m_hWnd);
+	mp_advDlg->ShowWindow(true);
+	
+	m_Split.SetSplitterPanes(*mp_list, *mp_advDlg);
 	
 	// Create the tray icon.
 	m_trayIcon.Create(this, IDR_TRAY_MENU, L"Halite", 
@@ -149,7 +155,7 @@ void HaliteWindow::selectionChanged()
 	{
 		boost::array<wchar_t, MAX_PATH> pathBuffer;
 		mp_list->GetItemText(itemPos, 0, pathBuffer.c_array(), pathBuffer.size());	
-		selectedTorrent_ = halite::wcstombs(pathBuffer.data());
+		selectedTorrent_ = wcstombs(pathBuffer.data());
 	}
 	
 	mp_dlg->selectionChanged();
@@ -201,10 +207,10 @@ void HaliteWindow::updateConfigSettings()
 	halite::bittorrent().setSessionSpeed(
 		INI().bitTConfig().downRate, INI().bitTConfig().upRate);
 	
-	if (INI().remoteConfig().isEnabled)
-		halite::xmlRpc().bindHost(INI().remoteConfig().port);
-	else
-		halite::xmlRpc().stopHost();
+//	if (INI().remoteConfig().isEnabled)
+//		halite::xmlRpc().bindHost(INI().remoteConfig().port);
+//	else
+//		halite::xmlRpc().stopHost();
 }
 
 void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)
@@ -219,10 +225,27 @@ void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)
 	}
 }	
 
+LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
+{
+	switch (pCSD->dwData)
+	{
+		case HALITE_SENDING_CMD:
+		wstring filename(static_cast<wchar_t*>(pCSD->lpData), pCSD->cbData/sizeof(wchar_t));
+		ProcessFile(filename.c_str());
+	}
+
+	return 0;
+}
+
 void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 {
-    path file(halite::wcstombs(lpszPath), boost::filesystem::native);	
-	halite::bittorrent().addTorrent(file);
+	try
+	{
+	
+	// Big changes due here.
+	
+	path file(wcstombs(lpszPath), boost::filesystem::native);	
+	halite::bittorrent().addTorrent(file, globalModule().exePath().branch_path()/"incoming");
 
 	updateUI();
 	
@@ -232,13 +255,19 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 		LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
 		findInfo.flags = LVFI_STRING;
 		
-		wstring filename = halite::mbstowcs(file.leaf());		
+		wstring filename = mbstowcs(file.leaf());		
 		findInfo.psz = filename.c_str();
 		
 		int itemPos = mp_list->FindItem(&findInfo, -1);	
 		mp_list->SelectItem(itemPos);
 		selectionChanged();
 	}	
+	
+	}
+	catch(const boost::filesystem::filesystem_error&)
+	{
+		// Just ignore filesystem errors for now.
+	}
 }
 
 void HaliteWindow::OnClose()
@@ -255,8 +284,11 @@ void HaliteWindow::OnSize(UINT type, CSize)
 {
 	if (type == SIZE_MINIMIZED)
 	{
-		ShowWindow(SW_HIDE);
-		m_trayIcon.Show();
+		if (INI().windowConfig().use_tray)
+		{
+			ShowWindow(SW_HIDE);
+			m_trayIcon.Show();
+		}
 	}
 	else
 		GetWindowRect(INI().windowConfig().rect);
@@ -322,8 +354,8 @@ LRESULT HaliteWindow::OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& 
 	
 	wstring torrent_filename = dlgSave.m_ofn.lpstrFile;
 	
-	halite::bittorrent().newTorrent(path(halite::wcstombs(torrent_filename),boost::filesystem::native),
-		path(halite::wcstombs(files),boost::filesystem::native));
+	halite::bittorrent().newTorrent(path(wcstombs(torrent_filename),boost::filesystem::native),
+		path(wcstombs(files),boost::filesystem::native));
 	
 	updateUI();
 	

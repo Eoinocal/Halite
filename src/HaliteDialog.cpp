@@ -1,4 +1,4 @@
-
+﻿
 #include <algorithm>
 #include <boost/format.hpp>
 #include <boost/array.hpp>
@@ -165,10 +165,15 @@ void HaliteDialog::updateDialog()
 		SetDlgItemText(IDC_STATUS, pTD->state().c_str());
 		m_prog.SetPos(static_cast<int>(pTD->completion()*100));
 		
-		SetDlgItemText(IDC_AVAIL,
-			(wformat(L"%1$.2f%%") 
-				% (pTD->available()*100)
-			).str().c_str());		
+		if (!pTD->estimatedTimeLeft().is_special())
+		{
+			SetDlgItemText(IDC_AVAIL,
+				(mbstowcs(boost::posix_time::to_simple_string(pTD->estimatedTimeLeft())).c_str()));
+		}
+		else
+		{
+			SetDlgItemText(IDC_AVAIL,L"∞");		
+		}
 		
 		SetDlgItemText(IDC_COMPLETE,
 			(wformat(L"%1$.2fmb of %2$.2fmb") 

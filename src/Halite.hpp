@@ -2,5 +2,5 @@
 #pragma once
 
 #include "halTorrent.hpp"
-#include "halXmlRpc.hpp"
+// #include "halXmlRpc.hpp"
 

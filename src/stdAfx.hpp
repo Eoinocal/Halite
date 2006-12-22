@@ -7,6 +7,10 @@
 #define _RICHEDIT_VER 0x0200
 #define VC_EXTRALEAN
 
+#define HALITE_GUID L"HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}"
+#define WMU_ARE_YOU_ME_STRING  L"WMU_ARE_YOU_ME_HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}"
+#define HALITE_SENDING_CMD 68816889
+
 #include <atlbase.h>
 #include <atlapp.h>
 
@@ -29,11 +33,14 @@ extern CAppModule _Module;
 // Include very common C++ and Boost libraries
 
 #include <string>
+#include <vector>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread/thread.hpp>
 #include <boost/smart_ptr.hpp>
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
 
 using std::string;
 using std::wstring;
@@ -47,3 +54,43 @@ using boost::bind;
 using boost::thread;
 using boost::shared_ptr;
 using boost::scoped_ptr;
+using boost::filesystem::path;
+
+wstring mbstowcs(const string &str);
+string wcstombs(const wstring &str);
+
+class GlobalModule
+{
+public:
+	GlobalModule()
+	{
+		LPWSTR *szArglist; int nArgs;		
+		szArglist = CommandLineToArgvW(GetCommandLineW(), &nArgs);
+		
+		if( NULL == szArglist )
+		{
+		}
+		else
+		{
+			exe_string_  = szArglist[0];
+			exe_path_ = path(wcstombs(exe_string_));
+			
+			for(int i=1; i<nArgs; ++i) 
+				command_args_.push_back(szArglist[i]);
+		}		
+		LocalFree(szArglist);	
+	}
+	
+	const wstring& exeString() const { return exe_string_; }
+	const path& exePath() const { return exe_path_; }
+	const std::vector<wstring>& commandArgs() const { return command_args_; }
+	
+private:
+	wstring exe_string_;
+	path exe_path_;
+	std::vector<wstring> command_args_;
+};
+
+GlobalModule& globalModule();
+
+

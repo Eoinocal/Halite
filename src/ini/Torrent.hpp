@@ -31,12 +31,13 @@ public:
 		inSession_(false)
 	{}
 	
-	TorrentInternal(libtorrent::torrent_handle h, std::wstring f) :		
+	TorrentInternal(libtorrent::torrent_handle h, std::wstring f, path saveDirectory) :		
 		transferLimit_(std::pair<float, float>(-1, -1)),
 		connections_(-1),
 		uploads_(-1),
 		paused_(false),
 		filename_(f),
+		saveDirectory_(saveDirectory.string()),
 		inSession_(true),
 		handle_(h)
 	{}
@@ -60,6 +61,7 @@ public:
 	}	 
 	
 	bool inSession() const { return inSession_; }
+	const string& saveDirectory() { return saveDirectory_; }
 	
     friend class boost::serialization::access;
     template<class Archive>
@@ -70,6 +72,7 @@ public:
         ar & BOOST_SERIALIZATION_NVP(uploads_);
         ar & BOOST_SERIALIZATION_NVP(paused_);
         ar & BOOST_SERIALIZATION_NVP(filename_);
+        ar & BOOST_SERIALIZATION_NVP(saveDirectory_);
     }
 	
 private:		
@@ -81,6 +84,7 @@ private:
 	bool inSession_;
 	
 	std::wstring filename_;
+	string saveDirectory_;
 	libtorrent::torrent_handle handle_;	
 };
 

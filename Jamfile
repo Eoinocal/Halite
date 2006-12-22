@@ -1,6 +1,6 @@
 
 use-project /boost : $(/boost) ;
-use-project /http : $(/http) ;
+#use-project /http : $(/http) ;
 use-project /libtorrent : $(/libtorrent) ;
 use-project /WTL : $(/WTL) ;
 use-project /osLibs : $(/osLibs) ;
@@ -11,10 +11,11 @@ SOURCES =
 	HaliteWindow.cpp
 	HaliteListViewCtrl.cpp
 	HaliteDialog.cpp
+	AdvHaliteDialog.cpp
 	ConfigOptions.cpp
 	halTorrent.cpp
 	GlobalIni.cpp
-	halXmlRpc.cpp
+#	halXmlRpc.cpp
 	NTray.cpp
 	;
 	
@@ -29,6 +30,7 @@ LIBS =
 	comdlg32
 	advapi32
 	gdi32	
+	UxTheme.lib	
 	;
 
 project Halite
@@ -37,7 +39,7 @@ project Halite
 	
 	<library>/boost/signals//boost_signals/<link>static
 	<library>/boost/serialization//boost_serialization/<link>static
-	<library>/http//http/<link>static
+#	<library>/http//http/<link>static
     <library>/libtorrent//torrent/<link>static
 	
 	<library>/WTL

@@ -6,13 +6,11 @@
 #include <boost/smart_ptr.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/fstream.hpp>  
 
 class BitTConfig;
 class WindowConfig;
 class DialogConfig;
+class GeneralConfig;
 class RemoteConfig;
 class SplashConfig;
 
@@ -27,6 +25,7 @@ public:
 	bool LoadData();	
 	bool SaveData();
 	
+	GeneralConfig& generalConfig() { return *generalConfig_; }
 	RemoteConfig& remoteConfig() { return *remoteConfig_; }
 	SplashConfig& splashConfig() { return *splashConfig_; }
 	BitTConfig& bitTConfig() { return *bitTConfig_; }
@@ -41,6 +40,7 @@ public:
 private:
 	ArchivalData();
 	
+	boost::scoped_ptr<GeneralConfig> generalConfig_;
 	boost::scoped_ptr<RemoteConfig> remoteConfig_;
 	boost::scoped_ptr<SplashConfig> splashConfig_;
 	boost::scoped_ptr<BitTConfig> bitTConfig_;

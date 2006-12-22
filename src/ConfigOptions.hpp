@@ -4,9 +4,46 @@
 #include "stdAfx.hpp"
 #include "DdxEx.hpp"
 
-#include "GlobalIni.hpp"
+#include "ini/Window.hpp"
+#include "ini/General.hpp"
 #include "ini/Remote.hpp"
+#include "GlobalIni.hpp"
 #include "ini/BitTConfig.hpp"
+
+class GeneralOptions :
+    public CPropertyPageImpl<GeneralOptions>,
+    public CWinDataExchange<GeneralOptions>
+{
+public:
+    enum { IDD = IDD_CONFIGGENERAL };
+
+	GeneralOptions() 
+	{}	
+	
+	~GeneralOptions()
+	{}
+ 
+    BEGIN_MSG_MAP(GeneralOptions)
+		MSG_WM_INITDIALOG(OnInitDialog)
+     	CHAIN_MSG_MAP(CPropertyPageImpl<GeneralOptions>)
+    END_MSG_MAP()
+ 
+    BEGIN_DDX_MAP(GeneralOptions)
+    	DDX_CHECK(IDC_GENERAL_ONEINST, INI().generalConfig().oneInst)
+    	DDX_CHECK(IDC_GENERAL_TRAY, INI().windowConfig().use_tray)
+//    	DDX_CHECK(IDC_GENERAL_ADVGUI, INI().remoteConfig().isEnabled)
+    END_DDX_MAP()
+ 
+    BOOL OnInitDialog(HWND hwndFocus, LPARAM lParam)
+	{
+		return DoDataExchange(false);
+	}	
+	
+    int OnApply()
+	{
+		return DoDataExchange(true);
+	}
+};
 
 class BitTorrentOptions :
     public CPropertyPageImpl<BitTorrentOptions>,
@@ -97,6 +134,7 @@ public:
           (LPCTSTR)NULL, UINT uStartPage = 0, HWND hWndParent = NULL)
         : CPropertySheet(title, uStartPage, hWndParent), m_bCentered(false)
     {
+		AddPage(generalOptions);
 		AddPage(bitTorrentOptions);
 		AddPage(remoteControlOptions);
 		AddPage(aboutOptions);
@@ -125,6 +163,7 @@ public:
         }
     }
 	
+	GeneralOptions generalOptions;
 	BitTorrentOptions bitTorrentOptions;
 	RemoteOptions remoteControlOptions;
 	AboutOptions aboutOptions;

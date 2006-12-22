@@ -8,12 +8,13 @@ class WindowConfig
 {
 public:
 	WindowConfig() :
-		splitterPos(100)
+		splitterPos(100),
+		use_tray(true)
 	{
 		rect.top = 10;
 		rect.left = 10;
 		rect.bottom = 400;
-		rect.right = 520;
+		rect.right = 620;
 		
 		mainListColWidth[0] = 100;
 		mainListColWidth[1] = 110;
@@ -31,8 +32,10 @@ public:
 		ar & BOOST_SERIALIZATION_NVP(rect);
 		ar & BOOST_SERIALIZATION_NVP(splitterPos);
 		ar & BOOST_SERIALIZATION_NVP(mainListColWidth);
+		ar & BOOST_SERIALIZATION_NVP(use_tray);
 	}
 	
+	friend class GeneralOptions;
 	friend class HaliteWindow;
 	friend class HaliteListViewCtrl;
 	friend int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
@@ -42,4 +45,5 @@ private:
 	CRect rect;
 	unsigned int splitterPos;
 	unsigned int mainListColWidth[numMainCols];
+	bool use_tray;
 };

@@ -10,6 +10,7 @@
 
 class HaliteListViewCtrl;
 class HaliteDialog;
+class AdvHaliteDialog;
 
 class HaliteWindow : 
 	public CFrameWindowImpl<HaliteWindow>,
@@ -17,9 +18,9 @@ class HaliteWindow :
 	public CDropFileTarget<HaliteWindow>,
 	public CMessageFilter,
 	public CIdleHandler
-{	
+{
 public:	
-	HaliteWindow();
+	HaliteWindow(unsigned ARE_YOU_ME);
 	~HaliteWindow();
 	
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -45,7 +46,9 @@ public:
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_MOVE(OnMove)
 		MSG_WM_ERASEBKGND(OnEraseBkgnd)
-		MSG_WM_TIMER(OnTimer)		
+		MSG_WM_TIMER(OnTimer)	
+		MSG_WM_COPYDATA(OnCopyData);
+		MESSAGE_HANDLER(WM_AreYouMe_, OnAreYouMe)	
 		MESSAGE_HANDLER_EX(WM_TRAYNOTIFY, OnTrayNotification)
 		COMMAND_ID_HANDLER(ID_FILE_NEW, OnFileNew)
 		COMMAND_ID_HANDLER(ID_FILE_OPEN, OnFileOpen)
@@ -91,6 +94,9 @@ public:
 	LRESULT OnViewStatusBar(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnEraseBkgnd(HDC hdc);
 	
+	LRESULT OnCopyData(HWND, PCOPYDATASTRUCT pCSD);
+	LRESULT OnAreYouMe(UINT, WPARAM, LPARAM, BOOL&) { return WM_AreYouMe_; }
+	
 	void attachUIEvent(boost::function<void ()> fn) { updateUI_.connect(fn); }
 	void updateUI() { updateUI_(); }
 	
@@ -113,9 +119,11 @@ protected:
 	
 	boost::scoped_ptr<HaliteListViewCtrl> mp_list;
 	boost::scoped_ptr<HaliteDialog> mp_dlg;
+	boost::scoped_ptr<AdvHaliteDialog> mp_advDlg;
 	
 	boost::signal<void ()> updateUI_;
 	string selectedTorrent_;
+	unsigned WM_AreYouMe_;
 	
 	void updateConfigSettings();
 };

@@ -2,6 +2,7 @@
 #include <boost/array.hpp>
 
 #include "GlobalIni.hpp"
+#include "ini/General.hpp"
 #include "ini/Remote.hpp"
 #include "ini/Dialog.hpp"
 #include "ini/Window.hpp"
@@ -9,7 +10,6 @@
 #include "ini/Torrent.hpp"
 #include "ini/Splash.hpp"
 
-using boost::filesystem::path;
 using boost::serialization::make_nvp;
 
 ArchivalData& INI()
@@ -23,12 +23,11 @@ ArchivalData::ArchivalData() :
 	haliteWindow_(new WindowConfig()),
 	haliteDialog_(new DialogConfig()),
 	torrentConfig_(new halite::TorrentConfig()),
+	generalConfig_(new GeneralConfig()),
 	remoteConfig_(new RemoteConfig()),
 	splashConfig_(new SplashConfig())	
 {
-	boost::array<char, MAX_PATH> pathBuffer;
-	GetCurrentDirectoryA(MAX_PATH, pathBuffer.c_array());
-	workingFile_ = path(pathBuffer.data(), boost::filesystem::native)/"Halite.ini.xml";
+	workingFile_ = globalModule().exePath().branch_path()/"Halite.ini.xml";
 }
 
 template<class Archive>
@@ -52,6 +51,7 @@ bool ArchivalData::LoadData()
 			ia >> make_nvp("bitConfig", *bitTConfig_);
 			ia >> make_nvp("haliteWindow", *haliteWindow_);
 			ia >> make_nvp("haliteDialog", *haliteDialog_);
+			ia >> make_nvp("generalConfig", *generalConfig_);
 			ia >> make_nvp("remoteConfig", *remoteConfig_);
 			ia >> make_nvp("splashConfig", *splashConfig_);
 			ia >> make_nvp("torrentConfig", *torrentConfig_);
@@ -60,7 +60,12 @@ bool ArchivalData::LoadData()
 	}
 	catch(std::exception& e)
 	{
-		::MessageBoxA(0, e.what(), "Load INI data exception.", 0);
+		::MessageBox(0, L"There was an error loading the INI XML file. This is a non-fatal error, \
+most settings will simply revert to defaults. To continue downloading any torrents that \
+were in progress simply manually reload the associated torrent files which can be found \
+in the \'torrents\' sub-directory.\r\n\r\n\
+See the Halite forum for more details.", 
+			(wformat(L"Load INI data exception: %1%") % e.what()).str().c_str(), 0);
 		return false;
 	}
 }
@@ -75,6 +80,7 @@ bool ArchivalData::SaveData()
 		oa << make_nvp("bitConfig", *bitTConfig_);
 		oa << make_nvp("haliteWindow", *haliteWindow_);
 		oa << make_nvp("haliteDialog", *haliteDialog_);
+		oa << make_nvp("generalConfig", *generalConfig_);	
 		oa << make_nvp("remoteConfig", *remoteConfig_);	
 		oa << make_nvp("splashConfig", *splashConfig_);
 		oa << make_nvp("torrentConfig", *torrentConfig_);			

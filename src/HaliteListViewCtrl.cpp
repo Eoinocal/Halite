@@ -1,4 +1,4 @@
-
+﻿
 #include "HaliteListViewCtrl.hpp"
 
 #include "GlobalIni.hpp"
@@ -19,6 +19,8 @@ void HaliteListViewCtrl::onShowWIndow(UINT, INT)
 	AddColumn(L"Upload", hdr.GetItemCount());
 	AddColumn(L"Peers", hdr.GetItemCount());
 	AddColumn(L"Seeds", hdr.GetItemCount());
+	AddColumn(L"ETA", hdr.GetItemCount());
+	AddColumn(L"Copies", hdr.GetItemCount());
 
 	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
 		SetColumnWidth(i, INI().windowConfig().mainListColWidth[i]);
@@ -53,6 +55,20 @@ void HaliteListViewCtrl::updateListView()
 		SetItemText(itemPos, 5,	(lexical_cast<wstring>((*i)->peers())).c_str());
 		
 		SetItemText(itemPos, 6,	(lexical_cast<wstring>((*i)->seeds())).c_str());	
+
+		if (!(*i)->estimatedTimeLeft().is_special())
+		{
+			SetItemText(itemPos, 7,	(mbstowcs(
+				boost::posix_time::to_simple_string((*i)->estimatedTimeLeft())).c_str()));
+		}
+		else
+		{
+			SetItemText(itemPos, 7,	L"∞");		
+		}
+		
+		SetItemText(itemPos, 8,	(wformat(L"%1$.2f") 
+				% ((*i)->distributedCopies())
+			).str().c_str());	
 	}	
 }
 

@@ -11,8 +11,13 @@
 #define IDPANE_STATUS                   109
 #define IDPANE_CAPS_INDICATOR           110
 #define IDD_NEWTORRENT                  111
+#define IDD_CONFIGGENERAL               112
+#define IDD_ADVHALITEDLG                114
+#define IDI_ICON1                       114
+#define IDR_APP_ICON                    114
+#define IDD_DIALOG1                     115
+#define IDD_THEMETEST                   115
 #define IDR_MAINFRAME                   128
-#define IDR_APP_ICON                    128
 #define LISTPEERS                       1000
 #define TORRENTPROG                     1003
 #define ID_SETTINGS                     1004
@@ -56,6 +61,14 @@
 #define IDC_NEWT_ADDTRACKER             1040
 #define IDC_BUTTON1                     1041
 #define IDC_EDIT1                       1042
+#define IDC_GENERAL_ONEINST             1043
+#define IDC_EDIT2                       1043
+#define IDC_TAB1                        1044
+#define IDC_TAB                         1044
+#define IDC_GENERAL_ADVGUI              1044
+#define IDC_GENERAL_TRAY                1045
+#define IDC_CHECK1                      1045
+#define IDC_RADIO1                      1046
 #define ID_ABOUT_OPENHALITE             40001
 #define ID_ABOUT_PAUSEALL               40002
 #define ID_ABOUT_RESUMEALL              40003
@@ -69,9 +82,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        112
+#define _APS_NEXT_RESOURCE_VALUE        116
 #define _APS_NEXT_COMMAND_VALUE         40010
-#define _APS_NEXT_CONTROL_VALUE         1043
+#define _APS_NEXT_CONTROL_VALUE         1048
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif
