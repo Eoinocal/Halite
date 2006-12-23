@@ -30,7 +30,7 @@ Name: english; MessagesFile: compiler:Default.isl
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
-Name: associate_torrent; Description: {cm:AssocFileExtension, Halite, .torrent}; GroupDescription: Other tasks:; Flags: unchecked
+Name: associate_torrent; Description: {cm:AssocFileExtension,Halite,.torrent}; GroupDescription: Other tasks:; Flags: unchecked
 
 [Files]
 Source: bin\msvc-7.1\release\asynch-exceptions-on\runtime-link-static\threading-multi\Halite.exe; DestDir: {app}; Flags: ignoreversion 32bit
@@ -43,8 +43,8 @@ Filename: {app}\{#MyAppUrlName}; Section: InternetShortcut; Key: URL; String: {#
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}
 Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}
 Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}
-Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon
-Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: quicklaunchicon
+Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Tasks: desktopicon
+Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Tasks: quicklaunchicon
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent

@@ -41,6 +41,8 @@ public:
 		COMMAND_ID_HANDLER_EX(BTNREANNOUNCE, onReannounce)
 		COMMAND_ID_HANDLER_EX(BTNREMOVE, onRemove)
 		
+//		MSG_WM_CTLCOLORSTATIC(OnCltColor)
+		
 		CHAIN_MSG_MAP(resizeClass)
 	END_MSG_MAP()
 	
@@ -86,7 +88,8 @@ public:
 	void onReannounce(UINT, int, HWND);	
 	void onRemove(UINT, int, HWND);
 	
-	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl );
+	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl);
+	LRESULT OnCltColor(HDC hDC, HWND hWnd);
 	
 	void selectionChanged();	
 	void updateDialog();

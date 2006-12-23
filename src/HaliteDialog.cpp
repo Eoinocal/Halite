@@ -153,6 +153,13 @@ LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	return 0;
 }
 
+LRESULT HaliteDialog::OnCltColor(HDC hDC, HWND hWnd)
+{	
+	::SetTextColor(hDC, RGB(255, 0, 255)); 
+	
+	return (LRESULT)::GetStockObject(DC_BRUSH);
+}
+
 void HaliteDialog::updateDialog()
 {
 	halite::TorrentDetail_ptr pTD = halite::bittorrent().getTorrentDetails(

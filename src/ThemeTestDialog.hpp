@@ -4,6 +4,11 @@
 #include "stdAfx.hpp"
 #include "DdxEx.hpp"
 
+#ifndef NDEBUG
+#	include <global_log.hpp>
+	using glb::wlog;
+#endif
+
 class ThemeTestDialog :
 	public CDialogImpl<ThemeTestDialog>,
 	public CDialogResize<ThemeTestDialog>
@@ -30,7 +35,6 @@ public:
 		MSG_WM_CTLCOLORDLG(OnCltColorDlg)
 		MSG_WM_CTLCOLORBTN(OnCltColor)
 		MSG_WM_CTLCOLORSTATIC(OnCltColor)
-		MSG_WM_CTLCOLOREDIT(OnCltColor)
 		
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
@@ -42,25 +46,31 @@ public:
 
 	END_DLGRESIZE_MAP()
 	
+	LRESULT onInitDialog(HWND, LPARAM) 
+	{
+		::SetWindowText(GetDlgItem(IDC_EDIT2), L"Eoin");
+		return 0; 
+	}	
+	
 	LRESULT OnCltColorDlg(HDC pDC, HWND pWnd)
 	{
 		RECT rect;
 		GetClientRect(&rect);
 		DrawThemeParentBackground(pWnd, pDC, &rect);
 		
-		return  (LRESULT)::GetStockObject(HOLLOW_BRUSH);
+		return (LRESULT)::GetStockObject(HOLLOW_BRUSH);
 	}
 	
-	LRESULT OnCltColor(HDC pDC, HWND pWnd)
-	{
+	LRESULT OnCltColor(HDC hDC, HWND hWnd)
+	{	
 		RECT rect;
-		::GetClientRect(pWnd, &rect);
-		DrawThemeParentBackground(pWnd, pDC, &rect);
+		::GetClientRect(hWnd, &rect);
+		::SetBkMode(hDC, TRANSPARENT); 
+		DrawThemeParentBackground(hWnd, hDC, &rect);
 		
-		return  (LRESULT)::GetStockObject(HOLLOW_BRUSH);
-	}	
+		return (LRESULT)::GetStockObject(HOLLOW_BRUSH);
+	}
 	
-	LRESULT onInitDialog(HWND, LPARAM) { return 0; }	
 	
 //	void OnSize(UINT, CSize);
 //	void onClose();	

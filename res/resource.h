@@ -2,6 +2,7 @@
 // Microsoft Visual C++ generated include file.
 // Used by Halite.rc
 //
+#define IDD_DEBUGDIALOG                 116
 #define IDD_CONFIGBIT                   102
 #define IDD_CONFIGREMOTE                103
 #define IDD_ABOUT                       104
@@ -69,6 +70,7 @@
 #define IDC_GENERAL_TRAY                1045
 #define IDC_CHECK1                      1045
 #define IDC_RADIO1                      1046
+#define ED_CON                          3000
 #define ID_ABOUT_OPENHALITE             40001
 #define ID_ABOUT_PAUSEALL               40002
 #define ID_ABOUT_RESUMEALL              40003
@@ -82,7 +84,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        116
+#define _APS_NEXT_RESOURCE_VALUE        117
 #define _APS_NEXT_COMMAND_VALUE         40010
 #define _APS_NEXT_CONTROL_VALUE         1048
 #define _APS_NEXT_SYMED_VALUE           110
