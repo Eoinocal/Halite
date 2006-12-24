@@ -3,6 +3,7 @@
 
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
+#include <boost/serialization/version.hpp>
 
 class BitTConfig
 {
@@ -13,7 +14,9 @@ public:
 		downRate(-1),
 		upRate(-1),
 		portFrom(6881),
-		portTo(6889)
+		portTo(6889),
+		enableDHT(false),
+		enableIPFilter(false)
 	{}
 	
 	friend class boost::serialization::access;
@@ -26,6 +29,11 @@ public:
 		ar & BOOST_SERIALIZATION_NVP(upRate);
 		ar & BOOST_SERIALIZATION_NVP(portFrom);
 		ar & BOOST_SERIALIZATION_NVP(portTo);
+		if(version > 0) {
+			ar & BOOST_SERIALIZATION_NVP(enableDHT);
+			ar & BOOST_SERIALIZATION_NVP(enableIPFilter);
+			ar & BOOST_SERIALIZATION_NVP(ipFilterFile);
+		}
 	}
 	
 	friend class BitTorrentOptions;
@@ -40,4 +48,12 @@ private:
 	
 	int portFrom;
 	int portTo;
+	
+	bool enableDHT;
+	
+	bool enableIPFilter;	
+	wstring ipFilterFile;
 };
+
+BOOST_CLASS_VERSION(BitTConfig, 1)
+

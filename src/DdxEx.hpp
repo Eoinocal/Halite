@@ -1,6 +1,7 @@
 ﻿
 #pragma once
 
+#include <boost/type_traits.hpp>
 #include <atlddx.h>
 
 #define DDX_EX_FLOAT_POSITIVE(nID, var) \
@@ -24,10 +25,34 @@
 				return FALSE; \
 		}
 
+#define DDX_EX_STDWSTRING(nID, str) \
+		if(nCtlID == (UINT)-1 || nCtlID == nID) \
+			return DDX_StdWString(nID, str, bSaveAndValidate);
+			
 template <class T>
 class CWinDataExchangeEx : public CWinDataExchange<T>
 {
-public:
+public:	
+
+	BOOL DDX_StdWString(UINT id, wstring& str, BOOL save, const size_t max_len=MAX_PATH)
+	{
+		T* pT = static_cast<T*>(this);
+		bool success = true;
+		
+		if (save)
+		{
+			std::vector<wchar_t> buffer(max_len);
+			size_t len = pT->GetDlgItemText(id, &buffer[0], max_len);
+			str.assign(buffer.begin(), buffer.begin()+len);
+		}
+		else
+		{		
+			pT->SetDlgItemText(id, str.c_str());
+		}
+		
+		return success;
+	}
+	
 	template <typename N>
 	BOOL DDX_Numeric_Inf(UINT nID, N& nVal, BOOL bSave, N lower_limit = 0, bool include_limit = true, BOOL bValidate = FALSE)
 	{

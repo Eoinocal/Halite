@@ -87,13 +87,13 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 		LVS_REPORT|LVS_SINGLESEL|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS);
 	
 	mp_dlg->Create(m_Split.m_hWnd);
-//	mp_dlg->ShowWindow(true);
+	mp_dlg->ShowWindow(true);
 	
 	mp_advDlg.reset(new AdvHaliteDialog(this));
 	mp_advDlg->Create(m_Split.m_hWnd);
-	mp_advDlg->ShowWindow(true);
+//	mp_advDlg->ShowWindow(true);
 	
-	m_Split.SetSplitterPanes(*mp_list, *mp_advDlg);
+	m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
 	
 	// Create the tray icon.
 	m_trayIcon.Create(this, IDR_TRAY_MENU, L"Halite", 

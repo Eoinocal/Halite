@@ -127,7 +127,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			
 			#ifndef NDEBUG
 			global_debugDialog_.Create(wndMain);
-			global_debugDialog_.ShowWindow(true);
+			global_debugDialog_.ShowWindow(false);
 			#endif
 			
 			nRet = theLoop.Run();				
