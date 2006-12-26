@@ -5,12 +5,14 @@
 #include "DdxEx.hpp"
 #include "Halite.hpp"
 
-class HaliteWindow;
+class ui_signal;
+class single_selection_manager;
 
 class HaliteDialog :
 	public CDialogImpl<HaliteDialog>,
 	public CDialogResize<HaliteDialog>,
-	public CWinDataExchangeEx<HaliteDialog>
+	public CWinDataExchangeEx<HaliteDialog>,
+	private noncopyable
 {
 protected:
 	typedef HaliteDialog thisClass;
@@ -20,14 +22,10 @@ protected:
 public:
 	enum { IDD = IDD_HALITEDLG };
 	
-	HaliteDialog(HaliteWindow* halWnd)
-		: mainHaliteWindow(halWnd)
-	{}
-
-	BOOL PreTranslateMessage(MSG* pMsg)
-	{
-		return this->IsDialogMessage(pMsg);
-	}
+	HaliteDialog(ui_signal& ui_sig, single_selection_manager& single_sel);	
+	BOOL PreTranslateMessage(MSG* pMsg)	{ return this->IsDialogMessage(pMsg); }
+	
+	void saveStatus(); // ****** NEEDS TO BE ANOTHER SIGNAL CLASS ******
   	
 	BEGIN_MSG_MAP(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
@@ -41,7 +39,7 @@ public:
 		COMMAND_ID_HANDLER_EX(BTNREANNOUNCE, onReannounce)
 		COMMAND_ID_HANDLER_EX(BTNREMOVE, onRemove)
 		
-//		MSG_WM_CTLCOLORSTATIC(OnCltColor)
+	//	MSG_WM_CTLCOLORSTATIC(OnCltColor)
 		
 		CHAIN_MSG_MAP(resizeClass)
 	END_MSG_MAP()
@@ -81,6 +79,7 @@ public:
 		DLGRESIZE_CONTROL(IDC_DETAILS_GROUP, (DLSZ_SIZE_X | DLSZ_SIZE_Y))
 	END_DLGRESIZE_MAP()
 	
+protected:	
 	LRESULT onInitDialog(HWND, LPARAM);	
 	void onClose();	
 	
@@ -91,14 +90,10 @@ public:
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl);
 	LRESULT OnCltColor(HDC hDC, HWND hWnd);
 	
-	void selectionChanged();	
+	void selectionChanged(const string& torrent_name);	
 	void updateDialog();
-	void saveStatus();
-	
-protected:
-	void InitializeControls(void);
-	void InitializeValues(void);
 
+private:
 	CButton m_btn_start;
 	CListViewCtrl m_list;
 	CContainedWindow m_wndNCD;
@@ -107,5 +102,6 @@ protected:
 	int NoConnDown, NoConnUp;
 	float TranLimitDown, TranLimitUp;
 	
-	HaliteWindow* mainHaliteWindow;	
+	ui_signal& ui_;
+	single_selection_manager& single_selection_;
 };

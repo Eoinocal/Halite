@@ -6,7 +6,6 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/smart_ptr.hpp>
-#include <boost/smart_ptr.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
@@ -21,9 +20,9 @@ namespace halite
 
 struct torrentBriefDetail 
 {
-	wstring filename;
-	wstring status;
-	pair<float,float> speed;
+	std::wstring filename;
+	std::wstring status;
+	std::pair<float,float> speed;
 	float completion;
 	int peers;
 	int seeds;
@@ -88,7 +87,7 @@ typedef std::vector<TorrentDetail_ptr> TorrentDetails;
 
 struct PeerDetail 
 {
-	PeerDetail(const wstring& ip_address) :
+	PeerDetail(const std::wstring& ip_address) :
 		ipAddress(ip_address)
 	{}
 	PeerDetail(libtorrent::peer_info& peerInfo);
@@ -104,9 +103,9 @@ struct PeerDetail
 	}
 	
 	wstring ipAddress;
-	pair<float,float> speed;
+	std::pair<float,float> speed;
 	bool seed;
-	wstring client;
+	std::wstring client;
 };
 
 typedef shared_ptr<PeerDetail> PeerDetail_ptr;
@@ -119,40 +118,40 @@ class BitTorrent
 public:
 	void shutDownSession();
 	
-	bool listenOn(pair<int, int> const& portRange);
+	bool listenOn(std::pair<int, int> const& portRange);
 	int isListeningOn();
 	void stopListening();
 	
 	void setSessionLimits(int maxConn, int maxUpload);
 	void setSessionSpeed(float download, float upload);
-	pair<double, double> sessionSpeed();
+	std::pair<double, double> sessionSpeed();
 	
 	void newTorrent(boost::filesystem::path filename, boost::filesystem::path files);
 	void addTorrent(boost::filesystem::path file, path saveDirectory);
 	void getAllTorrentDetails(TorrentDetails& torrentsContainer);
-	TorrentDetail_ptr getTorrentDetails(string filename);
+	TorrentDetail_ptr getTorrentDetails(std::string filename);
 	
-	void getAllPeerDetails(string filename, PeerDetails& peerContainer);
+	void getAllPeerDetails(std::string filename, PeerDetails& peerContainer);
 	
 	void resumeAll();
 	void closeAll();
 	
-	bool isTorrent(string filename);
+	bool isTorrent(std::string filename);
 	
-	void pauseTorrent(string filename);
-	void resumeTorrent(string filename);
-	bool isTorrentPaused(string filename);
+	void pauseTorrent(std::string filename);
+	void resumeTorrent(std::string filename);
+	bool isTorrentPaused(std::string filename);
 	
 	void pauseAllTorrents();
 	void resumeAllTorrents();
 	
-	void removeTorrent(string filename);
-	void reannounceTorrent(string filename);
+	void removeTorrent(std::string filename);
+	void reannounceTorrent(std::string filename);
 	
-	void setTorrentLimit(string filename, int maxConn, int maxUpload);
-	void setTorrentSpeed(string filename, float download, float upload);
-	pair<int, int> getTorrentLimit(string filename);
-	pair<float, float> getTorrentSpeed(string filename);
+	void setTorrentLimit(std::string filename, int maxConn, int maxUpload);
+	void setTorrentSpeed(std::string filename, float download, float upload);
+	pair<int, int> getTorrentLimit(std::string filename);
+	pair<float, float> getTorrentSpeed(std::string filename);
 	
 	friend BitTorrent& bittorrent();
 	

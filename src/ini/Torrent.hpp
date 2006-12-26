@@ -84,7 +84,7 @@ private:
 	bool inSession_;
 	
 	std::wstring filename_;
-	string saveDirectory_;
+	std::string saveDirectory_;
 	libtorrent::torrent_handle handle_;	
 };
 

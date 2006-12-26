@@ -41,6 +41,7 @@ extern CAppModule _Module;
 #include <boost/smart_ptr.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
+#include <boost/noncopyable.hpp>
 
 using std::string;
 using std::wstring;
@@ -55,6 +56,7 @@ using boost::thread;
 using boost::shared_ptr;
 using boost::scoped_ptr;
 using boost::filesystem::path;
+using boost::noncopyable;
 
 wstring mbstowcs(const string &str);
 string wcstombs(const wstring &str);

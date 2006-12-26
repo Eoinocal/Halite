@@ -7,24 +7,28 @@
 #include "HaliteDialog.hpp"
 #include "HaliteWindow.hpp"
 
-#include "HaliteListViewCtrl.hpp"
-
 #include "GlobalIni.hpp"
 #include "ini/Dialog.hpp"
 
-void HaliteDialog::selectionChanged()
+HaliteDialog::HaliteDialog(ui_signal& ui_sig, single_selection_manager& single_sel) :
+	ui_(ui_sig),
+	single_selection_(single_sel)
 {
-	string torrentName = mainHaliteWindow->getSelected();
-	
+	ui_.attach(bind(&HaliteDialog::updateDialog, this));
+	single_selection_.attach(bind(&HaliteDialog::selectionChanged, this, _1));
+}
+
+void HaliteDialog::selectionChanged(const string& torrent_name)
+{	
 	pair<float, float> tranLimit(-1.0, -1.0);
 	pair<int, int> connLimit(-1, -1);
-		
-	if (halite::bittorrent().isTorrent(torrentName))
+	
+	if (halite::bittorrent().isTorrent(torrent_name))
 	{
-		tranLimit = halite::bittorrent().getTorrentSpeed(torrentName);
-		connLimit = halite::bittorrent().getTorrentLimit(torrentName);
+		tranLimit = halite::bittorrent().getTorrentSpeed(torrent_name);
+		connLimit = halite::bittorrent().getTorrentLimit(torrent_name);
 		
-		if (halite::bittorrent().isTorrentPaused(torrentName))
+		if (halite::bittorrent().isTorrentPaused(torrent_name))
 			SetDlgItemText(BTNPAUSE, L"Resume");
 		else		
 			SetDlgItemText(BTNPAUSE, L"Pause");
@@ -67,7 +71,7 @@ void HaliteDialog::selectionChanged()
 	DoDataExchange(false);	
 	
 	m_list.DeleteAllItems();	
-	mainHaliteWindow->updateUI();
+	ui_.update();
 }
 
 LRESULT HaliteDialog::onInitDialog(HWND, LPARAM)
@@ -109,14 +113,15 @@ void HaliteDialog::saveStatus()
 
 void HaliteDialog::onClose()
 {
-	if(::IsWindow(m_hWnd)) {
+	if(::IsWindow(m_hWnd)) 
+	{
 		::DestroyWindow(m_hWnd);
 	}
 }
 
 void HaliteDialog::onPause(UINT, int, HWND)
 {
-	string torrentName = mainHaliteWindow->getSelected();
+	string torrentName = single_selection_.selected();
 	if (halite::bittorrent().isTorrentPaused(torrentName))
 	{
 		SetDlgItemText(BTNPAUSE,L"Pause");
@@ -128,27 +133,27 @@ void HaliteDialog::onPause(UINT, int, HWND)
 		halite::bittorrent().pauseTorrent(torrentName);
 	}
 	
-	mainHaliteWindow->updateUI();
+	ui_.update();
 }
 
 void HaliteDialog::onReannounce(UINT, int, HWND)
 {
-	halite::bittorrent().reannounceTorrent(mainHaliteWindow->getSelected());
+	halite::bittorrent().reannounceTorrent(single_selection_.selected());
 }
 
 void HaliteDialog::onRemove(UINT, int, HWND)
 {
-	mainHaliteWindow->clearSelected();		
+	single_selection_.clear();		
 	
-	mainHaliteWindow->updateUI();
+	ui_.update();
 }
 
 LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {
 	DoDataExchange(true);
 	
-	halite::bittorrent().setTorrentSpeed(mainHaliteWindow->getSelected(), TranLimitDown, TranLimitUp);
-	halite::bittorrent().setTorrentLimit(mainHaliteWindow->getSelected(), NoConnDown, NoConnUp);
+	halite::bittorrent().setTorrentSpeed(single_selection_.selected(), TranLimitDown, TranLimitUp);
+	halite::bittorrent().setTorrentLimit(single_selection_.selected(), NoConnDown, NoConnUp);
 	
 	return 0;
 }
@@ -157,13 +162,13 @@ LRESULT HaliteDialog::OnCltColor(HDC hDC, HWND hWnd)
 {	
 	::SetTextColor(hDC, RGB(255, 0, 255)); 
 	
-	return (LRESULT)::GetStockObject(DC_BRUSH);
+	return (LRESULT)::GetCurrentObject(hDC, OBJ_BRUSH);
 }
 
 void HaliteDialog::updateDialog()
 {
 	halite::TorrentDetail_ptr pTD = halite::bittorrent().getTorrentDetails(
-		mainHaliteWindow->getSelected());
+		single_selection_.selected());
 	
 	if (pTD) 	
 	{
@@ -189,7 +194,7 @@ void HaliteDialog::updateDialog()
 			).str().c_str());
 		
 		halite::PeerDetails peerDetails;
-		halite::bittorrent().getAllPeerDetails(mainHaliteWindow->getSelected(), peerDetails);
+		halite::bittorrent().getAllPeerDetails(single_selection_.selected(), peerDetails);
 		
 		if (!peerDetails.empty())
 		{

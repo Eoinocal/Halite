@@ -5,10 +5,17 @@
 #include <fstream>
 #include <iterator>
 #include <iomanip>
+#include <map>
+
+#include <boost/bind.hpp>
 #include <boost/array.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/split_free.hpp>
 
 #include <libtorrent/file.hpp>
-#include "libtorrent/hasher.hpp"
+#include <libtorrent/hasher.hpp>
 #include <libtorrent/entry.hpp>
 #include <libtorrent/bencode.hpp>
 #include <libtorrent/session.hpp>
@@ -16,8 +23,8 @@
 #include <libtorrent/peer_connection.hpp>
 
 #include "halTorrent.hpp"
-#include "GlobalIni.hpp"
-#include "ini/Torrent.hpp"
+//#include "GlobalIni.hpp"
+//#include "ini/Torrent.hpp"
 
 namespace halite 
 {
@@ -28,6 +35,77 @@ namespace fs = boost::filesystem;
 using fs::path;
 using fs::ifstream;
 using fs::ofstream;
+using boost::serialization::make_nvp;
+
+class TorrentInternal
+{
+public:
+	TorrentInternal() :		
+		transferLimit_(std::pair<float, float>(-1, -1)),
+		connections_(-1),
+		uploads_(-1),
+		paused_(false),
+		inSession_(false)
+	{}
+	
+	TorrentInternal(libtorrent::torrent_handle h, std::wstring f, path saveDirectory) :		
+		transferLimit_(std::pair<float, float>(-1, -1)),
+		connections_(-1),
+		uploads_(-1),
+		paused_(false),
+		filename_(f),
+		saveDirectory_(saveDirectory.string()),
+		inSession_(true),
+		handle_(h)
+	{}
+	
+	TorrentDetail_ptr getTorrentDetails() const;
+	void setTransferSpeed(float down, float up);
+	void setConnectionLimit(int maxConn, int maxUpload);
+	void setTransferSpeed();
+	void setConnectionLimit();
+	pair<float, float> getTransferSpeed();
+	pair<int, int> getConnectionLimit();
+	void pause();
+	void resume();
+	bool isPaused() const;
+	
+	const libtorrent::torrent_handle& handle() const { return handle_; }
+	void setHandle(libtorrent::torrent_handle h) 
+	{ 
+		handle_ = h; 
+		inSession_ = true;
+	}	 
+	
+	bool inSession() const { return inSession_; }
+	const string& saveDirectory() { return saveDirectory_; }
+	
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+        ar & BOOST_SERIALIZATION_NVP(transferLimit_);
+        ar & BOOST_SERIALIZATION_NVP(connections_);
+        ar & BOOST_SERIALIZATION_NVP(uploads_);
+        ar & BOOST_SERIALIZATION_NVP(paused_);
+        ar & BOOST_SERIALIZATION_NVP(filename_);
+        ar & BOOST_SERIALIZATION_NVP(saveDirectory_);
+    }
+	
+private:		
+	std::pair<float, float> transferLimit_;
+	
+	int connections_;
+	int uploads_;
+	bool paused_;
+	bool inSession_;
+	
+	std::wstring filename_;
+	std::string saveDirectory_;
+	libtorrent::torrent_handle handle_;	
+};
+
+typedef std::map<std::string, TorrentInternal> TorrentMap;
 
 lbt::entry haldecode(const path &file) 
 {
@@ -178,20 +256,44 @@ bool TorrentInternal::isPaused() const
 class BitTorrent_impl
 {
 	friend class BitTorrent;
+public:
+	
+	~BitTorrent_impl()
+	{
+		try
+		{
+			boost::filesystem::ofstream ofs(workingDirectory/"Torrents.xml");
+			boost::archive::xml_oarchive oa(ofs);
+			
+			oa << make_nvp("torrents", torrents);
+			return;
+		}
+		catch(const std::exception&)
+		{
+			return;
+		}	
+	}
 	
 private:
 	BitTorrent_impl() :
 		theSession(lbt::fingerprint("HL", 0, 2, 0, 8)),
-		torrents(INI().torrentConfig().torrents),
 		workingDirectory(globalModule().exePath().branch_path())
-	{}
+	{
+		boost::filesystem::ifstream ifs(workingDirectory/"Torrents.xml");
+		if (ifs)
+		{
+			boost::archive::xml_iarchive ia(ifs);
+			
+			ia >> make_nvp("torrents", torrents);
+		}		
+	}
 	
 	lbt::entry prepTorrent(path filename, path saveDirectory);
 	void removalThread(lbt::torrent_handle handle);
 	
 	lbt::session theSession;
-	path workingDirectory;
-	TorrentMap& torrents;
+	TorrentMap torrents;
+	const path workingDirectory;
 };
 
 BitTorrent::BitTorrent() :

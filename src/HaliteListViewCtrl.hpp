@@ -3,7 +3,9 @@
 
 #include "stdAfx.hpp"
 
-class HaliteListViewCtrl : public CWindowImpl<HaliteListViewCtrl, CListViewCtrl>
+class HaliteListViewCtrl : 
+	public CWindowImpl<HaliteListViewCtrl, CListViewCtrl>,
+	private noncopyable
 {
 public:	
 	BEGIN_MSG_MAP(HaliteListViewCtrl)
