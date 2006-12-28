@@ -23,8 +23,6 @@
 #include <libtorrent/peer_connection.hpp>
 
 #include "halTorrent.hpp"
-//#include "GlobalIni.hpp"
-//#include "ini/Torrent.hpp"
 
 namespace halite 
 {
@@ -84,12 +82,12 @@ public:
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-        ar & BOOST_SERIALIZATION_NVP(transferLimit_);
-        ar & BOOST_SERIALIZATION_NVP(connections_);
-        ar & BOOST_SERIALIZATION_NVP(uploads_);
-        ar & BOOST_SERIALIZATION_NVP(paused_);
-        ar & BOOST_SERIALIZATION_NVP(filename_);
-        ar & BOOST_SERIALIZATION_NVP(saveDirectory_);
+        ar & make_nvp("transferLimit", transferLimit_);
+        ar & make_nvp("connections", connections_);
+        ar & make_nvp("uploads", uploads_);
+        ar & make_nvp("paused", paused_);
+        ar & make_nvp("filename", filename_);
+        ar & make_nvp("saveDirectory", saveDirectory_);
     }
 	
 private:		

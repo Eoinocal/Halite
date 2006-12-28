@@ -5,7 +5,76 @@
 #include "ini/Window.hpp"
 #include "halTorrent.hpp"
 
-void HaliteListViewCtrl::onShowWIndow(UINT, INT)
+void selection_manager::sync_list(bool list_to_manager)
+{
+	if (list_to_manager)
+	{	
+		int itemPos = m_list_.GetSelectionMark();	
+	
+		if (itemPos != -1)
+		{
+			boost::array<wchar_t, MAX_PATH> pathBuffer;
+			m_list_.GetItemText(itemPos, 0, pathBuffer.c_array(), pathBuffer.size());	
+			string selected = wcstombs(pathBuffer.data());
+			
+			if (selected_ != selected)
+			{
+				selected_ = selected;
+				signal();
+			}
+		}
+		else
+		{
+			selected_ = "";
+			signal();
+		}
+	}
+	else
+	{
+		LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
+		findInfo.flags = LVFI_STRING;
+		
+		wstring torrent_name = mbstowcs(selected_);		
+		findInfo.psz = torrent_name.c_str();
+		
+		int itemPos = m_list_.FindItem(&findInfo, -1);	
+		
+		if (itemPos != m_list_.GetSelectionMark())
+		{
+			LVITEM lvi = { LVIF_STATE };
+			lvi.state = LVIS_SELECTED;
+			lvi.stateMask = LVIS_SELECTED;
+			m_list_.SetItemState(itemPos, &lvi);
+			m_list_.SetSelectionMark(itemPos);
+			signal();
+		}
+	}
+}
+
+void selection_manager::setSelected(int itemPos)
+{
+	LVITEM lvi = { LVIF_STATE };
+	lvi.state = LVIS_SELECTED;
+	lvi.stateMask = LVIS_SELECTED;
+	m_list_.SetItemState(itemPos, &lvi);
+	m_list_.SetSelectionMark(itemPos);
+	sync_list(true);
+}
+
+void selection_manager::clear()
+{
+	m_list_.DeleteItem(m_list_.GetSelectionMark());
+	halite::bittorrent().removeTorrent(selected_);
+	
+//	m_list_.SelectItem(0);
+	sync_list(true);
+}
+
+HaliteListViewCtrl::HaliteListViewCtrl() :
+	manager_(*this)
+{}
+
+void HaliteListViewCtrl::onShowWindow(UINT, INT)
 {
 	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT);
 
@@ -77,3 +146,20 @@ void HaliteListViewCtrl::saveStatus()
 	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
 		INI().windowConfig().mainListColWidth[i] = GetColumnWidth(i);
 }
+
+LRESULT HaliteListViewCtrl::OnClick(int, LPNMHDR pnmh, BOOL&)
+{
+	manager().sync_list(true);
+
+	return 0;
+}
+
+//LRESULT HaliteListViewCtrl::OnDeleteItem(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHandled*/)
+//{
+//	LPNMLISTVIEW pnmv=(LPNMLISTVIEW)pnmh;
+//	T* pItem=(T*)GetItemData(pnmv->iItem);
+//	ATLASSERT(pItem);
+//	if (pItem)	// Delete attached structure
+//		delete pItem;
+//	return 0;
+//}

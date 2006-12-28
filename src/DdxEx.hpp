@@ -34,7 +34,7 @@ class CWinDataExchangeEx : public CWinDataExchange<T>
 {
 public:	
 
-	BOOL DDX_StdWString(UINT id, wstring& str, BOOL save, const size_t max_len=MAX_PATH)
+	BOOL DDX_StdWString(UINT id, wstring& str, BOOL save, const int max_len=MAX_PATH)
 	{
 		T* pT = static_cast<T*>(this);
 		bool success = true;

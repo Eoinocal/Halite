@@ -63,7 +63,6 @@ static BOOL CALLBACK hwndSearcher(HWND hWnd, LPARAM lParam)
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	boost::filesystem::path::default_name_check(boost::filesystem::native);	
-	INI().LoadData();
 
 	AtlInitCommonControls(ICC_COOL_CLASSES | ICC_BAR_CLASSES);
    
@@ -102,14 +101,21 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	}
 	else
 	{
+		INI().LoadData();
+		
 		CMessageLoop theLoop;
 		_Module.AddMessageLoop(&theLoop);
-		{						
+		{	
 			HaliteWindow wndMain(WMU_ARE_YOU_ME);
 			if (wndMain.CreateEx() == NULL)
 				return 1;
 			
 			oneInstance.release();
+			
+			#ifndef NDEBUG
+			global_debugDialog_.Create(wndMain);
+			global_debugDialog_.ShowWindow(false);
+			#endif
 			
 			if (!globalModule().commandArgs().empty())
 				wndMain.ProcessFile(globalModule().commandArgs().front().c_str());
@@ -121,14 +127,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				INI().windowConfig().rect.right-INI().windowConfig().rect.left,
 				INI().windowConfig().rect.bottom-INI().windowConfig().rect.top,
 				false);
-				
+			
 			wndMain.SetIcon(LoadIcon(hInstance, MAKEINTRESOURCE(IDR_APP_ICON)), false);
 			wndMain.ShowWindow(nCmdShow);
-			
-			#ifndef NDEBUG
-			global_debugDialog_.Create(wndMain);
-			global_debugDialog_.ShowWindow(false);
-			#endif
 			
 			nRet = theLoop.Run();				
 		}	
@@ -143,13 +144,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		{
 			halite::bittorrent().closeAll();
 			halite::bittorrent().shutDownSession();		
-		}
+		}		
+		INI().SaveData();
 	}
 	}
 	
 	_Module.Term();
-	
-	INI().SaveData();
 	
 	return nRet;
 }

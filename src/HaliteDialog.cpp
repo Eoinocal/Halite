@@ -6,16 +6,17 @@
 #include "stdAfx.hpp"
 #include "HaliteDialog.hpp"
 #include "HaliteWindow.hpp"
+#include "HaliteListViewCtrl.hpp"
 
 #include "GlobalIni.hpp"
 #include "ini/Dialog.hpp"
 
-HaliteDialog::HaliteDialog(ui_signal& ui_sig, single_selection_manager& single_sel) :
+HaliteDialog::HaliteDialog(ui_signal& ui_sig, selection_manager& single_sel) :
 	ui_(ui_sig),
-	single_selection_(single_sel)
+	selection_manager_(single_sel)
 {
 	ui_.attach(bind(&HaliteDialog::updateDialog, this));
-	single_selection_.attach(bind(&HaliteDialog::selectionChanged, this, _1));
+	selection_manager_.attach(bind(&HaliteDialog::selectionChanged, this, _1));
 }
 
 void HaliteDialog::selectionChanged(const string& torrent_name)
@@ -121,7 +122,7 @@ void HaliteDialog::onClose()
 
 void HaliteDialog::onPause(UINT, int, HWND)
 {
-	string torrentName = single_selection_.selected();
+	string torrentName = selection_manager_.selected();
 	if (halite::bittorrent().isTorrentPaused(torrentName))
 	{
 		SetDlgItemText(BTNPAUSE,L"Pause");
@@ -138,12 +139,12 @@ void HaliteDialog::onPause(UINT, int, HWND)
 
 void HaliteDialog::onReannounce(UINT, int, HWND)
 {
-	halite::bittorrent().reannounceTorrent(single_selection_.selected());
+	halite::bittorrent().reannounceTorrent(selection_manager_.selected());
 }
 
 void HaliteDialog::onRemove(UINT, int, HWND)
 {
-	single_selection_.clear();		
+	selection_manager_.clear();		
 	
 	ui_.update();
 }
@@ -152,8 +153,8 @@ LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {
 	DoDataExchange(true);
 	
-	halite::bittorrent().setTorrentSpeed(single_selection_.selected(), TranLimitDown, TranLimitUp);
-	halite::bittorrent().setTorrentLimit(single_selection_.selected(), NoConnDown, NoConnUp);
+	halite::bittorrent().setTorrentSpeed(selection_manager_.selected(), TranLimitDown, TranLimitUp);
+	halite::bittorrent().setTorrentLimit(selection_manager_.selected(), NoConnDown, NoConnUp);
 	
 	return 0;
 }
@@ -168,7 +169,7 @@ LRESULT HaliteDialog::OnCltColor(HDC hDC, HWND hWnd)
 void HaliteDialog::updateDialog()
 {
 	halite::TorrentDetail_ptr pTD = halite::bittorrent().getTorrentDetails(
-		single_selection_.selected());
+		selection_manager_.selected());
 	
 	if (pTD) 	
 	{
@@ -194,7 +195,7 @@ void HaliteDialog::updateDialog()
 			).str().c_str());
 		
 		halite::PeerDetails peerDetails;
-		halite::bittorrent().getAllPeerDetails(single_selection_.selected(), peerDetails);
+		halite::bittorrent().getAllPeerDetails(selection_manager_.selected(), peerDetails);
 		
 		if (!peerDetails.empty())
 		{

@@ -5,7 +5,6 @@
 #include "DropFileTarget.h"
 #include "NTray.hpp"
 
-#include <boost/array.hpp>
 #include <boost/signals.hpp>
 
 class HaliteListViewCtrl;
@@ -20,47 +19,6 @@ public:
 	
 private:
 	boost::signal<void ()> ui_;
-};
-
-class single_selection_manager : noncopyable
-{
-public:
-	single_selection_manager(boost::shared_ptr<HaliteListViewCtrl> p_list) :
-		mp_list_(p_list)
-	{}
-	typedef const string& param_type;
-	
-	void sync_with_list(bool list_to_manager);
-	
-	param_type selected() const { return selected_; }
-	
-	void setSelected(const string& sel) 
-	{
-		selected_ = sel;
-		sync_with_list(false);
-	}
-	
-	void setSelected(int itemPos);
-	
-	void clear();
-	
-	void attach(boost::function<void (param_type)> fn) { selection_.connect(fn); }
-	void signal() { selection_(selected_); }
-	
-private:
-	string selected_;	
-	boost::signal<void (param_type)> selection_;
-	boost::shared_ptr<HaliteListViewCtrl> mp_list_;
-};
-
-class config_signal
-{
-public:
-	void attach(boost::function<void (bool)> fn) { config_.connect(fn); }
-	void update(bool firstTime) { config_(firstTime); }
-	
-private:
-	boost::signal<void (bool)> config_;
 };
 
 class HaliteWindow : 
@@ -78,10 +36,8 @@ public:
 	DECLARE_FRAME_WND_CLASS(NULL, IDR_MAINFRAME);
 	
 	ui_signal& ui() { return ui_; }
-	single_selection_manager& selection() { return single_selection_manager_; }
 
 	BEGIN_MSG_MAP(HaliteWindow)
-		MSG_WM_NOTIFY(OnNotify)
 		MSG_WM_CREATE(OnCreate)
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_SIZE(OnSize)
@@ -102,6 +58,7 @@ public:
 		COMMAND_ID_HANDLER(ID_TRAY_OPENHALITE, OnTrayOpenHalite)
 		COMMAND_ID_HANDLER(ID_TRAY_EXIT, OnTrayExit)
 		
+		REFLECT_NOTIFICATIONS()
 		CHAIN_MSG_MAP(CUpdateUI<HaliteWindow>)
 		CHAIN_MSG_MAP(CFrameWindowImpl<HaliteWindow>)
 		CHAIN_MSG_MAP(CDropFileTarget<HaliteWindow>)
@@ -160,11 +117,6 @@ protected:
 	
 	void updateWindow();
 	
-//	const string& getSelected() const;
-//	void setSelected(int index);
-//	void selectionChanged();
-//	void clearSelected();
-
 private:		
 	CCommandBarCtrl m_CmdBar;
 	CHorSplitterWindow m_Split;
@@ -176,13 +128,6 @@ private:
 	boost::scoped_ptr<AdvHaliteDialog> mp_advDlg;
 
 	ui_signal ui_;
-	config_signal config_;
-	single_selection_manager single_selection_manager_;
 	
-//	boost::signal<void ()> updateSelection_;
-	
-//	string selectedTorrent_;
 	unsigned WM_AreYouMe_;
-	
-	void updateConfigSettings();
 };

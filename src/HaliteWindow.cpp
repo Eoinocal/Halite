@@ -14,67 +14,11 @@
 
 #include "ConfigOptions.hpp"
 #include "GlobalIni.hpp"
+#include "ini/BitTConfig.hpp"
 #include "ini/Window.hpp"
-
-void single_selection_manager::sync_with_list(bool list_to_manager)
-{
-	if (list_to_manager)
-	{	
-		int itemPos = mp_list_->GetSelectionMark();		
-		if (itemPos != -1)
-		{
-			boost::array<wchar_t, MAX_PATH> pathBuffer;
-			mp_list_->GetItemText(itemPos, 0, pathBuffer.c_array(), pathBuffer.size());	
-			string selected = wcstombs(pathBuffer.data());
-			
-			if (selected_ != selected)
-			{
-				selected_ = selected;
-				signal();
-			}
-		}
-		else
-		{
-			selected_ = "";
-			signal();
-		}
-	}
-	else
-	{
-		LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
-		findInfo.flags = LVFI_STRING;
-		
-		wstring torrent_name = mbstowcs(selected_);		
-		findInfo.psz = torrent_name.c_str();
-		
-		int itemPos = mp_list_->FindItem(&findInfo, -1);	
-		
-		if (itemPos != mp_list_->GetSelectionMark())
-		{
-			mp_list_->SelectItem(itemPos);
-			signal();
-		}
-	}
-}
-
-void single_selection_manager::setSelected(int itemPos)
-{
-	mp_list_->SelectItem(itemPos);
-	sync_with_list(true);
-}
-
-void single_selection_manager::clear()
-{
-	mp_list_->DeleteItem(mp_list_->GetSelectionMark());
-	halite::bittorrent().removeTorrent(selected_);
-	
-	mp_list_->SelectItem(0);
-	sync_with_list(true);
-}
 
 HaliteWindow::HaliteWindow(unsigned areYouMe = 0) :
 	mp_list(new HaliteListViewCtrl()),
-	single_selection_manager_(mp_list),
 	WM_AreYouMe_(areYouMe)
 {}
 
@@ -90,30 +34,9 @@ BOOL HaliteWindow::PreTranslateMessage(MSG* pMsg)
 }
 
 LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
-{	
-	try
-	{
-	bool success = halite::bittorrent().listenOn(
-		std::make_pair(INI().bitTConfig().portFrom, INI().bitTConfig().portTo));
-	assert(success);	
-	}
-	catch(const std::exception& ex)
-	{
-		::MessageBoxA(0, ex.what(), "Init Exception", MB_ICONERROR|MB_OK);
-	}
+{
+	INI().bitTConfig().settingsChanged();
 	
-	halite::bittorrent().resumeAll();
-	
-	halite::bittorrent().setSessionLimits(
-		INI().bitTConfig().maxConnections, INI().bitTConfig().maxUploads);
-	halite::bittorrent().setSessionSpeed(
-		INI().bitTConfig().downRate, INI().bitTConfig().upRate);
-	
-/*	if (INI().remoteConfig().isEnabled)
-	{
-		halite::xmlRpc().bindHost(INI().remoteConfig().port);
-	}
-*/
 	RECT rc; GetClientRect(&rc);
 	SetMenu(0);
 	
@@ -140,17 +63,17 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	
 	// Create ListView and Dialog
 	mp_list->Create(m_Split.m_hWnd, rc, NULL, 
-		LVS_REPORT|LVS_SINGLESEL|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS);
+		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS);
 	
-	mp_dlg.reset(new HaliteDialog(ui(), selection())),
+	mp_dlg.reset(new HaliteDialog(ui(), mp_list->manager())),
 	mp_dlg->Create(m_Split.m_hWnd);
-	mp_dlg->ShowWindow(true);
+//	mp_dlg->ShowWindow(true);
 	
 	mp_advDlg.reset(new AdvHaliteDialog(this));
 	mp_advDlg->Create(m_Split.m_hWnd);
-//	mp_advDlg->ShowWindow(true);
+	mp_advDlg->ShowWindow(true);
 	
-	m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
+	m_Split.SetSplitterPanes(*mp_list, *mp_advDlg);
 	
 	// Create the tray icon.
 	m_trayIcon.Create(this, IDR_TRAY_MENU, L"Halite", 
@@ -176,52 +99,9 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	pLoop->AddMessageFilter(this);
 	pLoop->AddIdleHandler(this);
 	
-	selection().setSelected(0);
+	mp_list->manager().setSelected(0);
 	ui().update();
 	
-	return 0;
-}
-
-/*const string& HaliteWindow::getSelected() const 
-{
-	return selectedTorrent_; 
-}
-
-void HaliteWindow::setSelected(int index) 
-{
-	mp_list->SetSelectionMark(index);
-	selectionChanged();
-}
-
-void HaliteWindow::clearSelected()
-{
-	mp_list->DeleteItem(mp_list->GetSelectionMark());
-	halite::bittorrent().removeTorrent(selectedTorrent_);
-	selectedTorrent_ = "";	
-	
-	selectionChanged();
-}
-
-void HaliteWindow::selectionChanged()
-{
-	int itemPos = mp_list->GetSelectionMark();
-	
-	if (itemPos != -1)
-	{
-		boost::array<wchar_t, MAX_PATH> pathBuffer;
-		mp_list->GetItemText(itemPos, 0, pathBuffer.c_array(), pathBuffer.size());	
-		selectedTorrent_ = wcstombs(pathBuffer.data());
-	}
-	
-	mp_dlg->selectionChanged();
-}
-*/
-LRESULT HaliteWindow::OnNotify(int wParam, LPNMHDR lParam)
-{
-	if (lParam->hwndFrom == *mp_list && lParam->code == NM_CLICK)
-	{
-		selection().sync_with_list(true);
-	}
 	return 0;
 }
 
@@ -252,22 +132,6 @@ void HaliteWindow::updateWindow()
 	m_trayIcon.SetTooltipText(downloadRates.c_str());
 }
 
-void HaliteWindow::updateConfigSettings()
-{
-	halite::bittorrent().listenOn(
-		std::make_pair(INI().bitTConfig().portFrom, INI().bitTConfig().portTo));
-	
-	halite::bittorrent().setSessionLimits(
-		INI().bitTConfig().maxConnections, INI().bitTConfig().maxUploads);
-	halite::bittorrent().setSessionSpeed(
-		INI().bitTConfig().downRate, INI().bitTConfig().upRate);
-	
-//	if (INI().remoteConfig().isEnabled)
-//		halite::xmlRpc().bindHost(INI().remoteConfig().port);
-//	else
-//		halite::xmlRpc().stopHost();
-}
-
 void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)
 {
 	if (uTimerID == ID_UPDATE_TIMER) 
@@ -285,10 +149,14 @@ LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
 	switch (pCSD->dwData)
 	{
 		case HALITE_SENDING_CMD:
-		wstring filename(static_cast<wchar_t*>(pCSD->lpData), pCSD->cbData/sizeof(wchar_t));
-		ProcessFile(filename.c_str());
+		{	
+			wstring filename(static_cast<wchar_t*>(pCSD->lpData), pCSD->cbData/sizeof(wchar_t));
+			ProcessFile(filename.c_str());
+			break;
+		}
+		default:
+			break;
 	}
-
 	return 0;
 }
 
@@ -297,7 +165,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	try
 	{
 	
-	// Big changes due here.
+	// Big changes due here relating to custom savedirectory.
 	
 	path file(wcstombs(lpszPath), boost::filesystem::native);	
 	halite::bittorrent().addTorrent(file, globalModule().exePath().branch_path()/"incoming");
@@ -314,7 +182,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 		findInfo.psz = filename.c_str();
 		
 		int itemPos = mp_list->FindItem(&findInfo, -1);	
-		selection().setSelected(itemPos);
+		mp_list->manager().setSelected(itemPos);
 	}	
 	
 	}
@@ -421,7 +289,7 @@ LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	ConfigOptionsProp sheet(L"Settings");	
     sheet.DoModal();
 	
-	updateConfigSettings();
+	INI().bitTConfig().settingsChanged();
 	
 	return 0;
 }
@@ -440,13 +308,12 @@ LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL
 	return 0;
 }
 
-
 LRESULT HaliteWindow::OnHelp(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	ConfigOptionsProp sheet(L"Settings", 2);	
+	ConfigOptionsProp sheet(L"Settings", 3);	
     sheet.DoModal();
 	
-	updateConfigSettings();
+	INI().bitTConfig().settingsChanged();
 	
 	return 0;
 }

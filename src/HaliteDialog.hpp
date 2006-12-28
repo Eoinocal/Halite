@@ -6,7 +6,7 @@
 #include "Halite.hpp"
 
 class ui_signal;
-class single_selection_manager;
+class selection_manager;
 
 class HaliteDialog :
 	public CDialogImpl<HaliteDialog>,
@@ -22,7 +22,7 @@ protected:
 public:
 	enum { IDD = IDD_HALITEDLG };
 	
-	HaliteDialog(ui_signal& ui_sig, single_selection_manager& single_sel);	
+	HaliteDialog(ui_signal& ui_sig, selection_manager& single_sel);	
 	BOOL PreTranslateMessage(MSG* pMsg)	{ return this->IsDialogMessage(pMsg); }
 	
 	void saveStatus(); // ****** NEEDS TO BE ANOTHER SIGNAL CLASS ******
@@ -103,5 +103,5 @@ private:
 	float TranLimitDown, TranLimitUp;
 	
 	ui_signal& ui_;
-	single_selection_manager& single_selection_;
+	selection_manager& selection_manager_;
 };

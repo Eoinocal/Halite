@@ -16,7 +16,7 @@ LRESULT AdvHaliteDialog::onInitDialog(HWND, LPARAM)
 {	
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
-	m_tabCtrl.Attach(GetDlgItem(IDC_TAB));
+	m_tabCtrl.SubclassWindow(GetDlgItem(IDC_TAB));
 	
 	TCITEM tie = { TCIF_TEXT, 0, 0, L"Overview", 0, -1, 0 };
 	m_tabCtrl.InsertItem(0, &tie);
@@ -31,7 +31,6 @@ LRESULT AdvHaliteDialog::onInitDialog(HWND, LPARAM)
 	m_tabCtrl.AdjustRect(false, &rect);
 	
 	mp_dlg->SetWindowPos(HWND_TOP, rect.left, rect.top, 0, 0, SWP_NOSIZE);
-	
 	
 	return 0;
 }

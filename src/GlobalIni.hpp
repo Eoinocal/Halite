@@ -32,7 +32,6 @@ public:
 	BitTConfig& bitTConfig() { return *bitTConfig_; }
 	WindowConfig& windowConfig() { return *haliteWindow_; }
 	DialogConfig& dialogConfig() { return *haliteDialog_; }
-//	halite::TorrentConfig& torrentConfig() { return *torrentConfig_; }
 	
 	const boost::filesystem::path& workingFile() { return workingFile_; }
 	
@@ -47,7 +46,6 @@ private:
 	boost::scoped_ptr<BitTConfig> bitTConfig_;
 	boost::scoped_ptr<WindowConfig> haliteWindow_;
 	boost::scoped_ptr<DialogConfig> haliteDialog_;
-//	boost::scoped_ptr<halite::TorrentConfig> torrentConfig_;
 	
 	boost::filesystem::path workingFile_;
 };

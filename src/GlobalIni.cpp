@@ -10,7 +10,6 @@
 #include "ini/Dialog.hpp"
 #include "ini/Window.hpp"
 #include "ini/BitTConfig.hpp"
-//#include "ini/Torrent.hpp"
 #include "ini/Splash.hpp"
 
 using boost::serialization::make_nvp;
@@ -25,7 +24,6 @@ ArchivalData::ArchivalData() :
 	bitTConfig_(new BitTConfig()),
 	haliteWindow_(new WindowConfig()),
 	haliteDialog_(new DialogConfig()),
-//	torrentConfig_(new halite::TorrentConfig()),
 	generalConfig_(new GeneralConfig()),
 	remoteConfig_(new RemoteConfig()),
 	splashConfig_(new SplashConfig())	
@@ -57,7 +55,6 @@ bool ArchivalData::LoadData()
 			ia >> make_nvp("generalConfig", *generalConfig_);
 			ia >> make_nvp("remoteConfig", *remoteConfig_);
 			ia >> make_nvp("splashConfig", *splashConfig_);
-//			ia >> make_nvp("torrentConfig", *torrentConfig_);
 		}
 		return true;
 	}
@@ -85,8 +82,7 @@ bool ArchivalData::SaveData()
 		oa << make_nvp("haliteDialog", *haliteDialog_);
 		oa << make_nvp("generalConfig", *generalConfig_);	
 		oa << make_nvp("remoteConfig", *remoteConfig_);	
-		oa << make_nvp("splashConfig", *splashConfig_);
-//		oa << make_nvp("torrentConfig", *torrentConfig_);			
+		oa << make_nvp("splashConfig", *splashConfig_);		
 		return true;
 	}
 	catch(std::exception& e)

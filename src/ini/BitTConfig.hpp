@@ -36,6 +36,8 @@ public:
 		}
 	}
 	
+	void settingsChanged();
+	
 	friend class BitTorrentOptions;
 	friend class HaliteWindow;
 
@@ -52,7 +54,7 @@ private:
 	bool enableDHT;
 	
 	bool enableIPFilter;	
-	wstring ipFilterFile;
+	std::wstring ipFilterFile;
 };
 
 BOOST_CLASS_VERSION(BitTConfig, 1)
