@@ -413,6 +413,7 @@ STRINGTABLE
 BEGIN
     IDPANE_STATUS           "(D-U) 000.00kb/s - 000.00kb/s"
     IDPANE_CAPS_INDICATOR   "CAPS"
+    IDPANE_DHT              "DHT disabled, 100 nodes tracking 100 torrents."
 END
 
 #endif    // English (Ireland) resources

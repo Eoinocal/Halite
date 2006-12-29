@@ -16,6 +16,10 @@ public:
 		portFrom(6881),
 		portTo(6889),
 		enableDHT(false),
+		dhtMaxPeersReply(50),
+		dhtSearchBranching(5),		
+		dhtServicePort(6881),
+		dhtMaxFailCount(20),
 		enableIPFilter(false)
 	{}
 	
@@ -31,6 +35,10 @@ public:
 		ar & BOOST_SERIALIZATION_NVP(portTo);
 		if(version > 0) {
 			ar & BOOST_SERIALIZATION_NVP(enableDHT);
+			ar & BOOST_SERIALIZATION_NVP(dhtMaxPeersReply);
+			ar & BOOST_SERIALIZATION_NVP(dhtSearchBranching);
+			ar & BOOST_SERIALIZATION_NVP(dhtServicePort);
+			ar & BOOST_SERIALIZATION_NVP(dhtMaxFailCount);
 			ar & BOOST_SERIALIZATION_NVP(enableIPFilter);
 			ar & BOOST_SERIALIZATION_NVP(ipFilterFile);
 		}
@@ -52,6 +60,10 @@ private:
 	int portTo;
 	
 	bool enableDHT;
+	int dhtMaxPeersReply;
+	int dhtSearchBranching;
+	int dhtServicePort;
+	int dhtMaxFailCount;
 	
 	bool enableIPFilter;	
 	std::wstring ipFilterFile;

@@ -111,6 +111,15 @@ struct PeerDetail
 typedef shared_ptr<PeerDetail> PeerDetail_ptr;
 typedef std::vector<PeerDetail> PeerDetails;
 
+struct SessionDetail
+{
+	std::pair<double, double> sessionSpeed;
+	
+	bool dht_on;
+	int dht_nodes;
+	int dht_torrents;
+};
+
 class BitTorrent_impl;
 
 class BitTorrent
@@ -122,9 +131,15 @@ public:
 	int isListeningOn();
 	void stopListening();
 	
+	void ensure_dht_on();
+	void ensure_dht_off();
+	
 	void setSessionLimits(int maxConn, int maxUpload);
 	void setSessionSpeed(float download, float upload);
+	void setDhtSettings(int max_peers_reply, int search_branching, 
+		int service_port, int max_fail_count);
 	std::pair<double, double> sessionSpeed();
+	const SessionDetail getSessionDetails();
 	
 	void newTorrent(boost::filesystem::path filename, boost::filesystem::path files);
 	void addTorrent(boost::filesystem::path file, path saveDirectory);

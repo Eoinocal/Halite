@@ -251,6 +251,14 @@ bool TorrentInternal::isPaused() const
 	return paused_;
 }
 
+bool operator!=(const lbt::dht_settings& lhs, const lbt::dht_settings& rhs)
+{
+	return lhs.max_peers_reply != rhs.max_peers_reply ||
+		   lhs.search_branching != rhs.search_branching ||
+		   lhs.service_port != rhs.service_port ||
+           lhs.max_fail_count != rhs.max_fail_count;
+}
+
 class BitTorrent_impl
 {
 	friend class BitTorrent;
@@ -275,7 +283,8 @@ public:
 private:
 	BitTorrent_impl() :
 		theSession(lbt::fingerprint("HL", 0, 2, 0, 8)),
-		workingDirectory(globalModule().exePath().branch_path())
+		workingDirectory(globalModule().exePath().branch_path()),
+		dht_on_(false)
 	{
 		boost::filesystem::ifstream ifs(workingDirectory/"Torrents.xml");
 		if (ifs)
@@ -292,6 +301,9 @@ private:
 	lbt::session theSession;
 	TorrentMap torrents;
 	const path workingDirectory;
+	
+	bool dht_on_;
+	lbt::dht_settings dht_settings_;
 };
 
 BitTorrent::BitTorrent() :
@@ -347,6 +359,34 @@ void BitTorrent::stopListening()
 	pimpl->theSession.listen_on(make_pair(0, 0));
 }
 
+void BitTorrent::ensure_dht_on()
+{
+	if (!pimpl->dht_on_)
+	{
+		lbt::entry dht_state;
+		
+		if (exists(pimpl->workingDirectory/"dht_state.bin"))
+			dht_state = haldecode(pimpl->workingDirectory/"dht_state.bin");
+		
+		try
+		{
+		pimpl->theSession.start_dht(dht_state);
+		pimpl->dht_on_ = true;
+		}
+		catch(...)
+		{}
+	}
+}
+
+void BitTorrent::ensure_dht_off()
+{
+	if (pimpl->dht_on_)
+	{
+		pimpl->theSession.stop_dht();		
+		pimpl->dht_on_ = false;
+	}
+}
+
 void BitTorrent::setSessionLimits(int maxConn, int maxUpload)
 {		
 	pimpl->theSession.set_max_uploads(maxUpload);
@@ -361,10 +401,42 @@ void BitTorrent::setSessionSpeed(float download, float upload)
 	pimpl->theSession.set_upload_rate_limit(up);
 }
 
+void BitTorrent::setDhtSettings(int max_peers_reply, int search_branching, 
+	int service_port, int max_fail_count)
+{
+	lbt::dht_settings settings;
+	settings.max_peers_reply = max_peers_reply;
+	settings.search_branching = search_branching;
+	settings.service_port = service_port;
+	settings.max_fail_count = max_fail_count;
+	
+	if (pimpl->dht_settings_ != settings)
+	{
+		pimpl->dht_settings_ = settings;
+		pimpl->theSession.set_dht_settings(pimpl->dht_settings_);
+	}
+}
+
 pair<double, double> BitTorrent::sessionSpeed() 
 {
 	lbt::session_status sStatus = pimpl->theSession.status();		
 	return pair<double, double>(sStatus.download_rate, sStatus.upload_rate);
+}
+
+const SessionDetail BitTorrent::getSessionDetails()
+{
+	SessionDetail details;
+	
+	lbt::session_status status = pimpl->theSession.status();
+	lbt::session_settings settings = pimpl->theSession.settings();
+	
+	details.sessionSpeed = pair<double, double>(status.download_rate, status.upload_rate);
+	
+	details.dht_on = pimpl->dht_on_;
+	details.dht_nodes = status.m_dht_nodes;
+	details.dht_torrents = status.m_dht_torrents;
+	
+	return details;
 }
 
 lbt::entry BitTorrent_impl::prepTorrent(path filename, path saveDirectory)
@@ -532,6 +604,10 @@ void BitTorrent::resumeAll()
 			(*iter).second.setConnectionLimit();
 			
 			++iter;
+			}
+			catch(const lbt::duplicate_torrent&)
+			{
+				++iter; // Harmless, don't worry about it.
 			}
 			catch(std::exception &ex) 
 			{

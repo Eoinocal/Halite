@@ -51,7 +51,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	m_hWndStatusBar = m_StatusBar.Create(*this);
 	UIAddStatusBar(m_hWndStatusBar);
 	
-	int panes[] = {ID_DEFAULT_PANE, IDPANE_STATUS, IDPANE_CAPS_INDICATOR};
+	int panes[] = {ID_DEFAULT_PANE, IDPANE_DHT, IDPANE_STATUS};
 	m_StatusBar.SetPanes(panes, 3, false);
 	
 	// Create the Splitter Control
@@ -67,13 +67,13 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	
 	mp_dlg.reset(new HaliteDialog(ui(), mp_list->manager())),
 	mp_dlg->Create(m_Split.m_hWnd);
-//	mp_dlg->ShowWindow(true);
+	mp_dlg->ShowWindow(true);
 	
 	mp_advDlg.reset(new AdvHaliteDialog(this));
 	mp_advDlg->Create(m_Split.m_hWnd);
-	mp_advDlg->ShowWindow(true);
+//	mp_advDlg->ShowWindow(true);
 	
-	m_Split.SetSplitterPanes(*mp_list, *mp_advDlg);
+	m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
 	
 	// Create the tray icon.
 	m_trayIcon.Create(this, IDR_TRAY_MENU, L"Halite", 
@@ -114,6 +114,8 @@ LRESULT HaliteWindow::OnTrayNotification(UINT /*uMsg*/, WPARAM wParam, LPARAM lP
 
 void HaliteWindow::updateWindow()
 {
+	halite::SessionDetail details = halite::bittorrent().getSessionDetails();
+	
 	int port = halite::bittorrent().isListeningOn();
 	if (port > -1)
 	{
@@ -128,8 +130,20 @@ void HaliteWindow::updateWindow()
 			% (speed.first/1024) 
 			% (speed.second/1024)).str();
 	
-	UISetText(1, downloadRates.c_str());	
+	UISetText(2, downloadRates.c_str());	
 	m_trayIcon.SetTooltipText(downloadRates.c_str());
+	
+	if (details.dht_on)
+	{
+		wstring dht = (wformat(L"DHT enabled, %1% nodes tracking %2% torrents")
+			% details.dht_nodes % details.dht_torrents).str();
+			
+		UISetText(1, dht.c_str());
+	}
+	else
+	{
+		UISetText(1, L"DHT disabled");
+	}
 }
 
 void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)

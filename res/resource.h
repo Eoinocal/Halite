@@ -11,6 +11,7 @@
 #define IDPANE_STATUS                   109
 #define IDPANE_CAPS_INDICATOR           110
 #define IDD_NEWTORRENT                  111
+#define IDPANE_DHT                      111
 #define IDD_CONFIGGENERAL               112
 #define IDD_ADVHALITEDLG                114
 #define IDI_ICON1                       114
@@ -71,7 +72,6 @@
 #define IDC_CHECK1                      1045
 #define IDC_RADIO1                      1046
 #define IDC_BC_DHT                      1048
-#define IDC_BC_DHT2                     1049
 #define IDC_BC_FILTERCHECK              1049
 #define IDC_BC_FILTERSTATIC             1050
 #define IDC_BC_FILTEREDIT               1051
