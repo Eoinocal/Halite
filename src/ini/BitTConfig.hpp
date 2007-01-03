@@ -40,7 +40,6 @@ public:
 			ar & BOOST_SERIALIZATION_NVP(dhtServicePort);
 			ar & BOOST_SERIALIZATION_NVP(dhtMaxFailCount);
 			ar & BOOST_SERIALIZATION_NVP(enableIPFilter);
-			ar & BOOST_SERIALIZATION_NVP(ipFilterFile);
 		}
 	}
 	
@@ -50,6 +49,8 @@ public:
 	friend class HaliteWindow;
 
 private:
+	void settingsThread();
+	
 	int maxConnections;
 	int maxUploads;
 	
@@ -65,8 +66,7 @@ private:
 	int dhtServicePort;
 	int dhtMaxFailCount;
 	
-	bool enableIPFilter;	
-	std::wstring ipFilterFile;
+	bool enableIPFilter;
 };
 
 BOOST_CLASS_VERSION(BitTConfig, 1)

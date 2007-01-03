@@ -116,16 +116,16 @@ END
 // Dialog
 //
 
-IDD_CONFIGREMOTE DIALOGEX 0, 0, 242, 94
+IDD_CONFIGREMOTE DIALOGEX 0, 0, 283, 94
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Remote Control"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    GROUPBOX        "Remote Control Options",IDC_STATIC,6,6,228,30
+    GROUPBOX        "Remote Control Options",IDC_STATIC,6,6,271,30
     CONTROL         "Enable Remote Control",IDC_REMOTECTRL,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,12,18,96,12
-    RTEXT           "Port to listen on : ",IDC_STATIC,114,19,66,11
-    EDITTEXT        IDC_REMOTEPORT,180,18,42,12,ES_AUTOHSCROLL | WS_DISABLED
-    LTEXT           "Disabled",IDC_STATIC,103,47,72,22
+    RTEXT           "Port to listen on : ",IDC_STATIC,159,19,66,11,WS_DISABLED
+    EDITTEXT        IDC_REMOTEPORT,229,18,42,12,ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "*** Disabled ***",IDC_STATIC,104,19,59,11
 END
 
 IDD_CONFIGBIT DIALOGEX 0, 0, 283, 131
@@ -133,68 +133,70 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "BitTorrent"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    GROUPBOX        "Global Options",IDC_STATIC,7,6,269,96
-    EDITTEXT        IDC_BC_MAXCONN,96,18,42,12,ES_AUTOHSCROLL
-    RTEXT           "Total max connections :",IDC_STATIC,12,20,78,12
-    RTEXT           "Total upload slots :",IDC_STATIC,12,33,78,12
-    EDITTEXT        IDC_BC_MAXUP,96,31,42,12,ES_AUTOHSCROLL
-    RTEXT           "Attempt to  listen on a port number from",IDC_STATIC,14,50,130,12
-    RTEXT           "to",IDC_STATIC,204,50,9,10
-    EDITTEXT        IDC_BC_PORTFROM,150,48,54,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_BC_PORTTO,216,48,54,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_BC_DOWNRATE,228,18,42,12,ES_AUTOHSCROLL
-    RTEXT           "Download Rate (kb/s) :",IDC_STATIC,144,20,78,12
-    RTEXT           "Upload Rate (kb/s) :",IDC_STATIC,150,33,72,12
-    EDITTEXT        IDC_BC_UPRATE,228,31,42,12,ES_AUTOHSCROLL
+    GROUPBOX        "Global Options",IDC_STATIC,6,6,271,93
+    EDITTEXT        IDC_BC_MAXCONN,95,18,42,12,ES_AUTOHSCROLL
+    RTEXT           "Total max connections :",IDC_STATIC,11,20,78,12
+    RTEXT           "Total upload slots :",IDC_STATIC,11,33,78,12
+    EDITTEXT        IDC_BC_MAXUP,95,31,42,12,ES_AUTOHSCROLL
+    RTEXT           "Attempt to  listen on a port number from",IDC_STATIC,12,50,130,12
+    RTEXT           "to",IDC_STATIC,203,50,9,10
+    EDITTEXT        IDC_BC_PORTFROM,147,48,54,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BC_PORTTO,217,48,54,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BC_DOWNRATE,229,18,42,12,ES_AUTOHSCROLL
+    RTEXT           "Download Rate (kb/s) :",IDC_STATIC,145,20,78,12
+    RTEXT           "Upload Rate (kb/s) :",IDC_STATIC,151,33,72,12
+    EDITTEXT        IDC_BC_UPRATE,229,31,42,12,ES_AUTOHSCROLL
     CONTROL         "Enable DHT. (Note neither DHT nor PEX will apply to private torrents)",IDC_BC_DHT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,66,252,12
-    CONTROL         "Enable IP filtering.",IDC_BC_FILTERCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,80,76,12
-    RTEXT           "ipfilter.dat file :",IDC_BC_FILTERSTATIC,90,82,54,12,WS_DISABLED
-    EDITTEXT        IDC_BC_FILTEREDIT,150,80,96,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "...",IDC_BC_FILTERBTN,252,80,18,12,WS_DISABLED
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,66,252,12
+    CONTROL         "Enable IP filtering.",IDC_BC_FILTERCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,81,76,12
+    PUSHBUTTON      "Import ipfilter.dat",IDC_BC_FILTERLOAD,196,80,75,14,WS_DISABLED
+    PUSHBUTTON      "Clear IP database",IDC_BC_FILTERCLEAR,115,80,75,14,WS_DISABLED
 END
 
-IDD_ABOUT DIALOGEX 0, 0, 242, 115
+IDD_ABOUT DIALOGEX 0, 0, 283, 125
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    GROUPBOX        "Program Information",IDC_STATIC,5,7,230,101
-    LTEXT           "Halite is a BitTorrent client based on the excellent libtorrent library written by Arvid Norberg of Rasterbar Software. The program is written in C++ and is open sourced under a BSD and/or Boost software licence.",IDC_STATIC,12,18,216,33
-    LTEXT           "Some important acknowledgements to the authors whose work contributed to Halite; Arvid Norbery for libTorrent, Christopher Kohlhoff for Boost.ASIO and Paul Davey (mattahan) for the icon.",IDC_STATIC,12,56,216,25
-    RTEXT           "Alpha release v 0.2.7, Revision 107.",IDC_STATIC,103,96,129,9
+    GROUPBOX        "Program Information",IDC_STATIC,5,7,271,111
+    LTEXT           "Halite is a BitTorrent client based on the excellent libtorrent library written by Arvid Norberg of Rasterbar Software. The program is written in C++ and is open sourced under a MIT and/or Boost software licence.",IDC_STATIC,12,18,257,27
+    LTEXT           "This project has only been possible thanks to othes. I'd like to acknowledge some of those people.",IDC_STATIC,12,47,257,18
+    RTEXT           "Release v 0.2.8, Revision 107.",IDC_STATIC,145,106,129,9
+    LTEXT           "nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon.",IDC_STATIC,12,91,257,11
+    LTEXT           "Arvid Norberg - www.rasterbar.com - Author of the libtorrent library.",IDC_STATIC,12,68,257,11
+    LTEXT           "Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO.",IDC_STATIC,12,80,257,11
 END
 
-IDD_HALITEDLG DIALOGEX 0, 0, 318, 73
+IDD_HALITEDLG DIALOGEX 0, 0, 362, 73
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "Pause",BTNPAUSE,262,3,51,14
-    CONTROL         "",TORRENTPROG,"msctls_progress32",WS_BORDER,4,52,309,8
-    PUSHBUTTON      "Reannounce",BTNREANNOUNCE,262,19,51,14
-    PUSHBUTTON      "Remove",BTNREMOVE,262,35,51,14
+    DEFPUSHBUTTON   "Pause",BTNPAUSE,306,3,51,14
+    CONTROL         "",TORRENTPROG,"msctls_progress32",WS_BORDER,4,52,353,8
+    PUSHBUTTON      "Reannounce",BTNREANNOUNCE,306,19,51,14
+    PUSHBUTTON      "Remove",BTNREMOVE,306,35,51,14
     RTEXT           "Name:",IDC_STATIC,8,3,30,8
     LTEXT           "N/A",IDC_AVAIL,40,39,36,8,SS_ENDELLIPSIS
     RTEXT           "Status:",IDC_STATIC,8,27,30,8
     RTEXT           "Time left:",IDC_STATIC,2,39,36,8
     RTEXT           "Tracker:",IDC_STATIC,8,15,30,8
-    LTEXT           "N/A",IDC_STATUS,40,27,136,8,SS_ENDELLIPSIS
-    LTEXT           "N/A",IDC_TRACKER,40,15,136,8,SS_PATHELLIPSIS
-    LTEXT           "N/A",IDC_NAME,40,3,136,10,SS_ENDELLIPSIS
-    CONTROL         "",LISTPEERS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,4,64,309,6
-    EDITTEXT        IDC_EDITTLU,229,36,27,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDITTLD,189,36,27,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDITNCD,189,12,28,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDITNCU,229,12,27,12,ES_AUTOHSCROLL
-    RTEXT           "Max connection Limits:",IDC_NC,178,3,73,8
-    RTEXT           "Transfer rates (kb/s):",IDC_TL,178,27,70,8
-    RTEXT           "T",IDC_NCD,179,15,8,8
-    RTEXT           "U",IDC_NCU,218,15,8,8
-    RTEXT           "U",IDC_TLU,218,39,8,8
-    RTEXT           "D",IDC_TLD,179,39,8,8
-    RTEXT           "Completed:",IDC_STATIC,75,39,39,8
-    LTEXT           "N/A",IDC_COMPLETE,116,39,59,8,SS_PATHELLIPSIS
-    GROUPBOX        "",IDC_DETAILS_GROUP,1,-4,315,77,0,WS_EX_TRANSPARENT
+    LTEXT           "N/A",IDC_STATUS,40,27,145,8,SS_ENDELLIPSIS
+    LTEXT           "N/A",IDC_TRACKER,40,15,144,8,SS_PATHELLIPSIS
+    LTEXT           "N/A",IDC_NAME,40,3,144,10,SS_ENDELLIPSIS
+    CONTROL         "",LISTPEERS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,4,64,353,6
+    EDITTEXT        IDC_EDITTLU,267,36,34,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDITTLD,216,36,34,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDITNCD,216,12,34,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDITNCU,267,12,34,12,ES_AUTOHSCROLL
+    LTEXT           "Torrent connection limits:",IDC_NC,192,3,82,8
+    LTEXT           "Torrent transfer rates (kb/s):",IDC_TL,192,27,97,8
+    RTEXT           "Total",IDC_NCD,192,15,18,8
+    RTEXT           "Up",IDC_NCU,251,15,12,8
+    RTEXT           "Up",IDC_TLU,252,39,11,8
+    RTEXT           "Down",IDC_TLD,192,39,20,8
+    RTEXT           "Completed:",IDC_STATIC,84,39,39,8
+    LTEXT           "N/A",IDC_COMPLETE,125,39,59,8,SS_WORDELLIPSIS
+    GROUPBOX        "",IDC_DETAILS_GROUP,1,-4,359,77,0,WS_EX_TRANSPARENT
 END
 
 IDD_CLOSESPLASH DIALOGEX 0, 0, 191, 54
@@ -203,9 +205,9 @@ EXSTYLE WS_EX_PALETTEWINDOW | WS_EX_STATICEDGE
 CAPTION "Halite shutting down..."
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    ICON            IDR_APP_ICON,IDC_STATIC,7,10,21,20
+    ICON            IDR_APP_ICON,IDC_STATIC,7,10,20,20
     LTEXT           "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close.",IDC_STATIC,35,7,149,27
-    CONTROL         "Show this message in future.",IDC_SPLASH_MSG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,77,35,107,12
+    CONTROL         "Show this message in future",IDC_SPLASH_MSG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,83,35,101,12
 END
 
 IDD_NEWTORRENT DIALOGEX 0, 0, 229, 132
@@ -232,16 +234,16 @@ BEGIN
     CONTROL         "",IDC_TAB,"SysTabControl32",0x0,1,1,316,71
 END
 
-IDD_CONFIGGENERAL DIALOGEX 0, 0, 242, 90
+IDD_CONFIGGENERAL DIALOGEX 0, 0, 283, 90
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "General"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Allow only one instance to run.",IDC_GENERAL_ONEINST,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,16,114,14
-    GROUPBOX        "General Settings",IDC_STATIC,7,6,228,77
-    CONTROL         "Advanced GUI",IDC_GENERAL_ADVGUI,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,14,29,118,14
-    CONTROL         "Minimize to tray.",IDC_GENERAL_TRAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,131,16,98,14
+    GROUPBOX        "General Settings",IDC_STATIC,7,6,271,77
+    CONTROL         "Advanced GUI",IDC_GENERAL_ADVGUI,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,14,42,118,14
+    CONTROL         "Minimize to tray.",IDC_GENERAL_TRAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,29,98,14
 END
 
 IDD_THEMETEST DIALOGEX 0, 0, 186, 93
@@ -265,6 +267,16 @@ CAPTION "Halite Debug Dialog"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     EDITTEXT        ED_CON,3,3,246,99,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | WS_VSCROLL
+END
+
+IDD_PROGRESS DIALOGEX 0, 0, 191, 46
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+EXSTYLE WS_EX_TOOLWINDOW | WS_EX_STATICEDGE
+CAPTION "Halite importing IP ranges..."
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_PROG_PROGRESS,"msctls_progress32",WS_BORDER,6,6,180,12
+    PUSHBUTTON      "Cancel",IDC_PROG_CANCEL,60,24,66,15
 END
 
 
@@ -312,15 +324,15 @@ BEGIN
     IDD_CONFIGREMOTE, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 235
+        RIGHTMARGIN, 277
         TOPMARGIN, 7
         BOTTOMMARGIN, 87
     END
 
     IDD_CONFIGBIT, DIALOG
     BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 276
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 277
         TOPMARGIN, 7
         BOTTOMMARGIN, 124
     END
@@ -328,9 +340,14 @@ BEGIN
     IDD_ABOUT, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 235
+        RIGHTMARGIN, 276
         TOPMARGIN, 7
-        BOTTOMMARGIN, 108
+        BOTTOMMARGIN, 118
+    END
+
+    IDD_HALITEDLG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 361
     END
 
     IDD_CLOSESPLASH, DIALOG
@@ -352,7 +369,7 @@ BEGIN
     IDD_CONFIGGENERAL, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 235
+        RIGHTMARGIN, 278
         TOPMARGIN, 7
         BOTTOMMARGIN, 83
     END
@@ -371,6 +388,14 @@ BEGIN
         RIGHTMARGIN, 249
         TOPMARGIN, 3
         BOTTOMMARGIN, 102
+    END
+
+    IDD_PROGRESS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 184
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 39
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -411,9 +436,14 @@ IDR_APP_ICON            ICON                    "Halite.ico"
 
 STRINGTABLE 
 BEGIN
-    IDPANE_STATUS           "(D-U) 000.00kb/s - 000.00kb/s"
+    IDPANE_STATUS           "(D-U) 00.00kb/s - 00.00kb/s"
     IDPANE_CAPS_INDICATOR   "CAPS"
-    IDPANE_DHT              "DHT disabled, 100 nodes tracking 100 torrents."
+    IDPANE_DHT              "0 DHT node(s) tracking 0 torrent(s)"
+END
+
+STRINGTABLE 
+BEGIN
+    IDPANE_FILTER           "Filtering 000000 ranges."
 END
 
 #endif    // English (Ireland) resources

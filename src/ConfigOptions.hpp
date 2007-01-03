@@ -2,7 +2,9 @@
 #pragma once
  
 #include "stdAfx.hpp"
+#include "Halite.hpp"
 #include "DdxEx.hpp"
+#include "CSSFileDialog.hpp"
 
 #include "ini/Window.hpp"
 #include "ini/General.hpp"
@@ -60,7 +62,8 @@ public:
  
     BEGIN_MSG_MAP(BitTorrentOptions)
         MSG_WM_INITDIALOG(OnInitDialog)
-		COMMAND_ID_HANDLER_EX(IDC_BC_FILTERBTN, onFilterBtn)
+		COMMAND_ID_HANDLER_EX(IDC_BC_FILTERLOAD, onFilterImport)
+		COMMAND_ID_HANDLER_EX(IDC_BC_FILTERCLEAR, onFilterClear)
 		COMMAND_ID_HANDLER_EX(IDC_BC_FILTERCHECK, onFilterCheck)	
         CHAIN_MSG_MAP(CPropertyPageImpl<BitTorrentOptions>)
     END_MSG_MAP()
@@ -74,27 +77,13 @@ public:
         DDX_INT(IDC_BC_PORTTO, INI().bitTConfig().portTo)
         DDX_CHECK(IDC_BC_DHT, INI().bitTConfig().enableDHT)
         DDX_CHECK(IDC_BC_FILTERCHECK, INI().bitTConfig().enableIPFilter)
-		DDX_EX_STDWSTRING(IDC_BC_FILTEREDIT, INI().bitTConfig().ipFilterFile);
     END_DDX_MAP()
  
     BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)
 	{
-		BOOL retval =  DoDataExchange(false);
+		BOOL retval =  DoDataExchange(false);	
 		
-		LRESULT result = ::SendMessage(GetDlgItem(IDC_BC_FILTERCHECK), BM_GETCHECK, 0, 0);
-		
-		if (result == BST_CHECKED)
-		{
-			::EnableWindow(GetDlgItem(IDC_BC_FILTERSTATIC), true);
-			::EnableWindow(GetDlgItem(IDC_BC_FILTEREDIT), true);
-			::EnableWindow(GetDlgItem(IDC_BC_FILTERBTN), true);
-		}
-		else
-		{
-			::EnableWindow(GetDlgItem(IDC_BC_FILTERSTATIC), false);
-			::EnableWindow(GetDlgItem(IDC_BC_FILTEREDIT), false);
-			::EnableWindow(GetDlgItem(IDC_BC_FILTERBTN), false);		
-		}
+		onFilterCheck(0, 0, GetDlgItem(IDC_BC_FILTERCHECK));
 		
 		return retval;
 	}
@@ -110,25 +99,22 @@ public:
 		
 		if (result == BST_CHECKED)
 		{
-			::EnableWindow(GetDlgItem(IDC_BC_FILTERSTATIC), true);
-			::EnableWindow(GetDlgItem(IDC_BC_FILTEREDIT), true);
-			::EnableWindow(GetDlgItem(IDC_BC_FILTERBTN), true);
+			::EnableWindow(GetDlgItem(IDC_BC_FILTERCLEAR), true);
+			::EnableWindow(GetDlgItem(IDC_BC_FILTERLOAD), true);
 		}
 		else
 		{
-			::EnableWindow(GetDlgItem(IDC_BC_FILTERSTATIC), false);
-			::EnableWindow(GetDlgItem(IDC_BC_FILTEREDIT), false);
-			::EnableWindow(GetDlgItem(IDC_BC_FILTERBTN), false);		
+			::EnableWindow(GetDlgItem(IDC_BC_FILTERCLEAR), false);
+			::EnableWindow(GetDlgItem(IDC_BC_FILTERLOAD), false);		
 		}
 	}	
 	
-	void onFilterBtn(UINT, int, HWND hWnd)
+	void onFilterClear(UINT, int, HWND hWnd)
 	{
-		CSSFileDialog dlgOpen(TRUE, NULL, NULL, OFN_HIDEREADONLY, L"eMule ipfilter.dat. (*.dat)|*.dat|", m_hWnd);
+		halite::bittorrent().clearIpFilter();
+	}
 	
-		if (dlgOpen.DoModal() == IDOK) 
-			SetDlgItemText(IDC_BC_FILTEREDIT, dlgOpen.m_ofn.lpstrFile);	
-	}	
+	void onFilterImport(UINT, int, HWND hWnd);
 };
 
 class RemoteOptions :

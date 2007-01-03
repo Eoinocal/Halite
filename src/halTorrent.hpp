@@ -4,12 +4,16 @@
 #include <string>
 #include <vector>
 
+#include <boost/function.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/smart_ptr.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/fstream.hpp>
+
+#include <asio/ip/tcp.hpp>
+#include <asio/ip/udp.hpp>
 
 using boost::filesystem::path;
 
@@ -113,13 +117,20 @@ typedef std::vector<PeerDetail> PeerDetails;
 
 struct SessionDetail
 {
-	std::pair<double, double> sessionSpeed;
+	int port;
+	
+	std::pair<double, double> speed;
 	
 	bool dht_on;
-	int dht_nodes;
-	int dht_torrents;
+	size_t dht_nodes;
+	size_t dht_torrents;
+	
+	bool ip_filter_on;
+	size_t ip_ranges_filtered;
 };
 
+typedef boost::function<bool (size_t, size_t, size_t)> filterCallback;
+typedef boost::function<bool (size_t)> progressCallback;
 class BitTorrent_impl;
 
 class BitTorrent
@@ -134,11 +145,19 @@ public:
 	void ensure_dht_on();
 	void ensure_dht_off();
 	
+	void ensure_ip_filter_on(progressCallback fn);
+	void ensure_ip_filter_off();
+	void ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 last);
+	void ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last);
+	void ip_filter_import_dat(boost::filesystem::path file, progressCallback fn, bool octalFix);
+	size_t ip_filter_size();
+	void clearIpFilter();
+	
 	void setSessionLimits(int maxConn, int maxUpload);
 	void setSessionSpeed(float download, float upload);
 	void setDhtSettings(int max_peers_reply, int search_branching, 
 		int service_port, int max_fail_count);
-	std::pair<double, double> sessionSpeed();
+	
 	const SessionDetail getSessionDetails();
 	
 	void newTorrent(boost::filesystem::path filename, boost::filesystem::path files);

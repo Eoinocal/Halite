@@ -6,11 +6,19 @@
 #include <iterator>
 #include <iomanip>
 #include <map>
+#include <algorithm>
 
 #include <boost/bind.hpp>
 #include <boost/array.hpp>
+#include <boost/regex.hpp>
+#include <boost/lambda/lambda.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
+#include <boost/serialization/vector.hpp>
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/split_free.hpp>
 
@@ -19,10 +27,89 @@
 #include <libtorrent/entry.hpp>
 #include <libtorrent/bencode.hpp>
 #include <libtorrent/session.hpp>
+#include <libtorrent/ip_filter.hpp>
 #include <libtorrent/torrent_handle.hpp>
 #include <libtorrent/peer_connection.hpp>
 
 #include "halTorrent.hpp"
+
+namespace boost {
+namespace serialization {
+
+#define IP_SAVE  3
+
+template<class Archive, class address_type>
+void save(Archive& ar, const address_type& ip, const unsigned int version)
+{	
+#if IP_SAVE == 1
+	typename address_type::bytes_type bytes = ip.to_bytes();	
+	for (typename address_type::bytes_type::iterator i=bytes.begin(); i != bytes.end(); ++i)
+		ar & BOOST_SERIALIZATION_NVP(*i);
+#elif IP_SAVE == 2
+	string dotted = ip.to_string(); 
+	ar & BOOST_SERIALIZATION_NVP(dotted);
+#elif IP_SAVE == 3
+	unsigned long addr = ip.to_ulong();	
+	ar & BOOST_SERIALIZATION_NVP(addr);
+#endif
+}
+
+template<class Archive, class address_type>
+void load(Archive& ar, address_type& ip, const unsigned int version)
+{	
+#if IP_SAVE == 1
+	typename address_type::bytes_type bytes;	
+	for (typename address_type::bytes_type::iterator i=bytes.begin(); i != bytes.end(); ++i)
+		ar & BOOST_SERIALIZATION_NVP(*i);
+	
+	ip = address_type(bytes);
+#elif IP_SAVE == 2	
+	string dotted;
+	ar & BOOST_SERIALIZATION_NVP(dotted);
+	
+	ip = address_type::from_string(dotted);
+#elif IP_SAVE == 3
+	unsigned long addr;
+	ar & BOOST_SERIALIZATION_NVP(addr);
+	
+	ip = address_type(addr);
+//		::MessageBoxA(0, (format("%1%: %2%") 
+//			% ip.to_string() % addr).str().c_str(), "Load ipfilter!", 0);
+
+#endif
+}
+
+template<class Archive, class address_type>
+void serialize(Archive& ar, libtorrent::ip_range<address_type>& addr, const unsigned int version)
+{	
+	ar & BOOST_SERIALIZATION_NVP(addr.first);
+	ar & BOOST_SERIALIZATION_NVP(addr.last);
+	addr.flags = libtorrent::ip_filter::blocked;
+}
+
+} // namespace serialization
+} // namespace boost
+
+BOOST_SERIALIZATION_SPLIT_FREE(asio::ip::address_v4)
+BOOST_SERIALIZATION_SPLIT_FREE(asio::ip::address_v6)
+
+namespace libtorrent
+{
+template<class Addr>
+bool operator==(const libtorrent::ip_range<Addr>& lhs, const int flags)
+{
+	return (lhs.flags == flags);
+}
+
+std::ostream& operator<<(std::ostream& os, libtorrent::ip_range<asio::ip::address_v4>& ip)
+{
+	os << ip.first.to_ulong();
+	os << ip.last.to_ulong();
+	
+	return os;
+}
+
+}
 
 namespace halite 
 {
@@ -259,6 +346,39 @@ bool operator!=(const lbt::dht_settings& lhs, const lbt::dht_settings& rhs)
            lhs.max_fail_count != rhs.max_fail_count;
 }
 
+template<typename Addr>
+void write_range(fs::ofstream& ofs, const lbt::ip_range<Addr>& range)
+{ 
+	const typename Addr::bytes_type first = range.first.to_bytes();
+	const typename Addr::bytes_type last = range.last.to_bytes();
+	ofs.write((char*)first.elems, first.size());
+	ofs.write((char*)last.elems, last.size());
+}
+
+template<typename Addr>
+void write_vec_range(fs::ofstream& ofs, const std::vector<lbt::ip_range<Addr> >& vec)
+{ 
+	ofs << vec.size();
+	
+	for (typename std::vector<lbt::ip_range<Addr> >::const_iterator i=vec.begin(); 
+		i != vec.end(); ++i)
+	{
+		write_range(ofs, *i);
+	}
+}
+
+template<typename Addr>
+void read_range_to_filter(fs::ifstream& ifs, lbt::ip_filter& ip_filter)
+{ 
+	typename Addr::bytes_type first;
+	typename Addr::bytes_type last;
+	ifs.read((char*)first.elems, first.size());
+	ifs.read((char*)last.elems, last.size());	
+	
+	ip_filter.add_rule(Addr(first), Addr(last),
+		lbt::ip_filter::blocked);
+}
+
 class BitTorrent_impl
 {
 	friend class BitTorrent;
@@ -268,31 +388,57 @@ public:
 	{
 		try
 		{
-			boost::filesystem::ofstream ofs(workingDirectory/"Torrents.xml");
-			boost::archive::xml_oarchive oa(ofs);
+		{	fs::ofstream ofs(workingDirectory/"Torrents.xml");
+			boost::archive::xml_oarchive oxa(ofs);
 			
-			oa << make_nvp("torrents", torrents);
-			return;
-		}
-		catch(const std::exception&)
-		{
-			return;
+			oxa << make_nvp("torrents", torrents);
 		}	
+		if (dht_on_) 
+		{	
+			halencode(workingDirectory/"DHTState.bin", theSession.dht_state());
+		}
+		if (ip_filter_changed_)
+		{	
+			fs::ofstream ofs(workingDirectory/"IPFilter.bin", std::ios::binary);
+//			boost::archive::binary_oarchive oba(ofs);
+			
+			lbt::ip_filter::filter_tuple_t vectors = ip_filter_.export_filter();	
+			
+			std::vector<lbt::ip_range<asio::ip::address_v4> > v4(vectors.get<0>());
+			std::vector<lbt::ip_range<asio::ip::address_v6> > v6(vectors.get<1>());
+			
+			v4.erase(std::remove(v4.begin(), v4.end(), 0), v4.end());
+			v6.erase(std::remove(v6.begin(), v6.end(), 0), v6.end());
+
+			write_vec_range(ofs, v4);
+//			write_vec_range(ofs, v6);
+		}	
+		}
+		catch(std::exception& e)
+		{
+			::MessageBox(0, (wformat(L"Save data exception: %1%") % e.what()).str().c_str(), L"Exception", 0);
+		}
 	}
 	
 private:
 	BitTorrent_impl() :
 		theSession(lbt::fingerprint("HL", 0, 2, 0, 8)),
 		workingDirectory(globalModule().exePath().branch_path()),
+		ip_filter_on_(false),
+		ip_filter_loaded_(false),
+		ip_filter_changed_(false),
+		ip_filter_count_(0),
 		dht_on_(false)
 	{
-		boost::filesystem::ifstream ifs(workingDirectory/"Torrents.xml");
+	{	fs::ifstream ifs(workingDirectory/"Torrents.xml");
 		if (ifs)
 		{
-			boost::archive::xml_iarchive ia(ifs);
-			
+			boost::archive::xml_iarchive ia(ifs);			
 			ia >> make_nvp("torrents", torrents);
 		}		
+	}
+		if (exists(workingDirectory/"DHTState.bin"))
+			dht_state_ = haldecode(workingDirectory/"DHTState.bin");
 	}
 	
 	lbt::entry prepTorrent(path filename, path saveDirectory);
@@ -302,8 +448,20 @@ private:
 	TorrentMap torrents;
 	const path workingDirectory;
 	
+	bool ip_filter_on_;
+	bool ip_filter_loaded_;
+	bool ip_filter_changed_;
+	lbt::ip_filter ip_filter_;
+	size_t ip_filter_count_;
+	
+	void ip_filter_count();
+	void ip_filter_load(progressCallback fn);
+	void ip_filter_import(std::vector<lbt::ip_range<asio::ip::address_v4> >& v4,
+		std::vector<lbt::ip_range<asio::ip::address_v6> >& v6);
+	
 	bool dht_on_;
 	lbt::dht_settings dht_settings_;
+	lbt::entry dht_state_;
 };
 
 BitTorrent::BitTorrent() :
@@ -321,17 +479,6 @@ bool BitTorrent::listenOn(pair<int, int> const& range)
 	{
 		bool result = pimpl->theSession.listen_on(range);
 		
-/*		libtorrent::dht_settings settings;
-		settings.service_port = pimpl->theSession.listen_port()+10;
-		
-		pimpl->theSession.set_dht_settings(settings);
-		pimpl->theSession.start_dht();
-		
-		pimpl->theSession.add_dht_node(make_pair("192.168.11.12", 6891));
-		pimpl->theSession.add_dht_node(make_pair("192.168.11.12", 6892));
-		pimpl->theSession.add_dht_node(make_pair("192.168.11.12", 6893));
-		pimpl->theSession.add_dht_node(make_pair("192.168.11.12", 6894));
-*/		
 		return result;	
 	}
 	else
@@ -355,22 +502,17 @@ int BitTorrent::isListeningOn()
 
 void BitTorrent::stopListening()
 {
-//	pimpl->theSession.stop_dht();
+	ensure_dht_off();
 	pimpl->theSession.listen_on(make_pair(0, 0));
 }
 
 void BitTorrent::ensure_dht_on()
 {
 	if (!pimpl->dht_on_)
-	{
-		lbt::entry dht_state;
-		
-		if (exists(pimpl->workingDirectory/"dht_state.bin"))
-			dht_state = haldecode(pimpl->workingDirectory/"dht_state.bin");
-		
+	{		
 		try
 		{
-		pimpl->theSession.start_dht(dht_state);
+		pimpl->theSession.start_dht(pimpl->dht_state_);
 		pimpl->dht_on_ = true;
 		}
 		catch(...)
@@ -385,20 +527,6 @@ void BitTorrent::ensure_dht_off()
 		pimpl->theSession.stop_dht();		
 		pimpl->dht_on_ = false;
 	}
-}
-
-void BitTorrent::setSessionLimits(int maxConn, int maxUpload)
-{		
-	pimpl->theSession.set_max_uploads(maxUpload);
-	pimpl->theSession.set_max_connections(maxConn);
-}
-
-void BitTorrent::setSessionSpeed(float download, float upload)
-{
-	int down = (download > 0) ? static_cast<int>(download*1024) : -1;
-	pimpl->theSession.set_download_rate_limit(down);
-	int up = (upload > 0) ? static_cast<int>(upload*1024) : -1;
-	pimpl->theSession.set_upload_rate_limit(up);
 }
 
 void BitTorrent::setDhtSettings(int max_peers_reply, int search_branching, 
@@ -417,24 +545,206 @@ void BitTorrent::setDhtSettings(int max_peers_reply, int search_branching,
 	}
 }
 
-pair<double, double> BitTorrent::sessionSpeed() 
+void BitTorrent::setSessionLimits(int maxConn, int maxUpload)
+{		
+	pimpl->theSession.set_max_uploads(maxUpload);
+	pimpl->theSession.set_max_connections(maxConn);
+}
+
+void BitTorrent::setSessionSpeed(float download, float upload)
 {
-	lbt::session_status sStatus = pimpl->theSession.status();		
-	return pair<double, double>(sStatus.download_rate, sStatus.upload_rate);
+	int down = (download > 0) ? static_cast<int>(download*1024) : -1;
+	pimpl->theSession.set_download_rate_limit(down);
+	int up = (upload > 0) ? static_cast<int>(upload*1024) : -1;
+	pimpl->theSession.set_upload_rate_limit(up);
+}
+
+void BitTorrent_impl::ip_filter_count()
+{
+	lbt::ip_filter::filter_tuple_t vectors = ip_filter_.export_filter();
+	
+	vectors.get<0>().erase(std::remove(vectors.get<0>().begin(), vectors.get<0>().end(), 0),
+		vectors.get<0>().end());
+	vectors.get<1>().erase(std::remove(vectors.get<1>().begin(), vectors.get<1>().end(), 0),
+		vectors.get<1>().end());
+	ip_filter_count_ = vectors.get<0>().size() + vectors.get<1>().size();
+}
+
+
+void BitTorrent_impl::ip_filter_load(progressCallback fn)
+{
+	fs::ifstream ifs(workingDirectory/"IPFilter.bin", std::ios::binary);
+	if (ifs)
+	{
+		size_t v4_size;
+		ifs >> v4_size;
+		
+		size_t total = v4_size/100;
+		size_t previous = 0;
+					
+		for(unsigned i=0; i<v4_size; ++i)
+		{
+			if (i-previous > total)
+			{
+				previous = i;
+				if (fn) if (fn(size_t(i/total))) break;
+			}
+			
+			read_range_to_filter<asio::ip::address_v4>(ifs, ip_filter_);
+		}
+	}	
+}
+
+void  BitTorrent_impl::ip_filter_import(std::vector<lbt::ip_range<asio::ip::address_v4> >& v4,
+	std::vector<lbt::ip_range<asio::ip::address_v6> >& v6)
+{
+	for(std::vector<lbt::ip_range<asio::ip::address_v4> >::iterator i=v4.begin();
+		i != v4.end(); ++i)
+	{
+		ip_filter_.add_rule(i->first, i->last, lbt::ip_filter::blocked);
+	}
+/*	for(std::vector<lbt::ip_range<asio::ip::address_v6> >::iterator i=v6.begin();
+		i != v6.end(); ++i)
+	{
+		ip_filter_.add_rule(i->first, i->last, lbt::ip_filter::blocked);
+	}
+*/	
+	/* Note here we do not set ip_filter_changed_ */
+}
+
+void BitTorrent::ensure_ip_filter_on(progressCallback fn)
+{
+	if (!pimpl->ip_filter_loaded_)
+	{
+		pimpl->ip_filter_load(fn);
+		pimpl->ip_filter_loaded_ = true;
+	}
+	
+	if (!pimpl->ip_filter_on_)
+	{
+		pimpl->theSession.set_ip_filter(pimpl->ip_filter_);
+		pimpl->ip_filter_on_ = true;
+		pimpl->ip_filter_count();
+	}
+}
+
+void BitTorrent::ensure_ip_filter_off()
+{
+	pimpl->theSession.set_ip_filter(lbt::ip_filter());
+	pimpl->ip_filter_on_ = false;
+}
+
+void BitTorrent::ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 last)
+{
+	pimpl->ip_filter_.add_rule(first, last, lbt::ip_filter::blocked);
+	pimpl->ip_filter_count();
+	pimpl->ip_filter_changed_ = true;
+}
+
+void BitTorrent::ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last)
+{
+	pimpl->ip_filter_.add_rule(first, last, lbt::ip_filter::blocked);
+	pimpl->ip_filter_count();
+	pimpl->ip_filter_changed_ = true;
+}
+
+size_t BitTorrent::ip_filter_size()
+{
+	return pimpl->ip_filter_count_;
+}
+
+void BitTorrent::clearIpFilter()
+{
+	pimpl->ip_filter_ = lbt::ip_filter();
+	pimpl->theSession.set_ip_filter(lbt::ip_filter());	
+	pimpl->ip_filter_changed_ = true;
+	pimpl->ip_filter_count();
+}
+
+void BitTorrent::ip_filter_import_dat(boost::filesystem::path file, progressCallback fn, bool octalFix)
+{
+	fs::ifstream ifs(file);	
+	if (ifs)
+	{
+		boost::uintmax_t total = fs::file_size(file)/100;
+		boost::uintmax_t progress = 0;
+		boost::uintmax_t previous = 0;
+		
+		boost::regex reg("\\s*(\\d+\\.\\d+\\.\\d+\\.\\d+)\\s*-\\s*(\\d+\\.\\d+\\.\\d+\\.\\d+)\\s*.*");
+		boost::regex ip_reg("0*(\\d*)\\.0*(\\d*)\\.0*(\\d*)\\.0*(\\d*)");
+		boost::smatch m;
+		
+		string ip_address_line;		
+		while (!std::getline(ifs, ip_address_line).eof())
+		{		
+			progress += (ip_address_line.length() + 2);
+			if (progress-previous > total)
+			{
+				previous = progress;
+				if (fn)
+				{
+					if (fn(size_t(progress/total))) 
+						break;
+				}
+			}
+			
+			if (boost::regex_match(ip_address_line, m, reg))
+			{
+				string first = m[1];
+				string last = m[2];
+				
+				if (octalFix)
+				{
+					if (boost::regex_match(first, m, ip_reg))
+					{
+						first = ((m.length(1) != 0) ? m[1] : string("0")) + "." +
+								((m.length(2) != 0) ? m[2] : string("0")) + "." +
+								((m.length(3) != 0) ? m[3] : string("0")) + "." +
+								((m.length(4) != 0) ? m[4] : string("0"));
+					}					
+					if (boost::regex_match(last, m, ip_reg))
+					{
+						last = ((m.length(1) != 0) ? m[1] : string("0")) + "." +
+							   ((m.length(2) != 0) ? m[2] : string("0")) + "." +
+							   ((m.length(3) != 0) ? m[3] : string("0")) + "." +
+							   ((m.length(4) != 0) ? m[4] : string("0"));
+					}
+				}
+				
+				try
+				{			
+				pimpl->ip_filter_.add_rule(asio::ip::address_v4::from_string(first),
+					asio::ip::address_v4::from_string(last), lbt::ip_filter::blocked);	
+				}
+				catch(const std::exception& e)
+				{
+					::MessageBoxA(0, (format("%1%: %1% %2%") % e.what() % first % last).str().c_str(), "Load ipfilter.dat Exception!", 0);
+				}
+			}
+		}
+	}
+	
+	pimpl->ip_filter_changed_ = true;
+	pimpl->ip_filter_count();
 }
 
 const SessionDetail BitTorrent::getSessionDetails()
 {
 	SessionDetail details;
 	
+	details.port = pimpl->theSession.is_listening() ? pimpl->theSession.listen_port() : -1;
+	
 	lbt::session_status status = pimpl->theSession.status();
 	lbt::session_settings settings = pimpl->theSession.settings();
 	
-	details.sessionSpeed = pair<double, double>(status.download_rate, status.upload_rate);
+	details.speed = pair<double, double>(status.download_rate, status.upload_rate);
 	
 	details.dht_on = pimpl->dht_on_;
 	details.dht_nodes = status.m_dht_nodes;
 	details.dht_torrents = status.m_dht_torrents;
+	
+	details.ip_filter_on = pimpl->ip_filter_on_;
+	details.ip_ranges_filtered = pimpl->ip_filter_count_;
 	
 	return details;
 }

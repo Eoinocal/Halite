@@ -9,7 +9,7 @@
 
 class HaliteListViewCtrl;
 class HaliteDialog;
-class AdvHaliteDialog;
+//class AdvHaliteDialog;
 
 class ui_signal : noncopyable
 {
@@ -55,7 +55,10 @@ public:
 		COMMAND_ID_HANDLER(ID_SETTINGS, OnSettings)
 		COMMAND_ID_HANDLER(ID_HELP, OnHelp)
 		COMMAND_ID_HANDLER(ID_VIEW_STATUS_BAR, OnViewStatusBar)
+		
 		COMMAND_ID_HANDLER(ID_TRAY_OPENHALITE, OnTrayOpenHalite)
+		COMMAND_ID_HANDLER(ID_TRAY_RESUMEALL, OnResumeAll)
+		COMMAND_ID_HANDLER(ID_TRAY_PAUSEALL, OnPauseAll)
 		COMMAND_ID_HANDLER(ID_TRAY_EXIT, OnTrayExit)
 		
 		REFLECT_NOTIFICATIONS()
@@ -72,6 +75,7 @@ public:
         UPDATE_ELEMENT(0, UPDUI_STATUSBAR)
         UPDATE_ELEMENT(1, UPDUI_STATUSBAR)
         UPDATE_ELEMENT(2, UPDUI_STATUSBAR)
+        UPDATE_ELEMENT(3, UPDUI_STATUSBAR)
 	END_UPDATE_UI_MAP()
 	
 	void ProcessFile(LPCTSTR lpszPath);
@@ -125,7 +129,7 @@ private:
 	
 	boost::shared_ptr<HaliteListViewCtrl> mp_list;
 	boost::scoped_ptr<HaliteDialog> mp_dlg;
-	boost::scoped_ptr<AdvHaliteDialog> mp_advDlg;
+//	boost::scoped_ptr<AdvHaliteDialog> mp_advDlg;
 
 	ui_signal ui_;
 	

@@ -12,7 +12,7 @@ SOURCES =
 	HaliteWindow.cpp
 	HaliteListViewCtrl.cpp
 	HaliteDialog.cpp
-	AdvHaliteDialog.cpp
+#	AdvHaliteDialog.cpp
 	ConfigOptions.cpp
 	ini/BitTConfig.cpp
 	halTorrent.cpp
@@ -32,7 +32,7 @@ LIBS =
 	comdlg32
 	advapi32
 	gdi32	
-	uxtheme	
+#	uxtheme	
 	;
 
 project Halite
@@ -41,6 +41,7 @@ project Halite
 	
 	<library>/boost/signals//boost_signals/<link>static
 	<library>/boost/serialization//boost_serialization/<link>static
+	<library>/boost/regex//boost_regex/<link>static
 #	<library>/http//http/<link>static
     <library>/libtorrent//torrent/<link>static
 	

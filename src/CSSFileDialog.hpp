@@ -1,3 +1,6 @@
+
+#pragma once
+
 /**
  * @class CSSFileDialog
  * @brief a WTL implementation of CFileDialog which shows the modern places bar.

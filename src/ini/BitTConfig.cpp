@@ -5,10 +5,26 @@
 
 #include "../GlobalIni.hpp"
 #include "BitTConfig.hpp"
+#include "../ProgressDialog.hpp"
 #include "../halTorrent.hpp"
 
 void BitTConfig::settingsChanged()
 {
+//	thread settings(bind(&BitTConfig::settingsThread, this));
+	settingsThread();
+}
+
+void BitTConfig::settingsThread()
+{
+	if (INI().bitTConfig().enableIPFilter)
+	{
+		ProgressDialog progDlg(L"Loading IP filters...", bind(
+			&halite::BitTorrent::ensure_ip_filter_on, &halite::bittorrent(), _1));
+		progDlg.DoModal();
+	}
+	else
+		halite::bittorrent().ensure_ip_filter_off();
+	
 	try
 	{
 	bool success = halite::bittorrent().listenOn(

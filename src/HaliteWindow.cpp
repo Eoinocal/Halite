@@ -10,7 +10,7 @@
 #include "CSSFileDialog.hpp"
 #include "HaliteListViewCtrl.hpp"
 #include "HaliteDialog.hpp"
-#include "AdvHaliteDialog.hpp"
+//#include "AdvHaliteDialog.hpp"
 
 #include "ConfigOptions.hpp"
 #include "GlobalIni.hpp"
@@ -51,8 +51,8 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	m_hWndStatusBar = m_StatusBar.Create(*this);
 	UIAddStatusBar(m_hWndStatusBar);
 	
-	int panes[] = {ID_DEFAULT_PANE, IDPANE_DHT, IDPANE_STATUS};
-	m_StatusBar.SetPanes(panes, 3, false);
+	int panes[] = {ID_DEFAULT_PANE, IDPANE_FILTER, IDPANE_DHT, IDPANE_STATUS};
+	m_StatusBar.SetPanes(panes, 4, false);
 	
 	// Create the Splitter Control
 	m_Split.Create(m_hWnd, rc, NULL, WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN);
@@ -69,8 +69,8 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	mp_dlg->Create(m_Split.m_hWnd);
 	mp_dlg->ShowWindow(true);
 	
-	mp_advDlg.reset(new AdvHaliteDialog(this));
-	mp_advDlg->Create(m_Split.m_hWnd);
+//	mp_advDlg.reset(new AdvHaliteDialog(this));
+//	mp_advDlg->Create(m_Split.m_hWnd);
 //	mp_advDlg->ShowWindow(true);
 	
 	m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
@@ -116,33 +116,41 @@ void HaliteWindow::updateWindow()
 {
 	halite::SessionDetail details = halite::bittorrent().getSessionDetails();
 	
-	int port = halite::bittorrent().isListeningOn();
-	if (port > -1)
-	{
+	if (details.port > -1)
 		UISetText(0, 
-			(wformat(L"Listening on port %1%") % port ).str().c_str());	
-	}
+			(wformat(L"Port %1% open") % details.port ).str().c_str());	
 	else
-		UISetText(0,L"Halite not listening, try adjusting the port range");
+		UISetText(0,L"Halite not listening!");
 	
-	pair<double, double> speed = halite::bittorrent().sessionSpeed();
 	wstring downloadRates = (wformat(L"(D-U) %1$.2fkb/s - %2$.2fkb/s") 
-			% (speed.first/1024) 
-			% (speed.second/1024)).str();
+			% (details.speed.first/1024) 
+			% (details.speed.second/1024)).str();
 	
-	UISetText(2, downloadRates.c_str());	
+	UISetText(3, downloadRates.c_str());	
 	m_trayIcon.SetTooltipText(downloadRates.c_str());
 	
 	if (details.dht_on)
 	{
-		wstring dht = (wformat(L"DHT enabled, %1% nodes tracking %2% torrents")
+		wstring dht = (wformat(L"%1% DHT node(s) tracking %2% torrent(s)")
 			% details.dht_nodes % details.dht_torrents).str();
 			
-		UISetText(1, dht.c_str());
+		UISetText(2, dht.c_str());
 	}
 	else
 	{
-		UISetText(1, L"DHT disabled");
+		UISetText(2, L"DHT disabled");
+	}
+	
+	if (details.ip_filter_on)
+	{
+		wstring filter = (wformat(L"Filtering %1% range(s)")
+			% details.ip_ranges_filtered).str();
+		
+		UISetText(1, filter.c_str());
+	}
+	else
+	{
+		UISetText(1, L"IP filter disabled");
 	}
 }
 
@@ -179,10 +187,15 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	try
 	{
 	
-	// Big changes due here relating to custom savedirectory.
+	path saveDirectory(globalModule().exePath().branch_path()/"incoming");
+	CFolderDialog fldDlg ( NULL, _T("Select a directory to save the downloads to. Select cancel to accept default \'%program directory%\\incoming\' location"),
+                       BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE );
+ 
+	if (IDOK == fldDlg.DoModal())
+		saveDirectory = path(wcstombs(fldDlg.m_szFolderPath));
 	
 	path file(wcstombs(lpszPath), boost::filesystem::native);	
-	halite::bittorrent().addTorrent(file, globalModule().exePath().branch_path()/"incoming");
+	halite::bittorrent().addTorrent(file, saveDirectory);
 
 	ui().update();
 	
