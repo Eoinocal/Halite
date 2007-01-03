@@ -188,7 +188,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	{
 	
 	path saveDirectory(globalModule().exePath().branch_path()/"incoming");
-	CFolderDialog fldDlg ( NULL, _T("Select a directory to save the downloads to. Select cancel to accept default \'%program directory%\\incoming\' location"),
+	CFolderDialog fldDlg ( NULL, _T("Select a directory to save the downloads to. Select cancel to accept default 'incomming' location."),
                        BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE );
  
 	if (IDOK == fldDlg.DoModal())

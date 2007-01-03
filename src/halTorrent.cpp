@@ -430,15 +430,20 @@ private:
 		ip_filter_count_(0),
 		dht_on_(false)
 	{
-	{	fs::ifstream ifs(workingDirectory/"Torrents.xml");
-		if (ifs)
-		{
-			boost::archive::xml_iarchive ia(ifs);			
-			ia >> make_nvp("torrents", torrents);
-		}		
-	}
+		{	fs::ifstream ifs(workingDirectory/"Torrents.xml");
+			if (ifs)
+			{
+				boost::archive::xml_iarchive ia(ifs);			
+				ia >> make_nvp("torrents", torrents);
+			}		
+		}
 		if (exists(workingDirectory/"DHTState.bin"))
 			dht_state_ = haldecode(workingDirectory/"DHTState.bin");
+				
+		{	lbt::session_settings settings = theSession.settings();
+			settings.user_agent = "Halite v 0.2.8";
+			theSession.set_settings(settings);
+		}
 	}
 	
 	lbt::entry prepTorrent(path filename, path saveDirectory);
@@ -735,7 +740,6 @@ const SessionDetail BitTorrent::getSessionDetails()
 	details.port = pimpl->theSession.is_listening() ? pimpl->theSession.listen_port() : -1;
 	
 	lbt::session_status status = pimpl->theSession.status();
-	lbt::session_settings settings = pimpl->theSession.settings();
 	
 	details.speed = pair<double, double>(status.download_rate, status.upload_rate);
 	
