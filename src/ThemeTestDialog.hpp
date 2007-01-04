@@ -4,6 +4,8 @@
 #include "stdAfx.hpp"
 #include "DdxEx.hpp"
 
+#include "UxthemeWrapper.hpp"
+
 #ifndef NDEBUG
 #	include <global_log.hpp>
 	using glb::wlog;
@@ -30,8 +32,6 @@ public:
   	
 	BEGIN_MSG_MAP(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
-//		MSG_WM_CLOSE(onClose)	
-//		MSG_WM_SIZE(OnSize)
 		MSG_WM_CTLCOLORDLG(OnCltColorDlg)
 		MSG_WM_CTLCOLORBTN(OnCltColor)
 		MSG_WM_CTLCOLORSTATIC(OnCltColor)
@@ -52,28 +52,45 @@ public:
 		return 0; 
 	}	
 	
-	LRESULT OnCltColorDlg(HDC pDC, HWND pWnd)
+	LRESULT OnCltColorDlg(HDC hDC, HWND hWnd)
 	{
-		RECT rect;
-		GetClientRect(&rect);
-		DrawThemeParentBackground(pWnd, pDC, &rect);
+		SetMsgHandled(false);
 		
+		if (halite::uxtheme().pIsAppThemed)
+			if(halite::uxtheme().pIsAppThemed())
+			{
+				RECT rect;
+				GetClientRect(&rect);
+				if (halite::uxtheme().pDrawThemeParentBackground)
+				{
+					halite::uxtheme().pDrawThemeParentBackground(hWnd, hDC, &rect);
+					SetMsgHandled(true);
+				}
+			}
+			
 		return (LRESULT)::GetStockObject(HOLLOW_BRUSH);
 	}
 	
 	LRESULT OnCltColor(HDC hDC, HWND hWnd)
 	{	
-		RECT rect;
-		::GetClientRect(hWnd, &rect);
-		::SetBkMode(hDC, TRANSPARENT); 
-		DrawThemeParentBackground(hWnd, hDC, &rect);
+		SetMsgHandled(false);
 		
+		if (halite::uxtheme().pIsAppThemed)
+			if(halite::uxtheme().pIsAppThemed())
+			{
+				RECT rect;
+				::GetClientRect(hWnd, &rect);
+				::SetBkMode(hDC, TRANSPARENT); 
+				if (halite::uxtheme().pDrawThemeParentBackground)
+				{
+					halite::uxtheme().pDrawThemeParentBackground(hWnd, hDC, &rect);
+					SetMsgHandled(true);
+				}
+			}
+			
 		return (LRESULT)::GetStockObject(HOLLOW_BRUSH);
 	}
-	
-	
-//	void OnSize(UINT, CSize);
-//	void onClose();	
-	
+		
 protected:
+	wstring giveme;
 };

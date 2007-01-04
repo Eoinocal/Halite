@@ -4,8 +4,6 @@
 #include "stdAfx.hpp"
 #include "DdxEx.hpp"
 
-#include "uxtheme.h"
-
 #include "HaliteTabCtrl.hpp"
 #include "ThemeTestDialog.hpp"
 

@@ -2,8 +2,8 @@
 #pragma once
 
 #define WINVER 0x0500
-#define _WIN32_WINNT 0x0501
-#define _WIN32_IE 0x0501
+#define _WIN32_WINNT 0x0500
+#define _WIN32_IE 0x0500
 #define _RICHEDIT_VER 0x0200
 #define VC_EXTRALEAN
 
@@ -12,6 +12,7 @@
 #define HALITE_SENDING_CMD 68816889
 
 #include <atlbase.h>
+#include <atlsocket.h>
 #include <atlapp.h>
 
 extern CAppModule _Module;
@@ -27,6 +28,7 @@ extern CAppModule _Module;
 #include <atlctrlw.h>
 #include <atlctrlx.h>
 #include <atlddx.h>
+
 
 #include "..\res\resource.h"
 

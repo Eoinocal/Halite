@@ -12,13 +12,14 @@ SOURCES =
 	HaliteWindow.cpp
 	HaliteListViewCtrl.cpp
 	HaliteDialog.cpp
-#	AdvHaliteDialog.cpp
+	AdvHaliteDialog.cpp
 	ConfigOptions.cpp
 	ini/BitTConfig.cpp
 	halTorrent.cpp
 	GlobalIni.cpp
 #	halXmlRpc.cpp
 	NTray.cpp
+	UxthemeWrapper.cpp
 	;
 	
 RESOURCES =

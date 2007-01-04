@@ -10,7 +10,7 @@
 #include "CSSFileDialog.hpp"
 #include "HaliteListViewCtrl.hpp"
 #include "HaliteDialog.hpp"
-//#include "AdvHaliteDialog.hpp"
+#include "AdvHaliteDialog.hpp"
 
 #include "ConfigOptions.hpp"
 #include "GlobalIni.hpp"
@@ -69,8 +69,8 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	mp_dlg->Create(m_Split.m_hWnd);
 	mp_dlg->ShowWindow(true);
 	
-//	mp_advDlg.reset(new AdvHaliteDialog(this));
-//	mp_advDlg->Create(m_Split.m_hWnd);
+	mp_advDlg.reset(new AdvHaliteDialog(this));
+	mp_advDlg->Create(m_Split.m_hWnd);
 //	mp_advDlg->ShowWindow(true);
 	
 	m_Split.SetSplitterPanes(*mp_list, *mp_dlg);

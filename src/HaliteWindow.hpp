@@ -9,7 +9,7 @@
 
 class HaliteListViewCtrl;
 class HaliteDialog;
-//class AdvHaliteDialog;
+class AdvHaliteDialog;
 
 class ui_signal : noncopyable
 {
@@ -129,7 +129,7 @@ private:
 	
 	boost::shared_ptr<HaliteListViewCtrl> mp_list;
 	boost::scoped_ptr<HaliteDialog> mp_dlg;
-//	boost::scoped_ptr<AdvHaliteDialog> mp_advDlg;
+	boost::scoped_ptr<AdvHaliteDialog> mp_advDlg;
 
 	ui_signal ui_;
 	

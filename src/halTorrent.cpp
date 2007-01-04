@@ -744,8 +744,8 @@ const SessionDetail BitTorrent::getSessionDetails()
 	details.speed = pair<double, double>(status.download_rate, status.upload_rate);
 	
 	details.dht_on = pimpl->dht_on_;
-	details.dht_nodes = status.m_dht_nodes;
-	details.dht_torrents = status.m_dht_torrents;
+	details.dht_nodes = status.dht_nodes;
+	details.dht_torrents = status.dht_torrents;
 	
 	details.ip_filter_on = pimpl->ip_filter_on_;
 	details.ip_ranges_filtered = pimpl->ip_filter_count_;
