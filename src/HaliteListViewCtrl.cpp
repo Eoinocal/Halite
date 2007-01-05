@@ -93,6 +93,9 @@ void HaliteListViewCtrl::onShowWindow(UINT, INT)
 
 	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
 		SetColumnWidth(i, INI().windowConfig().mainListColWidth[i]);
+
+	for (size_t i=0; i<WindowConfig::numMainColsEx; ++i)
+		SetColumnWidth(i+WindowConfig::numMainCols, INI().windowConfig().mainListColWidthEx[i]);
 }
 
 void HaliteListViewCtrl::updateListView()
@@ -145,6 +148,9 @@ void HaliteListViewCtrl::saveStatus()
 {
 	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
 		INI().windowConfig().mainListColWidth[i] = GetColumnWidth(i);
+
+	for (size_t i=0; i<WindowConfig::numMainColsEx; ++i)
+		INI().windowConfig().mainListColWidthEx[i] = GetColumnWidth(i+WindowConfig::numMainCols);
 }
 
 LRESULT HaliteListViewCtrl::OnClick(int, LPNMHDR pnmh, BOOL&)

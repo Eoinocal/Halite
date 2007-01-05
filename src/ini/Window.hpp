@@ -23,6 +23,9 @@ public:
 		mainListColWidth[4] = 60;
 		mainListColWidth[5] = 42;
 		mainListColWidth[6] = 45;
+		
+		mainListColWidthEx[0] = 45;
+		mainListColWidthEx[1] = 45;	
 	}
 	
     friend class boost::serialization::access;
@@ -33,6 +36,9 @@ public:
 		ar & BOOST_SERIALIZATION_NVP(splitterPos);
 		ar & BOOST_SERIALIZATION_NVP(mainListColWidth);
 		ar & BOOST_SERIALIZATION_NVP(use_tray);
+		if (version > 0) {
+			ar & BOOST_SERIALIZATION_NVP(mainListColWidthEx);
+		}
 	}
 	
 	friend class GeneralOptions;
@@ -42,8 +48,12 @@ public:
 	
 private:	
 	static const size_t numMainCols = 7;
+	static const size_t numMainColsEx = 2;
 	CRect rect;
 	unsigned int splitterPos;
 	unsigned int mainListColWidth[numMainCols];
+	unsigned int mainListColWidthEx[numMainColsEx];
 	bool use_tray;
 };
+
+BOOST_CLASS_VERSION(WindowConfig, 1)

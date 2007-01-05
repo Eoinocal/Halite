@@ -133,24 +133,26 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "BitTorrent"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    GROUPBOX        "Global Options",IDC_STATIC,6,6,271,93
-    EDITTEXT        IDC_BC_MAXCONN,95,18,42,12,ES_AUTOHSCROLL
-    RTEXT           "Total max connections :",IDC_STATIC,11,20,78,12
-    RTEXT           "Total upload slots :",IDC_STATIC,11,33,78,12
-    EDITTEXT        IDC_BC_MAXUP,95,31,42,12,ES_AUTOHSCROLL
-    RTEXT           "Attempt to  listen on a port number from",IDC_STATIC,12,50,130,12
-    RTEXT           "to",IDC_STATIC,203,50,9,10
-    EDITTEXT        IDC_BC_PORTFROM,147,48,54,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_BC_PORTTO,217,48,54,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_BC_DOWNRATE,229,18,42,12,ES_AUTOHSCROLL
-    RTEXT           "Download Rate (kb/s) :",IDC_STATIC,145,20,78,12
-    RTEXT           "Upload Rate (kb/s) :",IDC_STATIC,151,33,72,12
-    EDITTEXT        IDC_BC_UPRATE,229,31,42,12,ES_AUTOHSCROLL
+    GROUPBOX        "Global Options",IDC_STATIC,6,6,271,118
+    RTEXT           "Open a (single) port between :  ",IDC_STATIC,22,66,115,12
+    EDITTEXT        IDC_BC_PORTFROM,138,64,54,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BC_PORTTO,217,64,54,12,ES_AUTOHSCROLL
     CONTROL         "Enable DHT. (Note neither DHT nor PEX will apply to private torrents)",IDC_BC_DHT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,66,252,12
-    CONTROL         "Enable IP filtering.",IDC_BC_FILTERCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,81,76,12
-    PUSHBUTTON      "Import ipfilter.dat",IDC_BC_FILTERLOAD,196,80,75,14,WS_DISABLED
-    PUSHBUTTON      "Clear IP database",IDC_BC_FILTERCLEAR,115,80,75,14,WS_DISABLED
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,91,252,12
+    CONTROL         "Enable IP filtering.",IDC_BC_FILTERCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,106,76,12
+    PUSHBUTTON      "Import ipfilter.dat",IDC_BC_FILTERLOAD,196,105,75,14,WS_DISABLED
+    PUSHBUTTON      "Clear IP database",IDC_BC_FILTERCLEAR,115,105,75,14,WS_DISABLED
+    EDITTEXT        IDC_BC_PROXYIP,124,17,77,12,ES_AUTOHSCROLL
+    RTEXT           "Proxy Host/IP : ",IDC_BC_PROXYIP_S,68,19,55,12
+    CONTROL         "Use a proxy.",IDC_BC_PROXYCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,19,59,8
+    RTEXT           "Port : ",IDC_BC_PROXYPORT_S,204,19,24,12
+    EDITTEXT        IDC_BC_PROXYPORT,229,17,42,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_BC_PROXYUSER,54,33,89,12,ES_AUTOHSCROLL
+    RTEXT           "Username : ",IDC_BC_PROXYUSER_S,8,35,44,12
+    RTEXT           "Password : ",IDC_BC_PROXYPASS_S,146,35,39,12
+    EDITTEXT        IDC_BC_PROXYPASS,188,33,83,12,ES_PASSWORD | ES_AUTOHSCROLL
+    CONTROL         "to",IDC_BC_PORTCHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,195,64,20,12
+    LTEXT           "Selct a port (or range of ports) to listen for incomming connections.",IDC_STATIC,13,52,238,11
 END
 
 IDD_ABOUT DIALOGEX 0, 0, 283, 125
@@ -279,6 +281,36 @@ BEGIN
     PUSHBUTTON      "Cancel",IDC_PROG_CANCEL,60,24,66,15
 END
 
+IDD_CONFIGTORRENT DIALOGEX 0, 0, 283, 165
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Torrents"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "Global Limits",IDC_STATIC,6,6,271,55
+    EDITTEXT        IDC_BC_MAXCONN,95,29,42,12,ES_AUTOHSCROLL
+    RTEXT           "Total max connections :",IDC_STATIC,11,31,78,11
+    RTEXT           "Total upload slots :",IDC_STATIC,11,44,78,10
+    EDITTEXT        IDC_BC_MAXUP,95,42,42,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BC_DOWNRATE,229,29,42,12,ES_AUTOHSCROLL
+    RTEXT           "Download Rate (kb/s) :",IDC_STATIC,145,31,78,11
+    RTEXT           "Upload Rate (kb/s) :",IDC_STATIC,151,44,72,10
+    EDITTEXT        IDC_BC_UPRATE,229,42,42,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BC_TMAXCONN,95,88,42,12,ES_AUTOHSCROLL
+    RTEXT           "Total max connections :",IDC_STATIC,11,91,78,12
+    RTEXT           "Total upload slots :",IDC_STATIC,11,104,78,12
+    EDITTEXT        IDC_BC_TMAXUP,95,101,42,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BC_TDOWNRATE,229,88,42,12,ES_AUTOHSCROLL
+    RTEXT           "Download Rate (kb/s) :",IDC_STATIC,145,91,78,12
+    RTEXT           "Upload Rate (kb/s) :",IDC_STATIC,151,104,72,12
+    EDITTEXT        IDC_BC_TUPRATE,229,101,42,12,ES_AUTOHSCROLL
+    GROUPBOX        "Torrent Defaults",IDC_STATIC,6,66,271,72
+    LTEXT           "These options set global maximums which will always be honoured.",IDC_STATIC,13,16,257,11
+    LTEXT           "These options specify the default limits applied to new torrents.",IDC_STATIC,13,76,257,11
+    RTEXT           "Default save folder : ",IDC_STATIC,13,120,77,11
+    EDITTEXT        IDC_BC_SAVEFOLDER,95,119,152,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BC_SAVEBROWSE,251,118,18,13
+END
+
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -396,6 +428,14 @@ BEGIN
         RIGHTMARGIN, 184
         TOPMARGIN, 7
         BOTTOMMARGIN, 39
+    END
+
+    IDD_CONFIGTORRENT, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 277
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 161
     END
 END
 #endif    // APSTUDIO_INVOKED

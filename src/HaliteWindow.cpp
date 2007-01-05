@@ -187,7 +187,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	try
 	{
 	
-	path saveDirectory(globalModule().exePath().branch_path()/"incoming");
+	path saveDirectory(wcstombs(INI().bitTConfig().defaultSaveFolder));
 	CFolderDialog fldDlg ( NULL, _T("Select a directory to save the downloads to. Select cancel to accept default 'incomming' location."),
                        BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE );
  

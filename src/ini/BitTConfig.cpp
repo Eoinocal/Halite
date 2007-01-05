@@ -44,7 +44,8 @@ void BitTConfig::settingsThread()
 		INI().bitTConfig().downRate, INI().bitTConfig().upRate);
 	
 	halite::bittorrent().setDhtSettings(INI().bitTConfig().dhtMaxPeersReply, 
-		INI().bitTConfig().dhtSearchBranching, INI().bitTConfig().dhtServicePort, INI().bitTConfig().dhtMaxFailCount);
+		INI().bitTConfig().dhtSearchBranching, INI().bitTConfig().dhtServicePort, 
+		INI().bitTConfig().dhtMaxFailCount);
 	
 	if (INI().bitTConfig().enableDHT)
 		halite::bittorrent().ensure_dht_on();
@@ -55,5 +56,5 @@ void BitTConfig::settingsThread()
 	{
 		halite::xmlRpc().bindHost(INI().remoteConfig().port);
 	}
-*/	
+*/
 }

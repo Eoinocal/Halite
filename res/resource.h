@@ -21,6 +21,8 @@
 #define IDD_THEMETEST                   115
 #define IDD_DEBUGDIALOG                 116
 #define IDD_PROGRESS                    117
+#define IDD_DIALOG2                     118
+#define IDD_CONFIGTORRENT               118
 #define IDR_MAINFRAME                   128
 #define LISTPEERS                       1000
 #define TORRENTPROG                     1003
@@ -49,14 +51,20 @@
 #define IDC_DETAILS_GROUP               1024
 #define IDC_BC_MAXCONN                  1025
 #define IDC_REMOTECTRL                  1026
+#define IDC_BC_TMAXCONN                 1026
 #define IDC_BC_MAXUP                    1027
 #define IDC_REMOTEPORT                  1028
+#define IDC_BC_TMAXUP                   1028
 #define IDC_BC_PORTFROM                 1029
+#define IDC_BC_TMAXUP2                  1029
+#define IDC_BC_SAVEFOLDER               1029
 #define IDC_BC_PORTTO                   1030
 #define IDC_BC_DOWNRATE                 1031
 #define IDC_BC_MAXUP2                   1032
+#define IDC_BC_TDOWNRATE                1032
 #define IDC_BC_UPRATE                   1033
 #define BTNPAUSE                        1034
+#define IDC_BC_TUPRATE                  1034
 #define IDC_NEWT_BROWSE                 1035
 #define IDC_NEWT_FILE                   1036
 #define IDC_NEWT_TRACKER                1037
@@ -83,6 +91,17 @@
 #define IDC_BC_FILTERBTN                1052
 #define IDC_BC_FILTERLOAD               1052
 #define IDC_BC_FILTERCLEAR              1053
+#define IDC_BC_PROXYIP                  1055
+#define IDC_BC_PROXYPORT                1056
+#define IDC_BC_PROXYIP_S                1057
+#define IDC_BC_PROXYPORT_S              1058
+#define IDC_BC_PROXYUSER                1059
+#define IDC_BC_PROXYUSER_S              1060
+#define IDC_BC_PROXYPASS_S              1061
+#define IDC_BC_PROXYPASS                1062
+#define IDC_BC_PROXYCHECK               1063
+#define IDC_BC_PORTCHECK                1064
+#define IDC_BC_SAVEBROWSE               1064
 #define ED_CON                          3000
 #define ID_ABOUT_OPENHALITE             40001
 #define ID_ABOUT_PAUSEALL               40002
@@ -97,9 +116,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        117
+#define _APS_NEXT_RESOURCE_VALUE        119
 #define _APS_NEXT_COMMAND_VALUE         40010
-#define _APS_NEXT_CONTROL_VALUE         1053
+#define _APS_NEXT_CONTROL_VALUE         1065
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

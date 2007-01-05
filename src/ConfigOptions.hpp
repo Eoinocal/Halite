@@ -64,15 +64,13 @@ public:
         MSG_WM_INITDIALOG(OnInitDialog)
 		COMMAND_ID_HANDLER_EX(IDC_BC_FILTERLOAD, onFilterImport)
 		COMMAND_ID_HANDLER_EX(IDC_BC_FILTERCLEAR, onFilterClear)
-		COMMAND_ID_HANDLER_EX(IDC_BC_FILTERCHECK, onFilterCheck)	
+		COMMAND_ID_HANDLER_EX(IDC_BC_PORTCHECK, onPortCheck)
+		COMMAND_ID_HANDLER_EX(IDC_BC_FILTERCHECK, onFilterCheck)
+		COMMAND_ID_HANDLER_EX(IDC_BC_PROXYCHECK, onProxyCheck)
         CHAIN_MSG_MAP(CPropertyPageImpl<BitTorrentOptions>)
     END_MSG_MAP()
  
     BEGIN_DDX_MAP(BitTorrentOptions)
-        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_MAXCONN, INI().bitTConfig().maxConnections, 2, true)
-        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_MAXUP, INI().bitTConfig().maxUploads, 2, true)
-        DDX_EX_FLOAT_POSITIVE(IDC_BC_DOWNRATE, INI().bitTConfig().downRate)
-        DDX_EX_FLOAT_POSITIVE(IDC_BC_UPRATE, INI().bitTConfig().upRate)
         DDX_INT(IDC_BC_PORTFROM, INI().bitTConfig().portFrom)
         DDX_INT(IDC_BC_PORTTO, INI().bitTConfig().portTo)
         DDX_CHECK(IDC_BC_DHT, INI().bitTConfig().enableDHT)
@@ -84,6 +82,8 @@ public:
 		BOOL retval =  DoDataExchange(false);	
 		
 		onFilterCheck(0, 0, GetDlgItem(IDC_BC_FILTERCHECK));
+		onProxyCheck(0, 0, GetDlgItem(IDC_BC_PROXYCHECK));
+		onPortCheck(0, 0, GetDlgItem(IDC_BC_PORTCHECK));
 		
 		return retval;
 	}
@@ -109,12 +109,108 @@ public:
 		}
 	}	
 	
+	void onPortCheck(UINT, int, HWND hWnd)
+	{
+		LRESULT result = ::SendMessage(hWnd, BM_GETCHECK, 0, 0);
+		
+		if (result == BST_CHECKED)
+		{
+			::EnableWindow(GetDlgItem(IDC_BC_PORTTO), true);
+		}
+		else
+		{
+			::EnableWindow(GetDlgItem(IDC_BC_PORTTO), false);
+			boost::array<wchar_t, MAX_PATH> buffer;
+			GetDlgItemText(IDC_BC_PORTFROM, buffer.elems, MAX_PATH);
+			SetDlgItemText(IDC_BC_PORTTO, buffer.elems);
+		}
+	}	
+	
+	void onProxyCheck(UINT, int, HWND hWnd)
+	{
+		LRESULT result = ::SendMessage(hWnd, BM_GETCHECK, 0, 0);
+		
+		if (result == BST_CHECKED)
+		{
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYIP), true);
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYPORT), true);
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYUSER), true);
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYPASS), true);
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYIP_S), true);
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYPORT_S), true);
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYUSER_S), true);
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYPASS_S), true);
+		}
+		else
+		{
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYIP), false);
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYPORT), false);
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYUSER), false);
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYPASS), false);
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYIP_S), false);
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYPORT_S), false);
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYUSER_S), false);
+			::EnableWindow(GetDlgItem(IDC_BC_PROXYPASS_S), false);	
+		}
+	}	
+	
 	void onFilterClear(UINT, int, HWND hWnd)
 	{
 		halite::bittorrent().clearIpFilter();
 	}
 	
 	void onFilterImport(UINT, int, HWND hWnd);
+};
+
+class TorrentsOptions :
+    public CPropertyPageImpl<TorrentsOptions>,
+    public CWinDataExchangeEx<TorrentsOptions>
+{
+public:
+    enum { IDD = IDD_CONFIGTORRENT };
+
+    BEGIN_MSG_MAP(TorrentsOptions)
+        MSG_WM_INITDIALOG(OnInitDialog)	
+		COMMAND_ID_HANDLER_EX(IDC_BC_SAVEBROWSE, onFolderBrowse)
+        CHAIN_MSG_MAP(CPropertyPageImpl<TorrentsOptions>)
+    END_MSG_MAP()
+ 
+    BEGIN_DDX_MAP(TorrentsOptions)
+        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_MAXCONN, INI().bitTConfig().maxConnections, 2, true)
+        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_MAXUP, INI().bitTConfig().maxUploads, 2, true)
+        DDX_EX_FLOAT_POSITIVE(IDC_BC_DOWNRATE, INI().bitTConfig().downRate)
+        DDX_EX_FLOAT_POSITIVE(IDC_BC_UPRATE, INI().bitTConfig().upRate)
+
+        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_TMAXCONN, INI().bitTConfig().torrentMaxConnections, 2, true)
+        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_TMAXUP, INI().bitTConfig().torrentMaxUploads, 2, true)
+        DDX_EX_FLOAT_POSITIVE(IDC_BC_TDOWNRATE, INI().bitTConfig().torrentDownRate)
+        DDX_EX_FLOAT_POSITIVE(IDC_BC_TUPRATE, INI().bitTConfig().torrentUpRate)
+		
+		DDX_EX_STDWSTRING(IDC_BC_SAVEFOLDER, INI().bitTConfig().defaultSaveFolder);
+    END_DDX_MAP()
+ 
+    BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)
+	{
+		BOOL retval =  DoDataExchange(false);	
+				
+		return retval;
+	}
+	
+	void onFolderBrowse(UINT, int, HWND hWnd)
+	{
+		halite::bittorrent().clearIpFilter();
+		
+		CFolderDialog fldDlg ( NULL, _T("Select a directory to save the downloads to. Select cancel to accept default 'incomming' location."),
+				   BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE );
+
+		if (IDOK == fldDlg.DoModal())
+			SetDlgItemText(IDC_BC_SAVEFOLDER, fldDlg.m_szFolderPath);
+	}	
+	
+    int OnApply()
+	{
+		return DoDataExchange(true);
+	}
 };
 
 class RemoteOptions :
@@ -171,6 +267,7 @@ public:
     {
 		AddPage(generalOptions);
 		AddPage(bitTorrentOptions);
+		AddPage(torrentsOptions);
 		AddPage(remoteControlOptions);
 		AddPage(aboutOptions);
     }
@@ -200,6 +297,7 @@ public:
 	
 	GeneralOptions generalOptions;
 	BitTorrentOptions bitTorrentOptions;
+	TorrentsOptions torrentsOptions;
 	RemoteOptions remoteControlOptions;
 	AboutOptions aboutOptions;
 };
