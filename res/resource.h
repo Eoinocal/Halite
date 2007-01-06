@@ -14,9 +14,11 @@
 #define IDPANE_DHT                      111
 #define IDD_CONFIGGENERAL               112
 #define IDPANE_FILTER                   112
+#define IDS_TRYANOTHERPORT              113
 #define IDD_ADVHALITEDLG                114
 #define IDI_ICON1                       114
 #define IDR_APP_ICON                    114
+#define IDS_DHTTRYANOTHERPORT           114
 #define IDD_DIALOG1                     115
 #define IDD_THEMETEST                   115
 #define IDD_DEBUGDIALOG                 116
@@ -56,7 +58,6 @@
 #define IDC_REMOTEPORT                  1028
 #define IDC_BC_TMAXUP                   1028
 #define IDC_BC_PORTFROM                 1029
-#define IDC_BC_TMAXUP2                  1029
 #define IDC_BC_SAVEFOLDER               1029
 #define IDC_BC_PORTTO                   1030
 #define IDC_BC_DOWNRATE                 1031
@@ -102,6 +103,7 @@
 #define IDC_BC_PROXYCHECK               1063
 #define IDC_BC_PORTCHECK                1064
 #define IDC_BC_SAVEBROWSE               1064
+#define ID_ADVANCED                     1064
 #define ED_CON                          3000
 #define ID_ABOUT_OPENHALITE             40001
 #define ID_ABOUT_PAUSEALL               40002
@@ -118,7 +120,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        119
 #define _APS_NEXT_COMMAND_VALUE         40010
-#define _APS_NEXT_CONTROL_VALUE         1065
+#define _APS_NEXT_CONTROL_VALUE         1066
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

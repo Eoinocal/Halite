@@ -16,6 +16,8 @@ void BitTConfig::settingsChanged()
 
 void BitTConfig::settingsThread()
 {
+	try
+	{
 	if (INI().bitTConfig().enableIPFilter)
 	{
 		ProgressDialog progDlg(L"Loading IP filters...", bind(
@@ -24,12 +26,20 @@ void BitTConfig::settingsThread()
 	}
 	else
 		halite::bittorrent().ensure_ip_filter_off();
+	}
+	catch(const std::exception& ex)
+	{
+		::MessageBoxA(0, ex.what(), "Loading IP Filter Exception", MB_ICONERROR|MB_OK);
+	}
 	
 	try
 	{
 	bool success = halite::bittorrent().listenOn(
 		std::make_pair(INI().bitTConfig().portFrom, INI().bitTConfig().portTo));
-	assert(success);	
+	if (!success)
+	{
+		MessageBox(0, globalModule().loadResString(IDS_TRYANOTHERPORT).c_str(), L"Init Exception", MB_ICONERROR|MB_OK);
+	}
 	}
 	catch(const std::exception& ex)
 	{
@@ -42,7 +52,13 @@ void BitTConfig::settingsThread()
 		INI().bitTConfig().maxConnections, INI().bitTConfig().maxUploads);
 	halite::bittorrent().setSessionSpeed(
 		INI().bitTConfig().downRate, INI().bitTConfig().upRate);
+		
+	halite::bittorrent().setTorrentDefaults(INI().bitTConfig().torrentMaxConnections,
+		INI().bitTConfig().torrentMaxUploads, INI().bitTConfig().torrentDownRate,
+		INI().bitTConfig().torrentUpRate);
 	
+	try
+	{
 	halite::bittorrent().setDhtSettings(INI().bitTConfig().dhtMaxPeersReply, 
 		INI().bitTConfig().dhtSearchBranching, INI().bitTConfig().dhtServicePort, 
 		INI().bitTConfig().dhtMaxFailCount);
@@ -51,7 +67,11 @@ void BitTConfig::settingsThread()
 		halite::bittorrent().ensure_dht_on();
 	else
 		halite::bittorrent().ensure_dht_off();
-	
+	}
+	catch(const asio::error& ex)
+	{		
+		MessageBox(0, globalModule().loadResString(IDS_DHTTRYANOTHERPORT).c_str(), L"DHT Error", MB_ICONERROR|MB_OK);
+	}	
 /*	if (INI().remoteConfig().isEnabled)
 	{
 		halite::xmlRpc().bindHost(INI().remoteConfig().port);

@@ -56,6 +56,7 @@ BEGIN
     BUTTON      ID_FILE_OPEN
     SEPARATOR
     BUTTON      ID_SETTINGS
+    BUTTON      ID_ADVANCED
     SEPARATOR
     BUTTON      ID_RESUME
     BUTTON      ID_PAUSE
@@ -248,7 +249,7 @@ BEGIN
     CONTROL         "Minimize to tray.",IDC_GENERAL_TRAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,29,98,14
 END
 
-IDD_THEMETEST DIALOGEX 0, 0, 186, 93
+IDD_THEMETEST DIALOGEX 0, 0, 186, 94
 STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU
 EXSTYLE WS_EX_TRANSPARENT | WS_EX_CONTROLPARENT
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -411,7 +412,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 179
         TOPMARGIN, 7
-        BOTTOMMARGIN, 86
+        BOTTOMMARGIN, 87
     END
 
     IDD_DEBUGDIALOG, DIALOG
@@ -484,6 +485,8 @@ END
 STRINGTABLE 
 BEGIN
     IDPANE_FILTER           "Filtering 000000 ranges."
+    IDS_TRYANOTHERPORT      "The BitTorrent session could not start. Try selecting another port in the settings."
+    IDS_DHTTRYANOTHERPORT   "DHT session could not start. Try selecting another port in the settings."
 END
 
 #endif    // English (Ireland) resources

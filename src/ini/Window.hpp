@@ -9,7 +9,8 @@ class WindowConfig
 public:
 	WindowConfig() :
 		splitterPos(100),
-		use_tray(true)
+		use_tray(true),
+		advancedUI(false)
 	{
 		rect.top = 10;
 		rect.left = 10;
@@ -38,6 +39,7 @@ public:
 		ar & BOOST_SERIALIZATION_NVP(use_tray);
 		if (version > 0) {
 			ar & BOOST_SERIALIZATION_NVP(mainListColWidthEx);
+			ar & BOOST_SERIALIZATION_NVP(advancedUI);
 		}
 	}
 	
@@ -54,6 +56,7 @@ private:
 	unsigned int mainListColWidth[numMainCols];
 	unsigned int mainListColWidthEx[numMainColsEx];
 	bool use_tray;
+	bool advancedUI;
 };
 
 BOOST_CLASS_VERSION(WindowConfig, 1)

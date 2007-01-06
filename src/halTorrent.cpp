@@ -134,9 +134,9 @@ public:
 	{}
 	
 	TorrentInternal(libtorrent::torrent_handle h, std::wstring f, path saveDirectory) :		
-		transferLimit_(std::pair<float, float>(-1, -1)),
-		connections_(-1),
-		uploads_(-1),
+		transferLimit_(std::pair<float, float>(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload())),
+		connections_(bittorrent().defTorrentMaxConn()),
+		uploads_(bittorrent().defTorrentMaxUpload()),
 		paused_(false),
 		filename_(f),
 		saveDirectory_(saveDirectory.string()),
@@ -419,11 +419,20 @@ public:
 			::MessageBox(0, (wformat(L"Save data exception: %1%") % e.what()).str().c_str(), L"Exception", 0);
 		}
 	}
+
+	int defTorrentMaxConn() { return defTorrentMaxConn_; }
+	int defTorrentMaxUpload() { return defTorrentMaxUpload_; }
+	float defTorrentDownload() { return defTorrentDownload_; }
+	float defTorrentUpload() { return defTorrentUpload_; }
 	
 private:
 	BitTorrent_impl() :
 		theSession(lbt::fingerprint("HL", 0, 2, 0, 8)),
 		workingDirectory(globalModule().exePath().branch_path()),
+		defTorrentMaxConn_(-1),
+		defTorrentMaxUpload_(-1),
+		defTorrentDownload_(-1),
+		defTorrentUpload_(-1),
 		ip_filter_on_(false),
 		ip_filter_loaded_(false),
 		ip_filter_changed_(false),
@@ -452,6 +461,11 @@ private:
 	lbt::session theSession;
 	TorrentMap torrents;
 	const path workingDirectory;
+	
+	int defTorrentMaxConn_;
+	int defTorrentMaxUpload_;
+	float defTorrentDownload_;
+	float defTorrentUpload_;
 	
 	bool ip_filter_on_;
 	bool ip_filter_loaded_;
@@ -751,6 +765,14 @@ const SessionDetail BitTorrent::getSessionDetails()
 	details.ip_ranges_filtered = pimpl->ip_filter_count_;
 	
 	return details;
+}
+
+void BitTorrent::setTorrentDefaults(int maxConn, int maxUpload, float download, float upload)
+{
+	pimpl->defTorrentMaxConn_ = maxConn;
+	pimpl->defTorrentMaxUpload_ = maxUpload;
+	pimpl->defTorrentDownload_ = download;
+	pimpl->defTorrentUpload_ = upload;
 }
 
 lbt::entry BitTorrent_impl::prepTorrent(path filename, path saveDirectory)
@@ -1117,4 +1139,9 @@ pair<float, float> BitTorrent::getTorrentSpeed(string filename)
 	return pair<float, float>(0, 0);
 }
 
+int BitTorrent::defTorrentMaxConn() { return pimpl->defTorrentMaxConn_; }
+int BitTorrent::defTorrentMaxUpload() { return pimpl->defTorrentMaxUpload_; }
+float BitTorrent::defTorrentDownload() { return pimpl->defTorrentDownload_; }
+float BitTorrent::defTorrentUpload() { return pimpl->defTorrentUpload_; }
+	
 };

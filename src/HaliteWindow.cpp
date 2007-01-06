@@ -67,13 +67,13 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	
 	mp_dlg.reset(new HaliteDialog(ui(), mp_list->manager())),
 	mp_dlg->Create(m_Split.m_hWnd);
-	mp_dlg->ShowWindow(true);
+//	mp_dlg->ShowWindow(true);
 	
 	mp_advDlg.reset(new AdvHaliteDialog(this));
 	mp_advDlg->Create(m_Split.m_hWnd);
 //	mp_advDlg->ShowWindow(true);
 	
-	m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
+//	m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
 	
 	// Create the tray icon.
 	m_trayIcon.Create(this, IDR_TRAY_MENU, L"Halite", 
@@ -100,7 +100,15 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	pLoop->AddIdleHandler(this);
 	
 	mp_list->manager().setSelected(0);
-	ui().update();
+	setCorrectDialog();
+	
+	return 0;
+}
+
+LRESULT HaliteWindow::OnAdvanced(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	INI().windowConfig().advancedUI = !INI().windowConfig().advancedUI;		
+	setCorrectDialog();
 	
 	return 0;
 }
@@ -110,6 +118,22 @@ LRESULT HaliteWindow::OnTrayNotification(UINT /*uMsg*/, WPARAM wParam, LPARAM lP
     m_trayIcon.OnTrayNotification(wParam, lParam);
     
     return 0;
+}
+void HaliteWindow::setCorrectDialog()
+{
+	if (!INI().windowConfig().advancedUI)
+	{		
+		mp_dlg->ShowWindow(true);
+		mp_advDlg->ShowWindow(false);
+		m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
+	}
+	else
+	{		
+		mp_dlg->ShowWindow(false);
+		mp_advDlg->ShowWindow(true);
+		m_Split.SetSplitterPanes(*mp_list, *mp_advDlg);
+	}
+	ui().update();
 }
 
 void HaliteWindow::updateWindow()

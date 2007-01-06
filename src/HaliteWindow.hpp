@@ -53,6 +53,7 @@ public:
 		COMMAND_ID_HANDLER(ID_RESUME, OnResumeAll)
 		COMMAND_ID_HANDLER(ID_PAUSE, OnPauseAll)
 		COMMAND_ID_HANDLER(ID_SETTINGS, OnSettings)
+		COMMAND_ID_HANDLER(ID_ADVANCED, OnAdvanced)
 		COMMAND_ID_HANDLER(ID_HELP, OnHelp)
 		COMMAND_ID_HANDLER(ID_VIEW_STATUS_BAR, OnViewStatusBar)
 		
@@ -112,6 +113,7 @@ protected:
 	LRESULT OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnHelp(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnAdvanced(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	
 	LRESULT OnViewStatusBar(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnEraseBkgnd(HDC hdc);
@@ -120,6 +122,7 @@ protected:
 	LRESULT OnAreYouMe(UINT, WPARAM, LPARAM, BOOL&) { return WM_AreYouMe_; }
 	
 	void updateWindow();
+	void setCorrectDialog();
 	
 private:		
 	CCommandBarCtrl m_CmdBar;
@@ -130,6 +133,8 @@ private:
 	boost::shared_ptr<HaliteListViewCtrl> mp_list;
 	boost::scoped_ptr<HaliteDialog> mp_dlg;
 	boost::scoped_ptr<AdvHaliteDialog> mp_advDlg;
+	
+	bool whichSimple_;
 
 	ui_signal ui_;
 	

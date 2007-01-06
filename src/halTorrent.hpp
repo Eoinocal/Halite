@@ -157,9 +157,10 @@ public:
 	void setSessionSpeed(float download, float upload);
 	void setDhtSettings(int max_peers_reply, int search_branching, 
 		int service_port, int max_fail_count);
-	
+			
 	const SessionDetail getSessionDetails();
-	
+
+	void setTorrentDefaults(int maxConn, int maxUpload, float download, float upload);	
 	void newTorrent(boost::filesystem::path filename, boost::filesystem::path files);
 	void addTorrent(boost::filesystem::path file, path saveDirectory);
 	void getAllTorrentDetails(TorrentDetails& torrentsContainer);
@@ -188,6 +189,11 @@ public:
 	pair<float, float> getTorrentSpeed(std::string filename);
 	
 	friend BitTorrent& bittorrent();
+	
+	int defTorrentMaxConn();
+	int defTorrentMaxUpload();
+	float defTorrentDownload();
+	float defTorrentUpload();
 	
 private:
 	BitTorrent();

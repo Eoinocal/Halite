@@ -62,7 +62,7 @@ static BOOL CALLBACK hwndSearcher(HWND hWnd, LPARAM lParam)
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	boost::filesystem::path::default_name_check(boost::filesystem::native);	
+	boost::filesystem::path::default_name_check(boost::filesystem::native);
 
 	AtlInitCommonControls(ICC_COOL_CLASSES | ICC_BAR_CLASSES);
    

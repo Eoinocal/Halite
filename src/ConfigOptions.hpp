@@ -33,7 +33,7 @@ public:
     BEGIN_DDX_MAP(GeneralOptions)
     	DDX_CHECK(IDC_GENERAL_ONEINST, INI().generalConfig().oneInst)
     	DDX_CHECK(IDC_GENERAL_TRAY, INI().windowConfig().use_tray)
-//    	DDX_CHECK(IDC_GENERAL_ADVGUI, INI().remoteConfig().isEnabled)
+    	DDX_CHECK(IDC_GENERAL_ADVGUI, INI().windowConfig().advancedUI)
     END_DDX_MAP()
  
     BOOL OnInitDialog(HWND hwndFocus, LPARAM lParam)

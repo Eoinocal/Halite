@@ -29,7 +29,6 @@ extern CAppModule _Module;
 #include <atlctrlx.h>
 #include <atlddx.h>
 
-
 #include "..\res\resource.h"
 
 // Include very common C++ and Boost libraries
@@ -89,10 +88,17 @@ public:
 	const path& exePath() const { return exe_path_; }
 	const std::vector<wstring>& commandArgs() const { return command_args_; }
 	
+	HINSTANCE hInstance() const { return hInstance_; }
+	void hInstance(HINSTANCE hInst) { hInstance_ = hInst; }
+	
+	wstring loadResString(UINT uID);
+	
 private:
 	wstring exe_string_;
 	path exe_path_;
 	std::vector<wstring> command_args_;
+	
+	HINSTANCE hInstance_;
 };
 
 GlobalModule& globalModule();

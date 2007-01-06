@@ -10,15 +10,6 @@
 class HaliteWindow;
 class ThemeTestDialog;
 
-/*class CMyTabCtrlWithDisable : public CTabCtrlWithDisable
-{
-public:
-    BOOL IsTabEnabled(int nTab)
-    {
-        return (nTab != 2);
-    }
-};
-*/
 class AdvHaliteDialog :
 	public CDialogImpl<AdvHaliteDialog>,
 	public CDialogResize<AdvHaliteDialog>
@@ -49,6 +40,7 @@ public:
 			if(PreTranslateMessage((LPMSG)lParam)) return TRUE;
 		
 		CHAIN_MSG_MAP(resizeClass)
+		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
 
 	BEGIN_DLGRESIZE_MAP(thisClass)
@@ -67,6 +59,7 @@ protected:
 //	CHalTabCtrl m_tabCtrl1;
 	CHalTabCtrl m_tabCtrl;
 	boost::scoped_ptr<ThemeTestDialog> mp_dlg;
+	boost::scoped_ptr<ThemeTestDialog> mp_dlg2;
 	
 	HaliteWindow* mainHaliteWindow;	
 };

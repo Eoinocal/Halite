@@ -11,27 +11,24 @@
 #include "GlobalIni.hpp"
 #include "ini/Dialog.hpp"
 
-
 LRESULT AdvHaliteDialog::onInitDialog(HWND, LPARAM)
 {	
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
+	
 	m_tabCtrl.SubclassWindow(GetDlgItem(IDC_TAB));
 	
-	TCITEM tie = { TCIF_TEXT, 0, 0, L"Overview", 0, -1, 0 };
-	m_tabCtrl.InsertItem(0, &tie);
-	
 	mp_dlg.reset(new ThemeTestDialog());
-	
 	mp_dlg->Create(m_tabCtrl);
-	mp_dlg->ShowWindow(true);	
 	
-	RECT rect;
-	m_tabCtrl.GetClientRect(&rect);
-	m_tabCtrl.AdjustRect(false, &rect);
+	m_tabCtrl.AddPage(*mp_dlg, L"Test1");
 	
-	mp_dlg->SetWindowPos(HWND_TOP, rect.left, rect.top, 0, 0, SWP_NOSIZE);
+	mp_dlg2.reset(new ThemeTestDialog());
+	mp_dlg2->Create(m_tabCtrl);
 	
+	m_tabCtrl.AddPage(*mp_dlg2, L"Test2");
+	
+	m_tabCtrl.SetCurrentPage(0);
 	return 0;
 }
 
@@ -41,7 +38,7 @@ void AdvHaliteDialog::OnSize(UINT type, CSize)
 	m_tabCtrl.GetClientRect(&rect);
 	m_tabCtrl.AdjustRect(false, &rect);
 	
-	mp_dlg->SetWindowPos(HWND_TOP, 0, 0, rect.right-rect.left, rect.bottom-rect.top, SWP_NOMOVE);
+//	mp_dlg->SetWindowPos(HWND_TOP, 0, 0, rect.right-rect.left, rect.bottom-rect.top, SWP_NOMOVE);
 	
 	SetMsgHandled(false);
 }	
