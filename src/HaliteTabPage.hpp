@@ -2,6 +2,7 @@
 #pragma once
  
 #include "stdAfx.hpp"
+#include "UxthemeWrapper.hpp"
 
 template <class T, class TBase = CWindow>
 class ATL_NO_VTABLE CHalTabPageImpl : public ATL::CDialogImpl< T >
@@ -10,6 +11,7 @@ public:
     BEGIN_MSG_MAP(CHalTabPageImpl)
 		MSG_WM_CTLCOLORDLG(OnCltColorDlg)
 		MSG_WM_CTLCOLORBTN(OnCltColor)
+//		MSG_WM_CTLCOLOREDIT(OnCltColor)
 		MSG_WM_CTLCOLORSTATIC(OnCltColor)
 		
         DEFAULT_REFLECTION_HANDLER()

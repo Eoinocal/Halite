@@ -183,6 +183,9 @@ public:
 	void removeTorrent(std::string filename);
 	void reannounceTorrent(std::string filename);
 	
+	void setTorrentLogin(std::string filename, std::wstring username, std::wstring password);
+	std::pair<std::wstring, std::wstring> getTorrentLogin(std::string filename);
+	
 	void setTorrentLimit(std::string filename, int maxConn, int maxUpload);
 	void setTorrentSpeed(std::string filename, float download, float upload);
 	pair<int, int> getTorrentLimit(std::string filename);

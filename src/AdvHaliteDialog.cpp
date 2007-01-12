@@ -6,7 +6,7 @@
 #include "stdAfx.hpp"
 #include "AdvHaliteDialog.hpp"
 
-#include "ThemeTestDialog.hpp"
+#include "advtabs/ThemeTestDialog.hpp"
 
 #include "GlobalIni.hpp"
 #include "ini/Dialog.hpp"
@@ -22,11 +22,15 @@ LRESULT AdvHaliteDialog::onInitDialog(HWND, LPARAM)
 	mp_dlg->Create(m_tabCtrl);
 	
 	m_tabCtrl.AddPage(*mp_dlg, L"Test1");
+		
+	m_torrent.Create(m_tabCtrl);
+	m_tabCtrl.AddPage(m_torrent, L"Torrent");
 	
-	mp_dlg2.reset(new ThemeTestDialog());
-	mp_dlg2->Create(m_tabCtrl);
+	m_tracker.Create(m_tabCtrl);
+	m_tabCtrl.AddPage(m_tracker, L"Tracker");
 	
-	m_tabCtrl.AddPage(*mp_dlg2, L"Test2");
+	m_debug.Create(m_tabCtrl);
+	m_tabCtrl.AddPage(m_debug, L"Log");
 	
 	m_tabCtrl.SetCurrentPage(0);
 	return 0;

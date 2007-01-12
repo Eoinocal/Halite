@@ -79,12 +79,12 @@ void HaliteListViewCtrl::onShowWindow(UINT, INT)
 	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT);
 
 	CHeaderCtrl hdr = GetHeader();
-	hdr.ModifyStyle(HDS_BUTTONS, 0);
+	hdr.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
 
 	AddColumn(L"Name", hdr.GetItemCount());
 	AddColumn(L"Status", hdr.GetItemCount());
 	AddColumn(L"Completed", hdr.GetItemCount());
-	AddColumn(L"Download", hdr.GetItemCount());
+	AddColumn(L"Downloaded", hdr.GetItemCount());
 	AddColumn(L"Upload", hdr.GetItemCount());
 	AddColumn(L"Peers", hdr.GetItemCount());
 	AddColumn(L"Seeds", hdr.GetItemCount());

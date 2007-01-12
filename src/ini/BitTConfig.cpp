@@ -68,10 +68,11 @@ void BitTConfig::settingsThread()
 	else
 		halite::bittorrent().ensure_dht_off();
 	}
-	catch(const asio::error& ex)
+	catch(const asio::error&)
 	{		
 		MessageBox(0, globalModule().loadResString(IDS_DHTTRYANOTHERPORT).c_str(), L"DHT Error", MB_ICONERROR|MB_OK);
 	}	
+	
 /*	if (INI().remoteConfig().isEnabled)
 	{
 		halite::xmlRpc().bindHost(INI().remoteConfig().port);

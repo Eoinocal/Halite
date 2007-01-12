@@ -7,8 +7,8 @@
 #define _RICHEDIT_VER 0x0200
 #define VC_EXTRALEAN
 
-#define HALITE_GUID L"HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}dev"
-#define WMU_ARE_YOU_ME_STRING  L"WMU_ARE_YOU_ME_HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}dev"
+#define HALITE_GUID L"HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}"
+#define WMU_ARE_YOU_ME_STRING  L"WMU_ARE_YOU_ME_HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}"
 #define HALITE_SENDING_CMD 68816889
 
 #include <atlbase.h>
@@ -36,6 +36,7 @@ extern CAppModule _Module;
 #include <string>
 #include <vector>
 #include <boost/format.hpp>
+#include <boost/array.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread/thread.hpp>
@@ -50,6 +51,7 @@ using std::pair;
 using std::make_pair;
 
 using boost::lexical_cast;
+using boost::array;
 using boost::format;
 using boost::wformat;
 using boost::bind;

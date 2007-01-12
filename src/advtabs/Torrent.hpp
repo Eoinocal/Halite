@@ -1,47 +1,45 @@
 
 #pragma once
  
-#include "stdAfx.hpp"
-#include "DdxEx.hpp"
-#include "Halite.hpp"
+#include "../stdAfx.hpp"
+#include "../DdxEx.hpp"
+#include "../Halite.hpp"
+
+#include "../HaliteTabPage.hpp"
 
 class ui_signal;
 class selection_manager;
 
-class HaliteDialog :
-	public CDialogImpl<HaliteDialog>,
-	public CDialogResize<HaliteDialog>,
-	public CWinDataExchangeEx<HaliteDialog>,
-	private noncopyable
+class AdvTorrentDialog :
+	public CHalTabPageImpl<AdvTorrentDialog>,
+	public CDialogResize<AdvTorrentDialog>,
+	public CWinDataExchangeEx<AdvTorrentDialog>
 {
 protected:
-	typedef HaliteDialog thisClass;
-	typedef CDialogImpl<HaliteDialog> baseClass;
-	typedef CDialogResize<HaliteDialog> resizeClass;
-
+	typedef AdvTorrentDialog thisClass;
+	typedef CHalTabPageImpl<AdvTorrentDialog> baseClass;
+	typedef CDialogResize<AdvTorrentDialog> resizeClass;
+	
 public:
-	enum { IDD = IDD_HALITEDLG };
+	enum { IDD = IDD_ADVTORRENT };	
 	
-	HaliteDialog(ui_signal& ui_sig, selection_manager& single_sel);	
-	BOOL PreTranslateMessage(MSG* pMsg)	{ return this->IsDialogMessage(pMsg); }
+	AdvTorrentDialog(ui_signal& ui_sig, selection_manager& single_sel);
 	
-	void saveStatus(); // ****** NEEDS TO BE ANOTHER SIGNAL CLASS ******
+	BOOL PreTranslateMessage(MSG* pMsg)
+	{
+		return this->IsDialogMessage(pMsg);
+	}
   	
 	BEGIN_MSG_MAP(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_CLOSE(onClose)	
 		COMMAND_RANGE_CODE_HANDLER_EX(IDC_EDITTLU, IDC_EDITNCU, EN_KILLFOCUS, OnEditKillFocus)
 		
-		if(uMsg == WM_FORWARDMSG)
-			if(PreTranslateMessage((LPMSG)lParam)) return TRUE;
-
-		COMMAND_ID_HANDLER_EX(BTNPAUSE, onPause)		
-		COMMAND_ID_HANDLER_EX(BTNREANNOUNCE, onReannounce)
-		COMMAND_ID_HANDLER_EX(BTNREMOVE, onRemove)
-		
-	//	MSG_WM_CTLCOLORSTATIC(OnCltColor)
+		if (uMsg == WM_FORWARDMSG)
+			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
 		
 		CHAIN_MSG_MAP(resizeClass)
+		CHAIN_MSG_MAP(baseClass)
 	END_MSG_MAP()
 	
 	BEGIN_DDX_MAP(thisClass)
@@ -50,12 +48,8 @@ public:
         DDX_EX_FLOAT_POSITIVE(IDC_EDITTLD, TranLimitDown)
         DDX_EX_FLOAT_POSITIVE(IDC_EDITTLU, TranLimitUp)
     END_DDX_MAP()
-
-	BEGIN_DLGRESIZE_MAP(thisClass)
-		DLGRESIZE_CONTROL(BTNPAUSE, (DLSZ_MOVE_X))
-		DLGRESIZE_CONTROL(BTNREANNOUNCE, (DLSZ_MOVE_X))
-		DLGRESIZE_CONTROL(BTNREMOVE, (DLSZ_MOVE_X))
-		
+	
+	BEGIN_DLGRESIZE_MAP(thisClass)		
 		DLGRESIZE_CONTROL(IDC_TL, (DLSZ_MOVE_X))
 		DLGRESIZE_CONTROL(IDC_NC, (DLSZ_MOVE_X))
 		DLGRESIZE_CONTROL(IDC_TLD, (DLSZ_MOVE_X))
@@ -75,28 +69,17 @@ public:
 		DLGRESIZE_CONTROL(IDC_STATUS, (DLSZ_SIZE_X))
 		DLGRESIZE_CONTROL(IDC_COMPLETE, (DLSZ_SIZE_X))
 		
-		DLGRESIZE_CONTROL(LISTPEERS, (DLSZ_SIZE_X | DLSZ_SIZE_Y))
-		DLGRESIZE_CONTROL(IDC_DETAILS_GROUP, (DLSZ_SIZE_X | DLSZ_SIZE_Y))
 	END_DLGRESIZE_MAP()
 	
-protected:	
 	LRESULT onInitDialog(HWND, LPARAM);
-	void onClose();
-	
-	void onPause(UINT, int, HWND);	
-	void onReannounce(UINT, int, HWND);	
-	void onRemove(UINT, int, HWND);
+	void onClose();	
 	
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl);
-	LRESULT OnCltColor(HDC hDC, HWND hWnd);
 	
 	void selectionChanged(const string& torrent_name);	
 	void updateDialog();
-
-private:
-	CButton m_btn_start;
-	CListViewCtrl m_list;
-	CContainedWindow m_wndNCD;
+		
+protected:
 	CProgressBarCtrl m_prog;
 	
 	int NoConnDown, NoConnUp;

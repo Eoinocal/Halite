@@ -69,7 +69,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	mp_dlg->Create(m_Split.m_hWnd);
 //	mp_dlg->ShowWindow(true);
 	
-	mp_advDlg.reset(new AdvHaliteDialog(this));
+	mp_advDlg.reset(new AdvHaliteDialog(ui(), mp_list->manager()));
 	mp_advDlg->Create(m_Split.m_hWnd);
 //	mp_advDlg->ShowWindow(true);
 	

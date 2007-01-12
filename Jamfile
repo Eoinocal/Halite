@@ -20,6 +20,9 @@ SOURCES =
 #	halXmlRpc.cpp
 	NTray.cpp
 	UxthemeWrapper.cpp
+	advtabs/Torrent.cpp
+	advtabs/Tracker.cpp
+	advtabs/Debug.cpp
 	;
 	
 RESOURCES =

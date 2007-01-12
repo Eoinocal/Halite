@@ -27,7 +27,8 @@
 
 #define DDX_EX_STDWSTRING(nID, str) \
 		if(nCtlID == (UINT)-1 || nCtlID == nID) \
-			return DDX_StdWString(nID, str, bSaveAndValidate);
+			if(!DDX_StdWString(nID, str, bSaveAndValidate)) \
+				return FALSE; \
 			
 template <class T>
 class CWinDataExchangeEx : public CWinDataExchange<T>
@@ -37,7 +38,7 @@ public:
 	BOOL DDX_StdWString(UINT id, wstring& str, BOOL save, const int max_len=MAX_PATH)
 	{
 		T* pT = static_cast<T*>(this);
-		bool success = true;
+		BOOL success = TRUE;
 		
 		if (save)
 		{

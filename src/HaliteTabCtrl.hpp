@@ -11,7 +11,8 @@ public:
 		currentPage_(0)
 	{}
 
-    BEGIN_MSG_MAP(CTabCtrlWithDisableImpl)
+    BEGIN_MSG_MAP(CHalTabCtrl)
+		MSG_WM_SIZE(OnSize)
 //        MESSAGE_HANDLER(WM_CREATE, OnCreate)
 		REFLECTED_NOTIFY_CODE_HANDLER_EX(TCN_SELCHANGE, OnSelChange)
         DEFAULT_REFLECTION_HANDLER()
@@ -43,7 +44,7 @@ public:
 			GetClientRect(&rect);
 			AdjustRect(false, &rect);
 			
-			::SetWindowPos(currentPage_, HWND_TOP, rect.left, rect.top, 0, 0, SWP_NOSIZE);
+			::SetWindowPos(currentPage_, HWND_TOP, rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top, 0);
 		}
 	}
 	
@@ -54,10 +55,20 @@ public:
 		return 0;
 	}
 	
+	void OnSize(UINT, CSize)
+	{
+//		MessageBox(L"Here in size", L"Msg", 0);
+		RECT rect;
+		GetClientRect(&rect);
+		AdjustRect(false, &rect);
+		
+		::MoveWindow(currentPage_,  rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top, true);
+	}
+	
 	void AddPage(HWND hWnd, wstring wndText)
 	{	
 		TCITEM tie = { TCIF_TEXT, 0, 0, const_cast<wchar_t*>(wndText.c_str()), 0, -1, 0 };
-		InsertItem(0, &tie);
+		InsertItem(pages_.size(), &tie);
 		
 		pages_.push_back(hWnd);
 

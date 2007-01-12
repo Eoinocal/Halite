@@ -5,10 +5,12 @@
 #include "DdxEx.hpp"
 
 #include "HaliteTabCtrl.hpp"
-#include "ThemeTestDialog.hpp"
+#include "advtabs/ThemeTestDialog.hpp"
+#include "advtabs/Torrent.hpp"
+#include "advtabs/Tracker.hpp"
+#include "advtabs/Debug.hpp"
 
 class HaliteWindow;
-class ThemeTestDialog;
 
 class AdvHaliteDialog :
 	public CDialogImpl<AdvHaliteDialog>,
@@ -21,8 +23,10 @@ protected:
 public:
 	enum { IDD = IDD_ADVHALITEDLG };
 	
-	AdvHaliteDialog(HaliteWindow* halWnd)
-		: mainHaliteWindow(halWnd)
+	AdvHaliteDialog(ui_signal& ui_sig, selection_manager& single_sel) :
+		m_torrent(ui_sig, single_sel),
+		m_tracker(ui_sig, single_sel),
+		m_debug(ui_sig, single_sel)
 	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)
@@ -56,10 +60,13 @@ protected:
 	void InitializeControls(void);
 	void InitializeValues(void);
 
-//	CHalTabCtrl m_tabCtrl1;
 	CHalTabCtrl m_tabCtrl;
 	boost::scoped_ptr<ThemeTestDialog> mp_dlg;
-	boost::scoped_ptr<ThemeTestDialog> mp_dlg2;
+	boost::scoped_ptr<AdvTorrentDialog> mp_dlg2;
+	
+	AdvTorrentDialog m_torrent;
+	AdvTrackerDialog m_tracker;
+	AdvDebugDialog m_debug;
 	
 	HaliteWindow* mainHaliteWindow;	
 };

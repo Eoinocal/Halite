@@ -25,6 +25,9 @@
 #define IDD_PROGRESS                    117
 #define IDD_DIALOG2                     118
 #define IDD_CONFIGTORRENT               118
+#define IDD_ADVTORRENT                  119
+#define IDD_ADVTRACKER                  120
+#define IDD_ADVDEBUGLOG                 121
 #define IDR_MAINFRAME                   128
 #define LISTPEERS                       1000
 #define TORRENTPROG                     1003
@@ -104,6 +107,23 @@
 #define IDC_BC_PORTCHECK                1064
 #define IDC_BC_SAVEBROWSE               1064
 #define ID_ADVANCED                     1064
+#define IDC_TRACKERLIST                 1066
+#define IDC_TRACKER_LOGINCHECK          1067
+#define IDC_TRACKER_USER_S              1068
+#define IDC_TRACKER_PASS_S              1069
+#define IDC_TRACKER_USER                1070
+#define IDC_TRACKER_PASS                1071
+#define IDC_DEBUGNONE                   1072
+#define IDC_DEBUGCRITICAL               1073
+#define IDC_DEBUGFATAL                  1074
+#define IDC_DEBUGWARNING                1075
+#define IDC_DEBUGINFO                   1076
+#define IDC_DEBUGDEBUG                  1077
+#define IDC_DEBUGFILECHECK              1078
+#define IDC_DEBUGEDIT                   1079
+#define IDC_DEBUGSTATIC                 1080
+#define IDC_LIST1                       1081
+#define IDC_DEBUGLIST                   1081
 #define ED_CON                          3000
 #define ID_ABOUT_OPENHALITE             40001
 #define ID_ABOUT_PAUSEALL               40002
@@ -120,7 +140,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        119
 #define _APS_NEXT_COMMAND_VALUE         40010
-#define _APS_NEXT_CONTROL_VALUE         1066
+#define _APS_NEXT_CONTROL_VALUE         1082
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

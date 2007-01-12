@@ -18,6 +18,7 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
+#include <boost/serialization/version.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/split_free.hpp>
@@ -113,6 +114,13 @@ std::ostream& operator<<(std::ostream& os, libtorrent::ip_range<asio::ip::addres
 
 namespace halite 
 {
+class TorrentInternal;
+}
+
+BOOST_CLASS_VERSION(halite::TorrentInternal, 1)
+
+namespace halite 
+{
 
 namespace lbt = libtorrent;
 namespace fs = boost::filesystem;
@@ -155,6 +163,27 @@ public:
 	void resume();
 	bool isPaused() const;
 	
+	void setTrackerLogin()
+	{
+		if (trackerUsername_ != L"")
+		{
+			handle_.set_tracker_login(wcstombs(trackerUsername_),
+				wcstombs(trackerPassword_));
+		}
+	}
+	
+	void setTrackerLogin(wstring username, wstring password)
+	{
+		trackerUsername_ = username;
+		trackerPassword_ = password;
+		setTrackerLogin();
+	}	
+	
+	pair<wstring, wstring> getTrackerLogin()
+	{
+		return make_pair(trackerUsername_, trackerPassword_);
+	}
+	
 	const libtorrent::torrent_handle& handle() const { return handle_; }
 	void setHandle(libtorrent::torrent_handle h) 
 	{ 
@@ -175,6 +204,10 @@ public:
         ar & make_nvp("paused", paused_);
         ar & make_nvp("filename", filename_);
         ar & make_nvp("saveDirectory", saveDirectory_);
+		if (version > 0) {
+			ar & make_nvp("trackerUsername", trackerUsername_);
+			ar & make_nvp("trackerPassword", trackerPassword_);
+		}
     }
 	
 private:		
@@ -188,7 +221,11 @@ private:
 	std::wstring filename_;
 	std::string saveDirectory_;
 	libtorrent::torrent_handle handle_;	
+	
+	std::wstring trackerUsername_;	
+	std::wstring trackerPassword_;
 };
+
 
 typedef std::map<std::string, TorrentInternal> TorrentMap;
 
@@ -588,7 +625,6 @@ void BitTorrent_impl::ip_filter_count()
 		vectors.get<1>().end());
 	ip_filter_count_ = vectors.get<0>().size() + vectors.get<1>().size();
 }
-
 
 void BitTorrent_impl::ip_filter_load(progressCallback fn)
 {
@@ -1038,6 +1074,28 @@ bool BitTorrent::isTorrentPaused(string filename)
 	return false; // ??? is this correct
 }
 
+void BitTorrent::setTorrentLogin(std::string filename, std::wstring username, std::wstring password)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		(*i).second.setTrackerLogin(username, password);
+	}
+}
+
+std::pair<std::wstring, std::wstring>  BitTorrent::getTorrentLogin(std::string filename)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		return (*i).second.getTrackerLogin();
+	}
+	
+	return std::make_pair(L"", L"");
+}
+
 void BitTorrent_impl::removalThread(lbt::torrent_handle handle)
 {
 	theSession.remove_torrent(handle);
@@ -1064,6 +1122,7 @@ void BitTorrent::reannounceTorrent(string filename)
 		(*i).second.handle().force_reannounce();
 	}
 
+//	pimpl->theSession.add_dht_node(make_pair(string("192.168.11.4"),6881));
 //	Temporary Hijack
 
 /*	ofstream out("dump.txt");
