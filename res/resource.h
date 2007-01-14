@@ -1,29 +1,21 @@
-//{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by Halite.rc
-//
+#ifndef IDC_STATIC
+#define IDC_STATIC (-1)
+#endif
+
+#define IDR_LISTVIEW_MENU               101
 #define IDD_CONFIGBIT                   102
 #define IDD_CONFIGREMOTE                103
 #define IDD_ABOUT                       104
 #define IDD_CLOSESPLASH                 105
 #define IDD_HALITEDLG                   106
 #define IDR_TRAY_MENU                   107
-#define IDPANE_STATUS                   109
-#define IDPANE_CAPS_INDICATOR           110
 #define IDD_NEWTORRENT                  111
-#define IDPANE_DHT                      111
 #define IDD_CONFIGGENERAL               112
-#define IDPANE_FILTER                   112
-#define IDS_TRYANOTHERPORT              113
 #define IDD_ADVHALITEDLG                114
-#define IDI_ICON1                       114
 #define IDR_APP_ICON                    114
-#define IDS_DHTTRYANOTHERPORT           114
-#define IDD_DIALOG1                     115
 #define IDD_THEMETEST                   115
 #define IDD_DEBUGDIALOG                 116
 #define IDD_PROGRESS                    117
-#define IDD_DIALOG2                     118
 #define IDD_CONFIGTORRENT               118
 #define IDD_ADVTORRENT                  119
 #define IDD_ADVTRACKER                  120
@@ -31,11 +23,10 @@
 #define IDR_MAINFRAME                   128
 #define LISTPEERS                       1000
 #define TORRENTPROG                     1003
-#define ID_SETTINGS                     1004
 #define IDC_COMPLETE                    1004
+#define ID_SETTINGS                     1004
 #define ID_RESUME                       1005
 #define ID_PAUSE                        1006
-#define IDC_RICHEDIT22                  1006
 #define IDC_SPLASH_MSG                  1007
 #define IDC_NAME                        1008
 #define IDC_TRACKER                     1009
@@ -55,16 +46,15 @@
 #define IDC_NCD                         1023
 #define IDC_DETAILS_GROUP               1024
 #define IDC_BC_MAXCONN                  1025
-#define IDC_REMOTECTRL                  1026
 #define IDC_BC_TMAXCONN                 1026
+#define IDC_REMOTECTRL                  1026
 #define IDC_BC_MAXUP                    1027
-#define IDC_REMOTEPORT                  1028
 #define IDC_BC_TMAXUP                   1028
+#define IDC_REMOTEPORT                  1028
 #define IDC_BC_PORTFROM                 1029
 #define IDC_BC_SAVEFOLDER               1029
 #define IDC_BC_PORTTO                   1030
 #define IDC_BC_DOWNRATE                 1031
-#define IDC_BC_MAXUP2                   1032
 #define IDC_BC_TDOWNRATE                1032
 #define IDC_BC_UPRATE                   1033
 #define BTNPAUSE                        1034
@@ -77,22 +67,17 @@
 #define IDC_NEWT_ADDTRACKER             1040
 #define IDC_BUTTON1                     1041
 #define IDC_EDIT1                       1042
-#define IDC_GENERAL_ONEINST             1043
 #define IDC_EDIT2                       1043
-#define IDC_TAB1                        1044
-#define IDC_TAB                         1044
+#define IDC_GENERAL_ONEINST             1043
 #define IDC_GENERAL_ADVGUI              1044
-#define IDC_GENERAL_TRAY                1045
+#define IDC_TAB                         1044
 #define IDC_CHECK1                      1045
+#define IDC_GENERAL_TRAY                1045
 #define IDC_RADIO1                      1046
 #define IDC_BC_DHT                      1048
 #define IDC_PROG_PROGRESS               1048
 #define IDC_BC_FILTERCHECK              1049
 #define IDC_PROG_CANCEL                 1049
-#define IDC_BC_FILTERSTATIC             1050
-#define IDC_BC_FILTERSTAT               1050
-#define IDC_BC_FILTEREDIT               1051
-#define IDC_BC_FILTERBTN                1052
 #define IDC_BC_FILTERLOAD               1052
 #define IDC_BC_FILTERCLEAR              1053
 #define IDC_BC_PROXYIP                  1055
@@ -122,25 +107,21 @@
 #define IDC_DEBUGFILECHECK              1078
 #define IDC_DEBUGEDIT                   1079
 #define IDC_DEBUGSTATIC                 1080
-#define IDC_LIST1                       1081
 #define IDC_DEBUGLIST                   1081
 #define ED_CON                          3000
-#define ID_ABOUT_OPENHALITE             40001
-#define ID_ABOUT_PAUSEALL               40002
-#define ID_ABOUT_RESUMEALL              40003
+#define IDPANE_STATUS                   40000
+#define ID_LVM_RESUME                   40000
+#define IDPANE_CAPS_INDICATOR           40001
+#define ID__LVM_PAUSE                   40001
+#define IDPANE_DHT                      40002
+#define ID_LVM_STOP                     40002
+#define IDPANE_FILTER                   40003
+#define ID_LVM_REANNOUNCE               40003
+#define IDS_TRYANOTHERPORT              40004
+#define ID_LVM_REMOVE_T                 40004
 #define ID_TRAY_OPENHALITE              40004
+#define IDS_DHTTRYANOTHERPORT           40005
+#define ID_LVM_REMOVE_TD                40005
 #define ID_TRAY_PAUSEALL                40005
 #define ID_TRAY_RESUMEALL               40006
 #define ID_TRAY_EXIT                    40009
-
-// Next default values for new objects
-// 
-#ifdef APSTUDIO_INVOKED
-#ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        119
-#define _APS_NEXT_COMMAND_VALUE         40010
-#define _APS_NEXT_CONTROL_VALUE         1082
-#define _APS_NEXT_SYMED_VALUE           110
-#endif
-#endif

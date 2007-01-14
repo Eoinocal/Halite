@@ -9,13 +9,30 @@ void selection_manager::sync_list(bool list_to_manager)
 {
 	if (list_to_manager)
 	{	
+		all_selected_.clear();
 		int itemPos = m_list_.GetSelectionMark();	
 	
 		if (itemPos != -1)
 		{
 			boost::array<wchar_t, MAX_PATH> pathBuffer;
 			m_list_.GetItemText(itemPos, 0, pathBuffer.c_array(), pathBuffer.size());	
-			string selected = wcstombs(pathBuffer.data());
+			
+			// Multi-Selected
+			int total = m_list_.GetItemCount();
+			
+			for (int i=0; i<total; ++i)
+			{
+				UINT flags = m_list_.GetItemState(i, LVIS_SELECTED);
+				
+				if (flags && LVIS_SELECTED)
+				{
+					m_list_.GetItemText(i, 0, pathBuffer.c_array(), pathBuffer.size());	
+					all_selected_.push_back(wcstombs(pathBuffer.data()));
+				}
+			}
+			
+			// Single-Selected
+			string selected = lexical_cast<string>(pathBuffer.data());
 			
 			if (selected_ != selected)
 			{
@@ -64,7 +81,23 @@ void selection_manager::setSelected(int itemPos)
 void selection_manager::clear()
 {
 	m_list_.DeleteItem(m_list_.GetSelectionMark());
-	halite::bittorrent().removeTorrent(selected_);
+	
+//	m_list_.SelectItem(0);
+	sync_list(true);
+}
+
+void selection_manager::clearAllSelected()
+{
+	int total = m_list_.GetItemCount();
+	
+	for (int i=0; i<total; ++i)
+	{
+		UINT flags = m_list_.GetItemState(i, LVIS_SELECTED);
+		
+		if (flags && LVIS_SELECTED)
+			m_list_.DeleteItem(i);
+	}
+	all_selected_.clear();
 	
 //	m_list_.SelectItem(0);
 	sync_list(true);
@@ -72,11 +105,15 @@ void selection_manager::clear()
 
 HaliteListViewCtrl::HaliteListViewCtrl() :
 	manager_(*this)
-{}
+{
+	BOOL menu_not_created = torrentMenu_.LoadMenu(IDR_LISTVIEW_MENU);
+	assert(menu_not_created);
+
+}
 
 void HaliteListViewCtrl::onShowWindow(UINT, INT)
 {
-	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT);
+	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
 
 	CHeaderCtrl hdr = GetHeader();
 	hdr.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
@@ -159,6 +196,74 @@ LRESULT HaliteListViewCtrl::OnClick(int, LPNMHDR pnmh, BOOL&)
 
 	return 0;
 }
+
+LRESULT HaliteListViewCtrl::OnRClick(int i, LPNMHDR pnmh, BOOL&)
+{
+	LPNMITEMACTIVATE pia = (LPNMITEMACTIVATE)pnmh;	
+	manager().sync_list(true);
+	
+	assert (torrentMenu_.IsMenu());
+	CMenuHandle sMenu = torrentMenu_.GetSubMenu(0);
+	assert (sMenu.IsMenu());
+	
+	POINT ptPoint;
+	GetCursorPos(&ptPoint);
+	sMenu.TrackPopupMenu(0, ptPoint.x, ptPoint.y, m_hWnd);
+	
+	return 0;
+}
+
+LRESULT HaliteListViewCtrl::OnColClick(int i, LPNMHDR pnmh, BOOL&)
+{
+	LPNMLISTVIEW pnlv = (LPNMLISTVIEW)pnmh;
+//	MessageBox(lexical_cast<wstring>(pnlv->iSubItem).c_str(), L"ListView",0);
+//	DeleteColumn(pnlv->iSubItem);
+
+	return 0;
+}
+
+LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	std::for_each(manager_.allSelected().begin(), manager_.allSelected().end(),
+		bind(&halite::BitTorrent::resumeTorrent, &halite::bittorrent(), _1));
+	
+	return 0;
+}
+
+LRESULT HaliteListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	std::for_each(manager_.allSelected().begin(), manager_.allSelected().end(),
+		bind(&halite::BitTorrent::pauseTorrent, &halite::bittorrent(), _1));
+	
+	return 0;
+}
+
+LRESULT HaliteListViewCtrl::OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	std::for_each(manager_.allSelected().begin(), manager_.allSelected().end(),
+		bind(&halite::BitTorrent::stopTorrent, &halite::bittorrent(), _1));
+	
+	return 0;
+}
+
+LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	std::for_each(manager_.allSelected().begin(), manager_.allSelected().end(),
+		bind(&halite::BitTorrent::removeTorrent, &halite::bittorrent(), _1));
+
+	manager_.clearAllSelected();	
+	return 0;
+}
+
+LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	std::for_each(manager_.allSelected().begin(), manager_.allSelected().end(),
+		bind(&halite::BitTorrent::removeTorrentWipeFiles, &halite::bittorrent(), _1));
+	
+	manager_.clearAllSelected();
+	return 0;
+}
+
 
 //LRESULT HaliteListViewCtrl::OnDeleteItem(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHandled*/)
 //{

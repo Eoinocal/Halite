@@ -57,21 +57,15 @@ void BitTConfig::settingsThread()
 		INI().bitTConfig().torrentMaxUploads, INI().bitTConfig().torrentDownRate,
 		INI().bitTConfig().torrentUpRate);
 	
-	try
-	{
 	halite::bittorrent().setDhtSettings(INI().bitTConfig().dhtMaxPeersReply, 
 		INI().bitTConfig().dhtSearchBranching, INI().bitTConfig().dhtServicePort, 
 		INI().bitTConfig().dhtMaxFailCount);
 	
 	if (INI().bitTConfig().enableDHT)
-		halite::bittorrent().ensure_dht_on();
+		if (!halite::bittorrent().ensure_dht_on())
+			MessageBox(0, globalModule().loadResString(IDS_DHTTRYANOTHERPORT).c_str(), L"DHT Error", MB_ICONERROR|MB_OK);
 	else
 		halite::bittorrent().ensure_dht_off();
-	}
-	catch(const asio::error&)
-	{		
-		MessageBox(0, globalModule().loadResString(IDS_DHTTRYANOTHERPORT).c_str(), L"DHT Error", MB_ICONERROR|MB_OK);
-	}	
 	
 /*	if (INI().remoteConfig().isEnabled)
 	{

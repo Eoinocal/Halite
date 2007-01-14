@@ -50,7 +50,14 @@ public:
 		estimatedTimeLeft_(eta)
 	{}		
 
-	TorrentDetail() {};
+	TorrentDetail() {};	
+	
+	enum state
+	{
+		torrent_active = 0,
+		torrent_paused,
+		torrent_stopped
+	};
 	
 	const std::wstring& filename() const { return filename_; }
 	const std::wstring& state() const { return state_; }
@@ -142,7 +149,7 @@ public:
 	int isListeningOn();
 	void stopListening();
 	
-	void ensure_dht_on();
+	bool ensure_dht_on();
 	void ensure_dht_off();
 	
 	void ensure_ip_filter_on(progressCallback fn);
@@ -175,13 +182,16 @@ public:
 	
 	void pauseTorrent(std::string filename);
 	void resumeTorrent(std::string filename);
-	bool isTorrentPaused(std::string filename);
+	void stopTorrent(std::string filename);
+	bool isTorrentActive(std::string filename);
 	
 	void pauseAllTorrents();
-	void resumeAllTorrents();
+	void unpauseAllTorrents();
 	
 	void removeTorrent(std::string filename);
+	void removeTorrentWipeFiles(std::string filename);
 	void reannounceTorrent(std::string filename);
+	
 	
 	void setTorrentLogin(std::string filename, std::wstring username, std::wstring password);
 	std::pair<std::wstring, std::wstring> getTorrentLogin(std::string filename);

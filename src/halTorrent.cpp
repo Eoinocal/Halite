@@ -8,6 +8,7 @@
 #include <map>
 #include <algorithm>
 
+#include <boost/foreach.hpp>
 #include <boost/bind.hpp>
 #include <boost/array.hpp>
 #include <boost/regex.hpp>
@@ -33,6 +34,8 @@
 #include <libtorrent/peer_connection.hpp>
 
 #include "halTorrent.hpp"
+
+#define foreach BOOST_FOREACH
 
 namespace boost {
 namespace serialization {
@@ -117,7 +120,7 @@ namespace halite
 class TorrentInternal;
 }
 
-BOOST_CLASS_VERSION(halite::TorrentInternal, 1)
+BOOST_CLASS_VERSION(halite::TorrentInternal, 2)
 
 namespace halite 
 {
@@ -137,7 +140,7 @@ public:
 		transferLimit_(std::pair<float, float>(-1, -1)),
 		connections_(-1),
 		uploads_(-1),
-		paused_(false),
+		state_(TorrentDetail::torrent_active),
 		inSession_(false)
 	{}
 	
@@ -145,7 +148,7 @@ public:
 		transferLimit_(std::pair<float, float>(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload())),
 		connections_(bittorrent().defTorrentMaxConn()),
 		uploads_(bittorrent().defTorrentMaxUpload()),
-		paused_(false),
+		state_(TorrentDetail::torrent_active),
 		filename_(f),
 		saveDirectory_(saveDirectory.string()),
 		inSession_(true),
@@ -159,9 +162,31 @@ public:
 	void setConnectionLimit();
 	pair<float, float> getTransferSpeed();
 	pair<int, int> getConnectionLimit();
-	void pause();
-	void resume();
-	bool isPaused() const;
+	
+	void resume()
+	{
+		if (inSession()) handle_.resume();
+		state_ = TorrentDetail::torrent_active;
+	}
+	
+	void pause()
+	{
+		if (state_ == TorrentDetail::torrent_active)
+		{
+			if (inSession()) handle_.pause();
+			state_ = TorrentDetail::torrent_paused;	
+		}
+	}
+	
+	void stop()
+	{
+		if (inSession()) handle_.pause();
+		state_ = TorrentDetail::torrent_stopped;	
+	}
+	
+	bool isActive() const { return state_ == TorrentDetail::torrent_active;	}
+	
+	unsigned state() const { return state_; }
 	
 	void setTrackerLogin()
 	{
@@ -201,21 +226,24 @@ public:
         ar & make_nvp("transferLimit", transferLimit_);
         ar & make_nvp("connections", connections_);
         ar & make_nvp("uploads", uploads_);
-        ar & make_nvp("paused", paused_);
         ar & make_nvp("filename", filename_);
         ar & make_nvp("saveDirectory", saveDirectory_);
 		if (version > 0) {
 			ar & make_nvp("trackerUsername", trackerUsername_);
 			ar & make_nvp("trackerPassword", trackerPassword_);
 		}
+		if (version > 1) {
+			ar & make_nvp("state", state_);
+		}
     }
 	
 private:		
 	std::pair<float, float> transferLimit_;
 	
+	unsigned state_;
 	int connections_;
 	int uploads_;
-	bool paused_;
+//	bool paused_;
 	bool inSession_;
 	
 	std::wstring filename_;
@@ -306,8 +334,10 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
 		lbt::torrent_status tS = handle_.status();
 		wstring state;
 		
-		if (paused_)
+		if (state_ == TorrentDetail::torrent_paused)
 			state = L"Paused";
+		else if (state_ == TorrentDetail::torrent_stopped)
+			state = L"Stopped";
 		else
 		{
 			switch (tS.state)
@@ -356,23 +386,6 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
 	{
 		return TorrentDetail_ptr(new TorrentDetail(filename_, L"Not in Session", L"No tracker"));
 	}
-}
-
-void TorrentInternal::pause()
-{
-	if (inSession()) handle_.pause();
-	paused_ = true;
-}
-
-void TorrentInternal::resume()
-{
-	if (inSession()) handle_.resume();
-	paused_ = false;
-}
-
-bool TorrentInternal::isPaused() const
-{
-	return paused_;
 }
 
 bool operator!=(const lbt::dht_settings& lhs, const lbt::dht_settings& rhs)
@@ -464,7 +477,7 @@ public:
 	
 private:
 	BitTorrent_impl() :
-		theSession(lbt::fingerprint("HL", 0, 2, 0, 8)),
+		theSession(lbt::fingerprint("HL", 0, 2, 0, 9)),
 		workingDirectory(globalModule().exePath().branch_path()),
 		defTorrentMaxConn_(-1),
 		defTorrentMaxUpload_(-1),
@@ -487,13 +500,13 @@ private:
 			dht_state_ = haldecode(workingDirectory/"DHTState.bin");
 				
 		{	lbt::session_settings settings = theSession.settings();
-			settings.user_agent = "Halite v 0.2.8";
+			settings.user_agent = "Halite v 0.2.9 dev2";
 			theSession.set_settings(settings);
 		}
 	}
 	
 	lbt::entry prepTorrent(path filename, path saveDirectory);
-	void removalThread(lbt::torrent_handle handle);
+	void removalThread(lbt::torrent_handle handle, bool wipeFiles);
 	
 	lbt::session theSession;
 	TorrentMap torrents;
@@ -562,7 +575,7 @@ void BitTorrent::stopListening()
 	pimpl->theSession.listen_on(make_pair(0, 0));
 }
 
-void BitTorrent::ensure_dht_on()
+bool BitTorrent::ensure_dht_on()
 {
 	if (!pimpl->dht_on_)
 	{		
@@ -574,6 +587,7 @@ void BitTorrent::ensure_dht_on()
 		catch(...)
 		{}
 	}
+		return pimpl->dht_on_;
 }
 
 void BitTorrent::ensure_dht_off()
@@ -969,8 +983,10 @@ void BitTorrent::resumeAll()
 			(*iter).second.setHandle(pimpl->theSession.add_torrent(metadata,
 				path((*iter).second.saveDirectory()), resumedata));
 			
-			if ((*iter).second.isPaused())
+			if ((*iter).second.state() == TorrentDetail::torrent_paused)
 				(*iter).second.pause();
+			else if ((*iter).second.state() == TorrentDetail::torrent_stopped)
+				(*iter).second.stop();
 			
 			(*iter).second.setTransferSpeed();
 			(*iter).second.setConnectionLimit();
@@ -1062,13 +1078,23 @@ void BitTorrent::resumeTorrent(string filename)
 	}
 }
 
-bool BitTorrent::isTorrentPaused(string filename)
+void BitTorrent::stopTorrent(string filename)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		(*i).second.stop();
+	}
+}
+
+bool BitTorrent::isTorrentActive(string filename)
 {
 	TorrentMap::const_iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
 	{
-		return (*i).second.isPaused();
+		return (*i).second.isActive();
 	}
 	
 	return false; // ??? is this correct
@@ -1096,9 +1122,32 @@ std::pair<std::wstring, std::wstring>  BitTorrent::getTorrentLogin(std::string f
 	return std::make_pair(L"", L"");
 }
 
-void BitTorrent_impl::removalThread(lbt::torrent_handle handle)
+void BitTorrent_impl::removalThread(lbt::torrent_handle handle, bool wipeFiles)
 {
-	theSession.remove_torrent(handle);
+	if (!wipeFiles)
+		theSession.remove_torrent(handle);
+	else
+	{
+		fs::path saveDirectory = handle.save_path();
+		lbt::torrent_info info = handle.get_torrent_info();
+		
+		theSession.remove_torrent(handle);
+		
+		foreach (const lbt::file_entry& entry, make_pair(info.begin_files(), info.end_files()))
+		{
+			path file_path = saveDirectory / entry.path;
+			
+			if (exists(file_path) && !file_path.empty())
+				remove_all(file_path);
+		}
+		
+		if (info.num_files() != 1)
+		{
+			path dir_path = saveDirectory / info.name();
+			if (exists(dir_path) && is_empty(dir_path))
+				remove_all(dir_path);
+		}
+	}	
 }
 
 void BitTorrent::removeTorrent(string filename)
@@ -1109,7 +1158,19 @@ void BitTorrent::removeTorrent(string filename)
 	{
 		lbt::torrent_handle handle = (*i).second.handle();
 		pimpl->torrents.erase(i);
-		thread t(bind(&BitTorrent_impl::removalThread, &*pimpl, handle));
+		thread t(bind(&BitTorrent_impl::removalThread, &*pimpl, handle, false));
+	}
+}
+
+void BitTorrent::removeTorrentWipeFiles(string filename)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		lbt::torrent_handle handle = (*i).second.handle();
+		pimpl->torrents.erase(i);
+		thread t(bind(&BitTorrent_impl::removalThread, &*pimpl, handle, true));
 	}
 }
 
@@ -1147,12 +1208,13 @@ void BitTorrent::pauseAllTorrents()
 	}
 }
 
-void BitTorrent::resumeAllTorrents()
+void BitTorrent::unpauseAllTorrents()
 {	
 	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
 		iter != pimpl->torrents.end(); ++iter)
 	{
-		(*iter).second.resume();
+		if (iter->second.state() == TorrentDetail::torrent_paused)
+			(*iter).second.resume();
 	}
 }
 

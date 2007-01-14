@@ -30,7 +30,7 @@ void AdvTorrentDialog::selectionChanged(const string& torrent_name)
 		tranLimit = halite::bittorrent().getTorrentSpeed(torrent_name);
 		connLimit = halite::bittorrent().getTorrentLimit(torrent_name);
 		
-		if (halite::bittorrent().isTorrentPaused(torrent_name))
+		if (!halite::bittorrent().isTorrentActive(torrent_name))
 			SetDlgItemText(BTNPAUSE, L"Resume");
 		else		
 			SetDlgItemText(BTNPAUSE, L"Pause");

@@ -354,7 +354,7 @@ LRESULT HaliteWindow::OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	halite::bittorrent().resumeAllTorrents();
+	halite::bittorrent().unpauseAllTorrents();
 	ui().update();
 	return 0;
 }

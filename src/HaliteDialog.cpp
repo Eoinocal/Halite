@@ -29,7 +29,7 @@ void HaliteDialog::selectionChanged(const string& torrent_name)
 		tranLimit = halite::bittorrent().getTorrentSpeed(torrent_name);
 		connLimit = halite::bittorrent().getTorrentLimit(torrent_name);
 		
-		if (halite::bittorrent().isTorrentPaused(torrent_name))
+		if (!halite::bittorrent().isTorrentActive(torrent_name))
 			SetDlgItemText(BTNPAUSE, L"Resume");
 		else		
 			SetDlgItemText(BTNPAUSE, L"Pause");
@@ -123,7 +123,7 @@ void HaliteDialog::onClose()
 void HaliteDialog::onPause(UINT, int, HWND)
 {
 	string torrentName = selection_manager_.selected();
-	if (halite::bittorrent().isTorrentPaused(torrentName))
+	if (!halite::bittorrent().isTorrentActive(torrentName))
 	{
 		SetDlgItemText(BTNPAUSE,L"Pause");
 		halite::bittorrent().resumeTorrent(torrentName);
@@ -144,6 +144,7 @@ void HaliteDialog::onReannounce(UINT, int, HWND)
 
 void HaliteDialog::onRemove(UINT, int, HWND)
 {
+	halite::bittorrent().removeTorrent(selection_manager_.selected());
 	selection_manager_.clear();		
 	
 	ui_.update();
