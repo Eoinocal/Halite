@@ -8,7 +8,7 @@
 #include "HaliteWindow.hpp"
 
 #include "CSSFileDialog.hpp"
-#include "HaliteListViewCtrl.hpp"
+#include "HaliteListView.hpp"
 #include "HaliteDialog.hpp"
 #include "AdvHaliteDialog.hpp"
 

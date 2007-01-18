@@ -34,6 +34,7 @@
 #include <libtorrent/peer_connection.hpp>
 
 #include "halTorrent.hpp"
+#include "global/string_conv.hpp"
 
 #define foreach BOOST_FOREACH
 
@@ -192,8 +193,8 @@ public:
 	{
 		if (trackerUsername_ != L"")
 		{
-			handle_.set_tracker_login(wcstombs(trackerUsername_),
-				wcstombs(trackerPassword_));
+			handle_.set_tracker_login(hal::to_str(trackerUsername_),
+				hal::to_gen_str<std::string, std::wstring>(trackerPassword_));
 		}
 	}
 	

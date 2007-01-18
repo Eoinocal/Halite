@@ -4,9 +4,12 @@
 #include "stdAfx.hpp"
 #include "DdxEx.hpp"
 #include "Halite.hpp"
+#include "HaliteListViewCtrl.hpp"
 
 class ui_signal;
-class selection_manager;
+class HaliteListViewCtrl;
+
+typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
 
 class HaliteDialog :
 	public CDialogImpl<HaliteDialog>,
@@ -22,7 +25,7 @@ protected:
 public:
 	enum { IDD = IDD_HALITEDLG };
 	
-	HaliteDialog(ui_signal& ui_sig, selection_manager& single_sel);	
+	HaliteDialog(ui_signal& ui_sig, ListViewManager& single_sel);	
 	BOOL PreTranslateMessage(MSG* pMsg)	{ return this->IsDialogMessage(pMsg); }
 	
 	void saveStatus(); // ****** NEEDS TO BE ANOTHER SIGNAL CLASS ******
@@ -103,5 +106,5 @@ private:
 	float TranLimitDown, TranLimitUp;
 	
 	ui_signal& ui_;
-	selection_manager& selection_manager_;
+	ListViewManager& selection_manager_;
 };

@@ -5,32 +5,6 @@
 #include "resource.h"
 #include "afxres.h"
 
-IDD_CONFIGREMOTE DIALOGEX 0,0,283,94
-STYLE DS_MODALFRAME | DS_SETFONT | DS_FIXEDSYS | WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_POPUP | WS_SYSMENU
-CAPTION "Remote Control"
-FONT 8,"MS Shell Dlg",400,0,1
-BEGIN
-    GROUPBOX        "Remote Control Options",IDC_STATIC,6,6,271,30
-    AUTOCHECKBOX    "Enable Remote Control",IDC_REMOTECTRL,12,18,96,12,WS_DISABLED
-    RTEXT           "Port to listen on : ",IDC_STATIC,159,19,66,11,WS_DISABLED
-    EDITTEXT        IDC_REMOTEPORT,229,18,42,12,WS_DISABLED | ES_AUTOHSCROLL
-    LTEXT           "*** Disabled ***",IDC_STATIC,104,19,59,11
-END
-
-IDD_ABOUT DIALOGEX 0,0,283,125
-STYLE DS_MODALFRAME | DS_SETFONT | DS_FIXEDSYS | WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_POPUP | WS_SYSMENU
-CAPTION "About"
-FONT 8,"MS Shell Dlg",400,0,1
-BEGIN
-    GROUPBOX        "Program Information",IDC_STATIC,5,7,271,111
-    LTEXT           "Halite is a BitTorrent client based on the libtorrent library from Rasterbar.com. The program is written in C++ relying on the Boost libraries and WTL. It is open sourced under a MIT and/or Boost software licence.",IDC_STATIC,12,18,256,27
-    LTEXT           "This project has only been possible thanks to the excellent work others. I'd like to acknowledge some of those people.",IDC_STATIC,12,47,257,18
-    RTEXT           "Release v 0.2.8, Revision 115.",IDC_STATIC,145,106,129,9
-    LTEXT           "nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon.",IDC_STATIC,12,91,257,11
-    LTEXT           "Arvid Norberg - www.rasterbar.com - Author of the libtorrent library.",IDC_STATIC,12,68,257,11
-    LTEXT           "Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO.",IDC_STATIC,12,80,257,11
-END
-
 IDD_HALITEDLG DIALOGEX 0,0,362,73
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILDWINDOW | WS_CLIPCHILDREN
 FONT 8,"MS Shell Dlg",400,0,1
@@ -60,7 +34,33 @@ BEGIN
     RTEXT           "Down",IDC_TLD,192,39,20,8
     RTEXT           "Completed:",IDC_STATIC,84,39,39,8
     LTEXT           "N/A",IDC_COMPLETE,125,39,59,8,SS_WORDELLIPSIS
-    GROUPBOX        "",IDC_DETAILS_GROUP,1,4294967292,359,77,0,WS_EX_TRANSPARENT
+    GROUPBOX        "",IDC_DETAILS_GROUP,1,4294967292,359,77
+END
+
+IDD_CONFIGREMOTE DIALOGEX 0,0,283,94
+STYLE DS_MODALFRAME | DS_SETFONT | DS_FIXEDSYS | WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_POPUP | WS_SYSMENU
+CAPTION "Remote Control"
+FONT 8,"MS Shell Dlg",400,0,1
+BEGIN
+    GROUPBOX        "Remote Control Options",IDC_STATIC,6,6,271,30
+    AUTOCHECKBOX    "Enable Remote Control",IDC_REMOTECTRL,12,18,96,12,WS_DISABLED
+    RTEXT           "Port to listen on : ",IDC_STATIC,159,19,66,11,WS_DISABLED
+    EDITTEXT        IDC_REMOTEPORT,229,18,42,12,WS_DISABLED | ES_AUTOHSCROLL
+    LTEXT           "*** Disabled ***",IDC_STATIC,104,19,59,11
+END
+
+IDD_ABOUT DIALOGEX 0,0,283,125
+STYLE DS_MODALFRAME | DS_SETFONT | DS_FIXEDSYS | WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_POPUP | WS_SYSMENU
+CAPTION "About"
+FONT 8,"MS Shell Dlg",400,0,1
+BEGIN
+    GROUPBOX        "Program Information",IDC_STATIC,5,7,271,111
+    LTEXT           "Halite is a BitTorrent client based on the libtorrent library from Rasterbar.com. The program is written in C++ relying on the Boost libraries and WTL. It is open sourced under a MIT and/or Boost software licence.",IDC_STATIC,12,18,256,27
+    LTEXT           "This project has only been possible thanks to the excellent work others. I'd like to acknowledge some of those people.",IDC_STATIC,12,47,257,18
+    RTEXT           "Release v 0.2.8, Revision 115.",IDC_STATIC,145,106,129,9
+    LTEXT           "nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon.",IDC_STATIC,12,91,257,11
+    LTEXT           "Arvid Norberg - www.rasterbar.com - Author of the libtorrent library.",IDC_STATIC,12,68,257,11
+    LTEXT           "Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO.",IDC_STATIC,12,80,257,11
 END
 
 IDD_CONFIGBIT DIALOGEX 0,0,283,131
@@ -253,6 +253,20 @@ BEGIN
     AUTOCHECKBOX    "Log to file.",IDC_DEBUGFILECHECK,4,69,78,9
     LTEXT           "Log Alert Level",IDC_DEBUGSTATIC,244,6,53,10
     LISTBOX         IDC_DEBUGLIST,4,7,233,59,WS_TABSTOP | WS_VSCROLL | LBS_NOINTEGRALHEIGHT | LBS_SORT
+END
+
+IDD_TRACKEDIT DIALOGEX 0,0,186,50
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_FIXEDSYS | WS_VISIBLE | WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_POPUP | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Add New Tracker"
+FONT 8,"MS Shell Dlg 2",400,0,1
+BEGIN
+    PUSHBUTTON      "OK",IDOK,41,31,50,14,BS_DEFPUSHBUTTON
+    PUSHBUTTON      "Cancel",IDCANCEL,95,31,50,14
+    LTEXT           "Tracker URL",IDC_STATIC,5,5,47,10
+    EDITTEXT        IDC_TRACKER_EDIT_URL,4,15,145,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TRACKER_EDIT_TIER,153,15,30,12,ES_AUTOHSCROLL
+    LTEXT           "Tier",IDC_STATIC,155,5,15,10
 END
 
 IDR_TRAY_MENU MENU

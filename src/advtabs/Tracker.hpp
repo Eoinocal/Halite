@@ -5,10 +5,15 @@
 #include "../DdxEx.hpp"
 #include "../Halite.hpp"
 
+#include "TrackerListView.hpp"
 #include "../HaliteTabPage.hpp"
+#include "../HaliteListManager.hpp"
 
 class ui_signal;
-class selection_manager;
+class HaliteListViewCtrl;
+class CHaliteListViewCtrl;
+
+typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
 
 class AdvTrackerDialog :
 	public CHalTabPageImpl<AdvTrackerDialog>,
@@ -23,7 +28,7 @@ protected:
 public:
 	enum { IDD = IDD_ADVTRACKER };	
 	
-	AdvTrackerDialog(ui_signal& ui_sig, selection_manager& single_sel);
+	AdvTrackerDialog(ui_signal& ui_sig, ListViewManager& single_sel);
 	
 	BOOL PreTranslateMessage(MSG* pMsg)
 	{
@@ -42,6 +47,7 @@ public:
 		
 		CHAIN_MSG_MAP(resizeClass)
 		CHAIN_MSG_MAP(baseClass)
+		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
 	
 	BEGIN_DDX_MAP(thisClass)
@@ -72,8 +78,10 @@ public:
 	void updateDialog();
 		
 protected:	
+	TrackerListViewCtrl m_list;
+	
 	ui_signal& ui_;
-	selection_manager& selection_manager_;
+	ListViewManager& selection_manager_;
 	
 	wstring username_;
 	wstring password_;

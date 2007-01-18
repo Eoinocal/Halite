@@ -1,0 +1,71 @@
+
+#pragma once
+
+#include "../DdxEx.hpp"
+
+class TrackerAddDialog :
+	public CDialogImpl<TrackerAddDialog>,
+    public CWinDataExchangeEx<TrackerAddDialog>
+{
+protected:
+	typedef TrackerAddDialog thisClass;
+	typedef CDialogImpl<TrackerAddDialog> baseClass;
+	
+public:
+	TrackerAddDialog(halite::TrackerDetail& tracker) :
+		tracker_(tracker)
+	{}
+	
+	enum { IDD = IDD_TRACKEDIT };
+
+    BEGIN_MSG_MAP_EX(TrackerAddDialog)
+        MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+		MSG_WM_CLOSE(OnClose)	
+		COMMAND_ID_HANDLER_EX(IDOK, OnOk)
+		COMMAND_ID_HANDLER_EX(IDCANCEL, OnCancel)
+    END_MSG_MAP()
+
+    BEGIN_DDX_MAP(TrackerAddDialog)
+		DDX_EX_STDWSTRING(IDC_TRACKER_EDIT_URL, tracker_.url);
+        DDX_INT(IDC_TRACKER_EDIT_TIER, tracker_.tier)
+    END_DDX_MAP()
+	
+	LRESULT OnInitDialog(...)
+	{
+		CenterWindow();
+		BOOL retval =  DoDataExchange(false);
+		
+		return TRUE;
+	}
+	
+	void OnClose()
+	{
+		DoDataExchange(true);
+		EndDialog(0);
+	}
+
+	void OnCancel(...)
+	{
+		DoDataExchange(true);
+		EndDialog(0);
+	}
+
+	void OnOk(...)
+	{
+		DoDataExchange(true);
+		EndDialog(1);
+	}
+
+	BOOL PreTranslateMessage(MSG* pMsg)
+	{
+		return this->IsDialogMessage(pMsg);
+	}
+	
+	void onCancel(UINT, int, HWND hWnd)
+	{
+	
+	}
+
+private:
+	halite::TrackerDetail& tracker_;
+};

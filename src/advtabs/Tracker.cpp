@@ -1,7 +1,7 @@
 ﻿
 #include "../stdAfx.hpp"
 #include "../HaliteWindow.hpp"
-#include "../HaliteListViewCtrl.hpp"
+#include "../HaliteListView.hpp"
 
 #include "../GlobalIni.hpp"
 #include "../ini/Dialog.hpp"
@@ -11,7 +11,7 @@ using glb::wlog;
 
 #include "Tracker.hpp"
 
-AdvTrackerDialog::AdvTrackerDialog(ui_signal& ui_sig, selection_manager& single_sel) :
+AdvTrackerDialog::AdvTrackerDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
 	ui_(ui_sig),
 	selection_manager_(single_sel)
 {
@@ -71,6 +71,8 @@ void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
 LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 {
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
+	
+	m_list.Attach(GetDlgItem(IDC_TRACKERLIST));
 	
 	if (halite::bittorrent().isTorrent(selection_manager_.selected()))
 	{		

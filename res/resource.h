@@ -21,7 +21,10 @@
 #define IDD_ADVTRACKER                  120
 #define IDD_ADVDEBUGLOG                 121
 #define IDR_MAINFRAME                   128
+#define IDD_TRACKEDIT                   130
 #define LISTPEERS                       1000
+#define IDC_TRACKER_EDIT_TIER           1001
+#define IDC_TRACKER_EDIT_URL            1002
 #define TORRENTPROG                     1003
 #define IDC_COMPLETE                    1004
 #define ID_SETTINGS                     1004

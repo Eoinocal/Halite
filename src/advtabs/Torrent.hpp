@@ -6,9 +6,12 @@
 #include "../Halite.hpp"
 
 #include "../HaliteTabPage.hpp"
+#include "../HaliteListViewCtrl.hpp"
 
 class ui_signal;
-class selection_manager;
+class HaliteListViewCtrl;
+
+typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
 
 class AdvTorrentDialog :
 	public CHalTabPageImpl<AdvTorrentDialog>,
@@ -23,7 +26,7 @@ protected:
 public:
 	enum { IDD = IDD_ADVTORRENT };	
 	
-	AdvTorrentDialog(ui_signal& ui_sig, selection_manager& single_sel);
+	AdvTorrentDialog(ui_signal& ui_sig, ListViewManager& single_sel);
 	
 	BOOL PreTranslateMessage(MSG* pMsg)
 	{
@@ -86,5 +89,5 @@ protected:
 	float TranLimitDown, TranLimitUp;
 	
 	ui_signal& ui_;
-	selection_manager& selection_manager_;
+	ListViewManager& selection_manager_;
 };

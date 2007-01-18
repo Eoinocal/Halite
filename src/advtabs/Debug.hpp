@@ -9,9 +9,13 @@ using glb::wlog;
 #include "../Halite.hpp"
 
 #include "../HaliteTabPage.hpp"
+#include "../HaliteListManager.hpp"
 
 class ui_signal;
-class selection_manager;
+class HaliteListViewCtrl;
+class CHaliteListViewCtrl;
+
+typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
 
 class LogEdit : public CWindowImpl<LogEdit, CEdit>
 {
@@ -66,7 +70,7 @@ protected:
 public:
 	enum { IDD = IDD_ADVDEBUGLOG };	
 	
-	AdvDebugDialog(ui_signal& ui_sig, selection_manager& single_sel);
+	AdvDebugDialog(ui_signal& ui_sig, ListViewManager& single_sel);
 	
 	BOOL PreTranslateMessage(MSG* pMsg)
 	{
@@ -121,5 +125,5 @@ protected:
 	
 	int debugLevel;
 	ui_signal& ui_;
-	selection_manager& selection_manager_;
+	ListViewManager& selection_manager_;
 };

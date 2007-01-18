@@ -122,6 +122,14 @@ struct PeerDetail
 typedef shared_ptr<PeerDetail> PeerDetail_ptr;
 typedef std::vector<PeerDetail> PeerDetails;
 
+struct TrackerDetail
+{
+	TrackerDetail(std::wstring u, int t) : url(u), tier(t) {}
+	
+	std::wstring url;
+	int tier;
+};
+
 struct SessionDetail
 {
 	int port;
@@ -191,7 +199,6 @@ public:
 	void removeTorrent(std::string filename);
 	void removeTorrentWipeFiles(std::string filename);
 	void reannounceTorrent(std::string filename);
-	
 	
 	void setTorrentLogin(std::string filename, std::wstring username, std::wstring password);
 	std::pair<std::wstring, std::wstring> getTorrentLogin(std::string filename);

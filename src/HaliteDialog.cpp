@@ -6,12 +6,12 @@
 #include "stdAfx.hpp"
 #include "HaliteDialog.hpp"
 #include "HaliteWindow.hpp"
-#include "HaliteListViewCtrl.hpp"
+#include "HaliteListView.hpp"
 
 #include "GlobalIni.hpp"
 #include "ini/Dialog.hpp"
 
-HaliteDialog::HaliteDialog(ui_signal& ui_sig, selection_manager& single_sel) :
+HaliteDialog::HaliteDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
 	ui_(ui_sig),
 	selection_manager_(single_sel)
 {

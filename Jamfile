@@ -7,10 +7,11 @@ use-project /osLibs : $(/osLibs) ;
 use-project /global_log : $(/global_log) ;
 
 SOURCES =
+	global/string_conv.cpp
 	Halite.cpp
 	stdAfx.cpp
 	HaliteWindow.cpp
-	HaliteListViewCtrl.cpp
+	HaliteListView.cpp
 	HaliteDialog.cpp
 	AdvHaliteDialog.cpp
 	ConfigOptions.cpp
@@ -22,6 +23,7 @@ SOURCES =
 	UxthemeWrapper.cpp
 	advtabs/Torrent.cpp
 	advtabs/Tracker.cpp
+	advtabs/TrackerListView.cpp
 	advtabs/Debug.cpp
 	;
 	

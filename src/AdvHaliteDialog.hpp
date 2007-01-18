@@ -10,6 +10,13 @@
 #include "advtabs/Tracker.hpp"
 #include "advtabs/Debug.hpp"
 
+#include "HaliteListManager.hpp"
+
+class HaliteListViewCtrl;
+class CHaliteListViewCtrl;
+
+typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
+
 class HaliteWindow;
 
 class AdvHaliteDialog :
@@ -23,7 +30,7 @@ protected:
 public:
 	enum { IDD = IDD_ADVHALITEDLG };
 	
-	AdvHaliteDialog(ui_signal& ui_sig, selection_manager& single_sel) :
+	AdvHaliteDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
 		m_torrent(ui_sig, single_sel),
 		m_tracker(ui_sig, single_sel),
 		m_debug(ui_sig, single_sel)
