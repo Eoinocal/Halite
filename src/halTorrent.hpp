@@ -124,6 +124,7 @@ typedef std::vector<PeerDetail> PeerDetails;
 
 struct TrackerDetail
 {
+	TrackerDetail() {}
 	TrackerDetail(std::wstring u, int t) : url(u), tier(t) {}
 	
 	std::wstring url;
@@ -207,6 +208,10 @@ public:
 	void setTorrentSpeed(std::string filename, float download, float upload);
 	pair<int, int> getTorrentLimit(std::string filename);
 	pair<float, float> getTorrentSpeed(std::string filename);
+	
+	void setTorrentTrackers(std::string filename, const std::vector<TrackerDetail>& trackers);
+	void resetTorrentTrackers(std::string filename);
+	std::vector<TrackerDetail> getTorrentTrackers(std::string filename);
 	
 	friend BitTorrent& bittorrent();
 	

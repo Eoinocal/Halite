@@ -35,6 +35,7 @@ extern CAppModule _Module;
 
 #include <string>
 #include <vector>
+#include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <boost/array.hpp>
 #include <boost/lexical_cast.hpp>
@@ -60,6 +61,8 @@ using boost::shared_ptr;
 using boost::scoped_ptr;
 using boost::filesystem::path;
 using boost::noncopyable;
+
+#define foreach BOOST_FOREACH
 
 wstring mbstowcs(const string &str);
 string wcstombs(const wstring &str);

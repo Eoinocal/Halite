@@ -31,6 +31,16 @@ void AdvTrackerDialog::selectionChanged(const string& torrent_name)
 		
 		username_ = details.first;
 		password_ = details.second;
+		
+		std::vector<halite::TrackerDetail> trackers =
+			halite::bittorrent().getTorrentTrackers(torrent_name);
+		m_list.manager().clearAll();
+		
+		foreach (const halite::TrackerDetail& tracker, trackers)
+		{
+			int itemPos = m_list.AddItem(0, 0, tracker.url.c_str(), 0);
+			m_list.SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());
+		}
 	}
 	else
 	{		
@@ -41,7 +51,10 @@ void AdvTrackerDialog::selectionChanged(const string& torrent_name)
 		password_ = L"";
 	}
 	
+	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), false);
+	
 	setLoginUiState(torrent_name);
+	
 	DoDataExchange(false);	
 
 	ui_.update();
@@ -72,7 +85,8 @@ LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 {
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
-	m_list.Attach(GetDlgItem(IDC_TRACKERLIST));
+	m_list.Attach(GetDlgItem(IDC_TRACKERLIST));	
+	m_list.attachEditedConnection(bind(&AdvTrackerDialog::trackerListEdited, this));
 	
 	if (halite::bittorrent().isTorrent(selection_manager_.selected()))
 	{		
@@ -137,7 +151,48 @@ void AdvTrackerDialog::onReannounce(UINT, int, HWND)
 	halite::bittorrent().reannounceTorrent(selection_manager_.selected());
 }
 
-void AdvTrackerDialog::updateDialog()
+void AdvTrackerDialog::trackerListEdited()
 {
+	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), true);
+}
 
+void AdvTrackerDialog::updateDialog()
+{}
+
+void AdvTrackerDialog::onReset(UINT, int, HWND)
+{
+	halite::bittorrent().resetTorrentTrackers(selection_manager_.selected());
+	
+	std::vector<halite::TrackerDetail> trackers =
+		halite::bittorrent().getTorrentTrackers(selection_manager_.selected());
+	m_list.manager().clearAll();
+	
+	foreach (const halite::TrackerDetail& tracker, trackers)
+	{
+		int itemPos = m_list.AddItem(0, 0, tracker.url.c_str(), 0);
+		m_list.SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());
+	}
+
+	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), false);
+}
+
+void AdvTrackerDialog::onApply(UINT, int, HWND)
+{
+	int total = m_list.GetItemCount();
+	std::vector<halite::TrackerDetail> trackers;
+	
+	for (int i=0; i<total; ++i)
+	{
+		array<wchar_t, MAX_PATH> buffer;		
+		
+		m_list.GetItemText(i, 0, buffer.elems, buffer.size());
+		trackers.push_back(halite::TrackerDetail(wstring(buffer.elems), 0));
+		
+		m_list.GetItemText(i, 1, buffer.elems, buffer.size());
+		trackers.back().tier = lexical_cast<int>(wstring(buffer.elems));
+	}
+	
+	halite::bittorrent().setTorrentTrackers(selection_manager_.selected(), trackers);
+	
+	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), false);
 }

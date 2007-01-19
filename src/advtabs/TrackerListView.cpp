@@ -15,6 +15,8 @@ void TrackerListViewCtrl::OnAttach()
 
 	AddColumn(L"Tracker", hdr.GetItemCount());
 	AddColumn(L"Tier", hdr.GetItemCount());
+	
+	SetColumnWidth(0, 200);
 /*
 	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
 		SetColumnWidth(i, INI().windowConfig().mainListColWidth[i]);
@@ -26,48 +28,7 @@ void TrackerListViewCtrl::OnAttach()
 
 void TrackerListViewCtrl::updateListView()
 {
-	halite::TorrentDetails TD;
-	halite::bittorrent().getAllTorrentDetails(TD);
-	
-	for (halite::TorrentDetails::const_iterator i = TD.begin(); i != TD.end(); ++i) 
-	{
-		LV_FINDINFO findInfo; 
-		findInfo.flags = LVFI_STRING;
-		findInfo.psz = const_cast<LPTSTR>((*i)->filename().c_str());
-		
-		int itemPos = FindItem(&findInfo, -1);
-		if (itemPos < 0)
-			itemPos = AddItem(0, 0, (*i)->filename().c_str(), 0);
-		
-		SetItemText(itemPos, 1, (*i)->state().c_str());
-		
-		SetItemText(itemPos, 2, (wformat(L"%1$.2f%%") 
-				% ((*i)->completion()*100)).str().c_str());
-		
-		SetItemText(itemPos, 3, (wformat(L"%1$.2fkb/s") 
-				% ((*i)->speed().first/1024)).str().c_str());	
-		
-		SetItemText(itemPos, 4, (wformat(L"%1$.2fkb/s") 
-				% ((*i)->speed().second/1024)).str().c_str());
-		
-		SetItemText(itemPos, 5,	(lexical_cast<wstring>((*i)->peers())).c_str());
-		
-		SetItemText(itemPos, 6,	(lexical_cast<wstring>((*i)->seeds())).c_str());	
 
-		if (!(*i)->estimatedTimeLeft().is_special())
-		{
-			SetItemText(itemPos, 7,	(mbstowcs(
-				boost::posix_time::to_simple_string((*i)->estimatedTimeLeft())).c_str()));
-		}
-		else
-		{
-			SetItemText(itemPos, 7,	L"8");		
-		}
-		
-		SetItemText(itemPos, 8,	(wformat(L"%1$.2f") 
-				% ((*i)->distributedCopies())
-			).str().c_str());	
-	}	
 }
 
 void TrackerListViewCtrl::saveStatus()
@@ -80,58 +41,67 @@ void TrackerListViewCtrl::saveStatus()
 */
 }
 
-LRESULT TrackerListViewCtrl::OnDoubleClick(int i, LPNMHDR pnmh, BOOL&)
+void TrackerListViewCtrl::enterNewTracker()
 {
 	halite::TrackerDetail tracker(L"", 0);	
-	TrackerAddDialog trackDlg(tracker);
+	TrackerAddDialog trackDlg(L"Add New Tracker", tracker);
+	
+	if (trackDlg.DoModal() == 1 && !tracker.url.empty()) 
+	{
+		int itemPos = AddItem(0, 0, tracker.url.c_str(), 0);		
+		SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());
+		
+		listEdited_();	
+	}
+}
+
+LRESULT TrackerListViewCtrl::OnDoubleClick(int i, LPNMHDR pnmh, BOOL&)
+{
+	enterNewTracker();
+
+	return 0;
+}
+
+LRESULT TrackerListViewCtrl::OnNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	enterNewTracker();
+	
+	return 0;
+}
+
+LRESULT TrackerListViewCtrl::OnEdit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	array<wchar_t, MAX_PATH> buffer;
+	int index = manager().selectedIndex();
+	
+	GetItemText(index, 0, buffer.elems, buffer.size());
+	halite::TrackerDetail tracker(wstring(buffer.elems), 0);
+	
+	GetItemText(index, 1, buffer.elems, buffer.size());
+	tracker.tier = lexical_cast<int>(wstring(buffer.elems));
+
+	TrackerAddDialog trackDlg(L"Edit Tracker", tracker);
 	
 	if (trackDlg.DoModal() == 1) 
 	{
-		int itemPos = AddItem(0, 0, tracker.url.c_str(), 0);		
-		SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());	
-	}
-
+		if (tracker.url.empty())
+		{
+			DeleteItem(index);
+		}
+		else
+		{
+			SetItemText(index, 0, tracker.url.c_str());	
+			SetItemText(index, 1, lexical_cast<wstring>(tracker.tier).c_str());
+		}		
+		listEdited_();
+	}	
 	return 0;
 }
 
-LRESULT TrackerListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+LRESULT TrackerListViewCtrl::OnDelete(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind(&halite::BitTorrent::resumeTorrent, &halite::bittorrent(), _1));
+	DeleteItem(manager().selectedIndex());
+	listEdited_();
 	
-	return 0;
-}
-
-LRESULT TrackerListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-{
-	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind(&halite::BitTorrent::pauseTorrent, &halite::bittorrent(), _1));
-	
-	return 0;
-}
-
-LRESULT TrackerListViewCtrl::OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-{
-	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind(&halite::BitTorrent::stopTorrent, &halite::bittorrent(), _1));
-	
-	return 0;
-}
-
-LRESULT TrackerListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-{
-	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind(&halite::BitTorrent::removeTorrent, &halite::bittorrent(), _1));
-
-	manager().clearAllSelected();	
-	return 0;
-}
-
-LRESULT TrackerListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-{
-	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind(&halite::BitTorrent::removeTorrentWipeFiles, &halite::bittorrent(), _1));
-	
-	manager().clearAllSelected();
 	return 0;
 }

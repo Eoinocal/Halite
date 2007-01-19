@@ -15,13 +15,12 @@ LRESULT AdvHaliteDialog::onInitDialog(HWND, LPARAM)
 {	
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
-	
 	m_tabCtrl.SubclassWindow(GetDlgItem(IDC_TAB));
 	
-	mp_dlg.reset(new ThemeTestDialog());
-	mp_dlg->Create(m_tabCtrl);
+//	mp_dlg.reset(new ThemeTestDialog());
+//	mp_dlg->Create(m_tabCtrl);
 	
-	m_tabCtrl.AddPage(*mp_dlg, L"Test1");
+//	m_tabCtrl.AddPage(*mp_dlg, L"Test1");
 		
 	m_torrent.Create(m_tabCtrl);
 	m_tabCtrl.AddPage(m_torrent, L"Torrent");

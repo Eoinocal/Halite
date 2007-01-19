@@ -28,7 +28,8 @@ public:
 		enableIPFilter(false),
 		enableProxy(false),
 		proxyPort(0),
-		defaultSaveFolder(mbstowcs((globalModule().exePath().branch_path()/"incoming").string()))
+		defaultSaveFolder(mbstowcs((globalModule().exePath().branch_path()/"incoming").string())),
+		savePrompt(true)
 	{}
 	
 	friend class boost::serialization::access;
@@ -64,6 +65,9 @@ public:
 			ar & BOOST_SERIALIZATION_NVP(proxyPassword);
 			
 			ar & BOOST_SERIALIZATION_NVP(defaultSaveFolder);
+		}		
+		if (version > 2) {
+			ar & BOOST_SERIALIZATION_NVP(savePrompt);		
 		}
 	}
 	
@@ -107,7 +111,8 @@ private:
 	wstring proxyPassword;
 	
 	wstring defaultSaveFolder;
+	bool savePrompt;
 };
 
-BOOST_CLASS_VERSION(BitTConfig, 2)
+BOOST_CLASS_VERSION(BitTConfig, 3)
 

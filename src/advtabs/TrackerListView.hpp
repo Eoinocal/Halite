@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include <boost/array.hpp>
 #include <boost/signals.hpp>
+#include <boost/function.hpp>
 
 #include "../stdAfx.hpp"
 #include "../global/string_conv.hpp"
@@ -13,14 +13,12 @@ class TrackerListViewCtrl :
 	private boost::noncopyable
 {
 public:	
-	enum { ID_MENU = IDR_LISTVIEW_MENU };	
+	enum { ID_MENU = IDR_TRACKERLV_MENU };	
 
 	BEGIN_MSG_MAP(TrackerListViewCtrl)		
-		COMMAND_ID_HANDLER(ID__LVM_PAUSE, OnPause)
-		COMMAND_ID_HANDLER(ID_LVM_STOP, OnStop)
-		COMMAND_ID_HANDLER(ID_LVM_RESUME, OnResume)
-		COMMAND_ID_HANDLER(ID_LVM_REMOVE_T, OnRemove)
-		COMMAND_ID_HANDLER(ID_LVM_REMOVE_TD, OnRemoveWipeFiles)
+		COMMAND_ID_HANDLER(ID_TLVM_NEW, OnNew)
+		COMMAND_ID_HANDLER(ID_TLVM_EDIT, OnEdit)
+		COMMAND_ID_HANDLER(ID_TLVM_DELETE, OnDelete)
 		
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_DBLCLK, OnDoubleClick)
 		
@@ -30,18 +28,20 @@ public:
 	END_MSG_MAP()
 	
 	void OnAttach();
-	LRESULT OnDoubleClick(int i, LPNMHDR pnmh, BOOL&);
 	void saveStatus();
 	void updateListView();
+	void enterNewTracker();
 	
-	LRESULT OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-	LRESULT OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-	LRESULT OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-	LRESULT OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-	LRESULT OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnDoubleClick(int i, LPNMHDR pnmh, BOOL&);
+	LRESULT OnNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnEdit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnDelete(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	
+	void attachEditedConnection(boost::function<void ()> fn) { listEdited_.connect(fn); }
 
 private:
 
+	boost::signal<void ()> listEdited_;
 };
 
 typedef selection_manager<TrackerListViewCtrl> TrackerListViewManager;

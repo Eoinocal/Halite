@@ -12,7 +12,8 @@ protected:
 	typedef CDialogImpl<TrackerAddDialog> baseClass;
 	
 public:
-	TrackerAddDialog(halite::TrackerDetail& tracker) :
+	TrackerAddDialog(wstring title, halite::TrackerDetail& tracker) :
+		title_(title),
 		tracker_(tracker)
 	{}
 	
@@ -32,6 +33,7 @@ public:
 	
 	LRESULT OnInitDialog(...)
 	{
+		SetWindowText(title_.c_str());
 		CenterWindow();
 		BOOL retval =  DoDataExchange(false);
 		
@@ -67,5 +69,6 @@ public:
 	}
 
 private:
+	wstring title_;
 	halite::TrackerDetail& tracker_;
 };

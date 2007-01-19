@@ -67,6 +67,7 @@ public:
 		COMMAND_ID_HANDLER_EX(IDC_BC_PORTCHECK, onPortCheck)
 		COMMAND_ID_HANDLER_EX(IDC_BC_FILTERCHECK, onFilterCheck)
 		COMMAND_ID_HANDLER_EX(IDC_BC_PROXYCHECK, onProxyCheck)
+		COMMAND_ID_HANDLER_EX(IDC_BC_DHT, onDHTCheck)
         CHAIN_MSG_MAP(CPropertyPageImpl<BitTorrentOptions>)
     END_MSG_MAP()
  
@@ -74,6 +75,7 @@ public:
         DDX_INT(IDC_BC_PORTFROM, INI().bitTConfig().portFrom)
         DDX_INT(IDC_BC_PORTTO, INI().bitTConfig().portTo)
         DDX_CHECK(IDC_BC_DHT, INI().bitTConfig().enableDHT)
+        DDX_INT(IDC_BC_DHTPORT, INI().bitTConfig().dhtServicePort)
         DDX_CHECK(IDC_BC_FILTERCHECK, INI().bitTConfig().enableIPFilter)
     END_DDX_MAP()
  
@@ -84,6 +86,7 @@ public:
 		onFilterCheck(0, 0, GetDlgItem(IDC_BC_FILTERCHECK));
 		onProxyCheck(0, 0, GetDlgItem(IDC_BC_PROXYCHECK));
 		onPortCheck(0, 0, GetDlgItem(IDC_BC_PORTCHECK));
+		onDHTCheck(0, 0, GetDlgItem(IDC_BC_DHT));
 		
 		return retval;
 	}
@@ -106,6 +109,22 @@ public:
 		{
 			::EnableWindow(GetDlgItem(IDC_BC_FILTERCLEAR), false);
 			::EnableWindow(GetDlgItem(IDC_BC_FILTERLOAD), false);		
+		}
+	}	
+	
+	void onDHTCheck(UINT, int, HWND hWnd)
+	{
+		LRESULT result = ::SendMessage(hWnd, BM_GETCHECK, 0, 0);
+		
+		if (result == BST_CHECKED)
+		{
+			::EnableWindow(GetDlgItem(IDC_BC_DHTPORT), true);
+			::EnableWindow(GetDlgItem(IDC_BC_DHTPORT_S), true);
+		}
+		else
+		{
+			::EnableWindow(GetDlgItem(IDC_BC_DHTPORT), false);
+			::EnableWindow(GetDlgItem(IDC_BC_DHTPORT_S), false);		
 		}
 	}	
 	
@@ -187,12 +206,13 @@ public:
         DDX_EX_FLOAT_POSITIVE(IDC_BC_TUPRATE, INI().bitTConfig().torrentUpRate)
 		
 		DDX_EX_STDWSTRING(IDC_BC_SAVEFOLDER, INI().bitTConfig().defaultSaveFolder);
+        DDX_CHECK(IDC_BC_PROMPTSAVE, INI().bitTConfig().savePrompt)
     END_DDX_MAP()
  
     BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)
 	{
 		BOOL retval =  DoDataExchange(false);	
-				
+		
 		return retval;
 	}
 	

@@ -65,22 +65,16 @@ void load(Archive& ar, address_type& ip, const unsigned int version)
 #if IP_SAVE == 1
 	typename address_type::bytes_type bytes;	
 	for (typename address_type::bytes_type::iterator i=bytes.begin(); i != bytes.end(); ++i)
-		ar & BOOST_SERIALIZATION_NVP(*i);
-	
+		ar & BOOST_SERIALIZATION_NVP(*i);	
 	ip = address_type(bytes);
 #elif IP_SAVE == 2	
 	string dotted;
-	ar & BOOST_SERIALIZATION_NVP(dotted);
-	
+	ar & BOOST_SERIALIZATION_NVP(dotted);	
 	ip = address_type::from_string(dotted);
 #elif IP_SAVE == 3
 	unsigned long addr;
-	ar & BOOST_SERIALIZATION_NVP(addr);
-	
+	ar & BOOST_SERIALIZATION_NVP(addr);	
 	ip = address_type(addr);
-//		::MessageBoxA(0, (format("%1%: %2%") 
-//			% ip.to_string() % addr).str().c_str(), "Load ipfilter!", 0);
-
 #endif
 }
 
@@ -90,6 +84,13 @@ void serialize(Archive& ar, libtorrent::ip_range<address_type>& addr, const unsi
 	ar & BOOST_SERIALIZATION_NVP(addr.first);
 	ar & BOOST_SERIALIZATION_NVP(addr.last);
 	addr.flags = libtorrent::ip_filter::blocked;
+}
+
+template<class Archive>
+void serialize(Archive& ar, halite::TrackerDetail& tracker, const unsigned int version)
+{	
+	ar & BOOST_SERIALIZATION_NVP(tracker.url);
+	ar & BOOST_SERIALIZATION_NVP(tracker.tier);
 }
 
 } // namespace serialization
@@ -114,7 +115,7 @@ std::ostream& operator<<(std::ostream& os, libtorrent::ip_range<asio::ip::addres
 	return os;
 }
 
-}
+} // namespace libtorrent
 
 namespace halite 
 {
@@ -215,7 +216,56 @@ public:
 	{ 
 		handle_ = h; 
 		inSession_ = true;
-	}	 
+	}
+	
+	void resetTrackers()
+	{
+		handle_.replace_trackers(torrent_trackers_);		
+		trackers_.clear();	
+	}
+	
+	const std::vector<TrackerDetail>& getTrackers()
+	{
+		if (trackers_.empty())
+		{
+			std::vector<lbt::announce_entry> trackers = handle_.trackers();
+			
+			foreach (const lbt::announce_entry& entry, trackers)
+			{
+				trackers_.push_back(
+					TrackerDetail(hal::to_wstr(entry.url), entry.tier));
+			}
+		}
+		
+		return trackers_;
+	}
+	
+	void applyTrackers()
+	{
+		if (torrent_trackers_.empty())
+			torrent_trackers_ = handle_.trackers();
+		
+		if (!trackers_.empty())
+		{
+			std::vector<lbt::announce_entry> trackers;
+			
+			foreach (const TrackerDetail& tracker, trackers_)
+			{
+				trackers.push_back(
+					lbt::announce_entry(hal::to_str(tracker.url)));
+				trackers.back().tier = tracker.tier;
+			}
+			handle_.replace_trackers(trackers);
+		}
+	}
+	
+	void setTrackers(const std::vector<TrackerDetail>& trackerDetails)
+	{
+		trackers_.clear();
+		trackers_.assign(trackerDetails.begin(), trackerDetails.end());
+		
+		applyTrackers();
+	}
 	
 	bool inSession() const { return inSession_; }
 	const string& saveDirectory() { return saveDirectory_; }
@@ -235,6 +285,9 @@ public:
 		}
 		if (version > 1) {
 			ar & make_nvp("state", state_);
+			ar & make_nvp("trackers", trackers_);
+		} else {
+			ar & make_nvp("paused", state_);		
 		}
     }
 	
@@ -253,6 +306,9 @@ private:
 	
 	std::wstring trackerUsername_;	
 	std::wstring trackerPassword_;
+	
+	std::vector<TrackerDetail> trackers_;
+	std::vector<lbt::announce_entry> torrent_trackers_;
 };
 
 
@@ -991,6 +1047,7 @@ void BitTorrent::resumeAll()
 			
 			(*iter).second.setTransferSpeed();
 			(*iter).second.setConnectionLimit();
+			(*iter).second.applyTrackers();
 			
 			++iter;
 			}
@@ -1259,6 +1316,40 @@ pair<float, float> BitTorrent::getTorrentSpeed(string filename)
 		return (*i).second.getTransferSpeed();
 	}
 	return pair<float, float>(0, 0);
+}
+
+void BitTorrent::setTorrentTrackers(std::string filename, 
+	const std::vector<TrackerDetail>& trackers)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		(*i).second.setTrackers(trackers);
+	}
+}
+
+
+void BitTorrent::resetTorrentTrackers(std::string filename)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		(*i).second.resetTrackers();
+	}
+}
+
+std::vector<TrackerDetail> BitTorrent::getTorrentTrackers(std::string filename)
+{
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		return (*i).second.getTrackers();
+	}
+	
+	return std::vector<TrackerDetail>();
 }
 
 int BitTorrent::defTorrentMaxConn() { return pimpl->defTorrentMaxConn_; }

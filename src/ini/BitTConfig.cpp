@@ -62,8 +62,13 @@ void BitTConfig::settingsThread()
 		INI().bitTConfig().dhtMaxFailCount);
 	
 	if (INI().bitTConfig().enableDHT)
+	{
 		if (!halite::bittorrent().ensure_dht_on())
+		{
+			halite::bittorrent().ensure_dht_off();
 			MessageBox(0, globalModule().loadResString(IDS_DHTTRYANOTHERPORT).c_str(), L"DHT Error", MB_ICONERROR|MB_OK);
+		}
+	}
 	else
 		halite::bittorrent().ensure_dht_off();
 	

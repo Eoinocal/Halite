@@ -212,11 +212,15 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	{
 	
 	path saveDirectory(wcstombs(INI().bitTConfig().defaultSaveFolder));
-	CFolderDialog fldDlg ( NULL, _T("Select a directory to save the downloads to. Select cancel to accept default 'incomming' location."),
-                       BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE );
- 
-	if (IDOK == fldDlg.DoModal())
-		saveDirectory = path(wcstombs(fldDlg.m_szFolderPath));
+	
+	if (INI().bitTConfig().savePrompt)
+	{
+		CFolderDialog fldDlg ( NULL, _T("Select a directory to save the downloads to. Select cancel to accept default 'incomming' location."),
+						   BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE );
+	 
+		if (IDOK == fldDlg.DoModal())
+			saveDirectory = path(wcstombs(fldDlg.m_szFolderPath));
+	}
 	
 	path file(wcstombs(lpszPath), boost::filesystem::native);	
 	halite::bittorrent().addTorrent(file, saveDirectory);

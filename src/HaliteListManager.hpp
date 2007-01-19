@@ -78,6 +78,16 @@ public:
 	}
 	
 	param_type selected() const { return selected_; }
+	
+	int selectedIndex()
+	{
+		wstring torrent_name = mbstowcs(selected_);	
+		LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 	
+		findInfo.psz = torrent_name.c_str();
+		
+		return m_list_.FindItem(&findInfo, -1);		
+	}
+	
 	const std::vector<string>& allSelected() const { return all_selected_; }
 	
 	void setSelected(const string& sel) 
@@ -119,6 +129,13 @@ public:
 		
 	//	m_list_.SelectItem(0);
 		sync_list(true);	
+	}
+	
+	void clearAll()
+	{
+		m_list_.DeleteAllItems();
+		all_selected_.clear();
+		sync_list(true);		
 	}
 	
 	void attach(boost::function<void (param_type)> fn) { selection_.connect(fn); }
