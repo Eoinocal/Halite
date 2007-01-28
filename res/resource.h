@@ -2,6 +2,7 @@
 #define IDC_STATIC (-1)
 #endif
 
+#define IDC_DEBUGLISTVIEW               1
 #define IDR_LISTVIEW_MENU               101
 #define IDD_CONFIGBIT                   102
 #define IDD_CONFIGREMOTE                103
@@ -114,9 +115,7 @@
 #define IDC_DEBUGINFO                   1076
 #define IDC_DEBUGDEBUG                  1077
 #define IDC_DEBUGFILECHECK              1078
-#define IDC_DEBUGEDIT                   1079
 #define IDC_DEBUGSTATIC                 1080
-#define IDC_DEBUGLIST                   1081
 #define ED_CON                          3000
 #define IDPANE_STATUS                   40000
 #define ID_LVM_RESUME                   40000

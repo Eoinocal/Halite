@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include <boost/optional.hpp>
 #include <boost/function.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/smart_ptr.hpp>
@@ -131,6 +132,8 @@ struct TrackerDetail
 	int tier;
 };
 
+struct AlertDetail;
+
 struct SessionDetail
 {
 	int port;
@@ -152,6 +155,8 @@ class BitTorrent_impl;
 class BitTorrent
 {
 public:
+	enum alertLevel { debug, info, warning, critical, fatal, none };
+	
 	void shutDownSession();
 	
 	bool listenOn(std::pair<int, int> const& portRange);
@@ -212,6 +217,9 @@ public:
 	void setTorrentTrackers(std::string filename, const std::vector<TrackerDetail>& trackers);
 	void resetTorrentTrackers(std::string filename);
 	std::vector<TrackerDetail> getTorrentTrackers(std::string filename);
+
+	void setSeverityLevel(alertLevel alert);
+	boost::optional<AlertDetail> getAlert();
 	
 	friend BitTorrent& bittorrent();
 	
@@ -224,6 +232,14 @@ private:
 	BitTorrent();
 	
 	boost::scoped_ptr<BitTorrent_impl> pimpl;
+};
+
+struct AlertDetail
+{
+	BitTorrent::alertLevel alert;
+	std::wstring msg;
+	unsigned alertCode;
+	std::string filename;
 };
 
 BitTorrent& bittorrent();

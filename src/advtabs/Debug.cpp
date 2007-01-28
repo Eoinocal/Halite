@@ -56,7 +56,7 @@ LRESULT AdvDebugDialog::onInitDialog(HWND, LPARAM)
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
 //	logEdit.SubclassWindow(GetDlgItem(IDC_DEBUGEDIT));
-	logList.SubclassWindow(GetDlgItem(IDC_DEBUGLIST));
+	logList.Attach(GetDlgItem(IDC_DEBUGLISTVIEW));
 	
 	DoDataExchange(false);
 	return 0;

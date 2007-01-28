@@ -8,7 +8,7 @@
 #include "HaliteListManager.hpp"
 
 template <class TBase>
-class CHaliteListViewCtrl : public CWindowImpl<TBase ,CListViewCtrl >
+class CHaliteListViewCtrl : public CWindowImpl<TBase, CListViewCtrl>
 {
 public:		 
 	CHaliteListViewCtrl<TBase>() :
@@ -28,7 +28,7 @@ public:
 	void Attach(HWND hWndNew)
 	{
 		ATLASSERT(::IsWindow(hWndNew));
-        CWindowImpl<TrackerListViewCtrl, CListViewCtrl>::SubclassWindow(hWndNew);
+        CWindowImpl<TBase, CListViewCtrl>::SubclassWindow(hWndNew);
 		
 		TBase* pT = static_cast<TBase*>(this);
 		pT->OnAttach();

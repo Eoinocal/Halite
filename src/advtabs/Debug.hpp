@@ -10,6 +10,7 @@ using glb::wlog;
 
 #include "../HaliteTabPage.hpp"
 #include "../HaliteListManager.hpp"
+#include "../HaliteListViewCtrl.hpp"
 
 class ui_signal;
 class HaliteListViewCtrl;
@@ -57,6 +58,39 @@ private:
 	boost::signals::scoped_connection listLogger;
 };
 
+class LogListViewCtrl : 
+	public CHaliteListViewCtrl<LogListViewCtrl>,
+	private boost::noncopyable
+{
+public:	
+	enum { ID_MENU = IDR_LISTVIEW_MENU };	
+
+	BEGIN_MSG_MAP(LogListViewCtrl)		
+		
+//		REFLECTED_NOTIFY_CODE_HANDLER(NM_DBLCLK, OnDoubleClick)
+		
+		CHAIN_MSG_MAP(CHaliteListViewCtrl<LogListViewCtrl>)		
+		DEFAULT_REFLECTION_HANDLER()
+	END_MSG_MAP()
+	
+	void OnAttach()
+	{
+		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
+	
+		CHeaderCtrl hdr = GetHeader();
+		hdr.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
+	
+		AddColumn(L"Tracker", hdr.GetItemCount());
+		AddColumn(L"Tier", hdr.GetItemCount());
+	}
+	
+	void saveStatus() {}
+	void updateListView() {}
+
+private:
+
+};
+
 class AdvDebugDialog :
 	public CHalTabPageImpl<AdvDebugDialog>,
 	public CDialogResize<AdvDebugDialog>,
@@ -95,8 +129,7 @@ public:
 	BOOL DoDataExchange(BOOL bSaveAndValidate = FALSE, UINT nCtlID = (UINT)-1);
 
 	BEGIN_DLGRESIZE_MAP(thisClass)
-		DLGRESIZE_CONTROL(IDC_DEBUGEDIT, DLSZ_SIZE_X|DLSZ_SIZE_Y)
-		DLGRESIZE_CONTROL(IDC_DEBUGLIST, DLSZ_SIZE_X|DLSZ_SIZE_Y)
+		DLGRESIZE_CONTROL(IDC_DEBUGLISTVIEW, DLSZ_SIZE_X|DLSZ_SIZE_Y)
 		DLGRESIZE_CONTROL(IDC_DEBUGFILECHECK, DLSZ_MOVE_Y)
 		
 		DLGRESIZE_CONTROL(IDC_DEBUGSTATIC, DLSZ_MOVE_X)
@@ -121,7 +154,7 @@ public:
 protected:
 	
 //	LogEdit logEdit;
-	LogList logList;
+	LogListViewCtrl logList;
 	
 	int debugLevel;
 	ui_signal& ui_;

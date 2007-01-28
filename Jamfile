@@ -2,8 +2,8 @@
 use-project /boost : $(/boost) ;
 #use-project /http : $(/http) ;
 use-project /libtorrent : $(/libtorrent) ;
-use-project /WTL : $(/WTL) ;
-use-project /osLibs : $(/osLibs) ;
+use-project /wtl : $(/wtl) ;
+use-project /os_libs : $(/os_libs) ;
 use-project /global_log : $(/global_log) ;
 
 SOURCES =
@@ -52,8 +52,8 @@ project Halite
     <library>/libtorrent//torrent/<link>static
 	
 	<library>/global_log//global_log/<link>static
-	<library>/WTL
-	<library>/osLibs//$(LIBS)
+	<library>/wtl
+	<library>/os_libs//$(LIBS)
 	
 	<variant>release:<define>NDEBUG
 	

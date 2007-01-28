@@ -7,6 +7,8 @@
 #include <iomanip>
 #include <map>
 #include <algorithm>
+#include <string>
+#include <vector>
 
 #include <boost/foreach.hpp>
 #include <boost/bind.hpp>
@@ -434,7 +436,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
 				long( float(tS.total_wanted-tS.total_wanted_done) / tS.download_payload_rate ));
 		}
 
-		return TorrentDetail_ptr(new TorrentDetail(filename_, state, mbstowcs(tS.current_tracker), 
+		return TorrentDetail_ptr(new TorrentDetail(filename_, state, hal::to_wstr(tS.current_tracker), 
 			pair<float, float>(tS.download_payload_rate, tS.upload_payload_rate),
 			tS.progress, tS.distributed_copies, tS.total_wanted_done, tS.total_wanted,
 			tS.num_peers, tS.num_seeds, td));
@@ -895,7 +897,7 @@ lbt::entry BitTorrent_impl::prepTorrent(path filename, path saveDirectory)
 		}
 		catch(std::exception &ex) 
 		{			
-			::MessageBoxW(0, mbstowcs(ex.what()).c_str(), L"Resume Exception", MB_ICONERROR|MB_OK);
+			::MessageBoxW(0, hal::to_wstr(ex.what()).c_str(), L"Resume Exception", MB_ICONERROR|MB_OK);
 			remove(resumeFile);
 		}
 	}
@@ -927,7 +929,7 @@ void BitTorrent::addTorrent(path file, path saveDirectory)
 			saveDirectory, resumedata);
 		
 		pimpl->torrents.insert(TorrentMap::value_type(file.leaf(), 
-			TorrentInternal(handle, mbstowcs(file.leaf()), saveDirectory)));
+			TorrentInternal(handle, hal::to_wstr(file.leaf()), saveDirectory)));
 	}
 
 	}
@@ -935,7 +937,7 @@ void BitTorrent::addTorrent(path file, path saveDirectory)
 	{
 		wstring caption=L"Add Torrent Exception";
 		
-		MessageBox(0, mbstowcs(ex.what()).c_str(), caption.c_str(), MB_ICONERROR|MB_OK);
+		MessageBox(0, hal::to_wstr(ex.what()).c_str(), caption.c_str(), MB_ICONERROR|MB_OK);
 	}
 }
 
@@ -1057,7 +1059,7 @@ void BitTorrent::resumeAll()
 			}
 			catch(std::exception &ex) 
 			{
-				MessageBox(0, mbstowcs(ex.what()).c_str(), L"Resume Torrent Exception", MB_ICONERROR|MB_OK);
+				MessageBox(0, hal::to_wstr(ex.what()).c_str(), L"Resume Torrent Exception", MB_ICONERROR|MB_OK);
 				
 				pimpl->torrents.erase(iter++);
 			}
@@ -1088,10 +1090,10 @@ void BitTorrent::closeAll()
 }
 
 PeerDetail::PeerDetail(lbt::peer_info& peerInfo) :
-	ipAddress(mbstowcs(peerInfo.ip.address().to_string())),
+	ipAddress(hal::to_wstr(peerInfo.ip.address().to_string())),
 	speed(make_pair(peerInfo.payload_down_speed, peerInfo.payload_up_speed)),
 	seed(peerInfo.seed),
-	client(mbstowcs(peerInfo.client))
+	client(hal::to_wstr(peerInfo.client))
 {}
 
 void BitTorrent::getAllPeerDetails(string filename, PeerDetails& peerContainer)
@@ -1329,7 +1331,6 @@ void BitTorrent::setTorrentTrackers(std::string filename,
 	}
 }
 
-
 void BitTorrent::resetTorrentTrackers(std::string filename)
 {
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
@@ -1350,6 +1351,37 @@ std::vector<TrackerDetail> BitTorrent::getTorrentTrackers(std::string filename)
 	}
 	
 	return std::vector<TrackerDetail>();
+}
+
+
+void BitTorrent::setSeverityLevel(alertLevel alert)
+{
+	switch (alert)
+	{
+	case debug:
+		pimpl->theSession.set_severity_level(lbt::alert::severity_t::debug);
+		break;
+	case info:
+		pimpl->theSession.set_severity_level(lbt::alert::severity_t::info);
+		break;
+	case warning:
+		pimpl->theSession.set_severity_level(lbt::alert::severity_t::warning);
+		break;
+	case critical:
+		pimpl->theSession.set_severity_level(lbt::alert::severity_t::critical);
+		break;
+	case fatal:
+		pimpl->theSession.set_severity_level(lbt::alert::severity_t::fatal);
+		break;
+	default:
+		pimpl->theSession.set_severity_level(lbt::alert::severity_t::none);
+		break;
+	}
+}
+
+boost::optional<AlertDetail> BitTorrent::getAlert()
+{
+	return boost::optional<AlertDetail>();
 }
 
 int BitTorrent::defTorrentMaxConn() { return pimpl->defTorrentMaxConn_; }
