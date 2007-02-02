@@ -102,6 +102,8 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	mp_list->manager().setSelected(0);
 	setCorrectDialog();
 	
+	halite::bittorrent().startAlertReceiver();
+	
 	return 0;
 }
 
@@ -119,6 +121,7 @@ LRESULT HaliteWindow::OnTrayNotification(UINT /*uMsg*/, WPARAM wParam, LPARAM lP
     
     return 0;
 }
+
 void HaliteWindow::setCorrectDialog()
 {
 	if (!INI().windowConfig().advancedUI)

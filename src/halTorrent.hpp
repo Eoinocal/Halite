@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include <boost/signal.hpp>
 #include <boost/optional.hpp>
 #include <boost/function.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -221,6 +222,9 @@ public:
 	void setSeverityLevel(alertLevel alert);
 	boost::optional<AlertDetail> getAlert();
 	
+	void startAlertReceiver();
+	boost::signals::scoped_connection attachAlertReceiver(boost::function<void (AlertDetail)> fn);
+	
 	friend BitTorrent& bittorrent();
 	
 	int defTorrentMaxConn();
@@ -236,7 +240,15 @@ private:
 
 struct AlertDetail
 {
+	AlertDetail(boost::posix_time::ptime t, std::wstring s, unsigned c, std::string f) :
+		timeStamp(t),
+		msg(s), 
+		alertCode(c), 
+		filename(f)
+	{}
+	
 	BitTorrent::alertLevel alert;
+	boost::posix_time::ptime timeStamp;
 	std::wstring msg;
 	unsigned alertCode;
 	std::string filename;

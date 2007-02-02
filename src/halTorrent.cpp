@@ -288,8 +288,6 @@ public:
 		if (version > 1) {
 			ar & make_nvp("state", state_);
 			ar & make_nvp("trackers", trackers_);
-		} else {
-			ar & make_nvp("paused", state_);		
 		}
     }
 	
@@ -299,7 +297,6 @@ private:
 	unsigned state_;
 	int connections_;
 	int uploads_;
-//	bool paused_;
 	bool inSession_;
 	
 	std::wstring filename_;
@@ -528,7 +525,23 @@ public:
 			::MessageBox(0, (wformat(L"Save data exception: %1%") % e.what()).str().c_str(), L"Exception", 0);
 		}
 	}
-
+	
+	void pop_alerts()
+	{
+		alert_signal_(AlertDetail(boost::posix_time::second_clock::universal_time(), L"Here", 0, ""));
+		std::auto_ptr<lbt::alert> p_alert = theSession.pop_alert();
+		
+		while (p_alert.get())
+		{		
+			alert_signal_(AlertDetail(p_alert->timestamp(), hal::to_wstr(p_alert->msg()), 0, ""));
+			
+			p_alert = theSession.pop_alert();
+		}
+		
+		asio::deadline_timer t(io_, boost::posix_time::seconds(5));
+	//	t.async_wait(bind(&BitTorrent_impl::pop_alerts, this));
+	}
+	
 	int defTorrentMaxConn() { return defTorrentMaxConn_; }
 	int defTorrentMaxUpload() { return defTorrentMaxUpload_; }
 	float defTorrentDownload() { return defTorrentDownload_; }
@@ -548,26 +561,33 @@ private:
 		ip_filter_count_(0),
 		dht_on_(false)
 	{
+		theSession.set_severity_level(lbt::alert::severity_t::debug);
+		
 		{	fs::ifstream ifs(workingDirectory/"Torrents.xml");
 			if (ifs)
 			{
 				boost::archive::xml_iarchive ia(ifs);			
 				ia >> make_nvp("torrents", torrents);
-			}		
+			}
 		}
 		if (exists(workingDirectory/"DHTState.bin"))
 			dht_state_ = haldecode(workingDirectory/"DHTState.bin");
 				
 		{	lbt::session_settings settings = theSession.settings();
-			settings.user_agent = "Halite v 0.2.9 dev2";
+			settings.user_agent = "Halite v 0.2.9 dev3";
 			theSession.set_settings(settings);
 		}
+		
+		asio::deadline_timer t(io_, boost::posix_time::seconds(5));
+		t.async_wait(bind(&BitTorrent_impl::pop_alerts, this));
 	}
 	
 	lbt::entry prepTorrent(path filename, path saveDirectory);
 	void removalThread(lbt::torrent_handle handle, bool wipeFiles);
 	
 	lbt::session theSession;
+	asio::io_service io_;
+	
 	TorrentMap torrents;
 	const path workingDirectory;
 	
@@ -590,6 +610,8 @@ private:
 	bool dht_on_;
 	lbt::dht_settings dht_settings_;
 	lbt::entry dht_state_;
+		
+	boost::signal<void (AlertDetail)> alert_signal_;
 };
 
 BitTorrent::BitTorrent() :
@@ -1353,7 +1375,6 @@ std::vector<TrackerDetail> BitTorrent::getTorrentTrackers(std::string filename)
 	return std::vector<TrackerDetail>();
 }
 
-
 void BitTorrent::setSeverityLevel(alertLevel alert)
 {
 	switch (alert)
@@ -1382,6 +1403,17 @@ void BitTorrent::setSeverityLevel(alertLevel alert)
 boost::optional<AlertDetail> BitTorrent::getAlert()
 {
 	return boost::optional<AlertDetail>();
+}
+	
+void BitTorrent::startAlertReceiver()
+{
+	pimpl->alert_signal_(AlertDetail(boost::posix_time::second_clock::universal_time(), L"Hello", 0, ""));
+	thread(bind(&asio::io_service::run, &pimpl->io_));
+}
+
+boost::signals::scoped_connection BitTorrent::attachAlertReceiver(boost::function<void (AlertDetail)> fn)
+{
+	return pimpl->alert_signal_.connect(fn);
 }
 
 int BitTorrent::defTorrentMaxConn() { return pimpl->defTorrentMaxConn_; }

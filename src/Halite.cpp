@@ -39,6 +39,28 @@
 
 #endif
 
+static class halite_log_file
+{
+public:
+	halite_log_file();
+	
+	void operator()(halite::AlertDetail alert)
+	{
+		if (!wofs.is_open()) wofs.open("HaliteLog.txt");
+
+		wofs << (wformat(L"%1% %2%\r\n") % alert.timeStamp % alert.msg);
+	}
+	
+private:
+	std::wofstream wofs;
+	boost::signals::scoped_connection conn_;
+	
+} halite_log_file_;
+
+halite_log_file::halite_log_file() :
+	conn_(halite::bittorrent().attachAlertReceiver(bind(&halite_log_file::operator(), &halite_log_file_, _1)))
+{}
+
 static const unsigned WMU_ARE_YOU_ME = ::RegisterWindowMessage(WMU_ARE_YOU_ME_STRING);
 
 static BOOL CALLBACK hwndSearcher(HWND hWnd, LPARAM lParam)
