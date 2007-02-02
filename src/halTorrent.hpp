@@ -133,7 +133,7 @@ struct TrackerDetail
 	int tier;
 };
 
-struct AlertDetail;
+class EventDetail;
 
 struct SessionDetail
 {
@@ -156,7 +156,8 @@ class BitTorrent_impl;
 class BitTorrent
 {
 public:
-	enum alertLevel { debug, info, warning, critical, fatal, none };
+	enum eventLevel { debug, info, warning, critical, fatal, none };
+	static std::wstring eventLevelToStr(eventLevel);
 	
 	void shutDownSession();
 	
@@ -179,7 +180,7 @@ public:
 	void setSessionSpeed(float download, float upload);
 	void setDhtSettings(int max_peers_reply, int search_branching, 
 		int service_port, int max_fail_count);
-			
+	
 	const SessionDetail getSessionDetails();
 
 	void setTorrentDefaults(int maxConn, int maxUpload, float download, float upload);	
@@ -219,11 +220,9 @@ public:
 	void resetTorrentTrackers(std::string filename);
 	std::vector<TrackerDetail> getTorrentTrackers(std::string filename);
 
-	void setSeverityLevel(alertLevel alert);
-	boost::optional<AlertDetail> getAlert();
-	
-	void startAlertReceiver();
-	boost::signals::scoped_connection attachAlertReceiver(boost::function<void (AlertDetail)> fn);
+	void setSeverityLevel(eventLevel event);	
+	void startEventReceiver();
+	boost::signals::scoped_connection attachEventReceiver(boost::function<void (std::auto_ptr<EventDetail>)> fn);
 	
 	friend BitTorrent& bittorrent();
 	
@@ -236,22 +235,6 @@ private:
 	BitTorrent();
 	
 	boost::scoped_ptr<BitTorrent_impl> pimpl;
-};
-
-struct AlertDetail
-{
-	AlertDetail(boost::posix_time::ptime t, std::wstring s, unsigned c, std::string f) :
-		timeStamp(t),
-		msg(s), 
-		alertCode(c), 
-		filename(f)
-	{}
-	
-	BitTorrent::alertLevel alert;
-	boost::posix_time::ptime timeStamp;
-	std::wstring msg;
-	unsigned alertCode;
-	std::string filename;
 };
 
 BitTorrent& bittorrent();

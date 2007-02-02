@@ -5,6 +5,18 @@
 #include "resource.h"
 #include "afxres.h"
 
+IDD_CONFIGREMOTE DIALOGEX 0,0,283,94
+STYLE DS_MODALFRAME | DS_SETFONT | DS_FIXEDSYS | WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_POPUP | WS_SYSMENU
+CAPTION "Remote Control"
+FONT 8,"MS Shell Dlg",400,0,1
+BEGIN
+    GROUPBOX        "Remote Control Options",IDC_STATIC,6,6,271,30
+    AUTOCHECKBOX    "Enable Remote Control",IDC_REMOTECTRL,12,18,96,12,WS_DISABLED
+    RTEXT           "Port to listen on : ",IDC_STATIC,159,19,66,11,WS_DISABLED
+    EDITTEXT        IDC_REMOTEPORT,229,18,42,12,WS_DISABLED | ES_AUTOHSCROLL
+    LTEXT           "*** Disabled ***",IDC_STATIC,104,19,59,11
+END
+
 IDD_HALITEDLG DIALOGEX 0,0,362,73
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILDWINDOW | WS_CLIPCHILDREN
 FONT 8,"MS Shell Dlg",400,0,1
@@ -35,18 +47,6 @@ BEGIN
     RTEXT           "Completed:",IDC_STATIC,84,39,39,8
     LTEXT           "N/A",IDC_COMPLETE,125,39,59,8,SS_WORDELLIPSIS
     GROUPBOX        "",IDC_DETAILS_GROUP,1,4294967292,359,77,0,WS_EX_TRANSPARENT
-END
-
-IDD_CONFIGREMOTE DIALOGEX 0,0,283,94
-STYLE DS_MODALFRAME | DS_SETFONT | DS_FIXEDSYS | WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_POPUP | WS_SYSMENU
-CAPTION "Remote Control"
-FONT 8,"MS Shell Dlg",400,0,1
-BEGIN
-    GROUPBOX        "Remote Control Options",IDC_STATIC,6,6,271,30
-    AUTOCHECKBOX    "Enable Remote Control",IDC_REMOTECTRL,12,18,96,12,WS_DISABLED
-    RTEXT           "Port to listen on : ",IDC_STATIC,159,19,66,11,WS_DISABLED
-    EDITTEXT        IDC_REMOTEPORT,229,18,42,12,WS_DISABLED | ES_AUTOHSCROLL
-    LTEXT           "*** Disabled ***",IDC_STATIC,104,19,59,11
 END
 
 IDD_ABOUT DIALOGEX 0,0,283,125
@@ -375,6 +375,10 @@ BEGIN
     IDPANE_FILTER                 "Filtering 000000 ranges."
     IDS_TRYANOTHERPORT            "The BitTorrent session could not start. Try selecting another port in the settings."
     IDS_DHTTRYANOTHERPORT         "DHT session could not start. Try selecting another port in the settings."
+    HAL_EVENTNONE                 "None"
+    HAL_EVENTDEBUG                "Debug"
+    HAL_EVENTINFO                 "Info"
+    HAL_EVENTCRITICAL             "Critical"
 END
 
 

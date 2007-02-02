@@ -17,10 +17,12 @@ SOURCES =
 	ConfigOptions.cpp
 	ini/BitTConfig.cpp
 	halTorrent.cpp
+	halEvent.cpp
 	GlobalIni.cpp
 #	halXmlRpc.cpp
 	NTray.cpp
 	UxthemeWrapper.cpp
+	
 	advtabs/Torrent.cpp
 	advtabs/Tracker.cpp
 	advtabs/TrackerListView.cpp

@@ -3,8 +3,10 @@
  
 #include "stdAfx.hpp"
 #include "DdxEx.hpp"
-#include "Halite.hpp"
 #include "HaliteListViewCtrl.hpp"
+
+#include "halTorrent.hpp"
+#include "halEvent.hpp"
 
 class ui_signal;
 class HaliteListViewCtrl;

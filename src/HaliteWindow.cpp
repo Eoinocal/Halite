@@ -102,7 +102,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	mp_list->manager().setSelected(0);
 	setCorrectDialog();
 	
-	halite::bittorrent().startAlertReceiver();
+	halite::bittorrent().startEventReceiver();
 	
 	return 0;
 }

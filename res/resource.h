@@ -134,5 +134,9 @@
 #define IDS_DHTTRYANOTHERPORT           40005
 #define ID_LVM_REMOVE_TD                40005
 #define ID_TRAY_PAUSEALL                40005
+#define HAL_EVENTNONE                   40006
 #define ID_TRAY_RESUMEALL               40006
+#define HAL_EVENTDEBUG                  40007
+#define HAL_EVENTINFO                   40008
+#define HAL_EVENTCRITICAL               40009
 #define ID_TRAY_EXIT                    40009

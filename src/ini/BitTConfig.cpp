@@ -6,7 +6,7 @@
 #include "../GlobalIni.hpp"
 #include "BitTConfig.hpp"
 #include "../ProgressDialog.hpp"
-#include "../halTorrent.hpp"
+#include "../Halite.hpp"
 
 void BitTConfig::settingsChanged()
 {

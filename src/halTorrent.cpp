@@ -36,6 +36,7 @@
 #include <libtorrent/peer_connection.hpp>
 
 #include "halTorrent.hpp"
+#include "halEvent.hpp"
 #include "global/string_conv.hpp"
 
 #define foreach BOOST_FOREACH
@@ -310,7 +311,6 @@ private:
 	std::vector<lbt::announce_entry> torrent_trackers_;
 };
 
-
 typedef std::map<std::string, TorrentInternal> TorrentMap;
 
 lbt::entry haldecode(const path &file) 
@@ -528,18 +528,18 @@ public:
 	
 	void pop_alerts()
 	{
-		alert_signal_(AlertDetail(boost::posix_time::second_clock::universal_time(), L"Here", 0, ""));
 		std::auto_ptr<lbt::alert> p_alert = theSession.pop_alert();
 		
 		while (p_alert.get())
 		{		
-			alert_signal_(AlertDetail(p_alert->timestamp(), hal::to_wstr(p_alert->msg()), 0, ""));
+			event_signal_(std::auto_ptr<EventDetail>(
+				new EventLibtorrent(p_alert->timestamp(), hal::to_wstr(p_alert->msg()))));
 			
 			p_alert = theSession.pop_alert();
 		}
 		
-		asio::deadline_timer t(io_, boost::posix_time::seconds(5));
-	//	t.async_wait(bind(&BitTorrent_impl::pop_alerts, this));
+		timer_.expires_from_now(boost::posix_time::seconds(5));
+		timer_.async_wait(bind(&BitTorrent_impl::pop_alerts, this));
 	}
 	
 	int defTorrentMaxConn() { return defTorrentMaxConn_; }
@@ -550,6 +550,7 @@ public:
 private:
 	BitTorrent_impl() :
 		theSession(lbt::fingerprint("HL", 0, 2, 0, 9)),
+		timer_(io_),
 		workingDirectory(globalModule().exePath().branch_path()),
 		defTorrentMaxConn_(-1),
 		defTorrentMaxUpload_(-1),
@@ -578,8 +579,8 @@ private:
 			theSession.set_settings(settings);
 		}
 		
-		asio::deadline_timer t(io_, boost::posix_time::seconds(5));
-		t.async_wait(bind(&BitTorrent_impl::pop_alerts, this));
+		timer_.expires_from_now(boost::posix_time::seconds(5));
+		timer_.async_wait(bind(&BitTorrent_impl::pop_alerts, this));
 	}
 	
 	lbt::entry prepTorrent(path filename, path saveDirectory);
@@ -587,6 +588,7 @@ private:
 	
 	lbt::session theSession;
 	asio::io_service io_;
+	asio::deadline_timer timer_;
 	
 	TorrentMap torrents;
 	const path workingDirectory;
@@ -610,8 +612,8 @@ private:
 	bool dht_on_;
 	lbt::dht_settings dht_settings_;
 	lbt::entry dht_state_;
-		
-	boost::signal<void (AlertDetail)> alert_signal_;
+	
+	boost::signal<void (std::auto_ptr<EventDetail>)> event_signal_;
 };
 
 BitTorrent::BitTorrent() :
@@ -1375,9 +1377,9 @@ std::vector<TrackerDetail> BitTorrent::getTorrentTrackers(std::string filename)
 	return std::vector<TrackerDetail>();
 }
 
-void BitTorrent::setSeverityLevel(alertLevel alert)
+void BitTorrent::setSeverityLevel(eventLevel event)
 {
-	switch (alert)
+	switch (event)
 	{
 	case debug:
 		pimpl->theSession.set_severity_level(lbt::alert::severity_t::debug);
@@ -1400,20 +1402,34 @@ void BitTorrent::setSeverityLevel(alertLevel alert)
 	}
 }
 
-boost::optional<AlertDetail> BitTorrent::getAlert()
+void BitTorrent::startEventReceiver()
 {
-	return boost::optional<AlertDetail>();
-}
-	
-void BitTorrent::startAlertReceiver()
-{
-	pimpl->alert_signal_(AlertDetail(boost::posix_time::second_clock::universal_time(), L"Hello", 0, ""));
+//	pimpl->alert_signal_(AlertDetail(boost::posix_time::second_clock::universal_time(), L"Hello", 0, ""));
 	thread(bind(&asio::io_service::run, &pimpl->io_));
 }
 
-boost::signals::scoped_connection BitTorrent::attachAlertReceiver(boost::function<void (AlertDetail)> fn)
+boost::signals::scoped_connection BitTorrent::attachEventReceiver(boost::function<void (std::auto_ptr<EventDetail>)> fn)
 {
-	return pimpl->alert_signal_.connect(fn);
+	return pimpl->event_signal_.connect(fn);
+}
+
+std::wstring BitTorrent::eventLevelToStr(eventLevel event)
+{
+	switch (event)
+	{
+	case debug:
+		return globalModule().loadResString(HAL_EVENTDEBUG);
+	case info:
+		return globalModule().loadResString(HAL_EVENTINFO);
+	case warning:
+		return globalModule().loadResString(HAL_EVENTINFO);
+	case critical:
+		return globalModule().loadResString(HAL_EVENTCRITICAL);
+	case fatal:
+		return globalModule().loadResString(HAL_EVENTCRITICAL);
+	default:
+		return globalModule().loadResString(HAL_EVENTNONE);
+	}
 }
 
 int BitTorrent::defTorrentMaxConn() { return pimpl->defTorrentMaxConn_; }
