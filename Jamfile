@@ -4,10 +4,13 @@ use-project /boost : $(/boost) ;
 use-project /libtorrent : $(/libtorrent) ;
 use-project /wtl : $(/wtl) ;
 use-project /os_libs : $(/os_libs) ;
-use-project /global_log : $(/global_log) ;
+#use-project /global_log : $(/global_log) ;
 
 SOURCES =
+	global/logger.cpp
 	global/string_conv.cpp
+	global/wtl_app.cpp
+	
 	Halite.cpp
 	stdAfx.cpp
 	HaliteWindow.cpp
@@ -53,7 +56,7 @@ project Halite
 #	<library>/http//http/<link>static
     <library>/libtorrent//torrent/<link>static
 	
-	<library>/global_log//global_log/<link>static
+#	<library>/global_log//global_log/<link>static
 	<library>/wtl
 	<library>/os_libs//$(LIBS)
 	

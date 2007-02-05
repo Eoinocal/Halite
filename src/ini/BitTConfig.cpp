@@ -38,7 +38,7 @@ void BitTConfig::settingsThread()
 		std::make_pair(INI().bitTConfig().portFrom, INI().bitTConfig().portTo));
 	if (!success)
 	{
-		MessageBox(0, globalModule().loadResString(IDS_TRYANOTHERPORT).c_str(), L"Init Exception", MB_ICONERROR|MB_OK);
+		MessageBox(0, hal::app().load_res_wstring(IDS_TRYANOTHERPORT).c_str(), L"Init Exception", MB_ICONERROR|MB_OK);
 	}
 	}
 	catch(const std::exception& ex)
@@ -66,7 +66,7 @@ void BitTConfig::settingsThread()
 		if (!halite::bittorrent().ensure_dht_on())
 		{
 			halite::bittorrent().ensure_dht_off();
-			MessageBox(0, globalModule().loadResString(IDS_DHTTRYANOTHERPORT).c_str(), L"DHT Error", MB_ICONERROR|MB_OK);
+			MessageBox(0, hal::app().load_res_wstring(IDS_DHTTRYANOTHERPORT).c_str(), L"DHT Error", MB_ICONERROR|MB_OK);
 		}
 	}
 	else

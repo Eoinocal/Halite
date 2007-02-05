@@ -140,3 +140,4 @@
 #define HAL_EVENTINFO                   40008
 #define HAL_EVENTCRITICAL               40009
 #define ID_TRAY_EXIT                    40009
+#define HAL_PEERALERT                   40010

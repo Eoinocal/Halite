@@ -8,8 +8,7 @@
 #include "UxthemeWrapper.hpp"
 
 #ifndef NDEBUG
-#	include <global_log.hpp>
-	using glb::wlog;
+#	include "global/logger.hpp"
 #endif
 
 class ThemeTestDialog :

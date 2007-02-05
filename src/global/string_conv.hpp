@@ -47,6 +47,7 @@ inline std::string to_str(const boost::array<char>& buf) { return std::string(bu
 inline std::string to_str(const boost::array<char>& buf) { return std::string(buf.get(), buf.size()); }
 inline std::string to_str(const boost::array<char>& buf) { return std::string(buf.get(), buf.size()); }
 */
-};
+
+} // namespace gbl
 
 #endif // GLOBAL_STRING_CONV

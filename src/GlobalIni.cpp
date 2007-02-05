@@ -28,7 +28,7 @@ ArchivalData::ArchivalData() :
 	remoteConfig_(new RemoteConfig()),
 	splashConfig_(new SplashConfig())	
 {
-	workingFile_ = globalModule().exePath().branch_path()/"Halite.ini.xml";
+	workingFile_ = hal::app().exe_path().branch_path()/"Halite.ini.xml";
 }
 
 template<class Archive>

@@ -1,10 +1,10 @@
 
 #pragma once
- 
-#include <global_log.hpp>
-using glb::wlog;
 
 #include "../stdAfx.hpp"
+#include "../global/string_conv.hpp"
+#include "../global/logger.hpp"
+
 #include "../DdxEx.hpp"
 #include "../Halite.hpp"
 
@@ -25,7 +25,7 @@ public:
     END_MSG_MAP()
 	
 	LogEdit() :
-		editLogger(glb::wlog().attach(bind(LogEdit::log, this, _1)))
+		editLogger(hal::wlog().attach(bind(LogEdit::log, this, _1)))
 	{}
  
 	void log(const std::wstring& text) 
@@ -46,7 +46,7 @@ public:
     END_MSG_MAP()
 	
 	LogList() :
-		listLogger(glb::wlog().attach(bind(LogList::log, this, _1)))
+		listLogger(hal::wlog().attach(bind(LogList::log, this, _1)))
 	{}
  
 	void log(const std::wstring& text) 
@@ -80,14 +80,32 @@ public:
 		CHeaderCtrl hdr = GetHeader();
 		hdr.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
 	
-		AddColumn(L"Tracker", hdr.GetItemCount());
-		AddColumn(L"Tier", hdr.GetItemCount());
+		AddColumn(L"Time", hdr.GetItemCount());
+		AddColumn(L"Severity", hdr.GetItemCount());
+		AddColumn(L"Message", hdr.GetItemCount());
+		
+		boost::signals::scoped_connection* p = new boost::signals::scoped_connection(
+			halite::bittorrent().attachEventReceiver(bind(&LogListViewCtrl::operator(), this, _1))
+			);
+		
+		pconn_.reset(new boost::signals::scoped_connection(*p));
+	}
+	
+	void operator()(shared_ptr<halite::EventDetail> event)
+	{		
+		int itemPos = AddItem(0, 0, lexical_cast<wstring>(event->timeStamp()).c_str(), 0);
+
+		SetItemText(itemPos, 1,
+			halite::BitTorrent::eventLevelToStr(event->level()).c_str());	
+			
+		SetItemText(itemPos, 2,	event->msg().c_str());
 	}
 	
 	void saveStatus() {}
 	void updateListView() {}
 
 private:
+	scoped_ptr<boost::signals::scoped_connection> pconn_;
 
 };
 

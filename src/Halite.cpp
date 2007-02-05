@@ -12,8 +12,7 @@
 #include "Halite.hpp"
 
 #ifndef NDEBUG
-#	include <global_log.hpp>
-	using glb::wlog;
+#	include "global/logger.hpp"
 #	include "DebugDialog.hpp"
 	
 	static DebugDialog global_debugDialog_;	
@@ -36,15 +35,17 @@
 	} global_log_file_;
 	
 	global_log_file::global_log_file() :
-		conn_(wlog().attach(bind(global_log_file::operator(), &global_log_file_, _1)))
+		conn_(hal::wlog().attach(bind(global_log_file::operator(), &global_log_file_, _1)))
 	{}
 
 #endif
 
-static class halite_log_file
+static class halite_log_file : public boost::signals::trackable
 {
-public:	
-	void operator()(std::auto_ptr<halite::EventDetail> event)
+public:
+	halite_log_file();
+	
+	void operator()(shared_ptr<halite::EventDetail> event)
 	{
 		if (!wofs.is_open()) wofs.open("HaliteLog.txt");
 		
@@ -52,6 +53,8 @@ public:
 			% event->timeStamp() % halite::BitTorrent::eventLevelToStr(event->level()) 
 			% event->msg());
 	}
+	
+	void disconnect() { conn_.disconnect(); }
 	
 private:
 	std::wofstream wofs;
@@ -110,14 +113,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			if (::IsIconic(hOther))
 				::ShowWindow(hOther, SW_RESTORE);
 			
-			if (!globalModule().commandArgs().empty())
+			if (!hal::app().command_args().empty())
 			{
 				COPYDATASTRUCT cmdLine; 
 				cmdLine.dwData = HALITE_SENDING_CMD; 
 				cmdLine.cbData = 
-					globalModule().commandArgs().front().length()*sizeof(wchar_t); 
+					hal::app().command_args().front().length()*sizeof(wchar_t); 
 				cmdLine.lpData = const_cast<wchar_t*>(
-					globalModule().commandArgs().front().c_str());
+					hal::app().command_args().front().c_str());
 				
 				::SendMessage(hOther, WM_COPYDATA, 0, (LPARAM)(LPVOID)&cmdLine);
 			}
@@ -141,8 +144,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			global_debugDialog_.ShowWindow(false);
 			#endif
 			
-			if (!globalModule().commandArgs().empty())
-				wndMain.ProcessFile(globalModule().commandArgs().front().c_str());
+			if (!hal::app().command_args().empty())
+				wndMain.ProcessFile(hal::app().command_args().front().c_str());
 			
 			wndMain.SetWindowText(L"Halite");
 			wndMain.MoveWindow(
@@ -159,6 +162,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		}	
 		_Module.RemoveMessageLoop();
 		
+		halite::bittorrent().stopEventReceiver();
+		
 		if (INI().splashConfig().showMessage)
 		{
 			SplashDialog splDlg;
@@ -168,7 +173,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		{
 			halite::bittorrent().closeAll();
 			halite::bittorrent().shutDownSession();		
-		}		
+		}
 		INI().SaveData();
 	}
 	}

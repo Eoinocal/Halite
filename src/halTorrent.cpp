@@ -28,6 +28,7 @@
 
 #include <libtorrent/file.hpp>
 #include <libtorrent/hasher.hpp>
+#include <libtorrent/alert_types.hpp>
 #include <libtorrent/entry.hpp>
 #include <libtorrent/bencode.hpp>
 #include <libtorrent/session.hpp>
@@ -485,6 +486,26 @@ void read_range_to_filter(fs::ifstream& ifs, lbt::ip_filter& ip_filter)
 		lbt::ip_filter::blocked);
 }
 
+static BitTorrent::eventLevel lbtAlertToHalEvent(lbt::alert::severity_t severity)
+{
+	switch (severity)
+	{
+	case lbt::alert::severity_t::debug:
+		return BitTorrent::eventLevel::debug;
+		
+	case lbt::alert::severity_t::info:
+	case lbt::alert::severity_t::warning:
+		return BitTorrent::eventLevel::info;
+		
+	case lbt::alert::severity_t::critical:
+	case lbt::alert::severity_t::fatal:
+		return BitTorrent::eventLevel::critical;
+		
+	default:
+		return BitTorrent::eventLevel::none;
+	}
+}
+
 class BitTorrent_impl
 {
 	friend class BitTorrent;
@@ -492,6 +513,8 @@ public:
 	
 	~BitTorrent_impl()
 	{
+		keepChecking_ = false;
+		
 		try
 		{
 		{	fs::ofstream ofs(workingDirectory/"Torrents.xml");
@@ -528,18 +551,31 @@ public:
 	
 	void pop_alerts()
 	{
-		std::auto_ptr<lbt::alert> p_alert = theSession.pop_alert();
-		
-		while (p_alert.get())
-		{		
-			event_signal_(std::auto_ptr<EventDetail>(
-				new EventLibtorrent(p_alert->timestamp(), hal::to_wstr(p_alert->msg()))));
+		if (keepChecking_)
+		{
+			std::auto_ptr<lbt::alert> p_alert = theSession.pop_alert();
 			
-			p_alert = theSession.pop_alert();
+			while (p_alert.get())
+			{	
+				if (lbt::peer_error_alert* peer = dynamic_cast<lbt::peer_error_alert*>(p_alert.get()))
+				{
+					event_signal_(shared_ptr<EventDetail>(
+						new EventPeerAlert(lbtAlertToHalEvent(p_alert->severity()), 
+							p_alert->timestamp(), hal::to_wstr(p_alert->msg()))));			
+				}
+				else
+				{
+					event_signal_(shared_ptr<EventDetail>(
+						new EventLibtorrent(lbtAlertToHalEvent(p_alert->severity()), 
+							p_alert->timestamp(), hal::to_wstr(p_alert->msg()))));
+				}
+				
+				p_alert = theSession.pop_alert();
+			}
+			
+			timer_.expires_from_now(boost::posix_time::seconds(5));
+			timer_.async_wait(bind(&BitTorrent_impl::pop_alerts, this));
 		}
-		
-		timer_.expires_from_now(boost::posix_time::seconds(5));
-		timer_.async_wait(bind(&BitTorrent_impl::pop_alerts, this));
 	}
 	
 	int defTorrentMaxConn() { return defTorrentMaxConn_; }
@@ -551,7 +587,8 @@ private:
 	BitTorrent_impl() :
 		theSession(lbt::fingerprint("HL", 0, 2, 0, 9)),
 		timer_(io_),
-		workingDirectory(globalModule().exePath().branch_path()),
+		keepChecking_(false),
+		workingDirectory(hal::app().exe_path().branch_path()),
 		defTorrentMaxConn_(-1),
 		defTorrentMaxUpload_(-1),
 		defTorrentDownload_(-1),
@@ -589,6 +626,7 @@ private:
 	lbt::session theSession;
 	asio::io_service io_;
 	asio::deadline_timer timer_;
+	bool keepChecking_;
 	
 	TorrentMap torrents;
 	const path workingDirectory;
@@ -613,7 +651,7 @@ private:
 	lbt::dht_settings dht_settings_;
 	lbt::entry dht_state_;
 	
-	boost::signal<void (std::auto_ptr<EventDetail>)> event_signal_;
+	boost::signal<void (shared_ptr<EventDetail>)> event_signal_;
 };
 
 BitTorrent::BitTorrent() :
@@ -1404,11 +1442,16 @@ void BitTorrent::setSeverityLevel(eventLevel event)
 
 void BitTorrent::startEventReceiver()
 {
-//	pimpl->alert_signal_(AlertDetail(boost::posix_time::second_clock::universal_time(), L"Hello", 0, ""));
+	pimpl->keepChecking_ = true;
 	thread(bind(&asio::io_service::run, &pimpl->io_));
 }
 
-boost::signals::scoped_connection BitTorrent::attachEventReceiver(boost::function<void (std::auto_ptr<EventDetail>)> fn)
+void BitTorrent::stopEventReceiver()
+{
+	pimpl->keepChecking_ = false;
+}
+
+boost::signals::scoped_connection BitTorrent::attachEventReceiver(boost::function<void (shared_ptr<EventDetail>)> fn)
 {
 	return pimpl->event_signal_.connect(fn);
 }
@@ -1418,17 +1461,17 @@ std::wstring BitTorrent::eventLevelToStr(eventLevel event)
 	switch (event)
 	{
 	case debug:
-		return globalModule().loadResString(HAL_EVENTDEBUG);
+		return hal::app().load_res_wstring(HAL_EVENTDEBUG);
 	case info:
-		return globalModule().loadResString(HAL_EVENTINFO);
+		return hal::app().load_res_wstring(HAL_EVENTINFO);
 	case warning:
-		return globalModule().loadResString(HAL_EVENTINFO);
+		return hal::app().load_res_wstring(HAL_EVENTINFO);
 	case critical:
-		return globalModule().loadResString(HAL_EVENTCRITICAL);
+		return hal::app().load_res_wstring(HAL_EVENTCRITICAL);
 	case fatal:
-		return globalModule().loadResString(HAL_EVENTCRITICAL);
+		return hal::app().load_res_wstring(HAL_EVENTCRITICAL);
 	default:
-		return globalModule().loadResString(HAL_EVENTNONE);
+		return hal::app().load_res_wstring(HAL_EVENTNONE);
 	}
 }
 

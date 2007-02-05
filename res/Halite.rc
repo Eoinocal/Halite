@@ -5,6 +5,20 @@
 #include "resource.h"
 #include "afxres.h"
 
+IDD_ABOUT DIALOGEX 0,0,283,125
+STYLE DS_MODALFRAME | DS_SETFONT | DS_FIXEDSYS | WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_POPUP | WS_SYSMENU
+CAPTION "About"
+FONT 8,"MS Shell Dlg",400,0,1
+BEGIN
+    GROUPBOX        "Program Information",IDC_STATIC,5,7,271,111
+    LTEXT           "Halite is a BitTorrent client based on the libtorrent library from Rasterbar.com. The program is written in C++ relying on the Boost libraries and WTL. It is open sourced under a MIT and/or Boost software licence.",IDC_STATIC,12,18,256,27
+    LTEXT           "This project has only been possible thanks to the excellent work others. I'd like to acknowledge some of those people.",IDC_STATIC,12,47,257,18
+    RTEXT           "Release v 0.2.8, Revision 115.",IDC_STATIC,145,106,129,9
+    LTEXT           "nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon.",IDC_STATIC,12,91,257,11
+    LTEXT           "Arvid Norberg - www.rasterbar.com - Author of the libtorrent library.",IDC_STATIC,12,68,257,11
+    LTEXT           "Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO.",IDC_STATIC,12,80,257,11
+END
+
 IDD_CONFIGREMOTE DIALOGEX 0,0,283,94
 STYLE DS_MODALFRAME | DS_SETFONT | DS_FIXEDSYS | WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_POPUP | WS_SYSMENU
 CAPTION "Remote Control"
@@ -47,20 +61,6 @@ BEGIN
     RTEXT           "Completed:",IDC_STATIC,84,39,39,8
     LTEXT           "N/A",IDC_COMPLETE,125,39,59,8,SS_WORDELLIPSIS
     GROUPBOX        "",IDC_DETAILS_GROUP,1,4294967292,359,77,0,WS_EX_TRANSPARENT
-END
-
-IDD_ABOUT DIALOGEX 0,0,283,125
-STYLE DS_MODALFRAME | DS_SETFONT | DS_FIXEDSYS | WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_POPUP | WS_SYSMENU
-CAPTION "About"
-FONT 8,"MS Shell Dlg",400,0,1
-BEGIN
-    GROUPBOX        "Program Information",IDC_STATIC,5,7,271,111
-    LTEXT           "Halite is a BitTorrent client based on the libtorrent library from Rasterbar.com. The program is written in C++ relying on the Boost libraries and WTL. It is open sourced under a MIT and/or Boost software licence.",IDC_STATIC,12,18,256,27
-    LTEXT           "This project has only been possible thanks to the excellent work others. I'd like to acknowledge some of those people.",IDC_STATIC,12,47,257,18
-    RTEXT           "Release v 0.2.8, Revision 115.",IDC_STATIC,145,106,129,9
-    LTEXT           "nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon.",IDC_STATIC,12,91,257,11
-    LTEXT           "Arvid Norberg - www.rasterbar.com - Author of the libtorrent library.",IDC_STATIC,12,68,257,11
-    LTEXT           "Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO.",IDC_STATIC,12,80,257,11
 END
 
 IDD_CONFIGBIT DIALOGEX 0,0,283,152
@@ -379,6 +379,7 @@ BEGIN
     HAL_EVENTDEBUG                "Debug"
     HAL_EVENTINFO                 "Info"
     HAL_EVENTCRITICAL             "Critical"
+    HAL_PEERALERT                 "Libtorrent Peer Alert: %1%."
 END
 
 

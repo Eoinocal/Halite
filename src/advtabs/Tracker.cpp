@@ -6,8 +6,7 @@
 #include "../GlobalIni.hpp"
 #include "../ini/Dialog.hpp"
 
-#include <global_log.hpp>
-using glb::wlog;
+#include "../global/logger.hpp"
 
 #include "Tracker.hpp"
 

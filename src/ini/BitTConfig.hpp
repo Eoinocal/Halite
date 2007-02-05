@@ -5,6 +5,8 @@
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/version.hpp>
 
+#include "../global/string_conv.hpp"
+
 class BitTConfig
 {
 public:
@@ -28,7 +30,7 @@ public:
 		enableIPFilter(false),
 		enableProxy(false),
 		proxyPort(0),
-		defaultSaveFolder(mbstowcs((globalModule().exePath().branch_path()/"incoming").string())),
+		defaultSaveFolder(hal::to_wstr((hal::app().exe_path().branch_path()/"incoming").string())),
 		savePrompt(true)
 	{}
 	

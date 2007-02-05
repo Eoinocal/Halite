@@ -30,4 +30,4 @@ std::string wcstombs(const wchar_t* str, size_t length)//const std::wstring &str
 	return std::string(buf.get(), len);
 }
 
-};
+} // namespace gbl

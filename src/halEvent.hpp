@@ -41,14 +41,31 @@ private:
 class EventLibtorrent : public EventDetail
 {
 public:
-	EventLibtorrent(boost::posix_time::ptime t, std::wstring m) :
-		EventDetail(BitTorrent::info, t, BitTorrent::debug),
+	EventLibtorrent(BitTorrent::eventLevel l, boost::posix_time::ptime t, std::wstring m) :
+		EventDetail(l, t, BitTorrent::debug),
 		msg_(m)
 	{}
 	
 	virtual std::wstring msg()
 	{
 		return (wformat(L"Code %1%, %2%") % code() % msg_).str();
+	}
+	
+private:
+	std::wstring msg_;
+};
+
+class EventPeerAlert : public EventDetail
+{
+public:
+	EventPeerAlert(BitTorrent::eventLevel l, boost::posix_time::ptime t, std::wstring m) :
+		EventDetail(l, t, BitTorrent::debug),
+		msg_(m)
+	{}
+	
+	virtual std::wstring msg()
+	{
+		return (wformat(hal::app().load_res_wstring(HAL_PEERALERT)) % msg_).str();
 	}
 	
 private:

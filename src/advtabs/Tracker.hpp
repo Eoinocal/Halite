@@ -2,6 +2,8 @@
 #pragma once
  
 #include "../stdAfx.hpp"
+#include "../global/string_conv.hpp"
+
 #include "../DdxEx.hpp"
 #include "../Halite.hpp"
 

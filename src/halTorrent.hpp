@@ -222,7 +222,8 @@ public:
 
 	void setSeverityLevel(eventLevel event);	
 	void startEventReceiver();
-	boost::signals::scoped_connection attachEventReceiver(boost::function<void (std::auto_ptr<EventDetail>)> fn);
+	void stopEventReceiver();
+	boost::signals::scoped_connection attachEventReceiver(boost::function<void (boost::shared_ptr<EventDetail>)> fn);
 	
 	friend BitTorrent& bittorrent();
 	
