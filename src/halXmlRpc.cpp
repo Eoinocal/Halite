@@ -22,7 +22,7 @@ using namespace boost;
 using namespace http;
 using namespace http::xmlrpc;
 
-namespace halite
+namespace hal
 {
 
 	XmlRpc& xmlRpc()
@@ -101,7 +101,7 @@ namespace halite
 		{
 			int nArgs = params.size();
 			
-			halite::torrentBriefDetails tbd = halite::getTorrents();
+			hal::torrentBriefDetails tbd = hal::getTorrents();
 			if (tbd) 
 			{				
 				for(size_t i=0; i<tbd->size(); i++) 
@@ -112,8 +112,8 @@ namespace halite
 						% ((*tbd)[i].speed.second/1024)
 						).str();
 						
-					result[i][0] = halite::wcstombs((*tbd)[i].filename);
-					result[i][1] = halite::wcstombs(details);
+					result[i][0] = hal::wcstombs((*tbd)[i].filename);
+					result[i][1] = hal::wcstombs(details);
 				}
 			}
 		}
@@ -133,14 +133,14 @@ namespace halite
 		{
 			int nArgs = params.size();
 			
-			halite::torrentBriefDetails tbd = halite::getTorrents();
+			hal::torrentBriefDetails tbd = hal::getTorrents();
 			if (tbd) 
 			{		
 				size_t j = 0;				
 				for(size_t i=0; i<tbd->size(); i++) 
 				{
 					if ((*tbd)[i].status == L"Paused")					
-						result[j++] = halite::wcstombs((*tbd)[i].filename);
+						result[j++] = hal::wcstombs((*tbd)[i].filename);
 				}
 			}
 		}
@@ -160,14 +160,14 @@ namespace halite
 		{
 			int nArgs = params.size();
 			
-			halite::torrentBriefDetails tbd = halite::getTorrents();
+			hal::torrentBriefDetails tbd = hal::getTorrents();
 			if (tbd) 
 			{		
 				size_t j = 0;				
 				for(size_t i=0; i<tbd->size(); i++) 
 				{
 					if ((*tbd)[i].status != L"Paused")					
-						result[j++] = halite::wcstombs((*tbd)[i].filename);
+						result[j++] = hal::wcstombs((*tbd)[i].filename);
 				}
 			}
 		}
@@ -189,7 +189,7 @@ namespace halite
 			if (nArgs >= 2)
 			{
 				string filename = params[1];
-				halite::resumeTorrent(halite::mbstowcs(filename));
+				hal::resumeTorrent(hal::mbstowcs(filename));
 			}			
 		}
 	
@@ -210,7 +210,7 @@ namespace halite
 			if (nArgs >= 2)
 			{
 				string filename = params[1];
-				halite::pauseTorrent(halite::mbstowcs(filename));
+				hal::pauseTorrent(hal::mbstowcs(filename));
 			}			
 		}
 	

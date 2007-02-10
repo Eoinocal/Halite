@@ -25,12 +25,12 @@ void AdvTorrentDialog::selectionChanged(const string& torrent_name)
 	pair<float, float> tranLimit(-1.0, -1.0);
 	pair<int, int> connLimit(-1, -1);
 	
-	if (halite::bittorrent().isTorrent(torrent_name))
+	if (hal::bittorrent().isTorrent(torrent_name))
 	{
-		tranLimit = halite::bittorrent().getTorrentSpeed(torrent_name);
-		connLimit = halite::bittorrent().getTorrentLimit(torrent_name);
+		tranLimit = hal::bittorrent().getTorrentSpeed(torrent_name);
+		connLimit = hal::bittorrent().getTorrentLimit(torrent_name);
 		
-		if (!halite::bittorrent().isTorrentActive(torrent_name))
+		if (!hal::bittorrent().isTorrentActive(torrent_name))
 			SetDlgItemText(BTNPAUSE, L"Resume");
 		else		
 			SetDlgItemText(BTNPAUSE, L"Pause");
@@ -103,15 +103,15 @@ LRESULT AdvTorrentDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl
 {
 	DoDataExchange(true);
 	
-	halite::bittorrent().setTorrentSpeed(selection_manager_.selected(), TranLimitDown, TranLimitUp);
-	halite::bittorrent().setTorrentLimit(selection_manager_.selected(), NoConnDown, NoConnUp);
+	hal::bittorrent().setTorrentSpeed(selection_manager_.selected(), TranLimitDown, TranLimitUp);
+	hal::bittorrent().setTorrentLimit(selection_manager_.selected(), NoConnDown, NoConnUp);
 	
 	return 0;
 }
 
 void AdvTorrentDialog::updateDialog()
 {
-	halite::TorrentDetail_ptr pTD = halite::bittorrent().getTorrentDetails(
+	hal::TorrentDetail_ptr pTD = hal::bittorrent().getTorrentDetails(
 		selection_manager_.selected());
 	
 	if (pTD) 	

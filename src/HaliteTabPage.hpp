@@ -22,14 +22,14 @@ protected:
 	{
 		SetMsgHandled(false);
 		
-		if (halite::uxtheme().pIsAppThemed)
-			if(halite::uxtheme().pIsAppThemed())
+		if (hal::uxtheme().pIsAppThemed)
+			if(hal::uxtheme().pIsAppThemed())
 			{
 				RECT rect;
 				GetClientRect(&rect);
-				if (halite::uxtheme().pDrawThemeParentBackground)
+				if (hal::uxtheme().pDrawThemeParentBackground)
 				{
-					halite::uxtheme().pDrawThemeParentBackground(hWnd, hDC, &rect);
+					hal::uxtheme().pDrawThemeParentBackground(hWnd, hDC, &rect);
 					SetMsgHandled(true);
 				}
 			}
@@ -41,15 +41,15 @@ protected:
 	{	
 		SetMsgHandled(false);
 		
-		if (halite::uxtheme().pIsAppThemed)
-			if(halite::uxtheme().pIsAppThemed())
+		if (hal::uxtheme().pIsAppThemed)
+			if(hal::uxtheme().pIsAppThemed())
 			{
 				RECT rect;
 				::GetClientRect(hWnd, &rect);
 				::SetBkMode(hDC, TRANSPARENT); 
-				if (halite::uxtheme().pDrawThemeParentBackground)
+				if (hal::uxtheme().pDrawThemeParentBackground)
 				{
-					halite::uxtheme().pDrawThemeParentBackground(hWnd, hDC, &rect);
+					hal::uxtheme().pDrawThemeParentBackground(hWnd, hDC, &rect);
 					SetMsgHandled(true);
 				}
 			}

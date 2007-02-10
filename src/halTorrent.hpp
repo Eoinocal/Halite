@@ -21,7 +21,7 @@ using boost::filesystem::path;
 
 namespace libtorrent { struct peer_info; }
 
-namespace halite 
+namespace hal 
 {
 
 struct torrentBriefDetail 
@@ -224,6 +224,7 @@ public:
 	void startEventReceiver();
 	void stopEventReceiver();
 	boost::signals::scoped_connection attachEventReceiver(boost::function<void (boost::shared_ptr<EventDetail>)> fn);
+	void postEvent(boost::shared_ptr<EventDetail> event);
 	
 	friend BitTorrent& bittorrent();
 	

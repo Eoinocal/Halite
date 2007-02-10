@@ -12,7 +12,7 @@ protected:
 	typedef CDialogImpl<TrackerAddDialog> baseClass;
 	
 public:
-	TrackerAddDialog(wstring title, halite::TrackerDetail& tracker) :
+	TrackerAddDialog(wstring title, hal::TrackerDetail& tracker) :
 		title_(title),
 		tracker_(tracker)
 	{}
@@ -70,5 +70,5 @@ public:
 
 private:
 	wstring title_;
-	halite::TrackerDetail& tracker_;
+	hal::TrackerDetail& tracker_;
 };

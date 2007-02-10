@@ -43,7 +43,7 @@ void TrackerListViewCtrl::saveStatus()
 
 void TrackerListViewCtrl::enterNewTracker()
 {
-	halite::TrackerDetail tracker(L"", 0);	
+	hal::TrackerDetail tracker(L"", 0);	
 	TrackerAddDialog trackDlg(L"Add New Tracker", tracker);
 	
 	if (trackDlg.DoModal() == 1 && !tracker.url.empty()) 
@@ -75,7 +75,7 @@ LRESULT TrackerListViewCtrl::OnEdit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BO
 	int index = manager().selectedIndex();
 	
 	GetItemText(index, 0, buffer.elems, buffer.size());
-	halite::TrackerDetail tracker(wstring(buffer.elems), 0);
+	hal::TrackerDetail tracker(wstring(buffer.elems), 0);
 	
 	GetItemText(index, 1, buffer.elems, buffer.size());
 	tracker.tier = lexical_cast<int>(wstring(buffer.elems));

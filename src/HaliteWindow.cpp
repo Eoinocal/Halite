@@ -102,7 +102,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	mp_list->manager().setSelected(0);
 	setCorrectDialog();
 	
-	halite::bittorrent().startEventReceiver();
+	hal::bittorrent().startEventReceiver();
 	
 	return 0;
 }
@@ -141,7 +141,7 @@ void HaliteWindow::setCorrectDialog()
 
 void HaliteWindow::updateWindow()
 {
-	halite::SessionDetail details = halite::bittorrent().getSessionDetails();
+	hal::SessionDetail details = hal::bittorrent().getSessionDetails();
 	
 	if (details.port > -1)
 		UISetText(0, 
@@ -226,7 +226,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	}
 	
 	path file(hal::to_str(lpszPath), boost::filesystem::native);	
-	halite::bittorrent().addTorrent(file, saveDirectory);
+	hal::bittorrent().addTorrent(file, saveDirectory);
 
 	ui().update();
 	
@@ -334,7 +334,7 @@ LRESULT HaliteWindow::OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& 
 	
 	wstring torrent_filename = dlgSave.m_ofn.lpstrFile;
 	
-	halite::bittorrent().newTorrent(path(hal::to_str(torrent_filename)), path(hal::to_str(files)));
+	hal::bittorrent().newTorrent(path(hal::to_str(torrent_filename)), path(hal::to_str(files)));
 	
 	ui().update();
 	
@@ -353,14 +353,14 @@ LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	halite::bittorrent().pauseAllTorrents();
+	hal::bittorrent().pauseAllTorrents();
 	ui().update();
 	return 0;
 }
 
 LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	halite::bittorrent().unpauseAllTorrents();
+	hal::bittorrent().unpauseAllTorrents();
 	ui().update();
 	return 0;
 }

@@ -20,22 +20,22 @@ AdvTrackerDialog::AdvTrackerDialog(ui_signal& ui_sig, ListViewManager& single_se
 
 void AdvTrackerDialog::selectionChanged(const string& torrent_name)
 {	
-	if (halite::bittorrent().isTorrent(torrent_name))
+	if (hal::bittorrent().isTorrent(torrent_name))
 	{		
 		::EnableWindow(GetDlgItem(IDC_TRACKER_LOGINCHECK), true);
 		::EnableWindow(GetDlgItem(IDC_TRACKERLIST), true);
 		
 		pair<wstring, wstring> details = 
-			halite::bittorrent().getTorrentLogin(selection_manager_.selected());
+			hal::bittorrent().getTorrentLogin(selection_manager_.selected());
 		
 		username_ = details.first;
 		password_ = details.second;
 		
-		std::vector<halite::TrackerDetail> trackers =
-			halite::bittorrent().getTorrentTrackers(torrent_name);
+		std::vector<hal::TrackerDetail> trackers =
+			hal::bittorrent().getTorrentTrackers(torrent_name);
 		m_list.manager().clearAll();
 		
-		foreach (const halite::TrackerDetail& tracker, trackers)
+		foreach (const hal::TrackerDetail& tracker, trackers)
 		{
 			int itemPos = m_list.AddItem(0, 0, tracker.url.c_str(), 0);
 			m_list.SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());
@@ -87,13 +87,13 @@ LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 	m_list.Attach(GetDlgItem(IDC_TRACKERLIST));	
 	m_list.attachEditedConnection(bind(&AdvTrackerDialog::trackerListEdited, this));
 	
-	if (halite::bittorrent().isTorrent(selection_manager_.selected()))
+	if (hal::bittorrent().isTorrent(selection_manager_.selected()))
 	{		
 		::EnableWindow(GetDlgItem(IDC_TRACKER_LOGINCHECK), true);
 		::EnableWindow(GetDlgItem(IDC_TRACKERLIST), true);
 		
 		pair<wstring, wstring> details = 
-			halite::bittorrent().getTorrentLogin(selection_manager_.selected());
+			hal::bittorrent().getTorrentLogin(selection_manager_.selected());
 		
 		username_ = details.first;
 		password_ = details.second;
@@ -140,14 +140,17 @@ LRESULT AdvTrackerDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl
 	DoDataExchange(true);
 	
 	setLoginUiState(selection_manager_.selected());
-	halite::bittorrent().setTorrentLogin(selection_manager_.selected(), username_, password_);
+	hal::bittorrent().setTorrentLogin(selection_manager_.selected(), username_, password_);
 	
 	return 0;
 }
 
 void AdvTrackerDialog::onReannounce(UINT, int, HWND)
 {
-	halite::bittorrent().reannounceTorrent(selection_manager_.selected());
+	hal::bittorrent().reannounceTorrent(selection_manager_.selected());
+	
+	hal::bittorrent().postEvent(shared_ptr<hal::EventDetail>(new hal::EventDetail(hal::BitTorrent::critical, 
+		boost::posix_time::second_clock::universal_time(), 123456)));
 }
 
 void AdvTrackerDialog::trackerListEdited()
@@ -160,13 +163,13 @@ void AdvTrackerDialog::updateDialog()
 
 void AdvTrackerDialog::onReset(UINT, int, HWND)
 {
-	halite::bittorrent().resetTorrentTrackers(selection_manager_.selected());
+	hal::bittorrent().resetTorrentTrackers(selection_manager_.selected());
 	
-	std::vector<halite::TrackerDetail> trackers =
-		halite::bittorrent().getTorrentTrackers(selection_manager_.selected());
+	std::vector<hal::TrackerDetail> trackers =
+		hal::bittorrent().getTorrentTrackers(selection_manager_.selected());
 	m_list.manager().clearAll();
 	
-	foreach (const halite::TrackerDetail& tracker, trackers)
+	foreach (const hal::TrackerDetail& tracker, trackers)
 	{
 		int itemPos = m_list.AddItem(0, 0, tracker.url.c_str(), 0);
 		m_list.SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());
@@ -178,20 +181,20 @@ void AdvTrackerDialog::onReset(UINT, int, HWND)
 void AdvTrackerDialog::onApply(UINT, int, HWND)
 {
 	int total = m_list.GetItemCount();
-	std::vector<halite::TrackerDetail> trackers;
+	std::vector<hal::TrackerDetail> trackers;
 	
 	for (int i=0; i<total; ++i)
 	{
 		array<wchar_t, MAX_PATH> buffer;		
 		
 		m_list.GetItemText(i, 0, buffer.elems, buffer.size());
-		trackers.push_back(halite::TrackerDetail(wstring(buffer.elems), 0));
+		trackers.push_back(hal::TrackerDetail(wstring(buffer.elems), 0));
 		
 		m_list.GetItemText(i, 1, buffer.elems, buffer.size());
 		trackers.back().tier = lexical_cast<int>(wstring(buffer.elems));
 	}
 	
-	halite::bittorrent().setTorrentTrackers(selection_manager_.selected(), trackers);
+	hal::bittorrent().setTorrentTrackers(selection_manager_.selected(), trackers);
 	
 	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), false);
 }

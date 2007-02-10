@@ -11,7 +11,7 @@ protected:
 	typedef ProgressDialog thisClass;
 	typedef CDialogImpl<ProgressDialog> baseClass;
 	
-	typedef boost::function<void (halite::progressCallback fn)> threadFunction;
+	typedef boost::function<void (hal::progressCallback fn)> threadFunction;
 
 public:
 	ProgressDialog(wstring windowText, threadFunction fn) :

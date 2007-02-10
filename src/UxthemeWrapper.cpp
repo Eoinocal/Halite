@@ -1,7 +1,7 @@
 
 #include "UxthemeWrapper.hpp"
 
-namespace halite 
+namespace hal 
 {
 
 uxthemeWrapper& uxtheme()

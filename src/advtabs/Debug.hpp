@@ -85,18 +85,18 @@ public:
 		AddColumn(L"Message", hdr.GetItemCount());
 		
 		boost::signals::scoped_connection* p = new boost::signals::scoped_connection(
-			halite::bittorrent().attachEventReceiver(bind(&LogListViewCtrl::operator(), this, _1))
+			hal::bittorrent().attachEventReceiver(bind(&LogListViewCtrl::operator(), this, _1))
 			);
 		
 		pconn_.reset(new boost::signals::scoped_connection(*p));
 	}
 	
-	void operator()(shared_ptr<halite::EventDetail> event)
+	void operator()(shared_ptr<hal::EventDetail> event)
 	{		
 		int itemPos = AddItem(0, 0, lexical_cast<wstring>(event->timeStamp()).c_str(), 0);
 
 		SetItemText(itemPos, 1,
-			halite::BitTorrent::eventLevelToStr(event->level()).c_str());	
+			hal::BitTorrent::eventLevelToStr(event->level()).c_str());	
 			
 		SetItemText(itemPos, 2,	event->msg().c_str());
 	}

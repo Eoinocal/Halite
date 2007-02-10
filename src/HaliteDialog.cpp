@@ -24,12 +24,12 @@ void HaliteDialog::selectionChanged(const string& torrent_name)
 	pair<float, float> tranLimit(-1.0, -1.0);
 	pair<int, int> connLimit(-1, -1);
 	
-	if (halite::bittorrent().isTorrent(torrent_name))
+	if (hal::bittorrent().isTorrent(torrent_name))
 	{
-		tranLimit = halite::bittorrent().getTorrentSpeed(torrent_name);
-		connLimit = halite::bittorrent().getTorrentLimit(torrent_name);
+		tranLimit = hal::bittorrent().getTorrentSpeed(torrent_name);
+		connLimit = hal::bittorrent().getTorrentLimit(torrent_name);
 		
-		if (!halite::bittorrent().isTorrentActive(torrent_name))
+		if (!hal::bittorrent().isTorrentActive(torrent_name))
 			SetDlgItemText(BTNPAUSE, L"Resume");
 		else		
 			SetDlgItemText(BTNPAUSE, L"Pause");
@@ -123,15 +123,15 @@ void HaliteDialog::onClose()
 void HaliteDialog::onPause(UINT, int, HWND)
 {
 	string torrentName = selection_manager_.selected();
-	if (!halite::bittorrent().isTorrentActive(torrentName))
+	if (!hal::bittorrent().isTorrentActive(torrentName))
 	{
 		SetDlgItemText(BTNPAUSE,L"Pause");
-		halite::bittorrent().resumeTorrent(torrentName);
+		hal::bittorrent().resumeTorrent(torrentName);
 	}
 	else
 	{
 		SetDlgItemText(BTNPAUSE,L"Resume");
-		halite::bittorrent().pauseTorrent(torrentName);
+		hal::bittorrent().pauseTorrent(torrentName);
 	}
 	
 	ui_.update();
@@ -139,12 +139,12 @@ void HaliteDialog::onPause(UINT, int, HWND)
 
 void HaliteDialog::onReannounce(UINT, int, HWND)
 {
-	halite::bittorrent().reannounceTorrent(selection_manager_.selected());
+	hal::bittorrent().reannounceTorrent(selection_manager_.selected());
 }
 
 void HaliteDialog::onRemove(UINT, int, HWND)
 {
-	halite::bittorrent().removeTorrent(selection_manager_.selected());
+	hal::bittorrent().removeTorrent(selection_manager_.selected());
 	selection_manager_.clear();		
 	
 	ui_.update();
@@ -154,8 +154,8 @@ LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {
 	DoDataExchange(true);
 	
-	halite::bittorrent().setTorrentSpeed(selection_manager_.selected(), TranLimitDown, TranLimitUp);
-	halite::bittorrent().setTorrentLimit(selection_manager_.selected(), NoConnDown, NoConnUp);
+	hal::bittorrent().setTorrentSpeed(selection_manager_.selected(), TranLimitDown, TranLimitUp);
+	hal::bittorrent().setTorrentLimit(selection_manager_.selected(), NoConnDown, NoConnUp);
 	
 	return 0;
 }
@@ -169,7 +169,7 @@ LRESULT HaliteDialog::OnCltColor(HDC hDC, HWND hWnd)
 
 void HaliteDialog::updateDialog()
 {
-	halite::TorrentDetail_ptr pTD = halite::bittorrent().getTorrentDetails(
+	hal::TorrentDetail_ptr pTD = hal::bittorrent().getTorrentDetails(
 		selection_manager_.selected());
 	
 	if (pTD) 	
@@ -195,8 +195,8 @@ void HaliteDialog::updateDialog()
 				% (static_cast<float>(pTD->totalWanted())/(1024*1024))
 			).str().c_str());
 		
-		halite::PeerDetails peerDetails;
-		halite::bittorrent().getAllPeerDetails(selection_manager_.selected(), peerDetails);
+		hal::PeerDetails peerDetails;
+		hal::bittorrent().getAllPeerDetails(selection_manager_.selected(), peerDetails);
 		
 		if (!peerDetails.empty())
 		{
@@ -209,8 +209,8 @@ void HaliteDialog::updateDialog()
 				boost::array<wchar_t, MAX_PATH> ip_address;
 				m_list.GetItemText(i, 0, ip_address.c_array(), MAX_PATH);
 				
-				halite::PeerDetail ip(ip_address.data());
-				halite::PeerDetails::iterator iter = 
+				hal::PeerDetail ip(ip_address.data());
+				hal::PeerDetails::iterator iter = 
 					std::lower_bound(peerDetails.begin(), peerDetails.end(), ip);
 				
 				if (iter == peerDetails.end() || !((*iter) == ip))
@@ -221,7 +221,7 @@ void HaliteDialog::updateDialog()
 			
 			// And now here we add/update the connected peers
 			
-			for (halite::PeerDetails::iterator i = peerDetails.begin(); 
+			for (hal::PeerDetails::iterator i = peerDetails.begin(); 
 				i != peerDetails.end(); ++i)
 			{			
 				LV_FINDINFO findInfo; 

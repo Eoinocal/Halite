@@ -9,7 +9,7 @@
 
 #include "halTorrent.hpp"
 
-namespace halite 
+namespace hal 
 {
 
 class EventDetail
@@ -77,4 +77,4 @@ class EventSession : public EventDetail
 
 };
 
-}// namespace halite
+}// namespace hal

@@ -15,7 +15,7 @@ class GeneralConfig;
 class RemoteConfig;
 class SplashConfig;
 
-//namespace halite
+//namespace hal
 //{
 //class TorrentConfig;
 //};

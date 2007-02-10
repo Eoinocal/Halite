@@ -175,7 +175,7 @@ public:
 	
 	void onFilterClear(UINT, int, HWND hWnd)
 	{
-		halite::bittorrent().clearIpFilter();
+		hal::bittorrent().clearIpFilter();
 	}
 	
 	void onFilterImport(UINT, int, HWND hWnd);
@@ -218,7 +218,7 @@ public:
 	
 	void onFolderBrowse(UINT, int, HWND hWnd)
 	{
-		halite::bittorrent().clearIpFilter();
+		hal::bittorrent().clearIpFilter();
 		
 		CFolderDialog fldDlg ( NULL, _T("Select a directory to save the downloads to. Select cancel to accept default 'incomming' location."),
 				   BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE );

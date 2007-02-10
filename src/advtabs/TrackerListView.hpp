@@ -6,14 +6,28 @@
 
 #include "../stdAfx.hpp"
 #include "../global/string_conv.hpp"
+#include "../HaliteIni.hpp"
 #include "../HaliteListViewCtrl.hpp"
 
 class TrackerListViewCtrl : 
 	public CHaliteListViewCtrl<TrackerListViewCtrl>,
+	public CHaliteIni<TrackerListViewCtrl>,
 	private boost::noncopyable
 {
 public:	
 	enum { ID_MENU = IDR_TRACKERLV_MENU };	
+	
+	TrackerListViewCtrl() :
+		CHaliteIni<TrackerListViewCtrl>("listviews/tracker", "TrackerListView"),
+		hello(true)
+	{
+		load();
+	}
+	
+	~TrackerListViewCtrl()
+	{
+		save();
+	}
 
 	BEGIN_MSG_MAP(TrackerListViewCtrl)		
 		COMMAND_ID_HANDLER(ID_TLVM_NEW, OnNew)
@@ -31,6 +45,13 @@ public:
 	void saveStatus();
 	void updateListView();
 	void enterNewTracker();
+
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+        ar & BOOST_SERIALIZATION_NVP(hello);
+    }
 	
 	LRESULT OnDoubleClick(int i, LPNMHDR pnmh, BOOL&);
 	LRESULT OnNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
@@ -42,6 +63,7 @@ public:
 private:
 
 	boost::signal<void ()> listEdited_;
+	bool hello;
 };
 
 typedef selection_manager<TrackerListViewCtrl> TrackerListViewManager;

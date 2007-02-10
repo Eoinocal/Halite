@@ -18,7 +18,7 @@ AdvDebugDialog::AdvDebugDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
 
 void AdvDebugDialog::selectionChanged(const string& torrent_name)
 {	
-	if (halite::bittorrent().isTorrent(torrent_name))
+	if (hal::bittorrent().isTorrent(torrent_name))
 	{		
 		::EnableWindow(GetDlgItem(IDC_TRACKER_LOGINCHECK), true);
 		::EnableWindow(GetDlgItem(IDC_TRACKERLIST), true);
@@ -81,7 +81,7 @@ LRESULT AdvDebugDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {
 	string torrent_name = selection_manager_.selected();
 	
-	if (halite::bittorrent().isTorrent(torrent_name))
+	if (hal::bittorrent().isTorrent(torrent_name))
 	{			
 		const int buffer_size = 512;
 		array<wchar_t, buffer_size> username;
@@ -90,7 +90,7 @@ LRESULT AdvDebugDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl)
 		GetDlgItemText(IDC_TRACKER_USER, username.elems, buffer_size);
 		GetDlgItemText(IDC_TRACKER_PASS, password.elems, buffer_size);
 		
-		halite::bittorrent().setTorrentLogin(torrent_name, wstring(username.elems),
+		hal::bittorrent().setTorrentLogin(torrent_name, wstring(username.elems),
 			wstring(password.elems));
 	}
 	
@@ -106,7 +106,7 @@ void AdvDebugDialog::onDebugOption(UINT, int, HWND)
 
 void AdvDebugDialog::updateDialog()
 {
-//	halite::TorrentDetail_ptr pTD = halite::bittorrent().getTorrentDetails(
+//	hal::TorrentDetail_ptr pTD = hal::bittorrent().getTorrentDetails(
 //		selection_manager_.selected());
 	
 

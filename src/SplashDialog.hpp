@@ -35,8 +35,8 @@ public:
 
 	void SplashThread()
 	{
-		halite::bittorrent().closeAll();
-		halite::bittorrent().shutDownSession();
+		hal::bittorrent().closeAll();
+		hal::bittorrent().shutDownSession();
 		
 		DoDataExchange(true);
 		EndDialog(0);

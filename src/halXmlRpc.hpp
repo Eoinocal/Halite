@@ -4,7 +4,7 @@
 #include <iostream>
 #include <boost/smart_ptr.hpp>
 
-namespace halite 
+namespace hal 
 {
 	bool initServer(int port);
 	void exitServer();

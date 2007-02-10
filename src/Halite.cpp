@@ -2,6 +2,7 @@
 #include "stdAfx.hpp"
 #include "WinAPIMutex.hpp"
 
+#include "global/ini.hpp"
 #include "GlobalIni.hpp"
 #include "ini/Window.hpp"
 #include "ini/General.hpp"
@@ -45,12 +46,12 @@ static class halite_log_file : public boost::signals::trackable
 public:
 	halite_log_file();
 	
-	void operator()(shared_ptr<halite::EventDetail> event)
+	void operator()(shared_ptr<hal::EventDetail> event)
 	{
 		if (!wofs.is_open()) wofs.open("HaliteLog.txt");
 		
 		wofs << (wformat(L"%1% %2%, %3%\r\n") 
-			% event->timeStamp() % halite::BitTorrent::eventLevelToStr(event->level()) 
+			% event->timeStamp() % hal::BitTorrent::eventLevelToStr(event->level()) 
 			% event->msg());
 	}
 	
@@ -63,7 +64,7 @@ private:
 } halite_log_file_;
 
 halite_log_file::halite_log_file() :
-	conn_(halite::bittorrent().attachEventReceiver(bind(&halite_log_file::operator(), &halite_log_file_, _1)))
+	conn_(hal::bittorrent().attachEventReceiver(bind(&halite_log_file::operator(), &halite_log_file_, _1)))
 {}
 
 static const unsigned WMU_ARE_YOU_ME = ::RegisterWindowMessage(WMU_ARE_YOU_ME_STRING);
@@ -129,6 +130,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	else
 	{
 		INI().LoadData();
+		hal::ini().load_data();
 		
 		CMessageLoop theLoop;
 		_Module.AddMessageLoop(&theLoop);
@@ -162,7 +164,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		}	
 		_Module.RemoveMessageLoop();
 		
-		halite::bittorrent().stopEventReceiver();
+		hal::bittorrent().stopEventReceiver();
 		
 		if (INI().splashConfig().showMessage)
 		{
@@ -171,10 +173,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		}
 		else
 		{
-			halite::bittorrent().closeAll();
-			halite::bittorrent().shutDownSession();		
+			hal::bittorrent().closeAll();
+			hal::bittorrent().shutDownSession();		
 		}
 		INI().SaveData();
+		hal::ini().save_data();
 	}
 	}
 	

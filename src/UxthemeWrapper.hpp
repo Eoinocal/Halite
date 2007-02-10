@@ -3,7 +3,7 @@
 
 #include "stdAfx.hpp"
 
-namespace halite 
+namespace hal 
 {
 
 class uxthemeWrapper

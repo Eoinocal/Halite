@@ -91,7 +91,7 @@ void serialize(Archive& ar, libtorrent::ip_range<address_type>& addr, const unsi
 }
 
 template<class Archive>
-void serialize(Archive& ar, halite::TrackerDetail& tracker, const unsigned int version)
+void serialize(Archive& ar, hal::TrackerDetail& tracker, const unsigned int version)
 {	
 	ar & BOOST_SERIALIZATION_NVP(tracker.url);
 	ar & BOOST_SERIALIZATION_NVP(tracker.tier);
@@ -121,14 +121,14 @@ std::ostream& operator<<(std::ostream& os, libtorrent::ip_range<asio::ip::addres
 
 } // namespace libtorrent
 
-namespace halite 
+namespace hal 
 {
 class TorrentInternal;
 }
 
-BOOST_CLASS_VERSION(halite::TorrentInternal, 2)
+BOOST_CLASS_VERSION(hal::TorrentInternal, 2)
 
-namespace halite 
+namespace hal 
 {
 
 namespace lbt = libtorrent;
@@ -1454,6 +1454,11 @@ void BitTorrent::stopEventReceiver()
 boost::signals::scoped_connection BitTorrent::attachEventReceiver(boost::function<void (shared_ptr<EventDetail>)> fn)
 {
 	return pimpl->event_signal_.connect(fn);
+}
+
+void BitTorrent::postEvent(boost::shared_ptr<EventDetail> event)
+{
+	pimpl->event_signal_(event);
 }
 
 std::wstring BitTorrent::eventLevelToStr(eventLevel event)
