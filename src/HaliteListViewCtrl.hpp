@@ -22,6 +22,7 @@ public:
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_CLICK, OnClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_RCLICK, OnRClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_COLUMNCLICK , OnColClick)
+		
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 	
@@ -33,8 +34,6 @@ public:
 		TBase* pT = static_cast<TBase*>(this);
 		pT->OnAttach();
 	}
-	
-	void OnAttach() {}
 	
 	LRESULT OnClick(int, LPNMHDR pnmh, BOOL&)
 	{

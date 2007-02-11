@@ -16,29 +16,38 @@ void TrackerListViewCtrl::OnAttach()
 	AddColumn(L"Tracker", hdr.GetItemCount());
 	AddColumn(L"Tier", hdr.GetItemCount());
 	
-	SetColumnWidth(0, 200);
-/*
-	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
-		SetColumnWidth(i, INI().windowConfig().mainListColWidth[i]);
+	assert (hdr.GetItemCount() == numListColumnWidth);
+	
+	for (int i=0; i<numListColumnWidth; ++i)
+	{
+		SetColumnWidth(i, listColumnWidth[i]);
+	}
+	
+	SetColumnOrderArray(numListColumnWidth, (int*)&listColumnOrder);	
+}
 
-	for (size_t i=0; i<WindowConfig::numMainColsEx; ++i)
-		SetColumnWidth(i+WindowConfig::numMainCols, INI().windowConfig().mainListColWidthEx[i]);
-*/
+void TrackerListViewCtrl::OnDestroy()
+{
+	saveSettings();
+}
+
+void TrackerListViewCtrl::saveSettings()
+{
+	assert (GetHeader().GetItemCount() == numListColumnWidth);
+	
+	GetColumnOrderArray(numListColumnWidth, (int*)&listColumnOrder);
+	
+	for (int i=0; i<numListColumnWidth; ++i)
+	{
+		listColumnWidth[i] = GetColumnWidth(i);
+	}
+	
+	save();
 }
 
 void TrackerListViewCtrl::updateListView()
 {
-
-}
-
-void TrackerListViewCtrl::saveStatus()
-{
-/*	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
-		INI().windowConfig().mainListColWidth[i] = GetColumnWidth(i);
-
-	for (size_t i=0; i<WindowConfig::numMainColsEx; ++i)
-		INI().windowConfig().mainListColWidthEx[i] = GetColumnWidth(i+WindowConfig::numMainCols);
-*/
+	// Should I be doing something here?
 }
 
 void TrackerListViewCtrl::enterNewTracker()

@@ -13,6 +13,7 @@
 #include "HaliteListManager.hpp"
 
 class HaliteListViewCtrl;
+template <class TBase>
 class CHaliteListViewCtrl;
 
 typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
@@ -44,8 +45,7 @@ public:
 	BEGIN_MSG_MAP(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_CLOSE(onClose)	
-		MSG_WM_SIZE(OnSize)
-		
+		MSG_WM_SIZE(OnSize)		
 		
 		if(uMsg == WM_FORWARDMSG)
 			if(PreTranslateMessage((LPMSG)lParam)) return TRUE;

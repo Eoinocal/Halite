@@ -5,7 +5,7 @@
 #include "ini/Window.hpp"
 #include "halTorrent.hpp"
 
-void HaliteListViewCtrl::onShowWindow(UINT, INT)
+void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 {
 	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
 
@@ -22,11 +22,29 @@ void HaliteListViewCtrl::onShowWindow(UINT, INT)
 	AddColumn(L"ETA", hdr.GetItemCount());
 	AddColumn(L"Copies", hdr.GetItemCount());
 
-	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
-		SetColumnWidth(i, INI().windowConfig().mainListColWidth[i]);
+	assert (hdr.GetItemCount() == numListColumnWidth);
+	
+	for (int i=0; i<numListColumnWidth; ++i)
+		SetColumnWidth(i, listColumnWidth[i]);
+	
+	SetColumnOrderArray(numListColumnWidth, (int*)&listColumnOrder);	
+}
 
-	for (size_t i=0; i<WindowConfig::numMainColsEx; ++i)
-		SetColumnWidth(i+WindowConfig::numMainCols, INI().windowConfig().mainListColWidthEx[i]);
+void HaliteListViewCtrl::OnDestroy()
+{
+	saveSettings();
+}
+
+void HaliteListViewCtrl::saveSettings()
+{
+	assert (GetHeader().GetItemCount() == numListColumnWidth);
+	
+	GetColumnOrderArray(numListColumnWidth, (int*)&listColumnOrder);
+	
+	for (int i=0; i<numListColumnWidth; ++i)
+		listColumnWidth[i] = GetColumnWidth(i);
+	
+	save();
 }
 
 void HaliteListViewCtrl::updateListView()
@@ -75,14 +93,6 @@ void HaliteListViewCtrl::updateListView()
 	}	
 }
 
-void HaliteListViewCtrl::saveStatus()
-{
-	for (size_t i=0; i<WindowConfig::numMainCols; ++i)
-		INI().windowConfig().mainListColWidth[i] = GetColumnWidth(i);
-
-	for (size_t i=0; i<WindowConfig::numMainColsEx; ++i)
-		INI().windowConfig().mainListColWidthEx[i] = GetColumnWidth(i+WindowConfig::numMainCols);
-}
 /*
 LRESULT HaliteListViewCtrl::OnClick(int, LPNMHDR pnmh, BOOL&)
 {

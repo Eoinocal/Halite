@@ -10,12 +10,13 @@
 
 #include "../HaliteTabPage.hpp"
 #include "../HaliteListManager.hpp"
+#include "../HaliteIni.hpp"
 #include "../HaliteListViewCtrl.hpp"
 
 class ui_signal;
-class HaliteListViewCtrl;
-class CHaliteListViewCtrl;
 
+class HaliteListViewCtrl;
+template <class TBase> class CHaliteListViewCtrl;
 typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
 
 class LogEdit : public CWindowImpl<LogEdit, CEdit>
@@ -25,7 +26,7 @@ public:
     END_MSG_MAP()
 	
 	LogEdit() :
-		editLogger(hal::wlog().attach(bind(LogEdit::log, this, _1)))
+		editLogger(hal::wlog().attach(bind(&LogEdit::log, this, _1)))
 	{}
  
 	void log(const std::wstring& text) 
@@ -46,7 +47,7 @@ public:
     END_MSG_MAP()
 	
 	LogList() :
-		listLogger(hal::wlog().attach(bind(LogList::log, this, _1)))
+		listLogger(hal::wlog().attach(bind(&LogList::log, this, _1)))
 	{}
  
 	void log(const std::wstring& text) 
@@ -60,36 +61,58 @@ private:
 
 class LogListViewCtrl : 
 	public CHaliteListViewCtrl<LogListViewCtrl>,
+	public CHaliteIni<LogListViewCtrl>,
 	private boost::noncopyable
 {
+protected:
+	typedef CHaliteIni<LogListViewCtrl> iniClass;
+	typedef CHaliteListViewCtrl<LogListViewCtrl> listClass;
+	
+	friend class listClass;
+	
 public:	
 	enum { ID_MENU = IDR_LISTVIEW_MENU };	
 
-	BEGIN_MSG_MAP(LogListViewCtrl)		
-		
-//		REFLECTED_NOTIFY_CODE_HANDLER(NM_DBLCLK, OnDoubleClick)
+	BEGIN_MSG_MAP(LogListViewCtrl)
+		MSG_WM_DESTROY(OnDestroy)
 		
 		CHAIN_MSG_MAP(CHaliteListViewCtrl<LogListViewCtrl>)		
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 	
-	void OnAttach()
+	LogListViewCtrl() :
+		iniClass("listviews/eventLog", "LogListView")
 	{
-		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
-	
-		CHeaderCtrl hdr = GetHeader();
-		hdr.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
-	
-		AddColumn(L"Time", hdr.GetItemCount());
-		AddColumn(L"Severity", hdr.GetItemCount());
-		AddColumn(L"Message", hdr.GetItemCount());
+		listColumnWidth[0] = 50;
+		listColumnWidth[1] = 250;
+		listColumnWidth[2] = 50;
 		
-		boost::signals::scoped_connection* p = new boost::signals::scoped_connection(
-			hal::bittorrent().attachEventReceiver(bind(&LogListViewCtrl::operator(), this, _1))
-			);
+		listColumnOrder[0] = 0;
+		listColumnOrder[1] = 1;
+		listColumnOrder[2] = 1;
 		
-		pconn_.reset(new boost::signals::scoped_connection(*p));
+		load();
 	}
+	
+	void saveSettings()
+	{
+		assert (GetHeader().GetItemCount() == numListColumnWidth);
+		
+		GetColumnOrderArray(numListColumnWidth, (int*)&listColumnOrder);
+		
+		for (int i=0; i<numListColumnWidth; ++i)
+			listColumnWidth[i] = GetColumnWidth(i);
+		
+		save();
+	}
+	
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+        ar & BOOST_SERIALIZATION_NVP(listColumnWidth);
+        ar & BOOST_SERIALIZATION_NVP(listColumnOrder);
+    }
 	
 	void operator()(shared_ptr<hal::EventDetail> event)
 	{		
@@ -105,8 +128,42 @@ public:
 	void updateListView() {}
 
 private:
-	scoped_ptr<boost::signals::scoped_connection> pconn_;
+	void OnAttach()
+	{
+		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
+	
+		CHeaderCtrl hdr = GetHeader();
+		hdr.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
+	
+		AddColumn(L"Time", hdr.GetItemCount());
+		AddColumn(L"Severity", hdr.GetItemCount());
+		AddColumn(L"Message", hdr.GetItemCount());
+		
+		assert (hdr.GetItemCount() == numListColumnWidth);
+		
+		for (int i=0; i<numListColumnWidth; ++i)
+			SetColumnWidth(i, listColumnWidth[i]);
+		
+		SetColumnOrderArray(numListColumnWidth, (int*)&listColumnOrder);
+		
+		
+		boost::signals::scoped_connection* p = new boost::signals::scoped_connection(
+			hal::bittorrent().attachEventReceiver(bind(&LogListViewCtrl::operator(), this, _1))
+		);
+		
+		pconn_.reset(new boost::signals::scoped_connection(*p));
+	}
+	
+	void OnDestroy()
+	{
+		saveSettings();
+	}
 
+	static const size_t numListColumnWidth = 3;
+	int listColumnWidth[numListColumnWidth];
+	int listColumnOrder[numListColumnWidth];	
+	
+	scoped_ptr<boost::signals::scoped_connection> pconn_;
 };
 
 class AdvDebugDialog :
@@ -134,7 +191,7 @@ public:
 		MSG_WM_CLOSE(onClose)
 //		COMMAND_ID_HANDLER_EX(BTNREANNOUNCE, onReannounce)
 //		COMMAND_ID_HANDLER_EX(IDC_TRACKER_LOGINCHECK, onLoginCheck)
-		COMMAND_RANGE_HANDLER_EX(IDC_DEBUGNONE, IDC_DEBUGDEBUG, onDebugOption)
+//		COMMAND_RANGE_HANDLER_EX(IDC_DEBUGNONE, IDC_DEBUGDEBUG, onDebugOption)
 		COMMAND_RANGE_CODE_HANDLER_EX(IDC_TRACKER_USER, IDC_TRACKER_PASS, EN_KILLFOCUS, OnEditKillFocus)
 		
 		if (uMsg == WM_FORWARDMSG)
@@ -149,14 +206,15 @@ public:
 	BEGIN_DLGRESIZE_MAP(thisClass)
 		DLGRESIZE_CONTROL(IDC_DEBUGLISTVIEW, DLSZ_SIZE_X|DLSZ_SIZE_Y)
 		DLGRESIZE_CONTROL(IDC_DEBUGFILECHECK, DLSZ_MOVE_Y)
+		DLGRESIZE_CONTROL(IDC_DEBUGDEBUGCHECK, DLSZ_MOVE_Y)
 		
-		DLGRESIZE_CONTROL(IDC_DEBUGSTATIC, DLSZ_MOVE_X)
+/*		DLGRESIZE_CONTROL(IDC_DEBUGSTATIC, DLSZ_MOVE_X)
 		DLGRESIZE_CONTROL(IDC_DEBUGNONE, DLSZ_MOVE_X)
 		DLGRESIZE_CONTROL(IDC_DEBUGFATAL, DLSZ_MOVE_X)
 		DLGRESIZE_CONTROL(IDC_DEBUGCRITICAL, DLSZ_MOVE_X)
 		DLGRESIZE_CONTROL(IDC_DEBUGWARNING, DLSZ_MOVE_X)
 		DLGRESIZE_CONTROL(IDC_DEBUGINFO, DLSZ_MOVE_X)
-		DLGRESIZE_CONTROL(IDC_DEBUGDEBUG, DLSZ_MOVE_X)
+		DLGRESIZE_CONTROL(IDC_DEBUGDEBUG, DLSZ_MOVE_X)*/
 	END_DLGRESIZE_MAP()
 	
 	LRESULT onInitDialog(HWND, LPARAM);

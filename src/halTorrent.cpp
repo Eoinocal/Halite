@@ -490,19 +490,19 @@ static BitTorrent::eventLevel lbtAlertToHalEvent(lbt::alert::severity_t severity
 {
 	switch (severity)
 	{
-	case lbt::alert::severity_t::debug:
-		return BitTorrent::eventLevel::debug;
+	case lbt::alert::debug:
+		return BitTorrent::debug;
 		
-	case lbt::alert::severity_t::info:
-	case lbt::alert::severity_t::warning:
-		return BitTorrent::eventLevel::info;
+	case lbt::alert::info:
+	case lbt::alert::warning:
+		return BitTorrent::info;
 		
-	case lbt::alert::severity_t::critical:
-	case lbt::alert::severity_t::fatal:
-		return BitTorrent::eventLevel::critical;
+	case lbt::alert::critical:
+	case lbt::alert::fatal:
+		return BitTorrent::critical;
 		
 	default:
-		return BitTorrent::eventLevel::none;
+		return BitTorrent::none;
 	}
 }
 
@@ -599,7 +599,7 @@ private:
 		ip_filter_count_(0),
 		dht_on_(false)
 	{
-		theSession.set_severity_level(lbt::alert::severity_t::debug);
+		theSession.set_severity_level(lbt::alert::debug);
 		
 		{	fs::ifstream ifs(workingDirectory/"Torrents.xml");
 			if (ifs)
@@ -1420,22 +1420,22 @@ void BitTorrent::setSeverityLevel(eventLevel event)
 	switch (event)
 	{
 	case debug:
-		pimpl->theSession.set_severity_level(lbt::alert::severity_t::debug);
+		pimpl->theSession.set_severity_level(lbt::alert::debug);
 		break;
 	case info:
-		pimpl->theSession.set_severity_level(lbt::alert::severity_t::info);
+		pimpl->theSession.set_severity_level(lbt::alert::info);
 		break;
 	case warning:
-		pimpl->theSession.set_severity_level(lbt::alert::severity_t::warning);
+		pimpl->theSession.set_severity_level(lbt::alert::warning);
 		break;
 	case critical:
-		pimpl->theSession.set_severity_level(lbt::alert::severity_t::critical);
+		pimpl->theSession.set_severity_level(lbt::alert::critical);
 		break;
 	case fatal:
-		pimpl->theSession.set_severity_level(lbt::alert::severity_t::fatal);
+		pimpl->theSession.set_severity_level(lbt::alert::fatal);
 		break;
 	default:
-		pimpl->theSession.set_severity_level(lbt::alert::severity_t::none);
+		pimpl->theSession.set_severity_level(lbt::alert::none);
 		break;
 	}
 }

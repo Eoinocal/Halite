@@ -64,7 +64,7 @@ LRESULT AdvDebugDialog::onInitDialog(HWND, LPARAM)
 
 BOOL AdvDebugDialog::DoDataExchange(BOOL bSaveAndValidate, UINT nCtlID)
 {	
-	DDX_RADIO(IDC_DEBUGNONE, INI().generalConfig().logLevel)
+//	DDX_RADIO(IDC_DEBUGNONE, INI().generalConfig().logLevel)
 
 	return TRUE;
 }

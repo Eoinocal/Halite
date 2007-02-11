@@ -12,8 +12,6 @@
 #include "../HaliteListManager.hpp"
 
 class ui_signal;
-class HaliteListViewCtrl;
-class CHaliteListViewCtrl;
 
 typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
 

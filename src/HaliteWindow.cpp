@@ -254,7 +254,6 @@ void HaliteWindow::OnClose()
 {
 	INI().windowConfig().splitterPos = m_Split.GetSplitterPos();
 	
-	mp_list->saveStatus();	
 	mp_dlg->saveStatus();
 	
 	SetMsgHandled(false);
