@@ -147,7 +147,9 @@ public:
 		connections_(-1),
 		uploads_(-1),
 		state_(TorrentDetail::torrent_active),
-		inSession_(false)
+		inSession_(false),
+		totalUploaded_(0),
+		totalBase_(0)
 	{}
 	
 	TorrentInternal(libtorrent::torrent_handle h, std::wstring f, path saveDirectory) :		
@@ -158,7 +160,9 @@ public:
 		filename_(f),
 		saveDirectory_(saveDirectory.string()),
 		inSession_(true),
-		handle_(h)
+		handle_(h),
+		totalUploaded_(0),
+		totalBase_(0)
 	{}
 	
 	TorrentDetail_ptr getTorrentDetails() const;
@@ -239,8 +243,7 @@ public:
 				trackers_.push_back(
 					TrackerDetail(hal::to_wstr(entry.url), entry.tier));
 			}
-		}
-		
+		}		
 		return trackers_;
 	}
 	
@@ -290,6 +293,7 @@ public:
 		if (version > 1) {
 			ar & make_nvp("state", state_);
 			ar & make_nvp("trackers", trackers_);
+			ar & make_nvp("totalUploaded", totalUploaded_);
 		}
     }
 	
@@ -307,6 +311,9 @@ private:
 	
 	std::wstring trackerUsername_;	
 	std::wstring trackerPassword_;
+	
+	mutable boost::int64_t totalUploaded_;
+	mutable boost::int64_t totalBase_;
 	
 	std::vector<TrackerDetail> trackers_;
 	std::vector<lbt::announce_entry> torrent_trackers_;
@@ -433,10 +440,13 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
 			td = boost::posix_time::seconds(	
 				long( float(tS.total_wanted-tS.total_wanted_done) / tS.download_payload_rate ));
 		}
+		
+		totalUploaded_ += (tS.total_payload_upload - totalBase_);
+		totalBase_ = tS.total_payload_upload;
 
 		return TorrentDetail_ptr(new TorrentDetail(filename_, state, hal::to_wstr(tS.current_tracker), 
 			pair<float, float>(tS.download_payload_rate, tS.upload_payload_rate),
-			tS.progress, tS.distributed_copies, tS.total_wanted_done, tS.total_wanted,
+			tS.progress, tS.distributed_copies, tS.total_wanted_done, tS.total_wanted, totalUploaded_,
 			tS.num_peers, tS.num_seeds, td));
 	}
 	else

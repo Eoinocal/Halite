@@ -38,7 +38,7 @@ class TorrentDetail
 {
 public:
 	TorrentDetail(std::wstring f, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
-			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, int p=0, int sd=0, boost::posix_time::time_duration eta=boost::posix_time::seconds(0)) :
+			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, int p=0, int sd=0, boost::posix_time::time_duration eta=boost::posix_time::seconds(0)) :
 		filename_(f),
 		state_(s),
 		currentTracker_(cT),
@@ -47,6 +47,7 @@ public:
 		distributed_copies_(d),
 		totalWantedDone_(tWD),
 		totalWanted_(tW),
+		totalUploaded_(tU),
 		peers_(p),
 		seeds_(sd),
 		estimatedTimeLeft_(eta)
@@ -69,6 +70,7 @@ public:
 	const float& completion() const { return completion_; }
 	const float& distributedCopies() const { return distributed_copies_; }
 	
+	const boost::int64_t& totalUploaded() const { return totalUploaded_; }
 	const boost::int64_t& totalWantedDone() const { return totalWantedDone_; }
 	const boost::int64_t& totalWanted() const { return totalWanted_; }
 	
@@ -88,6 +90,7 @@ public:
 	
 	boost::int64_t totalWantedDone_;
 	boost::int64_t totalWanted_;
+	boost::int64_t totalUploaded_;
 	
 	int peers_;
 	int seeds_;

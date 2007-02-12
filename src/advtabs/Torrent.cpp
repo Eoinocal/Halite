@@ -131,10 +131,16 @@ void AdvTorrentDialog::updateDialog()
 			SetDlgItemText(IDC_AVAIL,L"∞");		
 		}
 		
-		SetDlgItemText(IDC_COMPLETE,
+/*		SetDlgItemText(IDC_COMPLETE,
 			(wformat(L"%1$.2fmb of %2$.2fmb") 
 				% (static_cast<float>(pTD->totalWantedDone())/(1024*1024))
 				% (static_cast<float>(pTD->totalWanted())/(1024*1024))
 			).str().c_str());
+*/			
+		SetDlgItemText(IDC_TRANS,
+			(wformat(L"Transfered %1$.2fmb down and %2$.2fmb up") 
+				% (static_cast<float>(pTD->totalWantedDone())/(1024*1024))
+				% (static_cast<float>(pTD->totalUploaded())/(1024*1024))
+			).str().c_str());	
 	}
 }
