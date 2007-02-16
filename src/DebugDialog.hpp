@@ -10,7 +10,7 @@ public:
     END_MSG_MAP()
 	
 	LogEdit() :
-		editLogger(hal::wlog().attach(bind(LogEdit::log, this, _1)))
+		editLogger(hal::wlog().attach(bind(&LogEdit::log, this, _1)))
 	{}
  
 	void log(const std::wstring& text) 

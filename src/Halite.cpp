@@ -36,7 +36,7 @@
 	} global_log_file_;
 	
 	global_log_file::global_log_file() :
-		conn_(hal::wlog().attach(bind(global_log_file::operator(), &global_log_file_, _1)))
+		conn_(hal::wlog().attach(bind(&global_log_file::operator(), &global_log_file_, _1)))
 	{}
 
 #endif
