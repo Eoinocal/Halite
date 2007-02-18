@@ -7,6 +7,7 @@
 
 #include "../DdxEx.hpp"
 #include "../Halite.hpp"
+#include "../halEvent.hpp"
 
 #include "../HaliteTabPage.hpp"
 #include "../HaliteListManager.hpp"
@@ -89,7 +90,7 @@ public:
 		
 		listColumnOrder[0] = 0;
 		listColumnOrder[1] = 1;
-		listColumnOrder[2] = 1;
+		listColumnOrder[2] = 2;
 		
 		load();
 	}
@@ -116,12 +117,12 @@ public:
 	
 	void operator()(shared_ptr<hal::EventDetail> event)
 	{		
-		int itemPos = AddItem(0, 0, lexical_cast<wstring>(event->timeStamp()).c_str(), 0);
+		int itemPos = AddItem(0, 0, lexical_cast<wstring>(event->timeStamp()).c_str(), 0);	
+		
+		SetItemText(itemPos, 1,	event->msg().c_str());
 
-		SetItemText(itemPos, 1,
-			hal::BitTorrent::eventLevelToStr(event->level()).c_str());	
-			
-		SetItemText(itemPos, 2,	event->msg().c_str());
+		SetItemText(itemPos, 2,
+			hal::Event::eventLevelToStr(event->level()).c_str());
 	}
 	
 	void saveStatus() {}
@@ -136,8 +137,8 @@ private:
 		hdr.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
 	
 		AddColumn(L"Time", hdr.GetItemCount());
-		AddColumn(L"Severity", hdr.GetItemCount());
 		AddColumn(L"Message", hdr.GetItemCount());
+		AddColumn(L"Severity", hdr.GetItemCount());
 		
 		assert (hdr.GetItemCount() == numListColumnWidth);
 		
@@ -148,7 +149,7 @@ private:
 		
 		
 		boost::signals::scoped_connection* p = new boost::signals::scoped_connection(
-			hal::bittorrent().attachEventReceiver(bind(&LogListViewCtrl::operator(), this, _1))
+			hal::event().attach(bind(&LogListViewCtrl::operator(), this, _1))
 		);
 		
 		pconn_.reset(new boost::signals::scoped_connection(*p));
@@ -169,7 +170,8 @@ private:
 class AdvDebugDialog :
 	public CHalTabPageImpl<AdvDebugDialog>,
 	public CDialogResize<AdvDebugDialog>,
-	public CWinDataExchangeEx<AdvDebugDialog>
+	public CWinDataExchangeEx<AdvDebugDialog>,
+	private boost::noncopyable
 {
 protected:
 	typedef AdvDebugDialog thisClass;
@@ -189,9 +191,7 @@ public:
 	BEGIN_MSG_MAP(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_CLOSE(onClose)
-//		COMMAND_ID_HANDLER_EX(BTNREANNOUNCE, onReannounce)
-//		COMMAND_ID_HANDLER_EX(IDC_TRACKER_LOGINCHECK, onLoginCheck)
-//		COMMAND_RANGE_HANDLER_EX(IDC_DEBUGNONE, IDC_DEBUGDEBUG, onDebugOption)
+		
 		COMMAND_RANGE_CODE_HANDLER_EX(IDC_TRACKER_USER, IDC_TRACKER_PASS, EN_KILLFOCUS, OnEditKillFocus)
 		
 		if (uMsg == WM_FORWARDMSG)
@@ -207,14 +207,6 @@ public:
 		DLGRESIZE_CONTROL(IDC_DEBUGLISTVIEW, DLSZ_SIZE_X|DLSZ_SIZE_Y)
 		DLGRESIZE_CONTROL(IDC_DEBUGFILECHECK, DLSZ_MOVE_Y)
 		DLGRESIZE_CONTROL(IDC_DEBUGDEBUGCHECK, DLSZ_MOVE_Y)
-		
-/*		DLGRESIZE_CONTROL(IDC_DEBUGSTATIC, DLSZ_MOVE_X)
-		DLGRESIZE_CONTROL(IDC_DEBUGNONE, DLSZ_MOVE_X)
-		DLGRESIZE_CONTROL(IDC_DEBUGFATAL, DLSZ_MOVE_X)
-		DLGRESIZE_CONTROL(IDC_DEBUGCRITICAL, DLSZ_MOVE_X)
-		DLGRESIZE_CONTROL(IDC_DEBUGWARNING, DLSZ_MOVE_X)
-		DLGRESIZE_CONTROL(IDC_DEBUGINFO, DLSZ_MOVE_X)
-		DLGRESIZE_CONTROL(IDC_DEBUGDEBUG, DLSZ_MOVE_X)*/
 	END_DLGRESIZE_MAP()
 	
 	LRESULT onInitDialog(HWND, LPARAM);
@@ -226,10 +218,8 @@ public:
 	
 	void selectionChanged(const string& torrent_name);	
 	void updateDialog();
-		
-protected:
 	
-//	LogEdit logEdit;
+protected:	
 	LogListViewCtrl logList;
 	
 	int debugLevel;

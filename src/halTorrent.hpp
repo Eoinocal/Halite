@@ -158,10 +158,7 @@ class BitTorrent_impl;
 
 class BitTorrent
 {
-public:
-	enum eventLevel { debug, info, warning, critical, fatal, none };
-	static std::wstring eventLevelToStr(eventLevel);
-	
+public:	
 	void shutDownSession();
 	
 	bool listenOn(std::pair<int, int> const& portRange);
@@ -223,11 +220,11 @@ public:
 	void resetTorrentTrackers(std::string filename);
 	std::vector<TrackerDetail> getTorrentTrackers(std::string filename);
 
-	void setSeverityLevel(eventLevel event);	
+//	void setSeverityLevel(eventLevel event);	
 	void startEventReceiver();
 	void stopEventReceiver();
-	boost::signals::scoped_connection attachEventReceiver(boost::function<void (boost::shared_ptr<EventDetail>)> fn);
-	void postEvent(boost::shared_ptr<EventDetail> event);
+//	boost::signals::scoped_connection attachEventReceiver(boost::function<void (boost::shared_ptr<EventDetail>)> fn);
+//	void postEvent(boost::shared_ptr<EventDetail> event);
 	
 	friend BitTorrent& bittorrent();
 	

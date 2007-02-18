@@ -4,12 +4,26 @@
 #include "stdAfx.hpp"
 #include "DropFileTarget.h"
 #include "NTray.hpp"
+#include "HaliteIni.hpp"
+
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/serialization/vector.hpp>
 
 #include <boost/signals.hpp>
 
 class HaliteListViewCtrl;
 class HaliteDialog;
 class AdvHaliteDialog;
+
+template<class Archive>
+void serialize(Archive& ar, CRect& rect, const unsigned int version)
+{	
+	ar & BOOST_SERIALIZATION_NVP(rect.top);
+	ar & BOOST_SERIALIZATION_NVP(rect.bottom);		
+	ar & BOOST_SERIALIZATION_NVP(rect.left);
+	ar & BOOST_SERIALIZATION_NVP(rect.right);
+}
 
 class ui_signal : noncopyable
 {
@@ -27,7 +41,8 @@ class HaliteWindow :
 	public CDropFileTarget<HaliteWindow>,
 	public CMessageFilter,
 	public CIdleHandler,
-	private noncopyable
+	public CHaliteIni<HaliteWindow>,
+	private boost::noncopyable
 {
 public:	
 	HaliteWindow(unsigned ARE_YOU_ME);
@@ -82,6 +97,8 @@ public:
 	void ProcessFile(LPCTSTR lpszPath);
 
 protected:
+	typedef CHaliteIni<HaliteWindow> iniClass;
+	
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	
 	virtual BOOL OnIdle()
@@ -124,6 +141,17 @@ protected:
 	void updateWindow();
 	void setCorrectDialog();
 	
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+	{	
+		ar & BOOST_SERIALIZATION_NVP(rect);
+		ar & BOOST_SERIALIZATION_NVP(splitterPos);
+		ar & BOOST_SERIALIZATION_NVP(use_tray);
+		ar & BOOST_SERIALIZATION_NVP(advancedUI);
+		ar & BOOST_SERIALIZATION_NVP(activeTab);
+	}
+	
 private:		
 	CCommandBarCtrl m_CmdBar;
 	CHorSplitterWindow m_Split;
@@ -139,4 +167,12 @@ private:
 	ui_signal ui_;
 	
 	unsigned WM_AreYouMe_;
+	
+	CRect rect;
+	unsigned int splitterPos;
+	bool use_tray;
+	bool advancedUI;
+	int activeTab;
 };
+
+BOOST_CLASS_VERSION(HaliteWindow, 0)

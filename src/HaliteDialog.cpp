@@ -7,6 +7,7 @@
 #include "HaliteDialog.hpp"
 #include "HaliteWindow.hpp"
 #include "HaliteListView.hpp"
+#include "halEvent.hpp"
 
 #include "GlobalIni.hpp"
 #include "ini/Dialog.hpp"
@@ -139,6 +140,9 @@ void HaliteDialog::onPause(UINT, int, HWND)
 
 void HaliteDialog::onReannounce(UINT, int, HWND)
 {
+//	hal::event().post(boost::shared_ptr<hal::EventDetail>(
+//		new hal::EventXmlException(hal::to_wstr("I'm an exception!"), hal::to_wstr("I'm a name!")))); 
+
 	hal::bittorrent().reannounceTorrent(selection_manager_.selected());
 }
 

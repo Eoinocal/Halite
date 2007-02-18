@@ -2,6 +2,7 @@
 #pragma once
 
 #include "global/ini_adapter.hpp"
+#include "halEvent.hpp"
 
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
@@ -14,7 +15,7 @@ public:
 		adapter_(location, ini),
 		name_(name)
 	{}
-		
+	
 	void save()
 	{
 		std::stringstream xml_data;
@@ -40,7 +41,10 @@ public:
 		}
 		catch (const std::exception& e)
 		{
-			::MessageBoxA(0, e.what(), "Exception", 0);
+//			::MessageBoxA(0, e.what(), "Exception", 0);
+			
+			hal::event().post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventXmlException(hal::to_wstr(e.what()), hal::to_wstr(name_)))); 
 		}
 	}
 	

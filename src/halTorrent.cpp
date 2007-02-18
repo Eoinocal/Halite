@@ -496,23 +496,23 @@ void read_range_to_filter(fs::ifstream& ifs, lbt::ip_filter& ip_filter)
 		lbt::ip_filter::blocked);
 }
 
-static BitTorrent::eventLevel lbtAlertToHalEvent(lbt::alert::severity_t severity)
+static Event::eventLevel lbtAlertToHalEvent(lbt::alert::severity_t severity)
 {
 	switch (severity)
 	{
 	case lbt::alert::debug:
-		return BitTorrent::debug;
+		return Event::debug;
 		
 	case lbt::alert::info:
 	case lbt::alert::warning:
-		return BitTorrent::info;
+		return Event::info;
 		
 	case lbt::alert::critical:
 	case lbt::alert::fatal:
-		return BitTorrent::critical;
+		return Event::critical;
 		
 	default:
-		return BitTorrent::none;
+		return Event::none;
 	}
 }
 
@@ -569,13 +569,13 @@ public:
 			{	
 				if (lbt::peer_error_alert* peer = dynamic_cast<lbt::peer_error_alert*>(p_alert.get()))
 				{
-					event_signal_(shared_ptr<EventDetail>(
+					event().post(shared_ptr<EventDetail>(
 						new EventPeerAlert(lbtAlertToHalEvent(p_alert->severity()), 
 							p_alert->timestamp(), hal::to_wstr(p_alert->msg()))));			
 				}
 				else
 				{
-					event_signal_(shared_ptr<EventDetail>(
+					event().post(shared_ptr<EventDetail>(
 						new EventLibtorrent(lbtAlertToHalEvent(p_alert->severity()), 
 							p_alert->timestamp(), hal::to_wstr(p_alert->msg()))));
 				}
@@ -660,8 +660,6 @@ private:
 	bool dht_on_;
 	lbt::dht_settings dht_settings_;
 	lbt::entry dht_state_;
-	
-	boost::signal<void (shared_ptr<EventDetail>)> event_signal_;
 };
 
 BitTorrent::BitTorrent() :
@@ -1425,30 +1423,30 @@ std::vector<TrackerDetail> BitTorrent::getTorrentTrackers(std::string filename)
 	return std::vector<TrackerDetail>();
 }
 
-void BitTorrent::setSeverityLevel(eventLevel event)
+/*void BitTorrent::setSeverityLevel(Event::eventLevel event)
 {
 	switch (event)
 	{
-	case debug:
+	case Event::debug:
 		pimpl->theSession.set_severity_level(lbt::alert::debug);
 		break;
-	case info:
+	case Event::info:
 		pimpl->theSession.set_severity_level(lbt::alert::info);
 		break;
-	case warning:
+	case Event::warning:
 		pimpl->theSession.set_severity_level(lbt::alert::warning);
 		break;
-	case critical:
+	case Event::critical:
 		pimpl->theSession.set_severity_level(lbt::alert::critical);
 		break;
 	case fatal:
-		pimpl->theSession.set_severity_level(lbt::alert::fatal);
+		Event::pimpl->theSession.set_severity_level(lbt::alert::fatal);
 		break;
 	default:
-		pimpl->theSession.set_severity_level(lbt::alert::none);
+		Event::pimpl->theSession.set_severity_level(lbt::alert::none);
 		break;
 	}
-}
+}*/
 
 void BitTorrent::startEventReceiver()
 {
@@ -1461,7 +1459,7 @@ void BitTorrent::stopEventReceiver()
 	pimpl->keepChecking_ = false;
 }
 
-boost::signals::scoped_connection BitTorrent::attachEventReceiver(boost::function<void (shared_ptr<EventDetail>)> fn)
+/*boost::signals::scoped_connection BitTorrent::attachEventReceiver(boost::function<void (shared_ptr<EventDetail>)> fn)
 {
 	return pimpl->event_signal_.connect(fn);
 }
@@ -1470,25 +1468,7 @@ void BitTorrent::postEvent(boost::shared_ptr<EventDetail> event)
 {
 	pimpl->event_signal_(event);
 }
-
-std::wstring BitTorrent::eventLevelToStr(eventLevel event)
-{
-	switch (event)
-	{
-	case debug:
-		return hal::app().load_res_wstring(HAL_EVENTDEBUG);
-	case info:
-		return hal::app().load_res_wstring(HAL_EVENTINFO);
-	case warning:
-		return hal::app().load_res_wstring(HAL_EVENTINFO);
-	case critical:
-		return hal::app().load_res_wstring(HAL_EVENTCRITICAL);
-	case fatal:
-		return hal::app().load_res_wstring(HAL_EVENTCRITICAL);
-	default:
-		return hal::app().load_res_wstring(HAL_EVENTNONE);
-	}
-}
+*/
 
 int BitTorrent::defTorrentMaxConn() { return pimpl->defTorrentMaxConn_; }
 int BitTorrent::defTorrentMaxUpload() { return pimpl->defTorrentMaxUpload_; }

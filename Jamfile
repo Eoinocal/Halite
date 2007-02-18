@@ -21,6 +21,7 @@ SOURCES =
 	AdvHaliteDialog.cpp
 	ConfigOptions.cpp
 	ini/BitTConfig.cpp
+	halConfig.cpp
 	halTorrent.cpp
 	halEvent.cpp
 	GlobalIni.cpp

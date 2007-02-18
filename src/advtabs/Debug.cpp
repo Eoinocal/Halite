@@ -55,7 +55,6 @@ LRESULT AdvDebugDialog::onInitDialog(HWND, LPARAM)
 {
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
-//	logEdit.SubclassWindow(GetDlgItem(IDC_DEBUGEDIT));
 	logList.Attach(GetDlgItem(IDC_DEBUGLISTVIEW));
 	
 	DoDataExchange(false);
@@ -64,13 +63,14 @@ LRESULT AdvDebugDialog::onInitDialog(HWND, LPARAM)
 
 BOOL AdvDebugDialog::DoDataExchange(BOOL bSaveAndValidate, UINT nCtlID)
 {	
-//	DDX_RADIO(IDC_DEBUGNONE, INI().generalConfig().logLevel)
+//	DDX_CHECK(IDC_GENERAL_ONEINST, INI().generalConfig().oneInst)
+//	DDX_CHECK(IDC_GENERAL_ONEINST, INI().generalConfig().oneInst)
 
 	return TRUE;
 }
 
 void AdvDebugDialog::onClose()
-{
+{	
 	if(::IsWindow(m_hWnd)) 
 	{
 		::DestroyWindow(m_hWnd);
@@ -105,9 +105,4 @@ void AdvDebugDialog::onDebugOption(UINT, int, HWND)
 }
 
 void AdvDebugDialog::updateDialog()
-{
-//	hal::TorrentDetail_ptr pTD = hal::bittorrent().getTorrentDetails(
-//		selection_manager_.selected());
-	
-
-}
+{}

@@ -149,8 +149,8 @@ void AdvTrackerDialog::onReannounce(UINT, int, HWND)
 {
 	hal::bittorrent().reannounceTorrent(selection_manager_.selected());
 	
-	hal::bittorrent().postEvent(shared_ptr<hal::EventDetail>(new hal::EventDetail(hal::BitTorrent::critical, 
-		boost::posix_time::second_clock::universal_time(), 123456)));
+//	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDetail(hal::Event::critical, 
+//		boost::posix_time::second_clock::universal_time(), 123456)));
 }
 
 void AdvTrackerDialog::trackerListEdited()

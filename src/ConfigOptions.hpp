@@ -6,6 +6,8 @@
 #include "DdxEx.hpp"
 #include "CSSFileDialog.hpp"
 
+#include "halConfig.hpp"
+
 #include "ini/Window.hpp"
 #include "ini/General.hpp"
 #include "ini/Remote.hpp"
@@ -72,11 +74,11 @@ public:
     END_MSG_MAP()
  
     BEGIN_DDX_MAP(BitTorrentOptions)
-        DDX_INT(IDC_BC_PORTFROM, INI().bitTConfig().portFrom)
-        DDX_INT(IDC_BC_PORTTO, INI().bitTConfig().portTo)
-        DDX_CHECK(IDC_BC_DHT, INI().bitTConfig().enableDHT)
-        DDX_INT(IDC_BC_DHTPORT, INI().bitTConfig().dhtServicePort)
-        DDX_CHECK(IDC_BC_FILTERCHECK, INI().bitTConfig().enableIPFilter)
+        DDX_INT(IDC_BC_PORTFROM, hal::config().portFrom)
+        DDX_INT(IDC_BC_PORTTO, hal::config().portTo)
+        DDX_CHECK(IDC_BC_DHT, hal::config().enableDHT)
+        DDX_INT(IDC_BC_DHTPORT, hal::config().dhtServicePort)
+        DDX_CHECK(IDC_BC_FILTERCHECK, hal::config().enableIPFilter)
     END_DDX_MAP()
  
     BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)
@@ -195,18 +197,18 @@ public:
     END_MSG_MAP()
  
     BEGIN_DDX_MAP(TorrentsOptions)
-        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_MAXCONN, INI().bitTConfig().maxConnections, 2, true)
-        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_MAXUP, INI().bitTConfig().maxUploads, 2, true)
-        DDX_EX_FLOAT_POSITIVE(IDC_BC_DOWNRATE, INI().bitTConfig().downRate)
-        DDX_EX_FLOAT_POSITIVE(IDC_BC_UPRATE, INI().bitTConfig().upRate)
+        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_MAXCONN, hal::config().maxConnections, 2, true)
+        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_MAXUP, hal::config().maxUploads, 2, true)
+        DDX_EX_FLOAT_POSITIVE(IDC_BC_DOWNRATE, hal::config().downRate)
+        DDX_EX_FLOAT_POSITIVE(IDC_BC_UPRATE, hal::config().upRate)
 
-        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_TMAXCONN, INI().bitTConfig().torrentMaxConnections, 2, true)
-        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_TMAXUP, INI().bitTConfig().torrentMaxUploads, 2, true)
-        DDX_EX_FLOAT_POSITIVE(IDC_BC_TDOWNRATE, INI().bitTConfig().torrentDownRate)
-        DDX_EX_FLOAT_POSITIVE(IDC_BC_TUPRATE, INI().bitTConfig().torrentUpRate)
+        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_TMAXCONN, hal::config().torrentMaxConnections, 2, true)
+        DDX_EX_INT_POSITIVE_LIMIT(IDC_BC_TMAXUP, hal::config().torrentMaxUploads, 2, true)
+        DDX_EX_FLOAT_POSITIVE(IDC_BC_TDOWNRATE, hal::config().torrentDownRate)
+        DDX_EX_FLOAT_POSITIVE(IDC_BC_TUPRATE, hal::config().torrentUpRate)
 		
-		DDX_EX_STDWSTRING(IDC_BC_SAVEFOLDER, INI().bitTConfig().defaultSaveFolder);
-        DDX_CHECK(IDC_BC_PROMPTSAVE, INI().bitTConfig().savePrompt)
+		DDX_EX_STDWSTRING(IDC_BC_SAVEFOLDER, hal::config().defaultSaveFolder);
+        DDX_CHECK(IDC_BC_PROMPTSAVE, hal::config().savePrompt)
     END_DDX_MAP()
  
     BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)

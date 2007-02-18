@@ -13,17 +13,24 @@
 #include "AdvHaliteDialog.hpp"
 
 #include "ConfigOptions.hpp"
-#include "GlobalIni.hpp"
-#include "ini/BitTConfig.hpp"
-#include "ini/Window.hpp"
+#include "halConfig.hpp"
 
 HaliteWindow::HaliteWindow(unsigned areYouMe = 0) :
+	iniClass("HaliteWindow", "HaliteWindow"),
 	mp_list(new HaliteListViewCtrl()),
-	WM_AreYouMe_(areYouMe)
-{}
+	WM_AreYouMe_(areYouMe),
+	splitterPos(100),
+	use_tray(true),
+	advancedUI(false),
+	activeTab(0)
+{
+	load();
+}
 
 HaliteWindow::~HaliteWindow()
-{}
+{
+	save();
+}
 
 BOOL HaliteWindow::PreTranslateMessage(MSG* pMsg)
 {
@@ -35,7 +42,8 @@ BOOL HaliteWindow::PreTranslateMessage(MSG* pMsg)
 
 LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 {
-	INI().bitTConfig().settingsChanged();
+	hal::config().load();
+	hal::config().settingsChanged();
 	
 	RECT rc; GetClientRect(&rc);
 	SetMenu(0);
@@ -57,7 +65,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	// Create the Splitter Control
 	m_Split.Create(m_hWnd, rc, NULL, WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN);
 	m_Split.SetSplitterExtendedStyle(!SPLIT_PROPORTIONAL, SPLIT_PROPORTIONAL);
-	m_Split.SetSplitterPos(INI().windowConfig().splitterPos);
+	m_Split.SetSplitterPos(splitterPos);
 	
 	m_hWndClient = m_Split.m_hWnd;
 	
@@ -109,7 +117,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 
 LRESULT HaliteWindow::OnAdvanced(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	INI().windowConfig().advancedUI = !INI().windowConfig().advancedUI;		
+	advancedUI = !advancedUI;		
 	setCorrectDialog();
 	
 	return 0;
@@ -124,7 +132,7 @@ LRESULT HaliteWindow::OnTrayNotification(UINT /*uMsg*/, WPARAM wParam, LPARAM lP
 
 void HaliteWindow::setCorrectDialog()
 {
-	if (!INI().windowConfig().advancedUI)
+	if (!advancedUI)
 	{		
 		mp_dlg->ShowWindow(true);
 		mp_advDlg->ShowWindow(false);
@@ -252,7 +260,10 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 
 void HaliteWindow::OnClose()
 {
-	INI().windowConfig().splitterPos = m_Split.GetSplitterPos();
+	splitterPos = m_Split.GetSplitterPos();
+
+	hal::config().save();
+	save();
 	
 	mp_dlg->saveStatus();
 	
@@ -263,14 +274,14 @@ void HaliteWindow::OnSize(UINT type, CSize)
 {
 	if (type == SIZE_MINIMIZED)
 	{
-		if (INI().windowConfig().use_tray)
+		if (use_tray)
 		{
 			ShowWindow(SW_HIDE);
 			m_trayIcon.Show();
 		}
 	}
 	else
-		GetWindowRect(INI().windowConfig().rect);
+		GetWindowRect(rect);
 	
 	SetMsgHandled(false);
 }	
@@ -281,7 +292,7 @@ void HaliteWindow::OnMove(CSize)
 	GetWindowPlacement(&wnd);
 	
 	if (wnd.showCmd != SW_SHOWMINIMIZED)
-		GetWindowRect(INI().windowConfig().rect);
+		GetWindowRect(rect);
 
 	SetMsgHandled(false);	
 }

@@ -7,10 +7,18 @@
 #include "ini/Window.hpp"
 #include "ini/General.hpp"
 
+#include "halConfig.hpp"
+
 #include "HaliteWindow.hpp"
 #include "SplashDialog.hpp"
 
 #include "Halite.hpp"
+
+Halite& halite()
+{
+	static Halite h;
+	return h;
+}
 
 #ifndef NDEBUG
 #	include "global/logger.hpp"
@@ -51,7 +59,7 @@ public:
 		if (!wofs.is_open()) wofs.open("HaliteLog.txt");
 		
 		wofs << (wformat(L"%1% %2%, %3%\r\n") 
-			% event->timeStamp() % hal::BitTorrent::eventLevelToStr(event->level()) 
+			% event->timeStamp() % hal::Event::eventLevelToStr(event->level()) 
 			% event->msg());
 	}
 	
@@ -64,7 +72,7 @@ private:
 } halite_log_file_;
 
 halite_log_file::halite_log_file() :
-	conn_(hal::bittorrent().attachEventReceiver(bind(&halite_log_file::operator(), &halite_log_file_, _1)))
+	conn_(hal::event().attach(bind(&halite_log_file::operator(), &halite_log_file_, _1)))
 {}
 
 static const unsigned WMU_ARE_YOU_ME = ::RegisterWindowMessage(WMU_ARE_YOU_ME_STRING);
@@ -98,9 +106,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	HRESULT hRes = _Module.Init(NULL, hInstance);
 	assert (SUCCEEDED(hRes));	
 	
+	hal::ini().load_data();
+	
 	{ WinAPIMutex oneInstance(HALITE_GUID);
 	
-	if (!oneInstance.owner() && INI().generalConfig().oneInst)
+	if (!oneInstance.owner() && halite().oneInst)
 	{
 		WinAPIMutexLock lock(oneInstance, 5000L);
 		
@@ -130,7 +140,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	else
 	{
 		INI().LoadData();
-		hal::ini().load_data();
 		
 		CMessageLoop theLoop;
 		_Module.AddMessageLoop(&theLoop);
@@ -166,7 +175,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		
 		hal::bittorrent().stopEventReceiver();
 		
-		if (INI().splashConfig().showMessage)
+		if (halite().showMessage)
 		{
 			SplashDialog splDlg;
 			splDlg.DoModal();
@@ -176,7 +185,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			hal::bittorrent().closeAll();
 			hal::bittorrent().shutDownSession();		
 		}
+		
 		INI().SaveData();
+		
+		halite().save();
 		hal::ini().save_data();
 	}
 	}

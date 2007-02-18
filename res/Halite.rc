@@ -380,6 +380,7 @@ BEGIN
     HAL_EVENTINFO                 "Info"
     HAL_EVENTCRITICAL             "Critical"
     HAL_PEERALERT                 "Libtorrent Peer Alert: %1%."
+    HAL_EVENT_XMLEXP              "Xml Exception (%1%) with %2%."
 END
 
 
