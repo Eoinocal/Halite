@@ -1,8 +1,6 @@
 ﻿
 #include "HaliteListView.hpp"
 
-//#include "GlobalIni.hpp"
-//#include "ini/Window.hpp"
 #include "halTorrent.hpp"
 
 void HaliteListViewCtrl::OnShowWindow(UINT, INT)

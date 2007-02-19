@@ -9,12 +9,6 @@
 #include "DdxEx.hpp"
 #include "CSSFileDialog.hpp"
 
-//#include "ini/Window.hpp"
-//#include "ini/General.hpp"
-//#include "ini/Remote.hpp"
-//#include "GlobalIni.hpp"
-//#include "ini/BitTConfig.hpp"
-
 class GeneralOptions :
     public CPropertyPageImpl<GeneralOptions>,
     public CWinDataExchange<GeneralOptions>

@@ -3,10 +3,6 @@
 #include "WinAPIMutex.hpp"
 
 #include "global/ini.hpp"
-//#include "GlobalIni.hpp"
-//#include "ini/Window.hpp"
-//#include "ini/General.hpp"
-
 #include "halConfig.hpp"
 
 #include "HaliteWindow.hpp"

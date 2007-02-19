@@ -8,9 +8,6 @@
 
 #include "advtabs/ThemeTestDialog.hpp"
 
-//#include "GlobalIni.hpp"
-//#include "ini/Dialog.hpp"
-
 LRESULT AdvHaliteDialog::onInitDialog(HWND, LPARAM)
 {	
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);

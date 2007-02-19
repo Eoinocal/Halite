@@ -9,9 +9,6 @@
 #include "HaliteListView.hpp"
 #include "halEvent.hpp"
 
-//#include "GlobalIni.hpp"
-//#include "ini/Dialog.hpp"
-
 HaliteDialog::HaliteDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
 	iniClass("dialogs/halite", "HaliteDialog"),
 	ui_(ui_sig),
