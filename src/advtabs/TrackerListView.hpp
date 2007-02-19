@@ -25,7 +25,7 @@ public:
 	TrackerListViewCtrl() :
 		iniClass("listviews/tracker", "TrackerListView")
 	{
-		listColumnWidth[0] = 250;
+		listColumnWidth[0] = 287;
 		listColumnWidth[1] = 50;
 		
 		listColumnOrder[0] = 0;

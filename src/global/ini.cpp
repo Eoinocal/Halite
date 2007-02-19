@@ -1,14 +1,16 @@
 
 
 #include <boost/foreach.hpp>
-#include <tinyxml.h>
 
+#include "tinyxml.hpp"
 #include "wtl_app.hpp"
 #include "logger.hpp"
 #include "string_conv.hpp"
 #include "ini.hpp"
 
 #define foreach BOOST_FOREACH
+
+#include "../stdAfx.hpp"
 
 namespace hal 
 {
@@ -23,7 +25,7 @@ public:
 	
 	void load_data()
 	{
-		if (!xml_.LoadFile())
+		if (!xml_.load_file())
 		{
 			generate_default_file();
 		}
@@ -31,11 +33,12 @@ public:
 	
 	void save_data()
 	{		
-		xml_.SaveFile(working_file_.string());
+		xml_.save_file(working_file_.string());
 	}
 	
 	bool save(boost::filesystem::path location, std::string data)
 	{
+
 		tinyxml::node* data_node = get_data_node(location);
 		
 		// Should have correct node		
@@ -47,8 +50,8 @@ public:
 	{
 		tinyxml::node* data_node = get_data_node(location);
 		
-		data_node->Clear();
-		data_node->LinkEndChild(data);
+		data_node->clear();
+		data_node->link_end_child(data);
 		
 		return true;
 	}
@@ -57,10 +60,10 @@ public:
 	{
 		tinyxml::node* data_node = get_data_node(location);
 		
-		tinyxml::node* data = data_node->FirstChild();
+		tinyxml::node* data = data_node->first_child();
 		
 		if (data)
-			return data->Clone();
+			return data->clone();
 		else
 			return 0;
 	}
@@ -68,34 +71,34 @@ public:
 private:
 	void generate_default_file()
 	{
-		xml_.LinkEndChild(new tinyxml::declaration("1.0", "", ""));
+		xml_.link_end_child(new tinyxml::declaration("1.0", "", ""));
 		
-		xml_.LinkEndChild(new tinyxml::element("ini"));
+		xml_.link_end_child(new tinyxml::element("ini"));
 	}
 	
 	tinyxml::node* get_data_node(boost::filesystem::path location)
 	{
-		tinyxml::node* data_node = xml_.FirstChild("ini");
+		tinyxml::node* data_node = xml_.first_child("ini");
 		
 		if (!data_node)
 		{
 			data_node = new tinyxml::element("ini");
-			xml_.LinkEndChild(data_node);
+			xml_.link_end_child(data_node);
 		}
 		
-		foreach (std::string elem, location)
+		foreach(std::string elem, location)
 		{
-			tinyxml::node* child_node = data_node->FirstChild(elem);
+			tinyxml::node* child_node = data_node->first_child(elem);
 			
 			if (!child_node)
 			{
 				child_node = new tinyxml::element(elem);
-				data_node->LinkEndChild(child_node);
+				data_node->link_end_child(child_node);
 			}
 			
 			data_node = child_node;
 		}
-		
+
 		return data_node;
 	}
 	
@@ -138,4 +141,4 @@ ini_file& ini()
 	return ini;
 }
 
-}
+} // namespace hal

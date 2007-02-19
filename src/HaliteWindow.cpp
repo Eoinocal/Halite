@@ -24,6 +24,11 @@ HaliteWindow::HaliteWindow(unsigned areYouMe = 0) :
 	advancedUI(false),
 	activeTab(0)
 {
+	rect.top = 10;
+	rect.left = 10;
+	rect.bottom = 430;
+	rect.right = 620;
+	
 	load();
 }
 
@@ -42,6 +47,9 @@ BOOL HaliteWindow::PreTranslateMessage(MSG* pMsg)
 
 LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 {
+	SetWindowText(L"Halite");
+	MoveWindow(rect.left, rect.top,	rect.right-rect.left, rect.bottom-rect.top, false);	
+	
 	hal::config().load();
 	hal::config().settingsChanged();
 	
@@ -222,11 +230,11 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	try
 	{
 	
-	path saveDirectory(hal::to_str(INI().bitTConfig().defaultSaveFolder));
+	path saveDirectory(hal::to_str(hal::config().defaultSaveFolder));
 	
-	if (INI().bitTConfig().savePrompt)
+	if (hal::config().savePrompt)
 	{
-		CFolderDialog fldDlg ( NULL, _T("Select a directory to save the downloads to. Select cancel to accept default 'incomming' location."),
+		CFolderDialog fldDlg (NULL, hal::app().load_res_wstring(IDS_SAVEPROMPT).c_str(),
 						   BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE );
 	 
 		if (IDOK == fldDlg.DoModal())
@@ -353,10 +361,10 @@ LRESULT HaliteWindow::OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& 
 
 LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	ConfigOptionsProp sheet(L"Settings");	
+	ConfigOptionsProp sheet(this, L"Settings");	
     sheet.DoModal();
 	
-	INI().bitTConfig().settingsChanged();
+	hal::config().settingsChanged();
 	
 	return 0;
 }
@@ -377,10 +385,10 @@ LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL
 
 LRESULT HaliteWindow::OnHelp(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	ConfigOptionsProp sheet(L"Settings", 3);	
+	ConfigOptionsProp sheet(this, L"Settings", 4);	
     sheet.DoModal();
 	
-	INI().bitTConfig().settingsChanged();
+	hal::config().settingsChanged();
 	
 	return 0;
 }

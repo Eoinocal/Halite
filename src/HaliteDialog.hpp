@@ -4,6 +4,7 @@
 #include "stdAfx.hpp"
 #include "DdxEx.hpp"
 #include "HaliteListViewCtrl.hpp"
+#include "HaliteIni.hpp"
 
 #include "halTorrent.hpp"
 #include "halEvent.hpp"
@@ -17,12 +18,14 @@ class HaliteDialog :
 	public CDialogImpl<HaliteDialog>,
 	public CDialogResize<HaliteDialog>,
 	public CWinDataExchangeEx<HaliteDialog>,
-	private noncopyable
+	public CHaliteIni<HaliteDialog>,
+	private boost::noncopyable
 {
 protected:
 	typedef HaliteDialog thisClass;
 	typedef CDialogImpl<HaliteDialog> baseClass;
 	typedef CDialogResize<HaliteDialog> resizeClass;
+	typedef CHaliteIni<HaliteDialog> iniClass;
 
 public:
 	enum { IDD = IDD_HALITEDLG };
@@ -30,7 +33,7 @@ public:
 	HaliteDialog(ui_signal& ui_sig, ListViewManager& single_sel);	
 	BOOL PreTranslateMessage(MSG* pMsg)	{ return this->IsDialogMessage(pMsg); }
 	
-	void saveStatus(); // ****** NEEDS TO BE ANOTHER SIGNAL CLASS ******
+	void saveStatus();
   	
 	BEGIN_MSG_MAP(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
@@ -84,6 +87,13 @@ public:
 		DLGRESIZE_CONTROL(IDC_DETAILS_GROUP, (DLSZ_SIZE_X | DLSZ_SIZE_Y))
 	END_DLGRESIZE_MAP()
 	
+	friend class boost::serialization::access;
+    template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
+		ar & BOOST_SERIALIZATION_NVP(peerListColWidth);
+	}
+	
 protected:	
 	LRESULT onInitDialog(HWND, LPARAM);
 	void onClose();
@@ -109,4 +119,7 @@ private:
 	
 	ui_signal& ui_;
 	ListViewManager& selection_manager_;
+	
+	static const unsigned numPeers = 5;	
+	unsigned int peerListColWidth[numPeers];
 };

@@ -84,9 +84,9 @@ public:
 	LogListViewCtrl() :
 		iniClass("listviews/eventLog", "LogListView")
 	{
-		listColumnWidth[0] = 50;
-		listColumnWidth[1] = 250;
-		listColumnWidth[2] = 50;
+		listColumnWidth[0] = 67;
+		listColumnWidth[1] = 419;
+		listColumnWidth[2] = 69;
 		
 		listColumnOrder[0] = 0;
 		listColumnOrder[1] = 1;

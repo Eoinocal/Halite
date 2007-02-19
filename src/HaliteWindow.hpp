@@ -152,6 +152,8 @@ protected:
 		ar & BOOST_SERIALIZATION_NVP(activeTab);
 	}
 	
+	friend class GeneralOptions;
+	
 private:		
 	CCommandBarCtrl m_CmdBar;
 	CHorSplitterWindow m_Split;

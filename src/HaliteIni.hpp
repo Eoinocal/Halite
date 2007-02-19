@@ -31,6 +31,7 @@ public:
 	{
 		std::stringstream xml_data;		
 		adapter_.load_stream_data(xml_data);
+		
 		try 
 		{
 		
@@ -38,11 +39,10 @@ public:
 		
 		T* pT = static_cast<T*>(this);	
 		ixml >> boost::serialization::make_nvp(name_.c_str(), *pT);
+		
 		}
 		catch (const std::exception& e)
-		{
-//			::MessageBoxA(0, e.what(), "Exception", 0);
-			
+		{			
 			hal::event().post(boost::shared_ptr<hal::EventDetail>(
 				new hal::EventXmlException(hal::to_wstr(e.what()), hal::to_wstr(name_)))); 
 		}

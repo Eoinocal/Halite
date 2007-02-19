@@ -1,8 +1,8 @@
 
 #include "TrackerListView.hpp"
 
-#include "../GlobalIni.hpp"
-#include "../ini/Window.hpp"
+//#include "../GlobalIni.hpp"
+//#include "../ini/Window.hpp"
 #include "../halTorrent.hpp"
 #include "TrackerAddDialog.hpp"
 

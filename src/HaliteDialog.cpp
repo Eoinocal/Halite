@@ -9,15 +9,24 @@
 #include "HaliteListView.hpp"
 #include "halEvent.hpp"
 
-#include "GlobalIni.hpp"
-#include "ini/Dialog.hpp"
+//#include "GlobalIni.hpp"
+//#include "ini/Dialog.hpp"
 
 HaliteDialog::HaliteDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
+	iniClass("dialogs/halite", "HaliteDialog"),
 	ui_(ui_sig),
 	selection_manager_(single_sel)
 {
 	ui_.attach(bind(&HaliteDialog::updateDialog, this));
 	selection_manager_.attach(bind(&HaliteDialog::selectionChanged, this, _1));
+	
+	peerListColWidth[0] = 100;
+	peerListColWidth[1] = 70;
+	peerListColWidth[2] = 70;
+	peerListColWidth[3] = 70;
+	peerListColWidth[4] = 100;
+	
+	load();
 }
 
 void HaliteDialog::selectionChanged(const string& torrent_name)
@@ -95,8 +104,8 @@ LRESULT HaliteDialog::onInitDialog(HWND, LPARAM)
 	m_list.AddColumn(L"Type", hdr.GetItemCount());
 	m_list.AddColumn(L"Client", hdr.GetItemCount());
 
-	for (size_t i=0; i<DialogConfig::numPeers; ++i)
-		m_list.SetColumnWidth(i, INI().dialogConfig().peerListColWidth[i]);
+	for (size_t i=0; i<numPeers; ++i)
+		m_list.SetColumnWidth(i, peerListColWidth[i]);
 }		
 	NoConnDown = -1;
 	NoConnUp = -1;
@@ -109,12 +118,16 @@ LRESULT HaliteDialog::onInitDialog(HWND, LPARAM)
 
 void HaliteDialog::saveStatus()
 {
-	for (size_t i=0; i<4; ++i)
-		INI().dialogConfig().peerListColWidth[i] = m_list.GetColumnWidth(i);
+	for (size_t i=0; i<numPeers; ++i)
+		peerListColWidth[i] = m_list.GetColumnWidth(i);
+	
+	save();
 }
 
 void HaliteDialog::onClose()
 {
+	saveStatus();
+	
 	if(::IsWindow(m_hWnd)) 
 	{
 		::DestroyWindow(m_hWnd);

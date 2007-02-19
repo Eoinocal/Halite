@@ -8,8 +8,8 @@
 
 #include "advtabs/ThemeTestDialog.hpp"
 
-#include "GlobalIni.hpp"
-#include "ini/Dialog.hpp"
+//#include "GlobalIni.hpp"
+//#include "ini/Dialog.hpp"
 
 LRESULT AdvHaliteDialog::onInitDialog(HWND, LPARAM)
 {	

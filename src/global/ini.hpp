@@ -36,7 +36,7 @@ private:
 
 ini_file& ini();
 
-}
+} // namespace hal
 
 class ini_base
 {

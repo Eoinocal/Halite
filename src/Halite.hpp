@@ -33,6 +33,8 @@ public:
         ar & BOOST_SERIALIZATION_NVP(showMessage);
 	}	
 	
+	friend class GeneralOptions;
+	friend class SplashDialog;
 	friend int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 	
 private:

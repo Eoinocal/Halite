@@ -3,9 +3,9 @@
 #include "WinAPIMutex.hpp"
 
 #include "global/ini.hpp"
-#include "GlobalIni.hpp"
-#include "ini/Window.hpp"
-#include "ini/General.hpp"
+//#include "GlobalIni.hpp"
+//#include "ini/Window.hpp"
+//#include "ini/General.hpp"
 
 #include "halConfig.hpp"
 
@@ -139,7 +139,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	}
 	else
 	{
-		INI().LoadData();
+//		INI().LoadData();
 		
 		CMessageLoop theLoop;
 		_Module.AddMessageLoop(&theLoop);
@@ -158,15 +158,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			if (!hal::app().command_args().empty())
 				wndMain.ProcessFile(hal::app().command_args().front().c_str());
 			
-			wndMain.SetWindowText(L"Halite");
-			wndMain.MoveWindow(
-				INI().windowConfig().rect.left,
-				INI().windowConfig().rect.top,
-				INI().windowConfig().rect.right-INI().windowConfig().rect.left,
-				INI().windowConfig().rect.bottom-INI().windowConfig().rect.top,
-				false);
-			
-			wndMain.SetIcon(LoadIcon(hInstance, MAKEINTRESOURCE(IDR_APP_ICON)), false);
+			wndMain.SetIcon(LoadIcon(hInstance, MAKEINTRESOURCE(IDR_APP_ICON)), false);	
 			wndMain.ShowWindow(nCmdShow);
 			
 			nRet = theLoop.Run();				
@@ -186,7 +178,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			hal::bittorrent().shutDownSession();		
 		}
 		
-		INI().SaveData();
+//		INI().SaveData();
 		
 		halite().save();
 		hal::ini().save_data();

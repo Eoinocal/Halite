@@ -3,8 +3,8 @@
 #include "../HaliteWindow.hpp"
 #include "../HaliteListView.hpp"
 
-#include "../GlobalIni.hpp"
-#include "../ini/Dialog.hpp"
+//#include "../GlobalIni.hpp"
+//#include "../ini/Dialog.hpp"
 
 #include "../global/logger.hpp"
 

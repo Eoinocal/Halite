@@ -7,8 +7,8 @@
 #include "../HaliteWindow.hpp"
 #include "../HaliteListViewCtrl.hpp"
 
-#include "../GlobalIni.hpp"
-#include "../ini/Dialog.hpp"
+//#include "../GlobalIni.hpp"
+//#include "../ini/Dialog.hpp"
 
 #include "Torrent.hpp"
 

@@ -84,6 +84,7 @@ public:
 	
 	friend class BitTorrentOptions;
 	friend class TorrentsOptions;
+	friend class HaliteWindow;
 
 private:
 	void settingsThread();

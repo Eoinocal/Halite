@@ -3,7 +3,6 @@
 #define GLOBAL_INI_ADAPTER
 
 #include <iostream>
-
 #include <boost/filesystem/path.hpp>
 
 #include "ini.hpp"
@@ -14,7 +13,7 @@ namespace hal
 class ini_adapter
 {
 public:	
-	ini_adapter(boost::filesystem::path loc, ini_file& ini = ini()) :
+	ini_adapter(boost::filesystem::path loc, ini_file& ini = hal::ini()) :
 		ini_(ini),
 		location_(loc)
 	{}
@@ -27,6 +26,6 @@ private:
 	boost::filesystem::path location_;
 };
 
-}
+} // namespace hal
 
 #endif // GLOBAL_INI_ADAPTER

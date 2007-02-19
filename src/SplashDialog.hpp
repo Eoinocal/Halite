@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "ini/Splash.hpp"
+#include "Halite.hpp"
 #include "halTorrent.hpp"
 
 class SplashDialog :
@@ -20,7 +20,7 @@ public:
     END_MSG_MAP()
 	
 	BEGIN_DDX_MAP(CMainDlg)
-        DDX_CHECK(IDC_SPLASH_MSG, INI().splashConfig().showMessage)
+        DDX_CHECK(IDC_SPLASH_MSG, halite().showMessage)
     END_DDX_MAP()
 	
 	LRESULT SplashDialog::OnInitDialog(...)

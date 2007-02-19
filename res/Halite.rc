@@ -375,6 +375,7 @@ BEGIN
     IDPANE_FILTER                 "Filtering 000000 ranges."
     IDS_TRYANOTHERPORT            "The BitTorrent session could not start. Try selecting another port in the settings."
     IDS_DHTTRYANOTHERPORT         "DHT session could not start. Try selecting another port in the settings."
+    IDS_SAVEPROMPT                "Select a directory to save the downloads to. Select cancel to accept default 'incomming' location."
     HAL_EVENTNONE                 "None"
     HAL_EVENTDEBUG                "Debug"
     HAL_EVENTINFO                 "Info"

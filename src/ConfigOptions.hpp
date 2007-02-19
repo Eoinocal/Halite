@@ -2,17 +2,18 @@
 #pragma once
  
 #include "stdAfx.hpp"
+
 #include "Halite.hpp"
+#include "halConfig.hpp"
+#include "HaliteWindow.hpp"
 #include "DdxEx.hpp"
 #include "CSSFileDialog.hpp"
 
-#include "halConfig.hpp"
-
-#include "ini/Window.hpp"
-#include "ini/General.hpp"
-#include "ini/Remote.hpp"
-#include "GlobalIni.hpp"
-#include "ini/BitTConfig.hpp"
+//#include "ini/Window.hpp"
+//#include "ini/General.hpp"
+//#include "ini/Remote.hpp"
+//#include "GlobalIni.hpp"
+//#include "ini/BitTConfig.hpp"
 
 class GeneralOptions :
     public CPropertyPageImpl<GeneralOptions>,
@@ -21,7 +22,8 @@ class GeneralOptions :
 public:
     enum { IDD = IDD_CONFIGGENERAL };
 
-	GeneralOptions() 
+	GeneralOptions(HaliteWindow* haliteWindow) :
+		haliteWindow_(haliteWindow)
 	{}	
 	
 	~GeneralOptions()
@@ -33,9 +35,9 @@ public:
     END_MSG_MAP()
  
     BEGIN_DDX_MAP(GeneralOptions)
-    	DDX_CHECK(IDC_GENERAL_ONEINST, INI().generalConfig().oneInst)
-    	DDX_CHECK(IDC_GENERAL_TRAY, INI().windowConfig().use_tray)
-    	DDX_CHECK(IDC_GENERAL_ADVGUI, INI().windowConfig().advancedUI)
+    	DDX_CHECK(IDC_GENERAL_ONEINST, halite().oneInst)
+    	DDX_CHECK(IDC_GENERAL_TRAY, haliteWindow_->use_tray)
+    	DDX_CHECK(IDC_GENERAL_ADVGUI, haliteWindow_->advancedUI)
     END_DDX_MAP()
  
     BOOL OnInitDialog(HWND hwndFocus, LPARAM lParam)
@@ -47,6 +49,9 @@ public:
 	{
 		return DoDataExchange(true);
 	}
+	
+private:
+	HaliteWindow* haliteWindow_;
 };
 
 class BitTorrentOptions :
@@ -254,8 +259,8 @@ public:
     END_MSG_MAP()
  
     BEGIN_DDX_MAP(RemoteOptions)
-    	DDX_CHECK(IDC_REMOTECTRL, INI().remoteConfig().isEnabled)
-    	DDX_INT(IDC_REMOTEPORT, INI().remoteConfig().port)
+//    	DDX_CHECK(IDC_REMOTECTRL, INI().remoteConfig().isEnabled)
+//    	DDX_INT(IDC_REMOTEPORT, INI().remoteConfig().port)
     END_DDX_MAP()
  
     BOOL OnInitDialog ( HWND hwndFocus, LPARAM lParam )
@@ -283,9 +288,11 @@ private:
     bool m_bCentered;
 	
 public:    
-    ConfigOptionsProp(LPCTSTR title = 
-          (LPCTSTR)NULL, UINT uStartPage = 0, HWND hWndParent = NULL)
-        : CPropertySheet(title, uStartPage, hWndParent), m_bCentered(false)
+    ConfigOptionsProp(HaliteWindow* haliteWindow, LPCTSTR title = (LPCTSTR)NULL,
+		UINT uStartPage = 0, HWND hWndParent = NULL) :
+        CPropertySheet(title, uStartPage, hWndParent), 
+		m_bCentered(false),
+		generalOptions(haliteWindow)
     {
 		AddPage(generalOptions);
 		AddPage(bitTorrentOptions);

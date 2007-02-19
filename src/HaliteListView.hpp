@@ -34,7 +34,7 @@ public:
 		listColumnWidth[4] = 60;
 		listColumnWidth[5] = 42;
 		listColumnWidth[6] = 45;		
-		listColumnWidth[7] = 45;
+		listColumnWidth[7] = 61;
 		listColumnWidth[8] = 45;	
 		
 		for (int i=0; i<numListColumnWidth; ++i)
