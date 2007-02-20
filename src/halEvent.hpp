@@ -8,6 +8,7 @@
 #include <boost/smart_ptr.hpp>
 
 #include "halTorrent.hpp"
+#include "global/string_conv.hpp"
 
 namespace hal 
 {
@@ -98,7 +99,7 @@ class EventXmlException : public EventDetail
 {
 public:
 	EventXmlException(std::wstring e, std::wstring m) :
-		EventDetail(Event::debug, boost::posix_time::second_clock::universal_time(), HAL_EVENT_XMLEXP),
+		EventDetail(Event::info, boost::posix_time::second_clock::universal_time(), HAL_EVENT_XMLEXP),
 		exp_(e),
 		msg_(m)
 	{}
@@ -111,6 +112,51 @@ public:
 private:
 	std::wstring exp_;
 	std::wstring msg_;
+};
+
+class EventInvalidTorrent : public EventDetail
+{
+public:
+	EventInvalidTorrent(Event::eventLevel l, unsigned code, std::string t, std::string f) :
+		EventDetail(l, boost::posix_time::second_clock::universal_time(), code),
+		torrent_(hal::to_wstr(t)),
+		function_(hal::to_wstr(f)),
+		code_(code)
+	{}
+	
+	virtual std::wstring msg()
+	{
+		return (wformat(hal::app().load_res_wstring(code_)) % torrent_).str();
+	}
+	
+private:
+	unsigned code_;
+	std::wstring function_;
+	std::wstring torrent_;
+	std::wstring exception_;
+};
+
+class EventTorrentException : public EventDetail
+{
+public:
+	EventTorrentException(Event::eventLevel l, unsigned code, std::string e, std::string t, std::string f) :
+		EventDetail(l, boost::posix_time::second_clock::universal_time(), code),
+		torrent_(hal::to_wstr(t)),
+		function_(hal::to_wstr(f)),
+		exception_(hal::to_wstr(e)),
+		code_(code)
+	{}
+	
+	virtual std::wstring msg()
+	{
+		return (wformat(hal::app().load_res_wstring(code_)) % torrent_ % exception_).str();
+	}
+	
+private:
+	unsigned code_;
+	std::wstring torrent_;
+	std::wstring function_;
+	std::wstring exception_;
 };
 
 class EventSession : public EventDetail

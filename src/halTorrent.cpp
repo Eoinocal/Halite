@@ -666,6 +666,18 @@ BitTorrent::BitTorrent() :
 	pimpl(new BitTorrent_impl())
 {}
 
+#define HAL_GENERIC_TORRENT_EXCEPTION_CATCH(TORRENT, FUNCTION) \
+catch (const lbt::invalid_handle&)\
+{\
+	event().post(shared_ptr<EventDetail>(\
+		new EventInvalidTorrent(Event::critical, HAL_EVENT_INVTORRENT, TORRENT, FUNCTION)));\
+}\
+catch (const std::exception& e)\
+{\
+	event().post(shared_ptr<EventDetail>(\
+		new EventTorrentException(Event::critical, HAL_EVENT_TORRENTEXP, e.what(), TORRENT, FUNCTION)));\
+}
+
 void BitTorrent::shutDownSession()
 {
 	pimpl.reset();
@@ -1076,15 +1088,21 @@ void BitTorrent::newTorrent(fs::path filename, fs::path files)
 
 void BitTorrent::getAllTorrentDetails(TorrentDetails& torrentsContainer)
 {
+	try {
+	
 	for (TorrentMap::const_iterator iter = pimpl->torrents.begin(); 
 		iter != pimpl->torrents.end(); ++iter)
 	{
 		torrentsContainer.push_back(iter->second.getTorrentDetails());
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "getAllTorrentDetails")
 }
 
 TorrentDetail_ptr BitTorrent::getTorrentDetails(string filename)
 {
+	try {
+	
 	TorrentMap::const_iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
@@ -1092,11 +1110,15 @@ TorrentDetail_ptr BitTorrent::getTorrentDetails(string filename)
 		return i->second.getTorrentDetails();
 	}
 	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentDetails")
+	
 	return TorrentDetail_ptr();
 }
 
 void BitTorrent::resumeAll()
 {
+	try {
+	
 	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
 		iter != pimpl->torrents.end(); /*Nothing here*/)
 	{
@@ -1140,10 +1162,14 @@ void BitTorrent::resumeAll()
 			pimpl->torrents.erase(iter++);
 		}
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "resumeAll")
 }
 
 void BitTorrent::closeAll()
 {
+	try {
+	
 	path resumeDir=pimpl->workingDirectory/"resume";
 	
 	if (!pimpl->torrents.empty() && !exists(resumeDir))
@@ -1157,6 +1183,8 @@ void BitTorrent::closeAll()
 		
 		halencode(resumeDir/(*iter).first, resumedata);
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")
 }
 
 PeerDetail::PeerDetail(lbt::peer_info& peerInfo) :
@@ -1168,6 +1196,8 @@ PeerDetail::PeerDetail(lbt::peer_info& peerInfo) :
 
 void BitTorrent::getAllPeerDetails(string filename, PeerDetails& peerContainer)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
@@ -1181,45 +1211,67 @@ void BitTorrent::getAllPeerDetails(string filename, PeerDetails& peerContainer)
 			peerContainer.push_back(PeerDetail(*j));
 		}		
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getAllPeerDetails")
 }
 
 bool BitTorrent::isTorrent(string filename)
 {	
+	try {
+	
 	return (pimpl->torrents.find(filename) != pimpl->torrents.end());
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "isTorrent")
+	
+	return false;
 }
 
 void BitTorrent::pauseTorrent(string filename)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
 	{
 		(*i).second.pause();
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "pauseTorrent")
 }
 
 void BitTorrent::resumeTorrent(string filename)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
 	{
 		(*i).second.resume();
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "resumeTorrent")
 }
 
 void BitTorrent::stopTorrent(string filename)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
 	{
 		(*i).second.stop();
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "stopTorrent")
 }
 
 bool BitTorrent::isTorrentActive(string filename)
 {
+	try {
+	
 	TorrentMap::const_iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
@@ -1227,21 +1279,29 @@ bool BitTorrent::isTorrentActive(string filename)
 		return (*i).second.isActive();
 	}
 	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "isTorrentActive")
+	
 	return false; // ??? is this correct
 }
 
 void BitTorrent::setTorrentLogin(std::string filename, std::wstring username, std::wstring password)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
 	{
 		(*i).second.setTrackerLogin(username, password);
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentLogin")
 }
 
 std::pair<std::wstring, std::wstring>  BitTorrent::getTorrentLogin(std::string filename)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
@@ -1249,11 +1309,15 @@ std::pair<std::wstring, std::wstring>  BitTorrent::getTorrentLogin(std::string f
 		return (*i).second.getTrackerLogin();
 	}
 	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentLogin")
+	
 	return std::make_pair(L"", L"");
 }
 
 void BitTorrent_impl::removalThread(lbt::torrent_handle handle, bool wipeFiles)
 {
+	try {
+	
 	if (!wipeFiles)
 		theSession.remove_torrent(handle);
 	else
@@ -1278,10 +1342,14 @@ void BitTorrent_impl::removalThread(lbt::torrent_handle handle, bool wipeFiles)
 				remove_all(dir_path);
 		}
 	}	
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "removalThread")
 }
 
 void BitTorrent::removeTorrent(string filename)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
@@ -1290,10 +1358,14 @@ void BitTorrent::removeTorrent(string filename)
 		pimpl->torrents.erase(i);
 		thread t(bind(&BitTorrent_impl::removalThread, &*pimpl, handle, false));
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "removeTorrent")
 }
 
 void BitTorrent::removeTorrentWipeFiles(string filename)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
@@ -1302,16 +1374,22 @@ void BitTorrent::removeTorrentWipeFiles(string filename)
 		pimpl->torrents.erase(i);
 		thread t(bind(&BitTorrent_impl::removalThread, &*pimpl, handle, true));
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "removeTorrentWipeFiles")
 }
 
 void BitTorrent::reannounceTorrent(string filename)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
 	{
 		(*i).second.handle().force_reannounce();
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "reannounceTorrent")
 
 //	pimpl->theSession.add_dht_node(make_pair(string("192.168.11.4"),6881));
 //	Temporary Hijack
@@ -1331,88 +1409,124 @@ void BitTorrent::reannounceTorrent(string filename)
 
 void BitTorrent::pauseAllTorrents()
 {	
+	try {
+	
 	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
 		iter != pimpl->torrents.end(); ++iter)
 	{
 		(*iter).second.pause();
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "pauseAllTorrents")
 }
 
 void BitTorrent::unpauseAllTorrents()
 {	
+	try {
+	
 	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
 		iter != pimpl->torrents.end(); ++iter)
 	{
 		if (iter->second.state() == TorrentDetail::torrent_paused)
 			(*iter).second.resume();
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "unpauseAllTorrents")
 }
 
 void BitTorrent::setTorrentLimit(string filename, int maxConn, int maxUpload)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
 	{
 		(*i).second.setConnectionLimit(maxConn, maxUpload);
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentLimit")
 }
 
 void BitTorrent::setTorrentSpeed(string filename, float download, float upload)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
 	{
 		(*i).second.setTransferSpeed(download, upload);
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentSpeed")
 }
 
 pair<int, int> BitTorrent::getTorrentLimit(string filename)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
 	{
 		return (*i).second.getConnectionLimit();
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentLimit")
+	
 	return pair<int, int>(0, 0);
 }
 
 pair<float, float> BitTorrent::getTorrentSpeed(string filename)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
 	{
 		return (*i).second.getTransferSpeed();
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentSpeed")
+	
 	return pair<float, float>(0, 0);
 }
 
 void BitTorrent::setTorrentTrackers(std::string filename, 
 	const std::vector<TrackerDetail>& trackers)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
 	{
 		(*i).second.setTrackers(trackers);
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentTrackers")
 }
 
 void BitTorrent::resetTorrentTrackers(std::string filename)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
 	{
 		(*i).second.resetTrackers();
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "resetTorrentTrackers")
 }
 
 std::vector<TrackerDetail> BitTorrent::getTorrentTrackers(std::string filename)
 {
+	try {
+	
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
@@ -1420,33 +1534,10 @@ std::vector<TrackerDetail> BitTorrent::getTorrentTrackers(std::string filename)
 		return (*i).second.getTrackers();
 	}
 	
-	return std::vector<TrackerDetail>();
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentTrackers")
+	
+	return std::vector<TrackerDetail>();	
 }
-
-/*void BitTorrent::setSeverityLevel(Event::eventLevel event)
-{
-	switch (event)
-	{
-	case Event::debug:
-		pimpl->theSession.set_severity_level(lbt::alert::debug);
-		break;
-	case Event::info:
-		pimpl->theSession.set_severity_level(lbt::alert::info);
-		break;
-	case Event::warning:
-		pimpl->theSession.set_severity_level(lbt::alert::warning);
-		break;
-	case Event::critical:
-		pimpl->theSession.set_severity_level(lbt::alert::critical);
-		break;
-	case fatal:
-		Event::pimpl->theSession.set_severity_level(lbt::alert::fatal);
-		break;
-	default:
-		Event::pimpl->theSession.set_severity_level(lbt::alert::none);
-		break;
-	}
-}*/
 
 void BitTorrent::startEventReceiver()
 {
@@ -1458,17 +1549,6 @@ void BitTorrent::stopEventReceiver()
 {
 	pimpl->keepChecking_ = false;
 }
-
-/*boost::signals::scoped_connection BitTorrent::attachEventReceiver(boost::function<void (shared_ptr<EventDetail>)> fn)
-{
-	return pimpl->event_signal_.connect(fn);
-}
-
-void BitTorrent::postEvent(boost::shared_ptr<EventDetail> event)
-{
-	pimpl->event_signal_(event);
-}
-*/
 
 int BitTorrent::defTorrentMaxConn() { return pimpl->defTorrentMaxConn_; }
 int BitTorrent::defTorrentMaxUpload() { return pimpl->defTorrentMaxUpload_; }

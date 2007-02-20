@@ -147,3 +147,6 @@
 #define HAL_PEERALERT                   40010
 #define HAL_EVENT_XMLEXP				40011
 #define IDS_SAVEPROMPT  				40012
+#define HAL_EVENT_TORRENTEXP			40013
+#define HAL_EVENT_INVTORRENT			40014
+#define IDS_NA							40015

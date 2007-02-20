@@ -1,5 +1,4 @@
 
-
 #include <boost/foreach.hpp>
 
 #include "tinyxml.hpp"
@@ -9,8 +8,6 @@
 #include "ini.hpp"
 
 #define foreach BOOST_FOREACH
-
-#include "../stdAfx.hpp"
 
 namespace hal 
 {
@@ -38,7 +35,6 @@ public:
 	
 	bool save(boost::filesystem::path location, std::string data)
 	{
-
 		tinyxml::node* data_node = get_data_node(location);
 		
 		// Should have correct node		

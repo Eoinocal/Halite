@@ -371,17 +371,20 @@ STRINGTABLE
 BEGIN
     IDPANE_STATUS                 "(D-U) 00.00kb/s - 00.00kb/s"
     IDPANE_CAPS_INDICATOR         "CAPS"
-    IDPANE_DHT                    "0 DHT node(s) tracking 0 torrent(s)"
-    IDPANE_FILTER                 "Filtering 000000 ranges."
+    IDPANE_DHT                    "0000 DHT node(s)"
+    IDPANE_FILTER                 "Filtering 0000000 ranges."
     IDS_TRYANOTHERPORT            "The BitTorrent session could not start. Try selecting another port in the settings."
     IDS_DHTTRYANOTHERPORT         "DHT session could not start. Try selecting another port in the settings."
-    IDS_SAVEPROMPT                "Select a directory to save the downloads to. Select cancel to accept default 'incomming' location."
+    IDS_SAVEPROMPT                "Select a directory to save the downloads to. Click cancel to accept default 'incomming' location."
     HAL_EVENTNONE                 "None"
     HAL_EVENTDEBUG                "Debug"
     HAL_EVENTINFO                 "Info"
     HAL_EVENTCRITICAL             "Critical"
     HAL_PEERALERT                 "Libtorrent Peer Alert: %1%."
     HAL_EVENT_XMLEXP              "Xml Exception (%1%) with %2%."
+    IDS_NA                        "N/A"
+    HAL_EVENT_TORRENTEXP          "Generic exception thrown; %1%. (%3% - %2%)"
+    HAL_EVENT_INVTORRENT          "Invalid torrent exception. (%3% - %2%)"
 END
 
 
