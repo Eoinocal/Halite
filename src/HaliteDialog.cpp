@@ -247,12 +247,12 @@ void HaliteDialog::updateDialog()
 					itemPos = m_list.AddItem(0, 0, (*i).ipAddress.c_str(), 0);
 				
 				m_list.SetItemText(itemPos, 1,
-					(wformat(L"%1$.2fkb/s") 
+					(wformat(L"%1$.2fKB/s") 
 						% ((*i).speed.first/1024)
 					).str().c_str());	
 				
 				m_list.SetItemText(itemPos, 2,
-					(wformat(L"%1$.2fkb/s") 
+					(wformat(L"%1$.2fKB/s") 
 						% ((*i).speed.second/1024)
 					).str().c_str());	
 				

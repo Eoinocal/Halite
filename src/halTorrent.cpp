@@ -146,6 +146,7 @@ public:
 		transferLimit_(std::pair<float, float>(-1, -1)),
 		connections_(-1),
 		uploads_(-1),
+		ratio_(0),
 		state_(TorrentDetail::torrent_active),
 		inSession_(false),
 		totalUploaded_(0),
@@ -172,6 +173,24 @@ public:
 	void setConnectionLimit();
 	pair<float, float> getTransferSpeed();
 	pair<int, int> getConnectionLimit();
+	
+	void setRatio(float ratio) 
+	{ 
+		if (ratio < 0) ratio = 0;
+		
+		handle_.set_ratio(ratio);
+		ratio_ = ratio; 
+	}
+	
+	void setRatio()
+	{ 		
+		handle_.set_ratio(ratio_);
+	}
+	
+	float getRatio()
+	{
+		return ratio_;
+	}
 	
 	void resume()
 	{
@@ -294,7 +313,8 @@ public:
 			ar & make_nvp("state", state_);
 			ar & make_nvp("trackers", trackers_);
 			ar & make_nvp("totalUploaded", totalUploaded_);
-		}
+			ar & make_nvp("ratio", ratio_);
+		}		
     }
 	
 private:		
@@ -304,6 +324,7 @@ private:
 	int connections_;
 	int uploads_;
 	bool inSession_;
+	float ratio_;
 	
 	std::wstring filename_;
 	std::string saveDirectory_;
@@ -447,7 +468,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
 		return TorrentDetail_ptr(new TorrentDetail(filename_, state, hal::to_wstr(tS.current_tracker), 
 			pair<float, float>(tS.download_payload_rate, tS.upload_payload_rate),
 			tS.progress, tS.distributed_copies, tS.total_wanted_done, tS.total_wanted, totalUploaded_,
-			tS.num_peers, tS.num_seeds, td));
+			tS.num_peers, tS.num_seeds, ratio_, td));
 	}
 	else
 	{
@@ -1141,6 +1162,7 @@ void BitTorrent::resumeAll()
 			
 			(*iter).second.setTransferSpeed();
 			(*iter).second.setConnectionLimit();
+			(*iter).second.setRatio();
 			(*iter).second.applyTrackers();
 			
 			++iter;
@@ -1446,6 +1468,36 @@ void BitTorrent::setTorrentLimit(string filename, int maxConn, int maxUpload)
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentLimit")
+}
+
+void BitTorrent::setTorrentRatio(string filename, float ratio)
+{
+	try {
+	
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		(*i).second.setRatio(ratio);
+	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentRatio")
+}
+
+float BitTorrent::getTorrentRatio(string filename)
+{
+	try {
+	
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		return (*i).second.getRatio();
+	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentRatio")
+	
+	return 0;
 }
 
 void BitTorrent::setTorrentSpeed(string filename, float download, float upload)

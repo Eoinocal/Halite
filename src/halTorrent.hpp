@@ -38,7 +38,7 @@ class TorrentDetail
 {
 public:
 	TorrentDetail(std::wstring f, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
-			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, int p=0, int sd=0, boost::posix_time::time_duration eta=boost::posix_time::seconds(0)) :
+			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, int p=0, int sd=0, float r=0, boost::posix_time::time_duration eta=boost::posix_time::seconds(0)) :
 		filename_(f),
 		state_(s),
 		currentTracker_(cT),
@@ -50,6 +50,7 @@ public:
 		totalUploaded_(tU),
 		peers_(p),
 		seeds_(sd),
+		ratio_(r),
 		estimatedTimeLeft_(eta)
 	{}		
 
@@ -77,6 +78,8 @@ public:
 	const int& peers() const { return peers_; }
 	const int& seeds() const { return seeds_; }
 	
+	float ratio() { return ratio_; }
+	
 	const boost::posix_time::time_duration& estimatedTimeLeft() { return estimatedTimeLeft_; }
 
 public:
@@ -94,6 +97,8 @@ public:
 	
 	int peers_;
 	int seeds_;
+	
+	float ratio_;
 	
 	boost::posix_time::time_duration estimatedTimeLeft_;
 };
@@ -188,6 +193,9 @@ public:
 	void addTorrent(boost::filesystem::path file, path saveDirectory);
 	void getAllTorrentDetails(TorrentDetails& torrentsContainer);
 	TorrentDetail_ptr getTorrentDetails(std::string filename);
+	
+	void setTorrentRatio(std::string, float ratio);
+	float getTorrentRatio(std::string);
 	
 	void getAllPeerDetails(std::string filename, PeerDetails& peerContainer);
 	

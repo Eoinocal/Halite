@@ -8,6 +8,7 @@
 #include "../Halite.hpp"
 
 #include "../HaliteTabPage.hpp"
+#include "../HaliteEditCtrl.hpp"
 #include "../HaliteListViewCtrl.hpp"
 
 class ui_signal;
@@ -52,6 +53,7 @@ public:
         DDX_EX_INT_POSITIVE_LIMIT(IDC_EDITNCU, NoConnUp, 2, true)
         DDX_EX_FLOAT_POSITIVE(IDC_EDITTLD, TranLimitDown)
         DDX_EX_FLOAT_POSITIVE(IDC_EDITTLU, TranLimitUp)
+        DDX_EX_INT_FLOAT_LIMIT(IDC_EDITRATIO, Ratio, 1, true)
     END_DDX_MAP()
 	
 	BEGIN_DLGRESIZE_MAP(thisClass)		
@@ -98,6 +100,7 @@ protected:
 	
 	int NoConnDown, NoConnUp;
 	float TranLimitDown, TranLimitUp;
+	float Ratio;
 	
 	ui_signal& ui_;
 	ListViewManager& selection_manager_;

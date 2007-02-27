@@ -7,9 +7,6 @@
 #include "../HaliteWindow.hpp"
 #include "../HaliteListViewCtrl.hpp"
 
-//#include "../GlobalIni.hpp"
-//#include "../ini/Dialog.hpp"
-
 #include "Torrent.hpp"
 
 AdvTorrentDialog::AdvTorrentDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
@@ -24,11 +21,14 @@ void AdvTorrentDialog::selectionChanged(const string& torrent_name)
 {	
 	pair<float, float> tranLimit(-1.0, -1.0);
 	pair<int, int> connLimit(-1, -1);
+	float ratio = 0;
 	
 	if (hal::bittorrent().isTorrent(torrent_name))
 	{
 		tranLimit = hal::bittorrent().getTorrentSpeed(torrent_name);
 		connLimit = hal::bittorrent().getTorrentLimit(torrent_name);
+		
+		ratio = hal::bittorrent().getTorrentRatio(torrent_name);
 		
 		if (!hal::bittorrent().isTorrentActive(torrent_name))
 			SetDlgItemText(BTNPAUSE, L"Resume");
@@ -43,6 +43,7 @@ void AdvTorrentDialog::selectionChanged(const string& torrent_name)
 		::EnableWindow(GetDlgItem(IDC_EDITTLU), true);
 		::EnableWindow(GetDlgItem(IDC_EDITNCD), true);
 		::EnableWindow(GetDlgItem(IDC_EDITNCU), true);
+		::EnableWindow(GetDlgItem(IDC_EDITRATIO), true);
 	}
 	else
 	{
@@ -50,6 +51,7 @@ void AdvTorrentDialog::selectionChanged(const string& torrent_name)
 		SetDlgItemText(IDC_TRACKER, L"N/A");
 		SetDlgItemText(IDC_STATUS, L"N/A");
 		SetDlgItemText(IDC_AVAIL, L"N/A");
+		SetDlgItemText(IDC_TRANS, L"N/A");
 		SetDlgItemText(IDC_COMPLETE, L"N/A");
 		
 		SetDlgItemText(BTNPAUSE, L"Pause");		
@@ -63,12 +65,14 @@ void AdvTorrentDialog::selectionChanged(const string& torrent_name)
 		::EnableWindow(GetDlgItem(IDC_EDITTLU), false);
 		::EnableWindow(GetDlgItem(IDC_EDITNCD), false);
 		::EnableWindow(GetDlgItem(IDC_EDITNCU), false);
+		::EnableWindow(GetDlgItem(IDC_EDITRATIO), false);
 	}
 	
 	NoConnDown = connLimit.first;
 	NoConnUp = connLimit.second;
 	TranLimitDown = tranLimit.first;
 	TranLimitUp = tranLimit.second;
+	Ratio = ratio;
 	
 	DoDataExchange(false);	
 	ui_.update();
@@ -105,6 +109,7 @@ LRESULT AdvTorrentDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl
 	
 	hal::bittorrent().setTorrentSpeed(selection_manager_.selected(), TranLimitDown, TranLimitUp);
 	hal::bittorrent().setTorrentLimit(selection_manager_.selected(), NoConnDown, NoConnUp);
+	hal::bittorrent().setTorrentRatio(selection_manager_.selected(), Ratio);
 	
 	return 0;
 }
@@ -138,9 +143,10 @@ void AdvTorrentDialog::updateDialog()
 			).str().c_str());
 */			
 		SetDlgItemText(IDC_TRANS,
-			(wformat(L"Transfered %1$.2fmb down and %2$.2fmb up") 
+			(wformat(L"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f.") 
 				% (static_cast<float>(pTD->totalWantedDone())/(1024*1024))
 				% (static_cast<float>(pTD->totalUploaded())/(1024*1024))
+				% (static_cast<float>(pTD->totalUploaded())/(static_cast<float>(pTD->totalWantedDone())))
 			).str().c_str());	
 	}
 }

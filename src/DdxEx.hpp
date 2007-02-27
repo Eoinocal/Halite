@@ -11,6 +11,13 @@
 				return FALSE; \
 		}
 
+#define DDX_EX_INT_FLOAT_LIMIT(nID, var, lower, include) \
+		if(nCtlID == (UINT)-1 || nCtlID == nID) \
+		{ \
+			if(!DDX_Numeric_Inf<float>(nID, var, bSaveAndValidate, lower, include)) \
+				return FALSE; \
+		}
+
 #define DDX_EX_INT_POSITIVE_LIMIT(nID, var, lower, include) \
 		if(nCtlID == (UINT)-1 || nCtlID == nID) \
 		{ \
