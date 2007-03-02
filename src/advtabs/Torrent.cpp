@@ -131,10 +131,7 @@ void AdvTorrentDialog::updateDialog()
 			SetDlgItemText(IDC_AVAIL,
 				(hal::to_wstr(boost::posix_time::to_simple_string(pTD->estimatedTimeLeft())).c_str()));
 		}
-		else
-		{
-			SetDlgItemText(IDC_AVAIL,L"∞");		
-		}
+		else SetDlgItemText(IDC_AVAIL,L"∞");
 		
 /*		SetDlgItemText(IDC_COMPLETE,
 			(wformat(L"%1$.2fmb of %2$.2fmb") 
@@ -142,11 +139,23 @@ void AdvTorrentDialog::updateDialog()
 				% (static_cast<float>(pTD->totalWanted())/(1024*1024))
 			).str().c_str());
 */			
+		float ratio = (pTD->totalWantedDone()) 
+			? static_cast<float>(pTD->totalUploaded())
+				/ static_cast<float>(pTD->totalWantedDone())
+			: 0;
+		
 		SetDlgItemText(IDC_TRANS,
-			(wformat(L"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f.") 
+			(wformat(hal::app().res_wstr(HAL_DOWNLOAD_SUMMARY)) 
 				% (static_cast<float>(pTD->totalWantedDone())/(1024*1024))
 				% (static_cast<float>(pTD->totalUploaded())/(1024*1024))
-				% (static_cast<float>(pTD->totalUploaded())/(static_cast<float>(pTD->totalWantedDone())))
+				% (ratio)
 			).str().c_str());	
+			
+		if (!pTD->updateTrackerIn().is_special())
+		{
+			SetDlgItemText(IDC_UPDATE,	
+				(hal::to_wstr(boost::posix_time::to_simple_string(pTD->updateTrackerIn())).c_str()));
+		}
+		else SetDlgItemText(IDC_UPDATE,	L"N/A");		
 	}
 }

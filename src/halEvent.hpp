@@ -88,7 +88,7 @@ public:
 	
 	virtual std::wstring msg()
 	{
-		return (wformat(hal::app().load_res_wstring(HAL_PEERALERT)) % msg_).str();
+		return (wformat(hal::app().res_wstr(HAL_PEERALERT)) % msg_).str();
 	}
 	
 private:
@@ -106,7 +106,7 @@ public:
 	
 	virtual std::wstring msg()
 	{
-		return (wformat(hal::app().load_res_wstring(HAL_EVENT_XMLEXP)) % exp_ % msg_).str();
+		return (wformat(hal::app().res_wstr(HAL_EVENT_XMLEXP)) % exp_ % msg_).str();
 	}
 	
 private:
@@ -126,7 +126,7 @@ public:
 	
 	virtual std::wstring msg()
 	{
-		return (wformat(hal::app().load_res_wstring(code_)) % torrent_).str();
+		return (wformat(hal::app().res_wstr(code_)) % torrent_).str();
 	}
 	
 private:
@@ -149,7 +149,7 @@ public:
 	
 	virtual std::wstring msg()
 	{
-		return (wformat(hal::app().load_res_wstring(code_)) % torrent_ % exception_).str();
+		return (wformat(hal::app().res_wstr(code_)) % torrent_ % exception_).str();
 	}
 	
 private:
@@ -157,6 +157,25 @@ private:
 	std::wstring torrent_;
 	std::wstring function_;
 	std::wstring exception_;
+};
+
+class EventStdException : public EventDetail
+{
+public:
+	EventStdException(Event::eventLevel l, std::exception& e, std::wstring from) :
+		EventDetail(l, boost::posix_time::second_clock::universal_time(), HAL_EVENT_STDEXP),
+		exception_(hal::to_wstr(e.what())),
+		from_(from)
+	{}
+	
+	virtual std::wstring msg()
+	{
+		return (wformat(hal::app().res_wstr(HAL_EVENT_STDEXP)) % exception_ % from_).str();
+	}
+	
+private:
+	std::wstring exception_;
+	std::wstring from_;
 };
 
 class EventSession : public EventDetail

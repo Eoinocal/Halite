@@ -37,7 +37,7 @@ app_module::app_module()
 	LocalFree(szArglist);	
 }
 
-std::wstring app_module::load_res_wstring(unsigned uID)
+std::wstring app_module::res_wstr(unsigned uID)
 {
 	const int buffer_size = 512;
 	boost::array<wchar_t, buffer_size> buffer;

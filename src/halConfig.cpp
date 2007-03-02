@@ -40,7 +40,7 @@ void Config::settingsThread()
 		std::make_pair(portFrom, portTo));
 	if (!success)
 	{
-		MessageBox(0, app().load_res_wstring(IDS_TRYANOTHERPORT).c_str(), L"Init Exception", MB_ICONERROR|MB_OK);
+		MessageBox(0, app().res_wstr(IDS_TRYANOTHERPORT).c_str(), L"Init Exception", MB_ICONERROR|MB_OK);
 	}
 	}
 	catch(const std::exception& ex)
@@ -68,7 +68,7 @@ void Config::settingsThread()
 		if (!bittorrent().ensure_dht_on())
 		{
 			bittorrent().ensure_dht_off();
-			MessageBox(0, app().load_res_wstring(IDS_DHTTRYANOTHERPORT).c_str(), L"DHT Error", MB_ICONERROR|MB_OK);
+			MessageBox(0, app().res_wstr(IDS_DHTTRYANOTHERPORT).c_str(), L"DHT Error", MB_ICONERROR|MB_OK);
 		}
 	}
 	else

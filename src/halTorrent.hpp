@@ -18,6 +18,7 @@
 #include <asio/ip/udp.hpp>
 
 using boost::filesystem::path;
+using boost::posix_time::time_duration;
 
 namespace libtorrent { struct peer_info; }
 
@@ -38,7 +39,8 @@ class TorrentDetail
 {
 public:
 	TorrentDetail(std::wstring f, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
-			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, int p=0, int sd=0, float r=0, boost::posix_time::time_duration eta=boost::posix_time::seconds(0)) :
+			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, int p=0, int sd=0, float r=0, 
+			time_duration eta=boost::posix_time::seconds(0), time_duration uIn=boost::posix_time::seconds(0)) :
 		filename_(f),
 		state_(s),
 		currentTracker_(cT),
@@ -51,7 +53,8 @@ public:
 		peers_(p),
 		seeds_(sd),
 		ratio_(r),
-		estimatedTimeLeft_(eta)
+		estimatedTimeLeft_(eta),
+		updateTrackerIn_(uIn)
 	{}		
 
 	TorrentDetail() {};	
@@ -80,7 +83,8 @@ public:
 	
 	float ratio() { return ratio_; }
 	
-	const boost::posix_time::time_duration& estimatedTimeLeft() { return estimatedTimeLeft_; }
+	const time_duration& estimatedTimeLeft() { return estimatedTimeLeft_; }
+	const time_duration& updateTrackerIn() { return updateTrackerIn_; }
 
 public:
 	std::wstring filename_;
@@ -100,7 +104,8 @@ public:
 	
 	float ratio_;
 	
-	boost::posix_time::time_duration estimatedTimeLeft_;
+	time_duration estimatedTimeLeft_;
+	time_duration updateTrackerIn_;
 };
 
 typedef shared_ptr<TorrentDetail> TorrentDetail_ptr;

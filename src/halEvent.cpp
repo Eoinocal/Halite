@@ -32,17 +32,17 @@ std::wstring Event::eventLevelToStr(eventLevel event)
 	switch (event)
 	{
 	case debug:
-		return hal::app().load_res_wstring(HAL_EVENTDEBUG);
+		return hal::app().res_wstr(HAL_EVENTDEBUG);
 	case info:
-		return hal::app().load_res_wstring(HAL_EVENTINFO);
+		return hal::app().res_wstr(HAL_EVENTINFO);
 	case warning:
-		return hal::app().load_res_wstring(HAL_EVENTINFO);
+		return hal::app().res_wstr(HAL_EVENTINFO);
 	case critical:
-		return hal::app().load_res_wstring(HAL_EVENTCRITICAL);
+		return hal::app().res_wstr(HAL_EVENTCRITICAL);
 	case fatal:
-		return hal::app().load_res_wstring(HAL_EVENTCRITICAL);
+		return hal::app().res_wstr(HAL_EVENTCRITICAL);
 	default:
-		return hal::app().load_res_wstring(HAL_EVENTNONE);
+		return hal::app().res_wstr(HAL_EVENTNONE);
 	}
 }
 

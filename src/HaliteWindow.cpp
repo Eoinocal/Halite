@@ -157,15 +157,18 @@ void HaliteWindow::setCorrectDialog()
 
 void HaliteWindow::updateWindow()
 {
+	try
+	{
+	
 	hal::SessionDetail details = hal::bittorrent().getSessionDetails();
 	
 	if (details.port > -1)
 		UISetText(0, 
-			(wformat(L"Port %1% open") % details.port ).str().c_str());	
+			(wformat(hal::app().res_wstr(HAL_PORT_OPEN)) % details.port ).str().c_str());	
 	else
-		UISetText(0,L"Halite not listening!");
+		UISetText(0, hal::app().res_wstr(HAL_NOT_LISTENING).c_str());
 	
-	wstring downloadRates = (wformat(L"(D-U) %1$.2fkb/s - %2$.2fkb/s") 
+	wstring downloadRates = (wformat(hal::app().res_wstr(HAL_DOWN_RATES)) 
 			% (details.speed.first/1024) 
 			% (details.speed.second/1024)).str();
 	
@@ -174,26 +177,33 @@ void HaliteWindow::updateWindow()
 	
 	if (details.dht_on)
 	{
-		wstring dht = (wformat(L"%1% DHT node(s) tracking %2% torrent(s)")
-			% details.dht_nodes % details.dht_torrents).str();
+		wstring dht = (wformat(hal::app().res_wstr(HAL_DHT_ON))
+			% details.dht_nodes).str();
 			
 		UISetText(2, dht.c_str());
 	}
 	else
 	{
-		UISetText(2, L"DHT disabled");
+		UISetText(2, hal::app().res_wstr(HAL_DHT_OFF).c_str());
 	}
 	
 	if (details.ip_filter_on)
 	{
-		wstring filter = (wformat(L"Filtering %1% range(s)")
+		wstring filter = (wformat(hal::app().res_wstr(HAL_IPFILTER_ON))
 			% details.ip_ranges_filtered).str();
 		
 		UISetText(1, filter.c_str());
 	}
 	else
 	{
-		UISetText(1, L"IP filter disabled");
+		UISetText(1, hal::app().res_wstr(HAL_IPFILTER_OFF).c_str());
+	}
+	
+	}
+	catch (std::exception& e)
+	{
+		hal::event().post(shared_ptr<hal::EventDetail>(\
+			new hal::EventStdException(hal::Event::info, e, L"updateWindow")));
 	}
 }
 
@@ -234,8 +244,9 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	
 	if (hal::config().savePrompt)
 	{
-		CFolderDialog fldDlg (NULL, hal::app().load_res_wstring(IDS_SAVEPROMPT).c_str(),
-						   BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE );
+		std::wstring save_prompt = hal::app().res_wstr(IDS_SAVEPROMPT);		
+		CFolderDialog fldDlg(NULL, save_prompt.c_str(),
+			BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE);
 	 
 		if (IDOK == fldDlg.DoModal())
 			saveDirectory = path(hal::to_str(fldDlg.m_szFolderPath));

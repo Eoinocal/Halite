@@ -468,7 +468,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
 		return TorrentDetail_ptr(new TorrentDetail(filename_, state, hal::to_wstr(tS.current_tracker), 
 			pair<float, float>(tS.download_payload_rate, tS.upload_payload_rate),
 			tS.progress, tS.distributed_copies, tS.total_wanted_done, tS.total_wanted, totalUploaded_,
-			tS.num_peers, tS.num_seeds, ratio_, td));
+			tS.num_peers, tS.num_seeds, ratio_, td, tS.next_announce));
 	}
 	else
 	{

@@ -22,7 +22,7 @@ public:
 	const boost::filesystem::path& exe_path() const { return exe_path_; }
 	const std::vector<std::wstring>& command_args() const { return command_args_; }
 	
-	std::wstring load_res_wstring(unsigned uID);
+	std::wstring res_wstr(unsigned uID);
 	
 	friend app_module& app();
 	
