@@ -104,6 +104,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	
 	// Register UIEvents and the timer for the monitoring interval
 	SetTimer(ID_UPDATE_TIMER, 500);
+	SetTimer(ID_SAVE_TIMER, 5000);
 	ui().attach(bind(&HaliteWindow::updateWindow, this));
 	ui().attach(bind(&HaliteListViewCtrl::updateListView, &*mp_list));
 	
@@ -212,6 +213,10 @@ void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)
 	if (uTimerID == ID_UPDATE_TIMER) 
 	{
 		ui().update();
+	}
+	else if  (uTimerID == ID_SAVE_TIMER) 
+	{
+		hal::ini().save_data();
 	}
 	else 
 	{		

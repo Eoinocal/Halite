@@ -547,17 +547,11 @@ public:
 	{
 		keepChecking_ = false;
 		
+		saveTorrentData();
+		
 		try
 		{
-		{	fs::ofstream ofs(workingDirectory/"Torrents.xml");
-			boost::archive::xml_oarchive oxa(ofs);
-			
-			oxa << make_nvp("torrents", torrents);
-		}	
-		if (dht_on_) 
-		{	
-			halencode(workingDirectory/"DHTState.bin", theSession.dht_state());
-		}
+		
 		if (ip_filter_changed_)
 		{	
 			fs::ofstream ofs(workingDirectory/"IPFilter.bin", std::ios::binary);
@@ -610,6 +604,28 @@ public:
 		}
 	}
 	
+	void saveTorrentData()
+	{	try
+		{
+		
+		fs::ofstream ofs(workingDirectory/"Torrents.xml");
+		boost::archive::xml_oarchive oxa(ofs);
+		
+		oxa << make_nvp("torrents", torrents);
+			
+		if (dht_on_) 
+		{	
+			halencode(workingDirectory/"DHTState.bin", theSession.dht_state());
+		}
+		
+		}		
+		catch(std::exception& e)
+		{
+			event().post(shared_ptr<EventDetail>(\
+				new EventStdException(Event::critical, e, L"saveTorrentData")));
+		}
+	}
+	
 	int defTorrentMaxConn() { return defTorrentMaxConn_; }
 	int defTorrentMaxUpload() { return defTorrentMaxUpload_; }
 	float defTorrentDownload() { return defTorrentDownload_; }
@@ -644,7 +660,7 @@ private:
 			dht_state_ = haldecode(workingDirectory/"DHTState.bin");
 				
 		{	lbt::session_settings settings = theSession.settings();
-			settings.user_agent = "Halite v 0.2.9 dev3";
+			settings.user_agent = "Halite v 0.2.9 dev 140";
 			theSession.set_settings(settings);
 		}
 		
@@ -703,6 +719,11 @@ catch (const std::exception& e)\
 void BitTorrent::shutDownSession()
 {
 	pimpl.reset();
+}
+
+void BitTorrent::saveTorrentData()
+{
+	pimpl->saveTorrentData();
 }
 
 bool BitTorrent::listenOn(pair<int, int> const& range)

@@ -170,6 +170,7 @@ class BitTorrent
 {
 public:	
 	void shutDownSession();
+	void saveTorrentData();
 	
 	bool listenOn(std::pair<int, int> const& portRange);
 	int isListeningOn();

@@ -74,7 +74,7 @@ project Halite
 	<toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
 	<toolset>msvc:<define>_CRT_SECURE_NO_WARNINGS
 	
-#	<runtime-link>static
+	<runtime-link>static
 	
 	<toolset>msvc:<linkflags>/SUBSYSTEM:WINDOWS
 	;

@@ -110,6 +110,7 @@ protected:
 	
 	enum { 
 		ID_UPDATE_TIMER = 1,
+		ID_SAVE_TIMER,
 		WM_TRAYNOTIFY = WM_USER+123
 	};	
 
