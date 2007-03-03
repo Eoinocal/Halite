@@ -341,6 +341,7 @@ private:
 };
 
 typedef std::map<std::string, TorrentInternal> TorrentMap;
+typedef std::pair<std::string, TorrentInternal> TorrentPair;
 
 lbt::entry haldecode(const path &file) 
 {
@@ -1197,13 +1198,13 @@ void BitTorrent::closeAll()
 	if (!pimpl->torrents.empty() && !exists(resumeDir))
 		create_directory(resumeDir);
 	
-	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
-		iter != pimpl->torrents.end(); ++iter)
+	foreach (TorrentPair t, pimpl->torrents)
 	{
-		lbt::entry resumedata = (*iter).second.handle().write_resume_data();
-		pimpl->theSession.remove_torrent((*iter).second.handle());
+		t.second.handle().pause(); // NB. internal pause not registered in Torrents.xml
+		lbt::entry resumedata = t.second.handle().write_resume_data();
+		pimpl->theSession.remove_torrent(t.second.handle());
 		
-		halencode(resumeDir/(*iter).first, resumedata);
+		halencode(resumeDir/t.first, resumedata);
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")
