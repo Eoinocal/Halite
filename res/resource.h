@@ -51,7 +51,8 @@
 #define IDC_EDITTLD                     1015
 #define IDC_EDITNCD                     1016
 #define IDC_EDITNCU                     1017
-#define IDC_NC                          1018
+#define IDC_EDITRATIO                   1018
+#define IDC_NC                          1083
 #define IDC_TLD                         1019
 #define IDC_TLU                         1020
 #define IDC_TL                          1021
@@ -61,7 +62,6 @@
 #define IDC_BC_MAXCONN                  1025
 #define IDC_UPDATE                      1025
 #define IDC_BC_TMAXCONN                 1026
-#define IDC_EDITRATIO                   1026
 #define IDC_REMOTECTRL                  1026
 #define IDC_BC_MAXUP                    1027
 #define IDC_RATIO                       1027

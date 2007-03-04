@@ -21,12 +21,20 @@
 
 #include "halEvent.hpp"
 #include "global/string_conv.hpp"
+#include "Halite.hpp"
 
 #define foreach BOOST_FOREACH
 
 namespace hal
 {
 
+void Event::post(boost::shared_ptr<EventDetail> event)
+{
+	if (event->level() != hal::Event::debug || halite().logDebug())
+		event_signal_(event);
+}
+
+	
 std::wstring Event::eventLevelToStr(eventLevel event)
 {
 	switch (event)

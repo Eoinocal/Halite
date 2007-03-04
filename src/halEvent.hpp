@@ -17,18 +17,15 @@ class Event
 {
 public:
 	enum eventLevel { debug, info, warning, critical, fatal, none };
-	static std::wstring eventLevelToStr(eventLevel);
 	
-	void post(boost::shared_ptr<EventDetail> event)
-	{
-		event_signal_(event);
-	}
+	static std::wstring eventLevelToStr(eventLevel);	
+	void post(boost::shared_ptr<EventDetail> event);
 	
 	boost::signals::scoped_connection attach(boost::function<void (shared_ptr<EventDetail>)> fn)
 	{
 		return event_signal_.connect(fn);
 	}
-
+	
 private:
 	boost::signal<void (shared_ptr<EventDetail>)> event_signal_;
 };

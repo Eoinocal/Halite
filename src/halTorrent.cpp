@@ -1057,13 +1057,7 @@ void BitTorrent::addTorrent(path file, path saveDirectory)
 			TorrentInternal(handle, hal::to_wstr(file.leaf()), saveDirectory)));
 	}
 
-	}
-	catch(std::exception &ex) 
-	{
-		wstring caption=L"Add Torrent Exception";
-		
-		MessageBox(0, hal::to_wstr(ex.what()).c_str(), caption.c_str(), MB_ICONERROR|MB_OK);
-	}
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(file.string(), "addTorrent")
 }
 
 void add_files(lbt::torrent_info& t, fs::path const& p, fs::path const& l)

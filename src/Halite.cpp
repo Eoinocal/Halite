@@ -52,11 +52,14 @@ public:
 	
 	void operator()(shared_ptr<hal::EventDetail> event)
 	{
-		if (!wofs.is_open()) wofs.open("HaliteLog.txt");
-		
-		wofs << (wformat(L"%1% %2%, %3%\r\n") 
-			% event->timeStamp() % hal::Event::eventLevelToStr(event->level()) 
-			% event->msg());
+		if (halite().logToFile())
+		{
+			if (!wofs.is_open()) wofs.open("HaliteLog.txt");
+			
+			wofs << (wformat(L"%1% %2%, %3%\r\n") 
+				% event->timeStamp() % hal::Event::eventLevelToStr(event->level()) 
+				% event->msg());
+		}
 	}
 	
 	void disconnect() { conn_.disconnect(); }

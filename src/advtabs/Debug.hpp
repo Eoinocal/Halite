@@ -190,9 +190,10 @@ public:
   	
 	BEGIN_MSG_MAP(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
-		MSG_WM_CLOSE(onClose)
-		
-		COMMAND_RANGE_CODE_HANDLER_EX(IDC_TRACKER_USER, IDC_TRACKER_PASS, EN_KILLFOCUS, OnEditKillFocus)
+		MSG_WM_CLOSE(onClose)		
+
+		COMMAND_ID_HANDLER_EX(IDC_DEBUGFILECHECK, onFileCheck)
+		COMMAND_ID_HANDLER_EX(IDC_DEBUGDEBUGCHECK, onDebugCheck)
 		
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
@@ -213,6 +214,9 @@ public:
 	void onClose();	
 	
 	void onLoginCheck(UINT, int, HWND hWnd);
+	void onFileCheck(UINT, int, HWND hWnd) { DoDataExchange(true); }
+	void onDebugCheck(UINT, int, HWND hWnd) { DoDataExchange(true); }
+	
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl);
 	void onDebugOption(UINT, int, HWND);
 	

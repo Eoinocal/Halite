@@ -18,8 +18,9 @@ public:
 	Halite() :
 		CHaliteIni<Halite>("globals/halite", "Halite"),
 		oneInst(true),
-		logLevel(0),
-		showMessage(true)
+		logDebug_(false),
+		showMessage(true),
+		logToFile_(true)
 	{
 		load();
 	}
@@ -29,18 +30,24 @@ public:
 	void serialize(Archive& ar, const unsigned int version)
 	{	
         ar & BOOST_SERIALIZATION_NVP(oneInst);
-		ar & BOOST_SERIALIZATION_NVP(logLevel);
+		ar & BOOST_SERIALIZATION_NVP(logDebug_);
         ar & BOOST_SERIALIZATION_NVP(showMessage);
+		ar & BOOST_SERIALIZATION_NVP(logToFile_);
 	}	
+	
+	bool logToFile() { return logToFile_; }
+	bool logDebug() { return logDebug_; }
 	
 	friend class GeneralOptions;
 	friend class SplashDialog;
+	friend class AdvDebugDialog;
 	friend int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 	
 private:
 	bool oneInst;
-	int logLevel;
+	bool logDebug_;
 	bool showMessage;
+	bool logToFile_;
 };
 
 Halite& halite();

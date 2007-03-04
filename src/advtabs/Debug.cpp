@@ -63,8 +63,8 @@ LRESULT AdvDebugDialog::onInitDialog(HWND, LPARAM)
 
 BOOL AdvDebugDialog::DoDataExchange(BOOL bSaveAndValidate, UINT nCtlID)
 {	
-//	DDX_CHECK(IDC_GENERAL_ONEINST, INI().generalConfig().oneInst)
-//	DDX_CHECK(IDC_GENERAL_ONEINST, INI().generalConfig().oneInst)
+	DDX_CHECK(IDC_DEBUGFILECHECK, halite().logToFile_)
+	DDX_CHECK(IDC_DEBUGDEBUGCHECK, halite().logDebug_)
 
 	return TRUE;
 }
