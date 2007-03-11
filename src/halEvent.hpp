@@ -175,6 +175,23 @@ private:
 	std::wstring from_;
 };
 
+class EventDebug : public EventDetail
+{
+public:
+	EventDebug(Event::eventLevel l, std::wstring msg) :
+		EventDetail(l, boost::posix_time::second_clock::universal_time(), HAL_EVENT_STDEXP),
+		msg_(msg)
+	{}
+	
+	virtual std::wstring msg()
+	{
+		return (wformat(L"Debug event: %1%") % msg_).str();
+	}
+	
+private:
+	std::wstring msg_;
+};
+
 class EventSession : public EventDetail
 {
 

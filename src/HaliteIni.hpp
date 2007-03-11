@@ -4,8 +4,8 @@
 #include "global/ini_adapter.hpp"
 #include "halEvent.hpp"
 
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/archive/xml_iarchive.hpp>
+#include <boost/archive/xml_woarchive.hpp>
+#include <boost/archive/xml_wiarchive.hpp>
 
 template <class T>
 class CHaliteIni
@@ -18,9 +18,9 @@ public:
 	
 	void save()
 	{
-		std::stringstream xml_data;
+		std::wstringstream xml_data;
 		
-		boost::archive::xml_oarchive oxml(xml_data);
+		boost::archive::xml_woarchive oxml(xml_data);
 		T* pT = static_cast<T*>(this);	
 		oxml << boost::serialization::make_nvp(name_.c_str(), *pT);
 		
@@ -29,13 +29,13 @@ public:
 	
 	void load()
 	{
-		std::stringstream xml_data;		
+		std::wstringstream xml_data;		
 		adapter_.load_stream_data(xml_data);
 		
 		try 
 		{
 		
-		boost::archive::xml_iarchive ixml(xml_data);	
+		boost::archive::xml_wiarchive ixml(xml_data);	
 		
 		T* pT = static_cast<T*>(this);	
 		ixml >> boost::serialization::make_nvp(name_.c_str(), *pT);

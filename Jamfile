@@ -57,6 +57,7 @@ project Halite
 	
 	<library>/boost/signals//boost_signals/<link>static
 	<library>/boost/serialization//boost_serialization/<link>static
+	<library>/boost/serialization//boost_wserialization/<link>static
 	<library>/boost/regex//boost_regex/<link>static
 #	<library>/http//http/<link>static
     <library>/libtorrent//torrent/<link>static

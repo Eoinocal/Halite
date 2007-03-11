@@ -128,10 +128,10 @@ void AdvTorrentDialog::updateDialog()
 		
 		if (!pTD->estimatedTimeLeft().is_special())
 		{
-			SetDlgItemText(IDC_AVAIL,
+			SetDlgItemText(IDC_ETA,
 				(hal::to_wstr(boost::posix_time::to_simple_string(pTD->estimatedTimeLeft())).c_str()));
 		}
-		else SetDlgItemText(IDC_AVAIL,L"∞");
+		else SetDlgItemText(IDC_ETA,L"∞");
 		
 /*		SetDlgItemText(IDC_COMPLETE,
 			(wformat(L"%1$.2fmb of %2$.2fmb") 

@@ -97,6 +97,12 @@ static BOOL CALLBACK hwndSearcher(HWND hWnd, LPARAM lParam)
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+
+//	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, L"Hello")));
+	
+	try 
+	{
+	
 	boost::filesystem::path::default_name_check(boost::filesystem::native);
 
 	AtlInitCommonControls(ICC_COOL_CLASSES | ICC_BAR_CLASSES);
@@ -187,4 +193,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	_Module.Term();
 	
 	return nRet;
+	
+	}
+	catch (const std::exception& e)
+	{
+	MessageBoxA(0, e.what(), "Exception Thrown!", 0);
+	
+	return -1;
+	}
+	
 }

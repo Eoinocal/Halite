@@ -15,10 +15,16 @@
 #include <boost/array.hpp>
 #include <boost/regex.hpp>
 #include <boost/lambda/lambda.hpp>
+#include <boost/archive/text_woarchive.hpp>
+#include <boost/archive/text_wiarchive.hpp>
+#include <boost/archive/binary_woarchive.hpp>
+#include <boost/archive/binary_wiarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/xml_woarchive.hpp>
+#include <boost/archive/xml_wiarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/version.hpp>
@@ -608,8 +614,8 @@ public:
 	{	try
 		{
 		
-		fs::ofstream ofs(workingDirectory/"Torrents.xml");
-		boost::archive::xml_oarchive oxa(ofs);
+		fs::wofstream ofs(workingDirectory/"Torrents.xml");
+		boost::archive::xml_woarchive oxa(ofs);
 		
 		oxa << make_nvp("torrents", torrents);
 			
@@ -649,10 +655,10 @@ private:
 	{
 		theSession.set_severity_level(lbt::alert::debug);
 		
-		{	fs::ifstream ifs(workingDirectory/"Torrents.xml");
+		{	fs::wifstream ifs(workingDirectory/"Torrents.xml");
 			if (ifs)
 			{
-				boost::archive::xml_iarchive ia(ifs);			
+				boost::archive::xml_wiarchive ia(ifs);			
 				ia >> make_nvp("torrents", torrents);
 			}
 		}

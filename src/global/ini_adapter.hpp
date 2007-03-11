@@ -21,6 +21,9 @@ public:
 	void load_stream_data(std::ostream& data);
 	void save_stream_data(std::istream& data);
 	
+	void load_stream_data(std::wostream& data);
+	void save_stream_data(std::wistream& data);
+	
 private:
 	ini_file& ini_;
 	boost::filesystem::path location_;

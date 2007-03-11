@@ -5,21 +5,39 @@
 #include <string>
 #include <boost/array.hpp>
 
+#include "unicode.hpp"
+
 namespace hal
 {
 
 std::wstring mbstowcs(const char* str, size_t len);
 
-inline std::wstring mbstowcs(const std::string& str) 
+inline std::wstring mbstowcs(const std::string& ustr) 
 {
-	return mbstowcs(str.c_str(), str.length());
+	std::wstring wstr;
+	
+	unicode::transcode<unicode::utf8, unicode::wchar_encoding>(
+	   ustr.begin(),
+	   ustr.end(),
+	   std::insert_iterator<std::wstring>(wstr, wstr.end())
+	);
+	
+	return wstr;
 }
 
 std::string wcstombs(const wchar_t* str, size_t length);
 
-inline std::string wcstombs(const std::wstring& str) 
-{
-	return wcstombs(str.c_str(), str.length());
+inline std::string wcstombs(const std::wstring& wstr) 
+{	
+	std::string ustr;
+	
+	unicode::transcode<unicode::wchar_encoding, unicode::utf8>(
+	   wstr.begin(),
+	   wstr.end(),
+	   std::insert_iterator<std::string>(ustr, ustr.end())
+	);
+	
+	return ustr;
 }
 
 template <typename U, typename T>

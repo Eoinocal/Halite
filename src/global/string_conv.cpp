@@ -1,4 +1,5 @@
 
+#include <fstream>
 #include <boost/smart_ptr.hpp>
 
 #include "string_conv.hpp"
@@ -12,7 +13,7 @@ std::wstring mbstowcs(const char* str, size_t length)
 	boost::scoped_array<wchar_t> buf(new wchar_t[len]);
 
 	len=::mbstowcs(buf.get(), str, length);
-	if(len==static_cast<size_t>(-1)) 
+	if (len==static_cast<size_t>(-1)) 
 		throw std::runtime_error("mbstowcs(): invalid multi-byte character");
 
 	return std::wstring(buf.get(), len);
@@ -20,14 +21,19 @@ std::wstring mbstowcs(const char* str, size_t length)
 
 std::string wcstombs(const wchar_t* str, size_t length)//const std::wstring &str) 
 {
+
+	std::wofstream wofs;
+	if (!wofs.is_open()) wofs.open("WcstombsLog.txt");	
+	wofs << str;
+	
 	size_t len=::wcstombs(NULL, str, 0);
 	boost::scoped_array<char> buf(new char[len]);
 
 	len=::wcstombs(buf.get(), str, len);
-	if(len==static_cast<size_t>(-1)) 
+	if (len==static_cast<size_t>(-1)) 
 		throw std::runtime_error("wcstombs(): unable to convert character");
 
 	return std::string(buf.get(), len);
 }
 
-} // namespace gbl
+} // namespace hal
