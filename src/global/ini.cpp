@@ -15,9 +15,9 @@ namespace hal
 class ini_impl
 {
 public:
-	ini_impl(std::string filename) :
+	ini_impl(std::wstring filename) :
 		working_file_(app().exe_path().branch_path()/filename),
-		xml_(working_file_.string())
+		xml_(to_str(working_file_.string()))
 	{}
 	
 	void load_data()
@@ -30,7 +30,8 @@ public:
 	
 	void save_data()
 	{		
-		xml_.save_file(working_file_.string());
+	//	::MessageBox(0, to_wstr(working_file_.string()).c_str(), L"INI", 0);
+		xml_.save_file(to_str(working_file_.string()));
 	}
 	
 	bool save(boost::filesystem::path location, std::string data)
@@ -98,11 +99,11 @@ private:
 		return data_node;
 	}
 	
-	boost::filesystem::path working_file_;
+	boost::filesystem::wpath working_file_;
 	tinyxml::document xml_;
 };
 
-ini_file::ini_file(std::string filename) :
+ini_file::ini_file(std::wstring filename) :
 	pimpl(new ini_impl(filename))
 {}
 
@@ -133,7 +134,7 @@ tinyxml::node* ini_file::load(boost::filesystem::path location)
 
 ini_file& ini()
 {
-	static ini_file ini("Halite.xml");
+	static ini_file ini(L"Halite.xml");
 	return ini;
 }
 

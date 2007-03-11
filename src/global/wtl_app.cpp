@@ -15,6 +15,17 @@ extern CAppModule _Module;
 #include "wtl_app.hpp"
 #include "string_conv.hpp"
 
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/fstream.hpp>
+
+#define BOOST_UTF8_BEGIN_NAMESPACE \
+     namespace boost { namespace filesystem { namespace detail {
+
+#define BOOST_UTF8_END_NAMESPACE }}}
+#define BOOST_UTF8_DECL BOOST_FILESYSTEM_DECL
+
+#include <boost/detail/utf8_codecvt_facet.hpp>
+
 namespace hal
 {
 
@@ -23,15 +34,19 @@ app_module::app_module()
 	LPWSTR *szArglist; int nArgs;		
 	szArglist = CommandLineToArgvW(GetCommandLineW(), &nArgs);
 	
-	if( NULL == szArglist )
+	std::locale global_loc = std::locale();
+	std::locale loc( global_loc, new boost::filesystem::detail::utf8_codecvt_facet );
+	boost::filesystem::wpath_traits::imbue( loc );
+	
+	if (NULL == szArglist)
 	{
 	}
 	else
 	{
 		exe_string_  = szArglist[0];
-		exe_path_ = boost::filesystem::path(wcstombs(exe_string_));
+		exe_path_ = boost::filesystem::wpath(exe_string_);
 		
-		for(int i=1; i<nArgs; ++i) 
+		for (int i=1; i<nArgs; ++i) 
 			command_args_.push_back(szArglist[i]);
 	}		
 	LocalFree(szArglist);	

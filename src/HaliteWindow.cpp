@@ -245,7 +245,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	try
 	{
 	
-	path saveDirectory(hal::to_str(hal::config().defaultSaveFolder));
+	wpath saveDirectory(hal::config().defaultSaveFolder);
 	
 	if (hal::config().savePrompt)
 	{
@@ -254,10 +254,10 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 			BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE);
 	 
 		if (IDOK == fldDlg.DoModal())
-			saveDirectory = path(hal::to_str(fldDlg.m_szFolderPath));
+			saveDirectory = wpath(fldDlg.m_szFolderPath);
 	}
 	
-	path file(hal::to_str(lpszPath), boost::filesystem::native);	
+	wpath file(lpszPath, boost::filesystem::native);	
 	hal::bittorrent().addTorrent(file, saveDirectory);
 
 	ui().update();
@@ -368,7 +368,7 @@ LRESULT HaliteWindow::OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& 
 	
 	wstring torrent_filename = dlgSave.m_ofn.lpstrFile;
 	
-	hal::bittorrent().newTorrent(path(hal::to_str(torrent_filename)), path(hal::to_str(files)));
+	hal::bittorrent().newTorrent(wpath(torrent_filename), wpath(files));
 	
 	ui().update();
 	

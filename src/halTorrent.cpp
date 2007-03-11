@@ -159,7 +159,7 @@ public:
 		totalBase_(0)
 	{}
 	
-	TorrentInternal(libtorrent::torrent_handle h, std::wstring f, path saveDirectory) :		
+	TorrentInternal(libtorrent::torrent_handle h, std::wstring f, wpath saveDirectory) :		
 		transferLimit_(std::pair<float, float>(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload())),
 		connections_(bittorrent().defTorrentMaxConn()),
 		uploads_(bittorrent().defTorrentMaxUpload()),
@@ -300,7 +300,7 @@ public:
 	}
 	
 	bool inSession() const { return inSession_; }
-	const string& saveDirectory() { return saveDirectory_; }
+	const wstring& saveDirectory() { return saveDirectory_; }
 	
     friend class boost::serialization::access;
     template<class Archive>
@@ -333,7 +333,7 @@ private:
 	float ratio_;
 	
 	std::wstring filename_;
-	std::string saveDirectory_;
+	std::wstring saveDirectory_;
 	libtorrent::torrent_handle handle_;	
 	
 	std::wstring trackerUsername_;	
@@ -349,7 +349,7 @@ private:
 typedef std::map<std::string, TorrentInternal> TorrentMap;
 typedef std::pair<std::string, TorrentInternal> TorrentPair;
 
-lbt::entry haldecode(const path &file) 
+lbt::entry haldecode(const wpath &file) 
 {
 	ifstream fs(file, ifstream::binary);
 	if (fs.is_open()) 
@@ -360,7 +360,7 @@ lbt::entry haldecode(const path &file)
 	else return lbt::entry();
 }
 
-bool halencode(const path &file, const lbt::entry &e) 
+bool halencode(const wpath &file, const lbt::entry &e) 
 {
 	ofstream fs(file, ofstream::binary);
 	if (!fs.is_open()) 
@@ -560,7 +560,7 @@ public:
 		
 		if (ip_filter_changed_)
 		{	
-			fs::ofstream ofs(workingDirectory/"IPFilter.bin", std::ios::binary);
+			fs::ofstream ofs(workingDirectory/L"IPFilter.bin", std::ios::binary);
 //			boost::archive::binary_oarchive oba(ofs);
 			
 			lbt::ip_filter::filter_tuple_t vectors = ip_filter_.export_filter();	
@@ -614,14 +614,14 @@ public:
 	{	try
 		{
 		
-		fs::wofstream ofs(workingDirectory/"Torrents.xml");
+		fs::wofstream ofs(workingDirectory/L"Torrents.xml");
 		boost::archive::xml_woarchive oxa(ofs);
 		
 		oxa << make_nvp("torrents", torrents);
 			
 		if (dht_on_) 
 		{	
-			halencode(workingDirectory/"DHTState.bin", theSession.dht_state());
+			halencode(workingDirectory/L"DHTState.bin", theSession.dht_state());
 		}
 		
 		}		
@@ -655,15 +655,15 @@ private:
 	{
 		theSession.set_severity_level(lbt::alert::debug);
 		
-		{	fs::wifstream ifs(workingDirectory/"Torrents.xml");
+		{	fs::wifstream ifs(workingDirectory/L"Torrents.xml");
 			if (ifs)
 			{
 				boost::archive::xml_wiarchive ia(ifs);			
 				ia >> make_nvp("torrents", torrents);
 			}
 		}
-		if (exists(workingDirectory/"DHTState.bin"))
-			dht_state_ = haldecode(workingDirectory/"DHTState.bin");
+		if (exists(workingDirectory/L"DHTState.bin"))
+			dht_state_ = haldecode(workingDirectory/L"DHTState.bin");
 				
 		{	lbt::session_settings settings = theSession.settings();
 			settings.user_agent = "Halite v 0.2.9 dev 140";
@@ -674,7 +674,7 @@ private:
 		timer_.async_wait(bind(&BitTorrent_impl::pop_alerts, this));
 	}
 	
-	lbt::entry prepTorrent(path filename, path saveDirectory);
+	lbt::entry prepTorrent(wpath filename, wpath saveDirectory);
 	void removalThread(lbt::torrent_handle handle, bool wipeFiles);
 	
 	lbt::session theSession;
@@ -683,7 +683,7 @@ private:
 	bool keepChecking_;
 	
 	TorrentMap torrents;
-	const path workingDirectory;
+	const wpath workingDirectory;
 	
 	int defTorrentMaxConn_;
 	int defTorrentMaxUpload_;
@@ -832,7 +832,7 @@ void BitTorrent_impl::ip_filter_count()
 
 void BitTorrent_impl::ip_filter_load(progressCallback fn)
 {
-	fs::ifstream ifs(workingDirectory/"IPFilter.bin", std::ios::binary);
+	fs::ifstream ifs(workingDirectory/L"IPFilter.bin", std::ios::binary);
 	if (ifs)
 	{
 		size_t v4_size;
@@ -1015,10 +1015,10 @@ void BitTorrent::setTorrentDefaults(int maxConn, int maxUpload, float download, 
 	pimpl->defTorrentUpload_ = upload;
 }
 
-lbt::entry BitTorrent_impl::prepTorrent(path filename, path saveDirectory)
+lbt::entry BitTorrent_impl::prepTorrent(wpath filename, wpath saveDirectory)
 {
 	lbt::entry resumeData;	
-	const path resumeFile = workingDirectory/"resume"/filename.leaf();
+	const wpath resumeFile = workingDirectory/L"resume"/filename.leaf();
 	
 	if (exists(resumeFile)) 
 	{
@@ -1033,11 +1033,11 @@ lbt::entry BitTorrent_impl::prepTorrent(path filename, path saveDirectory)
 		}
 	}
 
-	if (!exists(workingDirectory/"torrents"))
-		create_directory(workingDirectory/"torrents");
+	if (!exists(workingDirectory/L"torrents"))
+		create_directory(workingDirectory/L"torrents");
 
-	if (!exists(workingDirectory/"torrents"/filename.leaf()))
-		copy_file(filename, workingDirectory/"torrents"/filename.leaf());
+	if (!exists(workingDirectory/L"torrents"/filename.leaf()))
+		copy_file(filename.string(), workingDirectory/L"torrents"/filename.leaf());
 
 	if (!exists(saveDirectory))
 		create_directory(saveDirectory);
@@ -1045,25 +1045,25 @@ lbt::entry BitTorrent_impl::prepTorrent(path filename, path saveDirectory)
 	return resumeData;
 }
 
-void BitTorrent::addTorrent(path file, path saveDirectory) 
+void BitTorrent::addTorrent(wpath file, wpath saveDirectory) 
 {
 	try 
 	{	
 	lbt::entry metadata = haldecode(file);
 	lbt::entry resumedata = pimpl->prepTorrent(file, saveDirectory);
 	
-	TorrentMap::const_iterator existing = pimpl->torrents.find(file.leaf());
+	TorrentMap::const_iterator existing = pimpl->torrents.find(to_str(file.leaf()));
 	
 	if (existing == pimpl->torrents.end())
 	{		
 		lbt::torrent_handle handle = pimpl->theSession.add_torrent(metadata,
-			saveDirectory, resumedata);
+			to_utf8(saveDirectory.string()), resumedata);
 		
-		pimpl->torrents.insert(TorrentMap::value_type(file.leaf(), 
-			TorrentInternal(handle, hal::to_wstr(file.leaf()), saveDirectory)));
+		pimpl->torrents.insert(TorrentMap::value_type(to_str(file.leaf()), 
+			TorrentInternal(handle, file.leaf(), saveDirectory)));
 	}
 
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(file.string(), "addTorrent")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(to_str(file.string()), "addTorrent")
 }
 
 void add_files(lbt::torrent_info& t, fs::path const& p, fs::path const& l)
@@ -1084,7 +1084,7 @@ void add_files(lbt::torrent_info& t, fs::path const& p, fs::path const& l)
 	}
 }
 
-void BitTorrent::newTorrent(fs::path filename, fs::path files)
+void BitTorrent::newTorrent(fs::wpath filename, fs::wpath files)
 {
 /*	try
 	{
@@ -1165,7 +1165,7 @@ void BitTorrent::resumeAll()
 	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
 		iter != pimpl->torrents.end(); /*Nothing here*/)
 	{
-		path file = pimpl->workingDirectory/"torrents"/(*iter).first;
+		wpath file = pimpl->workingDirectory/L"torrents"/to_wstr((*iter).first);
 		
 		if (exists(file))
 		{		
@@ -1175,7 +1175,7 @@ void BitTorrent::resumeAll()
 			lbt::entry resumedata = pimpl->prepTorrent(file, (*iter).second.saveDirectory());
 			
 			(*iter).second.setHandle(pimpl->theSession.add_torrent(metadata,
-				path((*iter).second.saveDirectory()), resumedata));
+				to_utf8((*iter).second.saveDirectory()), resumedata));
 			
 			if ((*iter).second.state() == TorrentDetail::torrent_paused)
 				(*iter).second.pause();
@@ -1214,18 +1214,18 @@ void BitTorrent::closeAll()
 {
 	try {
 	
-	path resumeDir=pimpl->workingDirectory/"resume";
+	wpath resumeDir=pimpl->workingDirectory/L"resume";
 	
 	if (!pimpl->torrents.empty() && !exists(resumeDir))
 		create_directory(resumeDir);
 	
 	foreach (TorrentPair t, pimpl->torrents)
 	{
-		t.second.handle().pause(); // NB. internal pause not registered in Torrents.xml
+		t.second.handle().pause(); // NB. internal pause, not registered in Torrents.xml
 		lbt::entry resumedata = t.second.handle().write_resume_data();
 		pimpl->theSession.remove_torrent(t.second.handle());
 		
-		halencode(resumeDir/t.first, resumedata);
+		halencode(resumeDir/to_wstr(t.first), resumedata);
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")

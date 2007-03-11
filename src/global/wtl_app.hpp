@@ -19,7 +19,7 @@ class app_module
 {
 public:	
 	const std::wstring& exe_string() const { return exe_string_; }
-	const boost::filesystem::path& exe_path() const { return exe_path_; }
+	const boost::filesystem::wpath& exe_path() const { return exe_path_; }
 	const std::vector<std::wstring>& command_args() const { return command_args_; }
 	
 	std::wstring res_wstr(unsigned uID);
@@ -30,7 +30,7 @@ private:
 	app_module();
 	
 	std::wstring exe_string_;
-	boost::filesystem::path exe_path_;
+	boost::filesystem::wpath exe_path_;
 	std::vector<std::wstring> command_args_;	
 };
 

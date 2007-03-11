@@ -63,6 +63,7 @@ using boost::thread;
 using boost::shared_ptr;
 using boost::scoped_ptr;
 using boost::filesystem::path;
+using boost::filesystem::wpath;
 using boost::noncopyable;
 
 #define foreach BOOST_FOREACH

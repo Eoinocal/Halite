@@ -195,8 +195,8 @@ public:
 	const SessionDetail getSessionDetails();
 
 	void setTorrentDefaults(int maxConn, int maxUpload, float download, float upload);	
-	void newTorrent(boost::filesystem::path filename, boost::filesystem::path files);
-	void addTorrent(boost::filesystem::path file, path saveDirectory);
+	void newTorrent(boost::filesystem::wpath filename, boost::filesystem::wpath files);
+	void addTorrent(boost::filesystem::wpath file, wpath saveDirectory);
 	void getAllTorrentDetails(TorrentDetails& torrentsContainer);
 	TorrentDetail_ptr getTorrentDetails(std::string filename);
 	

@@ -42,7 +42,7 @@ public:
 		enableIPFilter(false),
 		enableProxy(false),
 		proxyPort(0),
-		defaultSaveFolder(hal::to_wstr((hal::app().exe_path().branch_path()/"incoming").string())),
+		defaultSaveFolder((hal::app().exe_path().branch_path()/L"incoming").string()),
 		savePrompt(true)
 	{}
 	

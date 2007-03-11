@@ -29,7 +29,7 @@ public:
 	friend ini_file& ini();
 	
 private:
-	ini_file(std::string filename);
+	ini_file(std::wstring filename);
 	
 	boost::scoped_ptr<ini_impl> pimpl;
 };
