@@ -1387,8 +1387,12 @@ public:
 	bool save_file() const;
 	/// Load a file using the given filename. Returns true if successful.
 	bool load_file( const char * filename, encoding encoding_ = TIXML_DEFAULT_ENCODING );
+	
+	bool load_file( const wchar_t * filename, encoding encoding_ = TIXML_DEFAULT_ENCODING );
 	/// Save a file using the given filename. Returns true if successful.
 	bool save_file( const char * filename ) const;
+	
+	bool save_file( const wchar_t * filename ) const;
 	/** Load a file using the given FILE*. Returns true if successful. Note that this method
 		doesn't stream - the entire object pointed at by the FILE*
 		will be interpreted as an XML file. TinyXML doesn't stream in XML from the current
@@ -1405,7 +1409,20 @@ public:
 //		return ( f.buffer && load_file( f.buffer, encoding_ ));
 		return load_file( filename.c_str(), encoding_ );
 	}
+	bool load_file( const std::wstring& filename, encoding encoding_ = TIXML_DEFAULT_ENCODING )			///< STL std::string version_.
+	{
+//		StringToBuffer f( filename );
+//		return ( f.buffer && load_file( f.buffer, encoding_ ));
+		return load_file( filename.c_str(), encoding_ );
+	}
 	bool save_file( const std::string& filename ) const		///< STL std::string version_.
+	{
+//		StringToBuffer f( filename );
+//		return ( f.buffer && save_file( f.buffer ));
+		return save_file( filename.c_str() );
+	}
+	
+	bool save_file( const std::wstring& filename ) const		///< STL std::string version_.
 	{
 //		StringToBuffer f( filename );
 //		return ( f.buffer && save_file( f.buffer ));

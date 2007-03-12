@@ -5,41 +5,12 @@
 #include <string>
 #include <boost/array.hpp>
 
-#include "utf8.hpp"
-#include "unicode.hpp"
-
 namespace hal
 {
 
-inline std::wstring mbstowcs(const std::string& ustr) 
-{
-	std::wstring wstr;
-	
-/*	unicode::transcode<unicode::utf8, unicode::wchar_encoding>(
-	   ustr.begin(),
-	   ustr.end(),
-	   std::insert_iterator<std::wstring>(wstr, wstr.end())
-	);
-*/	
+std::wstring mbstowcs(const std::string& ustr);
 
-	wstr = utf8_wchar(ustr);
-	return wstr;
-}
-
-inline std::string wcstombs(const std::wstring& wstr) 
-{	
-	std::string ustr;
-	
-/*	unicode::transcode<unicode::wchar_encoding, unicode::utf8>(
-	   wstr.begin(),
-	   wstr.end(),
-	   std::insert_iterator<std::string>(ustr, ustr.end())
-	);
-*/
-	
-	ustr = wchar_utf8(wstr);	
-	return ustr;
-}
+std::string wcstombs(const std::wstring& wstr);
 
 template <typename U, typename T>
 inline U to_gen_str(const T& str) 

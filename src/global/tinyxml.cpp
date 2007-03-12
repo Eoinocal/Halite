@@ -23,6 +23,7 @@ distribution.
 */
 
 #include <ctype.h>
+#include <wchar.h>
 
 #ifdef TIXML_USE_STL
 #include <sstream>
@@ -962,6 +963,24 @@ bool document::load_file( const char* _filename, encoding encoding_ )
 	}
 }
 
+bool document::load_file( const wchar_t* _filename, encoding encoding_ )
+{
+	// reading in binary mode so that tinyxml can normalize the EOL
+	FILE* file = _wfopen( _filename, L"rb" );	
+
+	if ( file )
+	{
+		bool result = load_file( file, encoding_ );
+		fclose( file );
+		return result;
+	}
+	else
+	{
+		set_error( TIXML_ERROR_OPENING_FILE, 0, 0, TIXML_ENCODING_UNKNOWN );
+		return false;
+	}
+}
+
 bool document::load_file( FILE* file, encoding encoding_ )
 {
 	if ( !file ) 
@@ -1090,6 +1109,18 @@ bool document::save_file( const char * filename ) const
 	return false;
 }
 
+bool document::save_file( const wchar_t * filename ) const
+{
+	// The old c stuff lives on...
+	FILE* fp = _wfopen( filename, L"w" );
+	if ( fp )
+	{
+		bool result = save_file( fp );
+		fclose( fp );
+		return result;
+	}
+	return false;
+}
 
 bool document::save_file( FILE* fp ) const
 {

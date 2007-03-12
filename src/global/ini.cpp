@@ -16,13 +16,12 @@ class ini_impl
 {
 public:
 	ini_impl(std::wstring filename) :
-		working_file_(app().exe_path().branch_path()/filename),
-		xml_(to_str(working_file_.string()))
+		working_file_(app().exe_path().branch_path()/filename)
 	{}
 	
 	void load_data()
 	{
-		if (!xml_.load_file())
+		if (!xml_.load_file(working_file_.string()))
 		{
 			generate_default_file();
 		}
@@ -31,7 +30,7 @@ public:
 	void save_data()
 	{		
 	//	::MessageBox(0, to_wstr(working_file_.string()).c_str(), L"INI", 0);
-		xml_.save_file(to_str(working_file_.string()));
+		xml_.save_file(working_file_.string());
 	}
 	
 	bool save(boost::filesystem::path location, std::string data)

@@ -3,37 +3,38 @@
 #include <boost/smart_ptr.hpp>
 
 #include "string_conv.hpp"
+//#include "utf8.hpp"
+#include "unicode.hpp"
 
 namespace hal
 {
 
-std::wstring mbstowcs(const char* str, size_t length) 
+std::wstring mbstowcs(const std::string& ustr) 
 {
-	size_t len=::mbstowcs(NULL, str, length);
-	boost::scoped_array<wchar_t> buf(new wchar_t[len]);
+	std::wstring wstr;
+	
+	unicode::transcode<unicode::utf8, unicode::wchar_encoding>(
+	   ustr.begin(),
+	   ustr.end(),
+	   std::insert_iterator<std::wstring>(wstr, wstr.end())
+	);
 
-	len=::mbstowcs(buf.get(), str, length);
-	if (len==static_cast<size_t>(-1)) 
-		throw std::runtime_error("mbstowcs(): invalid multi-byte character");
-
-	return std::wstring(buf.get(), len);
+//	wstr = utf8_wchar(ustr);
+	return wstr;
 }
 
-std::string wcstombs(const wchar_t* str, size_t length)//const std::wstring &str) 
-{
-
-	std::wofstream wofs;
-	if (!wofs.is_open()) wofs.open("WcstombsLog.txt");	
-	wofs << str;
+std::string wcstombs(const std::wstring& wstr) 
+{	
+	std::string ustr;
 	
-	size_t len=::wcstombs(NULL, str, 0);
-	boost::scoped_array<char> buf(new char[len]);
-
-	len=::wcstombs(buf.get(), str, len);
-	if (len==static_cast<size_t>(-1)) 
-		throw std::runtime_error("wcstombs(): unable to convert character");
-
-	return std::string(buf.get(), len);
+	unicode::transcode<unicode::wchar_encoding, unicode::utf8>(
+	   wstr.begin(),
+	   wstr.end(),
+	   std::insert_iterator<std::string>(ustr, ustr.end())
+	);
+	
+//	ustr = wchar_utf8(wstr);	
+	return ustr;
 }
 
 } // namespace hal

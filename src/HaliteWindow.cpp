@@ -217,6 +217,7 @@ void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)
 	else if  (uTimerID == ID_SAVE_TIMER) 
 	{
 		hal::ini().save_data();
+		hal::bittorrent().saveTorrentData();
 	}
 	else 
 	{		
