@@ -14,8 +14,6 @@ AdvTrackerDialog::AdvTrackerDialog(ui_signal& ui_sig, ListViewManager& single_se
 	ui_(ui_sig),
 	selection_manager_(single_sel)
 {
-	ui_.attach(bind(&AdvTrackerDialog::updateDialog, this));
-	selection_manager_.attach(bind(&AdvTrackerDialog::selectionChanged, this, _1));
 }
 
 void AdvTrackerDialog::selectionChanged(const string& torrent_name)
@@ -82,6 +80,9 @@ void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
 
 LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 {
+	ui_.attach(bind(&AdvTrackerDialog::updateDialog, this));
+	selection_manager_.attach(bind(&AdvTrackerDialog::selectionChanged, this, _1));
+	
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
 	m_list.Attach(GetDlgItem(IDC_TRACKERLIST));	

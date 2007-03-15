@@ -209,20 +209,44 @@ void HaliteWindow::updateWindow()
 }
 
 void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)
-{
+{	
+
+	
 	if (uTimerID == ID_UPDATE_TIMER) 
-	{
+	{	
+		try
+		{
+		
 		ui().update();
+		
+		}
+		catch (std::exception& e)
+		{
+			hal::event().post(shared_ptr<hal::EventDetail>(\
+				new hal::EventStdException(hal::Event::info, e, L"updateTimer")));
+		}
+
 	}
-	else if  (uTimerID == ID_SAVE_TIMER) 
+	else if (uTimerID == ID_SAVE_TIMER) 
 	{
-		hal::ini().save_data();
-		hal::bittorrent().saveTorrentData();
+		try
+		{
+		
+	//	hal::ini().save_data();
+	//	hal::bittorrent().saveTorrentData();	
+	
+		}
+		catch (std::exception& e)
+		{
+			hal::event().post(shared_ptr<hal::EventDetail>(\
+				new hal::EventStdException(hal::Event::info, e, L"saveTimer")));
+		}
 	}
 	else 
 	{		
 		SetMsgHandled(false);
 	}
+	
 }	
 
 LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
@@ -269,7 +293,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 		LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
 		findInfo.flags = LVFI_STRING;
 		
-		wstring filename = hal::to_wstr(file.leaf());		
+		wstring filename = file.leaf();		
 		findInfo.psz = filename.c_str();
 		
 		int itemPos = mp_list->FindItem(&findInfo, -1);	

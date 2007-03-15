@@ -196,7 +196,7 @@ void HaliteDialog::updateDialog()
 		if (!pTD->estimatedTimeLeft().is_special())
 		{
 			SetDlgItemText(IDC_AVAIL,
-				(hal::to_wstr(boost::posix_time::to_simple_string(pTD->estimatedTimeLeft())).c_str()));
+				(hal::from_utf8(boost::posix_time::to_simple_string(pTD->estimatedTimeLeft())).c_str()));
 		}
 		else
 		{

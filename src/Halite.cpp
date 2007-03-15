@@ -3,6 +3,7 @@
 #include "WinAPIMutex.hpp"
 
 #include "global/ini.hpp"
+#include "global/logger.hpp"
 #include "halConfig.hpp"
 
 #include "HaliteWindow.hpp"
@@ -15,35 +16,6 @@ Halite& halite()
 	static Halite h;
 	return h;
 }
-
-#ifndef NDEBUG
-#	include "global/logger.hpp"
-#	include "DebugDialog.hpp"
-	
-	static DebugDialog global_debugDialog_;	
-
-	static class global_log_file
-	{
-	public:
-		global_log_file();
-		
-		void operator()(const wstring& text)
-		{
-			if (!wofs.is_open()) wofs.open("Log.txt");			
-			wofs << text;
-		}
-		
-	private:	
-		std::wofstream wofs;
-		boost::signals::scoped_connection conn_;
-		
-	} global_log_file_;
-	
-	global_log_file::global_log_file() :
-		conn_(hal::wlog().attach(bind(&global_log_file::operator(), &global_log_file_, _1)))
-	{}
-
-#endif
 
 static class halite_log_file : public boost::signals::trackable
 {
@@ -154,11 +126,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				return 1;
 			
 			oneInstance.release();
-			
-			#ifndef NDEBUG
-			global_debugDialog_.Create(wndMain);
-			global_debugDialog_.ShowWindow(false);
-			#endif
 			
 			if (!hal::app().command_args().empty())
 				wndMain.ProcessFile(hal::app().command_args().front().c_str());

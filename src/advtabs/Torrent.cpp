@@ -13,8 +13,6 @@ AdvTorrentDialog::AdvTorrentDialog(ui_signal& ui_sig, ListViewManager& single_se
 	ui_(ui_sig),
 	selection_manager_(single_sel)
 {
-	ui_.attach(bind(&AdvTorrentDialog::updateDialog, this));
-	selection_manager_.attach(bind(&AdvTorrentDialog::selectionChanged, this, _1));
 }
 
 void AdvTorrentDialog::selectionChanged(const string& torrent_name)
@@ -80,6 +78,9 @@ void AdvTorrentDialog::selectionChanged(const string& torrent_name)
 
 LRESULT AdvTorrentDialog::onInitDialog(HWND, LPARAM)
 {
+	ui_.attach(bind(&AdvTorrentDialog::updateDialog, this));
+	selection_manager_.attach(bind(&AdvTorrentDialog::selectionChanged, this, _1));
+	
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
 {	m_prog.Attach(GetDlgItem(TORRENTPROG));
@@ -129,7 +130,7 @@ void AdvTorrentDialog::updateDialog()
 		if (!pTD->estimatedTimeLeft().is_special())
 		{
 			SetDlgItemText(IDC_ETA,
-				(hal::to_wstr(boost::posix_time::to_simple_string(pTD->estimatedTimeLeft())).c_str()));
+				(hal::from_utf8(boost::posix_time::to_simple_string(pTD->estimatedTimeLeft())).c_str()));
 		}
 		else SetDlgItemText(IDC_ETA,L"∞");
 		
@@ -154,7 +155,7 @@ void AdvTorrentDialog::updateDialog()
 		if (!pTD->updateTrackerIn().is_special())
 		{
 			SetDlgItemText(IDC_UPDATE,	
-				(hal::to_wstr(boost::posix_time::to_simple_string(pTD->updateTrackerIn())).c_str()));
+				(hal::from_utf8(boost::posix_time::to_simple_string(pTD->updateTrackerIn())).c_str()));
 		}
 		else SetDlgItemText(IDC_UPDATE,	L"N/A");		
 	}

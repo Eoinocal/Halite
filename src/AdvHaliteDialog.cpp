@@ -11,6 +11,7 @@
 LRESULT AdvHaliteDialog::onInitDialog(HWND, LPARAM)
 {	
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
+	SetDlgItemText(IDC_ADVDLG_VERSION, hal::app().res_wstr(HAL_VERSION_STRING).c_str());
 	
 	m_tabCtrl.SubclassWindow(GetDlgItem(IDC_TAB));
 	
@@ -29,6 +30,7 @@ LRESULT AdvHaliteDialog::onInitDialog(HWND, LPARAM)
 	m_tabCtrl.AddPage(m_debug, L"Log");
 	
 	m_tabCtrl.SetCurrentPage(0);
+	
 	return 0;
 }
 

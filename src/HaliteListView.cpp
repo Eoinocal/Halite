@@ -77,7 +77,7 @@ void HaliteListViewCtrl::updateListView()
 
 		if (!(*i)->estimatedTimeLeft().is_special())
 		{
-			SetItemText(itemPos, 7,	(hal::to_wstr(
+			SetItemText(itemPos, 7,	(hal::from_utf8(
 				boost::posix_time::to_simple_string((*i)->estimatedTimeLeft())).c_str()));
 		}
 		else

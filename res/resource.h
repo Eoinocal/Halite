@@ -52,7 +52,6 @@
 #define IDC_EDITNCD                     1016
 #define IDC_EDITNCU                     1017
 #define IDC_EDITRATIO                   1018
-#define IDC_NC                          1083
 #define IDC_TLD                         1019
 #define IDC_TLU                         1020
 #define IDC_TL                          1021
@@ -120,6 +119,8 @@
 #define IDC_GROUP_TORRENT               1080
 #define IDC_GROUP_TRACKER               1081
 #define IDC_UPDATESTAT                  1082
+#define IDC_NC                          1083
+#define IDC_ADVDLG_VERSION              1084
 #define ED_CON                          3000
 #define IDPANE_STATUS                   40000
 #define ID_LVM_RESUME                   40000
@@ -159,3 +160,4 @@
 #define HAL_DOWN_RATES                  40022
 #define HAL_NOT_LISTENING               40023
 #define HAL_PORT_OPEN                   40024
+#define HAL_VERSION_STRING              40025

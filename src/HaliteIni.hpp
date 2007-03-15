@@ -44,7 +44,7 @@ public:
 		catch (const std::exception& e)
 		{			
 			hal::event().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventXmlException(hal::to_wstr(e.what()), hal::to_wstr(name_)))); 
+				new hal::EventXmlException(hal::from_utf8(e.what()), hal::from_utf8(name_)))); 
 		}
 	}
 	

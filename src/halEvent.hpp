@@ -116,8 +116,8 @@ class EventInvalidTorrent : public EventDetail
 public:
 	EventInvalidTorrent(Event::eventLevel l, unsigned code, std::string t, std::string f) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), code),
-		torrent_(hal::to_wstr(t)),
-		function_(hal::to_wstr(f)),
+		torrent_(hal::from_utf8(t)),
+		function_(hal::from_utf8(f)),
 		code_(code)
 	{}
 	
@@ -138,9 +138,9 @@ class EventTorrentException : public EventDetail
 public:
 	EventTorrentException(Event::eventLevel l, unsigned code, std::string e, std::string t, std::string f) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), code),
-		torrent_(hal::to_wstr(t)),
-		function_(hal::to_wstr(f)),
-		exception_(hal::to_wstr(e)),
+		torrent_(hal::from_utf8(t)),
+		function_(hal::from_utf8(f)),
+		exception_(hal::from_utf8(e)),
 		code_(code)
 	{}
 	
@@ -161,7 +161,7 @@ class EventStdException : public EventDetail
 public:
 	EventStdException(Event::eventLevel l, std::exception& e, std::wstring from) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), HAL_EVENT_STDEXP),
-		exception_(hal::to_wstr(e.what())),
+		exception_(hal::from_utf8(e.what())),
 		from_(from)
 	{}
 	

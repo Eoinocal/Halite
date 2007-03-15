@@ -36,12 +36,12 @@ public:
 					if (flags && LVIS_SELECTED)
 					{
 						m_list_.GetItemText(i, 0, pathBuffer.c_array(), pathBuffer.size());	
-						all_selected_.push_back(hal::to_str(pathBuffer.data()));
+						all_selected_.push_back(hal::to_utf8(pathBuffer.data()));
 					}
 				}
 				
 				// Single-Selected
-				string selected = hal::to_str(pathBuffer.data());
+				string selected = hal::to_utf8(pathBuffer.data());
 				
 				if (selected_ != selected)
 				{
@@ -60,7 +60,7 @@ public:
 			LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
 			findInfo.flags = LVFI_STRING;
 			
-			wstring torrent_name = hal::to_wstr(selected_);		
+			wstring torrent_name = hal::from_utf8(selected_);		
 			findInfo.psz = torrent_name.c_str();
 			
 			int itemPos = m_list_.FindItem(&findInfo, -1);	
@@ -81,7 +81,7 @@ public:
 	
 	int selectedIndex()
 	{
-		wstring torrent_name = hal::to_wstr(selected_);	
+		wstring torrent_name = hal::from_utf8(selected_);	
 		LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 	
 		findInfo.psz = torrent_name.c_str();
 		
