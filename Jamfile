@@ -1,9 +1,7 @@
 
 use-project /boost : $(/boost) ;
-#use-project /http : $(/http) ;
-use-project /libtorrent : $(/libtorrent) ;
 use-project /wtl : $(/wtl) ;
-use-project /os_libs : $(/os_libs) ;
+use-project /libtorrent : $(/libtorrent) ;
 
 SOURCES =
 	global/logger.cpp
@@ -22,11 +20,9 @@ SOURCES =
 	HaliteDialog.cpp
 	AdvHaliteDialog.cpp
 	ConfigOptions.cpp
-#	ini/BitTConfig.cpp
 	halConfig.cpp
 	halTorrent.cpp
 	halEvent.cpp
-#	GlobalIni.cpp
 #	halXmlRpc.cpp
 	NTray.cpp
 	UxthemeWrapper.cpp
@@ -47,9 +43,20 @@ LIBS =
 	kernel32
 	comdlg32
 	advapi32
-	gdi32	
-#	uxtheme	
+	gdi32
+	shell32
 	;
+
+lib comctl32 : : <name>comctl32.lib ;
+lib user32 : : <name>user32.lib ;
+lib kernel32 : : <name>kernel32.lib ;
+lib comdlg32 : : <name>comdlg32.lib ;
+lib advapi32 : : <name>advapi32.lib ;
+lib shell32 : : <name>shell32.lib ;
+lib gdi32 : : <name>gdi32.lib ;
+lib bufferoverflowU : : <name>bufferoverflowU.lib ;
+lib wsock32 : : <name>wsock32.lib ;
+lib uxtheme : : <name>UxTheme.lib ;
 
 project Halite
 
@@ -60,11 +67,11 @@ project Halite
 	<library>/boost/serialization//boost_wserialization/<link>static
 	<library>/boost/filesystem//boost_filesystem/<link>static
 	<library>/boost/regex//boost_regex/<link>static
-#	<library>/http//http/<link>static
-    <library>/libtorrent//torrent/<link>static
+	
+	<library>/libtorrent//torrent/<link>static
 	
 	<library>/wtl
-	<library>/os_libs//$(LIBS)
+	<library>$(LIBS)
 	
 	<variant>release:<define>NDEBUG
 	
