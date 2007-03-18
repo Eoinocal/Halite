@@ -12,12 +12,12 @@
 //-----------------------------------------------------------------------------
 // Class to make a window a dropfile target
 //-----------------------------------------------------------------------------
-template <class T> class CDropFileTarget  
+template <class T> class CDropFileTarget
 {
 public:
 
-	BEGIN_MSG_MAP(CDropFileTarget<T>)
-		MESSAGE_HANDLER(WM_DROPFILES, OnDropFiles) 
+	BEGIN_MSG_MAP_EX(CDropFileTarget<T>)
+		MESSAGE_HANDLER(WM_DROPFILES, OnDropFiles)
 	END_MSG_MAP()
 
 	//-----------------------------------------------------------------------------
@@ -44,7 +44,7 @@ private:
 	// Function name	: OnDropFiles
 	// Description	    : Handler for WM_DROPFILES message
 	// Return type		: LRESULT
-	// Parameter        : 
+	// Parameter        :
 	//-----------------------------------------------------------------------------
 	LRESULT OnDropFiles(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 	{
@@ -54,7 +54,7 @@ private:
 		ATLASSERT(::IsWindow(pT->m_hWnd));
 
 		// Get the handle to an internal structure describing the dropped files
-		HDROP hDrop = (HDROP)wParam; 
+		HDROP hDrop = (HDROP)wParam;
 
 		// Get the count of the files dropped
 		int nNumFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
@@ -68,7 +68,7 @@ private:
 			pT->ProcessFile(szFilename);
 		}
 
-		// Release the memory that the system allocated for use in transferring file 
+		// Release the memory that the system allocated for use in transferring file
 		// names to the application
 		DragFinish(hDrop);
 

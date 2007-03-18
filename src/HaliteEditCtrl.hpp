@@ -17,7 +17,7 @@ public:
 		range_inc_(include)
 	{}
 
-    BEGIN_MSG_MAP(CHalEditCtrl<T>)
+    BEGIN_MSG_MAP_EX(CHalEditCtrl<T>)
 		REFLECTED_NOTIFY_CODE_HANDLER_EX(EN_KILLFOCUS, OnKillFocus)
 		
         DEFAULT_REFLECTION_HANDLER()

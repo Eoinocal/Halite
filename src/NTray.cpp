@@ -3,9 +3,9 @@ Module : NTray.CPP
 Purpose: implementation for a MFC class to encapsulate Shell_NotifyIcon
 Created: PJN / 14-05-1997
 History: PJN / 25-11-1997 Addition of the following
-                          1. HideIcon(), ShowIcon() & MoveToExtremeRight() 
+                          1. HideIcon(), ShowIcon() & MoveToExtremeRight()
                           2. Support for animated tray icons
-         PJN / 23-06-1998 Class now supports the new Taskbar Creation Notification 
+         PJN / 23-06-1998 Class now supports the new Taskbar Creation Notification
                           message which comes with IE 4. This allows the tray icon
                           to be recreated whenever the explorer restarts (Crashes!!)
          PJN / 22-07-1998 1. Code now compiles cleanly at warning level 4
@@ -14,17 +14,17 @@ History: PJN / 25-11-1997 Addition of the following
          PJN / 27-01-1999 1. Code first tries to load a 16*16 icon before loading the 32*32
                           version. This removes the blurryness which was previously occuring
          PJN / 28-01-1999 1. Fixed a number of level 4 warnings which were occurring.
-         PJN / 09-05-1999 1. Fixed a problem as documented in KB article "PRB: Menus for 
-                          Notification Icons Do Not Work Correctly", Article ID: Q135788 
-         PJN / 15-05-1999 1. Now uses the author's hookwnd class. This prevents the need to 
+         PJN / 09-05-1999 1. Fixed a problem as documented in KB article "PRB: Menus for
+                          Notification Icons Do Not Work Correctly", Article ID: Q135788
+         PJN / 15-05-1999 1. Now uses the author's hookwnd class. This prevents the need to
                           create the two hidden windows namely CTrayRessurectionWnd and
                           CTrayTimerWnd
                           2. Code now compiles cleanly at warning level 4
                           3. General code tidy up and rearrangement
                           4. Added numerous ASSERT's to improve the code's robustness
                           5. Added functions to allow context menu to be customized
-         PJN / 01-01-2001 1. Now includes copyright message in the source code and documentation. 
-                          2. Fixed problem where the window does not get focus after double clicking 
+         PJN / 01-01-2001 1. Now includes copyright message in the source code and documentation.
+                          2. Fixed problem where the window does not get focus after double clicking
                           on the tray icon
                           3. Now fully supports the Windows 2000 balloon style tooltips
                           4. Fixed a off by one problem in some of the ASSERT's
@@ -39,7 +39,7 @@ History: PJN / 25-11-1997 Addition of the following
                           came from the article by Jeff Heaton in the April issue of WDJ. Also added
                           are overriden Create methods to allow you to easily costruct a dynamic
                           tray icon given a BITMAP instead of an ICON.
-         PJN / 21-03-2003 1. Fixed icon resource leaks in SetIcon(LPCTSTR lpIconName) and 
+         PJN / 21-03-2003 1. Fixed icon resource leaks in SetIcon(LPCTSTR lpIconName) and
                           SetIcon(UINT nIDResource). Thanks to Egor Pervouninski for reporting this.
                           2. Fixed unhooking of the tray icon when the notification window is being
                           closed.
@@ -52,7 +52,7 @@ History: PJN / 25-11-1997 Addition of the following
          PJN / 23-07-2004 1. Minor update to remove unnecessary include of "resource.h"
          PJN / 03-03-2006 1. Updated copyright details.
                           2. Updated the documentation to use the same style as the web site.
-                          3. Did a spell check of the documentation.        
+                          3. Did a spell check of the documentation.
                           4. Fixed some issues when the code is compiled using /Wp64. Please note that
                           to support this the code now requires a recentish Platform SDK to be installed
                           if the code is compiled with Visual C++ 6.
@@ -68,7 +68,7 @@ History: PJN / 25-11-1997 Addition of the following
                           11. Added support for NIS_HIDDEN via the ShowIcon and HideIcon methods.
                           12. Added support for NIIF_NOSOUND
          PJN / 27-06-2006 1. Code now uses new C++ style casts rather than old style C casts where necessary.
-                          2. The class framework now requires the Platform SDK if compiled using VC 6.  
+                          2. The class framework now requires the Platform SDK if compiled using VC 6.
                           3. Updated the logic of the ASSERTs which validate the various string lengths.
                           4. Fixed a bug in CTrayNotifyIcon::SetFocus() where the cbSize value was not being
                           set correctly.
@@ -78,57 +78,57 @@ History: PJN / 25-11-1997 Addition of the following
                           6. Optimized CTrayIconHooker constructor code
                           7. Updated code to compile cleanly using VC 2005. Thanks to "Itamar" for prompting this
                           update.
-                          8. Addition of a CTRAYNOTIFYICON_EXT_CLASS and CTRAYNOTIFYICON_EXT_API macros which makes 
+                          8. Addition of a CTRAYNOTIFYICON_EXT_CLASS and CTRAYNOTIFYICON_EXT_API macros which makes
                           the class easier to use in an extension dll.
                           9. Made CTrayNotifyIcon destructor virtual
-         PJN / 03-07-2005 1. Fixed a bug where the HideIcon functionality did not work on Windows 2000. This was 
+         PJN / 03-07-2005 1. Fixed a bug where the HideIcon functionality did not work on Windows 2000. This was
                           related to how the cbSize member of the NOTIFYICONDATA structure was initialized. The code
                           now dynamically determines the correct size to set at runtime according to the instructions
-                          provided by the MSDN documentation for this structure. As a result of this, all "bWin2k" 
+                          provided by the MSDN documentation for this structure. As a result of this, all "bWin2k"
                           parameters which were previously exposed via CTrayNotifyIcon have now been removed as there
                           is no need for them. Thanks to Edwin Geng for reporting this important bug. Client code will
                           still need to intelligently make decisions on what is supported by the OS. For example balloon
                           tray icons are only supported on Shell v5 (nominally Windows 2000 or later). CTrayNotifyIcon
-                          will ASSERT if for example calls are made to it to create a balloon tray icon on operating 
+                          will ASSERT if for example calls are made to it to create a balloon tray icon on operating
                           systems < Windows 2000.
-         PJN / 04-07-2006 1. Fixed a bug where the menu may pop up a second time after a menu item is chosen on 
-                          Windows 2000. The problem was tracked down to the code in CTrayNotifyIcon::OnTrayNotification. 
-                          During testing of this bug, I was unable to get a workable solution using the new shell 
-                          messages of WM_CONTEXTMENU, NIN_KEYSELECT & NIN_SELECT on Windows 2000 and Windows XP. 
-                          This means that the code in CTrayNotifyIcon::OnTrayNotification uses the old way of handling 
-                          notifications (WM_RBUTTDOWN*). This does mean that by default, client apps which use the 
+         PJN / 04-07-2006 1. Fixed a bug where the menu may pop up a second time after a menu item is chosen on
+                          Windows 2000. The problem was tracked down to the code in CTrayNotifyIcon::OnTrayNotification.
+                          During testing of this bug, I was unable to get a workable solution using the new shell
+                          messages of WM_CONTEXTMENU, NIN_KEYSELECT & NIN_SELECT on Windows 2000 and Windows XP.
+                          This means that the code in CTrayNotifyIcon::OnTrayNotification uses the old way of handling
+                          notifications (WM_RBUTTDOWN*). This does mean that by default, client apps which use the
                           CTrayNotifyIcon class will not support the new keyboard and mouse semantics for tray icons
-                          (IMHO this is no big loss!). Client code is of course free to handle their own notifications. 
-                          If you go down this route then I would advise you to thoroughly test your application on 
-                          Windows 2000 and Windows XP as my testing has shown that there is significant differences in 
-                          how tray icons handle their messaging on these 2 operating systems. Thanks to Edwin Geng for 
+                          (IMHO this is no big loss!). Client code is of course free to handle their own notifications.
+                          If you go down this route then I would advise you to thoroughly test your application on
+                          Windows 2000 and Windows XP as my testing has shown that there is significant differences in
+                          how tray icons handle their messaging on these 2 operating systems. Thanks to Edwin Geng for
                           reporting this issue.
                           2. Class now displays the menu based on the current message's screen coordinates, rather than
                           the current cursor screen coordinates.
-                          3. Fixed bug in sample app where if the about dialog is already up and it is reactivated 
+                          3. Fixed bug in sample app where if the about dialog is already up and it is reactivated
                           from the tray menu, it did not bring itself into the foreground
-         PJN / 06-07-2006 1. Reverted the change made for v1.53 where the screen coordinates used to show the context 
-                          menu use the current message's screen coordinates. Instead the pre v1.53 mechanism which 
-                          uses the current cursor's screen coordinates is now used. Thanks to Itamar Syn-Hershko for 
+         PJN / 06-07-2006 1. Reverted the change made for v1.53 where the screen coordinates used to show the context
+                          menu use the current message's screen coordinates. Instead the pre v1.53 mechanism which
+                          uses the current cursor's screen coordinates is now used. Thanks to Itamar Syn-Hershko for
                           reporting this issue.
-         PJN / 19-07-2006 1. The default menu item can now be customized via SetDefaultMenuItem and 
+         PJN / 19-07-2006 1. The default menu item can now be customized via SetDefaultMenuItem and
                           GetDefaultMenuItem. Thanks to Mikhail Bykanov for suggesting this nice update.
                           2. Optimized CTrayNotifyIcon constructor code
          PJN / 19-08-2005 1. Updated the code to operate independent of MFC if so desired. This requires WTL which is an
-                          open source library extension for ATL to provide UI support along the lines of MFC. Thanks to 
+                          open source library extension for ATL to provide UI support along the lines of MFC. Thanks to
                           zhiguo zhao for providing this very nice addition.
          PJN / 15-09-2006 1. Fixed a bug where WM_DESTROY messages were not been handled correctly for the top level window
                           which the CTrayIconHooker class subclasses in order to handle the tray resurrection message,
-                          the animation timers and auto destroying of the icons when the top level window is destroyed. 
+                          the animation timers and auto destroying of the icons when the top level window is destroyed.
                           Thanks to Edward Livingston for reporting this bug.
-                          2. Fixed a bug where the tray icons were not being recreated correctly when we receive the 
+                          2. Fixed a bug where the tray icons were not being recreated correctly when we receive the
                           "TaskbarCreated" when Explorer is restarted. Thanks to Nuno Esculcas for reporting this bug.
                           3. Split the functionality of hiding versus deleting and showing versus creating of the tray
-                          icon into 4 separate functions, namely Delete(), Create(), Hide() and Show(). Note that Hide 
+                          icon into 4 separate functions, namely Delete(), Create(), Hide() and Show(). Note that Hide
                           and Show functionality is only available on Shell v5 or later.
                           4. Fixed an issue with recreation of tray icons which use a dynamic icon created from a bitmap
                           (through the use of BitmapToIcon).
-                          5. CTrayNotifyIcon::LoadIconResource now loads up an icon as a shared icon resource using 
+                          5. CTrayNotifyIcon::LoadIconResource now loads up an icon as a shared icon resource using
                           LoadImage. This should avoid resource leaks using this function.
 
 Copyright (c) 1997 - 2006 by PJ Naughter (Web: www.naughter.com, Email: pjna@naughter.com)
@@ -137,11 +137,11 @@ All rights reserved.
 
 Copyright / Usage Details:
 
-You are allowed to include the source code in any product (commercial, shareware, freeware or otherwise) 
-when your product is released in binary form. You are allowed to modify the source code in any way you want 
-except you cannot modify the copyright details at the top of each module. If you want to distribute source 
-code with your application, then you are only allowed to distribute versions released by the author. This is 
-to maintain a single distribution point for the source code. 
+You are allowed to include the source code in any product (commercial, shareware, freeware or otherwise)
+when your product is released in binary form. You are allowed to modify the source code in any way you want
+except you cannot modify the copyright details at the top of each module. If you want to distribute source
+code with your application, then you are only allowed to distribute versions released by the author. This is
+to maintain a single distribution point for the source code.
 
 */
 
@@ -254,19 +254,19 @@ BOOL CTrayIconHooker::Init(CTrayNotifyIcon* pTrayIcon, CWindow* pNotifyWnd)
   //Hive away the input parameter
   m_pTrayIcon = pTrayIcon;
 
-  //Hook the top level frame of the notify window in preference 
+  //Hook the top level frame of the notify window in preference
   //to the notify window itself. This will ensure that we get
   //the taskbar created message
-#ifdef _AFX  
+#ifdef _AFX
   CWnd* pTopLevelWnd = pNotifyWnd->GetTopLevelFrame();
   if (pTopLevelWnd)
-    return SubclassWindow(pTopLevelWnd->operator HWND()); 
+    return SubclassWindow(pTopLevelWnd->operator HWND());
   else
     return SubclassWindow(pNotifyWnd->GetSafeHwnd());
 #else
   CWindow TopLevelWnd = pNotifyWnd->GetTopLevelWindow();
   if (TopLevelWnd.IsWindow())
-    return SubclassWindow(TopLevelWnd.operator HWND()); 
+    return SubclassWindow(TopLevelWnd.operator HWND());
   else
     return SubclassWindow(pNotifyWnd->m_hWnd);
 #endif
@@ -280,7 +280,7 @@ void CTrayIconHooker::StartUsingAnimation(HICON* phIcons, int nNumIcons, DWORD d
   ATLASSERT(dwDelay);        //must be non zero timer interval
   ATLASSERT(m_pTrayIcon);
 
-  //Stop the animation if already started  
+  //Stop the animation if already started
   StopUsingAnimation();
 
   //Hive away all the values locally
@@ -290,7 +290,7 @@ void CTrayIconHooker::StartUsingAnimation(HICON* phIcons, int nNumIcons, DWORD d
     m_phIcons[i] = phIcons[i];
   m_nNumIcons = nNumIcons;
 
-  //Start up the timer 
+  //Start up the timer
   m_nTimerID = SetTimer(m_pTrayIcon->m_NotifyIconData.uID, dwDelay);
 }
 
@@ -303,7 +303,7 @@ void CTrayIconHooker::StopUsingAnimation()
       KillTimer(m_nTimerID);
     m_nTimerID = 0;
   }
- 
+
   //Free up the memory
   if (m_phIcons)
   {
@@ -321,11 +321,11 @@ BOOL CTrayIconHooker::UsingAnimatedIcon() const
   return (m_nNumIcons != 0);
 }
 
-HICON CTrayIconHooker::GetCurrentIcon() const 
-{ 
+HICON CTrayIconHooker::GetCurrentIcon() const
+{
   ATLASSERT(UsingAnimatedIcon());
   ATLASSERT(m_phIcons);
-  return m_phIcons[m_nCurrentIconIndex]; 
+  return m_phIcons[m_nCurrentIconIndex];
 }
 
 BOOL CTrayIconHooker::ProcessWindowMessage(HWND /*hWnd*/, UINT nMsg, WPARAM wParam, LPARAM /*lParam*/, LRESULT& lResult, DWORD /*dwMsgMapID*/)
@@ -344,7 +344,7 @@ BOOL CTrayIconHooker::ProcessWindowMessage(HWND /*hWnd*/, UINT nMsg, WPARAM wPar
   }
   else if ((nMsg == WM_TIMER) && (wParam == m_pTrayIcon->m_NotifyIconData.uID))
   {
-    OnTimer(m_pTrayIcon->m_NotifyIconData.uID); 
+    OnTimer(m_pTrayIcon->m_NotifyIconData.uID);
     bHandled = TRUE; //Do not allow this message to go any further because we have fully handled the message
   }
   else if (nMsg == WM_DESTROY)
@@ -356,7 +356,7 @@ BOOL CTrayIconHooker::ProcessWindowMessage(HWND /*hWnd*/, UINT nMsg, WPARAM wPar
 #ifdef _DEBUG
 void CTrayIconHooker::OnTimer(UINT_PTR nIDEvent)
 #else
-void CTrayIconHooker::OnTimer(UINT_PTR /*nIDEvent*/)  //Just to avoid a compiler warning 
+void CTrayIconHooker::OnTimer(UINT_PTR /*nIDEvent*/)  //Just to avoid a compiler warning
 #endif                                                //when being built for release
 {
   ATLASSERT(nIDEvent == m_nTimerID);
@@ -387,7 +387,7 @@ CTrayNotifyIcon::~CTrayNotifyIcon()
 {
   //Delete the tray icon
   Delete();
-  
+
   //Free up any dynamic icon we may have
   if (m_hDynamicIcon)
   {
@@ -427,7 +427,7 @@ BOOL CTrayNotifyIcon::Hide()
 
   m_NotifyIconData.uFlags = NIF_STATE;
   m_NotifyIconData.dwState = NIS_HIDDEN;
-  m_NotifyIconData.dwStateMask = NIS_HIDDEN; 
+  m_NotifyIconData.dwStateMask = NIS_HIDDEN;
   BOOL bSuccess = Shell_NotifyIcon(NIM_MODIFY, reinterpret_cast<PNOTIFYICONDATA>(&m_NotifyIconData));
   if (bSuccess)
     m_bHidden = TRUE;
@@ -461,7 +461,7 @@ void CTrayNotifyIcon::SetMenu(HMENU hMenu)
 #ifdef _AFX
   CMenu* pSubMenu = m_Menu.GetSubMenu(0);
   ATLASSERT(pSubMenu); //Your menu resource has been designed incorrectly
-    
+
   //Make the specified menu item the default (bold font)
   pSubMenu->SetDefaultItem(m_nDefaultMenuItem, m_bDefaultMenuItemByPos);
 #else
@@ -478,10 +478,10 @@ CMenu& CTrayNotifyIcon::GetMenu()
   return m_Menu;
 }
 
-void CTrayNotifyIcon::SetDefaultMenuItem(UINT uItem, BOOL fByPos) 
-{ 
-  m_nDefaultMenuItem = uItem; 
-  m_bDefaultMenuItemByPos = fByPos; 
+void CTrayNotifyIcon::SetDefaultMenuItem(UINT uItem, BOOL fByPos)
+{
+  m_nDefaultMenuItem = uItem;
+  m_bDefaultMenuItemByPos = fByPos;
 
   //Also update in the live menu if it is present
   if (m_Menu.operator HMENU())
@@ -494,7 +494,7 @@ void CTrayNotifyIcon::SetDefaultMenuItem(UINT uItem, BOOL fByPos)
   #else
     CMenuHandle subMenu = m_Menu.GetSubMenu(0);
     ATLASSERT(subMenu.IsMenu()); //Your menu resource has been designed incorrectly
-    
+
     subMenu.SetMenuDefaultItem(m_nDefaultMenuItem, m_bDefaultMenuItemByPos);
   #endif
   }
@@ -508,7 +508,7 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
 {
   //Validate our parameters
   ATLASSERT(pNotifyWnd && ::IsWindow(pNotifyWnd->operator HWND()));
-#ifdef _DEBUG  
+#ifdef _DEBUG
   if (GetShellVersion() >= 5) //If on Shell v5 or higher, then use the larger size tooltip
   {
     NOTIFYICONDATA_2 dummy;
@@ -522,7 +522,7 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
     DBG_UNREFERENCED_LOCAL_VARIABLE(dummy);
   }
 #endif
-  ATLASSERT(hIcon); 
+  ATLASSERT(hIcon);
   ATLASSERT(nNotifyMessage >= WM_USER); //Make sure we avoid conflict with other messages
 
   //Load up the menu resource which is to be used as the context menu
@@ -533,7 +533,7 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
   }
 #ifdef _AFX
   CMenu* pSubMenu = m_Menu.GetSubMenu(0);
-  if (!pSubMenu) 
+  if (!pSubMenu)
   {
     ATLASSERT(FALSE); //Your menu resource has been designed incorrectly
     return FALSE;
@@ -563,9 +563,9 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
   m_NotifyIconData.hIcon = hIcon;
 #if (_MSC_VER >= 1400)
   _tcscpy_s(m_NotifyIconData.szTip, sizeof(m_NotifyIconData.szTip)/sizeof(TCHAR), pszTooltipText);
-#else  
+#else
   _tcscpy(m_NotifyIconData.szTip, pszTooltipText);
-#endif  
+#endif
   m_bCreated = Shell_NotifyIcon(NIM_ADD, reinterpret_cast<PNOTIFYICONDATA>(&m_NotifyIconData));
 
   //Turn on Shell v5 style behaviour if supported
@@ -621,8 +621,8 @@ HICON CTrayNotifyIcon::BitmapToIcon(CBitmap* pBitmap)
   iconInfo.xHotspot = 0;
   iconInfo.yHotspot = 0;
   iconInfo.hbmMask = maskBitmap;
-  iconInfo.hbmColor = *pBitmap; 
-  return CreateIconIndirect(&iconInfo); 
+  iconInfo.hbmColor = *pBitmap;
+  return CreateIconIndirect(&iconInfo);
 }
 
 #ifdef _AFX
@@ -675,7 +675,7 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
   ATLASSERT(_tcslen(pszTooltipText) < sizeof(dummy.szTip)/sizeof(TCHAR));
   ATLASSERT(_tcslen(pszBalloonText) < sizeof(dummy.szInfo)/sizeof(TCHAR));
   ATLASSERT(_tcslen(pszBalloonCaption) < sizeof(dummy.szInfoTitle)/sizeof(TCHAR));
-  ATLASSERT(hIcon); 
+  ATLASSERT(hIcon);
   ATLASSERT(nNotifyMessage >= WM_USER); //Make sure we avoid conflict with other messages
 #endif
 
@@ -687,7 +687,7 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
   }
 #ifdef _AFX
   CMenu* pSubMenu = m_Menu.GetSubMenu(0);
-  if (!pSubMenu) 
+  if (!pSubMenu)
   {
     ATLASSERT(FALSE); //Your menu resource has been designed incorrectly
     return FALSE;
@@ -696,14 +696,14 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
   pSubMenu->SetDefaultItem(m_nDefaultMenuItem, m_bDefaultMenuItemByPos);
 #else
   CMenuHandle subMenu = m_Menu.GetSubMenu(0);
-  if (!subMenu.IsMenu()) 
+  if (!subMenu.IsMenu())
   {
     ATLASSERT(FALSE); //Your menu resource has been designed incorrectly
     return FALSE;
   }
   //Make the specified menu item the default (bold font)
   subMenu.SetMenuDefaultItem(m_nDefaultMenuItem, m_bDefaultMenuItemByPos);
-#endif  
+#endif
 
   //Install the hook
   if (!m_HookWnd.Init(this, pNotifyWnd))
@@ -724,7 +724,7 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
   _tcscpy(m_NotifyIconData.szTip, pszTooltipText);
   _tcscpy(m_NotifyIconData.szInfo, pszBalloonText);
   _tcscpy(m_NotifyIconData.szInfoTitle, pszBalloonCaption);
-#endif  
+#endif
   m_NotifyIconData.uTimeout = nTimeout;
   switch (style)
   {
@@ -825,10 +825,10 @@ BOOL CTrayNotifyIcon::SetBalloonDetails(LPCTSTR pszBalloonText, LPCTSTR pszBallo
 #if (_MSC_VER >= 1400)
   _tcscpy_s(m_NotifyIconData.szInfo, sizeof(m_NotifyIconData.szInfo)/sizeof(TCHAR), pszBalloonText);
   _tcscpy_s(m_NotifyIconData.szInfoTitle, sizeof(m_NotifyIconData.szInfoTitle)/sizeof(TCHAR), pszBalloonCaption);
-#else  
+#else
   _tcscpy(m_NotifyIconData.szInfo, pszBalloonText);
   _tcscpy(m_NotifyIconData.szInfoTitle, pszBalloonCaption);
-#endif  
+#endif
   m_NotifyIconData.uTimeout = nTimeout;
   switch (style)
   {
@@ -920,7 +920,7 @@ BOOL CTrayNotifyIcon::SetTooltipText(LPCTSTR pszTooltipText)
     ATLASSERT(_tcslen(pszTooltipText) < sizeof(dummy.szTip)/sizeof(TCHAR));
   #endif
   }
-  else 
+  else
   {
   #ifdef _DEBUG
     NOTIFYICONDATA_1 dummy;
@@ -931,11 +931,11 @@ BOOL CTrayNotifyIcon::SetTooltipText(LPCTSTR pszTooltipText)
 
   //Call the Shell_NotifyIcon function
   m_NotifyIconData.uFlags = NIF_TIP;
-#if (_MSC_VER >= 1400)  
+#if (_MSC_VER >= 1400)
   _tcscpy_s(m_NotifyIconData.szTip, sizeof(m_NotifyIconData.szTip)/sizeof(TCHAR), pszTooltipText);
 #else
   _tcscpy(m_NotifyIconData.szTip, pszTooltipText);
-#endif  
+#endif
   return Shell_NotifyIcon(NIM_MODIFY, reinterpret_cast<PNOTIFYICONDATA>(&m_NotifyIconData));
 }
 
@@ -1018,14 +1018,14 @@ HICON CTrayNotifyIcon::LoadIconResource(LPCTSTR lpIconName)
 #ifdef _AFX
   HICON hIcon = static_cast<HICON>(::LoadImage(AfxGetResourceHandle(), lpIconName, IMAGE_ICON, GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), LR_SHARED));
 #else
-  HICON hIcon = static_cast<HICON>(::LoadImage(ATL::_AtlBaseModule.GetResourceInstance(), lpIconName, IMAGE_ICON, GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), LR_SHARED));
+  HICON hIcon = static_cast<HICON>(::LoadImage(_Module.GetResourceInstance(), lpIconName, IMAGE_ICON, GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), LR_SHARED));
 #endif
   if (hIcon == NULL)
   {
   #ifdef _AFX
     hIcon = AfxGetApp()->LoadIcon(lpIconName);
   #else
-    hIcon = ::LoadIcon(ATL::_AtlBaseModule.GetResourceInstance(), lpIconName);
+    hIcon = ::LoadIcon(_Module.GetResourceInstance(), lpIconName);
   #endif
   }
 
@@ -1120,7 +1120,7 @@ LRESULT CTrayNotifyIcon::OnTrayNotification(WPARAM wID, LPARAM lEvent)
   {
     CPoint ptCursor;
     GetCursorPos(&ptCursor);
-    ::SetForegroundWindow(m_NotifyIconData.hWnd);  
+    ::SetForegroundWindow(m_NotifyIconData.hWnd);
   #ifdef _AFX
     ::TrackPopupMenu(pSubMenu->m_hMenu, TPM_LEFTBUTTON, ptCursor.x, ptCursor.y, 0, m_NotifyIconData.hWnd, NULL);
   #else
@@ -1128,7 +1128,7 @@ LRESULT CTrayNotifyIcon::OnTrayNotification(WPARAM wID, LPARAM lEvent)
   #endif
     ::PostMessage(m_NotifyIconData.hWnd, WM_NULL, 0, 0);
   }
-  else if (lEvent == WM_LBUTTONDBLCLK) //double click received, the default action is to execute first menu item 
+  else if (lEvent == WM_LBUTTONDBLCLK) //double click received, the default action is to execute first menu item
   {
     ::SetForegroundWindow(m_NotifyIconData.hWnd);
   #ifdef _AFX
@@ -1175,7 +1175,7 @@ BOOL CTrayNotifyIcon::GetDynamicDCAndBitmap(CDC* pDC, CBitmap* pBitmap)
   int w = GetSystemMetrics(SM_CXSMICON);
   int h = GetSystemMetrics(SM_CYSMICON);
 
-  //Create an off-screen bitmap that the dynamic tray icon 
+  //Create an off-screen bitmap that the dynamic tray icon
   //can be drawn into. (Compatible with the desktop DC).
 #ifdef _AFX
   BOOL bSuccess = pBitmap->CreateCompatibleBitmap(pDCScreen, w, h);
@@ -1253,7 +1253,7 @@ DWORD CTrayNotifyIcon::GetShellVersion()
         sm_dwShellVersion = vinfo.dwMajorVersion;
     }
   }
-  
+
   return sm_dwShellVersion;
 }
 

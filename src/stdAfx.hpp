@@ -2,20 +2,20 @@
 
 #pragma once
 
-#define WINVER 0x0500
-#define _WIN32_WINNT 0x0500
+#define WINVER 0x0600
+#define _WIN32_WINNT 0x0600
 #define _WIN32_IE 0x0500
 #define _RICHEDIT_VER 0x0200
 #define VC_EXTRALEAN
+#define WIN32_LEAN_AND_MEAN
 
 #define HALITE_GUID L"HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}"
 #define WMU_ARE_YOU_ME_STRING  L"WMU_ARE_YOU_ME_HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}"
 #define HALITE_SENDING_CMD 68816889
 
-#include <atlbase.h>
 #include <winsock2.h>
-#include <mswsock.h>
-//#include <atlsocket.h>
+#include <shellapi.h>
+#include <atlbase.h>
 #include <atlapp.h>
 
 extern CAppModule _Module;

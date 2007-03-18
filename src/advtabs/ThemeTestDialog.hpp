@@ -1,6 +1,6 @@
 
 #pragma once
- 
+
 #include "stdAfx.hpp"
 #include "DdxEx.hpp"
 
@@ -21,7 +21,7 @@ protected:
 	typedef CDialogResize<ThemeTestDialog> resizeClass;
 public:
 	enum { IDD = IDD_THEMETEST };
-	
+
 	ThemeTestDialog()
 	{}
 
@@ -29,13 +29,13 @@ public:
 	{
 		return this->IsDialogMessage(pMsg);
 	}
-  	
-	BEGIN_MSG_MAP(thisClass)
+
+	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
-		
+
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
-		
+
 		CHAIN_MSG_MAP(baseClass)
 		CHAIN_MSG_MAP(resizeClass)
 	END_MSG_MAP()
@@ -43,13 +43,13 @@ public:
 	BEGIN_DLGRESIZE_MAP(thisClass)
 
 	END_DLGRESIZE_MAP()
-	
-	LRESULT onInitDialog(HWND, LPARAM) 
+
+	LRESULT onInitDialog(HWND, LPARAM)
 	{
 		::SetWindowText(GetDlgItem(IDC_EDIT2), L"Eoin");
-		return 0; 
-	}	
-		
+		return 0;
+	}
+
 protected:
 	wstring giveme;
 };

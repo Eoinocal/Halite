@@ -15,9 +15,9 @@
 //  correctly.
 //
 // This code may be used in compiled form in any way you desire. This
-// file may be redistributed by any means PROVIDING it is 
-// not sold for profit without the authors written consent, and 
-// providing that this notice and the authors name is included. 
+// file may be redistributed by any means PROVIDING it is
+// not sold for profit without the authors written consent, and
+// providing that this notice and the authors name is included.
 //
 // This file is provided "as is" with no expressed or implied warranty.
 // The author accepts no liability if it causes any damage to you or your
@@ -130,7 +130,7 @@ public:
       AddOutput(pstrDest, _T("{\\colortbl ;"));
       for( i=0; i<m_aColors.GetSize(); i++ ) {
          COLORREF clr = m_aColors[i];
-         AddOutputV(pstrDest, _T("\\red%d\\green%d\\blue%d;"), 
+         AddOutputV(pstrDest, _T("\\red%d\\green%d\\blue%d;"),
             GetRValue(clr), GetGValue(clr), GetBValue(clr));
       }
       AddOutput(pstrDest, _T("}"));
@@ -251,7 +251,7 @@ public:
                }
                Context.lLeftIndent =
                Context.lRightIndent =
-               Context.lTopIndent = 
+               Context.lTopIndent =
                Context.lBottomIndent = 8;
                if( GetAttribute(pszTag, _T("leftmargin"), szValue) ) {
                   Context.lLeftIndent = GetInteger(szValue);
@@ -308,7 +308,7 @@ public:
                   else if( _tcscmp(szValue, _T("justify")) == 0 ) AddOutput(pszAppendScope, _T("\\qj "));
                }
                if( GetAttribute(pszTag, _T("nowrap"), szValue) ) {
-                  AddOutput(pszAppendScope, _T("\\nowwrap "));                 
+                  AddOutput(pszAppendScope, _T("\\nowwrap "));
                }
                bNewContext = true;
             }
@@ -478,14 +478,14 @@ public:
          switch( *pszHTML ) {
          case _T('&'):
             {
-               static LPCTSTR szPseudo[] = 
+               static LPCTSTR szPseudo[] =
                {
                   _T("&nbsp;"), _T("\\~"),
                   _T("&quot;"), _T("\""),
                   _T("&amp;"), _T("&"),
                   _T("&lt;"), _T("<"),
                   _T("&gt;"), _T(">"),
-                  NULL, NULL 
+                  NULL, NULL
                };
                LPCTSTR* ppstrPseudo = szPseudo;
                while( *ppstrPseudo ) {
@@ -557,7 +557,7 @@ public:
    }
    void AddOutputV(LPTSTR& pstrDest, LPCTSTR pszFormat, ...) const
    {
-      va_list argptr;         
+      va_list argptr;
       va_start( argptr, pszFormat );
       int nCount = ::wvsprintf( pstrDest, pszFormat, argptr );
       va_end( argptr );
@@ -720,7 +720,7 @@ public:
    BOOL Load(LPCTSTR pszHTML)
    {
       ATLASSERT(!::IsBadStringPtr(pszHTML,-1));
-      
+
       // Extract current font, text color and background color...
       HFONT hFont = GetFont();
       if( hFont==NULL ) hFont = (HFONT) ::GetStockObject(ANSI_VAR_FONT);
@@ -729,7 +729,7 @@ public:
       CWindowDC dc(m_hWnd);
       m_clrText = dc.GetTextColor();
       m_clrBack = dc.GetBkColor();
-      
+
       // Convert HTML to RTF
       LPTSTR pstrText = (LPTSTR) convert.Convert(pszHTML, lf, m_clrText, m_clrBack);
       if( pstrText==NULL ) return FALSE;
@@ -787,7 +787,7 @@ public:
    {
       conv;
 #if _RICHEDIT_VER >= 0x0200
-      // Traverse the collection of links to assign the new display 
+      // Traverse the collection of links to assign the new display
       // state. Links seems to be handled internally in the RichEdit
       // control and not by some proprietary RTF tag (must be a first for
       // Microsoft...) so we need to manually assign the CFE_LINK attribute.
@@ -821,7 +821,7 @@ public:
 
    // Message map and handlers
 
-   BEGIN_MSG_MAP(CSimpleHtmlCtrl)
+   BEGIN_MSG_MAP_EX(CSimpleHtmlCtrl)
       MESSAGE_HANDLER(WM_CREATE, OnCreate)
    END_MSG_MAP()
 

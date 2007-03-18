@@ -1,6 +1,6 @@
 
 #pragma once
- 
+
 #include "stdAfx.hpp"
 #include "DdxEx.hpp"
 
@@ -30,7 +30,7 @@ protected:
 	typedef CDialogResize<AdvHaliteDialog> resizeClass;
 public:
 	enum { IDD = IDD_ADVHALITEDLG };
-	
+
 	AdvHaliteDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
 		m_torrent(ui_sig, single_sel),
 		m_tracker(ui_sig, single_sel),
@@ -41,15 +41,15 @@ public:
 	{
 		return this->IsDialogMessage(pMsg);
 	}
-  	
-	BEGIN_MSG_MAP(thisClass)
+
+	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
-		MSG_WM_CLOSE(onClose)	
-		MSG_WM_SIZE(OnSize)		
-		
+		MSG_WM_CLOSE(onClose)
+		MSG_WM_SIZE(OnSize)
+
 		if(uMsg == WM_FORWARDMSG)
 			if(PreTranslateMessage((LPMSG)lParam)) return TRUE;
-		
+
 		CHAIN_MSG_MAP(resizeClass)
 		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
@@ -59,11 +59,11 @@ public:
 		DLGRESIZE_CONTROL(IDC_ADVDLG_VERSION, (DLSZ_MOVE_X))
 
 	END_DLGRESIZE_MAP()
-	
-	LRESULT onInitDialog(HWND, LPARAM);	
+
+	LRESULT onInitDialog(HWND, LPARAM);
 	void OnSize(UINT, CSize);
-	void onClose();	
-	
+	void onClose();
+
 protected:
 	void InitializeControls(void);
 	void InitializeValues(void);
@@ -71,10 +71,10 @@ protected:
 	CHalTabCtrl m_tabCtrl;
 	boost::scoped_ptr<ThemeTestDialog> mp_dlg;
 	boost::scoped_ptr<AdvTorrentDialog> mp_dlg2;
-	
+
 	AdvTorrentDialog m_torrent;
 	AdvTrackerDialog m_tracker;
 	AdvDebugDialog m_debug;
-	
-	HaliteWindow* mainHaliteWindow;	
+
+	HaliteWindow* mainHaliteWindow;
 };
