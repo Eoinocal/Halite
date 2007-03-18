@@ -13,7 +13,9 @@
 #define HALITE_SENDING_CMD 68816889
 
 #include <atlbase.h>
-#include <atlsocket.h>
+#include <winsock2.h>
+#include <mswsock.h>
+//#include <atlsocket.h>
 #include <atlapp.h>
 
 extern CAppModule _Module;

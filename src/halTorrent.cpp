@@ -362,7 +362,8 @@ lbt::entry haldecode(const wpath &file)
 
 bool halencode(const wpath &file, const lbt::entry &e) 
 {
-	ofstream fs(file, ofstream::binary);
+	fs::ofstream fs(file);
+
 	if (!fs.is_open()) 
 		return false;
 	
@@ -1225,7 +1226,8 @@ void BitTorrent::closeAll()
 		lbt::entry resumedata = t.second.handle().write_resume_data();
 		pimpl->theSession.remove_torrent(t.second.handle());
 		
-		halencode(resumeDir/from_utf8(t.first), resumedata);
+		bool halencode_result = halencode(resumeDir/from_utf8(t.first), resumedata);
+		assert(halencode_result);
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")

@@ -58,6 +58,7 @@ project Halite
 	<library>/boost/signals//boost_signals/<link>static
 	<library>/boost/serialization//boost_serialization/<link>static
 	<library>/boost/serialization//boost_wserialization/<link>static
+	<library>/boost/filesystem//boost_filesystem/<link>static
 	<library>/boost/regex//boost_regex/<link>static
 #	<library>/http//http/<link>static
     <library>/libtorrent//torrent/<link>static
@@ -75,7 +76,7 @@ project Halite
 	<toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
 	<toolset>msvc:<define>_CRT_SECURE_NO_WARNINGS
 	
-	<runtime-link>static
+#	<runtime-link>static
 	
 	<toolset>msvc:<linkflags>/SUBSYSTEM:WINDOWS
 	;

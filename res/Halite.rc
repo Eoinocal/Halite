@@ -319,7 +319,7 @@ IDR_APP_ICON        ICON          "Halite.ico"
 
 IDR_MAINFRAME       BITMAP        "toolbar.bmp"
 
-1                   RT_MANIFEST   "Manifest.xml"
+//1                   RT_MANIFEST   "Manifest.xml"
 
 1 VERSIONINFO
     FILEVERSION     0,2,9,145

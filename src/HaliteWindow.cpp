@@ -232,8 +232,8 @@ void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)
 		try
 		{
 		
-	//	hal::ini().save_data();
-	//	hal::bittorrent().saveTorrentData();	
+		hal::ini().save_data();
+		hal::bittorrent().saveTorrentData();	
 	
 		}
 		catch (std::exception& e)
