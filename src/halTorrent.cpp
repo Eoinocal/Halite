@@ -667,7 +667,7 @@ private:
 			dht_state_ = haldecode(workingDirectory/L"DHTState.bin");
 				
 		{	lbt::session_settings settings = theSession.settings();
-			settings.user_agent = "Halite v 0.2.9 dev 145";
+			settings.user_agent = "Halite v 0.2.9 dev 148";
 			theSession.set_settings(settings);
 		}
 		
