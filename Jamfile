@@ -58,39 +58,42 @@ lib bufferoverflowU : : <name>bufferoverflowU.lib ;
 lib wsock32 : : <name>wsock32.lib ;
 lib uxtheme : : <name>UxTheme.lib ;
 
-project Halite
-
-	: requirements
-	
-	<library>/boost/signals//boost_signals/<link>static
-	<library>/boost/serialization//boost_serialization/<link>static
-	<library>/boost/serialization//boost_wserialization/<link>static
-	<library>/boost/filesystem//boost_filesystem/<link>static
-	<library>/boost/regex//boost_regex/<link>static
-	
-	<library>/libtorrent//torrent/<link>static
-	
-	<library>/wtl
-	<library>$(LIBS)
-	
-	<variant>release:<define>NDEBUG
-	
-	<toolset>msvc:<define>_UNICODE
-	<toolset>msvc:<define>WIN32
-	<toolset>msvc:<define>_WINDOWS
-	
-	<toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
-	<toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
-	<toolset>msvc:<define>_CRT_SECURE_NO_WARNINGS
-	
-#	<runtime-link>static
-	
-	<toolset>msvc:<linkflags>/SUBSYSTEM:WINDOWS
-	;
-
 exe Halite
 	:
 	./src/$(SOURCES)
 	./res/$(RESOURCES)
+	: 	
+	<library>/boost/signals//boost_signals/<link>static
+	<library>/boost/serialization//boost_serialization/<link>static
+	<library>/boost/serialization//boost_wserialization/<link>static
+	<library>/boost/filesystem//boost_filesystem/<link>static
+	<library>/boost/regex//boost_regex/<link>static	
+	<library>/libtorrent//torrent/<link>static	
+	<library>/wtl
+	<library>$(LIBS)
+	
+#	<runtime-link>static
+	<threading>multi
+	<asynch-exceptions>on
+	
+	<variant>release:<define>NDEBUG
+	
+	<define>_UNICODE
+	<define>UNICODE
+	<define>WIN32
+	<define>_WINDOWS	
+	<define>_CRT_SECURE_NO_DEPRECATE
+	<define>_SCL_SECURE_NO_DEPRECATE
+	<define>_CRT_SECURE_NO_WARNINGS
+	
+	<linkflags>/SUBSYSTEM:WINDOWS
+	;
+	
+lib English
+	:
+	
+	:	
+	<linkflags>/NOENTRY
+	<linkflags>/MACHINE:X86
 	;
 

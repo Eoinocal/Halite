@@ -322,8 +322,8 @@ IDR_MAINFRAME       BITMAP        "toolbar.bmp"
 //1                   RT_MANIFEST   "Manifest.xml"
 
 1 VERSIONINFO
-    FILEVERSION     0,2,9,145
-    PRODUCTVERSION  0,2,9,145
+    FILEVERSION     0,2,9,148
+    PRODUCTVERSION  0,2,9,148
     FILEOS          VOS_UNKNOWN
     FILETYPE        VFT_UNKNOWN
 BEGIN
@@ -336,7 +336,7 @@ BEGIN
             VALUE "FileDescription", "Halite BitTorrent Client"
             VALUE "FileVersion", "0, 2, 9, dev 148"
             VALUE "InternalName", "Halite"
-            VALUE "LegalCopyright", "(C) Eoin O'Callaghan 2006"
+            VALUE "LegalCopyright", "(C) Eoin O'Callaghan 2007"
             VALUE "OriginalFilename", "Halite.exe"
             VALUE "ProductName", "Halite"
             VALUE "ProductVersion", "0, 2, 9, dev 148"

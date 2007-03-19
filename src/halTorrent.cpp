@@ -362,7 +362,7 @@ lbt::entry haldecode(const wpath &file)
 
 bool halencode(const wpath &file, const lbt::entry &e) 
 {
-	fs::ofstream fs(file);
+	fs::ofstream fs(file, ofstream::binary);
 
 	if (!fs.is_open()) 
 		return false;
