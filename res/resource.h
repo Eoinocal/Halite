@@ -161,3 +161,6 @@
 #define HAL_NOT_LISTENING               40023
 #define HAL_PORT_OPEN                   40024
 #define HAL_VERSION_STRING              40025
+#define HAL_LISTVIEW_COLUMNS            40026
+#define HAL_DEBUG_LISTVIEW_COLUMNS      40027
+

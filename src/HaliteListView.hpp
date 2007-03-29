@@ -6,6 +6,7 @@
 
 #include <boost/array.hpp>
 #include <boost/signals.hpp>
+#include <boost/serialization/vector.hpp>
 
 #include "HaliteIni.hpp"
 #include "HaliteListViewCtrl.hpp"
@@ -22,24 +23,17 @@ protected:
 	friend class listClass;
 
 public:
-	enum { ID_MENU = IDR_LISTVIEW_MENU };
+	enum { 
+		LISTVIEW_ID_MENU = IDR_LISTVIEW_MENU,
+		LISTVIEW_ID_COLUMNNAMES = HAL_LISTVIEW_COLUMNS	
+	};
 
 	HaliteListViewCtrl() :
 		iniClass("listviews/halite", "HaliteListView")
 	{
-		listColumnWidth[0] = 100;
-		listColumnWidth[1] = 110;
-		listColumnWidth[2] = 60;
-		listColumnWidth[3] = 60;
-		listColumnWidth[4] = 60;
-		listColumnWidth[5] = 42;
-		listColumnWidth[6] = 45;
-		listColumnWidth[7] = 61;
-		listColumnWidth[8] = 45;
-
-		for (int i=0; i<numListColumnWidth; ++i)
-			listColumnOrder[i] = i;
-
+		array<int, 9> a = {{100, 110, 60, 60, 60, 42, 45, 61, 45}};
+		SetDefaults(a);
+		
 		load();
 	}
 
@@ -72,17 +66,12 @@ public:
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-        ar & BOOST_SERIALIZATION_NVP(listColumnWidth);
-        ar & BOOST_SERIALIZATION_NVP(listColumnOrder);
+		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
     }
 
 private:
 	void OnAttach();
 	void OnDetach();
-
-	static const size_t numListColumnWidth = 9;
-	int listColumnWidth[numListColumnWidth];
-	int listColumnOrder[numListColumnWidth];
 };
 
 typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;

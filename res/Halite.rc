@@ -221,7 +221,7 @@ IDD_ADVHALITEDLG DIALOGEX 0,0,317,72
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILDWINDOW
 FONT 8,"MS Shell Dlg",400,0,1
 BEGIN
-    CONTROL         "",IDC_TAB,"SysTabControl32",0,1,0,316,72
+    CONTROL         "",IDC_TAB,"SysTabControl32",0,1,0,315,71
     RTEXT           "Static",IDC_ADVDLG_VERSION,235,2,78,10
 END
 
@@ -396,6 +396,8 @@ BEGIN
     HAL_NOT_LISTENING             "Halite not listening!"
     HAL_PORT_OPEN                 "Port %1% open"
     HAL_VERSION_STRING            "v 0.2.9 dev, rev 148"
+	HAL_LISTVIEW_COLUMNS		  "Name;Status;Completed;Downloaded;Upload;Peers;Seeds;ETA;Copies"
+	HAL_DEBUG_LISTVIEW_COLUMNS	  "Time;Message;Severity"
 END
 
 

@@ -7,25 +7,7 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 {
 	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
 
-	CHeaderCtrl hdr = GetHeader();
-	hdr.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
-
-	AddColumn(L"Name", hdr.GetItemCount());
-	AddColumn(L"Status", hdr.GetItemCount());
-	AddColumn(L"Completed", hdr.GetItemCount());
-	AddColumn(L"Downloaded", hdr.GetItemCount());
-	AddColumn(L"Upload", hdr.GetItemCount());
-	AddColumn(L"Peers", hdr.GetItemCount());
-	AddColumn(L"Seeds", hdr.GetItemCount());
-	AddColumn(L"ETA", hdr.GetItemCount());
-	AddColumn(L"Copies", hdr.GetItemCount());
-
-	assert (hdr.GetItemCount() == numListColumnWidth);
-	
-	for (int i=0; i<numListColumnWidth; ++i)
-		SetColumnWidth(i, listColumnWidth[i]);
-	
-	SetColumnOrderArray(numListColumnWidth, (int*)&listColumnOrder);	
+	SetListViewDetails();
 }
 
 void HaliteListViewCtrl::OnDestroy()
@@ -35,13 +17,7 @@ void HaliteListViewCtrl::OnDestroy()
 
 void HaliteListViewCtrl::saveSettings()
 {
-	assert (GetHeader().GetItemCount() == numListColumnWidth);
-	
-	GetColumnOrderArray(numListColumnWidth, (int*)&listColumnOrder);
-	
-	for (int i=0; i<numListColumnWidth; ++i)
-		listColumnWidth[i] = GetColumnWidth(i);
-	
+	GetListViewDetails();
 	save();
 }
 

@@ -20,8 +20,12 @@ protected:
 
 	friend class listClass;
 public:
-	enum { ID_MENU = IDR_TRACKERLV_MENU };
-
+	enum { 
+		LISTVIEW_ID_MENU = IDR_TRACKERLV_MENU,
+		LISTVIEW_NUMCOLUMNS = 9,
+		LISTVIEW_ID_COLUMNNAMES = 0	
+	};
+	
 	TrackerListViewCtrl() :
 		iniClass("listviews/tracker", "TrackerListView")
 	{

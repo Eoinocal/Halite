@@ -71,8 +71,11 @@ protected:
 
 	friend class listClass;
 
-public:
-	enum { ID_MENU = IDR_LISTVIEW_MENU };
+public:	
+	enum { 
+		LISTVIEW_ID_MENU = IDR_LISTVIEW_MENU,
+		LISTVIEW_ID_COLUMNNAMES = HAL_DEBUG_LISTVIEW_COLUMNS	
+	};
 
 	BEGIN_MSG_MAP_EX(LogListViewCtrl)
 		MSG_WM_DESTROY(OnDestroy)
@@ -83,27 +86,16 @@ public:
 
 	LogListViewCtrl() :
 		iniClass("listviews/eventLog", "LogListView")
-	{
-		listColumnWidth[0] = 67;
-		listColumnWidth[1] = 419;
-		listColumnWidth[2] = 69;
-
-		listColumnOrder[0] = 0;
-		listColumnOrder[1] = 1;
-		listColumnOrder[2] = 2;
+	{		
+		array<int, 3> a = {{67, 419, 69}};
+		SetDefaults(a);
 
 		load();
 	}
 
 	void saveSettings()
 	{
-		assert (GetHeader().GetItemCount() == numListColumnWidth);
-
-		GetColumnOrderArray(numListColumnWidth, (int*)&listColumnOrder);
-
-		for (int i=0; i<numListColumnWidth; ++i)
-			listColumnWidth[i] = GetColumnWidth(i);
-
+		GetListViewDetails();
 		save();
 	}
 
@@ -111,8 +103,7 @@ public:
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-        ar & BOOST_SERIALIZATION_NVP(listColumnWidth);
-        ar & BOOST_SERIALIZATION_NVP(listColumnOrder);
+		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
     }
 
 	void operator()(shared_ptr<hal::EventDetail> event)
@@ -133,7 +124,7 @@ private:
 	{
 		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
 
-		CHeaderCtrl hdr = GetHeader();
+/*		CHeaderCtrl hdr = GetHeader();
 		hdr.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
 
 		AddColumn(L"Time", hdr.GetItemCount());
@@ -146,7 +137,8 @@ private:
 			SetColumnWidth(i, listColumnWidth[i]);
 
 		SetColumnOrderArray(numListColumnWidth, (int*)&listColumnOrder);
-
+*/
+		SetListViewDetails();
 
 		boost::signals::scoped_connection* p = new boost::signals::scoped_connection(
 			hal::event().attach(bind(&LogListViewCtrl::operator(), this, _1))
@@ -159,10 +151,6 @@ private:
 	{
 		saveSettings();
 	}
-
-	static const size_t numListColumnWidth = 3;
-	int listColumnWidth[numListColumnWidth];
-	int listColumnOrder[numListColumnWidth];
 
 	scoped_ptr<boost::signals::scoped_connection> pconn_;
 };
