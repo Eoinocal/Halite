@@ -10,20 +10,14 @@
 #include "halEvent.hpp"
 
 HaliteDialog::HaliteDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
-	iniClass("dialogs/halite", "HaliteDialog"),
+//	iniClass("dialogs/halite", "HaliteDialog"),
 	ui_(ui_sig),
 	selection_manager_(single_sel)
 {
 	ui_.attach(bind(&HaliteDialog::updateDialog, this));
 	selection_manager_.attach(bind(&HaliteDialog::selectionChanged, this, _1));
 	
-	peerListColWidth[0] = 100;
-	peerListColWidth[1] = 70;
-	peerListColWidth[2] = 70;
-	peerListColWidth[3] = 70;
-	peerListColWidth[4] = 100;
-	
-	load();
+//	load();
 }
 
 void HaliteDialog::selectionChanged(const string& torrent_name)
@@ -89,21 +83,8 @@ LRESULT HaliteDialog::onInitDialog(HWND, LPARAM)
 {	m_prog.Attach(GetDlgItem(TORRENTPROG));
 	m_prog.SetRange(0, 100);
 }	
-{	m_list.Attach(GetDlgItem(LISTPEERS));
-	m_list.SetExtendedListViewStyle(LVS_EX_FULLROWSELECT);
+	m_list.Attach(GetDlgItem(LISTPEERS));
 	
-	CHeaderCtrl hdr = m_list.GetHeader();
-	hdr.ModifyStyle(HDS_BUTTONS, 0);
-	
-	m_list.AddColumn(L"Peer", hdr.GetItemCount());
-	m_list.AddColumn(L"Upload", hdr.GetItemCount());
-	m_list.AddColumn(L"Download", hdr.GetItemCount());
-	m_list.AddColumn(L"Type", hdr.GetItemCount());
-	m_list.AddColumn(L"Client", hdr.GetItemCount());
-
-	for (size_t i=0; i<numPeers; ++i)
-		m_list.SetColumnWidth(i, peerListColWidth[i]);
-}		
 	NoConnDown = -1;
 	NoConnUp = -1;
 	TranLimitDown = -1;
@@ -115,10 +96,7 @@ LRESULT HaliteDialog::onInitDialog(HWND, LPARAM)
 
 void HaliteDialog::saveStatus()
 {
-	for (size_t i=0; i<numPeers; ++i)
-		peerListColWidth[i] = m_list.GetColumnWidth(i);
-	
-	save();
+	m_list.saveSettings();
 }
 
 void HaliteDialog::onClose()

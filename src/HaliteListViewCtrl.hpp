@@ -18,8 +18,11 @@ public:
 	CHaliteListViewCtrl<TBase>() :
 		manager_(*this)
 	{
-		BOOL menu_created = menu_.LoadMenu(TBase::LISTVIEW_ID_MENU);
-		assert(menu_created);	
+		if (TBase::LISTVIEW_ID_MENU)
+		{
+			BOOL menu_created = menu_.LoadMenu(TBase::LISTVIEW_ID_MENU);
+			assert(menu_created);	
+		}
 
 		wstring column_names = hal::app().res_wstr(TBase::LISTVIEW_ID_COLUMNNAMES);		
 		boost::split(names_, column_names, boost::is_any_of(L";"));
@@ -100,14 +103,17 @@ public:
 	{
 		LPNMITEMACTIVATE pia = (LPNMITEMACTIVATE)pnmh;
 		manager().sync_list(true);
-
-		assert (menu_.IsMenu());
-		CMenuHandle sMenu = menu_.GetSubMenu(0);
-		assert (sMenu.IsMenu());
-
-		POINT ptPoint;
-		GetCursorPos(&ptPoint);
-		sMenu.TrackPopupMenu(0, ptPoint.x, ptPoint.y, m_hWnd);
+		
+		if (TBase::LISTVIEW_ID_MENU)
+		{
+			assert (menu_.IsMenu());
+			CMenuHandle sMenu = menu_.GetSubMenu(0);
+			assert (sMenu.IsMenu());
+	
+			POINT ptPoint;
+			GetCursorPos(&ptPoint);
+			sMenu.TrackPopupMenu(0, ptPoint.x, ptPoint.y, m_hWnd);
+		}
 
 		return 0;
 	}

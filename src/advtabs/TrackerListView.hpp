@@ -14,26 +14,23 @@ class TrackerListViewCtrl :
 	public CHaliteIni<TrackerListViewCtrl>,
 	private boost::noncopyable
 {
-protected:
+
 	typedef CHaliteIni<TrackerListViewCtrl> iniClass;
 	typedef CHaliteListViewCtrl<TrackerListViewCtrl> listClass;
 
 	friend class listClass;
+	
 public:
 	enum { 
 		LISTVIEW_ID_MENU = IDR_TRACKERLV_MENU,
-		LISTVIEW_NUMCOLUMNS = 9,
-		LISTVIEW_ID_COLUMNNAMES = 0	
+		LISTVIEW_ID_COLUMNNAMES = HAL_TRACKER_LISTVIEW_COLUMNS	
 	};
 	
 	TrackerListViewCtrl() :
 		iniClass("listviews/tracker", "TrackerListView")
 	{
-		listColumnWidth[0] = 287;
-		listColumnWidth[1] = 50;
-
-		listColumnOrder[0] = 0;
-		listColumnOrder[1] = 1;
+		array<int, 2> a = {{287, 50}};
+		SetDefaults(a);
 
 		load();
 	}
@@ -60,8 +57,7 @@ public:
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-        ar & BOOST_SERIALIZATION_NVP(listColumnWidth);
-        ar & BOOST_SERIALIZATION_NVP(listColumnOrder);
+		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
     }
 
 	LRESULT OnDoubleClick(int i, LPNMHDR pnmh, BOOL&);
@@ -75,10 +71,10 @@ private:
 	void OnAttach();
 	void OnDestroy();
 
-	static const size_t numListColumnWidth = 2;
+/*	static const size_t numListColumnWidth = 2;
 	int listColumnWidth[numListColumnWidth];
 	int listColumnOrder[numListColumnWidth];
-
+*/
 	boost::signal<void ()> listEdited_;
 };
 

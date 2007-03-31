@@ -2,6 +2,9 @@
 #define IDC_STATIC (-1)
 #endif
 
+#define HALITE_VERSION					0,2,9,152
+#define HALITE_VERSION_STRING			"v 0.2.9 dev, rev 152"
+
 #define IDC_DEBUGLISTVIEW               1
 #define IDR_LISTVIEW_MENU               101
 #define IDD_CONFIGBIT                   102
@@ -163,4 +166,12 @@
 #define HAL_VERSION_STRING              40025
 #define HAL_LISTVIEW_COLUMNS            40026
 #define HAL_DEBUG_LISTVIEW_COLUMNS      40027
-
+#define HAL_TRACKER_LISTVIEW_COLUMNS	40028
+#define HAL_DIALOGPEER_LISTVIEW_COS     40029
+#define HAL_EVENT_EXP                   40030
+#define HAL_EVENT_XML_EXP               40031
+#define HAL_EVENT_UNICODE_EXP           40032
+#define HAL_EVENT_DEBUG                 40036
+#define HAL_EVENT_UNCLASSIFIED          40033
+#define HAL_EVENT_PEER                  40034
+#define HAL_EVENT_TRACKER               40035

@@ -209,9 +209,7 @@ void HaliteWindow::updateWindow()
 }
 
 void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)
-{	
-
-	
+{		
 	if (uTimerID == ID_UPDATE_TIMER) 
 	{	
 		try

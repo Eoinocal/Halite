@@ -122,9 +122,9 @@ public:
 private:
 	void OnAttach()
 	{
-		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
+/*		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
 
-/*		CHeaderCtrl hdr = GetHeader();
+		CHeaderCtrl hdr = GetHeader();
 		hdr.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
 
 		AddColumn(L"Time", hdr.GetItemCount());

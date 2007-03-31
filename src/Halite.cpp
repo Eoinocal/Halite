@@ -31,6 +31,8 @@ public:
 			wofs << (wformat(L"%1% %2%, %3%\r\n") 
 				% event->timeStamp() % hal::Event::eventLevelToStr(event->level()) 
 				% event->msg());
+			
+			wofs.flush();
 		}
 	}
 	

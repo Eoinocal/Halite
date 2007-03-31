@@ -18,6 +18,18 @@ class Event
 public:
 	enum eventLevel { debug, info, warning, critical, fatal, none };
 	
+	enum codes {
+		unclassified = HAL_EVENT_UNCLASSIFIED,
+		debugEvent = HAL_EVENT_DEBUG,
+		invalidTorrent = HAL_EVENT_INVTORRENT,
+		torrentException = HAL_EVENT_TORRENTEXP,
+		generalException = HAL_EVENT_EXP,
+		xmlException = HAL_EVENT_XML_EXP,
+		unicodeException = HAL_EVENT_UNICODE_EXP,
+		peer = HAL_EVENT_PEER,
+		tracker = HAL_EVENT_TRACKER
+	};
+	
 	static std::wstring eventLevelToStr(eventLevel);	
 	void post(boost::shared_ptr<EventDetail> event);
 	
@@ -35,7 +47,7 @@ Event& event();
 class EventDetail
 {
 public:
-	EventDetail(Event::eventLevel l, boost::posix_time::ptime t, unsigned c) :
+	EventDetail(Event::eventLevel l, boost::posix_time::ptime t, Event::codes c) :
 		level_(l),
 		timeStamp_(t),
 		code_(c)
@@ -50,25 +62,25 @@ public:
 
 	Event::eventLevel level() { return level_; }
 	boost::posix_time::ptime timeStamp() { return timeStamp_; }
-	unsigned code() { return code_; }
+	Event::codes code() { return code_; }
 	
 private:	
 	Event::eventLevel level_;
 	boost::posix_time::ptime timeStamp_;
-	unsigned code_;
+	Event::codes code_;
 };
 
 class EventLibtorrent : public EventDetail
 {
 public:
-	EventLibtorrent(Event::eventLevel l, boost::posix_time::ptime t, std::wstring m) :
-		EventDetail(l, t, Event::debug),
+	EventLibtorrent(Event::eventLevel l, boost::posix_time::ptime t, Event::codes c, std::wstring m) :
+		EventDetail(l, t, c),
 		msg_(m)
 	{}
 	
 	virtual std::wstring msg()
 	{
-		return (wformat(L"Code %1%, %2%") % code() % msg_).str();
+		return (wformat(hal::app().res_wstr(code())) % msg_).str();
 	}
 	
 private:
@@ -79,13 +91,13 @@ class EventPeerAlert : public EventDetail
 {
 public:
 	EventPeerAlert(Event::eventLevel l, boost::posix_time::ptime t, std::wstring m) :
-		EventDetail(l, t, Event::debug),
+		EventDetail(l, t, Event::peer),
 		msg_(m)
 	{}
 	
 	virtual std::wstring msg()
 	{
-		return (wformat(hal::app().res_wstr(HAL_PEERALERT)) % msg_).str();
+		return (wformat(hal::app().res_wstr(code())) % msg_).str();
 	}
 	
 private:
@@ -96,7 +108,7 @@ class EventXmlException : public EventDetail
 {
 public:
 	EventXmlException(std::wstring e, std::wstring m) :
-		EventDetail(Event::info, boost::posix_time::second_clock::universal_time(), HAL_EVENT_XMLEXP),
+		EventDetail(Event::warning, boost::posix_time::second_clock::universal_time(), Event::xmlException),
 		exp_(e),
 		msg_(m)
 	{}
@@ -114,20 +126,18 @@ private:
 class EventInvalidTorrent : public EventDetail
 {
 public:
-	EventInvalidTorrent(Event::eventLevel l, unsigned code, std::string t, std::string f) :
+	EventInvalidTorrent(Event::eventLevel l, Event::codes code, std::string t, std::string f) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), code),
 		torrent_(hal::from_utf8(t)),
-		function_(hal::from_utf8(f)),
-		code_(code)
+		function_(hal::from_utf8(f))
 	{}
 	
 	virtual std::wstring msg()
 	{
-		return (wformat(hal::app().res_wstr(code_)) % torrent_).str();
+		return (wformat(hal::app().res_wstr(code())) % torrent_).str();
 	}
 	
 private:
-	unsigned code_;
 	std::wstring function_;
 	std::wstring torrent_;
 	std::wstring exception_;
@@ -136,21 +146,19 @@ private:
 class EventTorrentException : public EventDetail
 {
 public:
-	EventTorrentException(Event::eventLevel l, unsigned code, std::string e, std::string t, std::string f) :
+	EventTorrentException(Event::eventLevel l, Event::codes code, std::string e, std::string t, std::string f) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), code),
 		torrent_(hal::from_utf8(t)),
 		function_(hal::from_utf8(f)),
-		exception_(hal::from_utf8(e)),
-		code_(code)
+		exception_(hal::from_utf8(e))
 	{}
 	
 	virtual std::wstring msg()
 	{
-		return (wformat(hal::app().res_wstr(code_)) % torrent_ % exception_).str();
+		return (wformat(hal::app().res_wstr(code())) % torrent_ % exception_ % function_).str();
 	}
 	
 private:
-	unsigned code_;
 	std::wstring torrent_;
 	std::wstring function_;
 	std::wstring exception_;
@@ -160,14 +168,14 @@ class EventStdException : public EventDetail
 {
 public:
 	EventStdException(Event::eventLevel l, std::exception& e, std::wstring from) :
-		EventDetail(l, boost::posix_time::second_clock::universal_time(), HAL_EVENT_STDEXP),
+		EventDetail(l, boost::posix_time::second_clock::universal_time(), Event::generalException),
 		exception_(hal::from_utf8(e.what())),
 		from_(from)
 	{}
 	
 	virtual std::wstring msg()
 	{
-		return (wformat(hal::app().res_wstr(HAL_EVENT_STDEXP)) % exception_ % from_).str();
+		return (wformat(hal::app().res_wstr(code())) % exception_ % from_).str();
 	}
 	
 private:
@@ -179,13 +187,13 @@ class EventDebug : public EventDetail
 {
 public:
 	EventDebug(Event::eventLevel l, std::wstring msg) :
-		EventDetail(l, boost::posix_time::second_clock::universal_time(), HAL_EVENT_STDEXP),
+		EventDetail(l, boost::posix_time::second_clock::universal_time(), Event::debugEvent),
 		msg_(msg)
 	{}
 	
 	virtual std::wstring msg()
 	{
-		return (wformat(L"Debug event: %1%") % msg_).str();
+		return (wformat(hal::app().res_wstr(code())) % msg_).str();
 	}
 	
 private:

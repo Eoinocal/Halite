@@ -578,7 +578,9 @@ public:
 		}
 		catch(std::exception& e)
 		{
-			::MessageBox(0, (wformat(L"Save data exception: %1%") % e.what()).str().c_str(), L"Exception", 0);
+			hal::event().post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(Event::critical, e, L"~BitTorrent_impl"))); 
+//			::MessageBox(0, (wformat(L"Save data exception: %1%") % e.what()).str().c_str(), L"Exception", 0);
 		}
 	}
 	
@@ -600,7 +602,7 @@ public:
 				{
 					event().post(shared_ptr<EventDetail>(
 						new EventLibtorrent(lbtAlertToHalEvent(p_alert->severity()), 
-							p_alert->timestamp(), hal::str_to_wstr(p_alert->msg()))));
+							p_alert->timestamp(), Event::unclassified, hal::str_to_wstr(p_alert->msg()))));
 				}
 				
 				p_alert = theSession.pop_alert();
@@ -664,8 +666,10 @@ private:
 			}
 		}
 		if (exists(workingDirectory/L"DHTState.bin"))
+		{
 			dht_state_ = haldecode(workingDirectory/L"DHTState.bin");
-				
+		}
+		
 		{	lbt::session_settings settings = theSession.settings();
 			settings.user_agent = "Halite v 0.2.9 dev 148";
 			theSession.set_settings(settings);
@@ -715,12 +719,12 @@ BitTorrent::BitTorrent() :
 catch (const lbt::invalid_handle&)\
 {\
 	event().post(shared_ptr<EventDetail>(\
-		new EventInvalidTorrent(Event::critical, HAL_EVENT_INVTORRENT, TORRENT, FUNCTION)));\
+		new EventInvalidTorrent(Event::critical, Event::invalidTorrent, TORRENT, FUNCTION)));\
 }\
 catch (const std::exception& e)\
 {\
 	event().post(shared_ptr<EventDetail>(\
-		new EventTorrentException(Event::critical, HAL_EVENT_TORRENTEXP, e.what(), TORRENT, FUNCTION)));\
+		new EventTorrentException(Event::critical, Event::torrentException, e.what(), TORRENT, FUNCTION)));\
 }
 
 void BitTorrent::shutDownSession()

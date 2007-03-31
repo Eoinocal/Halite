@@ -10,23 +10,83 @@
 #include "halEvent.hpp"
 
 class ui_signal;
-class HaliteListViewCtrl;
 
+class HaliteListViewCtrl;
 typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
 
 class HaliteDialog :
 	public CDialogImpl<HaliteDialog>,
 	public CDialogResize<HaliteDialog>,
 	public CWinDataExchangeEx<HaliteDialog>,
-	public CHaliteIni<HaliteDialog>,
+//	public CHaliteIni<HaliteDialog>,
 	private boost::noncopyable
-{
-protected:
+{	
+
 	typedef HaliteDialog thisClass;
 	typedef CDialogImpl<HaliteDialog> baseClass;
 	typedef CDialogResize<HaliteDialog> resizeClass;
-	typedef CHaliteIni<HaliteDialog> iniClass;
-
+//	typedef CHaliteIni<HaliteDialog> iniClass;
+	
+	
+	class DialogListView :
+		public CHaliteListViewCtrl<DialogListView>,
+		public CHaliteIni<DialogListView>,
+		private boost::noncopyable
+	{
+	protected:
+		typedef HaliteDialog::DialogListView thisClass;
+		typedef CHaliteIni<thisClass> iniClass;
+		typedef CHaliteListViewCtrl<thisClass> listClass;
+	
+		friend class listClass;
+	
+	public:	
+		enum { 
+			LISTVIEW_ID_MENU = 0,
+			LISTVIEW_ID_COLUMNNAMES = HAL_DIALOGPEER_LISTVIEW_COS	
+		};
+	
+		BEGIN_MSG_MAP_EX(DialogListView)
+			MSG_WM_DESTROY(OnDestroy)
+	
+			CHAIN_MSG_MAP(CHaliteListViewCtrl<DialogListView>)
+			DEFAULT_REFLECTION_HANDLER()
+		END_MSG_MAP()
+	
+		DialogListView() :
+			iniClass("listviews/dialog", "DialogPeersList")
+		{		
+			array<int, 5> a = {{100, 70, 70, 70, 100}};
+			SetDefaults(a);			
+			load();
+		}
+		
+		void saveSettings()
+		{
+			GetListViewDetails();
+			save();
+		}
+		
+		void OnAttach()
+		{
+			SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);			
+			SetListViewDetails();
+		}
+		
+		void OnDestroy()
+		{
+			saveSettings();
+		}
+		
+		friend class boost::serialization::access;
+		template<class Archive>
+		void serialize(Archive& ar, const unsigned int version)
+		{
+			ar & boost::serialization::make_nvp("listview", 
+				boost::serialization::base_object<listClass>(*this));
+		}
+	};
+	
 public:
 	enum { IDD = IDD_HALITEDLG };
 
@@ -87,13 +147,6 @@ public:
 		DLGRESIZE_CONTROL(IDC_DETAILS_GROUP, (DLSZ_SIZE_X | DLSZ_SIZE_Y))
 	END_DLGRESIZE_MAP()
 
-	friend class boost::serialization::access;
-    template<class Archive>
-	void serialize(Archive& ar, const unsigned int version)
-	{
-		ar & BOOST_SERIALIZATION_NVP(peerListColWidth);
-	}
-
 protected:
 	LRESULT onInitDialog(HWND, LPARAM);
 	void onClose();
@@ -110,7 +163,7 @@ protected:
 
 private:
 	CButton m_btn_start;
-	CListViewCtrl m_list;
+	DialogListView m_list;
 	CContainedWindow m_wndNCD;
 	CProgressBarCtrl m_prog;
 
@@ -119,7 +172,4 @@ private:
 
 	ui_signal& ui_;
 	ListViewManager& selection_manager_;
-
-	static const unsigned numPeers = 5;
-	unsigned int peerListColWidth[numPeers];
 };

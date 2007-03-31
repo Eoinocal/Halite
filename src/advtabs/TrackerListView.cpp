@@ -8,7 +8,8 @@
 
 void TrackerListViewCtrl::OnAttach()
 {
-	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
+	SetListViewDetails();
+/*	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
 
 	CHeaderCtrl hdr = GetHeader();
 	hdr.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
@@ -24,6 +25,7 @@ void TrackerListViewCtrl::OnAttach()
 	}
 	
 	SetColumnOrderArray(numListColumnWidth, (int*)&listColumnOrder);	
+*/
 }
 
 void TrackerListViewCtrl::OnDestroy()
@@ -32,8 +34,9 @@ void TrackerListViewCtrl::OnDestroy()
 }
 
 void TrackerListViewCtrl::saveSettings()
-{
-	assert (GetHeader().GetItemCount() == numListColumnWidth);
+{		
+	GetListViewDetails();
+/*	assert (GetHeader().GetItemCount() == numListColumnWidth);
 	
 	GetColumnOrderArray(numListColumnWidth, (int*)&listColumnOrder);
 	
@@ -41,7 +44,7 @@ void TrackerListViewCtrl::saveSettings()
 	{
 		listColumnWidth[i] = GetColumnWidth(i);
 	}
-	
+*/	
 	save();
 }
 
