@@ -118,7 +118,7 @@ public:
 	{
 		int total = m_list_.GetItemCount();
 		
-		for (int i=0; i<total; ++i)
+		for (int i=total-1; i>=0; --i)
 		{
 			UINT flags = m_list_.GetItemState(i, LVIS_SELECTED);
 			
