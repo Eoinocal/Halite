@@ -167,7 +167,7 @@ private:
 class EventStdException : public EventDetail
 {
 public:
-	EventStdException(Event::eventLevel l, std::exception& e, std::wstring from) :
+	EventStdException(Event::eventLevel l, const std::exception& e, std::wstring from) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), Event::generalException),
 		exception_(hal::from_utf8(e.what())),
 		from_(from)

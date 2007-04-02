@@ -72,7 +72,7 @@ exe Halite
 	<library>/wtl
 	<library>$(LIBS)
 	
-#	<runtime-link>static
+	<runtime-link>static
 	<threading>multi
 	<asynch-exceptions>on
 	

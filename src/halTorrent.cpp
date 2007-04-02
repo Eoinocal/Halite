@@ -927,6 +927,9 @@ void BitTorrent::clearIpFilter()
 
 void BitTorrent::ip_filter_import_dat(boost::filesystem::path file, progressCallback fn, bool octalFix)
 {
+	try
+	{
+
 	fs::ifstream ifs(file);	
 	if (ifs)
 	{
@@ -980,9 +983,9 @@ void BitTorrent::ip_filter_import_dat(boost::filesystem::path file, progressCall
 				pimpl->ip_filter_.add_rule(asio::ip::address_v4::from_string(first),
 					asio::ip::address_v4::from_string(last), lbt::ip_filter::blocked);	
 				}
-				catch(const std::exception& e)
+				catch(...)
 				{
-					::MessageBoxA(0, (format("%1%: %1% %2%") % e.what() % first % last).str().c_str(), "Load ipfilter.dat Exception!", 0);
+					hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, from_utf8((format("Invalid IP range: %1%-%2%.") % first % last).str()))));
 				}
 			}
 		}
@@ -990,6 +993,13 @@ void BitTorrent::ip_filter_import_dat(boost::filesystem::path file, progressCall
 	
 	pimpl->ip_filter_changed_ = true;
 	pimpl->ip_filter_count();
+	
+	}
+	catch(const std::exception& e)
+	{
+		event().post(shared_ptr<EventDetail>(
+			new EventStdException(Event::critical, e, L"ip_filter_import_dat")));
+	}
 }
 
 const SessionDetail BitTorrent::getSessionDetails()

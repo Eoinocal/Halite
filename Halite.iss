@@ -1,7 +1,7 @@
 ; -- Halite.iss --
 
 #define MyAppName "Halite"
-#define MyAppVerName "Halite 0.2.8"
+#define MyAppVerName "Halite 0.2.9"
 #define MyAppPublisher "BinaryNotions.com"
 #define MyAppURL "http://www.binarynotions.com/halite.php"
 #define MyAppExeName "Halite.exe"
@@ -18,7 +18,7 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=G:\Develop\C++\Personal\Halite\Boost License.txt
-OutputBaseFilename=Halite.0_2_8.setup
+OutputBaseFilename=Halite.0_2_9.setup
 Compression=lzma
 SolidCompression=true
 UninstallDisplayIcon={app}\{#MyAppName}
@@ -33,8 +33,10 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 Name: associate_torrent; Description: {cm:AssocFileExtension,Halite,.torrent}; GroupDescription: Other tasks:; Flags: unchecked
 
 [Files]
-Source: bin\msvc-7.1\release\asynch-exceptions-on\runtime-link-static\threading-multi\Halite.exe; DestDir: {app}; Flags: ignoreversion 32bit
+Source: bin\msvc-8.0\release\asynch-exceptions-on\threading-multi\Halite.exe; DestDir: {app}; Flags: ignoreversion 32bit
 Source: Readme.txt; DestDir: {app}; Flags: ignoreversion isreadme
+Source: G:\Program Files (x86)\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}; Flags: sharedfile 32bit; Tasks: ; Languages: 
+Source: G:\Program Files (x86)\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}; Flags: sharedfile 32bit
 
 [INI]
 Filename: {app}\{#MyAppUrlName}; Section: InternetShortcut; Key: URL; String: {#MyAppURL}
@@ -55,5 +57,3 @@ Root: HKCR; Subkey: Halite; ValueType: string; ValueName: ; ValueData: Torrent F
 Root: HKCR; Subkey: Halite\DefaultIcon; ValueType: string; ValueName: ; ValueData: {app}\halite.exe,0; Tasks: associate_torrent
 Root: HKCR; Subkey: Halite\shell\open\command; ValueType: string; ValueName: ; ValueData: """{app}\halite.exe"" ""%1"""; Tasks: associate_torrent
 
-[UninstallDelete]
-Type: files; Name: {app}\{#MyAppUrlName}
