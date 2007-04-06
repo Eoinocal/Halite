@@ -275,9 +275,14 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 		std::wstring save_prompt = hal::app().res_wstr(IDS_SAVEPROMPT);		
 		CFolderDialog fldDlg(NULL, save_prompt.c_str(),
 			BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE);
+		
+		wstring defaultSaveFolder = saveDirectory.native_file_string();
+		fldDlg.SetInitialFolder(defaultSaveFolder.c_str());
 	 
 		if (IDOK == fldDlg.DoModal())
 			saveDirectory = wpath(fldDlg.m_szFolderPath);
+		else
+			return;
 	}
 	
 	wpath file(lpszPath, boost::filesystem::native);	
@@ -301,7 +306,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	}
 	catch(const boost::filesystem::filesystem_error&)
 	{
-		// Just ignore filesystem errors for now.
+		hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::warning, L"filesystem error")));
 	}
 }
 

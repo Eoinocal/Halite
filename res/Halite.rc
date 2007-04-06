@@ -22,7 +22,7 @@ BEGIN
     EDITTEXT        IDC_EDITNCD,216,22,34,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDITNCU,267,22,34,12,ES_AUTOHSCROLL
     LTEXT           "Connection limits:",IDC_NC,192,13,75,8
-    LTEXT           "Transfer rates (kb/s):",IDC_TL,192,37,75,8
+    LTEXT           "Transfer rates (KB/s):",IDC_TL,192,37,75,8
     RTEXT           "Total",IDC_NCD,192,25,18,8
     RTEXT           "Up",IDC_NCU,251,25,12,8
     RTEXT           "Up",IDC_TLU,252,49,11,8
@@ -42,7 +42,7 @@ CAPTION "BitTorrent"
 FONT 8,"MS Shell Dlg",400,0,1
 BEGIN
     GROUPBOX        "Global Options",IDC_STATIC,6,6,271,77
-    RTEXT           "Open a (single) port between :  ",IDC_STATIC,22,66,115,12
+    RTEXT           "Open a (single) port between : ",IDC_STATIC,22,66,115,12
     EDITTEXT        IDC_BC_PORTFROM,138,64,54,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_BC_PORTTO,217,64,54,12,ES_AUTOHSCROLL
     AUTOCHECKBOX    "Enable DHT. (Note neither DHT nor PEX will apply to private torrents)",IDC_BC_DHT,12,98,252,12
@@ -59,10 +59,10 @@ BEGIN
     RTEXT           "Password : ",IDC_BC_PROXYPASS_S,146,35,39,12
     EDITTEXT        IDC_BC_PROXYPASS,188,33,83,12,ES_AUTOHSCROLL | ES_PASSWORD
     AUTOCHECKBOX    "to",IDC_BC_PORTCHECK,195,64,20,12
-    LTEXT           "Selct a port (or range of ports) to listen for incomming connections.",IDC_STATIC,13,52,238,11
+    LTEXT           "Select a (TCP) port (or range of ports) to listen for incomming connections.",IDC_STATIC,13,52,252,11
     GROUPBOX        "Global Options",IDC_STATIC,6,86,271,59
     EDITTEXT        IDC_BC_DHTPORT,67,112,77,12,ES_AUTOHSCROLL
-    RTEXT           "Port : ",IDC_BC_DHTPORT_S,30,114,35,12
+    RTEXT           "Port (UDP) : ",IDC_BC_DHTPORT_S,30,114,35,12
 END
 
 IDD_CONFIGREMOTE DIALOGEX 0,0,283,94
@@ -193,7 +193,7 @@ BEGIN
     LTEXT           "N/A",IDC_TRACKER,40,15,144,8,SS_WORDELLIPSIS
     LTEXT           "N/A",IDC_NAME,40,3,144,10,SS_WORDELLIPSIS
     LTEXT           "Torrent connection limits:",IDC_NC,192,3,82,8
-    LTEXT           "Torrent transfer rates (kb/s):",IDC_TL,192,27,97,8
+    LTEXT           "Torrent transfer rates (KB/s):",IDC_TL,192,27,97,8
     RTEXT           "Total",IDC_NCD,192,15,18,8
     RTEXT           "Up",IDC_NCU,251,15,12,8
     RTEXT           "Up",IDC_TLU,252,39,11,8
@@ -376,7 +376,7 @@ BEGIN
     IDPANE_FILTER                 "Filtering 0000000 ranges."
     IDS_TRYANOTHERPORT            "The BitTorrent session could not start. Try selecting another port in the settings."
     IDS_DHTTRYANOTHERPORT         "DHT session could not start. Try selecting another port in the settings."
-    IDS_SAVEPROMPT                "Select a directory to save the downloads to. Click cancel to accept default 'incomming' location."
+    IDS_SAVEPROMPT                "Select a directory to save the files to or cancel to not download torrent at all."
     HAL_EVENTNONE                 "None"
     HAL_EVENTDEBUG                "Debug"
     HAL_EVENTINFO                 "Info"
@@ -396,17 +396,17 @@ BEGIN
     HAL_NOT_LISTENING             "Halite not listening!"
     HAL_PORT_OPEN                 "Port %1% open"
     HAL_VERSION_STRING            HALITE_VERSION_STRING
-	HAL_LISTVIEW_COLUMNS		  "Name;Status;Completed;Downloaded;Upload;Peers;Seeds;ETA;Copies"
+	HAL_LISTVIEW_COLUMNS		  "Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies"
 	HAL_DEBUG_LISTVIEW_COLUMNS	  "Time;Message;Severity"
 	HAL_TRACKER_LISTVIEW_COLUMNS  "Tracker;Tier"
-	HAL_DIALOGPEER_LISTVIEW_COS	  "Peer;Upload;Download;Type;Client"
+	HAL_DIALOGPEER_LISTVIEW_COS	  "Peer;Download;Upload;Type;Client"
 	HAL_EVENT_EXP                 "Exception caught; %1%, from %2%."
 	HAL_EVENT_XML_EXP             "XML exception: %1%."
 	HAL_EVENT_UNICODE_EXP         "Unicode exception: %1%."
 	HAL_EVENT_UNCLASSIFIED		  "Bittorrent Event: %1%."
 	HAL_EVENT_PEER				  "Peer Event: %1%."
 	HAL_EVENT_TRACKER			  "Tracker Event: %1%."
-	HAL_EVENT_DEBUG				  "Debug Event: %1.%"
+	HAL_EVENT_DEBUG				  "Debug Event: %1%."
 END
 
 

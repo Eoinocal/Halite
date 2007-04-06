@@ -1,6 +1,6 @@
 Halite: A Free Open-Source BitTorrent client
 
-Version: 0.2.8 released 3rd January 2007
+Version: 0.2.9 released 6th April 2007
 
 WWW: http://www.binarynotions.com/halite.php Forum:
 http://www.binarynotions.com/forum.php
@@ -9,9 +9,7 @@ Developer: Eóin O'Callaghan
 
 Halite (named after the mineral) is a BitTorrent client based on Arvid
 Norberg's excellent libtorrent library from Rasterbar Software. The
-program also relies on the Boost libraries and on my own libHTTP for
-the still to be implemented remote control interface from Java-enabled
-(MIDP 1.0) mobile phones.
+program also relies on the Boost libraries.
 
 Features:
 
@@ -21,33 +19,61 @@ that is because I want to ensure it does the basic stuff well.
 
 That said, it supports:
 
-  + Multiple downloads
-  + Displays more detailed information for the selected torrent
-  + Connection limits both global and per-torrent
-  + Transfer rate limits again global and per-torrent
-  + Minimize to tray with transfer rate summary
-  + Trackerless torrents (using the Mainline kademlia DHT protocol)
-  + IP filtering with eMule ipfilter.dat import
-  + Association with ".torrent" files
-  + Option to limit the number of instances to one
-  + Estimated time remaining indicator
+  + Multiple downloads.
+  + Displays more detailed information for the selected torrent.
+  + Connection limits both global and per-torrent.
+  + Transfer rate limits again global and per-torrent.
+  + Minimize to tray with transfer rate summary.
+  + Trackerless torrents (using the Mainline kademlia DHT protocol).
+  + IP filtering with eMule ipfilter.dat import.
+  + Association with ".torrent" files.
+  + Option to limit the number of instances to one.
+  + Estimated time remaining indicator.
+  + Full Unicode support through UTF-8 and native Windows wide-char
+    strings.
+  + Login support where tracker requires it.
+  + Ability to edit trackers specified in the torrent.
 
 Planned in near future:
 
-Listed here is what is being worked on at the moment; for a more
+Listed here is what is being worked on in the short term; for a more
 detailed list see [http://www.binarynotions.com/halite/roadmap.php].
 
-  + Tabbed interface.
-  + Ability to modify trackers.
-  + Options to ban peers.
+  + Translations of the UI into a number of languages through the help
+    of volunteers.
+  + Improved and extended information on the details given for
+    connected peers. 
 
-Requirements: Windows 2000 or XP (Halite is written in Unicode)
+Requirements: Windows 2000, XP, Server 2003 and Vista (Note currently
+Vista users need to install the application to a directory where they
+will have full read and write access to. The recommended solution is
+to use the standalone exe distribution and not the installer.
 
-Known Issues/Problems: None!
+Known Issues/Problems: 
+
+Halite does not always gracefully accept configuration information
+from previous versions. Should you experience crashes upon running
+Halite you should delete any old Halite.ini.xml or Halite.xml. 
+
+You will not lose any downloads in progress and those which do not
+restart automatically can be done so manually by loading the
+associated torrent file from the 'torrents' subdirectory.
 
 Changes:
 
- - from v 0.2.7 to 0.2.8: 
+ - from v 0.2.8 to 0.2.9: 
+   1) Full Unicode support!
+   2) Rewitten XML fileformat with greatly improved robustness.
+   3) New tabbed interface makes better use of screen real estate.
+   4) Ability to edit Trackers and set login details.
+   5) Comprehensive logging for diagnosing problems.
+   6) Windows 2000 and Server 2003 supported fully.
+   7) Updated to recent versions of Boost and libtorrent.
+   8) Numerous bug fixes.
+   9) Switched to MSVC 2005 compiler (8.0) for improved reliability
+      though at the cost of slightly bigger executables.
+   
+- from v 0.2.7 to 0.2.8: 
    1) IP filtering support eMule style ipfilter.dat files.
    2) DHT support, thought it is turned off by default.
    3) Can select alternate save directory for torrents..

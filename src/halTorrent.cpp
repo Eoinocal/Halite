@@ -642,7 +642,7 @@ public:
 	
 private:
 	BitTorrent_impl() :
-		theSession(lbt::fingerprint("HL", 0, 2, 0, 9)),
+		theSession(lbt::fingerprint("HL", 0, 2, 9, 0)),
 		timer_(io_),
 		keepChecking_(false),
 		workingDirectory(hal::app().exe_path().branch_path()),
@@ -671,7 +671,7 @@ private:
 		}
 		
 		{	lbt::session_settings settings = theSession.settings();
-			settings.user_agent = "Halite v 0.2.9 dev 148";
+			settings.user_agent = "Halite v 0.2.9";
 			theSession.set_settings(settings);
 		}
 		
@@ -1206,15 +1206,16 @@ void BitTorrent::resumeAll()
 			}
 			catch(const lbt::duplicate_torrent&)
 			{
+				hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::debug, L"Encountered duplicate torrent")));
+
 				++iter; // Harmless, don't worry about it.
 			}
-			catch(std::exception &ex) 
+			catch(const std::exception& e) 
 			{
-				MessageBox(0, hal::str_to_wstr(ex.what()).c_str(), L"Resume Torrent Exception", MB_ICONERROR|MB_OK);
+				hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventStdException(hal::Event::warning, e, L"resumeAll")));
 				
 				pimpl->torrents.erase(iter++);
-			}
-			
+			}			
 		}
 		else
 		{
