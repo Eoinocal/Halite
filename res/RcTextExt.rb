@@ -1,4 +1,4 @@
-# This ruby script 
+# This ruby script ...
 
 resource_array = Array.new
 resource_file = File.open('Halite.rc').gets(nil)

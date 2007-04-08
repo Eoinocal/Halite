@@ -35,8 +35,8 @@ app_module::app_module()
 	szArglist = CommandLineToArgvW(GetCommandLineW(), &nArgs);
 	
 	std::locale global_loc = std::locale();
-	std::locale loc( global_loc, new boost::filesystem::detail::utf8_codecvt_facet );
-	boost::filesystem::wpath_traits::imbue( loc );
+	std::locale loc(global_loc, new boost::filesystem::detail::utf8_codecvt_facet);
+	boost::filesystem::wpath_traits::imbue(loc);
 	
 	if (NULL == szArglist)
 	{
@@ -50,6 +50,9 @@ app_module::app_module()
 			command_args_.push_back(szArglist[i]);
 	}		
 	LocalFree(szArglist);	
+	
+	HMODULE hMod = ::LoadLibraryEx(L"1337.dll", 0, LOAD_LIBRARY_AS_DATAFILE);
+	_Module.SetResourceInstance(reinterpret_cast<HINSTANCE>(hMod));
 }
 
 std::wstring app_module::res_wstr(unsigned uID)

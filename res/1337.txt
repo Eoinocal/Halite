@@ -1,0 +1,175 @@
+"MS Shell Dlg" --->  ??? 
+"Torrent" ---> "Ѳℓ№Щ∑∑"
+"Tracker" ---> "м⁸Œ@ÔÔ"
+"" --->  ??? 
+"msctls_progress32" --->  ??? 
+"N/A" ---> "N/4"
+"Time left:" ---> "71m3 |3f7:"
+"Connection limits:" ---> "C0nn3c710n |1m175:"
+"Transfer rates (KB/s):" ---> "7r4n5f3r r4735 (KB/5):"
+"Total" ---> "7074|"
+"Up" --->  ??? 
+"Down" ---> "D0wn"
+"Update in:" ---> "Upd473 1n:"
+"Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." ---> "D0wn|04d3d %1%MB, Up|04d3d %2%MB, R4710 %3%."
+"Ratio (this session):" ---> "R4710 (7h15 535510n):"
+"Ratio:" ---> "R4710:"
+"BitTorrent" ---> "B1770rr3n7"
+"Global Options" ---> "6|0b4| 0p710n5"
+"Open a (single) port between : " ---> "0p3n 4 (51n6|3) p0r7 b37w33n : "
+"Enable DHT. (Note neither DHT nor PEX will apply to private torrents)" ---> "3n4b|3 DH7. (N073 n317h3r DH7 n0r P3X w1|| 4pp|y 70 pr1v473 70rr3n75)"
+"Enable IP filtering." ---> "3n4b|3 1P f1|73r1n6."
+"Import ipfilter.dat" ---> "1mp0r7 1pf1|73r.d47"
+"Clear IP database" ---> "C|34r 1P d474b453"
+"Proxy Host/IP : " ---> "Pr0xy H057/1P : "
+"Use a proxy." ---> "U53 4 pr0xy."
+"Port : " ---> "P0r7 : "
+"Username : " ---> "U53rn4m3 : "
+"Password : " ---> "P455w0rd : "
+"to" ---> "70"
+"Select a (TCP) port (or range of ports) to listen for incomming connections." ---> "53|3c7 4 (7CP) p0r7 (0r r4n63 0f p0r75) 70 |1573n f0r 1nc0mm1n6 c0nn3c710n5."
+"Port (UDP) : " ---> "P0r7 (UDP) : "
+"Remote Control" ---> "R3m073 C0n7r0|"
+"Remote Control Options" ---> "R3m073 C0n7r0| 0p710n5"
+"Enable Remote Control" ---> "3n4b|3 R3m073 C0n7r0|"
+"Port to listen on : " ---> "P0r7 70 |1573n 0n : "
+"*** Disabled ***" ---> "*** D154b|3d ***"
+"Check1" --->  ??? 
+"Button1" --->  ??? 
+"Radio1" --->  ??? 
+"Static" --->  ??? 
+"Halite Debug Dialog" ---> "H4|173 D3bu6 D14|06"
+"MS Sans Serif" --->  ??? 
+"Halite importing IP ranges..." ---> "H4|173 1mp0r71n6 1P r4n635..."
+"Cancel" ---> "C4nc3|"
+"Torrents" ---> "70rr3n75"
+"Global Limits" ---> "6|0b4| |1m175"
+"Total max connections :" ---> "7074| m4x c0nn3c710n5 :"
+"Total upload slots :" ---> "7074| up|04d 5|075 :"
+"Download Rate (KB/s) :" ---> "D0wn|04d R473 (KB/5) :"
+"Upload Rate (KB/s) :" ---> "Up|04d R473 (KB/5) :"
+"Torrent Defaults" ---> "70rr3n7 D3f4u|75"
+"These options set global maximums which will always be honoured." ---> "7h353 0p710n5 537 6|0b4| m4x1mum5 wh1ch w1|| 4|w4y5 b3 h0n0ur3d."
+"These options specify the default limits applied to new torrents." ---> "7h353 0p710n5 5p3c1fy 7h3 d3f4u|7 |1m175 4pp|13d 70 n3w 70rr3n75."
+"Default save folder : " ---> "D3f4u|7 54v3 f0|d3r : "
+"..." --->  ??? 
+"Prompt for alternate save folder." ---> "Pr0mp7 f0r 4|73rn473 54v3 f0|d3r."
+"Halite shutting down..." ---> "H4|173 5hu771n6 d0wn..."
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "17 w1|| 74k3 7h3 B1770rr3n7 535510n 4 m0m3n7 70 5hu7d0wn c|34n|y 4f73r wh1ch 7h15 m355463 w1|| d154pp34r 4nd 7h3 pr06r4m w1|| c|053."
+"Show this message in future" ---> "5h0w 7h15 m355463 1n fu7ur3"
+"Create new torrent" ---> "Cr3473 n3w 70rr3n7"
+"Save" ---> "54v3"
+"Select a file or directory to construct the torrent." ---> "53|3c7 4 f1|3 0r d1r3c70ry 70 c0n57ruc7 7h3 70rr3n7."
+"Enter the tracker URLs for the torrent." ---> "3n73r 7h3 7r4ck3r UR|5 f0r 7h3 70rr3n7."
+"Have Halite acts a DHT node." ---> "H4v3 H4|173 4c75 4 DH7 n0d3."
+"Add" ---> "4dd"
+"Pause" ---> "P4u53"
+"Reannounce" ---> "R34nn0unc3"
+"Remove" ---> "R3m0v3"
+"SysListView32" --->  ??? 
+"Name:" ---> "N4m3:"
+"Status:" ---> "5747u5:"
+"Tracker:" ---> "7r4ck3r:"
+"Torrent connection limits:" ---> "70rr3n7 c0nn3c710n |1m175:"
+"Torrent transfer rates (KB/s):" ---> "70rr3n7 7r4n5f3r r4735 (KB/5):"
+"Completed:" ---> "C0mp|373d:"
+"About" ---> "4b0u7"
+"Program Information" ---> "Pr06r4m 1nf0rm4710n"
+"Halite is a BitTorrent client based on the libtorrent library from Rasterbar.com. The program is written in C++ relying on the Boost libraries and WTL. It is open sourced under a MIT and/or Boost software licence." ---> "H4|173 15 4 B1770rr3n7 c|13n7 b453d 0n 7h3 |1b70rr3n7 |1br4ry fr0m R4573rb4r.c0m. 7h3 pr06r4m 15 wr1773n 1n C++ r3|y1n6 0n 7h3 B0057 |1br4r135 4nd W7|. 17 15 0p3n 50urc3d und3r 4 M17 4nd/0r B0057 50f7w4r3 |1c3nc3."
+"This project has only been possible thanks to the excellent work others. I'd like to acknowledge some of those people." --->  ??? 
+"nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon." --->  ??? 
+"Arvid Norberg - www.rasterbar.com - Author of the libtorrent library." --->  ??? 
+"Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO." --->  ??? 
+"SysTabControl32" --->  ??? 
+"General" --->  ??? 
+"Allow only one instance to run." --->  ??? 
+"General Settings" --->  ??? 
+"Advanced GUI" --->  ??? 
+"Minimize to tray." --->  ??? 
+"List of Trackers." --->  ??? 
+"Send login info to trackers." --->  ??? 
+"Apply" --->  ??? 
+"Reset" --->  ??? 
+"Log to file." --->  ??? 
+"Log debug events." --->  ??? 
+"Add New Tracker" --->  ??? 
+"MS Shell Dlg 2" --->  ??? 
+"OK" --->  ??? 
+"Tracker URL" --->  ??? 
+"Tier" --->  ??? 
+"_POPUP_" --->  ??? 
+"Open &Halite" --->  ??? 
+"&Pause All" --->  ??? 
+"&Resume All" --->  ??? 
+"E&xit" --->  ??? 
+"Resume" --->  ??? 
+"Stop" --->  ??? 
+"Torrent File" --->  ??? 
+"Torrent and Data" --->  ??? 
+"New" --->  ??? 
+"Edit" --->  ??? 
+"Delete" --->  ??? 
+"Halite.ico" --->  ??? 
+"toolbar.bmp" --->  ??? 
+"StringFileInfo" --->  ??? 
+"180904b0" --->  ??? 
+"Comments" --->  ??? 
+"libTorrrent based client." --->  ??? 
+"CompanyName" --->  ??? 
+"BinaryNotions.com" --->  ??? 
+"FileDescription" --->  ??? 
+"Halite BitTorrent Client" --->  ??? 
+"FileVersion" --->  ??? 
+"InternalName" --->  ??? 
+"Halite" --->  ??? 
+"LegalCopyright" --->  ??? 
+"(C) Eoin O'Callaghan 2007" --->  ??? 
+"OriginalFilename" --->  ??? 
+"Halite.exe" --->  ??? 
+"ProductName" --->  ??? 
+"ProductVersion" --->  ??? 
+"VarFileInfo" --->  ??? 
+"Translation" --->  ??? 
+"N" --->  ??? 
+"O" --->  ??? 
+"S" --->  ??? 
+"P" --->  ??? 
+"Z" --->  ??? 
+"X" --->  ??? 
+"C" --->  ??? 
+"V" --->  ??? 
+"(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
+"CAPS" --->  ??? 
+"0000 DHT node(s)" --->  ??? 
+"Filtering 0000000 ranges." --->  ??? 
+"The BitTorrent session could not start. Try selecting another port in the settings." --->  ??? 
+"DHT session could not start. Try selecting another port in the settings." --->  ??? 
+"Select a directory to save the files to or cancel to not download torrent at all." --->  ??? 
+"None" --->  ??? 
+"Debug" --->  ??? 
+"Info" --->  ??? 
+"Critical" --->  ??? 
+"Libtorrent Peer Alert: %1%." --->  ??? 
+"Xml Exception (%1%) with %2%." --->  ??? 
+"Torrent (%1%) exception caught; %2% from %3%." --->  ??? 
+"Invalid torrent (%1%) from %2%." --->  ??? 
+"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
+"%1% DHT node(s)" --->  ??? 
+"DHT disabled" --->  ??? 
+"Filtering %1% range(s)" --->  ??? 
+"IP filter disabled" --->  ??? 
+"Standard exception (%1%) thrown from %2%." --->  ??? 
+"(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
+"Halite not listening!" --->  ??? 
+"Port %1% open" --->  ??? 
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" --->  ??? 
+"Time;Message;Severity" --->  ??? 
+"Tracker;Tier" --->  ??? 
+"Peer;Download;Upload;Type;Client" --->  ??? 
+"Exception caught; %1%, from %2%." --->  ??? 
+"XML exception: %1%." --->  ??? 
+"Unicode exception: %1%." --->  ??? 
+"Bittorrent Event: %1%." --->  ??? 
+"Peer Event: %1%." --->  ??? 
+"Tracker Event: %1%." --->  ??? 
+"Debug Event: %1%." --->  ??? 

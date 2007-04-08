@@ -89,10 +89,15 @@ exe Halite
 	<linkflags>/SUBSYSTEM:WINDOWS
 	;
 	
-lib English
+lib 1337
 	:
-	
+	/res/1337.rc
 	:	
+	<link>shared
+	<runtime-link>static
+	<threading>multi
+	<asynch-exceptions>on
+	
 	<linkflags>/NOENTRY
 	<linkflags>/MACHINE:X86
 	;
