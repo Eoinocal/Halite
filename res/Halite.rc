@@ -275,6 +275,13 @@ BEGIN
     LTEXT           "Tier",IDC_STATIC,155,5,15,10
 END
 
+IDD_ADVPEER DIALOGEX 0, 0, 305, 69
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_PEERLIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,4,7,297,59
+END
+
 IDR_TRAY_MENU MENU
 BEGIN
     POPUP "_POPUP_"
@@ -400,6 +407,7 @@ BEGIN
 	HAL_DEBUG_LISTVIEW_COLUMNS	  "Time;Message;Severity"
 	HAL_TRACKER_LISTVIEW_COLUMNS  "Tracker;Tier"
 	HAL_DIALOGPEER_LISTVIEW_COS	  "Peer;Download;Upload;Type;Client"
+	HAL_DIALOGPEER_LISTVIEW_ADV	  "Peer;Download;Upload;Type;Client;Status"
 	HAL_EVENT_EXP                 "Exception caught; %1%, from %2%."
 	HAL_EVENT_XML_EXP             "XML exception: %1%."
 	HAL_EVENT_UNICODE_EXP         "Unicode exception: %1%."
@@ -409,6 +417,33 @@ BEGIN
 	HAL_EVENT_DEBUG				  "Debug Event: %1%."
 END
 
+STRINGTABLE 
+BEGIN
+    HAL_PEER_INTERESTING    "Interesting"
+    HAL_PEER_CHOKED         "Choked"
+    HAL_PEER_REMOTE_INTERESTING "Interested in us"
+    HAL_PEER_REMOTE_CHOKED  "Has choked us"
+    HAL_PEER_SUPPORT_EXTENSIONs "Supports extensions"
+    HAL_PEER_LOCAL_CONNECTION "Local connection"
+    HAL_PEER_HANDSHAKE      "Handshake"
+    HAL_PEER_CONNECTING     "Connecting"
+    HAL_PEER_QUEUED         "Queued"
+END
+
+STRINGTABLE 
+BEGIN
+    HAL_TORRENT_QUEUED_CHECKING "Queued for Checking"
+    HAL_TORRENT_CHECKING_FILES "Checking Files"
+    HAL_TORRENT_CONNECTING  "Connecting to Tracker"
+    HAL_TORRENT_DOWNLOADING "Downloading"
+    HAL_TORRENT_FINISHED    "Finished"
+    HAL_TORRENT_SEEDING     "Seeding"
+    HAL_TORRENT_ALLOCATING  "Allocating"
+    HAL_TORRENT_QUEUED      "Queued"
+	HAL_TORRENT_STOPPED		"Stopped"
+	HAL_TORRENT_PAUSED		"Paused"
+	HAL_TORRENT_METADATA	"Downloading Metadata"
+END
 
 IDR_MAINFRAME TOOLBAR 22,22
 BEGIN

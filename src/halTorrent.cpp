@@ -428,36 +428,36 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
 		wstring state;
 		
 		if (state_ == TorrentDetail::torrent_paused)
-			state = L"Paused";
+			state = app().res_wstr(HAL_TORRENT_PAUSED);//L"Paused";
 		else if (state_ == TorrentDetail::torrent_stopped)
-			state = L"Stopped";
+			state = app().res_wstr(HAL_TORRENT_STOPPED);//L"Stopped";
 		else
 		{
 			switch (tS.state)
 			{
 			case lbt::torrent_status::queued_for_checking:
-				state = L"Queued For Checking";
+				state = app().res_wstr(HAL_TORRENT_QUEUED_CHECKING);//L"Queued For Checking";
 				break;
 			case lbt::torrent_status::checking_files:
-				state = L"Checking Files";
+				state = app().res_wstr(HAL_TORRENT_CHECKING_FILES);//L"Checking Files";
 				break;
 			case lbt::torrent_status::connecting_to_tracker:
-				state = L"Connecting To Tracker";
+				state = app().res_wstr(HAL_TORRENT_CONNECTING);//L"Connecting To Tracker";
 				break;
 			case lbt::torrent_status::downloading_metadata:
-				state = L"Downloading Metadata";
+				state = app().res_wstr(HAL_TORRENT_METADATA);//L"Downloading Metadata";
 				break;
 			case lbt::torrent_status::downloading:
-				state = L"Downloading";
+				state = app().res_wstr(HAL_TORRENT_FINISHED);//L"Downloading";
 				break;
 			case lbt::torrent_status::finished:
-				state = L"Finished";
+				state = app().res_wstr(HAL_TORRENT_SEEDING);//L"Finished";
 				break;
 			case lbt::torrent_status::seeding:
-				state = L"Seeding";
+				state = app().res_wstr(HAL_TORRENT_ALLOCATING);//L"Seeding";
 				break;
 			case lbt::torrent_status::allocating:
-				state = L"Allocating";
+				state = app().res_wstr(HAL_TORRENT_QUEUED);//L"Allocating";
 				break;
 			}	
 		}

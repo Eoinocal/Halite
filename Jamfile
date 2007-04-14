@@ -28,6 +28,7 @@ SOURCES =
 	UxthemeWrapper.cpp
 	
 	advtabs/Torrent.cpp
+	advtabs/Peers.cpp
 	advtabs/Tracker.cpp
 	advtabs/TrackerListView.cpp
 	advtabs/Debug.cpp

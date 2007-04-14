@@ -7,6 +7,7 @@
 #include "HaliteTabCtrl.hpp"
 #include "advtabs/ThemeTestDialog.hpp"
 #include "advtabs/Torrent.hpp"
+#include "advtabs/Peers.hpp"
 #include "advtabs/Tracker.hpp"
 #include "advtabs/Debug.hpp"
 
@@ -33,6 +34,7 @@ public:
 
 	AdvHaliteDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
 		m_torrent(ui_sig, single_sel),
+		m_peers(ui_sig, single_sel),
 		m_tracker(ui_sig, single_sel),
 		m_debug(ui_sig, single_sel)
 	{}
@@ -73,6 +75,7 @@ protected:
 	boost::scoped_ptr<AdvTorrentDialog> mp_dlg2;
 
 	AdvTorrentDialog m_torrent;
+	AdvPeerDialog m_peers;
 	AdvTrackerDialog m_tracker;
 	AdvDebugDialog m_debug;
 

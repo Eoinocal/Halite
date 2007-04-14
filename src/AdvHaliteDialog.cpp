@@ -23,6 +23,9 @@ LRESULT AdvHaliteDialog::onInitDialog(HWND, LPARAM)
 	m_torrent.Create(m_tabCtrl);
 	m_tabCtrl.AddPage(m_torrent, L"Torrent");
 	
+	m_peers.Create(m_tabCtrl);
+	m_tabCtrl.AddPage(m_peers, L"Peers");
+	
 	m_tracker.Create(m_tabCtrl);
 	m_tabCtrl.AddPage(m_tracker, L"Tracker");
 	
