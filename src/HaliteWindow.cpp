@@ -270,6 +270,9 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	
 	wpath saveDirectory(hal::config().defaultSaveFolder);
 	
+	if (!exists(saveDirectory))
+		create_directory(saveDirectory);
+	
 	if (hal::config().savePrompt)
 	{
 		std::wstring save_prompt = hal::app().res_wstr(IDS_SAVEPROMPT);		

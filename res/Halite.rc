@@ -5,6 +5,12 @@
 #include "resource.h"
 #include "afxres.h"
 
+
+STRINGTABLE 
+BEGIN
+    HALITE_LANGUAGE    "English"
+END
+	
 IDD_ADVOVERVIEW DIALOGEX 0,0,313,121
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILDWINDOW
 FONT 8,"MS Shell Dlg",400,0,1
@@ -423,7 +429,7 @@ BEGIN
     HAL_PEER_CHOKED         "Choked"
     HAL_PEER_REMOTE_INTERESTING "Interested in us"
     HAL_PEER_REMOTE_CHOKED  "Has choked us"
-    HAL_PEER_SUPPORT_EXTENSIONs "Supports extensions"
+    HAL_PEER_SUPPORT_EXTENSIONS "Supports extensions"
     HAL_PEER_LOCAL_CONNECTION "Local connection"
     HAL_PEER_HANDSHAKE      "Handshake"
     HAL_PEER_CONNECTING     "Connecting"

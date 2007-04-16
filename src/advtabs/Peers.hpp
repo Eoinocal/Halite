@@ -30,7 +30,7 @@ public:
 	thisClass() :
 		iniClass("listviews/advPeers", "PeerListView")
 	{
-		array<int, 6> a = {{50, 50, 50, 50, 50, 50}};
+		array<int, 6> a = {{95, 64, 64, 50, 100, 500}};
 		SetDefaults(a);
 
 		load();

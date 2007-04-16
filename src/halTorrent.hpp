@@ -132,6 +132,7 @@ struct PeerDetail
 	std::pair<float,float> speed;
 	bool seed;
 	std::wstring client;
+	std::wstring status;
 };
 
 typedef shared_ptr<PeerDetail> PeerDetail_ptr;

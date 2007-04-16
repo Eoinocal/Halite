@@ -2,9 +2,10 @@
 #define IDC_STATIC (-1)
 #endif
 
-#define HALITE_VERSION					0,2,9,155
+#define HALITE_VERSION					0,2,9,185
 #define HALITE_VERSION_STRING			"v 0.2.9"
 
+#define HALITE_LANGUAGE					10
 #define IDC_DEBUGLISTVIEW               1
 #define IDR_LISTVIEW_MENU               101
 #define IDD_CONFIGBIT                   102
@@ -181,7 +182,7 @@
 #define HAL_PEER_CHOKED                 40038
 #define HAL_PEER_REMOTE_INTERESTING     40039
 #define HAL_PEER_REMOTE_CHOKED          40040
-#define HAL_PEER_SUPPORT_EXTENSIONs     40041
+#define HAL_PEER_SUPPORT_EXTENSIONS     40041
 #define HAL_PEER_LOCAL_CONNECTION       40042
 #define HAL_PEER_HANDSHAKE              40043
 #define HAL_PEER_CONNECTING             40044

@@ -41,6 +41,8 @@
 #include <libtorrent/ip_filter.hpp>
 #include <libtorrent/torrent_handle.hpp>
 #include <libtorrent/peer_connection.hpp>
+#include <libtorrent/extensions/metadata_transfer.hpp>
+#include <libtorrent/extensions/ut_pex.hpp>
 
 #include "halTorrent.hpp"
 #include "halEvent.hpp"
@@ -448,16 +450,16 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
 				state = app().res_wstr(HAL_TORRENT_METADATA);//L"Downloading Metadata";
 				break;
 			case lbt::torrent_status::downloading:
-				state = app().res_wstr(HAL_TORRENT_FINISHED);//L"Downloading";
+				state = app().res_wstr(HAL_TORRENT_DOWNLOADING);//L"Downloading";
 				break;
 			case lbt::torrent_status::finished:
-				state = app().res_wstr(HAL_TORRENT_SEEDING);//L"Finished";
+				state = app().res_wstr(HAL_TORRENT_FINISHED);//L"Finished";
 				break;
 			case lbt::torrent_status::seeding:
-				state = app().res_wstr(HAL_TORRENT_ALLOCATING);//L"Seeding";
+				state = app().res_wstr(HAL_TORRENT_SEEDING);//L"Seeding";
 				break;
 			case lbt::torrent_status::allocating:
-				state = app().res_wstr(HAL_TORRENT_QUEUED);//L"Allocating";
+				state = app().res_wstr(HAL_TORRENT_ALLOCATING);//L"Allocating";
 				break;
 			}	
 		}
@@ -657,6 +659,9 @@ private:
 		dht_on_(false)
 	{
 		theSession.set_severity_level(lbt::alert::debug);
+		
+		theSession.add_extension(&lbt::create_metadata_plugin);
+		theSession.add_extension(&lbt::create_ut_pex_plugin);
 		
 		{	fs::wifstream ifs(workingDirectory/L"Torrents.xml");
 			if (ifs)
@@ -1207,7 +1212,7 @@ void BitTorrent::resumeAll()
 			catch(const lbt::duplicate_torrent&)
 			{
 				hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::debug, L"Encountered duplicate torrent")));
-
+				
 				++iter; // Harmless, don't worry about it.
 			}
 			catch(const std::exception& e) 
@@ -1253,7 +1258,39 @@ PeerDetail::PeerDetail(lbt::peer_info& peerInfo) :
 	speed(make_pair(peerInfo.payload_down_speed, peerInfo.payload_up_speed)),
 	seed(peerInfo.seed),
 	client(hal::str_to_wstr(peerInfo.client))
-{}
+{
+	std::vector<wstring> status_vec;
+	
+	if (peerInfo.flags & lbt::peer_info::interesting)
+		status_vec.push_back(app().res_wstr(HAL_PEER_INTERESTING));	
+	if (peerInfo.flags & lbt::peer_info::choked)
+		status_vec.push_back(app().res_wstr(HAL_PEER_CHOKED));	
+	if (peerInfo.flags & lbt::peer_info::remote_interested)
+		status_vec.push_back(app().res_wstr(HAL_PEER_REMOTE_INTERESTING));	
+	if (peerInfo.flags & lbt::peer_info::remote_choked)
+		status_vec.push_back(app().res_wstr(HAL_PEER_REMOTE_CHOKED));	
+	if (peerInfo.flags & lbt::peer_info::supports_extensions)
+		status_vec.push_back(app().res_wstr(HAL_PEER_SUPPORT_EXTENSIONS));	
+	if (peerInfo.flags & lbt::peer_info::local_connection)
+		status_vec.push_back(app().res_wstr(HAL_PEER_LOCAL_CONNECTION));		
+	if (peerInfo.flags & lbt::peer_info::handshake)
+		status_vec.push_back(app().res_wstr(HAL_PEER_HANDSHAKE));		
+	if (peerInfo.flags & lbt::peer_info::connecting)
+		status_vec.push_back(app().res_wstr(HAL_PEER_CONNECTING));		
+	if (peerInfo.flags & lbt::peer_info::queued)
+		status_vec.push_back(app().res_wstr(HAL_PEER_QUEUED));
+	
+	if (!status_vec.empty()) status = status_vec[0];
+	
+	if (status_vec.size() > 1)
+	{
+		for (size_t i=1; i<status_vec.size(); ++i)
+		{
+			status += L"; ";
+			status += status_vec[i];
+		}
+	}	
+}
 
 void BitTorrent::getAllPeerDetails(string filename, PeerDetails& peerContainer)
 {
