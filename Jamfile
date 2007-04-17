@@ -90,9 +90,9 @@ exe Halite
 	<linkflags>/SUBSYSTEM:WINDOWS
 	;
 	
-lib 1337
+lib Turkish
 	:
-	/res/1337.rc
+	/lang/Turkish.rc
 	:	
 	<link>shared
 	<runtime-link>static

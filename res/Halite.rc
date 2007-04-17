@@ -2,7 +2,7 @@
 // Copyright (C) 2006
 // http://www.resedit.net
 
-#include "resource.h"
+#include "../res/resource.h"
 #include "afxres.h"
 
 
