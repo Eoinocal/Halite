@@ -51,8 +51,8 @@ app_module::app_module()
 	}		
 	LocalFree(szArglist);	
 	
-	HMODULE hMod = ::LoadLibraryEx(L"Turkish.dll", 0, LOAD_LIBRARY_AS_DATAFILE);
-	_Module.SetResourceInstance(reinterpret_cast<HINSTANCE>(hMod));
+//	HMODULE hMod = ::LoadLibraryEx(L"Turkish.dll", 0, LOAD_LIBRARY_AS_DATAFILE);
+//	_Module.SetResourceInstance(reinterpret_cast<HINSTANCE>(hMod));
 }
 
 std::wstring app_module::res_wstr(unsigned uID)

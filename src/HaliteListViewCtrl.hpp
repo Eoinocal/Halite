@@ -50,8 +50,9 @@ public:
 	
 	void SetListViewDetails()
 	{
-		assert (listColumnWidth_.size() == names_.size());
-		assert (listColumnOrder_.size() == names_.size());
+//		assert (listColumnWidth_.size() == names_.size());
+//		assert (listColumnOrder_.size() == names_.size());
+		vectorSizePreConditions();
 		
 		CHeaderCtrl hdr = GetHeader();
 		hdr.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
@@ -71,8 +72,9 @@ public:
 	void SetDefaults(array<int, Size> a)
 	{
 		assert (Size == names_.size());
-		assert (listColumnWidth_.size() == names_.size());
-		assert (listColumnOrder_.size() == names_.size());
+//		assert (listColumnWidth_.size() == names_.size());
+//		assert (listColumnOrder_.size() == names_.size());
+		vectorSizePreConditions();
 		
 		for (size_t i=0; i<names_.size(); ++i)
 		{
@@ -83,8 +85,9 @@ public:
 	
 	void GetListViewDetails()
 	{
-		assert (listColumnWidth_.size() == names_.size());
-		assert (listColumnOrder_.size() == names_.size());
+//		assert (listColumnWidth_.size() == names_.size());
+//		assert (listColumnOrder_.size() == names_.size());
+		vectorSizePreConditions();
 		
 		GetColumnOrderArray(names_.size(), &listColumnOrder_[0]);
 		
@@ -142,6 +145,21 @@ public:
 	
 private:
 	selection_manager<CHaliteListViewCtrl> manager_;
+	
+	void vectorSizePreConditions()
+	{
+		if (listColumnWidth_.size() != names_.size())
+		{
+			listColumnWidth_.clear();
+			listColumnWidth_.insert(listColumnWidth_.end(), names_.size(), 50);	
+		}
+		
+		if (listColumnOrder_.size() != names_.size())
+		{		
+			listColumnOrder_.clear();
+			listColumnOrder_.insert(listColumnOrder_.end(), names_.size(), 0);
+		}		
+	}
 	
 	WTL::CMenu menu_;
 	std::vector<wstring> names_;

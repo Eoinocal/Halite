@@ -29,9 +29,12 @@ void Config::settingsThread()
 	else
 		bittorrent().ensure_ip_filter_off();
 	}
-	catch(const std::exception& ex)
+	catch(const std::exception& e)
 	{
-		::MessageBoxA(0, ex.what(), "Loading IP Filter Exception", MB_ICONERROR|MB_OK);
+		hal::event().post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(Event::critical, e, L"settingsThread, Load IP Filter"))); 
+
+//		::MessageBoxA(0, e.what(), "Loading IP Filter Exception", MB_ICONERROR|MB_OK);
 	}
 	
 	try
@@ -40,12 +43,17 @@ void Config::settingsThread()
 		std::make_pair(portFrom, portTo));
 	if (!success)
 	{
-		MessageBox(0, app().res_wstr(IDS_TRYANOTHERPORT).c_str(), L"Init Exception", MB_ICONERROR|MB_OK);
+		hal::event().post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventDebug(Event::critical, L"settingsThread, Init"))); 
+
+//		MessageBox(0, app().res_wstr(IDS_TRYANOTHERPORT).c_str(), L"Init Exception", MB_ICONERROR|MB_OK);
 	}
 	}
-	catch(const std::exception& ex)
+	catch(const std::exception& e)
 	{
-		::MessageBoxA(0, ex.what(), "Init Exception", MB_ICONERROR|MB_OK);
+		hal::event().post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(Event::critical, e, L"settingsThread, Init"))); 
+//		::MessageBoxA(0, e.what(), "Init Exception", MB_ICONERROR|MB_OK);
 	}
 	
 	bittorrent().resumeAll();
@@ -68,7 +76,11 @@ void Config::settingsThread()
 		if (!bittorrent().ensure_dht_on())
 		{
 			bittorrent().ensure_dht_off();
-			MessageBox(0, app().res_wstr(IDS_DHTTRYANOTHERPORT).c_str(), L"DHT Error", MB_ICONERROR|MB_OK);
+			
+			hal::event().post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventDebug(Event::critical, L"settingsThread, DHT Error"))); 
+			
+//			MessageBox(0, app().res_wstr(IDS_DHTTRYANOTHERPORT).c_str(), L"DHT Error", MB_ICONERROR|MB_OK);
 		}
 	}
 	else

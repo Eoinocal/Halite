@@ -663,16 +663,32 @@ private:
 		theSession.add_extension(&lbt::create_metadata_plugin);
 		theSession.add_extension(&lbt::create_ut_pex_plugin);
 		
-		{	fs::wifstream ifs(workingDirectory/L"Torrents.xml");
+		try
+		{	
+			fs::wifstream ifs(workingDirectory/L"Torrents.xml");
 			if (ifs)
 			{
 				boost::archive::xml_wiarchive ia(ifs);			
 				ia >> make_nvp("torrents", torrents);
 			}
 		}
+		catch(const std::exception& e)
+		{
+			event().post(shared_ptr<EventDetail>(\
+				new EventStdException(Event::fatal, e, L"Loading Torrents.xml")));
+		}
+		
 		if (exists(workingDirectory/L"DHTState.bin"))
 		{
-			dht_state_ = haldecode(workingDirectory/L"DHTState.bin");
+			try
+			{
+				dht_state_ = haldecode(workingDirectory/L"DHTState.bin");
+			}		
+			catch(const std::exception& e)
+			{
+				event().post(shared_ptr<EventDetail>(
+					new EventStdException(Event::critical, e, L"Loading DHTState.bin")));
+			}
 		}
 		
 		{	lbt::session_settings settings = theSession.settings();
@@ -1046,9 +1062,12 @@ lbt::entry BitTorrent_impl::prepTorrent(wpath filename, wpath saveDirectory)
 		{
 			resumeData = haldecode(resumeFile);
 		}
-		catch(std::exception &ex) 
-		{			
-			::MessageBoxW(0, hal::str_to_wstr(ex.what()).c_str(), L"Resume Exception", MB_ICONERROR|MB_OK);
+		catch(std::exception &e) 
+		{		
+			hal::event().post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(Event::critical, e, L"prepTorrent, Resume"))); 
+	
+//			::MessageBoxW(0, hal::str_to_wstr(ex.what()).c_str(), L"Resume Exception", MB_ICONERROR|MB_OK);
 			remove(resumeFile);
 		}
 	}
