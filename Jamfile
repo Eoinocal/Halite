@@ -90,16 +90,16 @@ exe Halite
 	<linkflags>/SUBSYSTEM:WINDOWS
 	;
 	
-#lib Turkish
-#	:
-#	/res/Turkish.rc
-#	:	
-#	<link>shared
-#	<runtime-link>static
-#	<threading>multi
-#	<asynch-exceptions>on
-#	
-#	<linkflags>/NOENTRY
-#	<linkflags>/MACHINE:X86
-#	;
+lib Template
+	:
+	/res/Template.rc
+	:	
+	<link>shared
+	<runtime-link>static
+	<threading>multi
+	<asynch-exceptions>on
+	
+	<linkflags>/NOENTRY
+	<linkflags>/MACHINE:X86
+	;
 

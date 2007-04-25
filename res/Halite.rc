@@ -3,7 +3,7 @@
 // http://www.resedit.net
 
 #include "../res/resource.h"
-#include "afxres.h"
+#include <afxres.h>
 
 
 STRINGTABLE 

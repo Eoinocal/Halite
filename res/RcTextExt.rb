@@ -19,7 +19,7 @@ end
 ARGV.each do |arg| 
 	# Parse any translated strings already present.
 	
-	lang_file = File.open(arg+'.txt', File::CREAT).gets(nil)
+	lang_file = File.open("../lang"+arg+'.txt', File::CREAT).gets(nil)
 	lang_map = Hash.new
 	
 	if lang_file 
@@ -38,7 +38,7 @@ ARGV.each do |arg|
 
     File.new(arg+'.rc', "w").print(resource_lang_file)
 	
-	lang_file = File.new(arg+".txt", File::CREAT|File::TRUNC|File::RDWR)
+	lang_file = File.new("../lang"+arg+".txt", File::CREAT|File::TRUNC|File::RDWR)
 	
 	resource_array.each do |value| 	
 		if lang_map.has_key?(value)
