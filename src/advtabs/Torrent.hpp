@@ -9,27 +9,26 @@
 
 #include "../HaliteTabPage.hpp"
 #include "../HaliteEditCtrl.hpp"
-#include "../HaliteListViewCtrl.hpp"
-
-class ui_signal;
-class HaliteListViewCtrl;
-
-typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
+#include "../HaliteDialogBase.hpp"
 
 class AdvTorrentDialog :
 	public CHalTabPageImpl<AdvTorrentDialog>,
 	public CDialogResize<AdvTorrentDialog>,
+	public CHaliteDialogBase<AdvTorrentDialog>,
 	public CWinDataExchangeEx<AdvTorrentDialog>
 {
 protected:
 	typedef AdvTorrentDialog thisClass;
 	typedef CHalTabPageImpl<AdvTorrentDialog> baseClass;
 	typedef CDialogResize<AdvTorrentDialog> resizeClass;
+	typedef CHaliteDialogBase<AdvTorrentDialog> dialogBaseClass;
 
 public:
 	enum { IDD = IDD_ADVOVERVIEW };
 
-	AdvTorrentDialog(ui_signal& ui_sig, ListViewManager& single_sel);
+	AdvTorrentDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
+		dialogBaseClass(ui_sig, single_sel)
+	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)
 	{
@@ -101,7 +100,4 @@ protected:
 	int NoConnDown, NoConnUp;
 	float TranLimitDown, TranLimitUp;
 	float Ratio;
-
-	ui_signal& ui_;
-	ListViewManager& selection_manager_;
 };

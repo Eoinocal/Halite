@@ -8,6 +8,7 @@
 #include "../Halite.hpp"
 
 #include "../HaliteTabPage.hpp"
+#include "../HaliteDialogBase.hpp"
 #include "../HaliteListManager.hpp"
 
 class PeerListViewCtrl :
@@ -72,24 +73,23 @@ private:
 	}
 };
 
-class ui_signal;
-
-typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
-
 class AdvPeerDialog :
 	public CHalTabPageImpl<AdvPeerDialog>,
-	public CDialogResize<AdvPeerDialog>//,
-//	public CWinDataExchangeEx<AdvPeerDialog>
+	public CHaliteDialogBase<AdvPeerDialog>,
+	public CDialogResize<AdvPeerDialog>
 {
 protected:
 	typedef AdvPeerDialog thisClass;
 	typedef CHalTabPageImpl<thisClass> baseClass;
 	typedef CDialogResize<thisClass> resizeClass;
+	typedef CHaliteDialogBase<AdvPeerDialog> dialogBaseClass;
 
 public:
 	enum { IDD = IDD_ADVPEER };
 
-	AdvPeerDialog(ui_signal& ui_sig, ListViewManager& single_sel);
+	AdvPeerDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
+		dialogBaseClass(ui_sig, single_sel)
+	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)
 	{
@@ -122,7 +122,4 @@ public:
 
 protected:
 	PeerListViewCtrl m_list;
-
-	ui_signal& ui_;
-	ListViewManager& selection_manager_;
 };

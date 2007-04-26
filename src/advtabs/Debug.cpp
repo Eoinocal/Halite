@@ -3,16 +3,7 @@
 #include "../HaliteWindow.hpp"
 #include "../HaliteListViewCtrl.hpp"
 
-//#include "../GlobalIni.hpp"
-//#include "../ini/General.hpp"
-
 #include "Debug.hpp"
-
-AdvDebugDialog::AdvDebugDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
-	ui_(ui_sig),
-	selection_manager_(single_sel)
-{
-}
 
 void AdvDebugDialog::selectionChanged(const string& torrent_name)
 {	
@@ -30,7 +21,7 @@ void AdvDebugDialog::selectionChanged(const string& torrent_name)
 	onLoginCheck(0, 0, GetDlgItem(IDC_TRACKER_LOGINCHECK));
 	
 	DoDataExchange(false);	
-	ui_.update();
+	ui().update();
 }
 
 void AdvDebugDialog::onLoginCheck(UINT, int, HWND hWnd)
@@ -51,11 +42,8 @@ void AdvDebugDialog::onLoginCheck(UINT, int, HWND hWnd)
 
 LRESULT AdvDebugDialog::onInitDialog(HWND, LPARAM)
 {
-	ui_.attach(bind(&AdvDebugDialog::updateDialog, this));
-	selection_manager_.attach(bind(&AdvDebugDialog::selectionChanged, this, _1));
-	
-	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
-	
+	dialogBaseClass::InitializeHalDialogBase();	
+	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);	
 	logList.Attach(GetDlgItem(IDC_DEBUGLISTVIEW));
 	
 	DoDataExchange(false);
@@ -80,7 +68,7 @@ void AdvDebugDialog::onClose()
 
 LRESULT AdvDebugDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {
-	string torrent_name = selection_manager_.selected();
+	string torrent_name = selection_manager().selected();
 	
 	if (hal::bittorrent().isTorrent(torrent_name))
 	{			

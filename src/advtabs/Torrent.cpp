@@ -9,12 +9,6 @@
 
 #include "Torrent.hpp"
 
-AdvTorrentDialog::AdvTorrentDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
-	ui_(ui_sig),
-	selection_manager_(single_sel)
-{
-}
-
 void AdvTorrentDialog::selectionChanged(const string& torrent_name)
 {	
 	pair<float, float> tranLimit(-1.0, -1.0);
@@ -73,14 +67,12 @@ void AdvTorrentDialog::selectionChanged(const string& torrent_name)
 	Ratio = ratio;
 	
 	DoDataExchange(false);	
-	ui_.update();
+	ui().update();
 }
 
 LRESULT AdvTorrentDialog::onInitDialog(HWND, LPARAM)
 {
-	ui_.attach(bind(&AdvTorrentDialog::updateDialog, this));
-	selection_manager_.attach(bind(&AdvTorrentDialog::selectionChanged, this, _1));
-	
+	dialogBaseClass::InitializeHalDialogBase();	
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
 {	m_prog.Attach(GetDlgItem(TORRENTPROG));
@@ -108,9 +100,9 @@ LRESULT AdvTorrentDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl
 {
 	DoDataExchange(true);
 	
-	hal::bittorrent().setTorrentSpeed(selection_manager_.selected(), TranLimitDown, TranLimitUp);
-	hal::bittorrent().setTorrentLimit(selection_manager_.selected(), NoConnDown, NoConnUp);
-	hal::bittorrent().setTorrentRatio(selection_manager_.selected(), Ratio);
+	hal::bittorrent().setTorrentSpeed(selection_manager().selected(), TranLimitDown, TranLimitUp);
+	hal::bittorrent().setTorrentLimit(selection_manager().selected(), NoConnDown, NoConnUp);
+	hal::bittorrent().setTorrentRatio(selection_manager().selected(), Ratio);
 	
 	return 0;
 }
@@ -118,7 +110,7 @@ LRESULT AdvTorrentDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl
 void AdvTorrentDialog::updateDialog()
 {
 	hal::TorrentDetail_ptr pTD = hal::bittorrent().getTorrentDetails(
-		selection_manager_.selected());
+		selection_manager().selected());
 	
 	if (pTD) 	
 	{

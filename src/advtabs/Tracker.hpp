@@ -10,25 +10,30 @@
 #include "TrackerListView.hpp"
 #include "../HaliteTabPage.hpp"
 #include "../HaliteListManager.hpp"
+#include "../HaliteDialogBase.hpp"
 
-class ui_signal;
+//class ui_signal;
 
-typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
+//typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
 
 class AdvTrackerDialog :
 	public CHalTabPageImpl<AdvTrackerDialog>,
 	public CDialogResize<AdvTrackerDialog>,
+	public CHaliteDialogBase<AdvTrackerDialog>,
 	public CWinDataExchangeEx<AdvTrackerDialog>
 {
 protected:
 	typedef AdvTrackerDialog thisClass;
 	typedef CHalTabPageImpl<AdvTrackerDialog> baseClass;
 	typedef CDialogResize<AdvTrackerDialog> resizeClass;
+	typedef CHaliteDialogBase<AdvTrackerDialog> dialogBaseClass;
 
 public:
 	enum { IDD = IDD_ADVTRACKER };
 
-	AdvTrackerDialog(ui_signal& ui_sig, ListViewManager& single_sel);
+	AdvTrackerDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
+		dialogBaseClass(ui_sig, single_sel)
+	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)
 	{
@@ -90,9 +95,6 @@ public:
 
 protected:
 	TrackerListViewCtrl m_list;
-
-	ui_signal& ui_;
-	ListViewManager& selection_manager_;
 
 	wstring username_;
 	wstring password_;

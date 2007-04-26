@@ -11,14 +11,9 @@
 
 #include "../HaliteTabPage.hpp"
 #include "../HaliteListManager.hpp"
+#include "../HaliteDialogBase.hpp"
 #include "../HaliteIni.hpp"
 #include "../HaliteListViewCtrl.hpp"
-
-class ui_signal;
-
-class HaliteListViewCtrl;
-template <class TBase> class CHaliteListViewCtrl;
-typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
 
 class LogEdit : public CWindowImpl<LogEdit, CEdit>
 {
@@ -158,6 +153,7 @@ private:
 class AdvDebugDialog :
 	public CHalTabPageImpl<AdvDebugDialog>,
 	public CDialogResize<AdvDebugDialog>,
+	public CHaliteDialogBase<AdvDebugDialog>,
 	public CWinDataExchangeEx<AdvDebugDialog>,
 	private boost::noncopyable
 {
@@ -165,12 +161,15 @@ protected:
 	typedef AdvDebugDialog thisClass;
 	typedef CHalTabPageImpl<AdvDebugDialog> baseClass;
 	typedef CDialogResize<AdvDebugDialog> resizeClass;
+	typedef CHaliteDialogBase<AdvDebugDialog> dialogBaseClass;
 
 public:
 	enum { IDD = IDD_ADVDEBUGLOG };
 
-	AdvDebugDialog(ui_signal& ui_sig, ListViewManager& single_sel);
-
+	AdvDebugDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
+		dialogBaseClass(ui_sig, single_sel)
+	{}
+	
 	BOOL PreTranslateMessage(MSG* pMsg)
 	{
 		return this->IsDialogMessage(pMsg);
@@ -213,8 +212,5 @@ public:
 
 protected:
 	LogListViewCtrl logList;
-
 	int debugLevel;
-	ui_signal& ui_;
-	ListViewManager& selection_manager_;
 };

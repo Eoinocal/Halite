@@ -3,17 +3,9 @@
 #include "../HaliteWindow.hpp"
 #include "../HaliteListView.hpp"
 
-//#include "../GlobalIni.hpp"
-//#include "../ini/Dialog.hpp"
-
 #include "../global/logger.hpp"
 
 #include "Peers.hpp"
-
-AdvPeerDialog::AdvPeerDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
-	ui_(ui_sig),
-	selection_manager_(single_sel)
-{}
 
 void AdvPeerDialog::selectionChanged(const string& torrent_name)
 {	
@@ -23,7 +15,7 @@ void AdvPeerDialog::selectionChanged(const string& torrent_name)
 void AdvPeerDialog::updateDialog()
 {
 	hal::PeerDetails peerDetails;
-	hal::bittorrent().getAllPeerDetails(selection_manager_.selected(), peerDetails);
+	hal::bittorrent().getAllPeerDetails(selection_manager().selected(), peerDetails);
 	
 	if (!peerDetails.empty())
 	{
@@ -85,9 +77,7 @@ void AdvPeerDialog::updateDialog()
 
 LRESULT AdvPeerDialog::onInitDialog(HWND, LPARAM)
 {
-	ui_.attach(bind(&AdvPeerDialog::updateDialog, this));
-	selection_manager_.attach(bind(&AdvPeerDialog::selectionChanged, this, _1));
-	
+	dialogBaseClass::InitializeHalDialogBase();	
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);	
 	m_list.Attach(GetDlgItem(IDC_PEERLIST));
 	
@@ -101,5 +91,4 @@ void AdvPeerDialog::onClose()
 		::DestroyWindow(m_hWnd);
 	}
 }
-
 

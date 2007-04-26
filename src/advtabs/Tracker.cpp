@@ -3,18 +3,9 @@
 #include "../HaliteWindow.hpp"
 #include "../HaliteListView.hpp"
 
-//#include "../GlobalIni.hpp"
-//#include "../ini/Dialog.hpp"
-
 #include "../global/logger.hpp"
 
 #include "Tracker.hpp"
-
-AdvTrackerDialog::AdvTrackerDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
-	ui_(ui_sig),
-	selection_manager_(single_sel)
-{
-}
 
 void AdvTrackerDialog::selectionChanged(const string& torrent_name)
 {	
@@ -24,7 +15,7 @@ void AdvTrackerDialog::selectionChanged(const string& torrent_name)
 		::EnableWindow(GetDlgItem(IDC_TRACKERLIST), true);
 		
 		pair<wstring, wstring> details = 
-			hal::bittorrent().getTorrentLogin(selection_manager_.selected());
+			hal::bittorrent().getTorrentLogin(selection_manager().selected());
 		
 		username_ = details.first;
 		password_ = details.second;
@@ -54,7 +45,7 @@ void AdvTrackerDialog::selectionChanged(const string& torrent_name)
 	
 	DoDataExchange(false);	
 
-	ui_.update();
+	ui().update();
 }
 
 void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
@@ -80,21 +71,19 @@ void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
 
 LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 {
-	ui_.attach(bind(&AdvTrackerDialog::updateDialog, this));
-	selection_manager_.attach(bind(&AdvTrackerDialog::selectionChanged, this, _1));
-	
+	dialogBaseClass::InitializeHalDialogBase();	
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
 	m_list.Attach(GetDlgItem(IDC_TRACKERLIST));	
 	m_list.attachEditedConnection(bind(&AdvTrackerDialog::trackerListEdited, this));
 	
-	if (hal::bittorrent().isTorrent(selection_manager_.selected()))
+	if (hal::bittorrent().isTorrent(selection_manager().selected()))
 	{		
 		::EnableWindow(GetDlgItem(IDC_TRACKER_LOGINCHECK), true);
 		::EnableWindow(GetDlgItem(IDC_TRACKERLIST), true);
 		
 		pair<wstring, wstring> details = 
-			hal::bittorrent().getTorrentLogin(selection_manager_.selected());
+			hal::bittorrent().getTorrentLogin(selection_manager().selected());
 		
 		username_ = details.first;
 		password_ = details.second;
@@ -108,7 +97,7 @@ LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 		password_ = L"";
 	}
 		
-	setLoginUiState(selection_manager_.selected());
+	setLoginUiState(selection_manager().selected());
 	DoDataExchange(false);	
 	return 0;
 }
@@ -140,15 +129,15 @@ LRESULT AdvTrackerDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl
 {
 	DoDataExchange(true);
 	
-	setLoginUiState(selection_manager_.selected());
-	hal::bittorrent().setTorrentLogin(selection_manager_.selected(), username_, password_);
+	setLoginUiState(selection_manager().selected());
+	hal::bittorrent().setTorrentLogin(selection_manager().selected(), username_, password_);
 	
 	return 0;
 }
 
 void AdvTrackerDialog::onReannounce(UINT, int, HWND)
 {
-	hal::bittorrent().reannounceTorrent(selection_manager_.selected());
+	hal::bittorrent().reannounceTorrent(selection_manager().selected());
 	
 //	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDetail(hal::Event::critical, 
 //		boost::posix_time::second_clock::universal_time(), 123456)));
@@ -164,10 +153,10 @@ void AdvTrackerDialog::updateDialog()
 
 void AdvTrackerDialog::onReset(UINT, int, HWND)
 {
-	hal::bittorrent().resetTorrentTrackers(selection_manager_.selected());
+	hal::bittorrent().resetTorrentTrackers(selection_manager().selected());
 	
 	std::vector<hal::TrackerDetail> trackers =
-		hal::bittorrent().getTorrentTrackers(selection_manager_.selected());
+		hal::bittorrent().getTorrentTrackers(selection_manager().selected());
 	m_list.manager().clearAll();
 	
 	foreach (const hal::TrackerDetail& tracker, trackers)
@@ -195,7 +184,7 @@ void AdvTrackerDialog::onApply(UINT, int, HWND)
 		trackers.back().tier = lexical_cast<int>(wstring(buffer.elems));
 	}
 	
-	hal::bittorrent().setTorrentTrackers(selection_manager_.selected(), trackers);
+	hal::bittorrent().setTorrentTrackers(selection_manager().selected(), trackers);
 	
 	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), false);
 }
