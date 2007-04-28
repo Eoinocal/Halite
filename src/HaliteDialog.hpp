@@ -4,6 +4,7 @@
 #include "stdAfx.hpp"
 #include "DdxEx.hpp"
 #include "HaliteListViewCtrl.hpp"
+#include "HaliteDialogBase.hpp"
 #include "HaliteIni.hpp"
 
 #include "halTorrent.hpp"
@@ -18,6 +19,7 @@ class HaliteDialog :
 	public CDialogImpl<HaliteDialog>,
 	public CDialogResize<HaliteDialog>,
 	public CWinDataExchangeEx<HaliteDialog>,
+	public CHaliteDialogBase<HaliteDialog>,
 //	public CHaliteIni<HaliteDialog>,
 	private boost::noncopyable
 {	
@@ -26,6 +28,7 @@ class HaliteDialog :
 	typedef CDialogImpl<HaliteDialog> baseClass;
 	typedef CDialogResize<HaliteDialog> resizeClass;
 //	typedef CHaliteIni<HaliteDialog> iniClass;
+	typedef CHaliteDialogBase<HaliteDialog> dialogBaseClass;
 	
 	
 	class DialogListView :
@@ -146,7 +149,10 @@ public:
 		DLGRESIZE_CONTROL(LISTPEERS, (DLSZ_SIZE_X | DLSZ_SIZE_Y))
 		DLGRESIZE_CONTROL(IDC_DETAILS_GROUP, (DLSZ_SIZE_X | DLSZ_SIZE_Y))
 	END_DLGRESIZE_MAP()
-
+	
+	void selectionChanged(const string& torrent_name);
+	void updateDialog();
+	
 protected:
 	LRESULT onInitDialog(HWND, LPARAM);
 	void onClose();
@@ -158,9 +164,6 @@ protected:
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl);
 	LRESULT OnCltColor(HDC hDC, HWND hWnd);
 
-	void selectionChanged(const string& torrent_name);
-	void updateDialog();
-
 private:
 	CButton m_btn_start;
 	DialogListView m_list;
@@ -169,7 +172,4 @@ private:
 
 	int NoConnDown, NoConnUp;
 	float TranLimitDown, TranLimitUp;
-
-	ui_signal& ui_;
-	ListViewManager& selection_manager_;
 };

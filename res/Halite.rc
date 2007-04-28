@@ -3,7 +3,7 @@
 // http://www.resedit.net
 
 #include "../res/resource.h"
-#include <afxres.h>
+#include "afxres.h"
 
 
 STRINGTABLE 
@@ -206,7 +206,7 @@ BEGIN
     RTEXT           "Down",IDC_TLD,192,39,20,8
     RTEXT           "Completed:",IDC_STATIC,84,39,39,8
     LTEXT           "N/A",IDC_COMPLETE,125,39,59,8,SS_WORDELLIPSIS
-    GROUPBOX        "",IDC_DETAILS_GROUP,1,4294967292,359,77,0,WS_EX_TRANSPARENT
+    GROUPBOX        "",IDC_DETAILS_GROUP,1,-5,359,77,0,WS_EX_TRANSPARENT
 END
 
 IDD_ABOUT DIALOGEX 0,0,283,125
