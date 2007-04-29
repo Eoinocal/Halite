@@ -14,7 +14,7 @@ std::wstring mbstowcs(const std::string& ustr)
 {
 	std::wstring wstr;
 	
-	try
+//	try
 	{
 	unicode::transcode<unicode::utf8, unicode::wchar_encoding>(
 	   ustr.begin(),
@@ -25,7 +25,7 @@ std::wstring mbstowcs(const std::string& ustr)
 	return wstr;
 	
 	}
-	catch (const unicode::unicode_error& e)
+/*	catch (const unicode::unicode_error& e)
 	{
 		log_file(L"mbstowcs unicode_error- ");
 		log_file(e.what());
@@ -41,8 +41,8 @@ std::wstring mbstowcs(const std::string& ustr)
 		log_file(ustr);
 		log_file(L"\r\n");
 	}
-
-	return L"";
+*/
+//	return L"";
 }
 
 std::string wcstombs(const std::wstring& wstr) 
