@@ -50,8 +50,13 @@ app_module::app_module()
 			command_args_.push_back(szArglist[i]);
 	}		
 	LocalFree(szArglist);	
+}
+
+void app_module::set_res_dll(std::wstring dll)
+{
+	res_dll_ = dll;	
 	
-	HMODULE hMod = ::LoadLibraryEx(L"Template.dll", 0, LOAD_LIBRARY_AS_DATAFILE);
+	HMODULE hMod = ::LoadLibraryEx(dll.c_str(), 0, LOAD_LIBRARY_AS_DATAFILE);
 	_Module.SetResourceInstance(reinterpret_cast<HINSTANCE>(hMod));
 }
 

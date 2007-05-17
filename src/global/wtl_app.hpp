@@ -23,6 +23,7 @@ public:
 	const std::vector<std::wstring>& command_args() const { return command_args_; }
 	
 	std::wstring res_wstr(unsigned uID);
+	void set_res_dll(std::wstring dll);
 	
 	friend app_module& app();
 	
@@ -30,6 +31,7 @@ private:
 	app_module();
 	
 	std::wstring exe_string_;
+	std::wstring res_dll_;
 	boost::filesystem::wpath exe_path_;
 	std::vector<std::wstring> command_args_;	
 };

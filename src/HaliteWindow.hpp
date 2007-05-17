@@ -117,7 +117,7 @@ protected:
 	LRESULT OnUpdateUIInfo(UINT, WPARAM, LPARAM, BOOL&);
 	LRESULT HaliteWindow::OnNotify(int wParam, LPNMHDR lParam);
 	LRESULT OnCreate(LPCREATESTRUCT lpcs);
-    void OnTimer(UINT uTimerID, TIMERPROC pTimerProc);
+    void OnTimer(UINT uTimerID);
 	void OnClose();
 	void OnSize(UINT, CSize);
 	void OnMove(CSize);

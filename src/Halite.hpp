@@ -20,7 +20,8 @@ public:
 		oneInst(true),
 		logDebug_(false),
 		showMessage(true),
-		logToFile_(true)
+		logToFile_(true),
+		dll_(L"")
 	{
 		load();
 	}
@@ -33,10 +34,13 @@ public:
 		ar & BOOST_SERIALIZATION_NVP(logDebug_);
         ar & BOOST_SERIALIZATION_NVP(showMessage);
 		ar & BOOST_SERIALIZATION_NVP(logToFile_);
+		if (version > 0)
+			ar & BOOST_SERIALIZATION_NVP(dll_);
 	}	
 	
 	bool logToFile() { return logToFile_; }
 	bool logDebug() { return logDebug_; }
+	const wstring& dll() { return dll_; }
 	
 	friend class GeneralOptions;
 	friend class SplashDialog;
@@ -44,6 +48,7 @@ public:
 	friend int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 	
 private:
+	wstring dll_;
 	bool oneInst;
 	bool logDebug_;
 	bool showMessage;
@@ -52,4 +57,4 @@ private:
 
 Halite& halite();
 
-BOOST_CLASS_VERSION(Halite, 0)
+BOOST_CLASS_VERSION(Halite, 1)

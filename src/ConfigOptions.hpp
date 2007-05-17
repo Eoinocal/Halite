@@ -34,10 +34,7 @@ public:
     	DDX_CHECK(IDC_GENERAL_ADVGUI, haliteWindow_->advancedUI)
     END_DDX_MAP()
 
-    BOOL OnInitDialog(HWND hwndFocus, LPARAM lParam)
-	{
-		return DoDataExchange(false);
-	}
+    BOOL OnInitDialog(HWND hwndFocus, LPARAM lParam);
 
     int OnApply()
 	{
@@ -45,6 +42,8 @@ public:
 	}
 
 private:
+	CListBox lang_list_;
+	std::map<wstring, wpath> lang_map_;
 	HaliteWindow* haliteWindow_;
 };
 

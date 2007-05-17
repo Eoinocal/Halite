@@ -127,6 +127,7 @@
 #define IDC_UPDATESTAT                  1082
 #define IDC_NC                          1083
 #define IDC_ADVDLG_VERSION              1084
+#define IDC_LANGLIST					1085
 #define ED_CON                          3000
 #define IDPANE_STATUS                   40000
 #define ID_LVM_RESUME                   40000

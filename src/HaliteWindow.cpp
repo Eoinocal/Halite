@@ -208,7 +208,7 @@ void HaliteWindow::updateWindow()
 	}
 }
 
-void HaliteWindow::OnTimer(UINT uTimerID, TIMERPROC pTimerProc)
+void HaliteWindow::OnTimer(UINT uTimerID)
 {		
 	if (uTimerID == ID_UPDATE_TIMER) 
 	{	

@@ -76,6 +76,7 @@ exe Halite
 	<runtime-link>static
 	<threading>multi
 	<asynch-exceptions>on
+	<warnings>off
 	
 	<variant>release:<define>NDEBUG
 	
