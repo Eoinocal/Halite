@@ -70,7 +70,8 @@ void app_module::set_res_dll(std::wstring dll)
 
 std::wstring app_module::res_wstr(unsigned uID)
 {
-	const int buffer_size = 512;
+	// The upper size limit ain't nice, but at least it's safe from buffer overflow
+	const int buffer_size = 2048;
 	boost::array<wchar_t, buffer_size> buffer;
 	::LoadString(_Module.GetResourceInstance(), uID, buffer.elems, buffer_size);
 	

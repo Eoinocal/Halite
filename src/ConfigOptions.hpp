@@ -38,11 +38,11 @@ public:
 
     int OnApply()
 	{	
-		const int buffer_size = 512;
-		boost::array<wchar_t, buffer_size> buffer;
+		size_t length = lang_list_.GetTextLen(lang_list_.GetCurSel());
+		boost::scoped_array<wchar_t> buffer(new wchar_t[length+1]);
 		
-		lang_list_.GetText(lang_list_.GetCurSel(), buffer.elems);
-		std::wstring language(buffer.elems);
+		lang_list_.GetText(lang_list_.GetCurSel(), buffer.get());
+		std::wstring language(buffer.get(), length);
 		
 		if (language == L"English")
 		{
