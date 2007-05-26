@@ -24,12 +24,17 @@ public:
 	
 	std::wstring res_wstr(unsigned uID);
 	void set_res_dll(std::wstring dll);
+	void revert_res();
+	
+	void set_initial_hinstance(HINSTANCE instance) { instance_ = instance; }
 	
 	friend app_module& app();
 	
 private:
 	app_module();
 	
+	HMODULE hmod_;
+	HINSTANCE instance_;
 	std::wstring exe_string_;
 	std::wstring res_dll_;
 	boost::filesystem::wpath exe_path_;

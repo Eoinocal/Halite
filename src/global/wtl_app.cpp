@@ -29,7 +29,8 @@ extern CAppModule _Module;
 namespace hal
 {
 
-app_module::app_module()
+app_module::app_module() :
+	hmod_(NULL)
 {
 	LPWSTR *szArglist; int nArgs;		
 	szArglist = CommandLineToArgvW(GetCommandLineW(), &nArgs);
@@ -52,12 +53,19 @@ app_module::app_module()
 	LocalFree(szArglist);	
 }
 
+void app_module::revert_res()
+{
+	if (hmod_) FreeLibrary(hmod_);
+	_Module.SetResourceInstance(instance_);
+}
+
 void app_module::set_res_dll(std::wstring dll)
 {
+	if (hmod_) FreeLibrary(hmod_);
 	res_dll_ = dll;	
 	
-	HMODULE hMod = ::LoadLibraryEx(dll.c_str(), 0, LOAD_LIBRARY_AS_DATAFILE);
-	_Module.SetResourceInstance(reinterpret_cast<HINSTANCE>(hMod));
+	HMODULE hmod_ = ::LoadLibraryEx(dll.c_str(), 0, LOAD_LIBRARY_AS_DATAFILE);
+	_Module.SetResourceInstance(reinterpret_cast<HINSTANCE>(hmod_));
 }
 
 std::wstring app_module::res_wstr(unsigned uID)

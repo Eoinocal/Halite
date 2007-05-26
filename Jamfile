@@ -76,7 +76,7 @@ exe Halite
 	<runtime-link>static
 	<threading>multi
 	<asynch-exceptions>on
-	<warnings>off
+#	<warnings>off
 	
 	<variant>release:<define>NDEBUG
 	
@@ -91,39 +91,10 @@ exe Halite
 	<linkflags>/SUBSYSTEM:WINDOWS
 	;
 	
-exe TranslationDll
-	:
-	./src/TranslationDll.cpp
-	./src/global/string_conv.cpp
-	./src/global/logger.cpp
-	: 	
-	<library>/boost/signals//boost_signals/<link>static
-	<library>/boost/filesystem//boost_filesystem/<link>static
-	<library>/boost/program_options//boost_program_options/<link>static
-	<library>/boost/regex//boost_regex/<link>static	
-	<library>$(LIBS)
+project languagedll
+
+	: requirements
 	
-#	<runtime-link>static
-	<threading>multi
-	<asynch-exceptions>on
-	
-	<variant>release:<define>NDEBUG
-	
-	<define>_UNICODE
-	<define>UNICODE
-	<define>WIN32
-	<define>_WINDOWS	
-	<define>_CRT_SECURE_NO_DEPRECATE
-	<define>_SCL_SECURE_NO_DEPRECATE
-	<define>_CRT_SECURE_NO_WARNINGS
-	
-	<linkflags>/SUBSYSTEM:CONSOLE
-	;
-	
-lib Template
-	:
-	/res/Template.rc
-	:	
 	<link>shared
 	<runtime-link>static
 	<threading>multi
@@ -132,4 +103,14 @@ lib Template
 	<linkflags>/NOENTRY
 	<linkflags>/MACHINE:X86
 	;
+	
+#lib Template
+#	:
+#	/res/Template.rc
+#	;
+
+#lib Turkish
+#	:
+#	/res/Turkish.rc
+#	;
 

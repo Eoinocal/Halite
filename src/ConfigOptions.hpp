@@ -37,7 +37,24 @@ public:
     BOOL OnInitDialog(HWND hwndFocus, LPARAM lParam);
 
     int OnApply()
-	{
+	{	
+		const int buffer_size = 512;
+		boost::array<wchar_t, buffer_size> buffer;
+		
+		lang_list_.GetText(lang_list_.GetCurSel(), buffer.elems);
+		std::wstring language(buffer.elems);
+		
+		if (language == L"English")
+		{
+			halite().dll_ = L"";
+			hal::app().revert_res();
+		}
+		else
+		{
+			halite().dll_ = lang_map_[language].external_file_string();
+			hal::app().set_res_dll(lang_map_[language].external_file_string());
+		}
+		
 		return DoDataExchange(true);
 	}
 

@@ -1,6 +1,17 @@
 
 #include <boost/foreach.hpp>
 
+#define WINVER 0x0500
+#define _WIN32_WINNT 0x0500
+#define _WIN32_IE 0x0500
+#define _RICHEDIT_VER 0x0200
+#define VC_EXTRALEAN
+
+#include <atlbase.h>
+#include <atlapp.h>
+
+extern CAppModule _Module;
+
 #include "tinyxml.hpp"
 #include "wtl_app.hpp"
 #include "logger.hpp"
