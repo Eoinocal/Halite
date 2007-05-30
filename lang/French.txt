@@ -7,31 +7,31 @@
 "" --->  ??? 
 "msctls_progress32" --->  ??? 
 "N/A" --->  ??? 
-"Time left:" ---> "Temps écoulé:"
-"Connection limits:" --->  ??? 
+"Time left:" ---> "Durée :"
+"Connection limits:" ---> "Limites de connexion"
 "Transfer rates (KB/s):" ---> "Taux de transfert (KB/s):"
 "Total" --->  ??? 
-"Up" ---> "Envoi"
-"Down" ---> "Réception"
-"Update in:" --->  ??? 
-"Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." ---> "Reçu %1%MB, Envoyé %2%MB, Ratio %3%."
-"Ratio (this session):" ---> "Ratio (cette session):"
-"Ratio:" --->  ??? 
+"Up" ---> "E :"
+"Down" ---> "R :"
+"Update in:" ---> "Actu. dans"
+"Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." ---> "Reçus %1%MB, Envoyés %2%MB, Ratio %3%"
+"Ratio (this session):" ---> "Ratio de la session :"
+"Ratio:" ---> "Ratio :"
 "BitTorrent" --->  ??? 
 "Global Options" ---> "Options générales"
 "Open a (single) port between : " ---> "Ouvrir un (seul) port entre:"
-"Enable DHT. (Note neither DHT nor PEX will apply to private torrents)" ---> "Activer DHT. (Note: le DHT et le PEX ne seront pas appliqués pour des torrents privés)"
+"Enable DHT. (Note neither DHT nor PEX will apply to private torrents)" ---> "Activer DHT (le DHT et le PEX ne sont pas appliqués pour des torrents privés)"
 "Button" --->  ??? 
-"Enable IP filtering." ---> "Activer le filtrage des IP."
+"Enable IP filtering." ---> "Activer le filtrage des IP"
 "Import ipfilter.dat" ---> "Importer IPfilter.dat"
 "Clear IP database" ---> "Vider IPfilter.dat"
 "Proxy Host/IP : " --->  ??? 
-"Use a proxy." ---> "Utiliser un proxy."
+"Use a proxy." ---> "Util. un proxy"
 "Port : " --->  ??? 
-"Username : " ---> "Identifiant:"
-"Password : " ---> "Mot de passe:"
-"to" --->  ??? 
-"Select a (TCP) port (or range of ports) to listen for incomming connections." ---> "Selectionner un port TCP (ou une fourchette de ports) pour les connexions entrantes."
+"Username : " ---> "Identifiant :"
+"Password : " ---> "MDP :"
+"to" ---> "à"
+"Select a (TCP) port (or range of ports) to listen for incomming connections." ---> "Choisir un port TCP (ou une fourchette de ports) pour les connexions entrantes"
 "Port (UDP) : " --->  ??? 
 "Remote Control" --->  ??? 
 "Remote Control Options" --->  ??? 
@@ -48,19 +48,19 @@
 "Cancel" ---> "Annuler"
 "Torrents" --->  ??? 
 "Global Limits" ---> "Limites générales"
-"Total max connections :" ---> "Total des connexions"
-"Total upload slots :" ---> "Total des slots d'émission"
-"Download Rate (KB/s) :" ---> "Taux de réception (KB/s)"
-"Upload Rate (KB/s) :" ---> "Taux d'émission (KB/s)"
+"Total max connections :" ---> "Total des connexions :"
+"Total upload slots :" ---> "Slots d'émission :"
+"Download Rate (KB/s) :" ---> "Réception (KB/s) :"
+"Upload Rate (KB/s) :" ---> "Emission (KB/s) :"
 "Torrent Defaults" ---> "Torrent par défaut"
-"These options set global maximums which will always be honoured." ---> "Ces options fixent les maximums qui seront respectés."
-"These options specify the default limits applied to new torrents." ---> "Ces options spécifient les limites par défaut appliqués aux nouveaux torrents."
-"Default save folder : " ---> "Dossier de sauvegarde par défaut:"
+"These options set global maximums which will always be honoured." ---> "Ces options fixent les maximums qui seront respectés"
+"These options specify the default limits applied to new torrents." ---> "Ces options spécifient les limites par défaut appliqués aux nouveaux torrents"
+"Default save folder : " ---> "Dossier de réception :"
 "..." --->  ??? 
-"Prompt for alternate save folder." ---> "Demander pour un dossier de sauvegarde alternatif."
+"Prompt for alternate save folder." ---> "Dossier de réception alternatif"
 "Halite shutting down..." ---> "Halite est en cours de fermeture..."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Cela prend un moment pour que la session soit fermée proprement. Quand ce message disparaîtra, le programme se fermera."
-"Show this message in future" ---> "Montrer ce message à l'avenir"
+"Show this message in future" ---> "Afficher ce message"
 "Create new torrent" ---> "Créer un nouveau torrent"
 "Save" ---> "Enregister"
 "Select a file or directory to construct the torrent." ---> "Choisissez un fichier ou un dossier pour former le torrent."
@@ -71,12 +71,12 @@
 "Reannounce" ---> "Réanoncer"
 "Remove" ---> "Supprimer"
 "SysListView32" --->  ??? 
-"Name:" ---> "Nom:"
-"Tracker:" --->  ??? 
-"Status:" ---> "Statut:"
+"Name:" ---> "Nom :"
+"Tracker:" ---> "Tracker :"
+"Status:" ---> "Statut :"
 "Torrent connection limits:" ---> "Limites de connexion du torrent"
 "Torrent transfer rates (KB/s):" ---> "Taux de transfert du torrent (KB/s)"
-"Completed:" ---> "Complété:"
+"Completed:" ---> "Complété :"
 "About" ---> "A propos"
 "Program Information" ---> "Informations"
 "Halite is a BitTorrent client based on the libtorrent library from Rasterbar.com. The program is written in C++ relying on the Boost libraries and WTL. It is open sourced under a MIT and/or Boost software licence." ---> "Halite est un client BitTorrent basé sur la librairie libtorrent de Rasterbar.com. Le programme est écrit en C++ basé sur les librairies Boost et WTL. Il est open-source sous licence MIT et/ou Boost software."
@@ -86,31 +86,31 @@
 "Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO." ---> "Christopher Kohlhoff - asio.sourceforge.net - Auteur de Boost.ASIO."
 "SysTabControl32" --->  ??? 
 "General" ---> "Général"
-"Allow only one instance to run." ---> "Autoriser une seule instance."
+"Allow only one instance to run." ---> "Autoriser une seule instance"
 "General Settings" ---> "Paramètres généraux"
 "Advanced GUI" ---> "Interface avancée"
-"Minimize to tray." ---> "Réduire dans en icone."
-"Language (requires restart)" --->  ??? 
-"List of Trackers." ---> "Liste des trackers."
-"Send login info to trackers." ---> "Envoyer les identifiant aux trackers"
-"Apply" ---> "Appliquer"
-"Reset" ---> "Réinitialiser"
-"Log to file." --->  ??? 
-"Log debug events." --->  ??? 
+"Minimize to tray." ---> "Minimiser en icône"
+"Language (requires restart)" ---> "Langage (redémarrage nécessaire)"
+"List of Trackers." ---> "Liste des trackers"
+"Send login info to trackers." ---> "Utiliser des identifiants"
+"Apply" ---> "OK"
+"Reset" ---> "RAZ"
+"Log to file." ---> "Log"
+"Log debug events." ---> "Debug"
 "Add New Tracker" ---> "Ajouter un nouveau tracker"
 "MS Shell Dlg 2" --->  ??? 
 "OK" --->  ??? 
 "Tracker URL" ---> "URL du tracker"
 "Tier" --->  ??? 
 "_POPUP_" --->  ??? 
-"Open &Halite" --->  ??? 
-"&Pause All" --->  ??? 
-"&Resume All" --->  ??? 
-"E&xit" --->  ??? 
-"Resume" --->  ??? 
-"Stop" --->  ??? 
-"Torrent File" --->  ??? 
-"Torrent and Data" --->  ??? 
+"Open &Halite" ---> "Ouvrir Halite"
+"&Pause All" ---> "&Tout suspendre"
+"&Resume All" ---> "&Tout reprendre"
+"E&xit" ---> "Q&uitter"
+"Resume" ---> "Reprendre"
+"Stop" ---> "Stopper"
+"Torrent File" ---> "Fichier Torrent"
+"Torrent and Data" ---> "Torrent et données"
 "New" --->  ??? 
 "Edit" --->  ??? 
 "Delete" --->  ??? 
@@ -148,20 +148,20 @@
 "Xml Exception (%1%) with %2%." --->  ??? 
 "Torrent (%1%) exception caught; %2% from %3%." --->  ??? 
 "Invalid torrent (%1%) from %2%." --->  ??? 
-"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
+"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Reçus %1$.2fMB, Envoyés %2$.2fMB, Ratio %3$.2f"
 "%1% DHT node(s)" --->  ??? 
 "DHT disabled" --->  ??? 
-"Filtering %1% range(s)" --->  ??? 
+"Filtering %1% range(s)" ---> "Filtre %1% IP(s)"
 "IP filter disabled" --->  ??? 
 "Standard exception (%1%) thrown from %2%." --->  ??? 
-"(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
+"(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(R-E) %1$.2fKB/s - %2$.2fKB/s"
 "Halite not listening!" --->  ??? 
-"Port %1% open" --->  ??? 
-"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" --->  ??? 
-"Time;Message;Severity" --->  ??? 
+"Port %1% open" ---> "Port %1% ouvert"
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "Nom;Statut;Completé;Réception;Envoi;Peers;Seeds;Temps restant;Copies"
+"Time;Message;Severity" ---> "Temps;Message;Niveau"
 "Tracker;Tier" --->  ??? 
-"Peer;Download;Upload;Type;Client" --->  ??? 
-"Peer;Download;Upload;Type;Client;Status" --->  ??? 
+"Peer;Download;Upload;Type;Client" ---> "Peer;Réception;Envoi;Type;Client"
+"Peer;Download;Upload;Type;Client;Status" ---> "Peer;Réception;Envoi;Type;Client;Statut"
 "Exception caught; %1%, from %2%." --->  ??? 
 "XML exception: %1%." --->  ??? 
 "Unicode exception: %1%." --->  ??? 
