@@ -92,6 +92,7 @@ public:
         DDX_INT(IDC_BC_PORTFROM, hal::config().portFrom)
         DDX_INT(IDC_BC_PORTTO, hal::config().portTo)
         DDX_CHECK(IDC_BC_DHT, hal::config().enableDHT)
+        DDX_CHECK(IDC_BC_PORTCHECK, hal::config().portRange)
         DDX_INT(IDC_BC_DHTPORT, hal::config().dhtServicePort)
         DDX_CHECK(IDC_BC_FILTERCHECK, hal::config().enableIPFilter)
     END_DDX_MAP()

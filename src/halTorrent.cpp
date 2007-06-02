@@ -662,6 +662,18 @@ private:
 		
 		theSession.add_extension(&lbt::create_metadata_plugin);
 		theSession.add_extension(&lbt::create_ut_pex_plugin);
+		theSession.set_max_half_open_connections(10);
+
+#ifndef TORRENT_DISABLE_ENCRYPTION	
+		lbt::pe_settings pe_set;
+		
+		pe_set.out_enc_policy = lbt::pe_settings::enabled;
+		pe_set.out_enc_policy = lbt::pe_settings::enabled;
+		pe_set.allowed_enc_level = lbt::pe_settings::both;
+		pe_set.prefer_rc4 = true;
+		
+		theSession.set_pe_settings(pe_set);
+#endif
 		
 		try
 		{	
@@ -1279,6 +1291,13 @@ PeerDetail::PeerDetail(lbt::peer_info& peerInfo) :
 	client(hal::str_to_wstr(peerInfo.client))
 {
 	std::vector<wstring> status_vec;
+
+#ifndef TORRENT_DISABLE_ENCRYPTION		
+	if (peerInfo.flags & lbt::peer_info::rc4_encrypted)
+		status_vec.push_back(app().res_wstr(HAL_PEER_RC4_ENCRYPTED));		
+	if (peerInfo.flags & lbt::peer_info::plaintext_encrypted)
+		status_vec.push_back(app().res_wstr(HAL_PEER_PLAINTEXT_ENCRYPTED));
+#endif
 	
 	if (peerInfo.flags & lbt::peer_info::interesting)
 		status_vec.push_back(app().res_wstr(HAL_PEER_INTERESTING));	

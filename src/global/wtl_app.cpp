@@ -7,6 +7,10 @@
 #define _RICHEDIT_VER 0x0200
 #define VC_EXTRALEAN
 
+#ifdef WIN32_LEAN_AND_MEAN
+#undef WIN32_LEAN_AND_MEAN
+#endif
+
 #include <atlbase.h>
 #include <atlapp.h>
 

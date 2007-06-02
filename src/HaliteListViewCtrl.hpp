@@ -33,6 +33,7 @@ public:
 
 	BEGIN_MSG_MAP_EX(CHaliteListViewCtrl<TBase>)
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_CLICK, OnClick)
+		REFLECTED_NOTIFY_CODE_HANDLER(LVN_ITEMCHANGED, OnItemChanged)
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_RCLICK, OnRClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_COLUMNCLICK , OnColClick)
 
@@ -96,6 +97,13 @@ public:
 	}
 
 	LRESULT OnClick(int, LPNMHDR pnmh, BOOL&)
+	{
+	//	manager().sync_list(true);
+
+		return 0;
+	}
+
+	LRESULT OnItemChanged(int, LPNMHDR pnmh, BOOL&)
 	{
 		manager().sync_list(true);
 
