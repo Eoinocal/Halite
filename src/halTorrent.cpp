@@ -134,7 +134,7 @@ namespace hal
 class TorrentInternal;
 }
 
-BOOST_CLASS_VERSION(hal::TorrentInternal, 2)
+BOOST_CLASS_VERSION(hal::TorrentInternal, 3)
 
 namespace hal 
 {
@@ -155,6 +155,7 @@ public:
 		connections_(-1),
 		uploads_(-1),
 		ratio_(0),
+		resolve_countries_(true),
 		state_(TorrentDetail::torrent_active),
 		inSession_(false),
 		totalUploaded_(0),
@@ -165,6 +166,7 @@ public:
 		transferLimit_(std::pair<float, float>(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload())),
 		connections_(bittorrent().defTorrentMaxConn()),
 		uploads_(bittorrent().defTorrentMaxUpload()),
+		resolve_countries_(true),                            // **********
 		state_(TorrentDetail::torrent_active),
 		filename_(f),
 		saveDirectory_(saveDirectory.string()),
@@ -198,6 +200,11 @@ public:
 	float getRatio()
 	{
 		return ratio_;
+	}
+	
+	void setResolveCountries()
+	{
+		handle_.resolve_countries(resolve_countries_);
 	}
 	
 	void resume()
@@ -323,6 +330,9 @@ public:
 			ar & make_nvp("totalUploaded", totalUploaded_);
 			ar & make_nvp("ratio", ratio_);
 		}		
+		if (version > 2) {
+			ar & make_nvp("resolve_countries", resolve_countries_);
+		}
     }
 	
 private:		
@@ -333,6 +343,7 @@ private:
 	int uploads_;
 	bool inSession_;
 	float ratio_;
+	bool resolve_countries_;
 	
 	std::wstring filename_;
 	std::wstring saveDirectory_;
@@ -1237,6 +1248,7 @@ void BitTorrent::resumeAll()
 			(*iter).second.setConnectionLimit();
 			(*iter).second.setRatio();
 			(*iter).second.applyTrackers();
+			(*iter).second.setResolveCountries();
 			
 			++iter;
 			}
@@ -1291,6 +1303,11 @@ PeerDetail::PeerDetail(lbt::peer_info& peerInfo) :
 	client(hal::str_to_wstr(peerInfo.client))
 {
 	std::vector<wstring> status_vec;
+	
+#ifndef TORRENT_DISABLE_RESOLVE_COUNTRIES
+	if (peerInfo.country[0] != 0 && peerInfo.country[1] != 0)
+		ipAddress = (wformat(L"%1% (%2%)") % ipAddress % hal::str_to_wstr(string(peerInfo.country, 2))).str().c_str();
+#endif	
 
 #ifndef TORRENT_DISABLE_ENCRYPTION		
 	if (peerInfo.flags & lbt::peer_info::rc4_encrypted)
@@ -1317,6 +1334,8 @@ PeerDetail::PeerDetail(lbt::peer_info& peerInfo) :
 		status_vec.push_back(app().res_wstr(HAL_PEER_CONNECTING));		
 	if (peerInfo.flags & lbt::peer_info::queued)
 		status_vec.push_back(app().res_wstr(HAL_PEER_QUEUED));
+		
+	seed = (peerInfo.flags & lbt::peer_info::seed) ? true : false;
 	
 	if (!status_vec.empty()) status = status_vec[0];
 	

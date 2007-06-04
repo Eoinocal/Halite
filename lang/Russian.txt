@@ -178,6 +178,8 @@
 "Handshake" ---> "Рукопожатие"
 "Connecting" ---> "Соединение"
 "Queued" ---> "Добавлено в очередь"
+"RC4 Encrypted" --->  ??? 
+"Plaintext Encrypted" --->  ??? 
 "Queued for Checking" ---> "На очереди к проверке"
 "Checking Files" ---> "Проверка файлов"
 "Connecting to Tracker" ---> "Соединение с сервером"

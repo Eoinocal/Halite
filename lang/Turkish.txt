@@ -178,6 +178,8 @@
 "Handshake" ---> "El Sıkışma"
 "Connecting" ---> "Bağlanıyor"
 "Queued" ---> "Sırada"
+"RC4 Encrypted" --->  ??? 
+"Plaintext Encrypted" --->  ??? 
 "Queued for Checking" ---> "Kontrol için Sırada"
 "Checking Files" ---> "Dosyalar Kontrol Ediliyor"
 "Connecting to Tracker" ---> "İzleyiciye Bağlanılıyor"

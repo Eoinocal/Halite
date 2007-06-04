@@ -178,6 +178,8 @@
 "Handshake" ---> "Handdruk"
 "Connecting" ---> "Maakt verbinding"
 "Queued" ---> "Wachtend"
+"RC4 Encrypted" --->  ??? 
+"Plaintext Encrypted" --->  ??? 
 "Queued for Checking" ---> "Wachtend op Controle"
 "Checking Files" ---> "Bestanden controleren"
 "Connecting to Tracker" ---> "Verbinden met Tracker"

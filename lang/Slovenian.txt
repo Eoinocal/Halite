@@ -178,6 +178,8 @@
 "Handshake" ---> "Pozdravljam"
 "Connecting" ---> "Povezujem"
 "Queued" ---> "V vrsti"
+"RC4 Encrypted" --->  ??? 
+"Plaintext Encrypted" --->  ??? 
 "Queued for Checking" ---> "V vrsti za pregled"
 "Checking Files" ---> "Preverjam datoteke"
 "Connecting to Tracker" ---> "Povezujem na sledilnik"

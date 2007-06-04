@@ -2,7 +2,6 @@
 use-project /boost : $(/boost) ;
 use-project /wtl : $(/wtl) ;
 use-project /libtorrent : $(/libtorrent) ;
-use-project /openssl : $(/openssl) ;
 
 SOURCES =
 	global/logger.cpp
@@ -72,8 +71,6 @@ exe Halite
 	<library>/boost/regex//boost_regex/<link>static	
 	<library>/libtorrent//torrent/<link>static	
 	<library>/wtl
-	<library>/openssl//ssleay32
-	<library>/openssl//libeay32
 	<library>$(LIBS)
 	
 	<runtime-link>static
@@ -82,10 +79,11 @@ exe Halite
 	<warnings>off
 	
 	<variant>release:<define>NDEBUG
-	
-	<openssl>on
 	<pe-support>on
-		
+	
+#	<define>TORRENT_DISABLE_ENCRYPTION
+#	<define>TORRENT_DISABLE_RESOLVE_COUNTRIES
+	
 	<define>_UNICODE
 	<define>UNICODE
 	<define>WIN32

@@ -178,6 +178,8 @@
 "Handshake" --->  ??? 
 "Connecting" --->  ??? 
 "Queued" ---> "Vorgemerkt"
+"RC4 Encrypted" --->  ??? 
+"Plaintext Encrypted" --->  ??? 
 "Queued for Checking" ---> "zur Prüfung vorgemerkt"
 "Checking Files" ---> "Prüfe Dateien"
 "Connecting to Tracker" ---> "Verbinde zum Tracker"
