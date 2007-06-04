@@ -178,6 +178,8 @@
 "Handshake" --->  ??? 
 "Connecting" ---> "Connexion"
 "Queued" ---> "En attente"
+"RC4 Encrypted" --->  ??? 
+"Plaintext Encrypted" --->  ??? 
 "Queued for Checking" ---> "En attente de vérification"
 "Checking Files" ---> "Vérification"
 "Connecting to Tracker" ---> "Connexion au tracker"
