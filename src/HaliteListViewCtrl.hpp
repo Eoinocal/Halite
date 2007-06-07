@@ -14,6 +14,55 @@ template <class TBase>
 class CHaliteListViewCtrl : public CWindowImpl<TBase, CListViewCtrl>
 {
 
+	class CHaliteHeaderCtrl : public CWindowImpl<CHaliteHeaderCtrl, CHeaderCtrl>
+	{
+	public:
+		BEGIN_MSG_MAP(CHaliteHeaderCtrl)
+			REFLECTED_NOTIFY_CODE_HANDLER(NM_RCLICK, OnRClick)
+		END_MSG_MAP()
+		
+		void Attach(HWND hWndNew)
+		{
+			ATLASSERT(::IsWindow(hWndNew));
+			CWindowImpl<CHaliteHeaderCtrl, CHeaderCtrl>::SubclassWindow(hWndNew);
+
+			menu_.CreatePopupMenu();
+			
+			MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
+			minfo.fMask = MIIM_STRING|MIIM_ID|MIIM_FTYPE|MIIM_STATE;
+			minfo.fType = MFT_STRING;
+			minfo.fState = MFS_CHECKED;
+			minfo.dwTypeData = L"Hello";
+			
+			menu_.InsertMenuItem(0, false, &minfo);
+	//	TBase* pT = static_cast<TBase*>(this);
+//			pT->OnAttach();
+		}
+		
+		LRESULT OnRClick(int i, LPNMHDR pnmh, BOOL&)
+		{
+/*			LPNMITEMACTIVATE pia = (LPNMITEMACTIVATE)pnmh;
+			manager().sync_list(true);
+			
+			if (TBase::LISTVIEW_ID_MENU)
+			{
+				assert (menu_.IsMenu());
+				CMenuHandle sMenu = menu_.GetSubMenu(0);
+				assert (sMenu.IsMenu());
+		
+			}
+*/
+			POINT ptPoint;
+			GetCursorPos(&ptPoint);
+			menu_.TrackPopupMenu(0, ptPoint.x, ptPoint.y, m_hWnd);
+
+			return 0;
+		}
+		
+	private:
+		WTL::CMenu menu_;
+	};
+
 public:
 	CHaliteListViewCtrl<TBase>() :
 		manager_(*this)
@@ -55,12 +104,12 @@ public:
 //		assert (listColumnOrder_.size() == names_.size());
 		vectorSizePreConditions();
 		
-		CHeaderCtrl hdr = GetHeader();
-		hdr.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
+		header_.Attach(this->GetHeader());
+		header_.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
 			
 		foreach (wstring name, names_)
 		{
-			AddColumn(name.c_str(), hdr.GetItemCount());
+			AddColumn(name.c_str(), header_.GetItemCount());
 		}		
 
 		for (unsigned i=0; i<names_.size(); ++i)
@@ -170,6 +219,7 @@ private:
 	}
 	
 	WTL::CMenu menu_;
+	CHaliteHeaderCtrl header_;
 	std::vector<wstring> names_;
 	std::vector<int> listColumnWidth_;
 	std::vector<int> listColumnOrder_;
