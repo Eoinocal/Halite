@@ -1,0 +1,196 @@
+﻿"English" ---> "Italiano"
+"MS Shell Dlg" --->  "Dialogo Shell MS "
+"Torrent" --->  ??? 
+"Tracker" --->  ???
+"" --->  "" 
+"msctls_progress32" --->  ??? 
+"N/A" --->  "N/A" 
+"Time left:" --->  "Al termine" 
+"Connection limits:" --->  "Limiti Connessione" 
+"Transfer rates (KB/s):" --->  "Velocità di trasferimento (KB/s)" 
+"Total" --->  "Totale" 
+"Up" --->  ??? 
+"Down" --->  ??? 
+"Update in:" --->  "Aggiornamento tra:" 
+"Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." --->  "Ricevuti %1%MB, Inviati %2%MB, Ratio %3%." 
+"Ratio (this session):" --->  "Ratio (questa sessione):" 
+"Ratio:" --->  ??? 
+"BitTorrent" --->  ??? 
+"Global Options" --->  "Opzioni Globali" 
+"Open a (single) port between : " --->  "Apri una (singola) porta tra :" 
+"Enable DHT. (Note neither DHT nor PEX will apply to private torrents)" --->  "Abilita DHT. (N.B.: DHT e PEX non si applicheranno ai torrents privati)" 
+"Enable IP filtering." --->  "Abilita filtro IP." 
+"Import ipfilter.dat" --->  "Importa ipfilter.dat" 
+"Clear IP database" --->  "Cancella database IP" 
+"Proxy Host/IP : " --->  ??? 
+"Use a proxy." --->  "Usa un proxy." 
+"Port : " --->  "Porta :" 
+"Username : " --->  "Nome Utente :" 
+"Password : " --->  "Password :" 
+"to" --->  "a" 
+"Select a (TCP) port (or range of ports) to listen for incomming connections." --->  "Seleziona una porta TCP (o un intervallo di porte) da monitorare per le connessioni in entrata."
+"Port (UDP) : " --->  "Porta (UDP) :" 
+"Remote Control" --->  "Controllo Remoto"
+"Remote Control Options" --->  "Opzioni Controllo Remoto" 
+"Enable Remote Control" --->  "Abilita Controllo Remoto" 
+"Port to listen on : " --->  "Porta in ascolto :" 
+"*** Disabled ***" --->  "*** Disabilitato ***" 
+"Check1" --->  ??? 
+"Button1" --->  ??? 
+"Radio1" --->  ??? 
+"Static" --->  ??? 
+"Halite Debug Dialog" --->  "Finestra di Debug di Halite" 
+"MS Sans Serif" --->  ??? 
+"Halite importing IP ranges..." --->  "Halite sta importando gli intervalli di IP..." 
+"Cancel" --->  "Annulla" 
+"Torrents" --->  ??? 
+"Global Limits" --->  "Limiti Globali" 
+"Total max connections :" --->  "Numero massimo di connessioni" 
+"Total upload slots :" --->  "Slot di upload totali" 
+"Download Rate (KB/s) :" --->  "Velocità Download (KB/s) :"
+"Upload Rate (KB/s) :" --->  "Velocità Upload (KB/s) :" 
+"Torrent Defaults" --->  "Limiti per file Torrent" 
+"These options set global maximums which will always be honoured." --->  "Queste opzioni definiscono i limiti massimi che saranno sempre rispettati."
+"These options specify the default limits applied to new torrents." --->  "Queste opzioni definiscono i limiti applicati ai singoli nuovi torrent." 
+"Default save folder : " --->  "Cartella predefinita di salvataggio : " 
+"..." --->  ??? 
+"Prompt for alternate save folder." --->  "Consenti di scegliere una cartella alternativa." 
+"Halite shutting down..." --->  "Halite in chiusura...." 
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." --->  "Ci vorrà qualche momento per la chiusura corretta della sessione BitTorrent, al termine della quale questo messaggio sparirà." 
+"Show this message in future" --->  "Mostra messaggio in futuro" 
+"Create new torrent" --->  "Crea nuovo torrent" 
+"Save" --->  "Salva" 
+"Select a file or directory to construct the torrent." --->  "Seleziona un file o una directory da aggiungere al file torrent." 
+"Enter the tracker URLs for the torrent." --->  "Inserisci gli indirizzi dei tracker per il torrent."
+"Have Halite acts a DHT node." --->  "Abilita nodo DHT Hailte." 
+"Add" --->  "Aggiungi" 
+"Pause" --->  "Pausa" 
+"Reannounce" --->  "Riannuncia" 
+"Remove" --->  "Rimuovi" 
+"SysListView32" --->  ??? 
+"Name:" --->  "Nome" 
+"Status:" --->  "Stato" 
+"Tracker:" --->  ??? 
+"Torrent connection limits:" --->  "Limiti connessioni torrent:" 
+"Torrent transfer rates (KB/s):" --->  "Velocità trasferimento torrent (KB/s):" 
+"Completed:" --->  "Completato" 
+"About" --->  "A proposito di" 
+"Program Information" --->  "Informazioni Programma" 
+"Halite is a BitTorrent client based on the libtorrent library from Rasterbar.com. The program is written in C++ relying on the Boost libraries and WTL. It is open sourced under a MIT and/or Boost software licence." --->  "Halite è un client BitTorrent basato sulla libreria libtorrent di Rasterbar.com. Il programma è scritto in C++ e utilizza le librerie Boost e WTL. E'un programma open-source sotto licenza software MIT e/o Boost." 
+"This project has only been possible thanks to the excellent work others. I'd like to acknowledge some of those people." --->  "Questo progetto è reso possibile grazie anche all'eccellente lavoro di altre persone. Desidererei ringraziarne qualcuna." 
+"nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon." --->  "nudone (Nick Pearson) - wtfcody.com / nudsville.com - Ha disegnato l'Icona." 
+"Arvid Norberg - www.rasterbar.com - Author of the libtorrent library." --->  "Arvid Norberg - www.rasterbar.com - Autore della libreria libtorrent." 
+"Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO." --->  "Christopher Kohlhoff - asio.sourceforge.net - Autore di Boost.ASIO." 
+"SysTabControl32" --->  ??? 
+"General" --->  "Generale" 
+"Allow only one instance to run." --->  "Consenti un solo avvio per volta" 
+"General Settings" --->  "Opzioni Generali" 
+"Advanced GUI" --->  "Interfaccia Avanzata" 
+"Minimize to tray." --->  "Riduci nella Tray" 
+"List of Trackers." --->  "Lista dei Trackers ."
+"Send login info to trackers." --->  "Manda informazioni di login ai trackers." 
+"Apply" --->  "Applica" 
+"Reset" --->  "Resetta" 
+"Log to file." --->  "Salva Log in un file." 
+"Log debug events." --->  "Log degli eventi di debug." 
+"Add New Tracker" --->  "Aggiungi Nuovo Tracker" 
+"MS Shell Dlg 2" --->  ??? 
+"OK" --->  ??? 
+"Tracker URL" --->  ??? 
+"Tier" --->  "Priorità" 
+"_POPUP_" --->  ??? 
+"Open &Halite" --->  "Apri &Halite" 
+"&Pause All" --->  "&Pausa Tutti" 
+"&Resume All" --->  "&Riprendi Tutti" 
+"E&xit" --->  "&Esci" 
+"Resume" --->   "Riprendi"
+"Stop" --->  "Ferma" 
+"Torrent File" --->  "File Torrent"
+"Torrent and Data" --->  "Torrent e Dati" 
+"New" --->  "Nuovo" 
+"Edit" --->  "Modifica" 
+"Delete" --->  "Elimina" 
+"Halite.ico" --->  ??? 
+"toolbar.bmp" --->  ??? 
+"StringFileInfo" --->  ??? 
+"180904b0" --->  ??? 
+"Comments" --->  "Commenti" 
+"libTorrrent based client." --->  "client basato su libTorrent." 
+"CompanyName" --->  ??? 
+"BinaryNotions.com" --->  ??? 
+"FileDescription" --->  ??? 
+"Halite BitTorrent Client" --->  ??? 
+"FileVersion" --->  ??? 
+"InternalName" --->  ??? 
+"Halite" --->  ??? 
+"LegalCopyright" --->  ??? 
+"(C) Eoin O'Callaghan 2007" --->  ??? 
+"OriginalFilename" --->  ??? 
+"Halite.exe" --->  ??? 
+"ProductName" --->  ??? 
+"ProductVersion" --->  ??? 
+"VarFileInfo" --->  ??? 
+"Translation" --->  ??? 
+"N" --->  ??? 
+"O" --->  ??? 
+"S" --->  ??? 
+"P" --->  ??? 
+"Z" --->  ??? 
+"X" --->  ??? 
+"C" --->  ??? 
+"V" --->  ??? 
+"(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
+"CAPS" --->  ??? 
+"0000 DHT node(s)" --->  ??? 
+"Filtering 0000000 ranges." --->  "Flitrando 0000000 intervalli."
+"The BitTorrent session could not start. Try selecting another port in the settings." --->  "La sessione BitTorrent non si è avviata. Prova a selezionare un'altra porta nelle Opzioni." 
+"DHT session could not start. Try selecting another port in the settings." --->  "La sessione DHT non si è avviata. Prova a selezionare un'altra porta nelle Opzioni." 
+"Select a directory to save the files to or cancel to not download torrent at all." --->  "Seleziona una directory in cui salvare i files, o annulla per non scaricare il torrent." 
+"None" --->  ??? 
+"Debug" --->  ??? 
+"Info" --->  ??? 
+"Critical" --->  ??? 
+"Libtorrent Peer Alert: %1%." --->  ??? 
+"Xml Exception (%1%) with %2%." --->  ??? 
+"Torrent (%1%) exception caught; %2% from %3%." --->  ??? 
+"Invalid torrent (%1%) from %2%." --->  ??? 
+"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  "Scaricati %1$.2fMB, Inviati %2$.2fMB, Ratio %3$.2f" 
+"%1% DHT node(s)" --->  ??? 
+"DHT disabled" --->  "DHT disabilitato" 
+"Filtering %1% range(s)" --->  "Filtrando %1% intervalli" 
+"IP filter disabled" --->  "Filtro IP disabilitato" 
+"Standard exception (%1%) thrown from %2%." --->  ??? 
+"(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
+"Halite not listening!" --->  "Halite non riceve" 
+"Port %1% open" --->  "Porta %1% aperta" 
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" --->  "Nome;Stato;Completati;Scaricati;Inviati;Peers;Seeds;ETA;Disponibilità" 
+"Time;Message;Severity" --->  "Orario;Messaggio;Gravità" 
+"Tracker;Tier" --->  "Tracker;Priorità" 
+"Peer;Download;Upload;Type;Client" --->  "Peer;Download;Upload;Tipo;Client" 
+"Peer;Download;Upload;Type;Client;Status" --->  "Peer;Download;Upload;Tipo;Client;Stato" 
+"Exception caught; %1%, from %2%." --->  ??? 
+"XML exception: %1%." --->  ??? 
+"Unicode exception: %1%." --->  ??? 
+"Bittorrent Event: %1%." --->  ??? 
+"Peer Event: %1%." --->  ??? 
+"Tracker Event: %1%." --->  ??? 
+"Debug Event: %1%." --->  ??? 
+"Interesting" --->  ??? 
+"Choked" --->  ??? 
+"Interested in us" --->  ??? 
+"Has choked us" --->  ???
+"Supports extensions" --->  ??? 
+"Local connection" --->  ??? 
+"Handshake" --->  ??? 
+"Connecting" --->  "In Connessione" 
+"Queued" --->  "In Coda" 
+"Queued for Checking" --->  "In Coda per Controllo" 
+"Checking Files" --->  "Sto Controllando i Files" 
+"Connecting to Tracker" --->  "Sto Connettendo al Tracker" 
+"Downloading" --->  ??? 
+"Finished" --->  "Finito" 
+"Seeding" --->  ??? 
+"Allocating" --->  "Allocando" 
+"Stopped" --->  "Fermato" 
+"Paused" --->  "In Pausa" 
+"Downloading Metadata" --->  "Scaricando Metadata" 
