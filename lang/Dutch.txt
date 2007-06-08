@@ -70,12 +70,12 @@
 "Pause" ---> "Pauzeer"
 "Reannounce" ---> "Heromroepen"
 "Remove" ---> "Verwijder"
-"SysListView32" ---> "SysListView32"
+"SysListView32" ---> ???
 "Name:" ---> "Naam:"
 "Tracker:" ---> "Tracker:"
 "Status:" ---> "Status:"
 "Torrent connection limits:" ---> "Torrent verbindings limiet"
-"Torrent transfer rates (KB/s):" ---> ""
+"Torrent transfer rates (KB/s):" ---> "Overdrachtsnelheden van torrent (KB/s)"
 "Completed:" ---> "Voltooid:"
 "About" ---> "Over"
 "Program Information" ---> "Programma Informatie"
@@ -84,9 +84,9 @@
 "nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon." --->  ??? 
 "Arvid Norberg - www.rasterbar.com - Author of the libtorrent library." ---> "Arvid Norberg - www.rasterbar.com - Auteur van de libtorrent bibliotheek."
 "Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO." ---> "Christopher Kohlhoff - asio.sourceforge.net - Auteur van Boost.ASIO."
-"SysTabControl32" ---> "SysTabControl32"
+"SysTabControl32" ---> ???
 "General" ---> "Algemeen"
-"Allow only one instance to run." ---> ""
+"Allow only one instance to run." ---> "Sta maar één instantie toe."
 "General Settings" ---> "Algemene Opties"
 "Advanced GUI" ---> "Geavanceerde GUI"
 "Minimize to tray." ---> "Minimaliseer naar systeemvak."
@@ -178,8 +178,8 @@
 "Handshake" ---> "Handdruk"
 "Connecting" ---> "Maakt verbinding"
 "Queued" ---> "Wachtend"
-"RC4 Encrypted" --->  ??? 
-"Plaintext Encrypted" --->  ??? 
+"RC4 Encrypted" --->  "RC4 encryptie" 
+"Plaintext Encrypted" --->  "Gewone text encryptie"
 "Queued for Checking" ---> "Wachtend op Controle"
 "Checking Files" ---> "Bestanden controleren"
 "Connecting to Tracker" ---> "Verbinden met Tracker"
