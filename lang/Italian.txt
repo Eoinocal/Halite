@@ -1,5 +1,5 @@
 ﻿"English" ---> "Italiano"
-"MS Shell Dlg" --->  "Dialogo Shell MS "
+"MS Shell Dlg" --->  ???
 "Torrent" --->  ??? 
 "Tracker" --->  ???
 "" --->  "" 
