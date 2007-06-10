@@ -215,7 +215,7 @@ public:
 	
 	void pause()
 	{
-		if (state_ == TorrentDetail::torrent_active)
+		if (state_ != TorrentDetail::torrent_stopped)
 		{
 			if (inSession()) handle_.pause();
 			state_ = TorrentDetail::torrent_paused;	
@@ -1239,16 +1239,16 @@ void BitTorrent::resumeAll()
 			(*iter).second.setHandle(pimpl->theSession.add_torrent(metadata,
 				to_utf8((*iter).second.saveDirectory()), resumedata));
 			
-			if ((*iter).second.state() == TorrentDetail::torrent_paused)
-				(*iter).second.pause();
-			else if ((*iter).second.state() == TorrentDetail::torrent_stopped)
-				(*iter).second.stop();
-			
 			(*iter).second.setTransferSpeed();
 			(*iter).second.setConnectionLimit();
 			(*iter).second.setRatio();
 			(*iter).second.applyTrackers();
 			(*iter).second.setResolveCountries();
+			
+			if ((*iter).second.state() == TorrentDetail::torrent_paused)
+				(*iter).second.pause();
+			else if ((*iter).second.state() == TorrentDetail::torrent_stopped)
+				(*iter).second.stop();
 			
 			++iter;
 			}

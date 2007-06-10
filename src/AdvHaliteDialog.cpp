@@ -21,16 +21,16 @@ LRESULT AdvHaliteDialog::onInitDialog(HWND, LPARAM)
 	m_tabCtrl.AddPage(*mp_dlg, L"Test1");
 */		
 	m_torrent.Create(m_tabCtrl);
-	m_tabCtrl.AddPage(m_torrent, L"Torrent");
+	m_tabCtrl.AddPage(m_torrent, hal::app().res_wstr(HAL_TORRENT_TAB).c_str());
 	
 	m_peers.Create(m_tabCtrl);
-	m_tabCtrl.AddPage(m_peers, L"Peers");
+	m_tabCtrl.AddPage(m_peers, hal::app().res_wstr(HAL_PEERS_TAB).c_str());
 	
 	m_tracker.Create(m_tabCtrl);
-	m_tabCtrl.AddPage(m_tracker, L"Tracker");
+	m_tabCtrl.AddPage(m_tracker, hal::app().res_wstr(HAL_TRACKER_TAB).c_str());
 	
 	m_debug.Create(m_tabCtrl);
-	m_tabCtrl.AddPage(m_debug, L"Log");
+	m_tabCtrl.AddPage(m_debug, hal::app().res_wstr(HAL_DEBUG_TAB).c_str());
 	
 	m_tabCtrl.SetCurrentPage(0);
 	

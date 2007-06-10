@@ -238,8 +238,8 @@ public:
 	{
 		hal::bittorrent().clearIpFilter();
 
-		CFolderDialog fldDlg ( NULL, _T("Select a directory to save the downloads to. Select cancel to accept default 'incomming' location."),
-				   BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE );
+		CFolderDialog fldDlg (NULL, hal::app().res_wstr(HAL_FOLDER_SELECT).c_str(),
+			BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE );
 
 		if (IDOK == fldDlg.DoModal())
 			SetDlgItemText(IDC_BC_SAVEFOLDER, fldDlg.m_szFolderPath);
@@ -290,6 +290,18 @@ class AboutOptions :
 {
 public:
     enum { IDD = IDD_ABOUT };
+	
+    BEGIN_MSG_MAP_EX(RemoteOptions)
+		MSG_WM_INITDIALOG(OnInitDialog)
+    END_MSG_MAP()
+
+
+    BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)
+	{
+		SetDlgItemText(IDC_EDITABOUT, hal::app().res_wstr(HAL_ABOUT_BOX).c_str());
+		
+		return true;
+	}
 };
 
 class ConfigOptionsProp :

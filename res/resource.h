@@ -128,6 +128,7 @@
 #define IDC_NC                          1083
 #define IDC_ADVDLG_VERSION              1084
 #define IDC_LANGLIST					1085
+#define IDC_EDITABOUT					1086
 #define ED_CON                          3000
 #define IDPANE_STATUS                   40000
 #define ID_LVM_RESUME                   40000
@@ -202,3 +203,9 @@
 #define HAL_TORRENT_PAUSED              40059
 #define HAL_TORRENT_METADATA            40060
 #define HAL_DIALOGPEER_LISTVIEW_ADV		40070
+#define HAL_ABOUT_BOX					40080
+#define HAL_FOLDER_SELECT				40081
+#define HAL_TORRENT_TAB				    40082
+#define HAL_PEERS_TAB				    40083
+#define HAL_TRACKER_TAB				    40084
+#define HAL_DEBUG_TAB				    40085

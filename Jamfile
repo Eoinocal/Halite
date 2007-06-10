@@ -77,12 +77,9 @@ exe Halite
 	<threading>multi
 	<asynch-exceptions>on
 	<warnings>off
-	
-	<variant>release:<define>NDEBUG
 	<pe-support>on
 	
-#	<define>TORRENT_DISABLE_ENCRYPTION
-#	<define>TORRENT_DISABLE_RESOLVE_COUNTRIES
+	<variant>release:<define>NDEBUG
 	
 	<define>_UNICODE
 	<define>UNICODE
@@ -94,18 +91,6 @@ exe Halite
 	
 	<linkflags>/SUBSYSTEM:WINDOWS
 	;
-	
-project languagedll
 
-	: requirements
-	
-	<link>shared
-	<runtime-link>static
-	<threading>multi
-	<asynch-exceptions>on
-	
-	<linkflags>/NOENTRY
-	<linkflags>/MACHINE:X86
-	;
 	
 
