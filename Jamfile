@@ -77,7 +77,6 @@ exe Halite
 	<threading>multi
 	<asynch-exceptions>on
 	<warnings>off
-	<pe-support>on
 	
 	<variant>release:<define>NDEBUG
 	
