@@ -38,7 +38,19 @@ RESOURCES =
 	Halite.rc
 	;
 
+BOOST_LIBS =
+	signals//boost_signals
+	serialization//boost_serialization
+	serialization//boost_wserialization
+	regex//boost_regex
+	filesystem//boost_filesystem
+	;
+	
 LIBS = 
+	/boost/$(BOOST_LIBS)/<link>static
+	/libtorrent//torrent/<link>static
+	/wtl
+	
 	comctl32
 	user32
 	kernel32
@@ -48,29 +60,11 @@ LIBS =
 	shell32
 	;
 
-lib comctl32 : : <name>comctl32.lib ;
-lib user32 : : <name>user32.lib ;
-lib kernel32 : : <name>kernel32.lib ;
-lib comdlg32 : : <name>comdlg32.lib ;
-lib advapi32 : : <name>advapi32.lib ;
-lib shell32 : : <name>shell32.lib ;
-lib gdi32 : : <name>gdi32.lib ;
-lib bufferoverflowU : : <name>bufferoverflowU.lib ;
-lib wsock32 : : <name>wsock32.lib ;
-lib uxtheme : : <name>UxTheme.lib ;
-
 exe Halite
 	:
 	./src/$(SOURCES)
 	./res/$(RESOURCES)
 	: 	
-	<library>/boost/signals//boost_signals/<link>static
-	<library>/boost/serialization//boost_serialization/<link>static
-	<library>/boost/serialization//boost_wserialization/<link>static
-	<library>/boost/filesystem//boost_filesystem/<link>static
-	<library>/boost/regex//boost_regex/<link>static	
-	<library>/libtorrent//torrent/<link>static	
-	<library>/wtl
 	<library>$(LIBS)
 	
 	<runtime-link>static
@@ -91,5 +85,13 @@ exe Halite
 	<linkflags>/SUBSYSTEM:WINDOWS
 	;
 
-	
-
+lib comctl32 : : <name>comctl32.lib ;
+lib user32 : : <name>user32.lib ;
+lib kernel32 : : <name>kernel32.lib ;
+lib comdlg32 : : <name>comdlg32.lib ;
+lib advapi32 : : <name>advapi32.lib ;
+lib shell32 : : <name>shell32.lib ;
+lib gdi32 : : <name>gdi32.lib ;
+lib bufferoverflowU : : <name>bufferoverflowU.lib ;
+lib wsock32 : : <name>wsock32.lib ;
+lib uxtheme : : <name>UxTheme.lib ;

@@ -165,6 +165,7 @@ struct SessionDetail
 
 typedef boost::function<bool (size_t, size_t, size_t)> filterCallback;
 typedef boost::function<bool (size_t)> progressCallback;
+
 class BitTorrent_impl;
 
 class BitTorrent
@@ -247,7 +248,6 @@ public:
 	
 private:
 	BitTorrent();
-	
 	boost::scoped_ptr<BitTorrent_impl> pimpl;
 };
 
