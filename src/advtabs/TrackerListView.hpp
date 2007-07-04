@@ -78,4 +78,4 @@ private:
 	boost::signal<void ()> listEdited_;
 };
 
-typedef selection_manager<TrackerListViewCtrl> TrackerListViewManager;
+typedef TrackerListViewCtrl::selection_manage_class TrackerListViewManager;

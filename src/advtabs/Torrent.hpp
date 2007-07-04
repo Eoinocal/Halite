@@ -26,8 +26,8 @@ protected:
 public:
 	enum { IDD = IDD_ADVOVERVIEW };
 
-	AdvTorrentDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
-		dialogBaseClass(ui_sig, single_sel)
+	AdvTorrentDialog(HaliteWindow& HalWindow, ui_signal& ui_sig, ListViewManager& single_sel) :
+		dialogBaseClass(HalWindow, ui_sig, single_sel)
 	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)
@@ -93,6 +93,7 @@ public:
 
 	void selectionChanged(const string& torrent_name);
 	void updateDialog();
+	void uiUpdate(const hal::TorrentDetails& torrentDetails) {}
 
 protected:
 	CProgressBarCtrl m_prog;

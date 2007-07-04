@@ -134,7 +134,7 @@ public:
 	
 	virtual std::wstring msg()
 	{
-		return (wformat(hal::app().res_wstr(code())) % torrent_).str();
+		return (wformat(hal::app().res_wstr(code())) % torrent_ % function_).str();
 	}
 	
 private:

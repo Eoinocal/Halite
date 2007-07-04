@@ -87,8 +87,8 @@ protected:
 public:
 	enum { IDD = IDD_ADVPEER };
 
-	AdvPeerDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
-		dialogBaseClass(ui_sig, single_sel)
+	AdvPeerDialog(HaliteWindow& halWindow, ui_signal& ui_sig, ListViewManager& single_sel) :
+		dialogBaseClass(halWindow, ui_sig, single_sel)
 	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)

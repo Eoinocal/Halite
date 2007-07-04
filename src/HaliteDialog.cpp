@@ -9,9 +9,8 @@
 #include "HaliteListView.hpp"
 #include "halEvent.hpp"
 
-HaliteDialog::HaliteDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
-//	iniClass("dialogs/halite", "HaliteDialog"),
-	dialogBaseClass(ui_sig, single_sel)
+HaliteDialog::HaliteDialog(HaliteWindow& halWindow, ui_signal& ui_sig, ListViewManager& single_sel) :
+		dialogBaseClass(halWindow, ui_sig, single_sel)
 {
 //	ui_.attach(bind(&HaliteDialog::updateDialog, this));
 //	selection_manager_.attach(bind(&HaliteDialog::selectionChanged, this, _1));
@@ -24,6 +23,7 @@ void HaliteDialog::selectionChanged(const string& torrent_name)
 	pair<float, float> tranLimit(-1.0, -1.0);
 	pair<int, int> connLimit(-1, -1);
 	
+#	if 0	
 	if (hal::bittorrent().isTorrent(torrent_name))
 	{
 		tranLimit = hal::bittorrent().getTorrentSpeed(torrent_name);
@@ -70,7 +70,7 @@ void HaliteDialog::selectionChanged(const string& torrent_name)
 	TranLimitUp = tranLimit.second;
 	
 	DoDataExchange(false);	
-	
+#	endif
 	m_list.DeleteAllItems();	
 	ui().update();
 }
@@ -159,8 +159,98 @@ LRESULT HaliteDialog::OnCltColor(HDC hDC, HWND hWnd)
 	return (LRESULT)::GetCurrentObject(hDC, OBJ_BRUSH);
 }
 
+void HaliteDialog::uiUpdate(const hal::TorrentDetails& torrentDetails)
+{
+	hal::TorrentDetails::const_iterator ppTd = torrentDetails.begin();
+	hal::TorrentDetail_ptr pTd;
+	
+	if ((ppTd != torrentDetails.end()) && (pTd = *ppTd)) 	
+	{
+		SetDlgItemText(IDC_NAME, pTd->filename().c_str());
+		SetDlgItemText(IDC_TRACKER, pTd->currentTracker().c_str());
+		SetDlgItemText(IDC_STATUS, pTd->state().c_str());
+		m_prog.SetPos(static_cast<int>(pTd->completion()*100));
+		
+		if (!pTd->estimatedTimeLeft().is_special())
+		{
+			SetDlgItemText(IDC_AVAIL,
+				(hal::from_utf8(boost::posix_time::to_simple_string(pTd->estimatedTimeLeft())).c_str()));
+		}
+		else
+		{
+			SetDlgItemText(IDC_AVAIL,L"∞");		
+		}
+		
+		SetDlgItemText(IDC_COMPLETE,
+			(wformat(L"%1$.2fmb of %2$.2fmb") 
+				% (static_cast<float>(pTd->totalWantedDone())/(1024*1024))
+				% (static_cast<float>(pTd->totalWanted())/(1024*1024))
+			).str().c_str());
+				
+		m_list.SetRedraw(false);
+		m_list.manager().clearAll();
+		
+		if (!pTd->peerDetails().empty())
+		{			
+			
+			foreach (const hal::PeerDetail& peer, pTd->peerDetails())
+			{			
+				LV_FINDINFO findInfo; 
+				findInfo.flags = LVFI_STRING;
+				findInfo.psz = const_cast<LPTSTR>(peer.ipAddress.c_str());
+				
+				int itemPos = m_list.FindItem(&findInfo, -1);
+				if (itemPos < 0)
+					itemPos = m_list.AddItem(0, 0, peer.ipAddress.c_str(), 0);
+				
+				m_list.SetItemText(itemPos, 1,
+					(wformat(L"%1$.2fKB/s") 
+						% (peer.speed.first/1024)
+					).str().c_str());	
+				
+				m_list.SetItemText(itemPos, 2,
+					(wformat(L"%1$.2fKB/s") 
+						% (peer.speed.second/1024)
+					).str().c_str());	
+				
+				if (peer.seed)
+					m_list.SetItemText(itemPos, 3, L"Seed");
+				
+				m_list.SetItemText(itemPos, 4, peer.client.c_str());
+			}			
+		}
+		
+		m_list.SetRedraw(true);
+	}
+	else
+	{
+		
+/*		SetDlgItemText(IDC_NAME, L"N/A");
+		SetDlgItemText(IDC_TRACKER, L"N/A");
+		SetDlgItemText(IDC_STATUS, L"N/A");
+		SetDlgItemText(IDC_AVAIL, L"N/A");
+		SetDlgItemText(IDC_COMPLETE, L"N/A");
+		
+		SetDlgItemText(BTNPAUSE, L"Pause");
+		
+		::EnableWindow(GetDlgItem(BTNPAUSE), false);
+		::EnableWindow(GetDlgItem(BTNREANNOUNCE), false);
+		::EnableWindow(GetDlgItem(BTNREMOVE), false);
+		
+		::EnableWindow(GetDlgItem(IDC_EDITTLD), false);
+		::EnableWindow(GetDlgItem(IDC_EDITTLU), false);
+		::EnableWindow(GetDlgItem(IDC_EDITNCD), false);
+		::EnableWindow(GetDlgItem(IDC_EDITNCU), false);
+		
+		m_list.DeleteAllItems();
+*/
+	}
+}
+
 void HaliteDialog::updateDialog()
 {
+#	if 0
+
 	hal::TorrentDetail_ptr pTD = hal::bittorrent().getTorrentDetails(
 		selection_manager().selected());
 	
@@ -264,4 +354,5 @@ void HaliteDialog::updateDialog()
 		m_list.DeleteAllItems();
 */
 	}
+#	endif
 }

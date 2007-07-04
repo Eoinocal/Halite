@@ -24,7 +24,7 @@ void HaliteListViewCtrl::saveSettings()
 void HaliteListViewCtrl::updateListView()
 {
 	hal::TorrentDetails TD;
-	hal::bittorrent().getAllTorrentDetails(TD);
+	hal::bittorrent().getAllTorrentDetails(TD, "");
 	
 	for (hal::TorrentDetails::const_iterator i = TD.begin(); i != TD.end(); ++i) 
 	{

@@ -13,7 +13,7 @@
 class ui_signal;
 
 class HaliteListViewCtrl;
-typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
+typedef CHaliteListViewCtrl<HaliteListViewCtrl>::selection_manage_class ListViewManager;
 
 class HaliteDialog :
 	public CDialogImpl<HaliteDialog>,
@@ -29,8 +29,7 @@ class HaliteDialog :
 	typedef CDialogResize<HaliteDialog> resizeClass;
 //	typedef CHaliteIni<HaliteDialog> iniClass;
 	typedef CHaliteDialogBase<HaliteDialog> dialogBaseClass;
-	
-	
+		
 	class DialogListView :
 		public CHaliteListViewCtrl<DialogListView>,
 		public CHaliteIni<DialogListView>,
@@ -80,7 +79,7 @@ class HaliteDialog :
 		{
 			saveSettings();
 		}
-		
+				
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
@@ -93,7 +92,7 @@ class HaliteDialog :
 public:
 	enum { IDD = IDD_HALITEDLG };
 
-	HaliteDialog(ui_signal& ui_sig, ListViewManager& single_sel);
+	HaliteDialog(HaliteWindow& HalWindow, ui_signal& ui_sig, ListViewManager& single_sel);
 	BOOL PreTranslateMessage(MSG* pMsg)	{ return this->IsDialogMessage(pMsg); }
 
 	void saveStatus();
@@ -152,6 +151,7 @@ public:
 	
 	void selectionChanged(const string& torrent_name);
 	void updateDialog();
+	void uiUpdate(const hal::TorrentDetails& torrentDetails);
 	
 protected:
 	LRESULT onInitDialog(HWND, LPARAM);

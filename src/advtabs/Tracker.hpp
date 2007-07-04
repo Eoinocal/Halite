@@ -31,8 +31,8 @@ protected:
 public:
 	enum { IDD = IDD_ADVTRACKER };
 
-	AdvTrackerDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
-		dialogBaseClass(ui_sig, single_sel)
+	AdvTrackerDialog(HaliteWindow& HalWindow, ui_signal& ui_sig, ListViewManager& single_sel) :
+		dialogBaseClass(HalWindow, ui_sig, single_sel)
 	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)

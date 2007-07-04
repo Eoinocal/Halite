@@ -14,6 +14,7 @@ void AdvPeerDialog::selectionChanged(const string& torrent_name)
 
 void AdvPeerDialog::updateDialog()
 {
+#	if 0
 	hal::PeerDetails peerDetails;
 	hal::bittorrent().getAllPeerDetails(selection_manager().selected(), peerDetails);
 	
@@ -73,6 +74,7 @@ void AdvPeerDialog::updateDialog()
 	{
 		m_list.DeleteAllItems();
 	}
+#	endif
 }
 
 LRESULT AdvPeerDialog::onInitDialog(HWND, LPARAM)

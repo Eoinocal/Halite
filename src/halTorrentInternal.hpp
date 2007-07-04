@@ -51,7 +51,7 @@ public:
 		totalBase_(0)
 	{}
 	
-	TorrentDetail_ptr getTorrentDetails() const;
+	TorrentDetail_ptr getTorrentDetails(bool with_peers) const;
 	void setTransferSpeed(float down, float up);
 	void setConnectionLimit(int maxConn, int maxUpload);
 	void setTransferSpeed();
@@ -252,8 +252,21 @@ public:
 		setResolveCountries();
 	}
 	
+	void getPeerDetails(PeerDetails& peerDetails) const
+	{
+		if (in_session_)
+		{
+			std::vector<lbt::peer_info> peerInfo;
+			handle_.get_peer_info(peerInfo);
+			
+			foreach (lbt::peer_info peer, peerInfo) 
+			{
+				peerDetails.push_back(peer);
+			}	
+		}
+	}
+	
 private:
-
 	static libtorrent::session* the_session_;
 	
 	std::pair<float, float> transferLimit_;
@@ -284,7 +297,6 @@ private:
 
 typedef std::map<std::string, TorrentInternal> TorrentMap;
 typedef std::pair<std::string, TorrentInternal> TorrentPair;
-
 
 void TorrentInternal::setConnectionLimit(int maxConn, int maxUpload)
 {
@@ -329,7 +341,7 @@ pair<float, float> TorrentInternal::getTransferSpeed()
 	return transferLimit_;
 }
 
-TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
+TorrentDetail_ptr TorrentInternal::getTorrentDetails(bool with_peers) const
 {
 	if (inSession())
 	{
@@ -382,10 +394,14 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
 		totalUploaded_ += (tS.total_payload_upload - totalBase_);
 		totalBase_ = tS.total_payload_upload;
 
-		return TorrentDetail_ptr(new TorrentDetail(filename_, state, hal::from_utf8(tS.current_tracker), 
+		TorrentDetail_ptr td_p(new TorrentDetail(filename_, state, hal::from_utf8(tS.current_tracker), 
 			pair<float, float>(tS.download_payload_rate, tS.upload_payload_rate),
 			tS.progress, tS.distributed_copies, tS.total_wanted_done, tS.total_wanted, totalUploaded_,
 			tS.num_peers, tS.num_seeds, ratio_, td, tS.next_announce));
+		
+		if (with_peers) getPeerDetails(td_p->peerDetails_);
+		
+		return td_p;
 	}
 	else
 	{

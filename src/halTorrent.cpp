@@ -873,14 +873,16 @@ void BitTorrent::newTorrent(fs::wpath filename, fs::wpath files)
 */
 }
 
-void BitTorrent::getAllTorrentDetails(TorrentDetails& torrentsContainer)
+void BitTorrent::getAllTorrentDetails(TorrentDetails& torrentsContainer, std::string filename)
 {
 	try {
 	
-	for (TorrentMap::const_iterator iter = pimpl->torrents.begin(); 
-		iter != pimpl->torrents.end(); ++iter)
+	foreach (TorrentPair t, pimpl->torrents)
 	{
-		torrentsContainer.push_back(iter->second.getTorrentDetails());
+		if (t.first == filename)		
+			torrentsContainer.insert(torrentsContainer.begin(), t.second.getTorrentDetails(true));		
+		else
+			torrentsContainer.push_back(t.second.getTorrentDetails(false));
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "getAllTorrentDetails")
@@ -894,7 +896,7 @@ TorrentDetail_ptr BitTorrent::getTorrentDetails(string filename)
 	
 	if (i != pimpl->torrents.end())
 	{
-		return i->second.getTorrentDetails();
+		return i->second.getTorrentDetails(true);
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentDetails")

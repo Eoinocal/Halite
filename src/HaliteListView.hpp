@@ -68,10 +68,19 @@ public:
     {
 		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
     }
+				
+	void connectForDetails(boost::function<void (const hal::TorrentDetails&)> fn) 
+	{ 
+		selection_details_.connect(fn); 
+	}
 
 private:
 	void OnAttach();
 	void OnDetach();
+	
+	boost::signal<void (const hal::TorrentDetails&)> selection_details_;
+	
+	hal::TorrentDetails torrentDetails_;
 };
 
-typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
+typedef HaliteListViewCtrl::selection_manage_class ListViewManager;

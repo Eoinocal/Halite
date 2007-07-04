@@ -17,7 +17,7 @@ class HaliteListViewCtrl;
 template <class TBase>
 class CHaliteListViewCtrl;
 
-typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
+typedef CHaliteListViewCtrl<HaliteListViewCtrl>::selection_manage_class ListViewManager;
 
 class HaliteWindow;
 
@@ -32,11 +32,11 @@ protected:
 public:
 	enum { IDD = IDD_ADVHALITEDLG };
 
-	AdvHaliteDialog(ui_signal& ui_sig, ListViewManager& single_sel) :
-		m_torrent(ui_sig, single_sel),
-		m_peers(ui_sig, single_sel),
-		m_tracker(ui_sig, single_sel),
-		m_debug(ui_sig, single_sel)
+	AdvHaliteDialog(HaliteWindow& halWindow, ui_signal& ui_sig, ListViewManager& single_sel) :
+		m_torrent(halWindow, ui_sig, single_sel),
+		m_peers(halWindow, ui_sig, single_sel),
+		m_tracker(halWindow, ui_sig, single_sel),
+		m_debug(halWindow, ui_sig, single_sel)
 	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)

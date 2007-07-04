@@ -35,6 +35,33 @@ struct torrentBriefDetail
 	int seeds;
 };
 
+struct PeerDetail 
+{
+	PeerDetail(const std::wstring& ip_address) :
+		ipAddress(ip_address)
+	{}
+	PeerDetail(libtorrent::peer_info& peerInfo);
+	
+	bool operator==(const PeerDetail& peer) const
+	{
+		return (ipAddress == peer.ipAddress);
+	}
+	
+	bool operator<(const PeerDetail& peer) const
+	{
+		return (ipAddress < peer.ipAddress);
+	}
+	
+	wstring ipAddress;
+	std::pair<float,float> speed;
+	bool seed;
+	std::wstring client;
+	std::wstring status;
+};
+
+typedef shared_ptr<PeerDetail> PeerDetail_ptr;
+typedef std::vector<PeerDetail> PeerDetails;
+
 class TorrentDetail 
 {
 public:
@@ -85,7 +112,9 @@ public:
 	
 	const time_duration& estimatedTimeLeft() { return estimatedTimeLeft_; }
 	const time_duration& updateTrackerIn() { return updateTrackerIn_; }
-
+	
+	const PeerDetails peerDetails() { return peerDetails_; }
+	
 public:
 	std::wstring filename_;
 	std::wstring state_;
@@ -106,37 +135,12 @@ public:
 	
 	time_duration estimatedTimeLeft_;
 	time_duration updateTrackerIn_;
+	
+	PeerDetails peerDetails_;
 };
 
 typedef shared_ptr<TorrentDetail> TorrentDetail_ptr;
 typedef std::vector<TorrentDetail_ptr> TorrentDetails;
-
-struct PeerDetail 
-{
-	PeerDetail(const std::wstring& ip_address) :
-		ipAddress(ip_address)
-	{}
-	PeerDetail(libtorrent::peer_info& peerInfo);
-	
-	bool operator==(const PeerDetail& peer) const
-	{
-		return (ipAddress == peer.ipAddress);
-	}
-	
-	bool operator<(const PeerDetail& peer) const
-	{
-		return (ipAddress < peer.ipAddress);
-	}
-	
-	wstring ipAddress;
-	std::pair<float,float> speed;
-	bool seed;
-	std::wstring client;
-	std::wstring status;
-};
-
-typedef shared_ptr<PeerDetail> PeerDetail_ptr;
-typedef std::vector<PeerDetail> PeerDetails;
 
 struct TrackerDetail
 {
@@ -199,7 +203,7 @@ public:
 	void setTorrentDefaults(int maxConn, int maxUpload, float download, float upload);	
 	void newTorrent(boost::filesystem::wpath filename, boost::filesystem::wpath files);
 	void addTorrent(boost::filesystem::wpath file, wpath saveDirectory);
-	void getAllTorrentDetails(TorrentDetails& torrentsContainer);
+	void getAllTorrentDetails(TorrentDetails& torrentsContainer, std::string filename);
 	TorrentDetail_ptr getTorrentDetails(std::string filename);
 	
 	void setTorrentRatio(std::string, float ratio);

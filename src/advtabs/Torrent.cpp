@@ -14,7 +14,8 @@ void AdvTorrentDialog::selectionChanged(const string& torrent_name)
 	pair<float, float> tranLimit(-1.0, -1.0);
 	pair<int, int> connLimit(-1, -1);
 	float ratio = 0;
-	
+
+#	if 0	
 	if (hal::bittorrent().isTorrent(torrent_name))
 	{
 		tranLimit = hal::bittorrent().getTorrentSpeed(torrent_name);
@@ -65,7 +66,8 @@ void AdvTorrentDialog::selectionChanged(const string& torrent_name)
 	TranLimitDown = tranLimit.first;
 	TranLimitUp = tranLimit.second;
 	Ratio = ratio;
-	
+#	endif	
+
 	DoDataExchange(false);	
 	ui().update();
 }
@@ -109,6 +111,7 @@ LRESULT AdvTorrentDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl
 
 void AdvTorrentDialog::updateDialog()
 {
+#	if 0
 	hal::TorrentDetail_ptr pTD = hal::bittorrent().getTorrentDetails(
 		selection_manager().selected());
 	
@@ -151,4 +154,5 @@ void AdvTorrentDialog::updateDialog()
 		}
 		else SetDlgItemText(IDC_UPDATE,	L"N/A");		
 	}
+#	endif
 }

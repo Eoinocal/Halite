@@ -9,20 +9,26 @@
 #include <boost/archive/xml_woarchive.hpp>
 #include <boost/archive/xml_wiarchive.hpp>
 
-template <class T>
+template <class TBase>
 class CHaliteDialogBase
 {
+	typedef CHaliteDialogBase<TBase> thisClass;
+	
 public:
-	CHaliteDialogBase(ui_signal& ui_sig, ListViewManager& single_sel) :
+	CHaliteDialogBase(HaliteWindow& theDaddy, ui_signal& ui_sig, ListViewManager& single_sel) :
 		ui_(ui_sig),
 		selection_manager_(single_sel)
-	{}
+	{		
+		theDaddy.connectUiUpdate(bind(&TBase::uiUpdate, static_cast<TBase*>(this), _1));
+	}
 	
 	void InitializeHalDialogBase()
 	{	
-		ui_.attach(bind(&T::updateDialog, static_cast<T*>(this)));
-		selection_manager_.attach(bind(&T::selectionChanged, static_cast<T*>(this), _1));
+		ui_.attach(bind(&TBase::updateDialog, static_cast<TBase*>(this)));
+		selection_manager_.attach(bind(&TBase::selectionChanged, static_cast<TBase*>(this), _1));
 	}
+	
+	void uiUpdate(const hal::TorrentDetails& torrentDetails) {}
 	
 /*	void save()
 	{

@@ -5,6 +5,7 @@
 #include "DropFileTarget.h"
 #include "NTray.hpp"
 #include "HaliteIni.hpp"
+#include "halTorrent.hpp"
 
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
@@ -95,7 +96,19 @@ public:
 	END_UPDATE_UI_MAP()
 
 	void ProcessFile(LPCTSTR lpszPath);
-
+	
+	void connectUiUpdate(boost::function<void (const hal::TorrentDetails& torrentDetails)> fn) 
+	{ 
+		ui_update_signal_.connect(fn); 
+	}
+		
+	boost::signal<void (const hal::TorrentDetails& torrentDetails)> & ui_sig() { return ui_update_signal_; }
+	
+	void connectSaveState(boost::function<void ()> fn) 
+	{ 
+		save_state_signal_.connect(fn); 
+	}
+	
 protected:
 	typedef CHaliteIni<HaliteWindow> iniClass;
 
@@ -152,7 +165,7 @@ protected:
 		ar & BOOST_SERIALIZATION_NVP(advancedUI);
 		ar & BOOST_SERIALIZATION_NVP(activeTab);
 	}
-
+	
 	friend class GeneralOptions;
 
 private:
@@ -176,6 +189,9 @@ private:
 	bool use_tray;
 	bool advancedUI;
 	int activeTab;
+	
+	boost::signal<void (const hal::TorrentDetails& torrentDetails)> ui_update_signal_;
+	boost::signal<void ()> save_state_signal_;	
 };
 
 BOOST_CLASS_VERSION(HaliteWindow, 0)

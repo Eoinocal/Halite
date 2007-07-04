@@ -81,11 +81,11 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	mp_list->Create(m_Split.m_hWnd, rc, NULL, 
 		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS);
 	
-	mp_dlg.reset(new HaliteDialog(ui(), mp_list->manager())),
+	mp_dlg.reset(new HaliteDialog(*this, ui(), mp_list->manager())),
 	mp_dlg->Create(m_Split.m_hWnd);
 //	mp_dlg->ShowWindow(true);
 	
-	mp_advDlg.reset(new AdvHaliteDialog(ui(), mp_list->manager()));
+	mp_advDlg.reset(new AdvHaliteDialog(*this, ui(), mp_list->manager()));
 	mp_advDlg->Create(m_Split.m_hWnd);
 //	mp_advDlg->ShowWindow(true);
 	
@@ -214,6 +214,10 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 	{	
 		try
 		{
+		
+		hal::TorrentDetails td;
+		hal::bittorrent().getAllTorrentDetails(td, mp_list->manager().selected());
+		ui_update_signal_(td);
 		
 		ui().update();
 		

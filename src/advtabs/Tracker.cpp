@@ -9,6 +9,8 @@
 
 void AdvTrackerDialog::selectionChanged(const string& torrent_name)
 {	
+
+#	if 0
 	if (hal::bittorrent().isTorrent(torrent_name))
 	{		
 		::EnableWindow(GetDlgItem(IDC_TRACKER_LOGINCHECK), true);
@@ -42,9 +44,9 @@ void AdvTrackerDialog::selectionChanged(const string& torrent_name)
 	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), false);
 	
 	setLoginUiState(torrent_name);
-	
-	DoDataExchange(false);	
+#	endif	
 
+	DoDataExchange(false);	
 	ui().update();
 }
 
