@@ -20,10 +20,10 @@ HaliteDialog::HaliteDialog(HaliteWindow& halWindow, ui_signal& ui_sig, ListViewM
 
 void HaliteDialog::selectionChanged(const string& torrent_name)
 {	
+#	if 0	
 	pair<float, float> tranLimit(-1.0, -1.0);
 	pair<int, int> connLimit(-1, -1);
 	
-#	if 0	
 	if (hal::bittorrent().isTorrent(torrent_name))
 	{
 		tranLimit = hal::bittorrent().getTorrentSpeed(torrent_name);
@@ -70,9 +70,9 @@ void HaliteDialog::selectionChanged(const string& torrent_name)
 	TranLimitUp = tranLimit.second;
 	
 	DoDataExchange(false);	
-#	endif
 	m_list.DeleteAllItems();	
 	ui().update();
+#	endif
 }
 
 LRESULT HaliteDialog::onInitDialog(HWND, LPARAM)
@@ -159,22 +159,21 @@ LRESULT HaliteDialog::OnCltColor(HDC hDC, HWND hWnd)
 	return (LRESULT)::GetCurrentObject(hDC, OBJ_BRUSH);
 }
 
-void HaliteDialog::uiUpdate(const hal::TorrentDetails& torrentDetails)
-{
-	hal::TorrentDetails::const_iterator ppTd = torrentDetails.begin();
-	hal::TorrentDetail_ptr pTd;
-	
-	if ((ppTd != torrentDetails.end()) && (pTd = *ppTd)) 	
+void HaliteDialog::uiUpdate(const hal::TorrentDetails& allTorrents, 
+		const hal::TorrentDetails& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent) 
+{	
+	if (selectedTorrent) 	
 	{
-		SetDlgItemText(IDC_NAME, pTd->filename().c_str());
-		SetDlgItemText(IDC_TRACKER, pTd->currentTracker().c_str());
-		SetDlgItemText(IDC_STATUS, pTd->state().c_str());
-		m_prog.SetPos(static_cast<int>(pTd->completion()*100));
+		SetDlgItemText(IDC_NAME, selectedTorrent->filename().c_str());
+		SetDlgItemText(IDC_TRACKER, selectedTorrent->currentTracker().c_str());
+		SetDlgItemText(IDC_STATUS, selectedTorrent->state().c_str());
+		m_prog.SetPos(static_cast<int>(selectedTorrent->completion()*100));
 		
-		if (!pTd->estimatedTimeLeft().is_special())
+		if (!selectedTorrent->estimatedTimeLeft().is_special())
 		{
 			SetDlgItemText(IDC_AVAIL,
-				(hal::from_utf8(boost::posix_time::to_simple_string(pTd->estimatedTimeLeft())).c_str()));
+				(hal::from_utf8(boost::posix_time::to_simple_string(
+					selectedTorrent->estimatedTimeLeft())).c_str()));
 		}
 		else
 		{
@@ -183,17 +182,17 @@ void HaliteDialog::uiUpdate(const hal::TorrentDetails& torrentDetails)
 		
 		SetDlgItemText(IDC_COMPLETE,
 			(wformat(L"%1$.2fmb of %2$.2fmb") 
-				% (static_cast<float>(pTd->totalWantedDone())/(1024*1024))
-				% (static_cast<float>(pTd->totalWanted())/(1024*1024))
+				% (static_cast<float>(selectedTorrent->totalWantedDone())/(1024*1024))
+				% (static_cast<float>(selectedTorrent->totalWanted())/(1024*1024))
 			).str().c_str());
 				
 		m_list.SetRedraw(false);
 		m_list.manager().clearAll();
 		
-		if (!pTd->peerDetails().empty())
+		if (!selectedTorrent->peerDetails().empty())
 		{			
 			
-			foreach (const hal::PeerDetail& peer, pTd->peerDetails())
+			foreach (const hal::PeerDetail& peer, selectedTorrent->peerDetails())
 			{			
 				LV_FINDINFO findInfo; 
 				findInfo.flags = LVFI_STRING;

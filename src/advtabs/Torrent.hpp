@@ -92,8 +92,10 @@ public:
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl);
 
 	void selectionChanged(const string& torrent_name);
-	void updateDialog();
-	void uiUpdate(const hal::TorrentDetails& torrentDetails) {}
+	void updateDialog();	
+	void uiUpdate(const hal::TorrentDetails& allTorrents, 
+		const hal::TorrentDetails& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent) 
+	{}
 
 protected:
 	CProgressBarCtrl m_prog;

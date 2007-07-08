@@ -80,6 +80,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	// Create ListView and Dialog
 	mp_list->Create(m_Split.m_hWnd, rc, NULL, 
 		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS);
+	mp_list->manager().attach(bind(&HaliteWindow::issueUiUpdate, this));
 	
 	mp_dlg.reset(new HaliteDialog(*this, ui(), mp_list->manager())),
 	mp_dlg->Create(m_Split.m_hWnd);
@@ -212,22 +213,7 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 {		
 	if (uTimerID == ID_UPDATE_TIMER) 
 	{	
-		try
-		{
-		
-		hal::TorrentDetails td;
-		hal::bittorrent().getAllTorrentDetails(td, mp_list->manager().selected());
-		ui_update_signal_(td);
-		
-		ui().update();
-		
-		}
-		catch (std::exception& e)
-		{
-			hal::event().post(shared_ptr<hal::EventDetail>(\
-				new hal::EventStdException(hal::Event::info, e, L"updateTimer")));
-		}
-
+		issueUiUpdate();
 	}
 	else if (uTimerID == ID_SAVE_TIMER) 
 	{
@@ -250,6 +236,45 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 	}
 	
 }	
+
+void HaliteWindow::issueUiUpdate()
+{
+	try
+	{
+	
+	hal::TorrentDetails allTorrents;
+	hal::TorrentDetails selectedTorrents;
+	hal::TorrentDetail_ptr selectedTorrent;
+	
+	hal::bittorrent().getAllTorrentDetails(allTorrents);
+	
+	std::set<string> selectedNames;
+	selectedNames.insert(mp_list->manager().allSelected().begin(), mp_list->manager().allSelected().end());
+	
+	selectedTorrents.reserve(selectedNames.size());
+	
+	foreach (hal::TorrentDetail_ptr t_ptr, allTorrents)
+	{
+		if (selectedNames.find(hal::to_utf8(t_ptr->filename())) != selectedNames.end())
+		{
+			selectedTorrents.push_back(t_ptr);
+		}
+		
+		if (mp_list->manager().selected() == hal::to_utf8(t_ptr->filename()))
+			selectedTorrent = t_ptr;
+	}
+			
+	ui_update_signal_(allTorrents, selectedTorrents, selectedTorrent);
+	
+//	ui().update();
+	
+	}
+	catch (std::exception& e)
+	{
+		hal::event().post(shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(hal::Event::info, e, L"updateTimer")));
+	}
+}
 
 LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
 {
@@ -313,7 +338,8 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	}
 	catch(const boost::filesystem::filesystem_error&)
 	{
-		hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::warning, L"filesystem error")));
+		hal::event().post(shared_ptr<hal::EventDetail>(
+			new hal::EventDebug(hal::Event::warning, L"filesystem error")));
 	}
 }
 

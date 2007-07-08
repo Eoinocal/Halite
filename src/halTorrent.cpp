@@ -237,6 +237,17 @@ static Event::eventLevel lbtAlertToHalEvent(lbt::alert::severity_t severity)
 	}
 }
 
+const PeerDetails& TorrentDetail::peerDetails() const
+{
+	if (!peerDetailsFilled_)
+	{
+		bittorrent().getAllPeerDetails(hal::to_utf8(filename_), peerDetails_);
+		peerDetailsFilled_ = true;
+	}
+	
+	return peerDetails_;
+}
+	
 class BitTorrent_impl
 {
 	friend class BitTorrent;
@@ -873,16 +884,15 @@ void BitTorrent::newTorrent(fs::wpath filename, fs::wpath files)
 */
 }
 
-void BitTorrent::getAllTorrentDetails(TorrentDetails& torrentsContainer, std::string filename)
+void BitTorrent::getAllTorrentDetails(TorrentDetails& torrentsContainer)
 {
 	try {
 	
+	torrentsContainer.reserve(pimpl->torrents.size());
+	
 	foreach (TorrentPair t, pimpl->torrents)
 	{
-		if (t.first == filename)		
-			torrentsContainer.insert(torrentsContainer.begin(), t.second.getTorrentDetails(true));		
-		else
-			torrentsContainer.push_back(t.second.getTorrentDetails(false));
+		torrentsContainer.push_back(t.second.getTorrentDetails());
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "getAllTorrentDetails")
@@ -896,7 +906,7 @@ TorrentDetail_ptr BitTorrent::getTorrentDetails(string filename)
 	
 	if (i != pimpl->torrents.end())
 	{
-		return i->second.getTorrentDetails(true);
+		return i->second.getTorrentDetails();
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentDetails")

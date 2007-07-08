@@ -19,16 +19,18 @@ public:
 		ui_(ui_sig),
 		selection_manager_(single_sel)
 	{		
-		theDaddy.connectUiUpdate(bind(&TBase::uiUpdate, static_cast<TBase*>(this), _1));
+		theDaddy.connectUiUpdate(bind(&TBase::uiUpdate, static_cast<TBase*>(this), _1, _2, _3));
 	}
 	
 	void InitializeHalDialogBase()
 	{	
-		ui_.attach(bind(&TBase::updateDialog, static_cast<TBase*>(this)));
-		selection_manager_.attach(bind(&TBase::selectionChanged, static_cast<TBase*>(this), _1));
+	//	ui_.attach(bind(&TBase::updateDialog, static_cast<TBase*>(this)));
+	//	selection_manager_.attach(bind(&TBase::selectionChanged, static_cast<TBase*>(this), _1));
 	}
 	
-	void uiUpdate(const hal::TorrentDetails& torrentDetails) {}
+	void uiUpdate(const hal::TorrentDetails& allTorrents, 
+		const hal::TorrentDetails& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent) 
+	{}
 	
 /*	void save()
 	{

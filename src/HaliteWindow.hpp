@@ -97,12 +97,20 @@ public:
 
 	void ProcessFile(LPCTSTR lpszPath);
 	
-	void connectUiUpdate(boost::function<void (const hal::TorrentDetails& torrentDetails)> fn) 
+	void connectUiUpdate(boost::function<void (const hal::TorrentDetails& allTorrents, 
+		const hal::TorrentDetails& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent)> fn) 
 	{ 
 		ui_update_signal_.connect(fn); 
 	}
 		
-	boost::signal<void (const hal::TorrentDetails& torrentDetails)> & ui_sig() { return ui_update_signal_; }
+	boost::signal<void (const hal::TorrentDetails& allTorrents, 
+		const hal::TorrentDetails& selectedTorrents, 
+		const hal::TorrentDetail_ptr selectedTorrent)> & ui_sig()
+	{ 
+		return ui_update_signal_; 
+	}
+	
+	void issueUiUpdate();
 	
 	void connectSaveState(boost::function<void ()> fn) 
 	{ 
@@ -190,7 +198,8 @@ private:
 	bool advancedUI;
 	int activeTab;
 	
-	boost::signal<void (const hal::TorrentDetails& torrentDetails)> ui_update_signal_;
+	boost::signal<void (const hal::TorrentDetails& allTorrents, 
+		const hal::TorrentDetails& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent)> ui_update_signal_;
 	boost::signal<void ()> save_state_signal_;	
 };
 
