@@ -200,7 +200,7 @@ public:
     BEGIN_DDX_MAP(thisClass)
         DDX_CHECK(IDC_BC_FILTERCHECK, hal::config().enableIPFilter)
         DDX_CHECK(IDC_SC_ENABLE_PE, hal::config().enablePe)
-        DDX_RADIO(IDC_SC_PE_ENC_NONE, hal::config().peEncLevel)
+        DDX_RADIO(IDC_SC_PE_ENC_PLAIN, hal::config().peEncLevel)
         DDX_CHECK(IDC_SC_PE_ENC_RC4_PERFER, hal::config().pePerferRc4)
         DDX_RADIO(IDC_SC_PE_CP_IN_FORCED, hal::config().peConInPolicy)
         DDX_RADIO(IDC_SC_PE_CP_OUT_FORCED, hal::config().peConOutPolicy)
@@ -246,7 +246,7 @@ public:
 
 		if (result == BST_CHECKED)
 		{
-			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_NONE), true);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_BOTH), true);
 			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_RC4), true);
 			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_PLAIN), true);
 			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_RC4_PERFER), true);
@@ -259,7 +259,7 @@ public:
 		}
 		else
 		{
-			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_NONE), false);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_BOTH), false);
 			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_RC4), false);
 			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_PLAIN), false);
 			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_RC4_PERFER), false);

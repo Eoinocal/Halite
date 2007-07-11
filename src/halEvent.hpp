@@ -87,6 +87,23 @@ private:
 	std::wstring msg_;
 };
 
+class EventGeneral : public EventDetail
+{
+public:
+	EventGeneral(Event::eventLevel l, Event::codes c, std::wstring m) :
+		EventDetail(l, boost::posix_time::second_clock::universal_time(), c),
+		msg_(m)
+	{}
+	
+	virtual std::wstring msg()
+	{
+		return (wformat(hal::app().res_wstr(code())) % msg_).str();
+	}
+	
+private:
+	std::wstring msg_;
+};
+
 class EventPeerAlert : public EventDetail
 {
 public:

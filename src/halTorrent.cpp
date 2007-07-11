@@ -368,17 +368,6 @@ private:
 		theSession.add_extension(&lbt::create_ut_pex_plugin);
 		theSession.set_max_half_open_connections(10);
 
-#ifndef TORRENT_DISABLE_ENCRYPTION	
-		lbt::pe_settings pe_set;
-		
-		pe_set.out_enc_policy = lbt::pe_settings::enabled;
-		pe_set.out_enc_policy = lbt::pe_settings::enabled;
-		pe_set.allowed_enc_level = lbt::pe_settings::both;
-		pe_set.prefer_rc4 = true;
-		
-		theSession.set_pe_settings(pe_set);
-#endif
-		
 		try
 		{	
 			fs::wifstream ifs(workingDirectory/L"Torrents.xml");
@@ -634,6 +623,86 @@ void BitTorrent::ensure_ip_filter_off()
 	pimpl->theSession.set_ip_filter(lbt::ip_filter());
 	pimpl->ip_filter_on_ = false;
 }
+
+#ifndef TORRENT_DISABLE_ENCRYPTION	
+void BitTorrent::ensure_pe_on(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4)
+{
+	lbt::pe_settings pe;
+	
+	switch (enc_level)
+	{
+		case 0:
+			pe.allowed_enc_level = lbt::pe_settings::plaintext;
+			break;
+		case 1:
+			pe.allowed_enc_level = lbt::pe_settings::rc4;
+			break;
+		case 2:
+			pe.allowed_enc_level = lbt::pe_settings::both;
+			break;
+		default:
+			pe.allowed_enc_level = lbt::pe_settings::both;
+			
+			hal::event().post(shared_ptr<hal::EventDetail>(
+				new hal::EventGeneral(hal::Event::warning, hal::Event::unclassified, 
+					(wformat(hal::app().res_wstr(HAL_INCORRECT_ENCODING_LEVEL)) % enc_level).str())));
+	}
+
+	switch (in_enc_policy)
+	{
+		case 0:
+			pe.in_enc_policy = lbt::pe_settings::forced;
+			break;
+		case 1:
+			pe.in_enc_policy = lbt::pe_settings::enabled;
+			break;
+		case 2:
+			pe.in_enc_policy = lbt::pe_settings::disabled;
+			break;
+		default:
+			pe.in_enc_policy = lbt::pe_settings::enabled;
+			
+			hal::event().post(shared_ptr<hal::EventDetail>(
+				new hal::EventGeneral(hal::Event::warning, hal::Event::unclassified, 
+					(wformat(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
+	}
+
+	switch (out_enc_policy)
+	{
+		case 0:
+			pe.out_enc_policy = lbt::pe_settings::forced;
+			break;
+		case 1:
+			pe.out_enc_policy = lbt::pe_settings::enabled;
+			break;
+		case 2:
+			pe.out_enc_policy = lbt::pe_settings::disabled;
+			break;
+		default:
+			pe.out_enc_policy = lbt::pe_settings::enabled;
+			
+			hal::event().post(shared_ptr<hal::EventDetail>(
+				new hal::EventGeneral(hal::Event::warning, hal::Event::unclassified, 
+					(wformat(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
+	}
+	
+	pe.prefer_rc4 = prefer_rc4;
+	
+	pimpl->theSession.set_pe_settings(pe);
+}
+
+void BitTorrent::ensure_pe_off()
+{
+	lbt::pe_settings pe;
+	pe.out_enc_policy = lbt::pe_settings::disabled;
+	pe.in_enc_policy = lbt::pe_settings::disabled;
+	
+	pe.allowed_enc_level = lbt::pe_settings::both;
+	pe.prefer_rc4 = true;
+	
+	pimpl->theSession.set_pe_settings(pe);
+}
+#endif
 
 void BitTorrent::ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 last)
 {

@@ -33,8 +33,21 @@ void Config::settingsThread()
 	{
 		hal::event().post(boost::shared_ptr<hal::EventDetail>(
 				new hal::EventStdException(Event::critical, e, L"settingsThread, Load IP Filter"))); 
-
-//		::MessageBoxA(0, e.what(), "Loading IP Filter Exception", MB_ICONERROR|MB_OK);
+	}
+	
+	try
+	{
+	if (enablePe)
+	{
+		bittorrent().ensure_pe_on(peEncLevel, peConInPolicy, peConOutPolicy, pePerferRc4);
+	}
+	else
+		bittorrent().ensure_pe_off();
+	}
+	catch(const std::exception& e)
+	{
+		hal::event().post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(Event::critical, e, L"settingsThread, Protocol Encryption"))); 
 	}
 	
 	try

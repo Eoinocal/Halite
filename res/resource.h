@@ -131,9 +131,9 @@
 #define IDC_LANGLIST					1085
 #define IDC_EDITABOUT					1086
 #define IDC_SC_ENABLE_PE                1087
-#define IDC_SC_PE_ENC_NONE              1088
+#define IDC_SC_PE_ENC_PLAIN             1088
 #define IDC_SC_PE_ENC_RC4               1089
-#define IDC_SC_PE_ENC_PLAIN             1090
+#define IDC_SC_PE_ENC_BOTH              1090
 #define IDC_SC_PE_ENC_RC4_PERFER        1091
 #define IDC_SC_PE_CP_IN_FORCED          1092
 #define IDC_SC_PE_CP_IN_DISABLED        1093
@@ -222,3 +222,5 @@
 #define HAL_PEERS_TAB				    40083
 #define HAL_TRACKER_TAB				    40084
 #define HAL_DEBUG_TAB				    40085
+#define HAL_INCORRECT_ENCODING_LEVEL	40086
+#define HAL_INCORRECT_CONNECT_POLICY    40087

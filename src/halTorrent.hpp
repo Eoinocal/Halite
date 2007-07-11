@@ -198,6 +198,9 @@ public:
 	size_t ip_filter_size();
 	void clearIpFilter();
 	
+	void ensure_pe_on(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4);
+	void ensure_pe_off();
+	
 	void setSessionLimits(int maxConn, int maxUpload);
 	void setSessionSpeed(float download, float upload);
 	void setDhtSettings(int max_peers_reply, int search_branching, 
