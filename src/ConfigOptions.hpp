@@ -79,10 +79,7 @@ public:
 
     BEGIN_MSG_MAP_EX(BitTorrentOptions)
         MSG_WM_INITDIALOG(OnInitDialog)
-		COMMAND_ID_HANDLER_EX(IDC_BC_FILTERLOAD, onFilterImport)
-		COMMAND_ID_HANDLER_EX(IDC_BC_FILTERCLEAR, onFilterClear)
 		COMMAND_ID_HANDLER_EX(IDC_BC_PORTCHECK, onPortCheck)
-		COMMAND_ID_HANDLER_EX(IDC_BC_FILTERCHECK, onFilterCheck)
 		COMMAND_ID_HANDLER_EX(IDC_BC_PROXYCHECK, onProxyCheck)
 		COMMAND_ID_HANDLER_EX(IDC_BC_DHT, onDHTCheck)
         CHAIN_MSG_MAP(CPropertyPageImpl<BitTorrentOptions>)
@@ -94,14 +91,12 @@ public:
         DDX_CHECK(IDC_BC_DHT, hal::config().enableDHT)
         DDX_CHECK(IDC_BC_PORTCHECK, hal::config().portRange)
         DDX_INT(IDC_BC_DHTPORT, hal::config().dhtServicePort)
-        DDX_CHECK(IDC_BC_FILTERCHECK, hal::config().enableIPFilter)
     END_DDX_MAP()
 
     BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)
 	{
 		BOOL retval =  DoDataExchange(false);
 
-		onFilterCheck(0, 0, GetDlgItem(IDC_BC_FILTERCHECK));
 		onProxyCheck(0, 0, GetDlgItem(IDC_BC_PROXYCHECK));
 		onPortCheck(0, 0, GetDlgItem(IDC_BC_PORTCHECK));
 		onDHTCheck(0, 0, GetDlgItem(IDC_BC_DHT));
@@ -112,22 +107,6 @@ public:
     int OnApply()
 	{
 		return DoDataExchange(true);
-	}
-
-	void onFilterCheck(UINT, int, HWND hWnd)
-	{
-		LRESULT result = ::SendMessage(hWnd, BM_GETCHECK, 0, 0);
-
-		if (result == BST_CHECKED)
-		{
-			::EnableWindow(GetDlgItem(IDC_BC_FILTERCLEAR), true);
-			::EnableWindow(GetDlgItem(IDC_BC_FILTERLOAD), true);
-		}
-		else
-		{
-			::EnableWindow(GetDlgItem(IDC_BC_FILTERCLEAR), false);
-			::EnableWindow(GetDlgItem(IDC_BC_FILTERLOAD), false);
-		}
 	}
 
 	void onDHTCheck(UINT, int, HWND hWnd)
@@ -190,6 +169,108 @@ public:
 			::EnableWindow(GetDlgItem(IDC_BC_PROXYPASS_S), false);
 		}
 	}
+};
+
+class SecurityOptions :
+    public CPropertyPageImpl<SecurityOptions>,
+    public CWinDataExchangeEx<SecurityOptions>
+{
+	typedef SecurityOptions thisClass;
+public:
+    enum { IDD = IDD_CONFIGSECURITY };
+
+	SecurityOptions()
+	{}
+
+	~SecurityOptions()
+	{}
+
+    BEGIN_MSG_MAP_EX(thisClass)
+        MSG_WM_INITDIALOG(OnInitDialog)
+		
+		COMMAND_ID_HANDLER_EX(IDC_BC_FILTERLOAD, onFilterImport)
+		COMMAND_ID_HANDLER_EX(IDC_BC_FILTERCLEAR, onFilterClear)
+		COMMAND_ID_HANDLER_EX(IDC_BC_FILTERCHECK, onFilterCheck)
+		
+		COMMAND_ID_HANDLER_EX(IDC_SC_ENABLE_PE, onPeCheck)
+		
+        CHAIN_MSG_MAP(CPropertyPageImpl<thisClass>)
+    END_MSG_MAP()
+
+    BEGIN_DDX_MAP(thisClass)
+        DDX_CHECK(IDC_BC_FILTERCHECK, hal::config().enableIPFilter)
+        DDX_CHECK(IDC_SC_ENABLE_PE, hal::config().enablePe)
+        DDX_RADIO(IDC_SC_PE_ENC_NONE, hal::config().peEncLevel)
+        DDX_CHECK(IDC_SC_PE_ENC_RC4_PERFER, hal::config().pePerferRc4)
+        DDX_RADIO(IDC_SC_PE_CP_IN_FORCED, hal::config().peConInPolicy)
+        DDX_RADIO(IDC_SC_PE_CP_OUT_FORCED, hal::config().peConOutPolicy)
+    END_DDX_MAP()
+
+    BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)
+	{
+		helpLink.SubclassWindow(GetDlgItem(IDC_SC_HELP_LINK));
+		helpLink.SetHyperLink(L"http://www.binarynotions.com/");
+		
+		BOOL retval =  DoDataExchange(false);
+
+		onFilterCheck(0, 0, GetDlgItem(IDC_BC_FILTERCHECK));
+		onPeCheck(0, 0, GetDlgItem(IDC_SC_ENABLE_PE));
+
+		return retval;
+	}
+
+    int OnApply()
+	{
+		return DoDataExchange(true);
+	}
+
+	void onFilterCheck(UINT, int, HWND hWnd)
+	{
+		LRESULT result = ::SendMessage(hWnd, BM_GETCHECK, 0, 0);
+
+		if (result == BST_CHECKED)
+		{
+			::EnableWindow(GetDlgItem(IDC_BC_FILTERCLEAR), true);
+			::EnableWindow(GetDlgItem(IDC_BC_FILTERLOAD), true);
+		}
+		else
+		{
+			::EnableWindow(GetDlgItem(IDC_BC_FILTERCLEAR), false);
+			::EnableWindow(GetDlgItem(IDC_BC_FILTERLOAD), false);
+		}
+	}
+
+	void onPeCheck(UINT, int, HWND hWnd)
+	{
+		LRESULT result = ::SendMessage(hWnd, BM_GETCHECK, 0, 0);
+
+		if (result == BST_CHECKED)
+		{
+			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_NONE), true);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_RC4), true);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_PLAIN), true);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_RC4_PERFER), true);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_CP_IN_FORCED), true);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_CP_IN_DISABLED), true);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_CP_IN_ENABLED), true);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_CP_OUT_DISABLED), true);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_CP_OUT_ENABLED), true);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_CP_OUT_FORCED), true);
+		}
+		else
+		{
+			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_NONE), false);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_RC4), false);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_PLAIN), false);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_ENC_RC4_PERFER), false);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_CP_IN_FORCED), false);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_CP_IN_DISABLED), false);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_CP_IN_ENABLED), false);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_CP_OUT_DISABLED), false);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_CP_OUT_ENABLED), false);
+			::EnableWindow(GetDlgItem(IDC_SC_PE_CP_OUT_FORCED), false);
+		}
+	}
 
 	void onFilterClear(UINT, int, HWND hWnd)
 	{
@@ -197,6 +278,9 @@ public:
 	}
 
 	void onFilterImport(UINT, int, HWND hWnd);
+
+private:
+	CHyperLink helpLink;
 };
 
 class TorrentsOptions :
@@ -319,6 +403,7 @@ public:
     {
 		AddPage(generalOptions);
 		AddPage(bitTorrentOptions);
+		AddPage(securityOptions);
 		AddPage(torrentsOptions);
 		AddPage(remoteControlOptions);
 		AddPage(aboutOptions);
@@ -349,6 +434,7 @@ public:
 
 	GeneralOptions generalOptions;
 	BitTorrentOptions bitTorrentOptions;
+	SecurityOptions securityOptions;
 	TorrentsOptions torrentsOptions;
 	RemoteOptions remoteControlOptions;
 	AboutOptions aboutOptions;

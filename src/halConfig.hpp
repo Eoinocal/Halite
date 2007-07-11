@@ -11,6 +11,7 @@
 #include "HaliteIni.hpp"
 
 class BitTorrentOptions;
+class SecurityOptions;
 class TorrentsOptions;
 	
 namespace hal
@@ -43,7 +44,12 @@ public:
 		enableProxy(false),
 		proxyPort(0),
 		defaultSaveFolder((hal::app().exe_path().branch_path()/L"incoming").string()),
-		savePrompt(true)
+		savePrompt(true),
+		enablePe(false),
+		peEncLevel(0),
+		pePerferRc4(false),
+		peConInPolicy(1),
+		peConOutPolicy(1)
 	{}
 	
 	friend class boost::serialization::access;
@@ -77,14 +83,23 @@ public:
 		ar & BOOST_SERIALIZATION_NVP(proxyPassword);
 		
 		ar & BOOST_SERIALIZATION_NVP(defaultSaveFolder);
-		ar & BOOST_SERIALIZATION_NVP(savePrompt);		
+		ar & BOOST_SERIALIZATION_NVP(savePrompt);
+		
+		if (version > 0) {
+			ar & BOOST_SERIALIZATION_NVP(enablePe);
+			ar & BOOST_SERIALIZATION_NVP(peEncLevel);
+			ar & BOOST_SERIALIZATION_NVP(pePerferRc4);
+			ar & BOOST_SERIALIZATION_NVP(peConInPolicy);
+			ar & BOOST_SERIALIZATION_NVP(peConOutPolicy);
+		}
 	}
 	
 	void settingsChanged();
 	
-	friend class BitTorrentOptions;
-	friend class TorrentsOptions;
 	friend class HaliteWindow;
+	friend class BitTorrentOptions;
+	friend class SecurityOptions;
+	friend class TorrentsOptions;
 
 private:
 	void settingsThread();
@@ -121,10 +136,16 @@ private:
 	
 	wstring defaultSaveFolder;
 	bool savePrompt;
+
+    bool enablePe;
+    int peEncLevel;
+    bool pePerferRc4;
+    int peConInPolicy;
+    int peConOutPolicy;
 };
 
 Config& config();
 
 } // namespace hal
 
-BOOST_CLASS_VERSION(hal::Config, 0)
+BOOST_CLASS_VERSION(hal::Config, 1)

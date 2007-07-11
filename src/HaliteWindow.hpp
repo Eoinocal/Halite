@@ -199,7 +199,8 @@ private:
 	int activeTab;
 	
 	boost::signal<void (const hal::TorrentDetails& allTorrents, 
-		const hal::TorrentDetails& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent)> ui_update_signal_;
+		const hal::TorrentDetails& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent)> 
+			ui_update_signal_;
 	boost::signal<void ()> save_state_signal_;	
 };
 

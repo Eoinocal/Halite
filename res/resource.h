@@ -10,6 +10,7 @@
 #define IDR_LISTVIEW_MENU               101
 #define IDD_CONFIGBIT                   102
 #define IDD_CONFIGREMOTE                103
+#define IDD_CONFIGSECURITY              108
 #define IDD_ABOUT                       104
 #define IDD_CLOSESPLASH                 105
 #define IDD_HALITEDLG                   106
@@ -129,6 +130,18 @@
 #define IDC_ADVDLG_VERSION              1084
 #define IDC_LANGLIST					1085
 #define IDC_EDITABOUT					1086
+#define IDC_SC_ENABLE_PE                1087
+#define IDC_SC_PE_ENC_NONE              1088
+#define IDC_SC_PE_ENC_RC4               1089
+#define IDC_SC_PE_ENC_PLAIN             1090
+#define IDC_SC_PE_ENC_RC4_PERFER        1091
+#define IDC_SC_PE_CP_IN_FORCED          1092
+#define IDC_SC_PE_CP_IN_DISABLED        1093
+#define IDC_SC_PE_CP_IN_ENABLED         1094
+#define IDC_SC_PE_CP_OUT_DISABLED       1095
+#define IDC_SC_PE_CP_OUT_ENABLED        1096
+#define IDC_SC_PE_CP_OUT_FORCED         1097
+#define IDC_SC_HELP_LINK                1098
 #define ED_CON                          3000
 #define IDPANE_STATUS                   40000
 #define ID_LVM_RESUME                   40000
