@@ -69,7 +69,9 @@ void Config::settingsThread()
 //		::MessageBoxA(0, e.what(), "Init Exception", MB_ICONERROR|MB_OK);
 	}
 	
-	bittorrent().resumeAll();
+	bittorrent().setSessionHalfOpenLimit(halfConnLimit);
+	
+	bittorrent().resumeAll();	
 	
 	bittorrent().setSessionLimits(
 		maxConnections, maxUploads);

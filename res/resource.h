@@ -2,8 +2,8 @@
 #define IDC_STATIC (-1)
 #endif
 
-#define HALITE_VERSION					0,2,9,217
-#define HALITE_VERSION_STRING			"v 0.2.9 dev 217"
+#define HALITE_VERSION					0,2,9,234
+#define HALITE_VERSION_STRING			"v 0.2.9 dev 234"
 
 #define HALITE_LANGUAGE					10
 #define IDC_DEBUGLISTVIEW               1
@@ -11,6 +11,7 @@
 #define IDD_CONFIGBIT                   102
 #define IDD_CONFIGREMOTE                103
 #define IDD_CONFIGSECURITY              108
+#define IDD_CONFIGPROXY                 109
 #define IDD_ABOUT                       104
 #define IDD_CLOSESPLASH                 105
 #define IDD_HALITEDLG                   106
@@ -30,6 +31,10 @@
 #define IDD_TRACKEDIT                   130
 #define IDD_ADVPEER                     131
 #define IDR_TRACKERLV_MENU              132
+#define IDC_PEERPROXY                   1000
+#define IDC_WEBPROXY                    1001
+#define IDC_TRACKERPROXY                1002
+#define IDC_DHTPROXY                    1003
 #define IDC_TRANS                       1000
 #define LISTPEERS                       1000
 #define IDC_PEERLIST                    1000
@@ -142,6 +147,10 @@
 #define IDC_SC_PE_CP_OUT_ENABLED        1096
 #define IDC_SC_PE_CP_OUT_FORCED         1097
 #define IDC_SC_HELP_LINK                1098
+#define IDC_BC_HELP_LINK                1098
+#define IDC_BC_CON_WHY                  1099
+#define IDC_BC_HALFCONN_CHECK           1100
+#define IDC_BC_HALFCONN_NUM             1101
 #define ED_CON                          3000
 #define IDPANE_STATUS                   40000
 #define ID_LVM_RESUME                   40000

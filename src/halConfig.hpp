@@ -12,6 +12,7 @@
 
 class BitTorrentOptions;
 class SecurityOptions;
+class ProxyOptions;
 class TorrentsOptions;
 	
 namespace hal
@@ -49,7 +50,9 @@ public:
 		peEncLevel(0),
 		pePerferRc4(false),
 		peConInPolicy(1),
-		peConOutPolicy(1)
+		peConOutPolicy(1),
+		halfConn(true),
+		halfConnLimit(10)
 	{}
 	
 	friend class boost::serialization::access;
@@ -76,11 +79,13 @@ public:
 		ar & BOOST_SERIALIZATION_NVP(torrentDownRate);
 		ar & BOOST_SERIALIZATION_NVP(torrentUpRate);
 		
-		ar & BOOST_SERIALIZATION_NVP(enableProxy);
-		ar & BOOST_SERIALIZATION_NVP(proxyHost);
-		ar & BOOST_SERIALIZATION_NVP(proxyPort);
-		ar & BOOST_SERIALIZATION_NVP(proxyUsername);
-		ar & BOOST_SERIALIZATION_NVP(proxyPassword);
+		if (version <= 1) {
+			ar & BOOST_SERIALIZATION_NVP(enableProxy);
+			ar & BOOST_SERIALIZATION_NVP(proxyHost);
+			ar & BOOST_SERIALIZATION_NVP(proxyPort);
+			ar & BOOST_SERIALIZATION_NVP(proxyUsername);
+			ar & BOOST_SERIALIZATION_NVP(proxyPassword);
+		}
 		
 		ar & BOOST_SERIALIZATION_NVP(defaultSaveFolder);
 		ar & BOOST_SERIALIZATION_NVP(savePrompt);
@@ -92,6 +97,10 @@ public:
 			ar & BOOST_SERIALIZATION_NVP(peConInPolicy);
 			ar & BOOST_SERIALIZATION_NVP(peConOutPolicy);
 		}
+		if (version > 1) {
+			ar & BOOST_SERIALIZATION_NVP(halfConn);
+			ar & BOOST_SERIALIZATION_NVP(halfConnLimit);
+		}
 	}
 	
 	void settingsChanged();
@@ -99,6 +108,7 @@ public:
 	friend class HaliteWindow;
 	friend class BitTorrentOptions;
 	friend class SecurityOptions;
+	friend class ProxyOptions;
 	friend class TorrentsOptions;
 
 private:
@@ -142,10 +152,13 @@ private:
     bool pePerferRc4;
     int peConInPolicy;
     int peConOutPolicy;
+	
+	bool halfConn;
+	int halfConnLimit;
 };
 
 Config& config();
 
 } // namespace hal
 
-BOOST_CLASS_VERSION(hal::Config, 1)
+BOOST_CLASS_VERSION(hal::Config, 2)

@@ -35,6 +35,7 @@ extern CAppModule _Module;
 #include <atlctrlw.h>
 #include <atlctrlx.h>
 #include <atlddx.h>
+#include <atlscrl.h>
 
 #include "global/wtl_app.hpp"
 

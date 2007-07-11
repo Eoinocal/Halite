@@ -1,4 +1,4 @@
-
+﻿
 #pragma once
 
 #include "stdAfx.hpp"
@@ -80,24 +80,32 @@ public:
     BEGIN_MSG_MAP_EX(BitTorrentOptions)
         MSG_WM_INITDIALOG(OnInitDialog)
 		COMMAND_ID_HANDLER_EX(IDC_BC_PORTCHECK, onPortCheck)
-		COMMAND_ID_HANDLER_EX(IDC_BC_PROXYCHECK, onProxyCheck)
+		COMMAND_ID_HANDLER_EX(IDC_BC_HALFCONN_CHECK, onHalfCheck)
 		COMMAND_ID_HANDLER_EX(IDC_BC_DHT, onDHTCheck)
         CHAIN_MSG_MAP(CPropertyPageImpl<BitTorrentOptions>)
     END_MSG_MAP()
 
     BEGIN_DDX_MAP(BitTorrentOptions)
-        DDX_INT(IDC_BC_PORTFROM, hal::config().portFrom)
-        DDX_INT(IDC_BC_PORTTO, hal::config().portTo)
-        DDX_CHECK(IDC_BC_DHT, hal::config().enableDHT)
         DDX_CHECK(IDC_BC_PORTCHECK, hal::config().portRange)
+        DDX_INT(IDC_BC_PORTFROM, hal::config().portFrom)
+        DDX_INT(IDC_BC_PORTTO, hal::config().portTo)		
+        DDX_CHECK(IDC_BC_HALFCONN_CHECK, hal::config().halfConn)
+        DDX_EX_INT_POSITIVE(IDC_BC_HALFCONN_NUM, hal::config().halfConnLimit)
+        DDX_CHECK(IDC_BC_DHT, hal::config().enableDHT)
         DDX_INT(IDC_BC_DHTPORT, hal::config().dhtServicePort)
     END_DDX_MAP()
 
     BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)
-	{
-		BOOL retval =  DoDataExchange(false);
+	{	
+		helpLink.SubclassWindow(GetDlgItem(IDC_BC_HELP_LINK));
+		helpLink.SetHyperLink(L"http://www.binarynotions.com/");
+		
+		whyHalfConn.SubclassWindow(GetDlgItem(IDC_BC_CON_WHY));
+		whyHalfConn.SetHyperLink(L"http://www.binarynotions.com/");
+		
+		BOOL retval = DoDataExchange(false);
 
-		onProxyCheck(0, 0, GetDlgItem(IDC_BC_PROXYCHECK));
+		onHalfCheck(0, 0, GetDlgItem(IDC_BC_HALFCONN_CHECK));
 		onPortCheck(0, 0, GetDlgItem(IDC_BC_PORTCHECK));
 		onDHTCheck(0, 0, GetDlgItem(IDC_BC_DHT));
 
@@ -123,6 +131,79 @@ public:
 			::EnableWindow(GetDlgItem(IDC_BC_DHTPORT), false);
 			::EnableWindow(GetDlgItem(IDC_BC_DHTPORT_S), false);
 		}
+	}
+
+	void onPortCheck(UINT, int, HWND hWnd)
+	{
+		LRESULT result = ::SendMessage(hWnd, BM_GETCHECK, 0, 0);
+
+		if (result == BST_CHECKED)
+		{
+			::EnableWindow(GetDlgItem(IDC_BC_PORTTO), true);
+		}
+		else
+		{
+			::EnableWindow(GetDlgItem(IDC_BC_PORTTO), false);
+			boost::array<wchar_t, MAX_PATH> buffer;
+			GetDlgItemText(IDC_BC_PORTFROM, buffer.elems, MAX_PATH);
+			SetDlgItemText(IDC_BC_PORTTO, buffer.elems);
+		}
+	}
+
+	void onHalfCheck(UINT, int, HWND hWnd)
+	{
+		LRESULT result = ::SendMessage(hWnd, BM_GETCHECK, 0, 0);
+
+		if (result == BST_CHECKED)
+		{
+			::EnableWindow(GetDlgItem(IDC_BC_HALFCONN_NUM), true);
+		}
+		else
+		{
+			::EnableWindow(GetDlgItem(IDC_BC_HALFCONN_NUM), false);
+			SetDlgItemText(IDC_BC_HALFCONN_NUM, L"∞");
+		}
+	}
+private:
+	CHyperLink helpLink;
+	CHyperLink whyHalfConn;
+};
+
+class ProxyOptions :
+    public CPropertyPageImpl<ProxyOptions>,
+    public CWinDataExchangeEx<ProxyOptions>
+{
+public:
+    enum { IDD = IDD_CONFIGPROXY };
+
+	ProxyOptions()
+	{}
+
+	~ProxyOptions()
+	{}
+
+    BEGIN_MSG_MAP_EX(ProxyOptions)
+        MSG_WM_INITDIALOG(OnInitDialog)
+		COMMAND_ID_HANDLER_EX(IDC_BC_PROXYCHECK, onProxyCheck)
+        CHAIN_MSG_MAP(CPropertyPageImpl<ProxyOptions>)
+    END_MSG_MAP()
+
+    BEGIN_DDX_MAP(ProxyOptions)
+	
+    END_DDX_MAP()
+
+    BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)
+	{
+		BOOL retval =  DoDataExchange(false);
+
+		onProxyCheck(0, 0, GetDlgItem(IDC_BC_PROXYCHECK));
+
+		return retval;
+	}
+
+    int OnApply()
+	{
+		return DoDataExchange(true);
 	}
 
 	void onPortCheck(UINT, int, HWND hWnd)
@@ -379,13 +460,13 @@ public:
 		MSG_WM_INITDIALOG(OnInitDialog)
     END_MSG_MAP()
 
-
     BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)
 	{
-		SetDlgItemText(IDC_EDITABOUT, hal::app().res_wstr(HAL_ABOUT_BOX).c_str());
 		
 		return true;
 	}
+	
+private:
 };
 
 class ConfigOptionsProp :

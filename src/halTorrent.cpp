@@ -828,6 +828,12 @@ const SessionDetail BitTorrent::getSessionDetails()
 	return details;
 }
 
+
+void BitTorrent::setSessionHalfOpenLimit(int halfConn)
+{
+	pimpl->theSession.set_max_half_open_connections(halfConn);
+}
+
 void BitTorrent::setTorrentDefaults(int maxConn, int maxUpload, float download, float upload)
 {
 	pimpl->defTorrentMaxConn_ = maxConn;
