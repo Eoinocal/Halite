@@ -219,10 +219,18 @@ protected:
 	};
 
 public:
-
 	typedef selection_manager<thisClass> selection_manage_class;
 	
+	enum sortDirection
+	{
+		none,
+		ascending,
+		descending
+	};
+	
 	CHaliteListViewCtrl<TBase>() :
+		sortingDirection_(CHaliteListViewCtrl<TBase>::none),
+		sortedColmun_(0),
 		manager_(*this)
 	{
 		if (TBase::LISTVIEW_ID_MENU)
@@ -231,11 +239,21 @@ public:
 			assert(menu_created);	
 		}
 
-		wstring column_names = hal::app().res_wstr(TBase::LISTVIEW_ID_COLUMNNAMES);		
+		wstring column_names = hal::app().res_wstr(TBase::LISTVIEW_ID_COLUMNNAMES);
 		boost::split(names_, column_names, boost::is_any_of(L";"));
+		
+		wstring column_widths = hal::app().res_wstr(TBase::LISTVIEW_ID_COLUMNWIDTHS);
+		std::vector<wstring> widths;
+		boost::split(widths, column_widths, boost::is_any_of(L";"));
 				
-		listColumnWidth_.assign(names_.size(), 0);	
-		listColumnOrder_.assign(names_.size(), 0);
+		listColumnWidth_.reserve(names_.size());	
+		listColumnOrder_.reserve(names_.size());
+		
+		for (size_t i=0; i<names_.size(); ++i)
+		{
+			listColumnWidth_.push_back(lexical_cast<int>(widths[i]));
+			listColumnOrder_.push_back(i);
+		}	
 	}
 
 	BEGIN_MSG_MAP_EX(CHaliteListViewCtrl<TBase>)
@@ -258,8 +276,6 @@ public:
 	
 	void SetListViewDetails()
 	{
-//		assert (listColumnWidth_.size() == names_.size());
-//		assert (listColumnOrder_.size() == names_.size());
 		vectorSizePreConditions();
 		
 		header_.Attach(this->GetHeader());
@@ -280,8 +296,6 @@ public:
 	void SetDefaults(array<int, Size> a)
 	{
 		assert (Size == names_.size());
-//		assert (listColumnWidth_.size() == names_.size());
-//		assert (listColumnOrder_.size() == names_.size());
 		vectorSizePreConditions();
 		
 		for (size_t i=0; i<names_.size(); ++i)
@@ -289,12 +303,11 @@ public:
 			listColumnWidth_[i] = a[i];
 			listColumnOrder_[i] = i;
 		}		
-	}	
+	}
 	
+	// Should probably make this redundant!!
 	void GetListViewDetails()
 	{
-//		assert (listColumnWidth_.size() == names_.size());
-//		assert (listColumnOrder_.size() == names_.size());
 		vectorSizePreConditions();
 		
 		GetColumnOrderArray(names_.size(), &listColumnOrder_[0]);
@@ -339,6 +352,8 @@ public:
 	LRESULT OnColClick(int i, LPNMHDR pnmh, BOOL&)
 	{
 		LPNMLISTVIEW pnlv = (LPNMLISTVIEW)pnmh;
+		
+		MessageBox((lexical_cast<wstring>(pnlv->iSubItem)).c_str(), L"Hi", 0);
 		return 0;
 	}
 	
@@ -351,6 +366,9 @@ public:
     }
 
 	selection_manager<CHaliteListViewCtrl>& manager() { return manager_; }
+	
+	size_t sortedColmun() { return sortedColmun_; }
+	sortDirection sortingDirection() { return sortingDirection_; }
 	
 	std::vector<int>& listColumnWidth() { return listColumnWidth_; }
 	std::vector<int>& listColumnOrder() { return listColumnOrder_; }
@@ -375,6 +393,9 @@ private:
 			listColumnOrder_.insert(listColumnOrder_.end(), names_.size(), 0);
 		}		
 	}
+	
+	sortDirection sortingDirection_;
+	size_t sortedColmun_;
 	
 	WTL::CMenu menu_;
 	CHaliteHeaderCtrl header_;

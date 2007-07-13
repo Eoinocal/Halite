@@ -45,7 +45,8 @@ class HaliteDialog :
 	public:	
 		enum { 
 			LISTVIEW_ID_MENU = 0,
-			LISTVIEW_ID_COLUMNNAMES = HAL_DIALOGPEER_LISTVIEW_COS	
+			LISTVIEW_ID_COLUMNNAMES = HAL_DIALOGPEER_LISTVIEW_COS,
+			LISTVIEW_ID_COLUMNWIDTHS = HAL_DIALOGPEER_LISTVIEW_COS_DEFAULTS
 		};
 	
 		BEGIN_MSG_MAP_EX(DialogListView)
@@ -57,9 +58,7 @@ class HaliteDialog :
 	
 		DialogListView() :
 			iniClass("listviews/dialog", "DialogPeersList")
-		{		
-			array<int, 5> a = {{100, 70, 70, 70, 100}};
-			SetDefaults(a);			
+		{					
 			load();
 		}
 		

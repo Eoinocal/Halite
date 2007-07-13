@@ -69,7 +69,8 @@ protected:
 public:	
 	enum { 
 		LISTVIEW_ID_MENU = IDR_LISTVIEW_MENU,
-		LISTVIEW_ID_COLUMNNAMES = HAL_DEBUG_LISTVIEW_COLUMNS	
+		LISTVIEW_ID_COLUMNNAMES = HAL_DEBUG_LISTVIEW_COLUMNS,
+		LISTVIEW_ID_COLUMNWIDTHS = HAL_DEBUG_LISTVIEW_DEFAULTS
 	};
 
 	BEGIN_MSG_MAP_EX(LogListViewCtrl)
@@ -81,10 +82,7 @@ public:
 
 	LogListViewCtrl() :
 		iniClass("listviews/eventLog", "LogListView")
-	{		
-		array<int, 3> a = {{67, 419, 69}};
-		SetDefaults(a);
-
+	{
 		load();
 	}
 

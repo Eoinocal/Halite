@@ -23,15 +23,13 @@ class TrackerListViewCtrl :
 public:
 	enum { 
 		LISTVIEW_ID_MENU = IDR_TRACKERLV_MENU,
-		LISTVIEW_ID_COLUMNNAMES = HAL_TRACKER_LISTVIEW_COLUMNS	
+		LISTVIEW_ID_COLUMNNAMES = HAL_TRACKER_LISTVIEW_COLUMNS,
+		LISTVIEW_ID_COLUMNWIDTHS = HAL_TRACKER_LISTVIEW_DEFAULTS
 	};
 	
 	TrackerListViewCtrl() :
 		iniClass("listviews/tracker", "TrackerListView")
 	{
-		array<int, 2> a = {{287, 50}};
-		SetDefaults(a);
-
 		load();
 	}
 

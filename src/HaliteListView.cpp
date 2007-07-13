@@ -23,6 +23,8 @@ void HaliteListViewCtrl::saveSettings()
 
 void HaliteListViewCtrl::updateListView()
 {
+	RedrawLock<HaliteListViewCtrl> rLock(*this);
+	
 	hal::TorrentDetails TD;
 	hal::bittorrent().getAllTorrentDetails(TD);
 	
@@ -67,39 +69,6 @@ void HaliteListViewCtrl::updateListView()
 	}	
 }
 
-/*
-LRESULT HaliteListViewCtrl::OnClick(int, LPNMHDR pnmh, BOOL&)
-{
-	manager().sync_list(true);
-
-	return 0;
-}
-
-LRESULT HaliteListViewCtrl::OnRClick(int i, LPNMHDR pnmh, BOOL&)
-{
-	LPNMITEMACTIVATE pia = (LPNMITEMACTIVATE)pnmh;	
-	manager().sync_list(true);
-	
-	assert (torrentMenu_.IsMenu());
-	CMenuHandle sMenu = torrentMenu_.GetSubMenu(0);
-	assert (sMenu.IsMenu());
-	
-	POINT ptPoint;
-	GetCursorPos(&ptPoint);
-	sMenu.TrackPopupMenu(0, ptPoint.x, ptPoint.y, m_hWnd);
-	
-	return 0;
-}
-
-LRESULT HaliteListViewCtrl::OnColClick(int i, LPNMHDR pnmh, BOOL&)
-{
-	LPNMLISTVIEW pnlv = (LPNMLISTVIEW)pnmh;
-//	MessageBox(lexical_cast<wstring>(pnlv->iSubItem).c_str(), L"ListView",0);
-//	DeleteColumn(pnlv->iSubItem);
-
-	return 0;
-}
-*/
 LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),

@@ -41,6 +41,31 @@ extern CAppModule _Module;
 
 #include "..\res\resource.h"
 
+template<class T>
+class RedrawLock
+{
+public:
+	RedrawLock(T& window) :
+		window_(window)
+	{
+		window_.SetRedraw(false);
+	}
+	
+	~RedrawLock()
+	{
+		unlock();
+	}
+	
+	void unlock()
+	{
+		window_.SetRedraw(true);
+		window_.InvalidateRect(NULL, false);
+	}
+	
+private:
+	T& window_;
+};
+
 // Include very common C++ and Boost libraries
 
 #include <string>

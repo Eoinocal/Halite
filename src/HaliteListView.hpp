@@ -25,15 +25,13 @@ protected:
 public:
 	enum { 
 		LISTVIEW_ID_MENU = IDR_LISTVIEW_MENU,
-		LISTVIEW_ID_COLUMNNAMES = HAL_LISTVIEW_COLUMNS	
+		LISTVIEW_ID_COLUMNNAMES = HAL_LISTVIEW_COLUMNS,
+		LISTVIEW_ID_COLUMNWIDTHS = HAL_LISTVIEW_DEFAULTS
 	};
 
 	HaliteListViewCtrl() :
 		iniClass("listviews/halite", "HaliteListView")
-	{
-		array<int, 9> a = {{100, 110, 60, 60, 60, 42, 45, 61, 45}};
-		SetDefaults(a);
-		
+	{		
 		load();
 	}
 
@@ -69,18 +67,9 @@ public:
 		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
     }
 				
-/*	void connectForDetails(boost::function<void (const hal::TorrentDetails&)> fn) 
-	{ 
-		selection_details_.connect(fn); 
-	}
-*/
 private:
 	void OnAttach();
 	void OnDetach();
-	
-//	boost::signal<void (const hal::TorrentDetails&)> selection_details_;
-	
-//	hal::TorrentDetails torrentDetails_;
 };
 
 typedef HaliteListViewCtrl::selection_manage_class ListViewManager;

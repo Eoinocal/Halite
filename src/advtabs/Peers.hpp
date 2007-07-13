@@ -25,15 +25,13 @@ class PeerListViewCtrl :
 public:
 	enum { 
 		LISTVIEW_ID_MENU = 0,
-		LISTVIEW_ID_COLUMNNAMES = HAL_DIALOGPEER_LISTVIEW_ADV	
+		LISTVIEW_ID_COLUMNNAMES = HAL_DIALOGPEER_LISTVIEW_ADV,
+		LISTVIEW_ID_COLUMNWIDTHS = HAL_DIALOGPEER_LISTVIEW_ADV_DEFAULTS
 	};
 	
 	thisClass() :
 		iniClass("listviews/advPeers", "PeerListView")
 	{
-		array<int, 6> a = {{95, 64, 64, 50, 100, 500}};
-		SetDefaults(a);
-
 		load();
 	}
 
