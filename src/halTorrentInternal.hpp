@@ -51,7 +51,7 @@ public:
 		totalBase_(0)
 	{}
 	
-	TorrentDetail_ptr getTorrentDetails() const;
+	TorrentDetail_ptr getTorrentDetail_ptr() const;
 	void setTransferSpeed(float down, float up);
 	void setConnectionLimit(int maxConn, int maxUpload);
 	void setTransferSpeed();
@@ -154,7 +154,10 @@ public:
 		return make_pair(trackerUsername_, trackerPassword_);
 	}
 	
+	std::wstring filename() { return filename_; }
+	
 	const libtorrent::torrent_handle& handle() const { return handle_; }
+
 	void setHandle(libtorrent::torrent_handle h) 
 	{ 
 		handle_ = h; 
@@ -341,7 +344,7 @@ pair<float, float> TorrentInternal::getTransferSpeed()
 	return transferLimit_;
 }
 
-TorrentDetail_ptr TorrentInternal::getTorrentDetails() const
+TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr() const
 {
 	if (inSession())
 	{

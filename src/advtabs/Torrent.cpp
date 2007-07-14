@@ -112,7 +112,7 @@ LRESULT AdvTorrentDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl
 void AdvTorrentDialog::updateDialog()
 {
 #	if 0
-	hal::TorrentDetail_ptr pTD = hal::bittorrent().getTorrentDetails(
+	hal::TorrentDetail_ptr pTD = hal::bittorrent().getTorrentDetail_vec(
 		selection_manager().selected());
 	
 	if (pTD) 	

@@ -68,7 +68,7 @@ protected:
 
 public:	
 	enum { 
-		LISTVIEW_ID_MENU = IDR_LISTVIEW_MENU,
+		LISTVIEW_ID_MENU = 0,
 		LISTVIEW_ID_COLUMNNAMES = HAL_DEBUG_LISTVIEW_COLUMNS,
 		LISTVIEW_ID_COLUMNWIDTHS = HAL_DEBUG_LISTVIEW_DEFAULTS
 	};
@@ -115,22 +115,6 @@ public:
 private:
 	void OnAttach()
 	{
-/*		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
-
-		CHeaderCtrl hdr = GetHeader();
-		hdr.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
-
-		AddColumn(L"Time", hdr.GetItemCount());
-		AddColumn(L"Message", hdr.GetItemCount());
-		AddColumn(L"Severity", hdr.GetItemCount());
-
-		assert (hdr.GetItemCount() == numListColumnWidth);
-
-		for (int i=0; i<numListColumnWidth; ++i)
-			SetColumnWidth(i, listColumnWidth[i]);
-
-		SetColumnOrderArray(numListColumnWidth, (int*)&listColumnOrder);
-*/
 		SetListViewDetails();
 
 		boost::signals::scoped_connection* p = new boost::signals::scoped_connection(
@@ -185,6 +169,7 @@ public:
 
 		CHAIN_MSG_MAP(resizeClass)
 		CHAIN_MSG_MAP(baseClass)
+		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
 
 	BOOL DoDataExchange(BOOL bSaveAndValidate = FALSE, UINT nCtlID = (UINT)-1);

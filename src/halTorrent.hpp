@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <set>
 
 #include <boost/signal.hpp>
 #include <boost/optional.hpp>
@@ -145,7 +146,35 @@ private:
 };
 
 typedef shared_ptr<TorrentDetail> TorrentDetail_ptr;
-typedef std::vector<TorrentDetail_ptr> TorrentDetails;
+typedef std::vector<TorrentDetail_ptr> TorrentDetail_vec;
+
+class TorrentDetails
+{
+public:	
+	enum sortIndex
+	{
+		sortName = 0,
+		sortStatus,
+		sortCompleted,
+		sortDownload,
+		sortUpload,
+		sortPeers,
+		sortSeeds,
+		sortETA,
+		sortCopies
+	};
+	
+	const TorrentDetail_vec torrents() { return torrents_; }
+	const TorrentDetail_vec selectedTorrents() { return selectedTorrents_; }
+	const TorrentDetail_ptr selectedTorrent() { return selectedTorrent_; }
+	
+	friend class BitTorrent;
+
+private:
+	TorrentDetail_vec torrents_;
+	TorrentDetail_vec selectedTorrents_;
+	TorrentDetail_ptr selectedTorrent_;
+};
 
 struct TrackerDetail
 {
@@ -212,8 +241,9 @@ public:
 	void setTorrentDefaults(int maxConn, int maxUpload, float download, float upload);	
 	void newTorrent(boost::filesystem::wpath filename, boost::filesystem::wpath files);
 	void addTorrent(boost::filesystem::wpath file, wpath saveDirectory);
-	void getAllTorrentDetails(TorrentDetails& torrentsContainer);
-	TorrentDetail_ptr getTorrentDetails(std::string filename);
+	void getAllTorrentDetail_vec(TorrentDetail_vec& torrentsContainer);
+	TorrentDetail_ptr getTorrentDetail_vec(std::string filename);	
+	TorrentDetails getTorrentDetails(std::string selected, std::set<std::string> allSelected);
 	
 	void setTorrentRatio(std::string, float ratio);
 	float getTorrentRatio(std::string);

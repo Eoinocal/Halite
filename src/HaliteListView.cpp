@@ -1,8 +1,15 @@
 ﻿
 #include "HaliteListView.hpp"
-
+#include "HaliteWindow.hpp"
 #include "halTorrent.hpp"
 
+HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
+	iniClass("listviews/halite", "HaliteListView")
+{		
+	HalWindow.connectUiUpdate(bind(&HaliteListViewCtrl::uiUpdate, this, _1, _2, _3));
+	load();
+}
+	
 void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 {
 	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
@@ -21,42 +28,41 @@ void HaliteListViewCtrl::saveSettings()
 	save();
 }
 
-void HaliteListViewCtrl::updateListView()
+
+void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetail_vec& allTorrents, 
+	const hal::TorrentDetail_vec& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent)
 {
 	RedrawLock<HaliteListViewCtrl> rLock(*this);
 	
-	hal::TorrentDetails TD;
-	hal::bittorrent().getAllTorrentDetails(TD);
-	
-	for (hal::TorrentDetails::const_iterator i = TD.begin(); i != TD.end(); ++i) 
+	foreach (const hal::TorrentDetail_ptr td, allTorrents) 
 	{
 		LV_FINDINFO findInfo; 
 		findInfo.flags = LVFI_STRING;
-		findInfo.psz = const_cast<LPTSTR>((*i)->filename().c_str());
+		findInfo.psz = const_cast<LPTSTR>(td->filename().c_str());
 		
 		int itemPos = FindItem(&findInfo, -1);
 		if (itemPos < 0)
-			itemPos = AddItem(0, 0, (*i)->filename().c_str(), 0);
+			itemPos = AddItem(0, 0, td->filename().c_str(), 0);
 		
-		SetItemText(itemPos, 1, (*i)->state().c_str());
+		SetItemText(itemPos, 1, td->state().c_str());
 		
 		SetItemText(itemPos, 2, (wformat(L"%1$.2f%%") 
-				% ((*i)->completion()*100)).str().c_str());
+				% (td->completion()*100)).str().c_str());
 		
 		SetItemText(itemPos, 3, (wformat(L"%1$.2fkb/s") 
-				% ((*i)->speed().first/1024)).str().c_str());	
+				% (td->speed().first/1024)).str().c_str());	
 		
 		SetItemText(itemPos, 4, (wformat(L"%1$.2fkb/s") 
-				% ((*i)->speed().second/1024)).str().c_str());
+				% (td->speed().second/1024)).str().c_str());
 		
-		SetItemText(itemPos, 5,	(lexical_cast<wstring>((*i)->peers())).c_str());
+		SetItemText(itemPos, 5,	(lexical_cast<wstring>(td->peers())).c_str());
 		
-		SetItemText(itemPos, 6,	(lexical_cast<wstring>((*i)->seeds())).c_str());	
+		SetItemText(itemPos, 6,	(lexical_cast<wstring>(td->seeds())).c_str());	
 
-		if (!(*i)->estimatedTimeLeft().is_special())
+		if (!td->estimatedTimeLeft().is_special())
 		{
 			SetItemText(itemPos, 7,	(hal::from_utf8(
-				boost::posix_time::to_simple_string((*i)->estimatedTimeLeft())).c_str()));
+				boost::posix_time::to_simple_string(td->estimatedTimeLeft())).c_str()));
 		}
 		else
 		{
@@ -64,9 +70,9 @@ void HaliteListViewCtrl::updateListView()
 		}
 		
 		SetItemText(itemPos, 8,	(wformat(L"%1$.2f") 
-				% ((*i)->distributedCopies())
+				% (td->distributedCopies())
 			).str().c_str());	
-	}	
+	}		
 }
 
 LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)

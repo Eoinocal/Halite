@@ -11,6 +11,8 @@
 #include "HaliteIni.hpp"
 #include "HaliteListViewCtrl.hpp"
 
+class HaliteWindow;
+
 class HaliteListViewCtrl :
 	public CHaliteListViewCtrl<HaliteListViewCtrl>,
 	public CHaliteIni<HaliteListViewCtrl>,
@@ -29,11 +31,7 @@ public:
 		LISTVIEW_ID_COLUMNWIDTHS = HAL_LISTVIEW_DEFAULTS
 	};
 
-	HaliteListViewCtrl() :
-		iniClass("listviews/halite", "HaliteListView")
-	{		
-		load();
-	}
+	HaliteListViewCtrl(HaliteWindow& HalWindow);
 
 	BEGIN_MSG_MAP_EX(HaliteListViewCtrl)
 		MSG_WM_SHOWWINDOW(OnShowWindow)
@@ -51,8 +49,9 @@ public:
 
 	void OnShowWindow(UINT, INT);
 	void OnDestroy();
-	void updateListView();
 	void saveSettings();
+	void uiUpdate(const hal::TorrentDetail_vec& allTorrents, 
+		const hal::TorrentDetail_vec& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent); 
 
 	LRESULT OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);

@@ -90,11 +90,11 @@ namespace hal
 //	static http::host host(80, 443);
 //	static shared_ptr<thread> host_thread;
 	
-/*	class GetTorrentDetails : public XmlRpcServerMethod
+/*	class GetTorrentDetail_vec : public XmlRpcServerMethod
 	{
 	public:
-		GetTorrentDetails(XmlRpcServer* s) : 
-			XmlRpcServerMethod("getTorrentDetails", s) 
+		GetTorrentDetail_vec(XmlRpcServer* s) : 
+			XmlRpcServerMethod("getTorrentDetail_vec", s) 
 		{}
 	
 		void execute(XmlRpcValue& params, XmlRpcValue& result)
@@ -120,7 +120,7 @@ namespace hal
 	
 		std::string help() { return std::string("Get Torrent Details"); }
 	
-	} getTorrentDetails(&Server);
+	} getTorrentDetail_vec(&Server);
 	
 	class GetPausedTorrents : public XmlRpcServerMethod
 	{

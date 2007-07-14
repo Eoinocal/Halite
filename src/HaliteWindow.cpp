@@ -8,7 +8,6 @@
 #include "HaliteWindow.hpp"
 
 #include "CSSFileDialog.hpp"
-#include "HaliteListView.hpp"
 #include "HaliteDialog.hpp"
 #include "AdvHaliteDialog.hpp"
 
@@ -17,7 +16,7 @@
 
 HaliteWindow::HaliteWindow(unsigned areYouMe = 0) :
 	iniClass("HaliteWindow", "HaliteWindow"),
-	mp_list(new HaliteListViewCtrl()),
+	haliteList(*this),
 	WM_AreYouMe_(areYouMe),
 	splitterPos(100),
 	use_tray(true),
@@ -78,15 +77,15 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	m_hWndClient = m_Split.m_hWnd;
 	
 	// Create ListView and Dialog
-	mp_list->Create(m_Split.m_hWnd, rc, NULL, 
+	haliteList.Create(m_Split.m_hWnd, rc, NULL, 
 		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS);
-	mp_list->manager().attach(bind(&HaliteWindow::issueUiUpdate, this));
+	haliteList.manager().attach(bind(&HaliteWindow::issueUiUpdate, this));
 	
-	mp_dlg.reset(new HaliteDialog(*this, ui(), mp_list->manager())),
+	mp_dlg.reset(new HaliteDialog(*this, ui(), haliteList.manager())),
 	mp_dlg->Create(m_Split.m_hWnd);
 //	mp_dlg->ShowWindow(true);
 	
-	mp_advDlg.reset(new AdvHaliteDialog(*this, ui(), mp_list->manager()));
+	mp_advDlg.reset(new AdvHaliteDialog(*this, ui(), haliteList.manager()));
 	mp_advDlg->Create(m_Split.m_hWnd);
 //	mp_advDlg->ShowWindow(true);
 	
@@ -107,7 +106,6 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	SetTimer(ID_UPDATE_TIMER, 500);
 	SetTimer(ID_SAVE_TIMER, 5000);
 	ui().attach(bind(&HaliteWindow::updateWindow, this));
-	ui().attach(bind(&HaliteListViewCtrl::updateListView, &*mp_list));
 	
 	RegisterDropTarget();
 	
@@ -117,7 +115,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	pLoop->AddMessageFilter(this);
 	pLoop->AddIdleHandler(this);
 	
-	mp_list->manager().setSelected(0);
+	haliteList.manager().setSelected(0);
 	setCorrectDialog();
 	
 	hal::bittorrent().startEventReceiver();
@@ -146,13 +144,13 @@ void HaliteWindow::setCorrectDialog()
 	{		
 		mp_dlg->ShowWindow(true);
 		mp_advDlg->ShowWindow(false);
-		m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
+		m_Split.SetSplitterPanes(haliteList, *mp_dlg);
 	}
 	else
 	{		
 		mp_dlg->ShowWindow(false);
 		mp_advDlg->ShowWindow(true);
-		m_Split.SetSplitterPanes(*mp_list, *mp_advDlg);
+		m_Split.SetSplitterPanes(haliteList, *mp_advDlg);
 	}
 	ui().update();
 }
@@ -241,33 +239,15 @@ void HaliteWindow::issueUiUpdate()
 {
 	try
 	{
-	
-	hal::TorrentDetails allTorrents;
-	hal::TorrentDetails selectedTorrents;
-	hal::TorrentDetail_ptr selectedTorrent;
-	
-	hal::bittorrent().getAllTorrentDetails(allTorrents);
-	
 	std::set<string> selectedNames;
-	selectedNames.insert(mp_list->manager().allSelected().begin(), mp_list->manager().allSelected().end());
-	
-	selectedTorrents.reserve(selectedNames.size());
-	
-	foreach (hal::TorrentDetail_ptr t_ptr, allTorrents)
-	{
-		if (selectedNames.find(hal::to_utf8(t_ptr->filename())) != selectedNames.end())
-		{
-			selectedTorrents.push_back(t_ptr);
-		}
-		
-		if (mp_list->manager().selected() == hal::to_utf8(t_ptr->filename()))
-			selectedTorrent = t_ptr;
-	}
-			
-	ui_update_signal_(allTorrents, selectedTorrents, selectedTorrent);
-	
-//	ui().update();
-	
+	selectedNames.insert(
+		haliteList.manager().allSelected().begin(), haliteList.manager().allSelected().end());
+
+	hal::TorrentDetails td = hal::bittorrent().getTorrentDetails(
+		haliteList.manager().selected(), selectedNames);
+
+	ui_update_signal_(td.torrents(), td.selectedTorrents(), td.selectedTorrent());
+
 	}
 	catch (std::exception& e)
 	{
@@ -322,7 +302,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 
 	ui().update();
 	
-	int itemPos = mp_list->GetSelectionMark();
+	int itemPos = haliteList.GetSelectionMark();
 	if (itemPos == -1)
 	{
 		LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
@@ -331,8 +311,8 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 		wstring filename = file.leaf();		
 		findInfo.psz = filename.c_str();
 		
-		int itemPos = mp_list->FindItem(&findInfo, -1);	
-		mp_list->manager().setSelected(itemPos);
+		int itemPos = haliteList.FindItem(&findInfo, -1);	
+		haliteList.manager().setSelected(itemPos);
 	}	
 	
 	}

@@ -111,6 +111,7 @@ public:
 	//	MSG_WM_CTLCOLORSTATIC(OnCltColor)
 
 		CHAIN_MSG_MAP(resizeClass)
+		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
 
 	BEGIN_DDX_MAP(thisClass)
@@ -150,8 +151,8 @@ public:
 	
 	void selectionChanged(const string& torrent_name);
 	void updateDialog();
-	void uiUpdate(const hal::TorrentDetails& allTorrents, 
-		const hal::TorrentDetails& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent); 
+	void uiUpdate(const hal::TorrentDetail_vec& allTorrents, 
+		const hal::TorrentDetail_vec& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent); 
 	
 protected:
 	LRESULT onInitDialog(HWND, LPARAM);

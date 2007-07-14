@@ -59,7 +59,7 @@ public:
 	void unlock()
 	{
 		window_.SetRedraw(true);
-		window_.InvalidateRect(NULL, false);
+		window_.InvalidateRect(NULL, true);
 	}
 	
 private:

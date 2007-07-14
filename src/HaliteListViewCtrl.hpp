@@ -17,12 +17,10 @@ public:
 	typedef CHaliteListViewCtrl<TBase> thisClass;
 	
 protected:
-
 	template <typename L, typename S=std::string>
 	class selection_manager : 
 		private boost::noncopyable
-	{
-	
+	{	
 	public:
 		selection_manager(L& m_list) :
 			m_list_(m_list)
@@ -196,17 +194,6 @@ protected:
 		
 		LRESULT OnRClick(int i, LPNMHDR pnmh, BOOL&)
 		{
-/*			LPNMITEMACTIVATE pia = (LPNMITEMACTIVATE)pnmh;
-			manager().sync_list(true);
-			
-			if (TBase::LISTVIEW_ID_MENU)
-			{
-				assert (menu_.IsMenu());
-				CMenuHandle sMenu = menu_.GetSubMenu(0);
-				assert (sMenu.IsMenu());
-		
-			}
-*/
 			POINT ptPoint;
 			GetCursorPos(&ptPoint);
 			menu_.TrackPopupMenu(0, ptPoint.x, ptPoint.y, m_hWnd);

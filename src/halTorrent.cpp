@@ -247,7 +247,12 @@ const PeerDetails& TorrentDetail::peerDetails() const
 	
 	return peerDetails_;
 }
-	
+
+bool nameLess(const TorrentDetail_ptr left, const TorrentDetail_ptr right)
+{
+	return left->filename() < right->filename();
+}
+
 class BitTorrent_impl
 {
 	friend class BitTorrent;
@@ -959,7 +964,7 @@ void BitTorrent::newTorrent(fs::wpath filename, fs::wpath files)
 */
 }
 
-void BitTorrent::getAllTorrentDetails(TorrentDetails& torrentsContainer)
+void BitTorrent::getAllTorrentDetail_vec(TorrentDetail_vec& torrentsContainer)
 {
 	try {
 	
@@ -967,13 +972,13 @@ void BitTorrent::getAllTorrentDetails(TorrentDetails& torrentsContainer)
 	
 	foreach (TorrentPair t, pimpl->torrents)
 	{
-		torrentsContainer.push_back(t.second.getTorrentDetails());
+		torrentsContainer.push_back(t.second.getTorrentDetail_ptr());
 	}
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "getAllTorrentDetails")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "getAllTorrentDetail_vec")
 }
 
-TorrentDetail_ptr BitTorrent::getTorrentDetails(string filename)
+TorrentDetail_ptr BitTorrent::getTorrentDetail_vec(string filename)
 {
 	try {
 	
@@ -981,12 +986,35 @@ TorrentDetail_ptr BitTorrent::getTorrentDetails(string filename)
 	
 	if (i != pimpl->torrents.end())
 	{
-		return i->second.getTorrentDetails();
+		return i->second.getTorrentDetail_ptr();
 	}
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentDetails")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentDetail_ptr")
 	
 	return TorrentDetail_ptr();
+}
+
+
+TorrentDetails BitTorrent::getTorrentDetails(std::string selected, std::set<std::string> allSelected)
+{
+	TorrentDetails torrentDetails;
+	
+	torrentDetails.torrents_.reserve(pimpl->torrents.size());
+	
+	foreach (TorrentPair t, pimpl->torrents)
+	{
+		if (allSelected.find(hal::to_utf8(t.second.filename())) != allSelected.end())
+		{
+			torrentDetails.selectedTorrents_.push_back(t.second.getTorrentDetail_ptr());
+		}
+		
+		if (selected == hal::to_utf8(t.second.filename()))
+			torrentDetails.selectedTorrent_ = t.second.getTorrentDetail_ptr();
+		
+		torrentDetails.torrents_.push_back(t.second.getTorrentDetail_ptr());
+	}
+	
+	return torrentDetails;
 }
 
 void BitTorrent::resumeAll()

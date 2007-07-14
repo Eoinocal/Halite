@@ -4,6 +4,7 @@
 #include "stdAfx.hpp"
 #include "DropFileTarget.h"
 #include "NTray.hpp"
+#include "HaliteListView.hpp"
 #include "HaliteIni.hpp"
 #include "halTorrent.hpp"
 
@@ -13,7 +14,6 @@
 
 #include <boost/signals.hpp>
 
-class HaliteListViewCtrl;
 class HaliteDialog;
 class AdvHaliteDialog;
 
@@ -97,14 +97,14 @@ public:
 
 	void ProcessFile(LPCTSTR lpszPath);
 	
-	void connectUiUpdate(boost::function<void (const hal::TorrentDetails& allTorrents, 
-		const hal::TorrentDetails& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent)> fn) 
+	void connectUiUpdate(boost::function<void (const hal::TorrentDetail_vec& allTorrents, 
+		const hal::TorrentDetail_vec& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent)> fn) 
 	{ 
 		ui_update_signal_.connect(fn); 
 	}
 		
-	boost::signal<void (const hal::TorrentDetails& allTorrents, 
-		const hal::TorrentDetails& selectedTorrents, 
+	boost::signal<void (const hal::TorrentDetail_vec& allTorrents, 
+		const hal::TorrentDetail_vec& selectedTorrents, 
 		const hal::TorrentDetail_ptr selectedTorrent)> & ui_sig()
 	{ 
 		return ui_update_signal_; 
@@ -177,12 +177,19 @@ protected:
 	friend class GeneralOptions;
 
 private:
+	// These two gotta be first!!!
+	boost::signal<void (const hal::TorrentDetail_vec& allTorrents, 
+		const hal::TorrentDetail_vec& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent)> 
+			ui_update_signal_;
+	boost::signal<void ()> save_state_signal_;	
+	
 	CCommandBarCtrl m_CmdBar;
 	CHorSplitterWindow m_Split;
     CMultiPaneStatusBarCtrl m_StatusBar;
 	CTrayNotifyIcon m_trayIcon;
 
-	boost::shared_ptr<HaliteListViewCtrl> mp_list;
+	HaliteListViewCtrl haliteList;
+	
 	boost::scoped_ptr<HaliteDialog> mp_dlg;
 	boost::scoped_ptr<AdvHaliteDialog> mp_advDlg;
 
@@ -197,11 +204,6 @@ private:
 	bool use_tray;
 	bool advancedUI;
 	int activeTab;
-	
-	boost::signal<void (const hal::TorrentDetails& allTorrents, 
-		const hal::TorrentDetails& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent)> 
-			ui_update_signal_;
-	boost::signal<void ()> save_state_signal_;	
 };
 
 BOOST_CLASS_VERSION(HaliteWindow, 0)

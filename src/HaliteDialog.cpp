@@ -159,8 +159,8 @@ LRESULT HaliteDialog::OnCltColor(HDC hDC, HWND hWnd)
 	return (LRESULT)::GetCurrentObject(hDC, OBJ_BRUSH);
 }
 
-void HaliteDialog::uiUpdate(const hal::TorrentDetails& allTorrents, 
-		const hal::TorrentDetails& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent) 
+void HaliteDialog::uiUpdate(const hal::TorrentDetail_vec& allTorrents, 
+		const hal::TorrentDetail_vec& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent) 
 {	
 	if (selectedTorrent) 	
 	{
@@ -250,7 +250,7 @@ void HaliteDialog::updateDialog()
 {
 #	if 0
 
-	hal::TorrentDetail_ptr pTD = hal::bittorrent().getTorrentDetails(
+	hal::TorrentDetail_ptr pTD = hal::bittorrent().getTorrentDetail_vec(
 		selection_manager().selected());
 	
 	if (pTD) 	
