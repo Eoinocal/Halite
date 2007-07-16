@@ -151,8 +151,7 @@ public:
 	
 	void selectionChanged(const string& torrent_name);
 	void updateDialog();
-	void uiUpdate(const hal::TorrentDetail_vec& allTorrents, 
-		const hal::TorrentDetail_vec& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent); 
+	void uiUpdate(const hal::TorrentDetails& allTorrents); 
 	
 protected:
 	LRESULT onInitDialog(HWND, LPARAM);

@@ -153,25 +153,27 @@ class TorrentDetails
 public:	
 	enum sortIndex
 	{
-		sortName = 0,
-		sortStatus,
-		sortCompleted,
-		sortDownload,
-		sortUpload,
-		sortPeers,
-		sortSeeds,
-		sortETA,
-		sortCopies
+		name = 0,
+		status,
+		completed,
+		download,
+		upload,
+		peers,
+		seeds,
+		eta,
+		copies
 	};
 	
-	const TorrentDetail_vec torrents() { return torrents_; }
-	const TorrentDetail_vec selectedTorrents() { return selectedTorrents_; }
-	const TorrentDetail_ptr selectedTorrent() { return selectedTorrent_; }
+	void sort(sortIndex i) const;
+	
+	const TorrentDetail_vec torrents() const { return torrents_; }
+	const TorrentDetail_vec selectedTorrents() const { return selectedTorrents_; }
+	const TorrentDetail_ptr selectedTorrent() const { return selectedTorrent_; }
 	
 	friend class BitTorrent;
 
 private:
-	TorrentDetail_vec torrents_;
+	mutable TorrentDetail_vec torrents_;
 	TorrentDetail_vec selectedTorrents_;
 	TorrentDetail_ptr selectedTorrent_;
 };

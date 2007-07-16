@@ -19,7 +19,7 @@ public:
 		ui_(ui_sig),
 		selection_manager_(single_sel)
 	{		
-		theDaddy.connectUiUpdate(bind(&TBase::uiUpdate, static_cast<TBase*>(this), _1, _2, _3));
+		theDaddy.connectUiUpdate(bind(&TBase::uiUpdate, static_cast<TBase*>(this), _1));
 	}
 	
 	void InitializeHalDialogBase()
@@ -28,8 +28,7 @@ public:
 	//	selection_manager_.attach(bind(&TBase::selectionChanged, static_cast<TBase*>(this), _1));
 	}
 	
-	void uiUpdate(const hal::TorrentDetail_vec& allTorrents, 
-		const hal::TorrentDetail_vec& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent) 
+	void uiUpdate(const hal::TorrentDetails& tD)
 	{}
 	
 /*	void save()

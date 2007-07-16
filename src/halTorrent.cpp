@@ -248,9 +248,14 @@ const PeerDetails& TorrentDetail::peerDetails() const
 	return peerDetails_;
 }
 
-bool nameLess(const TorrentDetail_ptr left, const TorrentDetail_ptr right)
+bool nameLess(const TorrentDetail_ptr& left, const TorrentDetail_ptr& right)
 {
-	return left->filename() < right->filename();
+	return left->state() < right->state();
+}
+
+void TorrentDetails::sort(sortIndex i) const
+{
+	std::stable_sort(torrents_.begin(), torrents_.end(), &nameLess);
 }
 
 class BitTorrent_impl

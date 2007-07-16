@@ -97,15 +97,12 @@ public:
 
 	void ProcessFile(LPCTSTR lpszPath);
 	
-	void connectUiUpdate(boost::function<void (const hal::TorrentDetail_vec& allTorrents, 
-		const hal::TorrentDetail_vec& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent)> fn) 
+	void connectUiUpdate(boost::function<void (const hal::TorrentDetails& allTorrents)> fn) 
 	{ 
 		ui_update_signal_.connect(fn); 
 	}
 		
-	boost::signal<void (const hal::TorrentDetail_vec& allTorrents, 
-		const hal::TorrentDetail_vec& selectedTorrents, 
-		const hal::TorrentDetail_ptr selectedTorrent)> & ui_sig()
+	boost::signal<void (const hal::TorrentDetails& allTorrents)> & ui_sig()
 	{ 
 		return ui_update_signal_; 
 	}
@@ -178,9 +175,7 @@ protected:
 
 private:
 	// These two gotta be first!!!
-	boost::signal<void (const hal::TorrentDetail_vec& allTorrents, 
-		const hal::TorrentDetail_vec& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent)> 
-			ui_update_signal_;
+	boost::signal<void (const hal::TorrentDetails& tD)> ui_update_signal_;
 	boost::signal<void ()> save_state_signal_;	
 	
 	CCommandBarCtrl m_CmdBar;

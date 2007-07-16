@@ -159,21 +159,20 @@ LRESULT HaliteDialog::OnCltColor(HDC hDC, HWND hWnd)
 	return (LRESULT)::GetCurrentObject(hDC, OBJ_BRUSH);
 }
 
-void HaliteDialog::uiUpdate(const hal::TorrentDetail_vec& allTorrents, 
-		const hal::TorrentDetail_vec& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent) 
+void HaliteDialog::uiUpdate(const hal::TorrentDetails& tD) 
 {	
-	if (selectedTorrent) 	
+	if (tD.selectedTorrent()) 	
 	{
-		SetDlgItemText(IDC_NAME, selectedTorrent->filename().c_str());
-		SetDlgItemText(IDC_TRACKER, selectedTorrent->currentTracker().c_str());
-		SetDlgItemText(IDC_STATUS, selectedTorrent->state().c_str());
-		m_prog.SetPos(static_cast<int>(selectedTorrent->completion()*100));
+		SetDlgItemText(IDC_NAME, tD.selectedTorrent()->filename().c_str());
+		SetDlgItemText(IDC_TRACKER, tD.selectedTorrent()->currentTracker().c_str());
+		SetDlgItemText(IDC_STATUS, tD.selectedTorrent()->state().c_str());
+		m_prog.SetPos(static_cast<int>(tD.selectedTorrent()->completion()*100));
 		
-		if (!selectedTorrent->estimatedTimeLeft().is_special())
+		if (!tD.selectedTorrent()->estimatedTimeLeft().is_special())
 		{
 			SetDlgItemText(IDC_AVAIL,
 				(hal::from_utf8(boost::posix_time::to_simple_string(
-					selectedTorrent->estimatedTimeLeft())).c_str()));
+					tD.selectedTorrent()->estimatedTimeLeft())).c_str()));
 		}
 		else
 		{
@@ -182,17 +181,17 @@ void HaliteDialog::uiUpdate(const hal::TorrentDetail_vec& allTorrents,
 		
 		SetDlgItemText(IDC_COMPLETE,
 			(wformat(L"%1$.2fmb of %2$.2fmb") 
-				% (static_cast<float>(selectedTorrent->totalWantedDone())/(1024*1024))
-				% (static_cast<float>(selectedTorrent->totalWanted())/(1024*1024))
+				% (static_cast<float>(tD.selectedTorrent()->totalWantedDone())/(1024*1024))
+				% (static_cast<float>(tD.selectedTorrent()->totalWanted())/(1024*1024))
 			).str().c_str());
 				
 		m_list.SetRedraw(false);
 		m_list.manager().clearAll();
 		
-		if (!selectedTorrent->peerDetails().empty())
+		if (!tD.selectedTorrent()->peerDetails().empty())
 		{			
 			
-			foreach (const hal::PeerDetail& peer, selectedTorrent->peerDetails())
+			foreach (const hal::PeerDetail& peer, tD.selectedTorrent()->peerDetails())
 			{			
 				LV_FINDINFO findInfo; 
 				findInfo.flags = LVFI_STRING;

@@ -246,7 +246,7 @@ void HaliteWindow::issueUiUpdate()
 	hal::TorrentDetails td = hal::bittorrent().getTorrentDetails(
 		haliteList.manager().selected(), selectedNames);
 
-	ui_update_signal_(td.torrents(), td.selectedTorrents(), td.selectedTorrent());
+	ui_update_signal_(td);
 
 	}
 	catch (std::exception& e)

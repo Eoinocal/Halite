@@ -6,7 +6,7 @@
 HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	iniClass("listviews/halite", "HaliteListView")
 {		
-	HalWindow.connectUiUpdate(bind(&HaliteListViewCtrl::uiUpdate, this, _1, _2, _3));
+	HalWindow.connectUiUpdate(bind(&HaliteListViewCtrl::uiUpdate, this, _1));
 	load();
 }
 	
@@ -29,12 +29,14 @@ void HaliteListViewCtrl::saveSettings()
 }
 
 
-void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetail_vec& allTorrents, 
-	const hal::TorrentDetail_vec& selectedTorrents, const hal::TorrentDetail_ptr selectedTorrent)
+void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
 {
 	RedrawLock<HaliteListViewCtrl> rLock(*this);
 	
-	foreach (const hal::TorrentDetail_ptr td, allTorrents) 
+	tD.sort(hal::TorrentDetails::name);
+	DeleteAllItems();
+	
+	foreach (const hal::TorrentDetail_ptr td, tD.torrents()) 
 	{
 		LV_FINDINFO findInfo; 
 		findInfo.flags = LVFI_STRING;
