@@ -10,17 +10,18 @@
 
 #include "HaliteIni.hpp"
 #include "HaliteListViewCtrl.hpp"
+#include "HaliteListViewCtrl2.hpp"
 
 class HaliteWindow;
 
 class HaliteListViewCtrl :
-	public CHaliteListViewCtrl<HaliteListViewCtrl>,
+	public CHaliteListViewCtrl2<HaliteListViewCtrl>,
 	public CHaliteIni<HaliteListViewCtrl>,
 	private boost::noncopyable
 {
 protected:
 	typedef CHaliteIni<HaliteListViewCtrl> iniClass;
-	typedef CHaliteListViewCtrl<HaliteListViewCtrl> listClass;
+	typedef CHaliteListViewCtrl2<HaliteListViewCtrl> listClass;
 
 	friend class listClass;
 
@@ -43,7 +44,7 @@ public:
 		COMMAND_ID_HANDLER(ID_LVM_REMOVE_T, OnRemove)
 		COMMAND_ID_HANDLER(ID_LVM_REMOVE_TD, OnRemoveWipeFiles)
 
-		CHAIN_MSG_MAP(CHaliteListViewCtrl<HaliteListViewCtrl>)
+		CHAIN_MSG_MAP(listClass)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 

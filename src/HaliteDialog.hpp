@@ -12,8 +12,8 @@
 
 class ui_signal;
 
-class HaliteListViewCtrl;
-typedef CHaliteListViewCtrl<HaliteListViewCtrl>::selection_manage_class ListViewManager;
+//class HaliteListViewCtrl;
+//typedef CHaliteListViewCtrl<HaliteListViewCtrl>::selection_manage_class ListViewManager;
 
 class HaliteDialog :
 	public CDialogImpl<HaliteDialog>,

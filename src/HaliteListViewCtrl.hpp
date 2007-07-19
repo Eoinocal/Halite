@@ -28,8 +28,9 @@ protected:
 		
 		typedef const S& param_type;
 		
-		void sync_list(bool list_to_manager)
+		void sync_list(bool list_to_manager, bool signal_change=true)
 		{
+//			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"%1%, %2% %3%") % hal::from_utf8(selected_) % list_to_manager % signal_change).str().c_str())));
 			if (list_to_manager)
 			{	
 				all_selected_.clear();
@@ -60,35 +61,55 @@ protected:
 					if (selected_ != selected)
 					{
 						selected_ = selected;
-						signal();
+						if (signal_change) signal();
 					}
 				}
 				else
 				{
 					selected_ = "";
-					signal();
+					if (signal_change) signal();
 				}
 			}
 			else
 			{
-				LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
-				findInfo.flags = LVFI_STRING;
-				
-				wstring torrent_name = hal::from_utf8(selected_);		
-				findInfo.psz = torrent_name.c_str();
-				
-				int itemPos = m_list_.FindItem(&findInfo, -1);	
-				
-				if (itemPos != m_list_.GetSelectionMark())
+			/*	foreach (string name, all_selected_)
 				{
-					LVITEM lvi = { LVIF_STATE };
-					lvi.state = LVIS_SELECTED;
-					lvi.stateMask = LVIS_SELECTED;
-					m_list_.SetItemState(itemPos, &lvi);
-					m_list_.SetSelectionMark(itemPos);
-					signal();
+					selectMatch(name);
 				}
+			*/
+				int itemPos = selectMatch(selected_);				
+			//	if (itemPos != -1) m_list_.SetSelectionMark(itemPos);
+				
+				if (signal_change) signal();
 			}
+		}
+		
+		int selectMatch(const string& name)
+		{
+			LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
+			findInfo.flags = LVFI_STRING;
+			
+			wstring torrent_name = hal::from_utf8(name);		
+			findInfo.psz = torrent_name.c_str();
+			
+			int itemPos = m_list_.FindItem(&findInfo, -1);	
+			
+//			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"%1%, %2%") % torrent_name % itemPos).str().c_str())));
+			
+			if (itemPos == -1)
+				return itemPos;
+				
+			UINT flags = m_list_.GetItemState(itemPos, LVIS_SELECTED);
+			
+			//if (!flags && LVIS_SELECTED)
+			{
+				LVITEM lvi = { LVIF_STATE };
+				lvi.state = LVIS_SELECTED;
+				lvi.stateMask = LVIS_SELECTED;
+				m_list_.SetItemState(itemPos, &lvi);
+			}
+		
+			return itemPos;
 		}
 		
 		param_type selected() const { return selected_; }

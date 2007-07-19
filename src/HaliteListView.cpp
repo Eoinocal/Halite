@@ -31,7 +31,9 @@ void HaliteListViewCtrl::saveSettings()
 
 void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
 {
-	RedrawLock<HaliteListViewCtrl> rLock(*this);
+	if (canUpdate())
+	{
+	UpdateLock<listClass> rLock(*this);
 	
 	tD.sort(hal::TorrentDetails::name);
 	DeleteAllItems();
@@ -74,7 +76,11 @@ void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
 		SetItemText(itemPos, 8,	(wformat(L"%1$.2f") 
 				% (td->distributedCopies())
 			).str().c_str());	
-	}		
+	}
+
+	manager().sync_list(false, false);
+	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, L"Two: Sync")));
+	}
 }
 
 LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)

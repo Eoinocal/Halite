@@ -13,11 +13,11 @@
 
 #include "HaliteListManager.hpp"
 
-class HaliteListViewCtrl;
-template <class TBase>
-class CHaliteListViewCtrl;
+//class HaliteListViewCtrl;
+//template <class TBase>
+//class CHaliteListViewCtrl;
 
-typedef CHaliteListViewCtrl<HaliteListViewCtrl>::selection_manage_class ListViewManager;
+//typedef CHaliteListViewCtrl<HaliteListViewCtrl>::selection_manage_class ListViewManager;
 
 class HaliteWindow;
 

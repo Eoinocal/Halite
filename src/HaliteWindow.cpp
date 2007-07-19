@@ -103,7 +103,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	UISetCheck(IDR_TRAY_MENU, 1);
 	
 	// Register UIEvents and the timer for the monitoring interval
-	SetTimer(ID_UPDATE_TIMER, 500);
+	SetTimer(ID_UPDATE_TIMER, 10000);
 	SetTimer(ID_SAVE_TIMER, 5000);
 	ui().attach(bind(&HaliteWindow::updateWindow, this));
 	
