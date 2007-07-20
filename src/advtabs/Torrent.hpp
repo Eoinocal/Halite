@@ -26,8 +26,8 @@ protected:
 public:
 	enum { IDD = IDD_ADVOVERVIEW };
 
-	AdvTorrentDialog(HaliteWindow& HalWindow, ui_signal& ui_sig, ListViewManager& single_sel) :
-		dialogBaseClass(HalWindow, ui_sig, single_sel)
+	AdvTorrentDialog(HaliteWindow& HalWindow) :
+		dialogBaseClass(HalWindow)
 	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)

@@ -23,7 +23,7 @@ void AdvDebugDialog::selectionChanged(const string& torrent_name)
 
 #	endif	
 	DoDataExchange(false);	
-	ui().update();
+//	ui().update();
 }
 
 void AdvDebugDialog::onLoginCheck(UINT, int, HWND hWnd)
@@ -70,7 +70,7 @@ void AdvDebugDialog::onClose()
 
 LRESULT AdvDebugDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {
-	string torrent_name = selection_manager().selected();
+/*	string torrent_name = selection_manager().selected();
 	
 	if (hal::bittorrent().isTorrent(torrent_name))
 	{			
@@ -84,9 +84,9 @@ LRESULT AdvDebugDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl)
 		hal::bittorrent().setTorrentLogin(torrent_name, wstring(username.elems),
 			wstring(password.elems));
 	}
-	
+*/		
 	DoDataExchange(true);
-	
+
 	return 0;
 }
 

@@ -9,8 +9,8 @@
 #include "HaliteListView.hpp"
 #include "halEvent.hpp"
 
-HaliteDialog::HaliteDialog(HaliteWindow& halWindow, ui_signal& ui_sig, ListViewManager& single_sel) :
-		dialogBaseClass(halWindow, ui_sig, single_sel)
+HaliteDialog::HaliteDialog(HaliteWindow& halWindow) :
+		dialogBaseClass(halWindow)
 {
 //	ui_.attach(bind(&HaliteDialog::updateDialog, this));
 //	selection_manager_.attach(bind(&HaliteDialog::selectionChanged, this, _1));
@@ -111,7 +111,7 @@ void HaliteDialog::onClose()
 
 void HaliteDialog::onPause(UINT, int, HWND)
 {
-	string torrentName = selection_manager().selected();
+/*	string torrentName = selection_manager().selected();
 	if (!hal::bittorrent().isTorrentActive(torrentName))
 	{
 		SetDlgItemText(BTNPAUSE,L"Pause");
@@ -124,6 +124,7 @@ void HaliteDialog::onPause(UINT, int, HWND)
 	}
 	
 	ui().update();
+	*/
 }
 
 void HaliteDialog::onReannounce(UINT, int, HWND)
@@ -131,24 +132,26 @@ void HaliteDialog::onReannounce(UINT, int, HWND)
 //	hal::event().post(boost::shared_ptr<hal::EventDetail>(
 //		new hal::EventXmlException(hal::to_wstr("I'm an exception!"), hal::to_wstr("I'm a name!")))); 
 
-	hal::bittorrent().reannounceTorrent(selection_manager().selected());
+/*	hal::bittorrent().reannounceTorrent(selection_manager().selected());
+*/
 }
 
 void HaliteDialog::onRemove(UINT, int, HWND)
 {
-	hal::bittorrent().removeTorrent(selection_manager().selected());
-	selection_manager().clear();		
+/*	hal::bittorrent().removeTorrent(selection_manager().selected());
+//	selection_manager().clear();		
 	
 	ui().update();
+	*/
 }
 
 LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {
 	DoDataExchange(true);
 	
-	hal::bittorrent().setTorrentSpeed(selection_manager().selected(), TranLimitDown, TranLimitUp);
+/*	hal::bittorrent().setTorrentSpeed(selection_manager().selected(), TranLimitDown, TranLimitUp);
 	hal::bittorrent().setTorrentLimit(selection_manager().selected(), NoConnDown, NoConnUp);
-	
+*/	
 	return 0;
 }
 

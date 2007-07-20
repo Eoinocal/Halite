@@ -30,7 +30,7 @@ class ui_signal : noncopyable
 {
 public:
 	void attach(boost::function<void ()> fn) { ui_.connect(fn); }
-	void update() { ui_(); }
+	void update() {  }
 
 private:
 	boost::signal<void ()> ui_;

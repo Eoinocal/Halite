@@ -81,11 +81,11 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS);
 	haliteList.manager().attach(bind(&HaliteWindow::issueUiUpdate, this));
 	
-	mp_dlg.reset(new HaliteDialog(*this, ui(), haliteList.manager())),
+	mp_dlg.reset(new HaliteDialog(*this)),
 	mp_dlg->Create(m_Split.m_hWnd);
 //	mp_dlg->ShowWindow(true);
 	
-	mp_advDlg.reset(new AdvHaliteDialog(*this, ui(), haliteList.manager()));
+	mp_advDlg.reset(new AdvHaliteDialog(*this));
 	mp_advDlg->Create(m_Split.m_hWnd);
 //	mp_advDlg->ShowWindow(true);
 	
@@ -103,7 +103,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	UISetCheck(IDR_TRAY_MENU, 1);
 	
 	// Register UIEvents and the timer for the monitoring interval
-	SetTimer(ID_UPDATE_TIMER, 10000);
+	SetTimer(ID_UPDATE_TIMER, 500);
 	SetTimer(ID_SAVE_TIMER, 5000);
 	ui().attach(bind(&HaliteWindow::updateWindow, this));
 	
@@ -115,10 +115,11 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	pLoop->AddMessageFilter(this);
 	pLoop->AddIdleHandler(this);
 	
-	haliteList.manager().setSelected(0);
+//	haliteList.manager().setSelected(0);
 	setCorrectDialog();
 	
 	hal::bittorrent().startEventReceiver();
+	issueUiUpdate();
 	
 	return 0;
 }
@@ -231,8 +232,7 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 	else 
 	{		
 		SetMsgHandled(false);
-	}
-	
+	}	
 }	
 
 void HaliteWindow::issueUiUpdate()
@@ -302,7 +302,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 
 	ui().update();
 	
-	int itemPos = haliteList.GetSelectionMark();
+/*	int itemPos = haliteList.GetSelectionMark();
 	if (itemPos == -1)
 	{
 		LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
@@ -314,7 +314,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 		int itemPos = haliteList.FindItem(&findInfo, -1);	
 		haliteList.manager().setSelected(itemPos);
 	}	
-	
+*/	
 	}
 	catch(const boost::filesystem::filesystem_error&)
 	{

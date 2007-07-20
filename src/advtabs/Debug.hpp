@@ -148,8 +148,8 @@ protected:
 public:
 	enum { IDD = IDD_ADVDEBUGLOG };
 
-	AdvDebugDialog(HaliteWindow& halWindow, ui_signal& ui_sig, ListViewManager& single_sel) :
-		dialogBaseClass(halWindow, ui_sig, single_sel)
+	AdvDebugDialog(HaliteWindow& halWindow) :
+		dialogBaseClass(halWindow)
 	{}
 	
 	BOOL PreTranslateMessage(MSG* pMsg)

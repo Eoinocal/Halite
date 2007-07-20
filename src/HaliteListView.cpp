@@ -78,8 +78,8 @@ void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
 			).str().c_str());	
 	}
 
-	manager().sync_list(false, false);
-	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, L"Two: Sync")));
+	manager_.sync_list(false, false);
+//	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, L"Two: Sync")));
 	}
 }
 
@@ -112,7 +112,7 @@ LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
 		bind(&hal::BitTorrent::removeTorrent, &hal::bittorrent(), _1));
 
-	manager().clearAllSelected();	
+//	manager().clearAllSelected();	
 	return 0;
 }
 
@@ -121,7 +121,7 @@ LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND h
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
 		bind(&hal::BitTorrent::removeTorrentWipeFiles, &hal::bittorrent(), _1));
 	
-	manager().clearAllSelected();
+//	manager().clearAllSelected();
 	return 0;
 }
 

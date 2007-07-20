@@ -47,7 +47,7 @@ void AdvTrackerDialog::selectionChanged(const string& torrent_name)
 #	endif	
 
 	DoDataExchange(false);	
-	ui().update();
+//	ui().update();
 }
 
 void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
@@ -79,7 +79,7 @@ LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 	m_list.Attach(GetDlgItem(IDC_TRACKERLIST));	
 	m_list.attachEditedConnection(bind(&AdvTrackerDialog::trackerListEdited, this));
 	
-	if (hal::bittorrent().isTorrent(selection_manager().selected()))
+/*	if (hal::bittorrent().isTorrent(selection_manager().selected()))
 	{		
 		::EnableWindow(GetDlgItem(IDC_TRACKER_LOGINCHECK), true);
 		::EnableWindow(GetDlgItem(IDC_TRACKERLIST), true);
@@ -99,7 +99,7 @@ LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 		password_ = L"";
 	}
 		
-	setLoginUiState(selection_manager().selected());
+	setLoginUiState(selection_manager().selected());*/
 	DoDataExchange(false);	
 	return 0;
 }
@@ -131,15 +131,15 @@ LRESULT AdvTrackerDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl
 {
 	DoDataExchange(true);
 	
-	setLoginUiState(selection_manager().selected());
-	hal::bittorrent().setTorrentLogin(selection_manager().selected(), username_, password_);
+//	setLoginUiState(selection_manager().selected());
+//	hal::bittorrent().setTorrentLogin(selection_manager().selected(), username_, password_);
 	
 	return 0;
 }
 
 void AdvTrackerDialog::onReannounce(UINT, int, HWND)
 {
-	hal::bittorrent().reannounceTorrent(selection_manager().selected());
+//	hal::bittorrent().reannounceTorrent(selection_manager().selected());
 	
 //	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDetail(hal::Event::critical, 
 //		boost::posix_time::second_clock::universal_time(), 123456)));
@@ -155,7 +155,7 @@ void AdvTrackerDialog::updateDialog()
 
 void AdvTrackerDialog::onReset(UINT, int, HWND)
 {
-	hal::bittorrent().resetTorrentTrackers(selection_manager().selected());
+/*	hal::bittorrent().resetTorrentTrackers(selection_manager().selected());
 	
 	std::vector<hal::TrackerDetail> trackers =
 		hal::bittorrent().getTorrentTrackers(selection_manager().selected());
@@ -168,6 +168,7 @@ void AdvTrackerDialog::onReset(UINT, int, HWND)
 	}
 
 	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), false);
+	*/
 }
 
 void AdvTrackerDialog::onApply(UINT, int, HWND)
@@ -186,7 +187,7 @@ void AdvTrackerDialog::onApply(UINT, int, HWND)
 		trackers.back().tier = lexical_cast<int>(wstring(buffer.elems));
 	}
 	
-	hal::bittorrent().setTorrentTrackers(selection_manager().selected(), trackers);
+//	hal::bittorrent().setTorrentTrackers(selection_manager().selected(), trackers);
 	
 	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), false);
 }

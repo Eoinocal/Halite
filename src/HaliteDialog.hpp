@@ -91,7 +91,7 @@ class HaliteDialog :
 public:
 	enum { IDD = IDD_HALITEDLG };
 
-	HaliteDialog(HaliteWindow& HalWindow, ui_signal& ui_sig, ListViewManager& single_sel);
+	HaliteDialog(HaliteWindow& HalWindow);
 	BOOL PreTranslateMessage(MSG* pMsg)	{ return this->IsDialogMessage(pMsg); }
 
 	void saveStatus();

@@ -32,11 +32,11 @@ protected:
 public:
 	enum { IDD = IDD_ADVHALITEDLG };
 
-	AdvHaliteDialog(HaliteWindow& halWindow, ui_signal& ui_sig, ListViewManager& single_sel) :
-		m_torrent(halWindow, ui_sig, single_sel),
-		m_peers(halWindow, ui_sig, single_sel),
-		m_tracker(halWindow, ui_sig, single_sel),
-		m_debug(halWindow, ui_sig, single_sel)
+	AdvHaliteDialog(HaliteWindow& halWindow) :
+		m_torrent(halWindow),
+		m_peers(halWindow),
+		m_tracker(halWindow),
+		m_debug(halWindow)
 	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)

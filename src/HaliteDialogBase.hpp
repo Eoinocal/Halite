@@ -15,9 +15,7 @@ class CHaliteDialogBase
 	typedef CHaliteDialogBase<TBase> thisClass;
 	
 public:
-	CHaliteDialogBase(HaliteWindow& theDaddy, ui_signal& ui_sig, ListViewManager& single_sel) :
-		ui_(ui_sig),
-		selection_manager_(single_sel)
+	CHaliteDialogBase(HaliteWindow& theDaddy)
 	{		
 		theDaddy.connectUiUpdate(bind(&TBase::uiUpdate, static_cast<TBase*>(this), _1));
 	}
@@ -63,11 +61,7 @@ public:
 		}
 	}
 */	
-	ui_signal& ui() { return ui_; }
-	ListViewManager&  selection_manager() { return selection_manager_; }
 	
 private:
-	ui_signal& ui_;
-	ListViewManager& selection_manager_;
 };
 

@@ -69,7 +69,7 @@ void AdvTorrentDialog::selectionChanged(const string& torrent_name)
 #	endif	
 
 	DoDataExchange(false);	
-	ui().update();
+//	ui().update();
 }
 
 LRESULT AdvTorrentDialog::onInitDialog(HWND, LPARAM)
@@ -102,10 +102,10 @@ LRESULT AdvTorrentDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl
 {
 	DoDataExchange(true);
 	
-	hal::bittorrent().setTorrentSpeed(selection_manager().selected(), TranLimitDown, TranLimitUp);
+/*	hal::bittorrent().setTorrentSpeed(selection_manager().selected(), TranLimitDown, TranLimitUp);
 	hal::bittorrent().setTorrentLimit(selection_manager().selected(), NoConnDown, NoConnUp);
 	hal::bittorrent().setTorrentRatio(selection_manager().selected(), Ratio);
-	
+	*/
 	return 0;
 }
 
