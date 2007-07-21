@@ -15,9 +15,10 @@ class CHaliteDialogBase
 	typedef CHaliteDialogBase<TBase> thisClass;
 	
 public:
-	CHaliteDialogBase(HaliteWindow& theDaddy)
+	CHaliteDialogBase(HaliteWindow& haliteWindow) :
+		haliteWnd(haliteWindow)
 	{		
-		theDaddy.connectUiUpdate(bind(&TBase::uiUpdate, static_cast<TBase*>(this), _1));
+		haliteWindow.connectUiUpdate(bind(&TBase::uiUpdate, static_cast<TBase*>(this), _1));
 	}
 	
 	void InitializeHalDialogBase()
@@ -28,6 +29,15 @@ public:
 	
 	void uiUpdate(const hal::TorrentDetails& tD)
 	{}
+	
+	template<typename T>
+	BOOL SetDlgItemInfo(int nID, T info)
+	{
+		std::wostringstream oss;
+		oss << info;
+		TBase* pT = static_cast<TBase*>(this);
+		return pT->SetDlgItemText(nID, oss.str().c_str());
+	}
 	
 /*	void save()
 	{
@@ -61,7 +71,8 @@ public:
 		}
 	}
 */	
-	
+protected:
+	HaliteWindow& haliteWnd;
 private:
 };
 

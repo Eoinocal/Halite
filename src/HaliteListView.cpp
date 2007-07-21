@@ -107,12 +107,20 @@ LRESULT HaliteListViewCtrl::OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
 	return 0;
 }
 
+LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	hal::bittorrent().removeTorrent(manager_.selected());
+
+	clearFocused();	
+	return 0;
+}
+
 LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
 		bind(&hal::BitTorrent::removeTorrent, &hal::bittorrent(), _1));
 
-//	manager().clearAllSelected();	
+	clearSelected();	
 	return 0;
 }
 
@@ -121,7 +129,7 @@ LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND h
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
 		bind(&hal::BitTorrent::removeTorrentWipeFiles, &hal::bittorrent(), _1));
 	
-//	manager().clearAllSelected();
+	clearSelected();
 	return 0;
 }
 

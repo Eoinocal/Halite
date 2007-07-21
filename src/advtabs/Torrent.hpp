@@ -64,8 +64,8 @@ public:
 		DLGRESIZE_CONTROL(IDC_NCD, (DLSZ_MOVE_X))
 		DLGRESIZE_CONTROL(IDC_RATIOESTATIC, (DLSZ_MOVE_X))
 		DLGRESIZE_CONTROL(IDC_EDITRATIO, (DLSZ_MOVE_X))
-		DLGRESIZE_CONTROL(IDC_RATIO, (DLSZ_MOVE_X))
-		DLGRESIZE_CONTROL(IDC_RATIOSTAT, (DLSZ_MOVE_X))
+//		DLGRESIZE_CONTROL(IDC_RATIO, (DLSZ_MOVE_X))
+//		DLGRESIZE_CONTROL(IDC_RATIOSTAT, (DLSZ_MOVE_X))
 
 		DLGRESIZE_CONTROL(IDC_UPDATESTAT, (DLSZ_MOVE_X))
 		DLGRESIZE_CONTROL(IDC_UPDATE, (DLSZ_MOVE_X))
@@ -83,6 +83,8 @@ public:
 		DLGRESIZE_CONTROL(IDC_TRACKER, (DLSZ_SIZE_X))
 		DLGRESIZE_CONTROL(IDC_STATUS, (DLSZ_SIZE_X))
 		DLGRESIZE_CONTROL(IDC_TRANS, (DLSZ_SIZE_X))
+		DLGRESIZE_CONTROL(IDC_TRANS_SES, (DLSZ_SIZE_X))
+		DLGRESIZE_CONTROL(IDC_TRANS_ETA, (DLSZ_SIZE_X))
 
 	END_DLGRESIZE_MAP()
 
@@ -93,7 +95,10 @@ public:
 
 	void selectionChanged(const string& torrent_name);
 	void updateDialog();	
-	void uiUpdate(const hal::TorrentDetails& tD) {}
+	void uiUpdate(const hal::TorrentDetails& tD);
+	void uiUpdateMultiple(const hal::TorrentDetail_vec& torrents);
+	void uiUpdateSingle(const hal::TorrentDetail_ptr& torrent);
+	void uiUpdateNone();
 
 protected:
 	CProgressBarCtrl m_prog;

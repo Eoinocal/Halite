@@ -114,6 +114,10 @@ public:
 		save_state_signal_.connect(fn); 
 	}
 	
+	const hal::TorrentDetails& torrents() { return torrents_; }
+	
+	HaliteListViewCtrl& torrentsList() { return haliteList; }
+	
 protected:
 	typedef CHaliteIni<HaliteWindow> iniClass;
 
@@ -170,7 +174,7 @@ protected:
 		ar & BOOST_SERIALIZATION_NVP(advancedUI);
 		ar & BOOST_SERIALIZATION_NVP(activeTab);
 	}
-	
+		
 	friend class GeneralOptions;
 
 private:
@@ -199,6 +203,8 @@ private:
 	bool use_tray;
 	bool advancedUI;
 	int activeTab;
+	
+	hal::TorrentDetails torrents_;
 };
 
 BOOST_CLASS_VERSION(HaliteWindow, 0)

@@ -74,7 +74,7 @@ public:
 		{
 			boost::array<wchar_t, MAX_PATH> pathBuffer;
 			std::set<S> all_selected;
-			string selected;
+			string selected = "";
 			
 			bool do_signal = false;
 			
@@ -199,24 +199,33 @@ public:
 			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Set Selected %1%") % itemPos).str().c_str())));
 
 			LVITEM lvi = { LVIF_STATE };
-			lvi.state = LVIS_SELECTED;
-			lvi.stateMask = LVIS_SELECTED;
+			lvi.state = LVIS_SELECTED|LVIS_FOCUSED;
+			lvi.stateMask = LVIS_SELECTED|LVIS_FOCUSED;
 			m_list_.SetItemState(itemPos, &lvi);
+			
 			m_list_.SetSelectionMark(itemPos);
+			
 			sync_list(true);
 		}
 		
 		void clear()
 		{
+			// Prevent changing states from signaling another sync
+			UpdateLock<L> lock(m_list_);
+			
 			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Clear")).str().c_str())));
-			m_list_.DeleteItem(m_list_.GetSelectionMark());
+	
+			m_list_.DeleteItem(selectedIndex());
 			
 		//	m_list_.SelectItem(0);
 			sync_list(true);	
 		}
 		
-		void clearAllSelected()
+		void clear_all_selected()
 		{
+			// Prevent changing states from signaling another sync
+			UpdateLock<L> lock(m_list_);
+			
 			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"ClearAllSelected")).str().c_str())));
 
 			int total = m_list_.GetItemCount();
@@ -234,11 +243,16 @@ public:
 			sync_list(true);	
 		}
 		
-		void clearAll()
+		void clear_all()
 		{
+			// Prevent changing states from signaling another sync
+			UpdateLock<L> lock(m_list_);
+			
 			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"ClearAll")).str().c_str())));
+
 			m_list_.DeleteAllItems();
 			all_selected_.clear();
+			
 			sync_list(true);		
 		}
 		
@@ -460,6 +474,10 @@ public:
 	const std::vector<int>& listColumnOrder() const { return listColumnOrder_; }
 	
 	bool canUpdate() const { return updateLock_ == 0; }
+	
+	void clearFocused() { manager_.clear(); }
+	void clearSelected() { manager_.clear_all_selected(); }
+	void clearAll() { manager_.clear(); }
 
 protected:
 	selection_manager<CHaliteListViewCtrl2> manager_;

@@ -105,7 +105,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	// Register UIEvents and the timer for the monitoring interval
 	SetTimer(ID_UPDATE_TIMER, 500);
 	SetTimer(ID_SAVE_TIMER, 5000);
-	ui().attach(bind(&HaliteWindow::updateWindow, this));
+	connectUiUpdate(bind(&HaliteWindow::updateWindow, this));
 	
 	RegisterDropTarget();
 	
@@ -239,14 +239,11 @@ void HaliteWindow::issueUiUpdate()
 {
 	try
 	{
-	std::set<string> selectedNames;
-	selectedNames.insert(
-		haliteList.manager().allSelected().begin(), haliteList.manager().allSelected().end());
 
-	hal::TorrentDetails td = hal::bittorrent().getTorrentDetails(
-		haliteList.manager().selected(), selectedNames);
+	torrents_ = hal::bittorrent().getTorrentDetails(
+		haliteList.manager().selected(), haliteList.manager().allSelected());
 
-	ui_update_signal_(td);
+	ui_update_signal_(torrents());
 
 	}
 	catch (std::exception& e)
