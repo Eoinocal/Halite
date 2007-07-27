@@ -7,7 +7,6 @@
 "" ---> ""
 "msctls_progress32" --->  ??? 
 "N/A" ---> "N/A"
-"Time left:" ---> "Overgebleven tijd:"
 "Connection limits:" ---> "Connectie limieten:"
 "Transfer rates (KB/s):" ---> "Overdrachtsnelheden (KB/s)"
 "Total" ---> "Totaal"
@@ -16,23 +15,48 @@
 "Update in:" ---> "Update over:"
 "Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." ---> "Gedownload %1%MB, Geupload %2%MB, Ratio %3%."
 "Ratio (this session):" ---> "Ratio (deze sessie):"
-"Ratio:" ---> "Ratio:"
+"This Session Downloaded %1%MB, Uploaded %2%MB" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
-"Global Options" ---> "Globale Opties"
 "Open a (single) port between : " ---> "Open een (enkele) poort tussen : "
-"Enable DHT. (Note neither DHT nor PEX will apply to private torrents)" ---> "Schakel DHT in. (Zowel DHT als PEX worden niet toegepast op 'private' torrents)"
+"Enable DHT" --->  ??? 
 "Button" --->  ??? 
-"Enable IP filtering." ---> "Schakel IP filtering in."
-"Import ipfilter.dat" ---> "Importeer ipfilter.dat"
-"Clear IP database" ---> "Leeg IP Database"
+"to" ---> "tot"
+"Select the (TCP) port (or range) on which to listen for incomming connections." --->  ??? 
+"Distributed Hash Tables" --->  ??? 
+"Port (UDP) : " ---> "Poort (UDP) : "
+"(DHT will not apply to pirvate torrents)" --->  ??? 
+"Need Help?" --->  ??? 
+"General Settings" ---> "Algemene Opties"
+"Limit the no. of half-open connections" --->  ??? 
+"Why?" --->  ??? 
+"Proxies" --->  ??? 
 "Proxy Host/IP : " ---> "Proxy Host/IP : "
 "Use a proxy." ---> "Gebruik een proxy."
 "Port : " ---> "Poort :"
 "Username : " ---> "Gebruikersnaam : "
 "Password : " ---> "Wachtwoord     : "
-"to" ---> "tot"
-"Select a (TCP) port (or range of ports) to listen for incomming connections." ---> "Selecteer een (TCP) poort (of bereik van poorten) om the luisteren naar binnenkomende verbindingen."
-"Port (UDP) : " ---> "Poort (UDP) : "
+"Peer" --->  ??? 
+"Web Seed" --->  ??? 
+"DHT" --->  ??? 
+"Proxy Settings" --->  ??? 
+"Security" --->  ??? 
+"IP Filtering" --->  ??? 
+"Enable IP filtering." ---> "Schakel IP filtering in."
+"Import ipfilter.dat" ---> "Importeer ipfilter.dat"
+"Clear IP database" ---> "Leeg IP Database"
+"Protocol Encryption" --->  ??? 
+"Enable Protocol Encryption." --->  ??? 
+"Connection Policies" --->  ??? 
+"Incoming" --->  ??? 
+"Outcoming" --->  ??? 
+"Forced" --->  ??? 
+"Enabled" --->  ??? 
+"Disablied" --->  ??? 
+"Encoding Level" --->  ??? 
+"Plaintext" --->  ??? 
+"RC4" --->  ??? 
+"Both" --->  ??? 
+"Prefer RC4" --->  ??? 
 "Remote Control" ---> "Beheer op afstand"
 "Remote Control Options" ---> "Beheer op afstand opties"
 "Enable Remote Control" ---> "Schakel Beheer op afstand in"
@@ -70,24 +94,19 @@
 "Pause" ---> "Pauzeer"
 "Reannounce" ---> "Heromroepen"
 "Remove" ---> "Verwijder"
-"SysListView32" ---> ???
+"SysListView32" --->  ??? 
 "Name:" ---> "Naam:"
 "Tracker:" ---> "Tracker:"
 "Status:" ---> "Status:"
+"Time left:" ---> "Overgebleven tijd:"
 "Torrent connection limits:" ---> "Torrent verbindings limiet"
 "Torrent transfer rates (KB/s):" ---> "Overdrachtsnelheden van torrent (KB/s)"
 "Completed:" ---> "Voltooid:"
 "About" ---> "Over"
 "Program Information" ---> "Programma Informatie"
-"Halite is a BitTorrent client based on the libtorrent library from Rasterbar.com. The program is written in C++ relying on the Boost libraries and WTL. It is open sourced under a MIT and/or Boost software licence." --->  ??? 
-"This project has only been possible thanks to the excellent work others. I'd like to acknowledge some of those people." --->  ??? 
-"nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon." --->  ??? 
-"Arvid Norberg - www.rasterbar.com - Author of the libtorrent library." ---> "Arvid Norberg - www.rasterbar.com - Auteur van de libtorrent bibliotheek."
-"Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO." ---> "Christopher Kohlhoff - asio.sourceforge.net - Auteur van Boost.ASIO."
-"SysTabControl32" ---> ???
+"SysTabControl32" --->  ??? 
 "General" ---> "Algemeen"
 "Allow only one instance to run." ---> "Sta maar één instantie toe."
-"General Settings" ---> "Algemene Opties"
 "Advanced GUI" ---> "Geavanceerde GUI"
 "Minimize to tray." ---> "Minimaliseer naar systeemvak."
 "Language (requires restart)" --->  ??? 
@@ -157,11 +176,6 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "Halite not listening!" ---> "Halite luistert niet!"
 "Port %1% open" ---> "Poort %1% open"
-"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "Naam;Status;Voltooid;Download;Upload;Peers;Seeds;ETA;Kopieen"
-"Time;Message;Severity" ---> "Tijd;Bericht;Ernst"
-"Tracker;Tier" ---> "Tracker;Laag"
-"Peer;Download;Upload;Type;Client" --->  ??? 
-"Peer;Download;Upload;Type;Client;Status" --->  ??? 
 "Exception caught; %1%, from %2%." ---> "Exceptie gevangen; %1%, van %2%."
 "XML exception: %1%." ---> "XML exceptie: %1%."
 "Unicode exception: %1%." ---> "Unicode exceptie: %1%."
@@ -169,6 +183,11 @@
 "Peer Event: %1%." ---> "Peer Gebeurtenis: %1%."
 "Tracker Event: %1%." ---> "Tracker Gebeurtenis: %1%."
 "Debug Event: %1%." ---> "Debug Gebeurtenis: %1%."
+"Select a directory to save the downloads to. Select cancel to accept default 'incomming' location." --->  ??? 
+"Peers" --->  ??? 
+"Logging" --->  ??? 
+"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
+"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "Interesting" ---> "Geinteresseerd"
 "Choked" ---> "Verstopt"
 "Interested in us" ---> "Geinteresseerd in ons"
@@ -178,8 +197,8 @@
 "Handshake" ---> "Handdruk"
 "Connecting" ---> "Maakt verbinding"
 "Queued" ---> "Wachtend"
-"RC4 Encrypted" --->  "RC4 encryptie" 
-"Plaintext Encrypted" --->  "Gewone text encryptie"
+"RC4 Encrypted" ---> "RC4 encryptie"
+"Plaintext Encrypted" ---> "Gewone text encryptie"
 "Queued for Checking" ---> "Wachtend op Controle"
 "Checking Files" ---> "Bestanden controleren"
 "Connecting to Tracker" ---> "Verbinden met Tracker"
@@ -190,3 +209,13 @@
 "Stopped" ---> "Gestopt"
 "Paused" ---> "Gepauzeerd"
 "Downloading Metadata" ---> "Metadata downloaden"
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "Naam;Status;Voltooid;Download;Upload;Peers;Seeds;ETA;Kopieen"
+"100;110;60;60;60;42;45;61;45" --->  ??? 
+"Time;Message;Severity" ---> "Tijd;Bericht;Ernst"
+"67;419;69" --->  ??? 
+"Tracker;Tier" ---> "Tracker;Laag"
+"287;50" --->  ??? 
+"Peer;Download;Upload;Type;Client" --->  ??? 
+"100;70;70;70;100" --->  ??? 
+"Peer;Download;Upload;Type;Client;Status" --->  ??? 
+"95;64;64;50;100;500" --->  ??? 

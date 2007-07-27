@@ -7,7 +7,6 @@
 "" ---> ""
 "msctls_progress32" ---> "msctls_progress32"
 "N/A" ---> "Нет доступа"
-"Time left:" ---> "Осталось времени:"
 "Connection limits:" ---> "Лимит соединений"
 "Transfer rates (KB/s):" ---> "Скорость закачки (KB/s):"
 "Total" ---> "Всего"
@@ -16,23 +15,48 @@
 "Update in:" ---> "Обновление через:"
 "Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." ---> "Скачано %1%MB, Отдано %2%MB, Соотношение %3%"
 "Ratio (this session):" ---> "Соотношение (в эту сессию):"
-"Ratio:" ---> "Соотношение:"
+"This Session Downloaded %1%MB, Uploaded %2%MB" --->  ??? 
 "BitTorrent" ---> "БитТоррент"
-"Global Options" ---> "Глобальные опции"
 "Open a (single) port between : " ---> "Открыть (единственный) порт между : "
-"Enable DHT. (Note neither DHT nor PEX will apply to private torrents)" ---> "Включить DHT (Ни DHT, ни PEX не будут активированы при работе с приватными торрентами)"
+"Enable DHT" --->  ??? 
 "Button" --->  ??? 
-"Enable IP filtering." ---> "Включить фильтрацию IP"
-"Import ipfilter.dat" ---> "Импортировать ipfilter.dat"
-"Clear IP database" ---> "Очистить базу данных IP"
+"to" ---> "в"
+"Select the (TCP) port (or range) on which to listen for incomming connections." --->  ??? 
+"Distributed Hash Tables" --->  ??? 
+"Port (UDP) : " ---> "Порт (UDP) : "
+"(DHT will not apply to pirvate torrents)" --->  ??? 
+"Need Help?" --->  ??? 
+"General Settings" ---> "Общие установки"
+"Limit the no. of half-open connections" --->  ??? 
+"Why?" --->  ??? 
+"Proxies" --->  ??? 
 "Proxy Host/IP : " ---> "Прокси Хост/IP"
 "Use a proxy." ---> "Использовать прокси."
 "Port : " ---> "Порт : "
 "Username : " ---> "Имя пользователя : "
 "Password : " ---> "Пароль : "
-"to" ---> "в"
-"Select a (TCP) port (or range of ports) to listen for incomming connections." ---> "Выберите TCP порт (или массив портов) с которых ожидать входящие соединения."
-"Port (UDP) : " ---> "Порт (UDP) : "
+"Peer" --->  ??? 
+"Web Seed" --->  ??? 
+"DHT" --->  ??? 
+"Proxy Settings" --->  ??? 
+"Security" --->  ??? 
+"IP Filtering" --->  ??? 
+"Enable IP filtering." ---> "Включить фильтрацию IP"
+"Import ipfilter.dat" ---> "Импортировать ipfilter.dat"
+"Clear IP database" ---> "Очистить базу данных IP"
+"Protocol Encryption" --->  ??? 
+"Enable Protocol Encryption." --->  ??? 
+"Connection Policies" --->  ??? 
+"Incoming" --->  ??? 
+"Outcoming" --->  ??? 
+"Forced" --->  ??? 
+"Enabled" --->  ??? 
+"Disablied" --->  ??? 
+"Encoding Level" --->  ??? 
+"Plaintext" --->  ??? 
+"RC4" --->  ??? 
+"Both" --->  ??? 
+"Prefer RC4" --->  ??? 
 "Remote Control" ---> "Удалённый контроль"
 "Remote Control Options" ---> "Опции удалённого контроля"
 "Enable Remote Control" ---> "Включить удалённый контроль"
@@ -74,20 +98,15 @@
 "Name:" ---> "Имя:"
 "Tracker:" ---> "Трэкер"
 "Status:" ---> "Статус:"
+"Time left:" ---> "Осталось времени:"
 "Torrent connection limits:" ---> "Лимит соединений торрента"
 "Torrent transfer rates (KB/s):" ---> "Скорость передачи торрента (KB/s):"
 "Completed:" ---> "Завершено:"
 "About" ---> "Информация"
 "Program Information" ---> "О программе"
-"Halite is a BitTorrent client based on the libtorrent library from Rasterbar.com. The program is written in C++ relying on the Boost libraries and WTL. It is open sourced under a MIT and/or Boost software licence." ---> "Халит - это БитТоррент клиент, базирующийся на библиотеке libtorrent написана в C++ и полагается на библиотеки Boost и WTL. Это открытый код по лицензии MIT и/или Boost software."
-"This project has only been possible thanks to the excellent work others. I'd like to acknowledge some of those people." ---> "Этот проект стал возможным только благодаря отличной работе многих. Я хотел бы назвать некоторых из этих людей."
-"nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon." ---> "nudone (Nick Pearson) - wtfcody.com / nudsville.com - Дизайн иконки."
-"Arvid Norberg - www.rasterbar.com - Author of the libtorrent library." ---> "Arvid Norberg - www.rasterbar.com - Автор библиотеки libtorrent."
-"Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO." ---> "Christopher Kohlhoff - asio.sourceforge.net - Автор Boost.ASIO."
 "SysTabControl32" ---> "SysTabControl32"
 "General" ---> "Общие"
 "Allow only one instance to run." ---> "Разрешить только одну активную копию программы"
-"General Settings" ---> "Общие установки"
 "Advanced GUI" ---> "Расширенный интерфейс"
 "Minimize to tray." ---> "Свернуть в трей"
 "Language (requires restart)" --->  ??? 
@@ -157,11 +176,6 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(З-В) %1$.2fKB/s - %2$.2fKB/s"
 "Halite not listening!" ---> "Халит не ожидает"
 "Port %1% open" ---> "Порт %1% открыт"
-"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "Имя;Статус;Завершено;Закачка;Выкачка;Пиры;Сиды;Вр.ожидания;Копии"
-"Time;Message;Severity" ---> "Время;Сообщение;Важность"
-"Tracker;Tier" ---> "Трэкер;Связь"
-"Peer;Download;Upload;Type;Client" ---> "Пир;Закачка;Выкачка;Тип;Клиент"
-"Peer;Download;Upload;Type;Client;Status" ---> "Пир;Закачка;Выкачка;Тип;Клиент;Статус"
 "Exception caught; %1%, from %2%." ---> "Исключение поймано; %1%, от %2%."
 "XML exception: %1%." --->  ??? 
 "Unicode exception: %1%." ---> "Исключение юникода: %1%."
@@ -169,6 +183,11 @@
 "Peer Event: %1%." ---> "Событие пира: %1%."
 "Tracker Event: %1%." ---> "Событие трэкера: %1%."
 "Debug Event: %1%." ---> "Событие отладки: %1%."
+"Select a directory to save the downloads to. Select cancel to accept default 'incomming' location." --->  ??? 
+"Peers" --->  ??? 
+"Logging" --->  ??? 
+"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
+"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "Interesting" ---> "Интересен"
 "Choked" ---> "Заглушен"
 "Interested in us" ---> "Заинтересован в нас"
@@ -190,3 +209,13 @@
 "Stopped" ---> "Остановлен"
 "Paused" ---> "В паузе"
 "Downloading Metadata" ---> "Загружаем метаинформацию"
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "Имя;Статус;Завершено;Закачка;Выкачка;Пиры;Сиды;Вр.ожидания;Копии"
+"100;110;60;60;60;42;45;61;45" --->  ??? 
+"Time;Message;Severity" ---> "Время;Сообщение;Важность"
+"67;419;69" --->  ??? 
+"Tracker;Tier" ---> "Трэкер;Связь"
+"287;50" --->  ??? 
+"Peer;Download;Upload;Type;Client" ---> "Пир;Закачка;Выкачка;Тип;Клиент"
+"100;70;70;70;100" --->  ??? 
+"Peer;Download;Upload;Type;Client;Status" ---> "Пир;Закачка;Выкачка;Тип;Клиент;Статус"
+"95;64;64;50;100;500" --->  ??? 

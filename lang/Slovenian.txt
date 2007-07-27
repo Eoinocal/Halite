@@ -7,7 +7,6 @@
 "" --->  ??? 
 "msctls_progress32" --->  ??? 
 "N/A" ---> "N/A"
-"Time left:" ---> "Čas do konca:"
 "Connection limits:" ---> "Omejitev povezav:"
 "Transfer rates (KB/s):" ---> "Hitrosti prenosa (KB/s):"
 "Total" ---> "Skupno"
@@ -16,23 +15,48 @@
 "Update in:" ---> "Posodobitev čez:"
 "Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." ---> "Prenos dol %1%MB, Prenos gor %2%MB, Delino razmerje %3%."
 "Ratio (this session):" ---> "Delino razmerje seje:"
-"Ratio:" ---> "Delino razmerje:"
+"This Session Downloaded %1%MB, Uploaded %2%MB" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
-"Global Options" ---> "Nastavitve"
 "Open a (single) port between : " ---> "Odpri posamičen port v rangu:"
-"Enable DHT. (Note neither DHT nor PEX will apply to private torrents)" ---> "Vključi DHT"
+"Enable DHT" --->  ??? 
 "Button" --->  ??? 
-"Enable IP filtering." ---> "Uporabi filtriranje IP naslovov"
-"Import ipfilter.dat" ---> "Uvozi ipfilter.dat"
-"Clear IP database" ---> "Počisti bazo IP naslovov"
+"to" --->  ??? 
+"Select the (TCP) port (or range) on which to listen for incomming connections." --->  ??? 
+"Distributed Hash Tables" --->  ??? 
+"Port (UDP) : " ---> "Port (UDP) : "
+"(DHT will not apply to pirvate torrents)" --->  ??? 
+"Need Help?" --->  ??? 
+"General Settings" ---> "Splošne nastavitve"
+"Limit the no. of half-open connections" --->  ??? 
+"Why?" --->  ??? 
+"Proxies" --->  ??? 
 "Proxy Host/IP : " ---> "Proxy IP : "
 "Use a proxy." ---> "Uporabi proxy."
 "Port : " ---> "Port : "
 "Username : " ---> "Uporabnik : "
 "Password : " ---> "Geslo : "
-"to" --->  ??? 
-"Select a (TCP) port (or range of ports) to listen for incomming connections." ---> "Izberi TCP port(-e) za poslušanje dohodnih povezav."
-"Port (UDP) : " ---> "Port (UDP) : "
+"Peer" --->  ??? 
+"Web Seed" --->  ??? 
+"DHT" --->  ??? 
+"Proxy Settings" --->  ??? 
+"Security" --->  ??? 
+"IP Filtering" --->  ??? 
+"Enable IP filtering." ---> "Uporabi filtriranje IP naslovov"
+"Import ipfilter.dat" ---> "Uvozi ipfilter.dat"
+"Clear IP database" ---> "Počisti bazo IP naslovov"
+"Protocol Encryption" --->  ??? 
+"Enable Protocol Encryption." --->  ??? 
+"Connection Policies" --->  ??? 
+"Incoming" --->  ??? 
+"Outcoming" --->  ??? 
+"Forced" --->  ??? 
+"Enabled" --->  ??? 
+"Disablied" --->  ??? 
+"Encoding Level" --->  ??? 
+"Plaintext" --->  ??? 
+"RC4" --->  ??? 
+"Both" --->  ??? 
+"Prefer RC4" --->  ??? 
 "Remote Control" ---> "Oddaljeni nadzor"
 "Remote Control Options" ---> "Nastavitve oddaljenega nadzora"
 "Enable Remote Control" ---> "Vključi oddaljeni nadzor"
@@ -74,20 +98,15 @@
 "Name:" ---> "Ime:"
 "Tracker:" ---> "Tracker"
 "Status:" ---> "Status:"
+"Time left:" ---> "Čas do konca:"
 "Torrent connection limits:" ---> "Omejitev povezave na torrentu"
 "Torrent transfer rates (KB/s):" ---> "Hitrosti prenosa (KB/s):"
 "Completed:" ---> "Končano:"
 "About" ---> "O programu"
 "Program Information" ---> "Informacije o programu"
-"Halite is a BitTorrent client based on the libtorrent library from Rasterbar.com. The program is written in C++ relying on the Boost libraries and WTL. It is open sourced under a MIT and/or Boost software licence." ---> "Halite je BitTorrent klient, kateri bazira na libtorrent knjižnici (Rasterbar.com). Program je spisan v C++ s pomočjo Boost knjižnic in WTL. Je odprtokodni program z MIT in Boost software licenco."
-"This project has only been possible thanks to the excellent work others. I'd like to acknowledge some of those people." ---> "Ta projekt so omogočili nekateri izvrstni posamezniki, katerim bi se rad zahvalil."
-"nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon." ---> "nudone (Nick Pearson) - wtfcody.com / nudsville.com - Design ikone."
-"Arvid Norberg - www.rasterbar.com - Author of the libtorrent library." ---> "Arvid Norberg - www.rasterbar.com - Avtor libtorrent knjižnice."
-"Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO." ---> "Christopher Kohlhoff - asio.sourceforge.net - Avtor Boost.ASIO."
 "SysTabControl32" --->  ??? 
 "General" ---> "Splošno"
 "Allow only one instance to run." ---> "Dovoli le enkratni zagon programa"
-"General Settings" ---> "Splošne nastavitve"
 "Advanced GUI" ---> "Dodatno o vmesniku"
 "Minimize to tray." ---> "Pomanjšaj v orodno vrstico"
 "Language (requires restart)" --->  ??? 
@@ -157,11 +176,6 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(D-G) %1$.2fKB/s - %2$.2fKB/s"
 "Halite not listening!" --->  ??? 
 "Port %1% open" ---> "Port %1% odprt"
-"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "Ime;Status;Končano;Dol;Gor;Peeri;Sejalcev;ETA;Kopij"
-"Time;Message;Severity" ---> "Čas;Sporočilo;Kritičnost"
-"Tracker;Tier" ---> "Tracker;Pomol"
-"Peer;Download;Upload;Type;Client" ---> "Peer;Dol;Gor;Kategorija;Klient"
-"Peer;Download;Upload;Type;Client;Status" ---> "Peer;Dol;Gor;Kategorija;Klient;Status"
 "Exception caught; %1%, from %2%." ---> "Izjema vjetna; %1%, od %2%."
 "XML exception: %1%." ---> "XML izjema: %1%."
 "Unicode exception: %1%." ---> "Unicode izjema: %1%."
@@ -169,6 +183,11 @@
 "Peer Event: %1%." ---> "Peer dogodek: %1%."
 "Tracker Event: %1%." ---> "Tracker dogodek: %1%."
 "Debug Event: %1%." ---> "Debug dogodek: %1%."
+"Select a directory to save the downloads to. Select cancel to accept default 'incomming' location." --->  ??? 
+"Peers" --->  ??? 
+"Logging" --->  ??? 
+"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
+"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "Interesting" ---> "Zanimanje"
 "Choked" ---> "Zadušeno"
 "Interested in us" ---> "Zainteresiran"
@@ -190,3 +209,13 @@
 "Stopped" ---> "Prekinjen"
 "Paused" ---> "Na pavzi"
 "Downloading Metadata" ---> "Prenašam metadata"
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "Ime;Status;Končano;Dol;Gor;Peeri;Sejalcev;ETA;Kopij"
+"100;110;60;60;60;42;45;61;45" --->  ??? 
+"Time;Message;Severity" ---> "Čas;Sporočilo;Kritičnost"
+"67;419;69" --->  ??? 
+"Tracker;Tier" ---> "Tracker;Pomol"
+"287;50" --->  ??? 
+"Peer;Download;Upload;Type;Client" ---> "Peer;Dol;Gor;Kategorija;Klient"
+"100;70;70;70;100" --->  ??? 
+"Peer;Download;Upload;Type;Client;Status" ---> "Peer;Dol;Gor;Kategorija;Klient;Status"
+"95;64;64;50;100;500" --->  ??? 

@@ -7,7 +7,6 @@
 "" ---> ""
 "msctls_progress32" ---> "msctls_progress32"
 "N/A" ---> "N/A"
-"Time left:" ---> "Kalan süre:"
 "Connection limits:" ---> "Bağlantı sınırları:"
 "Transfer rates (KB/s):" ---> "Aktarım hızları (KB/s):"
 "Total" ---> "Toplam"
@@ -16,23 +15,48 @@
 "Update in:" ---> "Güncelleme:"
 "Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." ---> "İndirilen  %1%MB, Gönderilen %2%MB, Oran %3%."
 "Ratio (this session):" ---> "Oran (bu oturum):"
-"Ratio:" ---> "Oran"
+"This Session Downloaded %1%MB, Uploaded %2%MB" --->  ??? 
 "BitTorrent" ---> "Bittorrent"
-"Global Options" ---> "Genel Ayarlar"
 "Open a (single) port between : " ---> "Arasında (tek) port  aç: "
-"Enable DHT. (Note neither DHT nor PEX will apply to private torrents)" ---> "DHT Etkin. (Not: DHT ve PEX özel torrentlerde kullanılmayacaktır.)"
-"Button" --->  "Düğme"
-"Enable IP filtering." ---> "IP süzgeci etkin"
-"Import ipfilter.dat" ---> "ipfilter.dat içeri aktar"
-"Clear IP database" ---> "IP veritabanını temizle"
+"Enable DHT" --->  ??? 
+"Button" ---> "Düğme"
+"to" ---> "-"
+"Select the (TCP) port (or range) on which to listen for incomming connections." --->  ??? 
+"Distributed Hash Tables" --->  ??? 
+"Port (UDP) : " ---> "Port (UDP) : "
+"(DHT will not apply to pirvate torrents)" --->  ??? 
+"Need Help?" --->  ??? 
+"General Settings" ---> "Genel Ayarlar"
+"Limit the no. of half-open connections" --->  ??? 
+"Why?" --->  ??? 
+"Proxies" --->  ??? 
 "Proxy Host/IP : " ---> "Proxy Host/IP"
 "Use a proxy." ---> "Proxy kullan"
 "Port : " ---> "Port"
 "Username : " ---> "Kullanıcı Adı"
 "Password : " ---> "Şifre"
-"to" ---> "-"
-"Select a (TCP) port (or range of ports) to listen for incomming connections." ---> "Gelen bağlantılar için tek bir port (TCP) veya port aralığı seçin."
-"Port (UDP) : " ---> "Port (UDP) : "
+"Peer" --->  ??? 
+"Web Seed" --->  ??? 
+"DHT" --->  ??? 
+"Proxy Settings" --->  ??? 
+"Security" --->  ??? 
+"IP Filtering" --->  ??? 
+"Enable IP filtering." ---> "IP süzgeci etkin"
+"Import ipfilter.dat" ---> "ipfilter.dat içeri aktar"
+"Clear IP database" ---> "IP veritabanını temizle"
+"Protocol Encryption" --->  ??? 
+"Enable Protocol Encryption." --->  ??? 
+"Connection Policies" --->  ??? 
+"Incoming" --->  ??? 
+"Outcoming" --->  ??? 
+"Forced" --->  ??? 
+"Enabled" --->  ??? 
+"Disablied" --->  ??? 
+"Encoding Level" --->  ??? 
+"Plaintext" --->  ??? 
+"RC4" --->  ??? 
+"Both" --->  ??? 
+"Prefer RC4" --->  ??? 
 "Remote Control" ---> "Uzak Kontrol"
 "Remote Control Options" ---> "Uzak Kontrol Ayarları"
 "Enable Remote Control" ---> "Uzak Kontrol Etkin"
@@ -74,23 +98,18 @@
 "Name:" ---> "İsim"
 "Tracker:" ---> "İzleyici"
 "Status:" ---> "Durum"
+"Time left:" ---> "Kalan süre:"
 "Torrent connection limits:" ---> "Torrent bağlantı sınırları:"
 "Torrent transfer rates (KB/s):" ---> "Torrent aktarım hızları (KB/s):"
 "Completed:" ---> "Tamamlanan:"
 "About" ---> "Hakkında"
 "Program Information" ---> "Program Bilgisi"
-"Halite is a BitTorrent client based on the libtorrent library from Rasterbar.com. The program is written in C++ relying on the Boost libraries and WTL. It is open sourced under a MIT and/or Boost software licence." ---> "Halite, Rasterbar.com'un libtorrent kütüphanesini temel alan bir BitTorrent programıdır. Program Boost kütüphaneleri ve WTL kullanılarak C++ programlama dili ile yazılmıştır. MIT ve/veya Boost lisansı altında olan açık kaynak kodlu yazılımdır."
-"This project has only been possible thanks to the excellent work others. I'd like to acknowledge some of those people." ---> "Bu projenin oluşturulmasında kullanılan gerekli bileşenleri yazan ve böylece bu projenin hayata geçmesini sağlayan diğer kimseler hakkında bilgi vermek isterim."
-"nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon." ---> "nudone (Nick Pearson) - wtfcody.com / nudsville.com - Simge Tasarımı."
-"Arvid Norberg - www.rasterbar.com - Author of the libtorrent library." ---> "Arvid Norberg - www.rasterbar.com - Libtorrent Kütüphanesi Yazarı."
-"Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO." ---> "Christopher Kohlhoff - asio.sourceforge.net - Boost.ASIO Yazarı."
 "SysTabControl32" ---> "SysTabControl32"
 "General" ---> "Genel"
 "Allow only one instance to run." ---> "Programın sadece bir kopyası çalıssın."
-"General Settings" ---> "Genel Ayarlar"
 "Advanced GUI" ---> "Gelişmiş GUI"
 "Minimize to tray." ---> "Simge Durumuna Küçült"
-"Language (requires restart)" --->  "Dil (yeniden başlatma gerektirir)" 
+"Language (requires restart)" ---> "Dil (yeniden başlatma gerektirir)"
 "List of Trackers." ---> "İzleyici Listesi."
 "Send login info to trackers." ---> "İzleyicilere giriş bilgisi gönder."
 "Apply" ---> "Uygula"
@@ -157,11 +176,6 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(İ-G) %1$.2fKB/s - %2$.2fKB/s"
 "Halite not listening!" ---> "Halite portu kullanamıyor!"
 "Port %1% open" ---> "%1% portu açık"
-"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "İsim;Durum;Tamamlanan;İndirme;Gönderme;Eşler;Kaynaklar;Kalan Süre;Kopyalar"
-"Time;Message;Severity" ---> "Süre;Mesaj;Öncelik"
-"Tracker;Tier" ---> "İzleyici;Sıra"
-"Peer;Download;Upload;Type;Client" ---> "Eş;İndirme;Gönderme;Tür;Program"
-"Peer;Download;Upload;Type;Client;Status" ---> "Eş;İndirme;Gönderme;Tür;Program;Durum"
 "Exception caught; %1%, from %2%." ---> "Yakalanan istisna; %1%, %2%'den."
 "XML exception: %1%." ---> "XML istisnası %1%."
 "Unicode exception: %1%." ---> "Unicode istisnası: %1%."
@@ -169,6 +183,11 @@
 "Peer Event: %1%." ---> "Eş ile İlgili Durum: %1%."
 "Tracker Event: %1%." ---> "İzleyici ile İlgili Durum: %1%."
 "Debug Event: %1%." ---> "Hata Ayıklama ile İlgili Durum: %1%."
+"Select a directory to save the downloads to. Select cancel to accept default 'incomming' location." --->  ??? 
+"Peers" --->  ??? 
+"Logging" --->  ??? 
+"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
+"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "Interesting" ---> "İlgileniyor"
 "Choked" ---> "Tıkandı"
 "Interested in us" ---> "Bizle ilgilendi"
@@ -178,8 +197,8 @@
 "Handshake" ---> "El Sıkışma"
 "Connecting" ---> "Bağlanıyor"
 "Queued" ---> "Sırada"
-"RC4 Encrypted" --->  "RC4 Şifrelenmiş"
-"Plaintext Encrypted" --->  "Plaintext Şifrelenmiş"
+"RC4 Encrypted" ---> "RC4 Şifrelenmiş"
+"Plaintext Encrypted" ---> "Plaintext Şifrelenmiş"
 "Queued for Checking" ---> "Kontrol için Sırada"
 "Checking Files" ---> "Dosyalar Kontrol Ediliyor"
 "Connecting to Tracker" ---> "İzleyiciye Bağlanılıyor"
@@ -190,3 +209,13 @@
 "Stopped" ---> "Durduruldu"
 "Paused" ---> "Duraklatıldı"
 "Downloading Metadata" ---> "Metadata İndiriliyor"
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "İsim;Durum;Tamamlanan;İndirme;Gönderme;Eşler;Kaynaklar;Kalan Süre;Kopyalar"
+"100;110;60;60;60;42;45;61;45" --->  ??? 
+"Time;Message;Severity" ---> "Süre;Mesaj;Öncelik"
+"67;419;69" --->  ??? 
+"Tracker;Tier" ---> "İzleyici;Sıra"
+"287;50" --->  ??? 
+"Peer;Download;Upload;Type;Client" ---> "Eş;İndirme;Gönderme;Tür;Program"
+"100;70;70;70;100" --->  ??? 
+"Peer;Download;Upload;Type;Client;Status" ---> "Eş;İndirme;Gönderme;Tür;Program;Durum"
+"95;64;64;50;100;500" --->  ??? 

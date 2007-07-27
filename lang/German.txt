@@ -7,7 +7,6 @@
 "" --->  ??? 
 "msctls_progress32" --->  ??? 
 "N/A" --->  ??? 
-"Time left:" ---> "Zeit übrig:"
 "Connection limits:" ---> "Verbindungs-Limits"
 "Transfer rates (KB/s):" ---> "Übertragungsraten (KB/s): "
 "Total" ---> "Gesamt"
@@ -16,23 +15,48 @@
 "Update in:" --->  ??? 
 "Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." ---> "Geladen %1%MB, Gesendet %2%MB, Ratio %3%MB"
 "Ratio (this session):" ---> "Ratio (diese Sitzung):"
-"Ratio:" --->  ??? 
+"This Session Downloaded %1%MB, Uploaded %2%MB" --->  ??? 
 "BitTorrent" --->  ??? 
-"Global Options" ---> "Globale Optionen"
 "Open a (single) port between : " --->  ??? 
-"Enable DHT. (Note neither DHT nor PEX will apply to private torrents)" ---> "Verwende DHT (Achtung:nicht auf privaten Trackern verwenden)"
+"Enable DHT" --->  ??? 
 "Button" --->  ??? 
-"Enable IP filtering." ---> "IP Filterung verwenden"
-"Import ipfilter.dat" ---> "ipfilter.dat importieren"
-"Clear IP database" ---> "IP Datanbank löschen"
+"to" ---> "bis"
+"Select the (TCP) port (or range) on which to listen for incomming connections." --->  ??? 
+"Distributed Hash Tables" --->  ??? 
+"Port (UDP) : " --->  ??? 
+"(DHT will not apply to pirvate torrents)" --->  ??? 
+"Need Help?" --->  ??? 
+"General Settings" ---> "Grundeinstellungen"
+"Limit the no. of half-open connections" --->  ??? 
+"Why?" --->  ??? 
+"Proxies" --->  ??? 
 "Proxy Host/IP : " --->  ??? 
 "Use a proxy." ---> "Proxy verwenden"
 "Port : " --->  ??? 
 "Username : " --->  ??? 
 "Password : " --->  ??? 
-"to" ---> "bis"
-"Select a (TCP) port (or range of ports) to listen for incomming connections." ---> "TCP Port (oder Portbereich) für eingehende Verbindungen auswählen"
-"Port (UDP) : " --->  ??? 
+"Peer" --->  ??? 
+"Web Seed" --->  ??? 
+"DHT" --->  ??? 
+"Proxy Settings" --->  ??? 
+"Security" --->  ??? 
+"IP Filtering" --->  ??? 
+"Enable IP filtering." ---> "IP Filterung verwenden"
+"Import ipfilter.dat" ---> "ipfilter.dat importieren"
+"Clear IP database" ---> "IP Datanbank löschen"
+"Protocol Encryption" --->  ??? 
+"Enable Protocol Encryption." --->  ??? 
+"Connection Policies" --->  ??? 
+"Incoming" --->  ??? 
+"Outcoming" --->  ??? 
+"Forced" --->  ??? 
+"Enabled" --->  ??? 
+"Disablied" --->  ??? 
+"Encoding Level" --->  ??? 
+"Plaintext" --->  ??? 
+"RC4" --->  ??? 
+"Both" --->  ??? 
+"Prefer RC4" --->  ??? 
 "Remote Control" ---> "Fernbedienung"
 "Remote Control Options" ---> "Fernbedienungs-Einstellungen"
 "Enable Remote Control" ---> "Fernbedienung verwenden"
@@ -74,20 +98,15 @@
 "Name:" --->  ??? 
 "Tracker:" --->  ??? 
 "Status:" --->  ??? 
+"Time left:" ---> "Zeit übrig:"
 "Torrent connection limits:" ---> "Verbindungsbeschränkungen:"
 "Torrent transfer rates (KB/s):" --->  ??? 
 "Completed:" ---> "Fertig"
 "About" ---> "Über"
 "Program Information" --->  ??? 
-"Halite is a BitTorrent client based on the libtorrent library from Rasterbar.com. The program is written in C++ relying on the Boost libraries and WTL. It is open sourced under a MIT and/or Boost software licence." ---> "Halite ist ein BT-Client basierend auf der libtorrent Bibliothek von Rastbar.com. Geschrieben wurde er in C++, gestützt auf die Boost Bibliotheken und WTL. Es ist Open Sourced unter MIT bzw Boost Software Lizenz."
-"This project has only been possible thanks to the excellent work others. I'd like to acknowledge some of those people." ---> "Dieses Projekt wurde erst durch die excellente Arbeit Anderer ermöglicht,von denen ich einige hier erwähnen möchte"
-"nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon." --->  ??? 
-"Arvid Norberg - www.rasterbar.com - Author of the libtorrent library." --->  ??? 
-"Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO." --->  ??? 
 "SysTabControl32" --->  ??? 
 "General" --->  ??? 
 "Allow only one instance to run." ---> "Nur 1 Kopie gleichzeitig zulassen"
-"General Settings" ---> "Grundeinstellungen"
 "Advanced GUI" ---> "Erweiterte GUI"
 "Minimize to tray." ---> "Ins Tray minimieren"
 "Language (requires restart)" --->  ??? 
@@ -157,11 +176,6 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "Halite not listening!" ---> "Halite hat keine Verbindung"
 "Port %1% open" ---> "Port %1% offen"
-"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "Name;Status;Fertig;Download;Upload;Peers;Seeds;Zeit;Copies"
-"Time;Message;Severity" ---> "Zeit;Meldung;Schwere"
-"Tracker;Tier" --->  ??? 
-"Peer;Download;Upload;Type;Client" --->  ??? 
-"Peer;Download;Upload;Type;Client;Status" --->  ??? 
 "Exception caught; %1%, from %2%." --->  ??? 
 "XML exception: %1%." ---> "XML Fehler: %1%."
 "Unicode exception: %1%." ---> "Unicode-Fehler: %1%."
@@ -169,6 +183,11 @@
 "Peer Event: %1%." ---> "Peer-Meldung: %1%."
 "Tracker Event: %1%." ---> "Tracker-Meldung: %1%."
 "Debug Event: %1%." ---> "Debug-Meldung: %1%."
+"Select a directory to save the downloads to. Select cancel to accept default 'incomming' location." --->  ??? 
+"Peers" --->  ??? 
+"Logging" --->  ??? 
+"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
+"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "Interesting" --->  ??? 
 "Choked" --->  ??? 
 "Interested in us" --->  ??? 
@@ -190,3 +209,13 @@
 "Stopped" ---> "Angehalten"
 "Paused" ---> "Pausiert"
 "Downloading Metadata" ---> "Lade Metadaten"
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "Name;Status;Fertig;Download;Upload;Peers;Seeds;Zeit;Copies"
+"100;110;60;60;60;42;45;61;45" --->  ??? 
+"Time;Message;Severity" ---> "Zeit;Meldung;Schwere"
+"67;419;69" --->  ??? 
+"Tracker;Tier" --->  ??? 
+"287;50" --->  ??? 
+"Peer;Download;Upload;Type;Client" --->  ??? 
+"100;70;70;70;100" --->  ??? 
+"Peer;Download;Upload;Type;Client;Status" --->  ??? 
+"95;64;64;50;100;500" --->  ??? 

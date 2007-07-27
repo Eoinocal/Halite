@@ -7,7 +7,6 @@
 "" --->  ??? 
 "msctls_progress32" --->  ??? 
 "N/A" --->  ??? 
-"Time left:" ---> "Durée :"
 "Connection limits:" ---> "Limites de connexion"
 "Transfer rates (KB/s):" ---> "Taux de transfert (KB/s):"
 "Total" --->  ??? 
@@ -16,23 +15,48 @@
 "Update in:" ---> "Actu. dans"
 "Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." ---> "Reçus %1%MB, Envoyés %2%MB, Ratio %3%"
 "Ratio (this session):" ---> "Ratio de la session :"
-"Ratio:" ---> "Ratio :"
+"This Session Downloaded %1%MB, Uploaded %2%MB" --->  ??? 
 "BitTorrent" --->  ??? 
-"Global Options" ---> "Options générales"
 "Open a (single) port between : " ---> "Ouvrir un (seul) port entre:"
-"Enable DHT. (Note neither DHT nor PEX will apply to private torrents)" ---> "Activer DHT (le DHT et le PEX ne sont pas appliqués pour des torrents privés)"
+"Enable DHT" --->  ??? 
 "Button" --->  ??? 
-"Enable IP filtering." ---> "Activer le filtrage des IP"
-"Import ipfilter.dat" ---> "Importer IPfilter.dat"
-"Clear IP database" ---> "Vider IPfilter.dat"
+"to" ---> "à"
+"Select the (TCP) port (or range) on which to listen for incomming connections." --->  ??? 
+"Distributed Hash Tables" --->  ??? 
+"Port (UDP) : " --->  ??? 
+"(DHT will not apply to pirvate torrents)" --->  ??? 
+"Need Help?" --->  ??? 
+"General Settings" ---> "Paramètres généraux"
+"Limit the no. of half-open connections" --->  ??? 
+"Why?" --->  ??? 
+"Proxies" --->  ??? 
 "Proxy Host/IP : " --->  ??? 
 "Use a proxy." ---> "Util. un proxy"
 "Port : " --->  ??? 
 "Username : " ---> "Identifiant :"
 "Password : " ---> "MDP :"
-"to" ---> "à"
-"Select a (TCP) port (or range of ports) to listen for incomming connections." ---> "Choisir un port TCP (ou une fourchette de ports) pour les connexions entrantes"
-"Port (UDP) : " --->  ??? 
+"Peer" --->  ??? 
+"Web Seed" --->  ??? 
+"DHT" --->  ??? 
+"Proxy Settings" --->  ??? 
+"Security" --->  ??? 
+"IP Filtering" --->  ??? 
+"Enable IP filtering." ---> "Activer le filtrage des IP"
+"Import ipfilter.dat" ---> "Importer IPfilter.dat"
+"Clear IP database" ---> "Vider IPfilter.dat"
+"Protocol Encryption" --->  ??? 
+"Enable Protocol Encryption." --->  ??? 
+"Connection Policies" --->  ??? 
+"Incoming" --->  ??? 
+"Outcoming" --->  ??? 
+"Forced" --->  ??? 
+"Enabled" --->  ??? 
+"Disablied" --->  ??? 
+"Encoding Level" --->  ??? 
+"Plaintext" --->  ??? 
+"RC4" --->  ??? 
+"Both" --->  ??? 
+"Prefer RC4" --->  ??? 
 "Remote Control" --->  ??? 
 "Remote Control Options" --->  ??? 
 "Enable Remote Control" --->  ??? 
@@ -74,20 +98,15 @@
 "Name:" ---> "Nom :"
 "Tracker:" ---> "Tracker :"
 "Status:" ---> "Statut :"
+"Time left:" ---> "Durée :"
 "Torrent connection limits:" ---> "Limites de connexion du torrent"
 "Torrent transfer rates (KB/s):" ---> "Taux de transfert du torrent (KB/s)"
 "Completed:" ---> "Complété :"
 "About" ---> "A propos"
 "Program Information" ---> "Informations"
-"Halite is a BitTorrent client based on the libtorrent library from Rasterbar.com. The program is written in C++ relying on the Boost libraries and WTL. It is open sourced under a MIT and/or Boost software licence." ---> "Halite est un client BitTorrent basé sur la librairie libtorrent de Rasterbar.com. Le programme est écrit en C++ basé sur les librairies Boost et WTL. Il est open-source sous licence MIT et/ou Boost software."
-"This project has only been possible thanks to the excellent work others. I'd like to acknowledge some of those people." ---> "Ce projet n'a été possible que grâce a l'excellent de ces autres programmeurs. "
-"nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon." ---> "nudone (Nick Pearson) - wtfcody.com / nudsville.com - Design de l'icone."
-"Arvid Norberg - www.rasterbar.com - Author of the libtorrent library." ---> "Arvid Norberg - www.rasterbar.com - Auteur dla libraire libtorrent."
-"Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO." ---> "Christopher Kohlhoff - asio.sourceforge.net - Auteur de Boost.ASIO."
 "SysTabControl32" --->  ??? 
 "General" ---> "Général"
 "Allow only one instance to run." ---> "Autoriser une seule instance"
-"General Settings" ---> "Paramètres généraux"
 "Advanced GUI" ---> "Interface avancée"
 "Minimize to tray." ---> "Minimiser en icône"
 "Language (requires restart)" ---> "Langage (redémarrage nécessaire)"
@@ -157,11 +176,6 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(R-E) %1$.2fKB/s - %2$.2fKB/s"
 "Halite not listening!" --->  ??? 
 "Port %1% open" ---> "Port %1% ouvert"
-"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "Nom;Statut;Completé;Réception;Envoi;Peers;Seeds;Temps restant;Copies"
-"Time;Message;Severity" ---> "Temps;Message;Niveau"
-"Tracker;Tier" --->  ??? 
-"Peer;Download;Upload;Type;Client" ---> "Peer;Réception;Envoi;Type;Client"
-"Peer;Download;Upload;Type;Client;Status" ---> "Peer;Réception;Envoi;Type;Client;Statut"
 "Exception caught; %1%, from %2%." --->  ??? 
 "XML exception: %1%." --->  ??? 
 "Unicode exception: %1%." --->  ??? 
@@ -169,6 +183,11 @@
 "Peer Event: %1%." --->  ??? 
 "Tracker Event: %1%." --->  ??? 
 "Debug Event: %1%." --->  ??? 
+"Select a directory to save the downloads to. Select cancel to accept default 'incomming' location." --->  ??? 
+"Peers" --->  ??? 
+"Logging" --->  ??? 
+"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
+"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "Interesting" --->  ??? 
 "Choked" --->  ??? 
 "Interested in us" --->  ??? 
@@ -190,3 +209,13 @@
 "Stopped" ---> "Stoppé"
 "Paused" ---> "En pause"
 "Downloading Metadata" --->  ??? 
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "Nom;Statut;Completé;Réception;Envoi;Peers;Seeds;Temps restant;Copies"
+"100;110;60;60;60;42;45;61;45" --->  ??? 
+"Time;Message;Severity" ---> "Temps;Message;Niveau"
+"67;419;69" --->  ??? 
+"Tracker;Tier" --->  ??? 
+"287;50" --->  ??? 
+"Peer;Download;Upload;Type;Client" ---> "Peer;Réception;Envoi;Type;Client"
+"100;70;70;70;100" --->  ??? 
+"Peer;Download;Upload;Type;Client;Status" ---> "Peer;Réception;Envoi;Type;Client;Statut"
+"95;64;64;50;100;500" --->  ??? 
