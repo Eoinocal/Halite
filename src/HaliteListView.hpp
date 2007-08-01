@@ -15,15 +15,65 @@
 class HaliteWindow;
 
 class HaliteListViewCtrl :
-	public CHaliteListViewCtrl2<HaliteListViewCtrl>,
+	public CHaliteListViewCtrl2<HaliteListViewCtrl, const hal::TorrentDetail_ptr>,
 	public CHaliteIni<HaliteListViewCtrl>,
 	private boost::noncopyable
 {
 protected:
 	typedef CHaliteIni<HaliteListViewCtrl> iniClass;
-	typedef CHaliteListViewCtrl2<HaliteListViewCtrl> listClass;
+	typedef CHaliteListViewCtrl2<HaliteListViewCtrl, const hal::TorrentDetail_ptr> listClass;
 
 	friend class listClass;
+	
+	class Adapters
+	{
+	
+	typedef const hal::TorrentDetail_ptr tD;
+	typedef HaliteListViewCtrl::Adapter adpt;
+	
+	class Filename : public adpt
+	{	
+	public:
+		virtual bool less(tD& l, tD& r)
+		{
+			return l->filename() < r->filename();
+		}
+		
+		virtual std::wstring print(tD& t)
+		{
+			return t->filename();
+		}		
+	};
+	
+	class State : public adpt
+	{	
+	public:
+		virtual bool less(tD& l, tD& r)
+		{
+			return l->state() < r->state();
+		}
+		
+		virtual std::wstring print(tD& t)
+		{
+			return t->state();
+		}		
+	};
+	
+	class Tracker : public adpt
+	{	
+	public:
+		virtual bool less(tD& l, tD& r)
+		{
+			return l->currentTracker() < r->currentTracker();
+		}
+		
+		virtual std::wstring print(tD& t)
+		{
+			return t->currentTracker();
+		}		
+	};
+	
+	};
 
 public:
 	enum { 
@@ -66,10 +116,15 @@ public:
     {
 		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
     }
+		
+	int CompareItemsCustom(LVCompareParam* /*pItem1*/, LVCompareParam* /*pItem2*/, int /*iSortCol*/);
+
 				
 private:
 	void OnAttach();
 	void OnDetach();
+	
+	HaliteWindow& halWindow_;
 };
 
-typedef HaliteListViewCtrl::selection_manage_class ListViewManager;
+typedef HaliteListViewCtrl::SelectionManager ListViewManager;

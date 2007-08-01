@@ -4,16 +4,22 @@
 #include "halTorrent.hpp"
 
 HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
+	halWindow_(HalWindow),
 	iniClass("listviews/halite", "HaliteListView")
 {		
 	HalWindow.connectUiUpdate(bind(&HaliteListViewCtrl::uiUpdate, this, _1));
 	load();
+	
+	adapters_.push_back(new Adapters::Filename());
+	adapters_.push_back(new Adapters::State());
+	adapters_.push_back(new Adapters::Tracker());
 }
 	
 void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 {
 	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
-
+	SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
+	
 	SetListViewDetails();
 }
 
@@ -28,15 +34,15 @@ void HaliteListViewCtrl::saveSettings()
 	save();
 }
 
-
 void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
 {
 	if (canUpdate())
 	{
 	UpdateLock<listClass> rLock(*this);
 	
-	tD.sort(hal::TorrentDetails::name);
-	DeleteAllItems();
+	tD.sort(bind(&Adapter::less, &adapters_[1], _1, _2));
+	
+//	DeleteAllItems();
 	
 	foreach (const hal::TorrentDetail_ptr td, tD.torrents()) 
 	{
@@ -78,15 +84,29 @@ void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
 			).str().c_str());	
 	}
 
-	manager_.sync_list(false, false);
-//	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, L"Two: Sync")));
+//	manager_.sync_list(false, false);
 	}
+}
+
+int HaliteListViewCtrl::CompareItemsCustom(LVCompareParam* pItem1, LVCompareParam* pItem2, int iSortCol)
+{	
+	boost::array<wchar_t, MAX_PATH> buffer;
+	
+	GetItemText(pItem1->iItem, 0, buffer.c_array(), buffer.size());		
+	wstring torrent1 = buffer.data();
+	
+	GetItemText(pItem2->iItem, 0, buffer.c_array(), buffer.size());		
+	wstring torrent2 = buffer.data();
+		
+	bool less = adapters_[1].less(halWindow_.torrents().get(torrent1), halWindow_.torrents().get(torrent2));
+		
+	return (less) ? 1 : -1;
 }
 
 LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind(&hal::BitTorrent::resumeTorrent, &hal::bittorrent(), _1));
+		bind(&hal::BitTorrent::resumeTorrent, &hal::bittorrent(), bind(&hal::to_utf8, _1)));
 	
 	return 0;
 }
@@ -94,7 +114,7 @@ LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 LRESULT HaliteListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind(&hal::BitTorrent::pauseTorrent, &hal::bittorrent(), _1));
+		bind(&hal::BitTorrent::pauseTorrent, &hal::bittorrent(), bind(&hal::to_utf8, _1)));
 	
 	return 0;
 }
@@ -102,14 +122,14 @@ LRESULT HaliteListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BO
 LRESULT HaliteListViewCtrl::OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind(&hal::BitTorrent::stopTorrent, &hal::bittorrent(), _1));
+		bind(&hal::BitTorrent::stopTorrent, &hal::bittorrent(),bind(&hal::to_utf8, _1)));
 	
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	hal::bittorrent().removeTorrent(manager_.selected());
+	hal::bittorrent().removeTorrent(hal::to_utf8(manager_.selected()));
 
 	clearFocused();	
 	return 0;
@@ -118,7 +138,7 @@ LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWn
 LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind(&hal::BitTorrent::removeTorrent, &hal::bittorrent(), _1));
+		bind(&hal::BitTorrent::removeTorrent, &hal::bittorrent(), bind(&hal::to_utf8, _1)));
 
 	clearSelected();	
 	return 0;
@@ -127,7 +147,7 @@ LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind(&hal::BitTorrent::removeTorrentWipeFiles, &hal::bittorrent(), _1));
+		bind(&hal::BitTorrent::removeTorrentWipeFiles, &hal::bittorrent(), bind(&hal::to_utf8, _1)));
 	
 	clearSelected();
 	return 0;

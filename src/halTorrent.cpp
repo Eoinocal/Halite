@@ -258,6 +258,12 @@ void TorrentDetails::sort(sortIndex i) const
 	std::stable_sort(torrents_.begin(), torrents_.end(), &nameLess);
 }
 
+void TorrentDetails::sort(
+	boost::function<bool (const TorrentDetail_ptr&, const TorrentDetail_ptr&)> fn) const
+{
+	std::stable_sort(torrents_.begin(), torrents_.end(), fn);
+}
+
 class BitTorrent_impl
 {
 	friend class BitTorrent;
@@ -975,9 +981,9 @@ void BitTorrent::getAllTorrentDetail_vec(TorrentDetail_vec& torrentsContainer)
 	
 	torrentsContainer.reserve(pimpl->torrents.size());
 	
-	foreach (TorrentPair t, pimpl->torrents)
+	for (TorrentMap::const_iterator i=pimpl->torrents.begin(), e=pimpl->torrents.end(); i != e; ++i)
 	{
-		torrentsContainer.push_back(t.second.getTorrentDetail_ptr());
+		torrentsContainer.push_back((*i).second.getTorrentDetail_ptr());
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "getAllTorrentDetail_vec")
@@ -1006,17 +1012,20 @@ TorrentDetails BitTorrent::getTorrentDetails(std::string selected, std::set<std:
 	
 	torrentDetails.torrents_.reserve(pimpl->torrents.size());
 	
-	foreach (TorrentPair t, pimpl->torrents)
-	{
-		if (allSelected.find(hal::to_utf8(t.second.filename())) != allSelected.end())
+	for (TorrentMap::const_iterator i=pimpl->torrents.begin(), e=pimpl->torrents.end(); i != e; ++i)
+	{	
+		TorrentDetail_ptr pT = (*i).second.getTorrentDetail_ptr();
+		
+		if (allSelected.find(hal::to_utf8((*i).second.filename())) != allSelected.end())
 		{
-			torrentDetails.selectedTorrents_.push_back(t.second.getTorrentDetail_ptr());
+			torrentDetails.selectedTorrents_.push_back(pT);
 		}
 		
-		if (selected == hal::to_utf8(t.second.filename()))
-			torrentDetails.selectedTorrent_ = t.second.getTorrentDetail_ptr();
+		if (selected == hal::to_utf8((*i).second.filename()))
+			torrentDetails.selectedTorrent_ = pT;
 		
-		torrentDetails.torrents_.push_back(t.second.getTorrentDetail_ptr());
+		torrentDetails.torrentMap_[(*i).second.filename()] = pT;
+		torrentDetails.torrents_.push_back(pT);
 	}
 	
 	return torrentDetails;
@@ -1080,13 +1089,13 @@ void BitTorrent::closeAll()
 	if (!pimpl->torrents.empty() && !exists(resumeDir))
 		create_directory(resumeDir);
 	
-	foreach (TorrentPair t, pimpl->torrents)
+	for (TorrentMap::const_iterator i=pimpl->torrents.begin(), e=pimpl->torrents.end(); i != e; ++i)
 	{
-		t.second.handle().pause(); // NB. internal pause, not registered in Torrents.xml
-		lbt::entry resumedata = t.second.handle().write_resume_data();
-		pimpl->theSession.remove_torrent(t.second.handle());
+		(*i).second.handle().pause(); // NB. internal pause, not registered in Torrents.xml
+		lbt::entry resumedata = (*i).second.handle().write_resume_data();
+		pimpl->theSession.remove_torrent((*i).second.handle());
 		
-		bool halencode_result = halencode(resumeDir/from_utf8(t.first), resumedata);
+		bool halencode_result = halencode(resumeDir/from_utf8((*i).first), resumedata);
 		assert(halencode_result);
 	}
 	

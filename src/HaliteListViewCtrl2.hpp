@@ -6,6 +6,7 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/split_free.hpp>
+#include <boost/ptr_container/ptr_vector.hpp>
 
 #include "stdAfx.hpp"
 #include "halTorrent.hpp"
@@ -37,27 +38,27 @@ private:
 	T& window_;
 };
 
-template <class TBase>
-class CHaliteListViewCtrl2 : public CWindowImpl<TBase, CListViewCtrl>
+template <class TBase, typename adapterType, size_t N=-1>
+class CHaliteListViewCtrl2 : 
+	public CSortListViewCtrlImpl<CHaliteListViewCtrl2<TBase, adapterType, N> >
 {
 public:
-	typedef CHaliteListViewCtrl2<TBase> thisClass;
+	typedef CHaliteListViewCtrl2<TBase, adapterType, N> thisClass;
+	typedef CSortListViewCtrlImpl<thisClass> parentClass;
 	
-	template <typename L, typename S=std::string>
 	class selection_manager : 
 		private boost::noncopyable
 	{	
 	public:
-		selection_manager(L& m_list) :
+		selection_manager(thisClass& m_list) :
 			m_list_(m_list)
 		{}
 		
-		typedef const S& param_type;
+		typedef std::wstring string_t; 
+		typedef const string_t& param_type;
 		
 		void sync_list(bool list_to_manager, bool signal_change=true)
 		{
-//			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"  A: %1%, %2% %3%") % hal::from_utf8(selected_) % list_to_manager % signal_change).str().c_str())));
-
 			if (list_to_manager)
 			{	
 				if (listToManager() && signal_change) signal();
@@ -66,15 +67,13 @@ public:
 			{
 				if (managerToList() && signal_change) signal();
 			}
-			
-//			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"  Z: %1%, %2% %3%") % hal::from_utf8(selected_) % list_to_manager % signal_change).str().c_str())));
 		}
 		
 		bool listToManager()
 		{
 			boost::array<wchar_t, MAX_PATH> pathBuffer;
-			std::set<S> all_selected;
-			string selected = "";
+			std::set<string_t> all_selected;
+			string_t selected = L"";
 			
 			bool do_signal = false;
 			
@@ -87,11 +86,11 @@ public:
 				if (flags && LVIS_SELECTED)
 				{
 					m_list_.GetItemText(i, 0, pathBuffer.c_array(), pathBuffer.size());	
-					all_selected.insert(hal::to_utf8(pathBuffer.data()));
+					all_selected.insert(pathBuffer.data());
 				}
 				if (flags && LVIS_FOCUSED)
 				{
-					selected = hal::to_utf8(pathBuffer.data());
+					selected = pathBuffer.data();
 				}
 			}
 
@@ -113,7 +112,7 @@ public:
 		bool managerToList()
 		{
 			// Prevent changing states from signaling another sync
-			UpdateLock<L> lock(m_list_);
+			UpdateLock<thisClass> lock(m_list_);
 			
 			boost::array<wchar_t, MAX_PATH> pathBuffer;
 			LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
@@ -126,7 +125,7 @@ public:
 			for (int i=0; i<total; ++i)
 			{
 				m_list_.GetItemText(i, 0, pathBuffer.c_array(), pathBuffer.size());
-				string temp_name = hal::to_utf8(pathBuffer.data());
+				string_t temp_name = pathBuffer.data();
 				
 				LVITEM lvi = { LVIF_STATE };
 				lvi.state = 0;
@@ -147,18 +146,15 @@ public:
 			return do_signal;
 		}
 		
-		int selectMatch(const string& name)
+		int selectMatch(const string_t& name)
 		{
 			LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
 			findInfo.flags = LVFI_STRING;
-			
-			wstring torrent_name = hal::from_utf8(name);		
-			findInfo.psz = torrent_name.c_str();
+					
+			findInfo.psz = name.c_str();
 			
 			int itemPos = m_list_.FindItem(&findInfo, -1);	
-			
-//			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Two: %1%, %2%") % torrent_name % itemPos).str().c_str())));
-			
+						
 			if (itemPos == -1)
 				return itemPos;
 				
@@ -179,19 +175,17 @@ public:
 		
 		int selectedIndex()
 		{
-			wstring torrent_name = hal::from_utf8(selected_);	
 			LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 	
-			findInfo.psz = torrent_name.c_str();
+			findInfo.psz = selected_.c_str();
 			
 			return m_list_.FindItem(&findInfo, -1);		
 		}
 		
-		const std::set<string>& allSelected() const { return all_selected_; }
+		const std::set<string_t>& allSelected() const { return all_selected_; }
 		
-		void setSelected(const string& sel) 
+		void setSelected(const string_t& sel) 
 		{
 			selected_ = sel;
-		//	sync_list(false);
 		}
 		
 		void setSelected(int itemPos)
@@ -211,22 +205,21 @@ public:
 		void clear()
 		{
 			// Prevent changing states from signaling another sync
-			UpdateLock<L> lock(m_list_);
+			UpdateLock<thisClass> lock(m_list_);
 			
-			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Clear")).str().c_str())));
+//			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Clear")).str().c_str())));
 	
 			m_list_.DeleteItem(selectedIndex());
 			
-		//	m_list_.SelectItem(0);
 			sync_list(true);	
 		}
 		
 		void clear_all_selected()
 		{
 			// Prevent changing states from signaling another sync
-			UpdateLock<L> lock(m_list_);
+			UpdateLock<thisClass> lock(m_list_);
 			
-			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"ClearAllSelected")).str().c_str())));
+//			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"ClearAllSelected")).str().c_str())));
 
 			int total = m_list_.GetItemCount();
 			
@@ -239,16 +232,15 @@ public:
 			}
 			all_selected_.clear();
 			
-		//	m_list_.SelectItem(0);
 			sync_list(true);	
 		}
 		
 		void clear_all()
 		{
 			// Prevent changing states from signaling another sync
-			UpdateLock<L> lock(m_list_);
+			UpdateLock<thisClass> lock(m_list_);
 			
-			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"ClearAll")).str().c_str())));
+//			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"ClearAll")).str().c_str())));
 
 			m_list_.DeleteAllItems();
 			all_selected_.clear();
@@ -264,11 +256,11 @@ public:
 		}
 		
 	private:
-		S selected_;
-		std::set<S> all_selected_;
+		string_t selected_;
+		std::set<string_t> all_selected_;
 		
 		mutable boost::signal<void (param_type)> selection_;
-		L& m_list_;
+		thisClass& m_list_;
 	};
 	
 	class CHaliteHeaderCtrl : public CWindowImpl<CHaliteHeaderCtrl, CHeaderCtrl>
@@ -308,20 +300,19 @@ public:
 	private:
 		WTL::CMenu menu_;
 	};
+	
+	class Adapter
+	{
+	public:
+		virtual bool less(adapterType& l, adapterType& r) = 0;
+		virtual std::wstring print(adapterType& t) = 0;
+	};
 
 public:
-	typedef selection_manager<thisClass> selection_manage_class;
+	typedef selection_manager SelectionManager;
+	typedef SelectionManager selection_manager_class;
 	
-	enum sortDirection
-	{
-		none,
-		ascending,
-		descending
-	};
-	
-	CHaliteListViewCtrl2<TBase>() :
-		sortingDirection_(CHaliteListViewCtrl2<TBase>::none),
-		sortedColmun_(0),
+	thisClass() :
 		manager_(*this),
 		updateLock_(0)
 	{
@@ -348,19 +339,20 @@ public:
 		}	
 	}
 
-	BEGIN_MSG_MAP_EX(CHaliteListViewCtrl2<TBase>)
+	BEGIN_MSG_MAP_EX(thisClass)
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_CLICK, OnClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_RCLICK, OnRClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_ITEMCHANGED, OnItemChanged)
-		REFLECTED_NOTIFY_CODE_HANDLER(LVN_COLUMNCLICK , OnColClick)
+	//	REFLECTED_NOTIFY_CODE_HANDLER(LVN_COLUMNCLICK , OnColClick)
 
 		DEFAULT_REFLECTION_HANDLER()
+		CHAIN_MSG_MAP(parentClass)
 	END_MSG_MAP()
 
 	void Attach(HWND hWndNew)
 	{
 		ATLASSERT(::IsWindow(hWndNew));
-        CWindowImpl<TBase, CListViewCtrl>::SubclassWindow(hWndNew);
+        parentClass::SubclassWindow(hWndNew);
 
 		TBase* pT = static_cast<TBase*>(this);
 		pT->OnAttach();
@@ -375,7 +367,10 @@ public:
 			
 		foreach (wstring name, names_)
 		{
-			AddColumn(name.c_str(), header_.GetItemCount());
+			int i = header_.GetItemCount();
+			
+			AddColumn(name.c_str(), i);
+			SetColumnSortType(i, LVCOLSORT_CUSTOM);
 		}		
 
 		for (unsigned i=0; i<names_.size(); ++i)
@@ -425,7 +420,6 @@ public:
 		return 0;
 	}
 
-
 	LRESULT OnRClick(int i, LPNMHDR pnmh, BOOL&)
 	{
 		hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"RClick %1%") % pnmh->code).str().c_str())));
@@ -453,6 +447,12 @@ public:
 		MessageBox((lexical_cast<wstring>(pnlv->iSubItem)).c_str(), L"Hi", 0);
 		return 0;
 	}
+		
+	int CompareItemsCustom(LVCompareParam* pItem1, LVCompareParam* pItem2, int iSortCol)
+	{
+		TBase* pT = static_cast<TBase*>(this);
+		return pT->CompareItemsCustom(pItem1, pItem2, iSortCol);
+	}
 	
 	friend class boost::serialization::access;
     template<class Archive>
@@ -462,11 +462,8 @@ public:
         ar & boost::serialization::make_nvp("order", listColumnOrder_);
     }
 
-	const selection_manager<CHaliteListViewCtrl2>& manager() { return manager_; }
-	
-	size_t sortedColmun() { return sortedColmun_; }
-	sortDirection sortingDirection() { return sortingDirection_; }
-	
+	const SelectionManager& manager() { return manager_; }
+		
 	std::vector<int>& listColumnWidth() { return listColumnWidth_; }
 	std::vector<int>& listColumnOrder() { return listColumnOrder_; }
 	
@@ -480,7 +477,8 @@ public:
 	void clearAll() { manager_.clear(); }
 
 protected:
-	selection_manager<CHaliteListViewCtrl2> manager_;
+	SelectionManager manager_;
+	boost::ptr_vector<Adapter> adapters_;
 	
 private:
 	void vectorSizePreConditions()
@@ -497,10 +495,7 @@ private:
 			listColumnOrder_.insert(listColumnOrder_.end(), names_.size(), 0);
 		}		
 	}
-	
-	sortDirection sortingDirection_;
-	size_t sortedColmun_;
-	
+		
 	WTL::CMenu menu_;
 	CHaliteHeaderCtrl header_;
 	std::vector<wstring> names_;

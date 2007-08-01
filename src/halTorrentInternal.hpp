@@ -6,7 +6,7 @@ namespace hal
 class TorrentInternal;
 }
 
-BOOST_CLASS_VERSION(hal::TorrentInternal, 3)
+BOOST_CLASS_VERSION(hal::TorrentInternal, 4)
 
 namespace hal 
 {
@@ -22,6 +22,48 @@ using boost::serialization::make_nvp;
 class TorrentInternal
 {
 	friend class BitTorrent_impl;
+	
+	template<typename T>
+	class TransferTracker
+	{
+	public:
+		TransferTracker() :
+			total_(0),
+			total_offset_(0)
+		{}
+		
+		TransferTracker(T total) :
+			total_(total),
+			total_offset_(0)
+		{}
+		
+		void reset(T total) const
+		{
+			total_ = total;
+			total_offset_ = 0;
+		}
+		
+		T update(T rel_total) const
+		{
+			total_ += (rel_total - total_offset_);
+			total_offset_ = rel_total;
+						
+			return total_;
+		}
+		
+		operator T() const { return total_; }
+		
+		friend class boost::serialization::access;
+		template<class Archive>
+		void serialize(Archive& ar, const unsigned int version)
+		{
+			ar & make_nvp("total", total_);
+		}
+		
+	private:
+		mutable T total_;
+		mutable T total_offset_;
+	};
 	
 public:
 	TorrentInternal() :	
@@ -149,12 +191,12 @@ public:
 		setTrackerLogin();
 	}	
 	
-	pair<wstring, wstring> getTrackerLogin()
+	pair<wstring, wstring> getTrackerLogin() const
 	{
 		return make_pair(trackerUsername_, trackerPassword_);
 	}
 	
-	std::wstring filename() { return filename_; }
+	const std::wstring& filename() const { return filename_; }
 	
 	const libtorrent::torrent_handle& handle() const { return handle_; }
 
@@ -225,6 +267,20 @@ public:
         ar & make_nvp("filename", filename_);
         ar & make_nvp("saveDirectory", save_directory_);
 		
+		if (version > 3) {
+			ar & make_nvp("payloadUploaded_", payloadUploaded_);
+			ar & make_nvp("payloadDownloaded_", payloadDownloaded_);
+			ar & make_nvp("uploaded_", uploaded_);
+			ar & make_nvp("downloaded_", downloaded_);		
+		} 
+		else if (version > 1)
+		{
+			ar & make_nvp("totalUploaded", totalUploaded_);
+			ar & make_nvp("ratio", ratio_);
+			
+			payloadUploaded_.reset(totalUploaded_);
+		}
+		
 		if (version > 0) {
 			ar & make_nvp("trackerUsername", trackerUsername_);
 			ar & make_nvp("trackerPassword", trackerPassword_);
@@ -232,9 +288,8 @@ public:
 		if (version > 1) {
 			ar & make_nvp("state", state_);
 			ar & make_nvp("trackers", trackers_);
-			ar & make_nvp("totalUploaded", totalUploaded_);
-			ar & make_nvp("ratio", ratio_);
-		}		
+		}
+	
 		if (version > 2) {
 			ar & make_nvp("resolve_countries", resolve_countries_);
 		}
@@ -294,6 +349,11 @@ private:
 	mutable boost::int64_t totalUploaded_;
 	mutable boost::int64_t totalBase_;
 	
+	TransferTracker<boost::int64_t> payloadUploaded_;
+	TransferTracker<boost::int64_t> payloadDownloaded_;
+	TransferTracker<boost::int64_t> uploaded_;
+	TransferTracker<boost::int64_t> downloaded_;
+	
 	std::vector<TrackerDetail> trackers_;
 	std::vector<lbt::announce_entry> torrent_trackers_;
 };
@@ -345,7 +405,7 @@ pair<float, float> TorrentInternal::getTransferSpeed()
 }
 
 TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr() const
-{
+{	
 	if (inSession())
 	{
 		lbt::torrent_status tS = handle_.status();
@@ -396,11 +456,16 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr() const
 		
 		totalUploaded_ += (tS.total_payload_upload - totalBase_);
 		totalBase_ = tS.total_payload_upload;
+		
+		uploaded_.update(tS.total_upload);
+		payloadUploaded_.update(tS.total_payload_upload);
+		downloaded_.update(tS.total_download);
+		payloadDownloaded_.update(tS.total_payload_download);
 
 		return TorrentDetail_ptr(new TorrentDetail(filename_, state, hal::from_utf8(tS.current_tracker), 
 			pair<float, float>(tS.download_payload_rate, tS.upload_payload_rate),
-			tS.progress, tS.distributed_copies, tS.total_wanted_done, tS.total_wanted, totalUploaded_,
-			tS.num_peers, tS.num_seeds, ratio_, td, tS.next_announce));
+			tS.progress, tS.distributed_copies, tS.total_wanted_done, tS.total_wanted, uploaded_, payloadUploaded_,
+			downloaded_, payloadDownloaded_, tS.num_peers, tS.num_seeds, ratio_, td, tS.next_announce));
 	}
 	else
 	{

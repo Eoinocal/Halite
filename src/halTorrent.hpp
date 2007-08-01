@@ -67,7 +67,7 @@ class TorrentDetail
 {
 public:
 	TorrentDetail(std::wstring f, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
-			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, int p=0, int sd=0, float r=0, 
+			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, boost::int64_t tpU=0, boost::int64_t tD=0, boost::int64_t tpD=0, int p=0, int sd=0, float r=0, 
 			time_duration eta=boost::posix_time::seconds(0), time_duration uIn=boost::posix_time::seconds(0)) :
 		filename_(f),
 		state_(s),
@@ -78,6 +78,9 @@ public:
 		totalWantedDone_(tWD),
 		totalWanted_(tW),
 		totalUploaded_(tU),
+		totalPayloadUploaded_(tpU),
+		totalDownloaded_(tD),
+		totalPayloadDownloaded_(tpD),
 		peers_(p),
 		seeds_(sd),
 		ratio_(r),
@@ -99,7 +102,7 @@ public:
 	
 	const std::wstring& filename() const { return filename_; }
 	const std::wstring& state() const { return state_; }
-	const std::wstring& currentTracker() { return currentTracker_; }
+	const std::wstring& currentTracker() const { return currentTracker_; }
 	
 	std::pair<float,float> speed() const { return speed_; }
 	const float& completion() const { return completion_; }
@@ -131,6 +134,9 @@ public:
 	boost::int64_t totalWantedDone_;
 	boost::int64_t totalWanted_;
 	boost::int64_t totalUploaded_;
+	boost::int64_t totalPayloadUploaded_;
+	boost::int64_t totalDownloaded_;
+	boost::int64_t totalPayloadDownloaded_;
 	
 	int peers_;
 	int seeds_;
@@ -147,6 +153,7 @@ private:
 
 typedef shared_ptr<TorrentDetail> TorrentDetail_ptr;
 typedef std::vector<TorrentDetail_ptr> TorrentDetail_vec;
+typedef std::map<std::wstring, TorrentDetail_ptr> TorrentDetail_map;
 
 class TorrentDetails
 {
@@ -165,15 +172,29 @@ public:
 	};
 	
 	void sort(sortIndex i) const;
+	void sort(boost::function<bool (const TorrentDetail_ptr&, const TorrentDetail_ptr&)> fn) const;
 	
 	const TorrentDetail_vec torrents() const { return torrents_; }
 	const TorrentDetail_vec selectedTorrents() const { return selectedTorrents_; }
 	const TorrentDetail_ptr selectedTorrent() const { return selectedTorrent_; }
 	
+	const TorrentDetail_ptr get(std::wstring filename) const
+	{
+		TorrentDetail_map::const_iterator i = torrentMap_.find(filename);
+		
+		if (i != torrentMap_.end())
+		{
+			return i->second;
+		}
+		
+		return TorrentDetail_ptr();
+	}
+	
 	friend class BitTorrent;
 
 private:
 	mutable TorrentDetail_vec torrents_;
+	TorrentDetail_map torrentMap_;
 	TorrentDetail_vec selectedTorrents_;
 	TorrentDetail_ptr selectedTorrent_;
 };

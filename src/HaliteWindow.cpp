@@ -236,12 +236,22 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 }	
 
 void HaliteWindow::issueUiUpdate()
-{
+{	
+//	hal::event().post(shared_ptr<hal::EventDetail>(
+//		new hal::EventDebug(hal::Event::info, (wformat(L"issueUiUpdate")).str().c_str())));
+
 	try
 	{
+	
+	std::set<string> allSelected;
+
+	std::transform(haliteList.manager().allSelected().begin(), 
+				   haliteList.manager().allSelected().end(), 
+				   std::inserter(allSelected, allSelected.end()), 
+				   &hal::to_utf8);	
 
 	torrents_ = hal::bittorrent().getTorrentDetails(
-		haliteList.manager().selected(), haliteList.manager().allSelected());
+		hal::to_utf8(haliteList.manager().selected()), allSelected);
 
 	ui_update_signal_(torrents());
 
