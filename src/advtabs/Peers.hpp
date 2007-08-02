@@ -12,13 +12,13 @@
 #include "../HaliteListManager.hpp"
 
 class PeerListViewCtrl :
-	public CHaliteListViewCtrl2<PeerListViewCtrl, int>,
+	public CHaliteSortListViewCtrl<PeerListViewCtrl, int>,
 	public CHaliteIni<PeerListViewCtrl>,
 	private boost::noncopyable
 {
 	typedef PeerListViewCtrl thisClass;
 	typedef CHaliteIni<thisClass> iniClass;
-	typedef CHaliteListViewCtrl2<thisClass, int> listClass;
+	typedef CHaliteSortListViewCtrl<thisClass, int> listClass;
 
 	friend class listClass;
 	

@@ -10,18 +10,18 @@
 
 #include "HaliteIni.hpp"
 #include "HaliteListViewCtrl.hpp"
-#include "HaliteListViewCtrl2.hpp"
+#include "HaliteSortListViewCtrl.hpp"
 
 class HaliteWindow;
 
 class HaliteListViewCtrl :
-	public CHaliteListViewCtrl2<HaliteListViewCtrl, const hal::TorrentDetail_ptr>,
+	public CHaliteSortListViewCtrl<HaliteListViewCtrl, const hal::TorrentDetail_ptr>,
 	public CHaliteIni<HaliteListViewCtrl>,
 	private boost::noncopyable
 {
 protected:
 	typedef CHaliteIni<HaliteListViewCtrl> iniClass;
-	typedef CHaliteListViewCtrl2<HaliteListViewCtrl, const hal::TorrentDetail_ptr> listClass;
+	typedef CHaliteSortListViewCtrl<HaliteListViewCtrl, const hal::TorrentDetail_ptr> listClass;
 
 	friend class listClass;
 	

@@ -39,11 +39,11 @@ private:
 };
 
 template <class TBase, typename adapterType, size_t N=-1>
-class CHaliteListViewCtrl2 : 
-	public CSortListViewCtrlImpl<CHaliteListViewCtrl2<TBase, adapterType, N> >
+class CHaliteSortListViewCtrl : 
+	public CSortListViewCtrlImpl<CHaliteSortListViewCtrl<TBase, adapterType, N> >
 {
 public:
-	typedef CHaliteListViewCtrl2<TBase, adapterType, N> thisClass;
+	typedef CHaliteSortListViewCtrl<TBase, adapterType, N> thisClass;
 	typedef CSortListViewCtrlImpl<thisClass> parentClass;
 	
 	class selection_manager : 
