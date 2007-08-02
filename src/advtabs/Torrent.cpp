@@ -125,29 +125,30 @@ void AdvTorrentDialog::uiUpdateSingle(const hal::TorrentDetail_ptr& torrent)
 		SetDlgItemText(IDC_NAME, torrent->filename().c_str());
 		SetDlgItemText(IDC_TRACKER, torrent->currentTracker().c_str());
 		SetDlgItemText(IDC_STATUS, torrent->state().c_str());
-		m_prog.SetPos(static_cast<int>(torrent->completion()*100));
+		m_prog.SetPos(static_cast<int>(torrent->completion()*100));	
+
+		wstring eta = L"∞";	
 		
-/*		if (!torrent->estimatedTimeLeft().is_special())
+		if (!torrent->estimatedTimeLeft().is_special())
 		{
-			SetDlgItemText(IDC_ETA,
-				(hal::from_utf8(boost::posix_time::to_simple_string(torrent->estimatedTimeLeft())).c_str()));
+			eta = hal::from_utf8(boost::posix_time::to_simple_string(torrent->estimatedTimeLeft()));
 		}
-		else SetDlgItemText(IDC_ETA,L"∞");
-*/		
-/*		SetDlgItemText(IDC_COMPLETE,
-			(wformat(L"%1$.2fmb of %2$.2fmb") 
-				% (static_cast<float>(pTD->totalWantedDone())/(1024*1024))
-				% (static_cast<float>(pTD->totalWanted())/(1024*1024))
+		
+		SetDlgItemText(IDC_TRANS_ETA,
+			(wformat(hal::app().res_wstr(HAL_COMPLETED_SUMMARY)) 
+				% (static_cast<float>(torrent->totalWantedDone())/(1024*1024))
+				% (static_cast<float>(torrent->totalWanted())/(1024*1024))
+				% eta
 			).str().c_str());
-*/			
-		float ratio = (torrent->totalWantedDone()) 
+			
+		float ratio = (torrent->totalDownloaded()) 
 			? static_cast<float>(torrent->totalUploaded())
-				/ static_cast<float>(torrent->totalWantedDone())
+				/ static_cast<float>(torrent->totalDownloaded())
 			: 0;
 		
 		SetDlgItemInfo(IDC_TRANS,
-			wformat(hal::app().res_wstr(HAL_DOWNLOAD_SUMMARY)) 
-				% (static_cast<float>(torrent->totalWantedDone())/(1024*1024))
+			wformat(hal::app().res_wstr(HAL_DOWNLOADT_SUMMARY)) 
+				% (static_cast<float>(torrent->totalDownloaded())/(1024*1024))
 				% (static_cast<float>(torrent->totalUploaded())/(1024*1024))
 				% ratio);	
 			

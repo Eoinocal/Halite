@@ -10,7 +10,7 @@ public:
 	{
 		mutex_ = ::CreateMutex(0, true, mutexName.c_str());
 		
-		if (mutex_ && ::GetLastError() ==ERROR_ALREADY_EXISTS)
+		if (mutex_ && ::GetLastError() == ERROR_ALREADY_EXISTS)
 			owner_ = false;
 	}
 	

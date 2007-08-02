@@ -1091,12 +1091,15 @@ void BitTorrent::closeAll()
 	
 	for (TorrentMap::const_iterator i=pimpl->torrents.begin(), e=pimpl->torrents.end(); i != e; ++i)
 	{
-		(*i).second.handle().pause(); // NB. internal pause, not registered in Torrents.xml
-		lbt::entry resumedata = (*i).second.handle().write_resume_data();
-		pimpl->theSession.remove_torrent((*i).second.handle());
-		
-		bool halencode_result = halencode(resumeDir/from_utf8((*i).first), resumedata);
-		assert(halencode_result);
+		if ((*i).second.inSession())
+		{
+			(*i).second.handle().pause(); // NB. internal pause, not registered in Torrents.xml
+			lbt::entry resumedata = (*i).second.handle().write_resume_data();
+			pimpl->theSession.remove_torrent((*i).second.handle());
+			
+			bool halencode_result = halencode(resumeDir/from_utf8((*i).first), resumedata);
+			assert(halencode_result);
+		}
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")
@@ -1374,8 +1377,9 @@ void BitTorrent::pauseAllTorrents()
 	
 	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
 		iter != pimpl->torrents.end(); ++iter)
-	{
-		(*iter).second.pause();
+	{		
+		if ((*iter).second.inSession())
+			(*iter).second.pause();
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "pauseAllTorrents")
@@ -1388,7 +1392,7 @@ void BitTorrent::unpauseAllTorrents()
 	for (TorrentMap::iterator iter = pimpl->torrents.begin(); 
 		iter != pimpl->torrents.end(); ++iter)
 	{
-		if (iter->second.state() == TorrentDetail::torrent_paused)
+		if ((*iter).second.inSession() && iter->second.state() == TorrentDetail::torrent_paused)
 			(*iter).second.resume();
 	}
 	

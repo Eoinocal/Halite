@@ -10,6 +10,7 @@
 
 #include "stdAfx.hpp"
 #include "halTorrent.hpp"
+#include "WinAPIWaitableTimer.hpp"
 
 template<class T>
 class UpdateLock
@@ -415,6 +416,8 @@ public:
 		if (canUpdate()) 
 		{
 			manager_.sync_list(true, true);
+//			if (syncTimer_.reset(200, bind(&thisClass::syncTimeout, this)))	
+//				hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"********** Set")).str().c_str())));
 		}
 		
 		return 0;
@@ -495,6 +498,13 @@ private:
 			listColumnOrder_.insert(listColumnOrder_.end(), names_.size(), 0);
 		}		
 	}
+	
+	void syncTimeout()
+	{
+		hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"********** Signaled")).str().c_str())));
+		
+		manager_.sync_list(true, true);
+	}
 		
 	WTL::CMenu menu_;
 	CHaliteHeaderCtrl header_;
@@ -504,4 +514,6 @@ private:
 	
 	int updateLock_;
 	friend class UpdateLock<thisClass>;
+	
+	WinAPIWaitableTimer syncTimer_;
 };

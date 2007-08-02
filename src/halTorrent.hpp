@@ -87,7 +87,7 @@ public:
 		estimatedTimeLeft_(eta),
 		updateTrackerIn_(uIn),
 		peerDetailsFilled_(false)
-	{}		
+	{}
 
 	TorrentDetail() :	
 		peerDetailsFilled_(false)
@@ -109,6 +109,9 @@ public:
 	const float& distributedCopies() const { return distributed_copies_; }
 	
 	const boost::int64_t& totalUploaded() const { return totalUploaded_; }
+	const boost::int64_t& totalPayloadUploaded() const { return totalPayloadUploaded_; }
+	const boost::int64_t& totalDownloaded() const { return totalDownloaded_; }
+	const boost::int64_t& totalPayloadDownloaded() const { return totalPayloadDownloaded_; }
 	const boost::int64_t& totalWantedDone() const { return totalWantedDone_; }
 	const boost::int64_t& totalWanted() const { return totalWanted_; }
 	
