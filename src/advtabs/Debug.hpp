@@ -85,6 +85,11 @@ public:
 	{
 		load();
 	}
+	
+	LogListViewCtrl()
+	{
+		if (conn_.connected()) conn_.disconnect();
+	}
 
 	void saveSettings()
 	{
@@ -116,20 +121,16 @@ private:
 	void OnAttach()
 	{
 		SetListViewDetails();
-
-		boost::signals::scoped_connection* p = new boost::signals::scoped_connection(
-			hal::event().attach(bind(&LogListViewCtrl::operator(), this, _1))
-		);
-
-		pconn_.reset(new boost::signals::scoped_connection(*p));
+		conn_ = hal::event().attach(bind(&LogListViewCtrl::operator(), this, _1));
 	}
 
 	void OnDestroy()
 	{
+		conn_.disconnect();
 		saveSettings();
 	}
 
-	scoped_ptr<boost::signals::scoped_connection> pconn_;
+	boost::signals::connection conn_;
 };
 
 class AdvDebugDialog :

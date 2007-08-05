@@ -16,7 +16,7 @@ class CHaliteDialogBase
 	
 public:
 	CHaliteDialogBase(HaliteWindow& haliteWindow) :
-		haliteWnd(haliteWindow)
+		haliteWindow_(haliteWindow)
 	{		
 		haliteWindow.connectUiUpdate(bind(&TBase::uiUpdate, static_cast<TBase*>(this), _1));
 	}
@@ -25,6 +25,16 @@ public:
 	{	
 	//	ui_.attach(bind(&TBase::updateDialog, static_cast<TBase*>(this)));
 	//	selection_manager_.attach(bind(&TBase::selectionChanged, static_cast<TBase*>(this), _1));
+	}
+	
+	void requestUiUpdate()
+	{
+		haliteWindow_.issueUiUpdate();
+	}
+	
+	HaliteListViewCtrl& torrentsList() 
+	{ 
+		return haliteWindow_.torrentsList(); 
 	}
 	
 	void uiUpdate(const hal::TorrentDetails& tD)
@@ -72,7 +82,8 @@ public:
 	}
 */	
 protected:
-	HaliteWindow& haliteWnd;
+
 private:
+	HaliteWindow& haliteWindow_;
 };
 

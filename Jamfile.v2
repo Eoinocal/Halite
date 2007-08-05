@@ -2,6 +2,7 @@
 use-project /boost : $(/boost) ;
 use-project /wtl : $(/wtl) ;
 use-project /libtorrent : $(/libtorrent) ;
+use-project /stlsoft : $(/stlsoft) ;
 
 SOURCES =
 	global/logger.cpp
@@ -50,6 +51,7 @@ LIBS =
 	/boost/$(BOOST_LIBS)/<link>static
 	/libtorrent//torrent/<link>static
 	/wtl
+	/stlsoft
 	
 	comctl32
 	user32

@@ -88,7 +88,8 @@ void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
 	}
 }
 
-int HaliteListViewCtrl::CompareItemsCustom(LVCompareParam* pItem1, LVCompareParam* pItem2, int iSortCol)
+int HaliteListViewCtrl::CompareItemsCustom(LVCompareParam* pItem1, LVCompareParam* pItem2,
+	int iSortCol)
 {	
 	boost::array<wchar_t, MAX_PATH> buffer;
 	
@@ -98,7 +99,8 @@ int HaliteListViewCtrl::CompareItemsCustom(LVCompareParam* pItem1, LVComparePara
 	GetItemText(pItem2->iItem, 0, buffer.c_array(), buffer.size());		
 	wstring torrent2 = buffer.data();
 		
-	bool less = adapters_[1].less(halWindow_.torrents().get(torrent1), halWindow_.torrents().get(torrent2));
+	bool less = adapters_[1].less(hal::bittorrent().torrentDetails().get(torrent1), 
+		hal::bittorrent().torrentDetails().get(torrent2));
 		
 	return (less) ? 1 : -1;
 }

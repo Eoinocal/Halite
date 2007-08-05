@@ -114,8 +114,6 @@ public:
 		save_state_signal_.connect(fn); 
 	}
 	
-	const hal::TorrentDetails& torrents() { return torrents_; }
-	
 	HaliteListViewCtrl& torrentsList() { return haliteList; }
 	
 protected:
@@ -203,8 +201,6 @@ private:
 	bool use_tray;
 	bool advancedUI;
 	int activeTab;
-	
-	hal::TorrentDetails torrents_;
 };
 
 BOOST_CLASS_VERSION(HaliteWindow, 0)

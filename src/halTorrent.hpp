@@ -161,45 +161,61 @@ typedef std::map<std::wstring, TorrentDetail_ptr> TorrentDetail_map;
 class TorrentDetails
 {
 public:	
-	enum sortIndex
-	{
-		name = 0,
-		status,
-		completed,
-		download,
-		upload,
-		peers,
-		seeds,
-		eta,
-		copies
-	};
-	
-	void sort(sortIndex i) const;
 	void sort(boost::function<bool (const TorrentDetail_ptr&, const TorrentDetail_ptr&)> fn) const;
 	
-	const TorrentDetail_vec torrents() const { return torrents_; }
-	const TorrentDetail_vec selectedTorrents() const { return selectedTorrents_; }
-	const TorrentDetail_ptr selectedTorrent() const { return selectedTorrent_; }
+	const TorrentDetail_vec torrents() const 
+	{
+		mutex_t::scoped_lock l(mutex_);	
+		return torrents_; 
+	}
+	
+	const TorrentDetail_vec selectedTorrents() const 
+	{ 
+		mutex_t::scoped_lock l(mutex_);	
+		return selectedTorrents_; 
+	}
+	
+	const TorrentDetail_ptr focusedTorrent() const 
+	{
+		mutex_t::scoped_lock l(mutex_);	
+		return selectedTorrent_; 
+	}
+	
+	const TorrentDetail_ptr selectedTorrent() const { return focusedTorrent(); }
 	
 	const TorrentDetail_ptr get(std::wstring filename) const
 	{
+		mutex_t::scoped_lock l(mutex_);	
+		
 		TorrentDetail_map::const_iterator i = torrentMap_.find(filename);
 		
 		if (i != torrentMap_.end())
-		{
 			return i->second;
-		}
-		
-		return TorrentDetail_ptr();
+		else
+			return TorrentDetail_ptr();
 	}
 	
 	friend class BitTorrent;
 
 private:
+	void clearAll(const mutex_t::scoped_lock&)
+	{
+		// !! No mutex lock, it should only be call from functions which 
+		// have the lock themselves, hence the unused function param
+		
+		torrents_.clear();
+		torrentMap_.clear();
+		selectedTorrents_.clear();
+		selectedTorrent_.reset();
+	}
+
 	mutable TorrentDetail_vec torrents_;
+	
 	TorrentDetail_map torrentMap_;
 	TorrentDetail_vec selectedTorrents_;
 	TorrentDetail_ptr selectedTorrent_;
+	
+	mutable mutex_t mutex_;
 };
 
 struct TrackerDetail
@@ -269,7 +285,8 @@ public:
 	void addTorrent(boost::filesystem::wpath file, wpath saveDirectory);
 	void getAllTorrentDetail_vec(TorrentDetail_vec& torrentsContainer);
 	TorrentDetail_ptr getTorrentDetail_vec(std::string filename);	
-	TorrentDetails getTorrentDetails(std::string selected, std::set<std::string> allSelected);
+	
+	TorrentDetails& getTorrentDetails(std::string selected, std::set<std::string> allSelected);
 	
 	void setTorrentRatio(std::string, float ratio);
 	float getTorrentRatio(std::string);
@@ -313,11 +330,16 @@ public:
 	int defTorrentMaxConn();
 	int defTorrentMaxUpload();
 	float defTorrentDownload();
-	float defTorrentUpload();
+	float defTorrentUpload();	
+	
+	TorrentDetails& torrentDetails();
+	TorrentDetails& updateTorrentDetails(std::string focused, std::set<std::string> selected);
 	
 private:
 	BitTorrent();
 	boost::scoped_ptr<BitTorrent_impl> pimpl;
+	
+	TorrentDetails torrentDetails_;
 };
 
 BitTorrent& bittorrent();

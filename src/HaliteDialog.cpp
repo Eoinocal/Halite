@@ -111,7 +111,7 @@ void HaliteDialog::onClose()
 
 void HaliteDialog::onPause(UINT, int, HWND)
 {
-	string torrentName = hal::to_utf8(haliteWnd.torrents().selectedTorrent()->filename());
+	string torrentName = hal::to_utf8(hal::bittorrent().torrentDetails().selectedTorrent()->filename());
 	
 	if (!hal::bittorrent().isTorrentActive(torrentName))
 	{
@@ -124,7 +124,7 @@ void HaliteDialog::onPause(UINT, int, HWND)
 		hal::bittorrent().pauseTorrent(torrentName);
 	}
 	
-	haliteWnd.issueUiUpdate();	
+	requestUiUpdate();	
 }
 
 void HaliteDialog::onReannounce(UINT, int, HWND)
@@ -138,10 +138,10 @@ void HaliteDialog::onReannounce(UINT, int, HWND)
 
 void HaliteDialog::onRemove(UINT, int, HWND)
 {
-	string torrentName = hal::to_utf8(haliteWnd.torrents().selectedTorrent()->filename());
+	string torrentName = hal::to_utf8(hal::bittorrent().torrentDetails().selectedTorrent()->filename());
 
 	hal::bittorrent().removeTorrent(torrentName);
-	haliteWnd.torrentsList().clearFocused();
+	torrentsList().clearFocused();
 }
 
 LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl)

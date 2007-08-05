@@ -4,47 +4,53 @@
 #include <boost/function.hpp>
 #include <boost/cstdint.hpp>
 
-inline VOID CALLBACK TimerAPCProc(LPVOID, DWORD, DWORD);
+inline void CALLBACK TimerProc(void* lpParametar, BOOLEAN TimerOrWaitFired);
 
 class WinAPIWaitableTimer
 {
 public:
-	WinAPIWaitableTimer()
-	{
-		timer_ = ::CreateWaitableTimer(NULL, true, NULL);
-	}
+	WinAPIWaitableTimer() :
+		timer_(INVALID_HANDLE_VALUE)
+	{}
 	
 	~WinAPIWaitableTimer()
 	{
-		::CloseHandle(timer_);
+		if (timer_ != INVALID_HANDLE_VALUE) deleteTimer();
 	}
 	
-	bool reset(unsigned period, boost::function<void ()> fn)
+	bool reset(unsigned dueTime, unsigned period, boost::function<void ()> fn)
 	{
-		LARGE_INTEGER liDueTime;
-		liDueTime.QuadPart = -((int)1000 * 10000);
-
-		if(::SetWaitableTimer(timer_, &liDueTime, 0, &TimerAPCProc, (LPVOID)this, 0))
-		{
-			fn_ = fn;			
-			return true;
-		}
-		else return false;
+		if (timer_ != INVALID_HANDLE_VALUE) deleteTimer();
+		
+		fn_ = fn;
+		
+		return ::CreateTimerQueueTimer(
+			&timer_,
+			NULL,
+			&TimerProc,
+			(LPVOID)this,
+			dueTime, 
+			period, 
+			WT_EXECUTEINTIMERTHREAD);
 	}
 
 private:
+	void deleteTimer()
+	{
+		::DeleteTimerQueueTimer(NULL, timer_, NULL);  
+		::CloseHandle (timer_);
+		timer_ = INVALID_HANDLE_VALUE;	
+	}
+	
 	HANDLE timer_;
 	boost::function<void ()> fn_;
-	boost::int64_t timeout_;
 	
-	friend VOID CALLBACK TimerAPCProc(LPVOID, DWORD, DWORD);
+	friend void CALLBACK TimerProc(void* lpParametar, BOOLEAN TimerOrWaitFired);
 };
 
-inline VOID CALLBACK TimerAPCProc(LPVOID lpArgToCompletionRoutine, 
-	DWORD dwTimerLowValue, DWORD dwTimerHighValue)
+inline void CALLBACK TimerProc(void* lpParametar, BOOLEAN TimerOrWaitFired)
 {
-	WinAPIWaitableTimer* timer_event = (WinAPIWaitableTimer*)lpArgToCompletionRoutine;
+	WinAPIWaitableTimer* timer_event = (WinAPIWaitableTimer*)lpParametar;
 	
 	timer_event->fn_();
 }
-

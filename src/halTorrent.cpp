@@ -253,11 +253,6 @@ bool nameLess(const TorrentDetail_ptr& left, const TorrentDetail_ptr& right)
 	return left->state() < right->state();
 }
 
-void TorrentDetails::sort(sortIndex i) const
-{
-	std::stable_sort(torrents_.begin(), torrents_.end(), &nameLess);
-}
-
 void TorrentDetails::sort(
 	boost::function<bool (const TorrentDetail_ptr&, const TorrentDetail_ptr&)> fn) const
 {
@@ -1005,30 +1000,42 @@ TorrentDetail_ptr BitTorrent::getTorrentDetail_vec(string filename)
 	return TorrentDetail_ptr();
 }
 
-
-TorrentDetails BitTorrent::getTorrentDetails(std::string selected, std::set<std::string> allSelected)
+TorrentDetails& BitTorrent::getTorrentDetails(std::string selected, std::set<std::string> allSelected)
 {
-	TorrentDetails torrentDetails;
+	return updateTorrentDetails(selected, allSelected);
+}
+
+TorrentDetails& BitTorrent::torrentDetails()
+{
+	return torrentDetails_;
+}
+
+TorrentDetails& BitTorrent::updateTorrentDetails(std::string focused, std::set<std::string> selected)
+{
+	mutex_t::scoped_lock l(torrentDetails_.mutex_);	
 	
-	torrentDetails.torrents_.reserve(pimpl->torrents.size());
+	torrentDetails_.clearAll(l);
+	
+	torrentDetails_.torrents_.reserve(pimpl->torrents.size());
 	
 	for (TorrentMap::const_iterator i=pimpl->torrents.begin(), e=pimpl->torrents.end(); i != e; ++i)
 	{	
+		string utf8Filename = hal::to_utf8((*i).second.filename());
 		TorrentDetail_ptr pT = (*i).second.getTorrentDetail_ptr();
 		
-		if (allSelected.find(hal::to_utf8((*i).second.filename())) != allSelected.end())
+		if (selected.find(utf8Filename) != selected.end())
 		{
-			torrentDetails.selectedTorrents_.push_back(pT);
+			torrentDetails_.selectedTorrents_.push_back(pT);
 		}
 		
-		if (selected == hal::to_utf8((*i).second.filename()))
-			torrentDetails.selectedTorrent_ = pT;
+		if (focused == utf8Filename)
+			torrentDetails_.selectedTorrent_ = pT;
 		
-		torrentDetails.torrentMap_[(*i).second.filename()] = pT;
-		torrentDetails.torrents_.push_back(pT);
+		torrentDetails_.torrentMap_[(*i).second.filename()] = pT;
+		torrentDetails_.torrents_.push_back(pT);
 	}
 	
-	return torrentDetails;
+	return torrentDetails_;
 }
 
 void BitTorrent::resumeAll()

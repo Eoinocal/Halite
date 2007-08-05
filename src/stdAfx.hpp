@@ -37,6 +37,8 @@ extern CAppModule _Module;
 #include <atlddx.h>
 #include <atlscrl.h>
 
+#include <stlsoft/util/nulldef.h>
+
 #include "global/wtl_app.hpp"
 
 #include "..\res\resource.h"
@@ -76,6 +78,7 @@ private:
 #include <boost/lexical_cast.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread/thread.hpp>
+#include <boost/thread/recursive_mutex.hpp>
 #include <boost/smart_ptr.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
@@ -97,5 +100,11 @@ using boost::scoped_ptr;
 using boost::filesystem::path;
 using boost::filesystem::wpath;
 using boost::noncopyable;
+
+namespace hal
+{
+	typedef boost::recursive_mutex mutex_t;
+	typedef boost::thread thread_t;
+}
 
 #define foreach BOOST_FOREACH

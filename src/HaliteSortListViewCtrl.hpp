@@ -415,9 +415,9 @@ public:
 	{		
 		if (canUpdate()) 
 		{
-			manager_.sync_list(true, true);
-//			if (syncTimer_.reset(200, bind(&thisClass::syncTimeout, this)))	
-//				hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"********** Set")).str().c_str())));
+//			manager_.sync_list(true, true);
+			if (syncTimer_.reset(50, 0, bind(&thisClass::syncTimeout, this)))	
+				hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"********** Set")).str().c_str())));
 		}
 		
 		return 0;
