@@ -376,7 +376,7 @@ public:
 		for (unsigned i=0; i<names_.size(); ++i)
 			SetColumnWidth(i, listColumnWidth_[i]);
 		
-		SetColumnOrderArray(names_.size(), &listColumnOrder_[0]);	
+		SetColumnOrderArray(names_.size(), &list ColumnOrder_[0]);	
 	}
 	
 	template<std::size_t Size>
