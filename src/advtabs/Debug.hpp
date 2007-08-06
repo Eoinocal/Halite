@@ -86,7 +86,7 @@ public:
 		load();
 	}
 	
-	LogListViewCtrl()
+	~LogListViewCtrl()
 	{
 		if (conn_.connected()) conn_.disconnect();
 	}

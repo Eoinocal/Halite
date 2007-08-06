@@ -6,7 +6,7 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/split_free.hpp>
-#include <boost/ptr_container/ptr_vector.hpp>
+#include <boost/ptr_container/ptr_map.hpp>
 
 #include "stdAfx.hpp"
 #include "halTorrent.hpp"
@@ -302,9 +302,8 @@ public:
 		WTL::CMenu menu_;
 	};
 	
-	class Adapter
+	struct ColumnAdapter
 	{
-	public:
 		virtual bool less(adapterType& l, adapterType& r) = 0;
 		virtual std::wstring print(adapterType& t) = 0;
 	};
@@ -480,8 +479,24 @@ public:
 	void clearAll() { manager_.clear(); }
 
 protected:
+	void regColumnAdapter(size_t key, ColumnAdapter* colAdapter)
+	{
+		columnAdapters_.insert(key, colAdapter);
+	}
+	
+	ColumnAdapter* getColumnAdapter(size_t index)
+	{
+		boost::ptr_map<size_t, ColumnAdapter>::iterator 
+			i = columnAdapters_.find(index);
+	
+		if (i != columnAdapters_.end())
+		{
+			return i->second;
+		}		
+		return NULL;
+	}
+
 	SelectionManager manager_;
-	boost::ptr_vector<Adapter> adapters_;
 	
 private:
 	void vectorSizePreConditions()
@@ -513,7 +528,9 @@ private:
 	std::vector<int> listColumnOrder_;
 	
 	int updateLock_;
-	friend class UpdateLock<thisClass>;
+	friend class UpdateLock<thisClass>;		
+	
+	boost::ptr_map<size_t, ColumnAdapter> columnAdapters_;
 	
 	WinAPIWaitableTimer syncTimer_;
 };

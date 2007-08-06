@@ -25,52 +25,28 @@ protected:
 
 	friend class listClass;
 	
-	class Adapters
+	struct ColumnAdapters
 	{
 	
 	typedef const hal::TorrentDetail_ptr tD;
-	typedef HaliteListViewCtrl::Adapter adpt;
+	typedef listClass::ColumnAdapter ColAdapter_t;
 	
-	class Filename : public adpt
+	struct Filename : public ColAdapter_t
 	{	
-	public:
-		virtual bool less(tD& l, tD& r)
-		{
-			return l->filename() < r->filename();
-		}
-		
-		virtual std::wstring print(tD& t)
-		{
-			return t->filename();
-		}		
+		virtual bool less(tD& l, tD& r)	{ return l->filename() < r->filename(); }		
+		virtual std::wstring print(tD& t) { return t->filename(); }		
 	};
 	
-	class State : public adpt
+	struct State : public ColAdapter_t
 	{	
-	public:
-		virtual bool less(tD& l, tD& r)
-		{
-			return l->state() < r->state();
-		}
-		
-		virtual std::wstring print(tD& t)
-		{
-			return t->state();
-		}		
+		virtual bool less(tD& l, tD& r) { return l->state() < r->state(); }		
+		virtual std::wstring print(tD& t) { return t->state(); }		
 	};
 	
-	class Tracker : public adpt
-	{	
-	public:
-		virtual bool less(tD& l, tD& r)
-		{
-			return l->currentTracker() < r->currentTracker();
-		}
-		
-		virtual std::wstring print(tD& t)
-		{
-			return t->currentTracker();
-		}		
+	struct Tracker : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)	{ return l->currentTracker() < r->currentTracker(); }		
+		virtual std::wstring print(tD& t) { return t->currentTracker(); }		
 	};
 	
 	};

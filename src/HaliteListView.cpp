@@ -10,9 +10,9 @@ HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	HalWindow.connectUiUpdate(bind(&HaliteListViewCtrl::uiUpdate, this, _1));
 	load();
 	
-	adapters_.push_back(new Adapters::Filename());
-	adapters_.push_back(new Adapters::State());
-	adapters_.push_back(new Adapters::Tracker());
+	regColumnAdapter(0, new ColumnAdapters::Filename());
+	regColumnAdapter(1, new ColumnAdapters::State());
+	regColumnAdapter(2, new ColumnAdapters::Tracker());
 }
 	
 void HaliteListViewCtrl::OnShowWindow(UINT, INT)
@@ -40,7 +40,7 @@ void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
 	{
 	UpdateLock<listClass> rLock(*this);
 	
-	tD.sort(bind(&Adapter::less, &adapters_[1], _1, _2));
+	//tD.sort(bind(&Adapter::less, &adapters_[1], _1, _2));
 	
 //	DeleteAllItems();
 	
@@ -98,11 +98,18 @@ int HaliteListViewCtrl::CompareItemsCustom(LVCompareParam* pItem1, LVComparePara
 	
 	GetItemText(pItem2->iItem, 0, buffer.c_array(), buffer.size());		
 	wstring torrent2 = buffer.data();
+	
+	listClass::ColumnAdapter* pCA = getColumnAdapter(1);
 		
-	bool less = adapters_[1].less(hal::bittorrent().torrentDetails().get(torrent1), 
-		hal::bittorrent().torrentDetails().get(torrent2));
+	if (pCA)
+	{
+		bool less = pCA->less(hal::bittorrent().torrentDetails().get(torrent1), 
+			hal::bittorrent().torrentDetails().get(torrent2));
 		
-	return (less) ? 1 : -1;
+		return (less) ? 1 : -1;
+	}
+	else return 0;
+
 }
 
 LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
