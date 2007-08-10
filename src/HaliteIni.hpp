@@ -16,7 +16,7 @@ public:
 		name_(name)
 	{}
 	
-	void save()
+	void Save()
 	{
 		std::wstringstream xml_data;
 		
@@ -27,7 +27,9 @@ public:
 		adapter_.save_stream_data(xml_data);
 	}
 	
-	void load()
+	void save() { Save(); }
+	
+	void Load()
 	{
 		std::wstringstream xml_data;		
 		adapter_.load_stream_data(xml_data);
@@ -47,6 +49,8 @@ public:
 				new hal::EventXmlException(hal::from_utf8(e.what()), hal::from_utf8(name_)))); 
 		}
 	}
+	
+	void load() { Load(); }
 	
 private:
 	hal::ini_adapter adapter_;

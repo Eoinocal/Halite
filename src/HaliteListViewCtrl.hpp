@@ -225,6 +225,17 @@ protected:
 	private:
 		WTL::CMenu menu_;
 	};
+	
+	template<typename T>
+	class column_type
+	{
+	public:
+		virtual ~column_type() = 0		
+		virtual bool less(cont T&, const T&) = 0
+		virtual std::string str() = 0;
+	};
+	
+	// EG T is a TorrentDetail, so have array column_types
 
 public:
 	typedef selection_manager<thisClass> selection_manage_class;

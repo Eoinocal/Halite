@@ -22,13 +22,13 @@ class HaliteListViewCtrl :
 protected:
 	typedef CHaliteIni<HaliteListViewCtrl> iniClass;
 	typedef CHaliteSortListViewCtrl<HaliteListViewCtrl, const hal::TorrentDetail_ptr> listClass;
+	typedef const hal::TorrentDetail_ptr tD;
 
 	friend class listClass;
 	
 	struct ColumnAdapters
 	{
 	
-	typedef const hal::TorrentDetail_ptr tD;
 	typedef listClass::ColumnAdapter ColAdapter_t;
 	
 	struct Filename : public ColAdapter_t
@@ -47,6 +47,12 @@ protected:
 	{
 		virtual bool less(tD& l, tD& r)	{ return l->currentTracker() < r->currentTracker(); }		
 		virtual std::wstring print(tD& t) { return t->currentTracker(); }		
+	};
+	
+	struct DistributedCopies : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)	{ return l->distributedCopies() < r->distributedCopies(); }		
+		virtual std::wstring print(tD& t) { return L"Eoin"; }		
 	};
 	
 	};
@@ -92,10 +98,9 @@ public:
     {
 		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
     }
-		
-	int CompareItemsCustom(LVCompareParam* /*pItem1*/, LVCompareParam* /*pItem2*/, int /*iSortCol*/);
+	
+	tD CustomItemConversion(LVCompareParam* param, int iSortCol);
 
-				
 private:
 	void OnAttach();
 	void OnDetach();

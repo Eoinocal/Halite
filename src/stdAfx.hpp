@@ -37,7 +37,7 @@ extern CAppModule _Module;
 #include <atlddx.h>
 #include <atlscrl.h>
 
-#include <stlsoft/util/nulldef.h>
+//#include <stlsoft/util/nulldef.h>
 
 #include "global/wtl_app.hpp"
 

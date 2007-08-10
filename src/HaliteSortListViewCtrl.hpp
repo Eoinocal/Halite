@@ -39,7 +39,7 @@ private:
 	T& window_;
 };
 
-template <class TBase, typename adapterType, size_t N=-1>
+template <class TBase, typename adapterType=void*, size_t N=-1>
 class CHaliteSortListViewCtrl : 
 	public CSortListViewCtrlImpl<CHaliteSortListViewCtrl<TBase, adapterType, N> >
 {
@@ -312,35 +312,41 @@ public:
 	typedef selection_manager SelectionManager;
 	typedef SelectionManager selection_manager_class;
 	
-	thisClass() :
+	thisClass(bool resMenu=true, bool resNames=true, bool resWidthsAndOrder=true) :
 		manager_(*this),
 		updateLock_(0)
 	{
-		if (TBase::LISTVIEW_ID_MENU)
+		if (resMenu && TBase::LISTVIEW_ID_MENU)
 		{
 			BOOL menu_created = menu_.LoadMenu(TBase::LISTVIEW_ID_MENU);
 			assert(menu_created);	
 		}
 
-		wstring column_names = hal::app().res_wstr(TBase::LISTVIEW_ID_COLUMNNAMES);
-		boost::split(names_, column_names, boost::is_any_of(L";"));
-		
-		wstring column_widths = hal::app().res_wstr(TBase::LISTVIEW_ID_COLUMNWIDTHS);
-		std::vector<wstring> widths;
-		boost::split(widths, column_widths, boost::is_any_of(L";"));
-				
-		listColumnWidth_.reserve(names_.size());	
-		listColumnOrder_.reserve(names_.size());
-		
-		for (size_t i=0; i<names_.size(); ++i)
+		if (resNames)
 		{
-			listColumnWidth_.push_back(lexical_cast<int>(widths[i]));
-			listColumnOrder_.push_back(i);
-		}	
+			wstring column_names = hal::app().res_wstr(TBase::LISTVIEW_ID_COLUMNNAMES);
+			boost::split(listNames_, column_names, boost::is_any_of(L";"));
+		}
+		
+		if (resWidthsAndOrder)
+		{
+			wstring column_widths = hal::app().res_wstr(TBase::LISTVIEW_ID_COLUMNWIDTHS);
+			std::vector<wstring> widths;
+			boost::split(widths, column_widths, boost::is_any_of(L";"));
+					
+			listWidths_.reserve(listNames_.size());	
+			listOrder_.reserve(listNames_.size());
+			
+			for (size_t i=0; i<listNames_.size(); ++i)
+			{
+				listWidths_.push_back(lexical_cast<int>(widths[i]));
+				listOrder_.push_back(i);
+			}
+		}
 	}
 
 	BEGIN_MSG_MAP_EX(thisClass)
-		REFLECTED_NOTIFY_CODE_HANDLER(NM_CLICK, OnClick)
+	//	REFLECTED_NOTIFY_CODE_HANDLER(NM_CLICK, OnClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_RCLICK, OnRClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_ITEMCHANGED, OnItemChanged)
 	//	REFLECTED_NOTIFY_CODE_HANDLER(LVN_COLUMNCLICK , OnColClick)
@@ -365,48 +371,72 @@ public:
 		header_.Attach(this->GetHeader());
 		header_.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
 			
-		foreach (wstring name, names_)
+		foreach (wstring name, listNames_)
 		{
 			int i = header_.GetItemCount();
 			
 			AddColumn(name.c_str(), i);
-			SetColumnSortType(i, LVCOLSORT_CUSTOM);
+		//	SetColumnSortType(i, LVCOLSORT_CUSTOM);
 		}		
 
-		for (unsigned i=0; i<names_.size(); ++i)
-			SetColumnWidth(i, listColumnWidth_[i]);
+		for (unsigned i=0; i<listNames_.size(); ++i)
+			SetColumnWidth(i, listOrder_[i]);
 		
-		SetColumnOrderArray(names_.size(), &list ColumnOrder_[0]);	
+		SetColumnOrderArray(listOrder_.size(), &listOrder_[0]);	
+	}
+	
+	template<typename N, typename W, typename O, typename P>
+	void SetDefaults(N nameList, W widthList, O orderList, P visibleList)
+	{
+		listNames_.assign(nameList.begin(), nameList.end());
+		listWidths_.assign(widthList.begin(), widthList.end());
+		listOrder_.assign(orderList.begin(), orderList.end());
+		listVisible_.assign(visibleList.begin(), visibleList.end());
 	}
 	
 	template<std::size_t Size>
 	void SetDefaults(array<int, Size> a)
 	{
-		assert (Size == names_.size());
+		assert (Size == listNames_.size());
 		vectorSizePreConditions();
 		
-		for (size_t i=0; i<names_.size(); ++i)
+		for (size_t i=0; i<listNames_.size(); ++i)
 		{
-			listColumnWidth_[i] = a[i];
-			listColumnOrder_[i] = i;
+			listWidths_[i] = a[i];
+			listOrder_[i] = i;
 		}		
 	}
 	
-	// Should probably make this redundant!!
-	void GetListViewDetails()
+	void ApplyDetails()
 	{
 		vectorSizePreConditions();
 		
-		GetColumnOrderArray(names_.size(), &listColumnOrder_[0]);
+		header_.Attach(this->GetHeader());
+		header_.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
 		
-		for (size_t i=0; i<names_.size(); ++i)
-			listColumnWidth_[i] = GetColumnWidth(i);	
+		for (int i = header_.GetItemCount(); i<listNames_.size(); i = header_.GetItemCount())
+		{
+			AddColumn(listNames_[i].c_str(), i);
+			SetColumnWidth(i, listWidths_[i]);
+		}
+		
+		SetColumnOrderArray(listNames_.size(), &listOrder_[0]);
+	}
+	
+	void GetListViewDetails()
+	{
+		vectorSizePreConditions();		
+		
+		for (size_t i=0; i<listNames_.size(); ++i)
+		{
+			listWidths_[i] = GetColumnWidth(i);
+		}
+		
+		GetColumnOrderArray(listNames_.size(), &listOrder_[0]);
 	}
 
 	LRESULT OnClick(int, LPNMHDR pnmh, BOOL&)
 	{
-	//	manager().sync_list(true);
-
 		return 0;
 	}
 
@@ -414,9 +444,11 @@ public:
 	{		
 		if (canUpdate()) 
 		{
-//			manager_.sync_list(true, true);
-			if (syncTimer_.reset(50, 0, bind(&thisClass::syncTimeout, this)))	
-				hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"********** Set")).str().c_str())));
+			if (syncTimer_.reset(50, 0, bind(&thisClass::syncTimeout, this)))
+			{
+			//	hal::event().post(shared_ptr<hal::EventDetail>
+			//		(new hal::EventDebug(hal::Event::info, (wformat(L"Set")).str().c_str())));
+			}
 		}
 		
 		return 0;
@@ -449,19 +481,21 @@ public:
 		MessageBox((lexical_cast<wstring>(pnlv->iSubItem)).c_str(), L"Hi", 0);
 		return 0;
 	}
-		
-	int CompareItemsCustom(LVCompareParam* pItem1, LVCompareParam* pItem2, int iSortCol)
+	
+	void SetColumnSortType(int iCol, WORD wType, ColumnAdapter* colAdapter=NULL)
 	{
-		TBase* pT = static_cast<TBase*>(this);
-		return pT->CompareItemsCustom(pItem1, pItem2, iSortCol);
+		parentClass::SetColumnSortType(iCol, wType);
+		
+		if (LVCOLSORT_CUSTOM == wType)
+			regColumnAdapter(iCol, colAdapter);
 	}
 	
 	friend class boost::serialization::access;
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)
     {
-        ar & boost::serialization::make_nvp("width", listColumnWidth_);
-        ar & boost::serialization::make_nvp("order", listColumnOrder_);
+        ar & boost::serialization::make_nvp("width", listWidths_);
+        ar & boost::serialization::make_nvp("order", listOrder_);
     }
 
 	const SelectionManager& manager() { return manager_; }
@@ -477,10 +511,37 @@ public:
 	void clearFocused() { manager_.clear(); }
 	void clearSelected() { manager_.clear_all_selected(); }
 	void clearAll() { manager_.clear(); }
-
-protected:
+	
+	int CompareItemsCustom(LVCompareParam* pItem1, LVCompareParam* pItem2, int iSortCol)
+	{
+		TBase* pT = static_cast<TBase*>(this);
+		
+		adapterType left = pT->CustomItemConversion(pItem1, iSortCol);
+		adapterType right = pT->CustomItemConversion(pItem2, iSortCol);
+		
+		return pT->CustomItemComparision(left, right, iSortCol);
+	}
+	
+protected:	
+	inline void* CustomItemConversion(LVCompareParam* param, int iSortCol)
+	{
+		assert(false);
+		return NULL;
+	}
+	
+	int CustomItemComparision(adapterType left, adapterType right, int iSortCol)
+	{
+		ColumnAdapter* pCA = getColumnAdapter(iSortCol);
+		
+		if (pCA)
+			return (pCA->less(left, right)) ? 1 : -1;
+		else 
+			return 0;
+	}
+	
 	void regColumnAdapter(size_t key, ColumnAdapter* colAdapter)
 	{
+		assert (colAdapter);
 		columnAdapters_.insert(key, colAdapter);
 	}
 	
@@ -501,7 +562,7 @@ protected:
 private:
 	void vectorSizePreConditions()
 	{
-		if (listColumnWidth_.size() != names_.size())
+/*		if (listColumnWidth_.size() != names_.size())
 		{
 			listColumnWidth_.clear();
 			listColumnWidth_.insert(listColumnWidth_.end(), names_.size(), 50);	
@@ -511,21 +572,25 @@ private:
 		{		
 			listColumnOrder_.clear();
 			listColumnOrder_.insert(listColumnOrder_.end(), names_.size(), 0);
-		}		
+		}
+*/
 	}
 	
 	void syncTimeout()
 	{
-		hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"********** Signaled")).str().c_str())));
+	//	hal::event().post(shared_ptr<hal::EventDetail>
+	//		(new hal::EventDebug(hal::Event::info, (wformat(L"Signaled")).str().c_str())));
 		
 		manager_.sync_list(true, true);
 	}
-		
+	
 	WTL::CMenu menu_;
-	CHaliteHeaderCtrl header_;
-	std::vector<wstring> names_;
-	std::vector<int> listColumnWidth_;
-	std::vector<int> listColumnOrder_;
+	CHaliteHeaderCtrl header_;	
+	
+	std::vector<wstring> listNames_;
+	std::vector<int> listWidths_;
+	std::vector<int> listOrder_;
+	std::vector<bool> listVisible_;
 	
 	int updateLock_;
 	friend class UpdateLock<thisClass>;		
