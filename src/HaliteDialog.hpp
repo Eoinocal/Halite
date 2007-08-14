@@ -3,7 +3,7 @@
 
 #include "stdAfx.hpp"
 #include "DdxEx.hpp"
-#include "HaliteListViewCtrl.hpp"
+#include "HaliteSortListViewCtrl.hpp"
 #include "HaliteDialogBase.hpp"
 #include "HaliteIni.hpp"
 
@@ -12,35 +12,56 @@
 
 class ui_signal;
 
-//class HaliteListViewCtrl;
-//typedef CHaliteListViewCtrl<HaliteListViewCtrl>::selection_manage_class ListViewManager;
-
 class HaliteDialog :
 	public CDialogImpl<HaliteDialog>,
 	public CDialogResize<HaliteDialog>,
 	public CWinDataExchangeEx<HaliteDialog>,
 	public CHaliteDialogBase<HaliteDialog>,
-//	public CHaliteIni<HaliteDialog>,
 	private boost::noncopyable
 {	
 
 	typedef HaliteDialog thisClass;
 	typedef CDialogImpl<HaliteDialog> baseClass;
 	typedef CDialogResize<HaliteDialog> resizeClass;
-//	typedef CHaliteIni<HaliteDialog> iniClass;
 	typedef CHaliteDialogBase<HaliteDialog> dialogBaseClass;
 		
 	class DialogListView :
-		public CHaliteListViewCtrl<DialogListView>,
+		public CHaliteSortListViewCtrl<DialogListView, const hal::PeerDetail>,
 		public CHaliteIni<DialogListView>,
 		private boost::noncopyable
 	{
 	protected:
 		typedef HaliteDialog::DialogListView thisClass;
 		typedef CHaliteIni<thisClass> iniClass;
-		typedef CHaliteListViewCtrl<thisClass> listClass;
+		typedef CHaliteSortListViewCtrl<DialogListView, const hal::PeerDetail> listClass;
+		typedef const hal::PeerDetail pD;
 	
 		friend class listClass;
+		
+		struct ColumnAdapters
+		{
+		
+		typedef listClass::ColumnAdapter ColAdapter_t;
+		
+		struct SpeedDown : public ColAdapter_t
+		{
+			virtual bool less(pD& l, pD& r)	{ return l.speed.first < r.speed.first; }		
+			virtual std::wstring print(pD& p) 
+			{
+				return (wformat(L"%1$.2fkb/s") % (p.speed.first/1024)).str(); 
+			}		
+		};
+		
+		struct SpeedUp : public ColAdapter_t
+		{
+			virtual bool less(pD& l, pD& r)	{ return l.speed.second < r.speed.second; }		
+			virtual std::wstring print(pD& p) 
+			{
+				return (wformat(L"%1$.2fkb/s") % (p.speed.second/1024)).str(); 
+			}		
+		};
+		
+		};
 	
 	public:	
 		enum { 
@@ -49,17 +70,29 @@ class HaliteDialog :
 			LISTVIEW_ID_COLUMNWIDTHS = HAL_DIALOGPEER_LISTVIEW_COS_DEFAULTS
 		};
 	
-		BEGIN_MSG_MAP_EX(DialogListView)
+		BEGIN_MSG_MAP_EX(thisClass)
 			MSG_WM_DESTROY(OnDestroy)
 	
-			CHAIN_MSG_MAP(CHaliteListViewCtrl<DialogListView>)
+			CHAIN_MSG_MAP(listClass)
 			DEFAULT_REFLECTION_HANDLER()
 		END_MSG_MAP()
 	
 		DialogListView() :
-			iniClass("listviews/dialog", "DialogPeersList")
+			iniClass("listviews/dialog", "DialogPeersList"),
+			listClass(true,false,false)
 		{					
-			load();
+			std::vector<wstring> names;	
+			wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
+
+			// "Peer;Country;Download;Upload;Type;Client"
+			boost::split(names, column_names, boost::is_any_of(L";"));
+			
+			array<int, 6> widths = {100,20,70,70,70,100};
+			array<int, 6> order = {0,1,2,3,4,5};
+			array<bool, 6> visible = {true,true,true,true,true,true};
+			
+			SetDefaults(names, widths, order, visible);
+			Load();
 		}
 		
 		void saveSettings()
@@ -70,15 +103,20 @@ class HaliteDialog :
 		
 		void OnAttach()
 		{
-			SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);			
-			SetListViewDetails();
+			SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
+			SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
+			
+			ApplyDetails();
+			
+			SetColumnSortType(2, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedDown());
+			SetColumnSortType(3, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedUp());
 		}
 		
 		void OnDestroy()
 		{
 			saveSettings();
 		}
-				
+		
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
@@ -86,6 +124,34 @@ class HaliteDialog :
 			ar & boost::serialization::make_nvp("listview", 
 				boost::serialization::base_object<listClass>(*this));
 		}
+		
+		pD CustomItemConversion(LVCompareParam* param, int iSortCol)
+		{			
+		//	DWORD index = GetItemData(param->iItem);
+		
+			return hal::PeerDetail(L"Eóin");
+			
+			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"peerDetails get %1%, %2%. Item count %3%") % param->iItem % param->dwItemData % GetItemCount()).str().c_str())));
+			
+			return peerDetails_[param->dwItemData];
+		}		
+		
+		int CustomItemComparision(pD left, pD right, int iSortCol)
+		{
+			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"peerDetails left %1%, right %2%") % left.ipAddress % right.ipAddress).str().c_str())));
+			return 1;
+			ColumnAdapter* pCA = getColumnAdapter(iSortCol);
+			
+			if (pCA)
+				return (pCA->less(left, right)) ? 1 : -1;
+			else 
+				return 0;
+		}
+		
+		void uiUpdate(const hal::TorrentDetails& tD);
+		
+	private:
+		hal::PeerDetails peerDetails_;
 	};
 	
 public:

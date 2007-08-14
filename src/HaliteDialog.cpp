@@ -11,10 +11,7 @@
 
 HaliteDialog::HaliteDialog(HaliteWindow& halWindow) :
 		dialogBaseClass(halWindow)
-{
-//	ui_.attach(bind(&HaliteDialog::updateDialog, this));
-//	selection_manager_.attach(bind(&HaliteDialog::selectionChanged, this, _1));
-	
+{	
 //	load();
 }
 
@@ -161,6 +158,74 @@ LRESULT HaliteDialog::OnCltColor(HDC hDC, HWND hWnd)
 	return (LRESULT)::GetCurrentObject(hDC, OBJ_BRUSH);
 }
 
+void HaliteDialog::DialogListView::uiUpdate(const hal::TorrentDetails& tD) 
+{	
+	if (canUpdate())
+	{
+		UpdateLock<listClass> rLock(*this);
+//		hal::mutex_t::scoped_lock l(mutex_);
+		
+		peerDetails_ = tD.selectedTorrent()->peerDetails();
+		//clearAll();
+	
+		std::sort(peerDetails_.begin(), peerDetails_.end());
+		
+		// Wipe details not present
+		for(int i = 0; i < GetItemCount(); /*nothing here*/)
+		{
+			boost::array<wchar_t, MAX_PATH> ip_address;
+			GetItemText(i, 0, ip_address.c_array(), MAX_PATH);
+			
+			hal::PeerDetail ip(ip_address.data());
+			hal::PeerDetails::iterator iter = 
+				std::lower_bound(peerDetails_.begin(), peerDetails_.end(), ip);
+			
+			if (iter == peerDetails_.end() || !((*iter) == ip))
+			{
+				DeleteItem(i);
+			}
+			else
+			{
+				SetItemData(i, std::distance(peerDetails_.begin(), iter));
+			
+				DWORD index = GetItemData(i);		
+				hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"peerDetails set A %1%, %2% - %3%") % i % std::distance(peerDetails_.begin(), iter) % index).str().c_str())));
+
+				++i;
+			}
+		}
+		
+		// Add additional details
+		for (hal::PeerDetails::iterator i=peerDetails_.begin(), e=peerDetails_.end();
+			i != e; ++i)
+		{			
+			LV_FINDINFO findInfo; 
+			findInfo.flags = LVFI_STRING;
+			findInfo.psz = const_cast<LPTSTR>((*i).ipAddress.c_str());
+			
+			int itemPos = FindItem(&findInfo, -1);
+			if (itemPos < 0)
+				itemPos = AddItem(GetItemCount(), 0, (*i).ipAddress.c_str(), 0);
+	
+			SetItemData(itemPos, std::distance(peerDetails_.begin(), i));
+			
+			DWORD index = GetItemData(itemPos);			
+			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"peerDetails set B %1%, %2% - %3%") % itemPos % std::distance(peerDetails_.begin(), i) % index).str().c_str())));
+			
+			SetItemText(itemPos, 1, (*i).country.c_str());
+			
+			SetItemText(itemPos, 2, getColumnAdapter(2)->print(*i).c_str());
+			
+			SetItemText(itemPos, 3, getColumnAdapter(3)->print(*i).c_str());
+			
+			if ((*i).seed)
+				SetItemText(itemPos, 4, L"Seed");
+			
+			SetItemText(itemPos, 5, (*i).client.c_str());
+		}			
+	}
+}
+
 void HaliteDialog::uiUpdate(const hal::TorrentDetails& tD) 
 {	
 	if (tD.selectedTorrent()) 	
@@ -186,41 +251,8 @@ void HaliteDialog::uiUpdate(const hal::TorrentDetails& tD)
 				% (static_cast<float>(tD.selectedTorrent()->totalWantedDone())/(1024*1024))
 				% (static_cast<float>(tD.selectedTorrent()->totalWanted())/(1024*1024))
 			).str().c_str());
-				
-		m_list.SetRedraw(false);
-		m_list.manager().clearAll();
 		
-		if (!tD.selectedTorrent()->peerDetails().empty())
-		{			
-			
-			foreach (const hal::PeerDetail& peer, tD.selectedTorrent()->peerDetails())
-			{			
-				LV_FINDINFO findInfo; 
-				findInfo.flags = LVFI_STRING;
-				findInfo.psz = const_cast<LPTSTR>(peer.ipAddress.c_str());
-				
-				int itemPos = m_list.FindItem(&findInfo, -1);
-				if (itemPos < 0)
-					itemPos = m_list.AddItem(0, 0, peer.ipAddress.c_str(), 0);
-				
-				m_list.SetItemText(itemPos, 1,
-					(wformat(L"%1$.2fKB/s") 
-						% (peer.speed.first/1024)
-					).str().c_str());	
-				
-				m_list.SetItemText(itemPos, 2,
-					(wformat(L"%1$.2fKB/s") 
-						% (peer.speed.second/1024)
-					).str().c_str());	
-				
-				if (peer.seed)
-					m_list.SetItemText(itemPos, 3, L"Seed");
-				
-				m_list.SetItemText(itemPos, 4, peer.client.c_str());
-			}			
-		}
-		
-		m_list.SetRedraw(true);
+		m_list.uiUpdate(tD);
 	}
 	else
 	{

@@ -54,6 +54,7 @@ struct PeerDetail
 	}
 	
 	wstring ipAddress;
+	wstring country;
 	std::pair<float,float> speed;
 	bool seed;
 	std::wstring client;

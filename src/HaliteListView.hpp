@@ -1,4 +1,4 @@
-
+﻿
 #pragma once
 
 #include "stdAfx.hpp"
@@ -49,10 +49,97 @@ protected:
 		virtual std::wstring print(tD& t) { return t->currentTracker(); }		
 	};
 	
+	struct SpeedDown : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)	{ return l->speed().first < r->speed().first; }		
+		virtual std::wstring print(tD& t) 
+		{
+			return (wformat(L"%1$.2fkb/s") % (t->speed().first/1024)).str(); 
+		}		
+	};
+	
+	struct SpeedUp : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)	{ return l->speed().second < r->speed().second; }		
+		virtual std::wstring print(tD& t) 
+		{
+			return (wformat(L"%1$.2fkb/s") % (t->speed().second/1024)).str(); 
+		}		
+	};
+
+	struct Completion : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)	{ return l->completion() < r->completion(); }		
+		virtual std::wstring print(tD& t) 
+		{
+			return (wformat(L"%1$.2f%%") % (t->completion()*100)).str(); 
+		}		
+	};
+
+	struct Peers : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)	{ return l->peers() < r->seeds(); }		
+		virtual std::wstring print(tD& t) { return lexical_cast<wstring>(t->peers()); }		
+	};
+	
+	struct Seeds : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)	{ return l->distributedCopies() < r->distributedCopies(); }		
+		virtual std::wstring print(tD& t) { return lexical_cast<wstring>(t->seeds()); }		
+	};
+	
+	struct ETA : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)	{ return l->estimatedTimeLeft() < r->estimatedTimeLeft(); }		
+		virtual std::wstring print(tD& t) 
+		{ 
+			if (!t->estimatedTimeLeft().is_special())
+			{
+				return hal::from_utf8(
+					boost::posix_time::to_simple_string(t->estimatedTimeLeft()));
+			}
+			else
+			{
+				return L"∞";		
+			}
+		}		
+	};
+	
+	struct UpdateTrackerIn : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)	{ return l->updateTrackerIn() < r->updateTrackerIn(); }		
+		virtual std::wstring print(tD& t) 
+		{ 
+			if (!t->updateTrackerIn().is_special())
+			{
+				return hal::from_utf8(
+					boost::posix_time::to_simple_string(t->updateTrackerIn()));
+			}
+			else
+			{
+				return L"∞";		
+			}
+		}		
+	};
+	
+	struct Ratio : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)	{ return l->ratio() < r->ratio(); }		
+		virtual std::wstring print(tD& t) { return lexical_cast<wstring>(t->ratio()); }		
+	};
+	
 	struct DistributedCopies : public ColAdapter_t
 	{
 		virtual bool less(tD& l, tD& r)	{ return l->distributedCopies() < r->distributedCopies(); }		
-		virtual std::wstring print(tD& t) { return L"Eoin"; }		
+		virtual std::wstring print(tD& t) 
+		{ 
+			float copies = t->distributedCopies();
+			
+			if (copies < 0)
+				return L"Seeding"; 
+			else
+				return lexical_cast<wstring>(copies);		
+		}		
 	};
 	
 	};
@@ -104,6 +191,8 @@ public:
 private:
 	void OnAttach();
 	void OnDetach();
+	
+	enum { NumberOfColumns_s = 12 };
 	
 	HaliteWindow& halWindow_;
 };

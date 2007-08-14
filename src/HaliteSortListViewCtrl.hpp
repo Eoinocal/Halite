@@ -285,8 +285,6 @@ public:
 			minfo.dwTypeData = L"Hello";
 			
 			menu_.InsertMenuItem(0, false, &minfo);
-//			TBase* pT = static_cast<TBase*>(this);
-//			pT->OnAttach();
 		}
 		
 		LRESULT OnRClick(int i, LPNMHDR pnmh, BOOL&)
@@ -333,7 +331,7 @@ public:
 			wstring column_widths = hal::app().res_wstr(TBase::LISTVIEW_ID_COLUMNWIDTHS);
 			std::vector<wstring> widths;
 			boost::split(widths, column_widths, boost::is_any_of(L";"));
-					
+			
 			listWidths_.reserve(listNames_.size());	
 			listOrder_.reserve(listNames_.size());
 			
@@ -376,7 +374,6 @@ public:
 			int i = header_.GetItemCount();
 			
 			AddColumn(name.c_str(), i);
-		//	SetColumnSortType(i, LVCOLSORT_CUSTOM);
 		}		
 
 		for (unsigned i=0; i<listNames_.size(); ++i)
@@ -456,7 +453,7 @@ public:
 
 	LRESULT OnRClick(int i, LPNMHDR pnmh, BOOL&)
 	{
-		hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"RClick %1%") % pnmh->code).str().c_str())));
+		//hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"RClick %1%") % pnmh->code).str().c_str())));
 		LPNMITEMACTIVATE pia = (LPNMITEMACTIVATE)pnmh;
 		manager_.sync_list(true);
 		
@@ -514,6 +511,9 @@ public:
 	
 	int CompareItemsCustom(LVCompareParam* pItem1, LVCompareParam* pItem2, int iSortCol)
 	{
+		//return 1;
+		//hal::mutex_t::scoped_lock l(mutex_);
+		
 		TBase* pT = static_cast<TBase*>(this);
 		
 		adapterType left = pT->CustomItemConversion(pItem1, iSortCol);
@@ -556,8 +556,10 @@ protected:
 		}		
 		return NULL;
 	}
-
+	
 	SelectionManager manager_;
+
+	//hal::mutex_t mutex_;
 	
 private:
 	void vectorSizePreConditions()
