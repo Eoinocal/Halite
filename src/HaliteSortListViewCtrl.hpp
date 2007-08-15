@@ -349,16 +349,20 @@ public:
 		{
 			BOOL menu_created = menu_.LoadMenu(TBase::LISTVIEW_ID_MENU);
 			assert(menu_created);	
+			
+			menu_ = menu_.GetSubMenu(0);
 		}
 		
 		if (!menu_)
-			menu_.CreatePopupMenu();
-		else
 		{
-			minfo.fMask = MIIM_FTYPE;
+			menu_.CreatePopupMenu();
+		}
+		else
+		{				
+			minfo.fMask = MIIM_SUBMENU;
 			minfo.fType = MFT_SEPARATOR;
 			
-			menu_.InsertMenuItem(3, true, &minfo);		
+			menu_.InsertMenuItem(menu_.GetMenuItemCount(), true, &minfo);		
 		}
 
 		minfo.fMask = MIIM_STRING|MIIM_ID|MIIM_FTYPE|MIIM_STATE;
@@ -366,7 +370,7 @@ public:
 		minfo.fState = MFS_CHECKED;
 		minfo.wID = ID_LVM_AUTOSORT;
 		
-		wstring autoarrange = hal::app().res_wstr(TBase::LISTVIEW_ID_COLUMNNAMES);
+		wstring autoarrange = hal::app().res_wstr(HAL_AUTOSORT);
 		minfo.dwTypeData = (LPWSTR)autoarrange.c_str();
 		
 		menu_.InsertMenuItem(menu_.GetMenuItemCount(), true, &minfo);
@@ -505,12 +509,10 @@ public:
 		if (menu_)
 		{
 			assert (menu_.IsMenu());
-			CMenuHandle sMenu = menu_.GetSubMenu(0);
-			assert (sMenu.IsMenu());
 	
 			POINT ptPoint;
 			GetCursorPos(&ptPoint);
-			sMenu.TrackPopupMenu(0, ptPoint.x, ptPoint.y, m_hWnd);
+			menu_.TrackPopupMenu(0, ptPoint.x, ptPoint.y, m_hWnd);
 		}
 
 		return 0;

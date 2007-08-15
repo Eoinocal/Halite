@@ -244,3 +244,4 @@
 #define HAL_DOWNLOADT_SUMMARY           40094
 #define HAL_AUTOSORT					40095
 #define ID_LVM_AUTOSORT					40096
+#define IDR_BLANK_MENU					40097
