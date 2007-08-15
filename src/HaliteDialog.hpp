@@ -127,19 +127,15 @@ class HaliteDialog :
 		
 		pD CustomItemConversion(LVCompareParam* param, int iSortCol)
 		{			
-		//	DWORD index = GetItemData(param->iItem);
-		
-			return hal::PeerDetail(L"Eóin");
-			
-			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"peerDetails get %1%, %2%. Item count %3%") % param->iItem % param->dwItemData % GetItemCount()).str().c_str())));
+		//	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"peerDetails get %1%, %2%. Item count %3%") % param->iItem % param->dwItemData % GetItemCount()).str().c_str())));
 			
 			return peerDetails_[param->dwItemData];
 		}		
 		
 		int CustomItemComparision(pD left, pD right, int iSortCol)
 		{
-			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"peerDetails left %1%, right %2%") % left.ipAddress % right.ipAddress).str().c_str())));
-			return 1;
+		//	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"peerDetails left %1%, right %2%") % left.ipAddress % right.ipAddress).str().c_str())));
+
 			ColumnAdapter* pCA = getColumnAdapter(iSortCol);
 			
 			if (pCA)

@@ -160,14 +160,11 @@ LRESULT HaliteDialog::OnCltColor(HDC hDC, HWND hWnd)
 
 void HaliteDialog::DialogListView::uiUpdate(const hal::TorrentDetails& tD) 
 {	
-	if (canUpdate())
-	{
-		UpdateLock<listClass> rLock(*this);
-//		hal::mutex_t::scoped_lock l(mutex_);
-		
+	TryUpdateLock<listClass> lock(*this);
+	if (lock) 
+	{		
 		peerDetails_ = tD.selectedTorrent()->peerDetails();
-		//clearAll();
-	
+		
 		std::sort(peerDetails_.begin(), peerDetails_.end());
 		
 		// Wipe details not present
@@ -187,10 +184,6 @@ void HaliteDialog::DialogListView::uiUpdate(const hal::TorrentDetails& tD)
 			else
 			{
 				SetItemData(i, std::distance(peerDetails_.begin(), iter));
-			
-				DWORD index = GetItemData(i);		
-				hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"peerDetails set A %1%, %2% - %3%") % i % std::distance(peerDetails_.begin(), iter) % index).str().c_str())));
-
 				++i;
 			}
 		}
@@ -206,11 +199,8 @@ void HaliteDialog::DialogListView::uiUpdate(const hal::TorrentDetails& tD)
 			int itemPos = FindItem(&findInfo, -1);
 			if (itemPos < 0)
 				itemPos = AddItem(GetItemCount(), 0, (*i).ipAddress.c_str(), 0);
-	
-			SetItemData(itemPos, std::distance(peerDetails_.begin(), i));
 			
-			DWORD index = GetItemData(itemPos);			
-			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"peerDetails set B %1%, %2% - %3%") % itemPos % std::distance(peerDetails_.begin(), i) % index).str().c_str())));
+			SetItemData(itemPos, std::distance(peerDetails_.begin(), i));
 			
 			SetItemText(itemPos, 1, (*i).country.c_str());
 			
@@ -222,7 +212,11 @@ void HaliteDialog::DialogListView::uiUpdate(const hal::TorrentDetails& tD)
 				SetItemText(itemPos, 4, L"Seed");
 			
 			SetItemText(itemPos, 5, (*i).client.c_str());
-		}			
+		}
+		
+		int iCol = GetSortColumn();
+		if (iCol >= 0 && iCol < m_arrColSortType.GetSize())
+			DoSortItems(iCol, IsSortDescending());
 	}
 }
 

@@ -39,6 +39,41 @@ private:
 	T& window_;
 };
 
+template<class T>
+class TryUpdateLock
+{
+public:
+	TryUpdateLock(T& window) :
+		window_(window),
+		locked_(false)
+	{
+		if (0 == window_.updateLock_)
+		{
+			locked_=  true;
+			++window_.updateLock_;
+			window_.SetRedraw(false);
+		}
+	}
+	
+	~TryUpdateLock()
+	{
+		if (locked_ && !--window_.updateLock_)
+			unlock();
+	}
+	
+	void unlock()
+	{
+		window_.SetRedraw(true);
+		window_.InvalidateRect(NULL, true);
+	}
+	
+	operator bool() const { return locked_; }
+	
+private:
+	T& window_;
+	bool locked_;
+};
+
 template <class TBase, typename adapterType=void*, size_t N=-1>
 class CHaliteSortListViewCtrl : 
 	public CSortListViewCtrlImpl<CHaliteSortListViewCtrl<TBase, adapterType, N> >
@@ -208,8 +243,6 @@ public:
 			// Prevent changing states from signaling another sync
 			UpdateLock<thisClass> lock(m_list_);
 			
-//			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Clear")).str().c_str())));
-	
 			m_list_.DeleteItem(selectedIndex());
 			
 			sync_list(true);	
@@ -220,8 +253,6 @@ public:
 			// Prevent changing states from signaling another sync
 			UpdateLock<thisClass> lock(m_list_);
 			
-//			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"ClearAllSelected")).str().c_str())));
-
 			int total = m_list_.GetItemCount();
 			
 			for (int i=total-1; i>=0; --i)
@@ -241,8 +272,6 @@ public:
 			// Prevent changing states from signaling another sync
 			UpdateLock<thisClass> lock(m_list_);
 			
-//			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"ClearAll")).str().c_str())));
-
 			m_list_.DeleteAllItems();
 			all_selected_.clear();
 			
@@ -314,11 +343,33 @@ public:
 		manager_(*this),
 		updateLock_(0)
 	{
+		MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
+		
 		if (resMenu && TBase::LISTVIEW_ID_MENU)
 		{
 			BOOL menu_created = menu_.LoadMenu(TBase::LISTVIEW_ID_MENU);
 			assert(menu_created);	
 		}
+		
+		if (!menu_)
+			menu_.CreatePopupMenu();
+		else
+		{
+			minfo.fMask = MIIM_FTYPE;
+			minfo.fType = MFT_SEPARATOR;
+			
+			menu_.InsertMenuItem(3, true, &minfo);		
+		}
+
+		minfo.fMask = MIIM_STRING|MIIM_ID|MIIM_FTYPE|MIIM_STATE;
+		minfo.fType = MFT_STRING;
+		minfo.fState = MFS_CHECKED;
+		minfo.wID = ID_LVM_AUTOSORT;
+		
+		wstring autoarrange = hal::app().res_wstr(TBase::LISTVIEW_ID_COLUMNNAMES);
+		minfo.dwTypeData = (LPWSTR)autoarrange.c_str();
+		
+		menu_.InsertMenuItem(menu_.GetMenuItemCount(), true, &minfo);
 
 		if (resNames)
 		{
@@ -439,25 +490,19 @@ public:
 
 	LRESULT OnItemChanged(int, LPNMHDR pnmh, BOOL&)
 	{		
-		if (canUpdate()) 
-		{
-			if (syncTimer_.reset(50, 0, bind(&thisClass::syncTimeout, this)))
-			{
-			//	hal::event().post(shared_ptr<hal::EventDetail>
-			//		(new hal::EventDebug(hal::Event::info, (wformat(L"Set")).str().c_str())));
-			}
-		}
+		TryUpdateLock<thisClass> lock(*this);
+		if (lock) 
+			!syncTimer_.reset(50, 0, bind(&thisClass::syncTimeout, this));
 		
 		return 0;
 	}
 
 	LRESULT OnRClick(int i, LPNMHDR pnmh, BOOL&)
 	{
-		//hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"RClick %1%") % pnmh->code).str().c_str())));
 		LPNMITEMACTIVATE pia = (LPNMITEMACTIVATE)pnmh;
 		manager_.sync_list(true);
 		
-		if (TBase::LISTVIEW_ID_MENU)
+		if (menu_)
 		{
 			assert (menu_.IsMenu());
 			CMenuHandle sMenu = menu_.GetSubMenu(0);
@@ -511,8 +556,7 @@ public:
 	
 	int CompareItemsCustom(LVCompareParam* pItem1, LVCompareParam* pItem2, int iSortCol)
 	{
-		//return 1;
-		//hal::mutex_t::scoped_lock l(mutex_);
+		UpdateLock<thisClass> lock(*this);
 		
 		TBase* pT = static_cast<TBase*>(this);
 		
@@ -558,8 +602,6 @@ protected:
 	}
 	
 	SelectionManager manager_;
-
-	//hal::mutex_t mutex_;
 	
 private:
 	void vectorSizePreConditions()
@@ -595,7 +637,8 @@ private:
 	std::vector<bool> listVisible_;
 	
 	int updateLock_;
-	friend class UpdateLock<thisClass>;		
+	friend class UpdateLock<thisClass>;	
+	friend class TryUpdateLock<thisClass>;		
 	
 	boost::ptr_map<size_t, ColumnAdapter> columnAdapters_;
 	
