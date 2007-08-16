@@ -19,9 +19,7 @@ Halite& halite()
 
 static class halite_log_file : public boost::signals::trackable
 {
-public:
-	halite_log_file();
-	
+public:	
 	void operator()(shared_ptr<hal::EventDetail> event)
 	{
 		if (halite().logToFile())
@@ -36,17 +34,19 @@ public:
 		}
 	}
 	
+	void connect() 
+	{ 
+		conn_ = hal::event().attach(bind(&halite_log_file::operator(), this, _1)); 
+		assert(conn_.connected());
+	}
+	
 	void disconnect() { conn_.disconnect(); }
 	
 private:
 	std::wofstream wofs;
-	boost::signals::scoped_connection conn_;
+	boost::signals::connection conn_;
 	
 } halite_log_file_;
-
-halite_log_file::halite_log_file() :
-	conn_(hal::event().attach(bind(&halite_log_file::operator(), &halite_log_file_, _1)))
-{}
 
 static const unsigned WMU_ARE_YOU_ME = ::RegisterWindowMessage(WMU_ARE_YOU_ME_STRING);
 
@@ -125,6 +125,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		{	
 			hal::app().set_initial_hinstance(hInstance);
 			if (halite().dll() != L"") hal::app().set_res_dll(halite().dll());
+			
+			halite_log_file_.connect();
 			
 			HaliteWindow wndMain(WMU_ARE_YOU_ME);
 			if (wndMain.CreateEx() == NULL)

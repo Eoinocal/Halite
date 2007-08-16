@@ -16,7 +16,7 @@ class HaliteWindow;
 
 class HaliteListViewCtrl :
 	public CHaliteSortListViewCtrl<HaliteListViewCtrl, const hal::TorrentDetail_ptr>,
-	public CHaliteIni<HaliteListViewCtrl>,
+	private CHaliteIni<HaliteListViewCtrl>,
 	private boost::noncopyable
 {
 protected:
@@ -78,13 +78,13 @@ protected:
 
 	struct Peers : public ColAdapter_t
 	{
-		virtual bool less(tD& l, tD& r)	{ return l->peers() < r->seeds(); }		
+		virtual bool less(tD& l, tD& r)	{ return l->peers() < r->peers(); }		
 		virtual std::wstring print(tD& t) { return lexical_cast<wstring>(t->peers()); }		
 	};
 	
 	struct Seeds : public ColAdapter_t
 	{
-		virtual bool less(tD& l, tD& r)	{ return l->distributedCopies() < r->distributedCopies(); }		
+		virtual bool less(tD& l, tD& r)	{ return l->seeds() < r->seeds(); }		
 		virtual std::wstring print(tD& t) { return lexical_cast<wstring>(t->seeds()); }		
 	};
 	

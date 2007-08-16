@@ -1113,17 +1113,17 @@ void BitTorrent::closeAll()
 }
 
 PeerDetail::PeerDetail(lbt::peer_info& peerInfo) :
-	ipAddress(hal::str_to_wstr(peerInfo.ip.address().to_string())),
+	ipAddress(hal::safe_from_utf8(peerInfo.ip.address().to_string())),
 	country(L""),
 	speed(make_pair(peerInfo.payload_down_speed, peerInfo.payload_up_speed)),
 	seed(peerInfo.seed),
-	client(hal::str_to_wstr(peerInfo.client))
+	client(hal::safe_from_utf8(peerInfo.client))
 {
 	std::vector<wstring> status_vec;
 	
 #ifndef TORRENT_DISABLE_RESOLVE_COUNTRIES
 	if (peerInfo.country[0] != 0 && peerInfo.country[1] != 0)
-		country = (wformat(L"(%1%)") % hal::str_to_wstr(string(peerInfo.country, 2))).str().c_str();
+		country = (wformat(L"(%1%)") % hal::safe_from_utf8(string(peerInfo.country, 2))).str().c_str();
 #endif	
 
 #ifndef TORRENT_DISABLE_ENCRYPTION		

@@ -60,9 +60,9 @@ void HaliteListViewCtrl::saveSettings()
 
 void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
 {
-	if (canUpdate())
+	TryUpdateLock<listClass> lock(*this);
+	if (lock) 
 	{
-	UpdateLock<listClass> rLock(*this);
 	
 	foreach (const hal::TorrentDetail_ptr td, tD.torrents()) 
 	{
@@ -79,6 +79,10 @@ void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
 			SetItemText(itemPos, i, getColumnAdapter(i)->print(td).c_str());
 		}
 	}
+	
+	int iCol = GetSortColumn();
+	if (autoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
+		DoSortItems(iCol, IsSortDescending());
 	
 	}
 }

@@ -215,7 +215,7 @@ void HaliteDialog::DialogListView::uiUpdate(const hal::TorrentDetails& tD)
 		}
 		
 		int iCol = GetSortColumn();
-		if (iCol >= 0 && iCol < m_arrColSortType.GetSize())
+		if (autoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
 			DoSortItems(iCol, IsSortDescending());
 	}
 }

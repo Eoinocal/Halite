@@ -50,6 +50,34 @@ inline std::wstring str_to_wstr(const std::string& str)
 	return wstr;
 }
 
+inline std::wstring safe_from_utf8(const std::string& str) 
+{ 		
+	try
+	{
+	
+	return mbstowcs(str); 
+	
+	}
+	catch(...)
+	{
+	
+	std::wstring wstr;
+	wstr.reserve(str.length());
+	
+	for (std::string::const_iterator i=str.begin(); i!=str.end(); ++i)
+	{
+		char narrow_char = *i;
+		wchar_t wide_char = 0;
+		
+		*(reinterpret_cast<char*>(&wide_char)) = narrow_char;
+		wstr.push_back(wide_char);
+	}
+	
+	return wstr;
+	
+	}
+}
+
 inline std::wstring from_utf8(const std::string& str) 
 { 
 	return mbstowcs(str);  

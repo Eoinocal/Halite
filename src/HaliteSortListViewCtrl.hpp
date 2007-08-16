@@ -341,39 +341,18 @@ public:
 	
 	thisClass(bool resMenu=true, bool resNames=true, bool resWidthsAndOrder=true) :
 		manager_(*this),
-		updateLock_(0)
-	{
-		MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
-		
+		updateLock_(0),
+		autoSort_(false)
+	{		
 		if (resMenu && TBase::LISTVIEW_ID_MENU)
 		{
-			BOOL menu_created = menu_.LoadMenu(TBase::LISTVIEW_ID_MENU);
+			CMenuHandle menu;
+			BOOL menu_created = menu.LoadMenu(TBase::LISTVIEW_ID_MENU);
 			assert(menu_created);	
 			
-			menu_ = menu_.GetSubMenu(0);
-		}
-		
-		if (!menu_)
-		{
-			menu_.CreatePopupMenu();
-		}
-		else
-		{				
-			minfo.fMask = MIIM_SUBMENU;
-			minfo.fType = MFT_SEPARATOR;
-			
-			menu_.InsertMenuItem(menu_.GetMenuItemCount(), true, &minfo);		
+			menu_.Attach(menu.GetSubMenu(0));
 		}
 
-		minfo.fMask = MIIM_STRING|MIIM_ID|MIIM_FTYPE|MIIM_STATE;
-		minfo.fType = MFT_STRING;
-		minfo.fState = MFS_CHECKED;
-		minfo.wID = ID_LVM_AUTOSORT;
-		
-		wstring autoarrange = hal::app().res_wstr(HAL_AUTOSORT);
-		minfo.dwTypeData = (LPWSTR)autoarrange.c_str();
-		
-		menu_.InsertMenuItem(menu_.GetMenuItemCount(), true, &minfo);
 
 		if (resNames)
 		{
@@ -399,6 +378,8 @@ public:
 	}
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		COMMAND_ID_HANDLER(ID_LVM_AUTOSORT, OnAutoSort)
+		
 	//	REFLECTED_NOTIFY_CODE_HANDLER(NM_CLICK, OnClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_RCLICK, OnRClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_ITEMCHANGED, OnItemChanged)
@@ -438,12 +419,14 @@ public:
 	}
 	
 	template<typename N, typename W, typename O, typename P>
-	void SetDefaults(N nameList, W widthList, O orderList, P visibleList)
+	void SetDefaults(N nameList, W widthList, O orderList, P visibleList, bool autoSort=false)
 	{
 		listNames_.assign(nameList.begin(), nameList.end());
 		listWidths_.assign(widthList.begin(), widthList.end());
 		listOrder_.assign(orderList.begin(), orderList.end());
 		listVisible_.assign(visibleList.begin(), visibleList.end());
+		
+		autoSort_ = autoSort;
 	}
 	
 	template<std::size_t Size>
@@ -462,6 +445,30 @@ public:
 	void ApplyDetails()
 	{
 		vectorSizePreConditions();
+		
+		MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
+		
+		if (!menu_)
+		{
+			menu_.CreatePopupMenu();
+		}
+		else
+		{				
+			minfo.fMask = MIIM_SUBMENU;
+			minfo.fType = MFT_SEPARATOR;
+			
+			menu_.InsertMenuItem(menu_.GetMenuItemCount(), true, &minfo);		
+		}
+
+		minfo.fMask = MIIM_STRING|MIIM_ID|MIIM_FTYPE|MIIM_STATE;
+		minfo.fType = MFT_STRING;
+		minfo.fState = autoSort_ ? MFS_CHECKED : MFS_UNCHECKED;
+		minfo.wID = ID_LVM_AUTOSORT;
+		
+		wstring autoarrange = hal::app().res_wstr(HAL_AUTOSORT);
+		minfo.dwTypeData = (LPWSTR)autoarrange.c_str();
+		
+		menu_.InsertMenuItem(menu_.GetMenuItemCount(), true, &minfo);
 		
 		header_.Attach(this->GetHeader());
 		header_.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
@@ -485,6 +492,20 @@ public:
 		}
 		
 		GetColumnOrderArray(listNames_.size(), &listOrder_[0]);
+	}
+	
+	LRESULT OnAutoSort(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+	{
+		autoSort_ = !autoSort_;
+		
+		MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
+		
+		minfo.fMask = MIIM_STATE;
+		minfo.fState = autoSort_ ? MFS_CHECKED : MFS_UNCHECKED;
+		
+		menu_.SetMenuItemInfo(ID_LVM_AUTOSORT, false, &minfo);
+		
+		return 0;
 	}
 
 	LRESULT OnClick(int, LPNMHDR pnmh, BOOL&)
@@ -538,8 +559,13 @@ public:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)
     {
-        ar & boost::serialization::make_nvp("width", listWidths_);
-        ar & boost::serialization::make_nvp("order", listOrder_);
+		if (version >= 1)
+		{
+			ar & boost::serialization::make_nvp("width", listWidths_);
+			ar & boost::serialization::make_nvp("order", listOrder_);
+			ar & boost::serialization::make_nvp("visible", listVisible_);
+			ar & boost::serialization::make_nvp("autoSort", autoSort_);
+		}
     }
 
 	const SelectionManager& manager() { return manager_; }
@@ -567,6 +593,8 @@ public:
 		
 		return pT->CustomItemComparision(left, right, iSortCol);
 	}
+	
+	bool autoSort() { return autoSort_; }
 	
 protected:	
 	inline void* CustomItemConversion(LVCompareParam* param, int iSortCol)
@@ -637,6 +665,7 @@ private:
 	std::vector<int> listWidths_;
 	std::vector<int> listOrder_;
 	std::vector<bool> listVisible_;
+	bool autoSort_;
 	
 	int updateLock_;
 	friend class UpdateLock<thisClass>;	
@@ -646,3 +675,15 @@ private:
 	
 	WinAPIWaitableTimer syncTimer_;
 };
+
+namespace boost {
+namespace serialization {
+template <class TBase, typename adapterType, size_t N>
+struct version< CHaliteSortListViewCtrl<TBase, adapterType, N> >
+{
+    typedef mpl::int_<1> type;
+    typedef mpl::integral_c_tag tag;
+    BOOST_STATIC_CONSTANT(unsigned int, value = version::type::value);                                                             
+};
+}
+}

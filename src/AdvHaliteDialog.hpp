@@ -23,12 +23,13 @@ class HaliteWindow;
 
 class AdvHaliteDialog :
 	public CDialogImpl<AdvHaliteDialog>,
-	public CDialogResize<AdvHaliteDialog>
+	private CDialogResize<AdvHaliteDialog>
 {
 protected:
 	typedef AdvHaliteDialog thisClass;
 	typedef CDialogImpl<AdvHaliteDialog> baseClass;
 	typedef CDialogResize<AdvHaliteDialog> resizeClass;
+	friend class resizeClass;
 public:
 	enum { IDD = IDD_ADVHALITEDLG };
 
