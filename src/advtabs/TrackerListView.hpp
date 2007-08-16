@@ -7,16 +7,16 @@
 #include "../stdAfx.hpp"
 #include "../global/string_conv.hpp"
 #include "../HaliteIni.hpp"
-#include "../HaliteListViewCtrl.hpp"
+#include "../HaliteSortListViewCtrl.hpp"
 
 class TrackerListViewCtrl :
-	public CHaliteListViewCtrl<TrackerListViewCtrl>,
+	public CHaliteSortListViewCtrl<TrackerListViewCtrl>,
 	public CHaliteIni<TrackerListViewCtrl>,
 	private boost::noncopyable
 {
 
 	typedef CHaliteIni<TrackerListViewCtrl> iniClass;
-	typedef CHaliteListViewCtrl<TrackerListViewCtrl> listClass;
+	typedef CHaliteSortListViewCtrl<TrackerListViewCtrl> listClass;
 
 	friend class listClass;
 	
@@ -28,9 +28,21 @@ public:
 	};
 	
 	TrackerListViewCtrl() :
+		listClass(true,false,false),
 		iniClass("listviews/tracker", "TrackerListView")
 	{
-		load();
+		std::vector<wstring> names;	
+		wstring column_names = hal::app().res_wstr(HAL_TRACKER_LISTVIEW_COLUMNS);
+
+		// "Tracker;Tier"
+		boost::split(names, column_names, boost::is_any_of(L";"));
+		
+		array<int, 2> widths = {287,50};
+		array<int, 2> order = {0,1};
+		array<bool, 2> visible = {true,true};
+		
+		SetDefaults(names, widths, order, visible, true);
+		Load();
 	}
 
 	BEGIN_MSG_MAP_EX(TrackerListViewCtrl)
@@ -42,12 +54,11 @@ public:
 
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_DBLCLK, OnDoubleClick)
 
-		CHAIN_MSG_MAP(CHaliteListViewCtrl<TrackerListViewCtrl>)
-
+		CHAIN_MSG_MAP(listClass)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 
-	void updateListView();
+	void uiUpdate(const hal::TorrentDetails& tD);
 	void enterNewTracker();
 	void saveSettings();
 
@@ -69,11 +80,7 @@ private:
 	void OnAttach();
 	void OnDestroy();
 
-/*	static const size_t numListColumnWidth = 2;
-	int listColumnWidth[numListColumnWidth];
-	int listColumnOrder[numListColumnWidth];
-*/
 	boost::signal<void ()> listEdited_;
 };
 
-typedef TrackerListViewCtrl::selection_manage_class TrackerListViewManager;
+typedef TrackerListViewCtrl::SelectionManager TrackerListViewManager;

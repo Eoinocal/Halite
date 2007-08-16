@@ -11,64 +11,126 @@
 #include "../HaliteDialogBase.hpp"
 #include "../HaliteListManager.hpp"
 
-class PeerListViewCtrl :
-	public CHaliteSortListViewCtrl<PeerListViewCtrl>,
-	public CHaliteIni<PeerListViewCtrl>,
+class PeerListView :
+	public CHaliteSortListViewCtrl<PeerListView, const hal::PeerDetail>,
+	public CHaliteIni<PeerListView>,
 	private boost::noncopyable
 {
-	typedef PeerListViewCtrl thisClass;
+protected:
+	typedef PeerListView thisClass;
 	typedef CHaliteIni<thisClass> iniClass;
-	typedef CHaliteSortListViewCtrl<thisClass> listClass;
+	typedef CHaliteSortListViewCtrl<thisClass, const hal::PeerDetail> listClass;
+	typedef const hal::PeerDetail pD;
 
 	friend class listClass;
 	
-public:
+	struct ColumnAdapters
+	{
+	
+	typedef listClass::ColumnAdapter ColAdapter_t;
+	
+	struct SpeedDown : public ColAdapter_t
+	{
+		virtual bool less(pD& l, pD& r)	{ return l.speed.first < r.speed.first; }		
+		virtual std::wstring print(pD& p) 
+		{
+			return (wformat(L"%1$.2fkb/s") % (p.speed.first/1024)).str(); 
+		}		
+	};
+	
+	struct SpeedUp : public ColAdapter_t
+	{
+		virtual bool less(pD& l, pD& r)	{ return l.speed.second < r.speed.second; }		
+		virtual std::wstring print(pD& p) 
+		{
+			return (wformat(L"%1$.2fkb/s") % (p.speed.second/1024)).str(); 
+		}		
+	};
+	
+	};
+
+public:	
 	enum { 
 		LISTVIEW_ID_MENU = IDR_LISTVIEW_MENU,
 		LISTVIEW_ID_COLUMNNAMES = HAL_DIALOGPEER_LISTVIEW_ADV,
 		LISTVIEW_ID_COLUMNWIDTHS = HAL_DIALOGPEER_LISTVIEW_ADV_DEFAULTS
 	};
 	
-	thisClass() :
-		iniClass("listviews/advPeers", "PeerListView")
-	{
-		load();
-	}
 
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_DESTROY(OnDestroy)
 
 		CHAIN_MSG_MAP(listClass)
-
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
-	
-	void updateListView()
-	{}
+
+	thisClass() :
+		iniClass("listviews/advPeers", "PeerListView"),
+		listClass(true,false,false)
+	{					
+		std::vector<wstring> names;	
+		wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
+
+		// "Peer;Country;Download;Upload;Type;Client,Status"
+		boost::split(names, column_names, boost::is_any_of(L";"));
+		
+		array<int, 7> widths = {100,20,70,70,70,100,200};
+		array<int, 7> order = {0,1,2,3,4,5,6};
+		array<bool, 7> visible = {true,true,true,true,true,true,true};
+		
+		SetDefaults(names, widths, order, visible, true);
+		Load();
+	}
 	
 	void saveSettings()
 	{
 		GetListViewDetails();
 		save();
 	}
-
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
-    {
-		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
-    }
-
-private:
+	
 	void OnAttach()
 	{
-		SetListViewDetails();
+		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
+		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
+		
+		ApplyDetails();
+		
+		SetColumnSortType(2, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedDown());
+		SetColumnSortType(3, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedUp());
 	}
 	
 	void OnDestroy()
 	{
 		saveSettings();
 	}
+	
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
+		ar & boost::serialization::make_nvp("listview", 
+			boost::serialization::base_object<listClass>(*this));
+	}
+	
+	pD CustomItemConversion(LVCompareParam* param, int iSortCol)
+	{			
+		return peerDetails_[param->dwItemData];
+	}		
+	
+	int CustomItemComparision(pD left, pD right, int iSortCol)
+	{
+		ColumnAdapter* pCA = getColumnAdapter(iSortCol);
+		
+		if (pCA)
+			return (pCA->less(left, right)) ? 1 : -1;
+		else 
+			return 0;
+	}
+	
+	void uiUpdate(const hal::TorrentDetails& tD);
+	
+private:
+	hal::PeerDetails peerDetails_;
 };
 
 class AdvPeerDialog :
@@ -114,10 +176,9 @@ public:
 	void onClose();
 
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl);
-
-	void selectionChanged(const string& torrent_name);
-	void updateDialog();
+	
+	void uiUpdate(const hal::TorrentDetails& tD);
 
 protected:
-	PeerListViewCtrl m_list;
+	PeerListView peerList_;
 };

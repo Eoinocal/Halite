@@ -12,10 +12,6 @@
 #include "../HaliteListManager.hpp"
 #include "../HaliteDialogBase.hpp"
 
-//class ui_signal;
-
-//typedef selection_manager<CHaliteListViewCtrl<HaliteListViewCtrl> > ListViewManager;
-
 class AdvTrackerDialog :
 	public CHalTabPageImpl<AdvTrackerDialog>,
 	public CDialogResize<AdvTrackerDialog>,
@@ -87,13 +83,12 @@ public:
 	void onApply(UINT, int, HWND);
 	void onReset(UINT, int, HWND);
 
-	void setLoginUiState(const string& torrent_name);
-	void selectionChanged(const string& torrent_name);
-	void updateDialog();
-
+	void setLoginUiState(const string& torrent_name);	
+	void uiUpdate(const hal::TorrentDetails& tD);
 	void trackerListEdited();
 
 protected:
+	string current_torrent_name_;
 	TrackerListViewCtrl m_list;
 
 	wstring username_;

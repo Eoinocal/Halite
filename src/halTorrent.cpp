@@ -1101,6 +1101,21 @@ void BitTorrent::closeAll()
 		if ((*i).second.inSession())
 		{
 			(*i).second.handle().pause(); // NB. internal pause, not registered in Torrents.xml
+		}
+	}
+	
+	// Ok this polling loop here is a bit curde, but a blocking wait is actually appropiate.
+	lbt::session_status status = pimpl->theSession.status();	
+	while (status.download_rate > 0 || status.upload_rate > 0)
+	{
+		Sleep(200);
+		status = pimpl->theSession.status();
+	}
+	
+	for (TorrentMap::const_iterator i=pimpl->torrents.begin(), e=pimpl->torrents.end(); i != e; ++i)
+	{
+		if ((*i).second.inSession())
+		{
 			lbt::entry resumedata = (*i).second.handle().write_resume_data();
 			pimpl->theSession.remove_torrent((*i).second.handle());
 			

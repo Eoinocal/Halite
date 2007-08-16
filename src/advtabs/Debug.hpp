@@ -56,33 +56,46 @@ private:
 };
 
 class LogListViewCtrl :
-	public CHaliteListViewCtrl<LogListViewCtrl>,
+	public CHaliteSortListViewCtrl<LogListViewCtrl>,
 	public CHaliteIni<LogListViewCtrl>,
 	private boost::noncopyable
 {
 protected:
 	typedef CHaliteIni<LogListViewCtrl> iniClass;
-	typedef CHaliteListViewCtrl<LogListViewCtrl> listClass;
+	typedef CHaliteSortListViewCtrl<LogListViewCtrl> listClass;
 
 	friend class listClass;
 
 public:	
 	enum { 
 		LISTVIEW_ID_MENU = 0,
-		LISTVIEW_ID_COLUMNNAMES = HAL_DEBUG_LISTVIEW_COLUMNS,
-		LISTVIEW_ID_COLUMNWIDTHS = HAL_DEBUG_LISTVIEW_DEFAULTS
+		LISTVIEW_ID_COLUMNNAMES = 0,
+		LISTVIEW_ID_COLUMNWIDTHS = 0
 	};
 
 	BEGIN_MSG_MAP_EX(LogListViewCtrl)
 		MSG_WM_DESTROY(OnDestroy)
 
-		CHAIN_MSG_MAP(CHaliteListViewCtrl<LogListViewCtrl>)
+		CHAIN_MSG_MAP(listClass)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 
 	LogListViewCtrl() :
+		listClass(false, false, false),
 		iniClass("listviews/eventLog", "LogListView")
 	{
+		std::vector<wstring> names;	
+		wstring column_names = hal::app().res_wstr(HAL_DEBUG_LISTVIEW_COLUMNS);
+
+		// "Time;Message;Severity"
+		boost::split(names, column_names, boost::is_any_of(L";"));
+		
+		array<int, 3> widths = {67,419,69};
+		array<int, 3> order = {0,1,2};
+		array<bool, 3> visible = {true,true,true};
+		
+		SetDefaults(names, widths, order, visible, true);
+		
 		load();
 	}
 	
@@ -101,7 +114,8 @@ public:
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
+		ar & boost::serialization::make_nvp("listview", 
+			boost::serialization::base_object<listClass>(*this));
     }
 
 	void operator()(shared_ptr<hal::EventDetail> event)
@@ -119,8 +133,12 @@ public:
 
 private:
 	void OnAttach()
-	{
-		SetListViewDetails();
+	{		
+		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
+		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
+		
+		ApplyDetails();
+		
 		conn_ = hal::event().attach(bind(&LogListViewCtrl::operator(), this, _1));
 	}
 
@@ -188,11 +206,7 @@ public:
 	void onFileCheck(UINT, int, HWND hWnd) { DoDataExchange(true); }
 	void onDebugCheck(UINT, int, HWND hWnd) { DoDataExchange(true); }
 
-	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl);
 	void onDebugOption(UINT, int, HWND);
-
-	void selectionChanged(const string& torrent_name);
-	void updateDialog();
 
 protected:
 	LogListViewCtrl logList;

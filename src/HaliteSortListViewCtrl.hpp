@@ -209,7 +209,7 @@ public:
 		
 		param_type selected() const { return selected_; }
 		
-		int selectedIndex()
+		int selectedIndex() const
 		{
 			LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 	
 			findInfo.psz = selected_.c_str();
@@ -337,7 +337,7 @@ public:
 
 public:
 	typedef selection_manager SelectionManager;
-	typedef SelectionManager selection_manager_class;
+	typedef SelectionManager selection_manage_class;
 	
 	thisClass(bool resMenu=true, bool resNames=true, bool resWidthsAndOrder=true) :
 		manager_(*this),
@@ -580,7 +580,7 @@ public:
 	
 	void clearFocused() { manager_.clear(); }
 	void clearSelected() { manager_.clear_all_selected(); }
-	void clearAll() { manager_.clear(); }
+	void clearAll() { manager_.clear_all(); }
 	
 	int CompareItemsCustom(LVCompareParam* pItem1, LVCompareParam* pItem2, int iSortCol)
 	{
@@ -629,6 +629,13 @@ protected:
 			return i->second;
 		}		
 		return NULL;
+	}
+	
+	void ConditionallyDoAutoSort()
+	{
+		int iCol = GetSortColumn();
+		if (autoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
+			DoSortItems(iCol, IsSortDescending());	
 	}
 	
 	SelectionManager manager_;

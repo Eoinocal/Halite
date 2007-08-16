@@ -94,7 +94,7 @@ public:
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl);
 
 	void selectionChanged(const string& torrent_name);
-	void updateDialog();	
+	void updateDialog();
 	void uiUpdate(const hal::TorrentDetails& tD);
 	void uiUpdateMultiple(const hal::TorrentDetail_vec& torrents);
 	void uiUpdateSingle(const hal::TorrentDetail_ptr& torrent);

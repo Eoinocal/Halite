@@ -8,24 +8,12 @@
 
 void TrackerListViewCtrl::OnAttach()
 {
-	SetListViewDetails();
-/*	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
-
-	CHeaderCtrl hdr = GetHeader();
-	hdr.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
-
-	AddColumn(L"Tracker", hdr.GetItemCount());
-	AddColumn(L"Tier", hdr.GetItemCount());
+	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
+	SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
 	
-	assert (hdr.GetItemCount() == numListColumnWidth);
+	ApplyDetails();
 	
-	for (int i=0; i<numListColumnWidth; ++i)
-	{
-		SetColumnWidth(i, listColumnWidth[i]);
-	}
-	
-	SetColumnOrderArray(numListColumnWidth, (int*)&listColumnOrder);	
-*/
+	SetColumnSortType(1, LVCOLSORT_LONG);
 }
 
 void TrackerListViewCtrl::OnDestroy()
@@ -36,21 +24,36 @@ void TrackerListViewCtrl::OnDestroy()
 void TrackerListViewCtrl::saveSettings()
 {		
 	GetListViewDetails();
-/*	assert (GetHeader().GetItemCount() == numListColumnWidth);
-	
-	GetColumnOrderArray(numListColumnWidth, (int*)&listColumnOrder);
-	
-	for (int i=0; i<numListColumnWidth; ++i)
-	{
-		listColumnWidth[i] = GetColumnWidth(i);
-	}
-*/	
 	save();
 }
 
-void TrackerListViewCtrl::updateListView()
-{
-	// Should I be doing something here?
+void TrackerListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
+{	
+	if (!tD.selectedTorrent())
+		return;
+		
+	string torrent_name = hal::to_utf8(tD.selectedTorrent()->filename());
+
+	if (hal::bittorrent().isTorrent(torrent_name))
+	{			
+		TryUpdateLock<listClass> lock(*this);
+		if (lock) 
+		{			
+			std::vector<hal::TrackerDetail> trackers =
+				hal::bittorrent().getTorrentTrackers(torrent_name);
+			clearAll();
+			
+			foreach (const hal::TrackerDetail& tracker, trackers)
+			{
+				int itemPos = AddItem(0, 0, tracker.url.c_str(), 0);
+				SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());
+			}
+		}
+	}
+	else
+	{		
+		clearAll();
+	}
 }
 
 void TrackerListViewCtrl::enterNewTracker()
