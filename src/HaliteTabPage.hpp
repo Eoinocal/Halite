@@ -9,6 +9,7 @@ class ATL_NO_VTABLE CHalTabPageImpl : public ATL::CDialogImpl< T >
 {
 public:
     BEGIN_MSG_MAP_EX(CHalTabPageImpl)
+		MSG_WM_ERASEBKGND(OnEraseBkgnd)
 		MSG_WM_CTLCOLORDLG(OnCltColorDlg)
 		MSG_WM_CTLCOLORBTN(OnCltColor)
 //		MSG_WM_CTLCOLOREDIT(OnCltColor)
@@ -18,6 +19,22 @@ public:
     END_MSG_MAP()
 
 protected:
+	LRESULT OnEraseBkgnd(HDC dc)
+	{
+		CRect rect;
+		GetClientRect(rect);
+		
+		if(hal::uxtheme().pIsAppThemed && hal::uxtheme().pIsAppThemed())
+		{
+			if (hal::uxtheme().pDrawThemeParentBackground)
+			{
+				hal::uxtheme().pDrawThemeParentBackground(*this, dc, rect);
+			}
+		}
+		
+		return 1;
+	}
+	
 	LRESULT OnCltColorDlg(HDC hDC, HWND hWnd)
 	{
 		SetMsgHandled(false);

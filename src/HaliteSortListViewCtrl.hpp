@@ -12,6 +12,8 @@
 #include "halTorrent.hpp"
 #include "WinAPIWaitableTimer.hpp"
 
+#include "UxthemeWrapper.hpp"
+
 template<class T>
 class UpdateLock
 {
@@ -20,7 +22,7 @@ public:
 		window_(window)
 	{
 		++window_.updateLock_;
-		window_.SetRedraw(false);
+//		window_.LockWindowUpdate(true);
 	}
 	
 	~UpdateLock()
@@ -31,8 +33,8 @@ public:
 	
 	void unlock()
 	{
-		window_.SetRedraw(true);
-		window_.InvalidateRect(NULL, true);
+//		window_.LockWindowUpdate(false);
+//		window_.InvalidateRect(NULL, true);
 	}
 	
 private:
@@ -51,7 +53,7 @@ public:
 		{
 			locked_=  true;
 			++window_.updateLock_;
-			window_.SetRedraw(false);
+//			window_.LockWindowUpdate(true);
 		}
 	}
 	
@@ -63,8 +65,8 @@ public:
 	
 	void unlock()
 	{
-		window_.SetRedraw(true);
-		window_.InvalidateRect(NULL, true);
+//		window_.LockWindowUpdate(false);
+//		window_.InvalidateRect(NULL, true);
 	}
 	
 	operator bool() const { return locked_; }
@@ -352,7 +354,6 @@ public:
 			
 			menu_.Attach(menu.GetSubMenu(0));
 		}
-
 
 		if (resNames)
 		{

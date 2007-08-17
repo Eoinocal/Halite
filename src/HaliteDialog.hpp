@@ -72,6 +72,10 @@ class HaliteDialog :
 	
 		BEGIN_MSG_MAP_EX(thisClass)
 			MSG_WM_DESTROY(OnDestroy)
+			
+		//	MSG_WM_ERASEBKGND(OnEraseBkgnd)
+		//	MSG_WM_PAINT(OnPaint)
+		//	MSG_WM_NCPAINT(OnNcPaint)
 	
 			CHAIN_MSG_MAP(listClass)
 			DEFAULT_REFLECTION_HANDLER()
@@ -145,6 +149,10 @@ class HaliteDialog :
 		}
 		
 		void uiUpdate(const hal::TorrentDetails& tD);
+		
+		LRESULT OnEraseBkgnd(HDC dc);
+		LRESULT OnNcPaint(HRGN rgn);
+		LRESULT OnPaint(HDC dc);
 		
 	private:
 		hal::PeerDetails peerDetails_;

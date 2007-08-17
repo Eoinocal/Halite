@@ -468,8 +468,12 @@ LRESULT HaliteWindow::OnViewStatusBar(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 	return 0;
 }	
 
-LRESULT HaliteWindow::OnEraseBkgnd(HDC hdc)
+LRESULT HaliteWindow::OnEraseBkgnd(HDC dc)
 {
+	return 1;
+}
 
+LRESULT HaliteWindow::OnPaint(HDC dc)
+{
 	return 1;
 }

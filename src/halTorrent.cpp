@@ -839,7 +839,6 @@ const SessionDetail BitTorrent::getSessionDetails()
 	return details;
 }
 
-
 void BitTorrent::setSessionHalfOpenLimit(int halfConn)
 {
 	pimpl->theSession.set_max_half_open_connections(halfConn);

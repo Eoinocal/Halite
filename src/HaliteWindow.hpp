@@ -62,7 +62,10 @@ public:
 		MSG_WM_TIMER(OnTimer)
 		MSG_WM_COPYDATA(OnCopyData);
 		MESSAGE_HANDLER(WM_AreYouMe_, OnAreYouMe)
-		MESSAGE_HANDLER_EX(WM_TRAYNOTIFY, OnTrayNotification)
+		MESSAGE_HANDLER_EX(WM_TRAYNOTIFY, OnTrayNotification)	
+		
+		MSG_WM_ERASEBKGND(OnEraseBkgnd)
+		//MSG_WM_PAINT(OnPaint)
 
 		COMMAND_ID_HANDLER(ID_FILE_NEW, OnFileNew)
 		COMMAND_ID_HANDLER(ID_FILE_OPEN, OnFileOpen)
@@ -155,6 +158,7 @@ protected:
 
 	LRESULT OnViewStatusBar(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnEraseBkgnd(HDC hdc);
+	LRESULT OnPaint(HDC dc);
 
 	LRESULT OnCopyData(HWND, PCOPYDATASTRUCT pCSD);
 	LRESULT OnAreYouMe(UINT, WPARAM, LPARAM, BOOL&) { return WM_AreYouMe_; }

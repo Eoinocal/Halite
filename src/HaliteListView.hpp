@@ -138,7 +138,7 @@ protected:
 			if (copies < 0)
 				return L"Seeding"; 
 			else
-				return lexical_cast<wstring>(copies);		
+				return (wformat(L"%1$.2f") % copies).str();		
 		}		
 	};
 	
