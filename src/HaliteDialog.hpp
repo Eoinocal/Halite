@@ -160,16 +160,16 @@ public:
 	void saveStatus();
 
 	BEGIN_MSG_MAP_EX(thisClass)
-		MSG_WM_INITDIALOG(onInitDialog)
-		MSG_WM_CLOSE(onClose)
+		MSG_WM_INITDIALOG(OnInitDialog)
+		MSG_WM_CLOSE(OnClose)
 		COMMAND_RANGE_CODE_HANDLER_EX(IDC_EDITTLU, IDC_EDITNCU, EN_KILLFOCUS, OnEditKillFocus)
 
 		if(uMsg == WM_FORWARDMSG)
 			if(PreTranslateMessage((LPMSG)lParam)) return TRUE;
 
-		COMMAND_ID_HANDLER_EX(BTNPAUSE, onPause)
-		COMMAND_ID_HANDLER_EX(BTNREANNOUNCE, onReannounce)
-		COMMAND_ID_HANDLER_EX(BTNREMOVE, onRemove)
+		COMMAND_ID_HANDLER_EX(BTNPAUSE, OnPause)
+		COMMAND_ID_HANDLER_EX(BTNREANNOUNCE, OnReannounce)
+		COMMAND_ID_HANDLER_EX(BTNREMOVE, OnRemove)
 
 	//	MSG_WM_CTLCOLORSTATIC(OnCltColor)
 
@@ -180,8 +180,8 @@ public:
 	BEGIN_DDX_MAP(thisClass)
         DDX_EX_INT_POSITIVE_LIMIT(IDC_EDITNCD, NoConnDown, 2, true)
         DDX_EX_INT_POSITIVE_LIMIT(IDC_EDITNCU, NoConnUp, 2, true)
-        DDX_EX_FLOAT_POSITIVE(IDC_EDITTLD, TranLimitDown)
-        DDX_EX_FLOAT_POSITIVE(IDC_EDITTLU, TranLimitUp)
+        DDX_EX_INT_FLOAT_LIMIT(IDC_EDITTLD, TranLimitDown, 5, true)
+        DDX_EX_INT_FLOAT_LIMIT(IDC_EDITTLU, TranLimitUp, 5, true)
     END_DDX_MAP()
 
 	BEGIN_DLGRESIZE_MAP(thisClass)
@@ -212,17 +212,16 @@ public:
 		DLGRESIZE_CONTROL(IDC_DETAILS_GROUP, (DLSZ_SIZE_X | DLSZ_SIZE_Y))
 	END_DLGRESIZE_MAP()
 	
-	void selectionChanged(const string& torrent_name);
-	void updateDialog();
 	void uiUpdate(const hal::TorrentDetails& allTorrents); 
+	void focusChanged(string& torrent_name);
 	
 protected:
-	LRESULT onInitDialog(HWND, LPARAM);
-	void onClose();
+	LRESULT OnInitDialog(HWND, LPARAM);
+	void OnClose();
 
-	void onPause(UINT, int, HWND);
-	void onReannounce(UINT, int, HWND);
-	void onRemove(UINT, int, HWND);
+	void OnPause(UINT, int, HWND);
+	void OnReannounce(UINT, int, HWND);
+	void OnRemove(UINT, int, HWND);
 
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl);
 	LRESULT OnCltColor(HDC hDC, HWND hWnd);
@@ -232,6 +231,8 @@ private:
 	DialogListView m_list;
 	CContainedWindow m_wndNCD;
 	CProgressBarCtrl m_prog;
+	
+	string current_torrent_name_;
 
 	int NoConnDown, NoConnUp;
 	float TranLimitDown, TranLimitUp;

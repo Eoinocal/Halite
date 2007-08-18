@@ -30,6 +30,7 @@ protected:
 	typedef CDialogImpl<AdvHaliteDialog> baseClass;
 	typedef CDialogResize<AdvHaliteDialog> resizeClass;
 	friend class resizeClass;
+	
 public:
 	enum { IDD = IDD_ADVHALITEDLG };
 

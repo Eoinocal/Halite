@@ -347,7 +347,9 @@ public:
 	thisClass(bool resMenu=true, bool resNames=true, bool resWidthsAndOrder=true) :
 		manager_(*this),
 		updateLock_(0),
-		autoSort_(false)
+		autoSort_(false),
+		descending_(false),
+		sortCol_(-1)
 	{		
 		if (resMenu && TBase::LISTVIEW_ID_MENU)
 		{
@@ -495,6 +497,10 @@ public:
 		}
 		
 		SetColumnOrderArray(listNames_.size(), &listOrder_[0]);
+		
+		m_bSortDescending = descending_;
+		if (sortCol_ >= 0 && sortCol_ < m_arrColSortType.GetSize())
+			SetSortColumn(sortCol_);
 	}
 	
 	void GetListViewDetails()
@@ -507,6 +513,9 @@ public:
 		}
 		
 		GetColumnOrderArray(listNames_.size(), &listOrder_[0]);
+		
+		sortCol_ = GetSortColumn();
+		descending_ = IsSortDescending();	
 	}
 	
 	LRESULT OnAutoSort(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
@@ -581,6 +590,11 @@ public:
 			ar & boost::serialization::make_nvp("order", listOrder_);
 			ar & boost::serialization::make_nvp("visible", listVisible_);
 			ar & boost::serialization::make_nvp("autoSort", autoSort_);
+		}
+		if (version >= 2)
+		{
+			ar & boost::serialization::make_nvp("descending", descending_);
+			ar & boost::serialization::make_nvp("sortCol", sortCol_);
 		}
     }
 
@@ -689,6 +703,8 @@ private:
 	std::vector<int> listOrder_;
 	std::vector<bool> listVisible_;
 	bool autoSort_;
+	bool descending_;
+	int sortCol_;
 	
 	int updateLock_;
 	friend class UpdateLock<thisClass>;	
@@ -704,7 +720,7 @@ namespace serialization {
 template <class TBase, typename adapterType, size_t N>
 struct version< CHaliteSortListViewCtrl<TBase, adapterType, N> >
 {
-    typedef mpl::int_<1> type;
+    typedef mpl::int_<2> type;
     typedef mpl::integral_c_tag tag;
     BOOST_STATIC_CONSTANT(unsigned int, value = version::type::value);                                                             
 };

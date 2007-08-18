@@ -9,69 +9,6 @@
 
 #include "Torrent.hpp"
 
-void AdvTorrentDialog::selectionChanged(const string& torrent_name)
-{	
-	pair<float, float> tranLimit(-1.0, -1.0);
-	pair<int, int> connLimit(-1, -1);
-	float ratio = 0;
-
-#	if 0	
-	if (hal::bittorrent().isTorrent(torrent_name))
-	{
-		tranLimit = hal::bittorrent().getTorrentSpeed(torrent_name);
-		connLimit = hal::bittorrent().getTorrentLimit(torrent_name);
-		
-		ratio = hal::bittorrent().getTorrentRatio(torrent_name);
-		
-		if (!hal::bittorrent().isTorrentActive(torrent_name))
-			SetDlgItemText(BTNPAUSE, L"Resume");
-		else		
-			SetDlgItemText(BTNPAUSE, L"Pause");
-		
-		::EnableWindow(GetDlgItem(BTNPAUSE), true);
-		::EnableWindow(GetDlgItem(BTNREANNOUNCE), true);
-		::EnableWindow(GetDlgItem(BTNREMOVE), true);
-		
-		::EnableWindow(GetDlgItem(IDC_EDITTLD), true);
-		::EnableWindow(GetDlgItem(IDC_EDITTLU), true);
-		::EnableWindow(GetDlgItem(IDC_EDITNCD), true);
-		::EnableWindow(GetDlgItem(IDC_EDITNCU), true);
-		::EnableWindow(GetDlgItem(IDC_EDITRATIO), true);
-	}
-	else
-	{
-		SetDlgItemText(IDC_NAME, L"N/A");
-		SetDlgItemText(IDC_TRACKER, L"N/A");
-		SetDlgItemText(IDC_STATUS, L"N/A");
-		SetDlgItemText(IDC_AVAIL, L"N/A");
-		SetDlgItemText(IDC_TRANS, L"N/A");
-		SetDlgItemText(IDC_COMPLETE, L"N/A");
-		
-		SetDlgItemText(BTNPAUSE, L"Pause");		
-		m_prog.SetPos(0);
-		
-		::EnableWindow(GetDlgItem(BTNPAUSE), false);
-		::EnableWindow(GetDlgItem(BTNREANNOUNCE), false);
-		::EnableWindow(GetDlgItem(BTNREMOVE), false);
-		
-		::EnableWindow(GetDlgItem(IDC_EDITTLD), false);
-		::EnableWindow(GetDlgItem(IDC_EDITTLU), false);
-		::EnableWindow(GetDlgItem(IDC_EDITNCD), false);
-		::EnableWindow(GetDlgItem(IDC_EDITNCU), false);
-		::EnableWindow(GetDlgItem(IDC_EDITRATIO), false);
-	}
-	
-	NoConnDown = connLimit.first;
-	NoConnUp = connLimit.second;
-	TranLimitDown = tranLimit.first;
-	TranLimitUp = tranLimit.second;
-	Ratio = ratio;
-#	endif	
-
-	DoDataExchange(false);	
-//	ui().update();
-}
-
 LRESULT AdvTorrentDialog::onInitDialog(HWND, LPARAM)
 {
 	dialogBaseClass::InitializeHalDialogBase();	
@@ -102,113 +39,147 @@ LRESULT AdvTorrentDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl
 {
 	DoDataExchange(true);
 	
-/*	hal::bittorrent().setTorrentSpeed(selection_manager().selected(), TranLimitDown, TranLimitUp);
-	hal::bittorrent().setTorrentLimit(selection_manager().selected(), NoConnDown, NoConnUp);
-	hal::bittorrent().setTorrentRatio(selection_manager().selected(), Ratio);
-	*/
+	if (hal::TorrentDetail_ptr torrent = hal::bittorrent().torrentDetails().selectedTorrent()) 
+	{
+		string torrentName = hal::to_utf8(torrent->filename());
+		
+		hal::bittorrent().setTorrentSpeed(torrentName, TranLimitDown, TranLimitUp);
+		hal::bittorrent().setTorrentLimit(torrentName, NoConnDown, NoConnUp);
+		hal::bittorrent().setTorrentRatio(torrentName, Ratio);
+	}
+	
 	return 0;
 }
 
-void AdvTorrentDialog::uiUpdate(const hal::TorrentDetails& tD)
+void AdvTorrentDialog::focusChanged(string& torrent_name) 
 {
-	uiUpdateSingle(tD.selectedTorrent());
+	pair<float, float> tranLimit(-1.0, -1.0);
+	pair<int, int> connLimit(-1, -1);
+	float ratio = 0;
+
+	if (hal::bittorrent().isTorrent(torrent_name))
+	{
+		tranLimit = hal::bittorrent().getTorrentSpeed(torrent_name);
+		connLimit = hal::bittorrent().getTorrentLimit(torrent_name);
+		
+		ratio = hal::bittorrent().getTorrentRatio(torrent_name);
+		
+		::EnableWindow(GetDlgItem(IDC_EDITTLD), true);
+		::EnableWindow(GetDlgItem(IDC_EDITTLU), true);
+		::EnableWindow(GetDlgItem(IDC_EDITNCD), true);
+		::EnableWindow(GetDlgItem(IDC_EDITNCU), true);
+		::EnableWindow(GetDlgItem(IDC_EDITRATIO), true);
+	}
+	else
+	{
+		SetDlgItemText(IDC_NAME_STATUS, L"N/A");
+	//	SetDlgItemText(IDC_SECOND, L"N/A");
+		SetDlgItemText(IDC_TRANSFERED, L"N/A");
+		SetDlgItemText(IDC_REMAINING, L"N/A");
+		SetDlgItemText(IDC_RATE, L"N/A");
+		SetDlgItemText(IDC_TRACKER, L"N/A");
+		SetDlgItemText(IDC_UPDATE, L"N/A");
+		
+		m_prog.SetPos(0);
+		
+		::EnableWindow(GetDlgItem(IDC_EDITTLD), false);
+		::EnableWindow(GetDlgItem(IDC_EDITTLU), false);
+		::EnableWindow(GetDlgItem(IDC_EDITNCD), false);
+		::EnableWindow(GetDlgItem(IDC_EDITNCU), false);
+		::EnableWindow(GetDlgItem(IDC_EDITRATIO), false);
+	}
+	
+	NoConnDown = connLimit.first;
+	NoConnUp = connLimit.second;
+	TranLimitDown = tranLimit.first;
+	TranLimitUp = tranLimit.second;
+	Ratio = ratio;
+
+	DoDataExchange(false);	
 }
 
-void AdvTorrentDialog::uiUpdateMultiple(const hal::TorrentDetail_vec& torrents)
-{
+void AdvTorrentDialog::uiUpdate(const hal::TorrentDetails& tD)
+{	
+	if (hal::TorrentDetail_ptr torrent = tD.selectedTorrent()) 	
+	{	
+		string torrent_name = hal::to_utf8(torrent->filename());
+		
+		if (current_torrent_name_ != torrent_name)
+		{	
+			current_torrent_name_ = torrent_name;
+			focusChanged(current_torrent_name_);
+		}
+		
+		uiUpdateSingle(tD.selectedTorrent());	
+	}
+	else
+	{	
+		if (current_torrent_name_ != "")
+		{	
+			current_torrent_name_ = "";
+			focusChanged(current_torrent_name_);
+		}	
+	}
 }
 
 void AdvTorrentDialog::uiUpdateSingle(const hal::TorrentDetail_ptr& torrent)
 {	
 	if (torrent) 	
 	{
-		SetDlgItemText(IDC_NAME, torrent->filename().c_str());
-		SetDlgItemText(IDC_TRACKER, torrent->currentTracker().c_str());
-		SetDlgItemText(IDC_STATUS, torrent->state().c_str());
-		m_prog.SetPos(static_cast<int>(torrent->completion()*100));	
+/*		HAL_NAME_STATUS		  "Name: %1%, %2%."
+		HAL_SECOND			  ""
+		HAL_TRANSFERED		  "Transfered (Overhead): %1$.2fMB (%2$.2fMB) Down, %3$.2fMB (%4$.2fMB) Up."
+		HAL_REMAINING		  "Remaining: %1$.2fMB, ETA %2%."
+		HAL_RATE			  "Downloading at %1$.2fkb/s, Uploading at %2$.2fkb/s, Ratio %3$.2f."
+*/	
 
-		wstring eta = L"∞";	
-		
+		SetDlgItemInfo(IDC_NAME_STATUS, 
+			wformat(hal::app().res_wstr(HAL_NAME_STATUS)) 
+				% torrent->filename()
+				% torrent->state());
+
+		SetDlgItemInfo(IDC_TRANSFERED,
+			wformat(hal::app().res_wstr(HAL_TRANSFERED)) 
+				% (static_cast<float>(torrent->totalPayloadDownloaded())/(1024*1024))
+				% (static_cast<float>(torrent->totalDownloaded() - torrent->totalPayloadDownloaded())/(1024*1024))
+				% (static_cast<float>(torrent->totalPayloadUploaded())/(1024*1024))
+				% (static_cast<float>(torrent->totalUploaded() - torrent->totalPayloadUploaded())/(1024*1024)));
+
+		wstring eta = L"∞";			
 		if (!torrent->estimatedTimeLeft().is_special())
-		{
 			eta = hal::from_utf8(boost::posix_time::to_simple_string(torrent->estimatedTimeLeft()));
-		}
-		
-		SetDlgItemText(IDC_TRANS_ETA,
-			(wformat(hal::app().res_wstr(HAL_COMPLETED_SUMMARY)) 
-				% (static_cast<float>(torrent->totalWantedDone())/(1024*1024))
-				% (static_cast<float>(torrent->totalWanted())/(1024*1024))
-				% eta
-			).str().c_str());
 			
-		float ratio = (torrent->totalDownloaded()) 
-			? static_cast<float>(torrent->totalUploaded())
-				/ static_cast<float>(torrent->totalDownloaded())
+		SetDlgItemInfo(IDC_REMAINING,
+			wformat(hal::app().res_wstr(HAL_REMAINING))
+				% (static_cast<float>(torrent->totalWanted()-torrent->totalWantedDone())/(1024*1024))
+				% eta);
+
+		float ratio = (torrent->totalPayloadDownloaded()) 
+			? static_cast<float>(torrent->totalPayloadUploaded())
+				/ static_cast<float>(torrent->totalPayloadDownloaded())
 			: 0;
-		
-		SetDlgItemInfo(IDC_TRANS,
-			wformat(hal::app().res_wstr(HAL_DOWNLOADT_SUMMARY)) 
-				% (static_cast<float>(torrent->totalDownloaded())/(1024*1024))
-				% (static_cast<float>(torrent->totalUploaded())/(1024*1024))
-				% ratio);	
 			
+		SetDlgItemInfo(IDC_RATE,
+			wformat(hal::app().res_wstr(HAL_RATE))
+				% (torrent->speed().first/1024)
+				% (torrent->speed().second/1024)
+				% ratio);		
+		
+		m_prog.SetPos(static_cast<int>(torrent->completion()*100));	
+		
+		SetDlgItemText(IDC_TRACKER, torrent->currentTracker().c_str());
+		
 		if (!torrent->updateTrackerIn().is_special())
 		{
 			SetDlgItemText(IDC_UPDATE,	
 				(hal::from_utf8(boost::posix_time::to_simple_string(torrent->updateTrackerIn())).c_str()));
 		}
-		else SetDlgItemText(IDC_UPDATE,	L"N/A");	
-	}
-}
-
-void AdvTorrentDialog::uiUpdateNone()
-{
-}
-
-void AdvTorrentDialog::updateDialog()
-{
-#	if 0
-	hal::TorrentDetail_ptr pTD = hal::bittorrent().getTorrentDetail_vec(
-		selection_manager().selected());
-	
-	if (pTD) 	
-	{
-		SetDlgItemText(IDC_NAME, pTD->filename().c_str());
-		SetDlgItemText(IDC_TRACKER, pTD->currentTracker().c_str());
-		SetDlgItemText(IDC_STATUS, pTD->state().c_str());
-		m_prog.SetPos(static_cast<int>(pTD->completion()*100));
-		
-		if (!pTD->estimatedTimeLeft().is_special())
-		{
-			SetDlgItemText(IDC_ETA,
-				(hal::from_utf8(boost::posix_time::to_simple_string(pTD->estimatedTimeLeft())).c_str()));
-		}
-		else SetDlgItemText(IDC_ETA,L"∞");
-		
-/*		SetDlgItemText(IDC_COMPLETE,
-			(wformat(L"%1$.2fmb of %2$.2fmb") 
-				% (static_cast<float>(pTD->totalWantedDone())/(1024*1024))
-				% (static_cast<float>(pTD->totalWanted())/(1024*1024))
-			).str().c_str());
-*/			
-		float ratio = (pTD->totalWantedDone()) 
-			? static_cast<float>(pTD->totalUploaded())
-				/ static_cast<float>(pTD->totalWantedDone())
-			: 0;
-		
-		SetDlgItemText(IDC_TRANS,
-			(wformat(hal::app().res_wstr(HAL_DOWNLOAD_SUMMARY)) 
-				% (static_cast<float>(pTD->totalWantedDone())/(1024*1024))
-				% (static_cast<float>(pTD->totalUploaded())/(1024*1024))
-				% (ratio)
-			).str().c_str());	
-			
-		if (!pTD->updateTrackerIn().is_special())
-		{
-			SetDlgItemText(IDC_UPDATE,	
-				(hal::from_utf8(boost::posix_time::to_simple_string(pTD->updateTrackerIn())).c_str()));
-		}
 		else SetDlgItemText(IDC_UPDATE,	L"N/A");		
 	}
-#	endif
 }
+
+void AdvTorrentDialog::uiUpdateMultiple(const hal::TorrentDetail_vec& torrents)
+{}
+
+void AdvTorrentDialog::uiUpdateNone()
+{}

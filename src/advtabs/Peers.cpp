@@ -80,7 +80,7 @@ void AdvPeerDialog::uiUpdate(const hal::TorrentDetails& tD)
 	peerList_.uiUpdate(tD);
 }
 
-LRESULT AdvPeerDialog::onInitDialog(HWND, LPARAM)
+LRESULT AdvPeerDialog::OnInitDialog(HWND, LPARAM)
 {	
 	peerList_.SubclassWindow(GetDlgItem(IDC_PEERLIST));
 	
@@ -89,11 +89,10 @@ LRESULT AdvPeerDialog::onInitDialog(HWND, LPARAM)
 	return 0;
 }
 
-void AdvPeerDialog::onClose()
+void AdvPeerDialog::OnClose()
 {
 	if(::IsWindow(m_hWnd)) 
 	{
 		::DestroyWindow(m_hWnd);
 	}
 }
-

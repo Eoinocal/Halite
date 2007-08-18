@@ -1157,8 +1157,8 @@ PeerDetail::PeerDetail(lbt::peer_info& peerInfo) :
 		status_vec.push_back(app().res_wstr(HAL_PEER_REMOTE_CHOKED));	
 	if (peerInfo.flags & lbt::peer_info::supports_extensions)
 		status_vec.push_back(app().res_wstr(HAL_PEER_SUPPORT_EXTENSIONS));	
-	if (peerInfo.flags & lbt::peer_info::local_connection)
-		status_vec.push_back(app().res_wstr(HAL_PEER_LOCAL_CONNECTION));		
+//	if (peerInfo.flags & lbt::peer_info::local_connection)						// Not sure whats up here?
+//		status_vec.push_back(app().res_wstr(HAL_PEER_LOCAL_CONNECTION));		
 	if (peerInfo.flags & lbt::peer_info::handshake)
 		status_vec.push_back(app().res_wstr(HAL_PEER_HANDSHAKE));		
 	if (peerInfo.flags & lbt::peer_info::connecting)

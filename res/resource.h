@@ -2,8 +2,8 @@
 #define IDC_STATIC (-1)
 #endif
 
-#define HALITE_VERSION					0,2,9,255
-#define HALITE_VERSION_STRING			"v 0.2.9 dev 255"
+#define HALITE_VERSION					0,2,9,259
+#define HALITE_VERSION_STRING			"v 0.2.9 dev 259"
 
 #define HALITE_LANGUAGE					10
 #define IDC_DEBUGLISTVIEW               1
@@ -245,3 +245,15 @@
 #define HAL_AUTOSORT					40095
 #define ID_LVM_AUTOSORT					40096
 #define IDR_BLANK_MENU					40097
+#define HAL_PAYLOAD_SUMMARY				40098
+#define HAL_NAME_SUMMARY				40099
+#define IDC_NAME_STATUS					40100
+#define IDC_SECOND						40101
+#define IDC_TRANSFERED					40102
+#define IDC_REMAINING					40103
+#define IDC_RATE						40104
+#define HAL_NAME_STATUS					40105
+#define HAL_SECOND						40106
+#define HAL_TRANSFERED					40107
+#define HAL_REMAINING					40108
+#define HAL_RATE						40109

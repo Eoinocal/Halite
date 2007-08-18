@@ -51,12 +51,11 @@ protected:
 
 public:	
 	enum { 
-		LISTVIEW_ID_MENU = IDR_LISTVIEW_MENU,
+		LISTVIEW_ID_MENU = 0,
 		LISTVIEW_ID_COLUMNNAMES = HAL_DIALOGPEER_LISTVIEW_ADV,
-		LISTVIEW_ID_COLUMNWIDTHS = HAL_DIALOGPEER_LISTVIEW_ADV_DEFAULTS
+		LISTVIEW_ID_COLUMNWIDTHS = 0
 	};
 	
-
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_DESTROY(OnDestroy)
 
@@ -159,9 +158,8 @@ public:
 	}
 
 	BEGIN_MSG_MAP_EX(thisClass)
-		MSG_WM_INITDIALOG(onInitDialog)
-		MSG_WM_CLOSE(onClose)
-	//	MSG_WM_ERASEBKGND(OnEraseBkgnd)
+		MSG_WM_INITDIALOG(OnInitDialog)
+		MSG_WM_CLOSE(OnClose)
 	
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
@@ -175,16 +173,8 @@ public:
 		DLGRESIZE_CONTROL(IDC_PEERLIST, DLSZ_SIZE_X|DLSZ_SIZE_Y)
 	END_DLGRESIZE_MAP()
 
-	LRESULT onInitDialog(HWND, LPARAM);
-	
-	LRESULT OnEraseBkgnd(HDC dc)
-	{
-		return 1;
-	}
-		
-	void onClose();
-
-	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl);
+	LRESULT OnInitDialog(HWND, LPARAM);
+	void OnClose();
 	
 	void uiUpdate(const hal::TorrentDetails& tD);
 

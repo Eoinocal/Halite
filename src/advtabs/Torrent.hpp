@@ -50,8 +50,8 @@ public:
 	BEGIN_DDX_MAP(thisClass)
         DDX_EX_INT_POSITIVE_LIMIT(IDC_EDITNCD, NoConnDown, 2, true)
         DDX_EX_INT_POSITIVE_LIMIT(IDC_EDITNCU, NoConnUp, 2, true)
-        DDX_EX_FLOAT_POSITIVE(IDC_EDITTLD, TranLimitDown)
-        DDX_EX_FLOAT_POSITIVE(IDC_EDITTLU, TranLimitUp)
+        DDX_EX_INT_FLOAT_LIMIT(IDC_EDITTLD, TranLimitDown, 5, true)
+        DDX_EX_INT_FLOAT_LIMIT(IDC_EDITTLU, TranLimitUp, 5, true)
         DDX_EX_INT_FLOAT_LIMIT(IDC_EDITRATIO, Ratio, 1, true)
     END_DDX_MAP()
 
@@ -79,13 +79,13 @@ public:
 		DLGRESIZE_CONTROL(IDC_GROUP_TRACKER, (DLSZ_SIZE_X))
 		DLGRESIZE_CONTROL(TORRENTPROG, (DLSZ_SIZE_X))
 
-		DLGRESIZE_CONTROL(IDC_NAME, (DLSZ_SIZE_X))
+		DLGRESIZE_CONTROL(IDC_NAME_STATUS, (DLSZ_SIZE_X))
+//		DLGRESIZE_CONTROL(IDC_SECOND, (DLSZ_SIZE_X))
+		DLGRESIZE_CONTROL(IDC_TRANSFERED, (DLSZ_SIZE_X))
+		DLGRESIZE_CONTROL(IDC_REMAINING, (DLSZ_SIZE_X))
+		DLGRESIZE_CONTROL(IDC_RATE, (DLSZ_SIZE_X))
+		
 		DLGRESIZE_CONTROL(IDC_TRACKER, (DLSZ_SIZE_X))
-		DLGRESIZE_CONTROL(IDC_STATUS, (DLSZ_SIZE_X))
-		DLGRESIZE_CONTROL(IDC_TRANS, (DLSZ_SIZE_X))
-		DLGRESIZE_CONTROL(IDC_TRANS_SES, (DLSZ_SIZE_X))
-		DLGRESIZE_CONTROL(IDC_TRANS_ETA, (DLSZ_SIZE_X))
-
 	END_DLGRESIZE_MAP()
 
 	LRESULT onInitDialog(HWND, LPARAM);
@@ -93,12 +93,11 @@ public:
 
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl);
 
-	void selectionChanged(const string& torrent_name);
-	void updateDialog();
 	void uiUpdate(const hal::TorrentDetails& tD);
 	void uiUpdateMultiple(const hal::TorrentDetail_vec& torrents);
 	void uiUpdateSingle(const hal::TorrentDetail_ptr& torrent);
 	void uiUpdateNone();
+	void focusChanged(string& torrent_name);
 
 protected:
 	CProgressBarCtrl m_prog;
@@ -106,4 +105,6 @@ protected:
 	int NoConnDown, NoConnUp;
 	float TranLimitDown, TranLimitUp;
 	float Ratio;
+	
+	string current_torrent_name_;
 };
