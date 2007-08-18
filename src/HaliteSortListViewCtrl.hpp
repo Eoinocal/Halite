@@ -9,10 +9,13 @@
 #include <boost/ptr_container/ptr_map.hpp>
 
 #include "stdAfx.hpp"
+#include "../res/resource.h"
 #include "halTorrent.hpp"
 #include "WinAPIWaitableTimer.hpp"
 
 #include "UxthemeWrapper.hpp"
+
+#define LVS_EX_DOUBLEBUFFER     0x00010000
 
 template<class T>
 class UpdateLock
@@ -399,6 +402,17 @@ public:
 		pT->OnAttach();
 	}
 	
+	bool SubclassWindow(HWND hwnd)
+	{
+		if(!parentClass::SubclassWindow(hwnd))
+			return false;
+			
+		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER);
+		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
+		
+		return true;
+	}		
+	
 	void SetListViewDetails()
 	{
 		vectorSizePreConditions();
@@ -518,7 +532,8 @@ public:
 	{		
 		TryUpdateLock<thisClass> lock(*this);
 		if (lock) 
-			!syncTimer_.reset(50, 0, bind(&thisClass::syncTimeout, this));
+			manager_.sync_list(true, true);
+			//syncTimer_.reset(50, 0, bind(&thisClass::syncTimeout, this));
 		
 		return 0;
 	}

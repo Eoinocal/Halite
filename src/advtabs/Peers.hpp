@@ -88,15 +88,17 @@ public:
 		save();
 	}
 	
-	void OnAttach()
+	bool SubclassWindow(HWND hwnd)
 	{
-		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
-		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
-		
+		if(!listClass::SubclassWindow(hwnd))
+			return false;
+					
 		ApplyDetails();
 		
 		SetColumnSortType(2, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedDown());
 		SetColumnSortType(3, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedUp());
+		
+		return true;
 	}
 	
 	void OnDestroy()
@@ -159,7 +161,8 @@ public:
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_CLOSE(onClose)
-
+	//	MSG_WM_ERASEBKGND(OnEraseBkgnd)
+	
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
 
@@ -173,6 +176,12 @@ public:
 	END_DLGRESIZE_MAP()
 
 	LRESULT onInitDialog(HWND, LPARAM);
+	
+	LRESULT OnEraseBkgnd(HDC dc)
+	{
+		return 1;
+	}
+		
 	void onClose();
 
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl);

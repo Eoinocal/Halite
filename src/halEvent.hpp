@@ -9,6 +9,7 @@
 
 #include "halTorrent.hpp"
 #include "global/string_conv.hpp"
+#include "../res/resource.h"
 
 namespace hal 
 {

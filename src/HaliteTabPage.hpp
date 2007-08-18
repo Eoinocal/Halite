@@ -9,7 +9,7 @@ class ATL_NO_VTABLE CHalTabPageImpl : public ATL::CDialogImpl< T >
 {
 public:
     BEGIN_MSG_MAP_EX(CHalTabPageImpl)
-		MSG_WM_ERASEBKGND(OnEraseBkgnd)
+//		MSG_WM_ERASEBKGND(OnEraseBkgnd)
 		MSG_WM_CTLCOLORDLG(OnCltColorDlg)
 		MSG_WM_CTLCOLORBTN(OnCltColor)
 //		MSG_WM_CTLCOLOREDIT(OnCltColor)
@@ -21,6 +21,8 @@ public:
 protected:
 	LRESULT OnEraseBkgnd(HDC dc)
 	{
+		return 1;
+		
 		CRect rect;
 		GetClientRect(rect);
 		

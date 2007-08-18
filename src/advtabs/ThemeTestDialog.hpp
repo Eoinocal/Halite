@@ -2,6 +2,7 @@
 #pragma once
 
 #include "stdAfx.hpp"
+#include "../res/resource.h"
 #include "DdxEx.hpp"
 
 #include "HaliteTabPage.hpp"

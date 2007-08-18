@@ -69,6 +69,10 @@ exe Halite
 	: 	
 	<library>$(LIBS)
 	
+	<pch>on
+	<pch-source>./src/stdAfx.cpp
+	<pch-header>./src/stdAfx.hpp
+	
 	<runtime-link>static
 	<threading>multi
 	<asynch-exceptions>on

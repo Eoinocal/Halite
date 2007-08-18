@@ -72,10 +72,6 @@ class HaliteDialog :
 	
 		BEGIN_MSG_MAP_EX(thisClass)
 			MSG_WM_DESTROY(OnDestroy)
-			
-		//	MSG_WM_ERASEBKGND(OnEraseBkgnd)
-		//	MSG_WM_PAINT(OnPaint)
-		//	MSG_WM_NCPAINT(OnNcPaint)
 	
 			CHAIN_MSG_MAP(listClass)
 			DEFAULT_REFLECTION_HANDLER()
@@ -105,15 +101,20 @@ class HaliteDialog :
 			save();
 		}
 		
-		void OnAttach()
+		bool SubclassWindow(HWND hwnd)
 		{
-			SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
+			if(!parentClass::SubclassWindow(hwnd))
+				return false;
+				
+			SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER);
 			SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
 			
 			ApplyDetails();
 			
 			SetColumnSortType(2, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedDown());
 			SetColumnSortType(3, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedUp());
+				
+			return true;
 		}
 		
 		void OnDestroy()
@@ -131,15 +132,11 @@ class HaliteDialog :
 		
 		pD CustomItemConversion(LVCompareParam* param, int iSortCol)
 		{			
-		//	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"peerDetails get %1%, %2%. Item count %3%") % param->iItem % param->dwItemData % GetItemCount()).str().c_str())));
-			
 			return peerDetails_[param->dwItemData];
 		}		
 		
 		int CustomItemComparision(pD left, pD right, int iSortCol)
 		{
-		//	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"peerDetails left %1%, right %2%") % left.ipAddress % right.ipAddress).str().c_str())));
-
 			ColumnAdapter* pCA = getColumnAdapter(iSortCol);
 			
 			if (pCA)
@@ -149,10 +146,6 @@ class HaliteDialog :
 		}
 		
 		void uiUpdate(const hal::TorrentDetails& tD);
-		
-		LRESULT OnEraseBkgnd(HDC dc);
-		LRESULT OnNcPaint(HRGN rgn);
-		LRESULT OnPaint(HDC dc);
 		
 	private:
 		hal::PeerDetails peerDetails_;

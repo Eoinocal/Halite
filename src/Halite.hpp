@@ -9,6 +9,7 @@
 #include <boost/serialization/version.hpp>
 
 #include "HaliteIni.hpp"
+#include "../res/resource.h"
 	
 class Halite :
 	public CHaliteIni<Halite>,

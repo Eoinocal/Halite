@@ -80,7 +80,7 @@ LRESULT HaliteDialog::onInitDialog(HWND, LPARAM)
 {	m_prog.Attach(GetDlgItem(TORRENTPROG));
 	m_prog.SetRange(0, 100);
 }	
-	m_list.Attach(GetDlgItem(LISTPEERS));
+	m_list.SubclassWindow(GetDlgItem(LISTPEERS));
 	
 	NoConnDown = -1;
 	NoConnUp = -1;
@@ -381,75 +381,3 @@ void HaliteDialog::updateDialog()
 #	endif
 }
 
-LRESULT HaliteDialog::DialogListView::OnEraseBkgnd(HDC dc)
-{
-	CRect rect;
-	GetClientRect(rect);
-	
-	if(hal::uxtheme().pIsAppThemed && hal::uxtheme().pIsAppThemed())
-	{
-		if (hal::uxtheme().pDrawThemeParentBackground)
-		{
-			hal::uxtheme().pDrawThemeParentBackground(*this, dc, rect);
-		}
-	}
-	
-	return 1;
-}
-
-LRESULT HaliteDialog::DialogListView::OnNcPaint(HRGN rgn)
-{
-	CRect rect;
-	GetClientRect(rect);
-	
-	HDC hdc;
-	hdc = GetDCEx(rgn, DCX_INTERSECTRGN|DCX_WINDOW|DCX_PARENTCLIP|DCX_CLIPCHILDREN);
-	
-	if (!hdc)
-	{
-	//	SetMsgHandled(false);
-		return 0;
-	}
-	
-	CMemoryDC mDc(hdc, rect);
-	
-	if (hal::uxtheme().pIsAppThemed)
-		if(hal::uxtheme().pIsAppThemed())
-		{
-			if (hal::uxtheme().pDrawThemeParentBackground)
-			{
-				hal::uxtheme().pDrawThemeParentBackground(*this, mDc, rect);
-			}
-		}
-		
-	Print(mDc, PRF_NONCLIENT);
-	
-	//::BitBlt(hdc, rect.left, rect.top, rect.right, rect.bottom, mDc, rect.left, rect.top, SRCCOPY);
-	ReleaseDC(hdc);
-	return 0;
-}
-
-LRESULT HaliteDialog::DialogListView::OnPaint(HDC dc)
-{
-	CRect rect;
-	GetClientRect(rect);
-	
-	CPaintDC pDc(*this);
-	
-	CMemoryDC mDc(pDc, pDc.m_ps.rcPaint);
-	
-	if (hal::uxtheme().pIsAppThemed)
-		if(hal::uxtheme().pIsAppThemed())
-		{
-			if (hal::uxtheme().pDrawThemeParentBackground)
-			{
-				hal::uxtheme().pDrawThemeParentBackground(*this, mDc, &pDc.m_ps.rcPaint);
-			}
-		}
-		
-	PrintClient(mDc, PRF_CHILDREN|PRF_CLIENT|PRF_ERASEBKGND);
-	
-//	pDc.BitBlt(pDc.m_ps.rcPaint.left, pDc.m_ps.rcPaint.top, pDc.m_ps.rcPaint.right, pDc.m_ps.rcPaint.bottom, mDc, 15, 15, SRCCOPY);
-	return 0;
-}
-	

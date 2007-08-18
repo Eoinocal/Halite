@@ -13,6 +13,7 @@ public:
 
     BEGIN_MSG_MAP_EX(CHalTabCtrl)
 		MSG_WM_SIZE(OnSize)
+//		MSG_WM_ERASEBKGND(OnEraseBkgnd)
 //        MESSAGE_HANDLER(WM_CREATE, OnCreate)
 		REFLECTED_NOTIFY_CODE_HANDLER_EX(TCN_SELCHANGE, OnSelChange)
         DEFAULT_REFLECTION_HANDLER()
@@ -22,12 +23,6 @@ public:
 	{
 		ATLASSERT(::IsWindow(hWndNew));
         CWindowImpl<CHalTabCtrl, CTabCtrl>::SubclassWindow(hWndNew);
-	}
-
-	LRESULT OnEraseBkgnd(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
-	{
-		bHandled = TRUE;
-		return bHandled;
 	}
 
 	void SetCurrentPage(unsigned index)
