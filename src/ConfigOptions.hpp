@@ -462,11 +462,12 @@ public:
 
     BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)
 	{
-		
+		richEdit_.Attach(GetDlgItem(IDC_RICHEDITABOUT));
 		return true;
 	}
 	
 private:
+	CRichEditCtrl richEdit_;
 };
 
 class ConfigOptionsProp :

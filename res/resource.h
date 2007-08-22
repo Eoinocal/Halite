@@ -257,3 +257,5 @@
 #define HAL_TRANSFERED					40107
 #define HAL_REMAINING					40108
 #define HAL_RATE						40109
+#define IDC_RICHEDITABOUT				40110
+

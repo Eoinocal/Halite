@@ -999,17 +999,17 @@ TorrentDetail_ptr BitTorrent::getTorrentDetail_vec(string filename)
 	return TorrentDetail_ptr();
 }
 
-TorrentDetails& BitTorrent::getTorrentDetails(std::string selected, std::set<std::string> allSelected)
+/*const TorrentDetails& BitTorrent::getTorrentDetails(std::string selected, std::set<std::string> allSelected)
 {
 	return updateTorrentDetails(selected, allSelected);
 }
-
-TorrentDetails& BitTorrent::torrentDetails()
+*/
+const TorrentDetails& BitTorrent::torrentDetails()
 {
 	return torrentDetails_;
 }
 
-TorrentDetails& BitTorrent::updateTorrentDetails(std::string focused, std::set<std::string> selected)
+const TorrentDetails& BitTorrent::updateTorrentDetails(std::string focused, std::set<std::string> selected)
 {
 	mutex_t::scoped_lock l(torrentDetails_.mutex_);	
 	
@@ -1140,32 +1140,39 @@ PeerDetail::PeerDetail(lbt::peer_info& peerInfo) :
 		country = (wformat(L"(%1%)") % hal::safe_from_utf8(string(peerInfo.country, 2))).str().c_str();
 #endif	
 
-#ifndef TORRENT_DISABLE_ENCRYPTION		
-	if (peerInfo.flags & lbt::peer_info::rc4_encrypted)
-		status_vec.push_back(app().res_wstr(HAL_PEER_RC4_ENCRYPTED));		
-	if (peerInfo.flags & lbt::peer_info::plaintext_encrypted)
-		status_vec.push_back(app().res_wstr(HAL_PEER_PLAINTEXT_ENCRYPTED));
-#endif
-	
-	if (peerInfo.flags & lbt::peer_info::interesting)
-		status_vec.push_back(app().res_wstr(HAL_PEER_INTERESTING));	
-	if (peerInfo.flags & lbt::peer_info::choked)
-		status_vec.push_back(app().res_wstr(HAL_PEER_CHOKED));	
-	if (peerInfo.flags & lbt::peer_info::remote_interested)
-		status_vec.push_back(app().res_wstr(HAL_PEER_REMOTE_INTERESTING));	
-	if (peerInfo.flags & lbt::peer_info::remote_choked)
-		status_vec.push_back(app().res_wstr(HAL_PEER_REMOTE_CHOKED));	
-	if (peerInfo.flags & lbt::peer_info::supports_extensions)
-		status_vec.push_back(app().res_wstr(HAL_PEER_SUPPORT_EXTENSIONS));	
-//	if (peerInfo.flags & lbt::peer_info::local_connection)						// Not sure whats up here?
-//		status_vec.push_back(app().res_wstr(HAL_PEER_LOCAL_CONNECTION));		
 	if (peerInfo.flags & lbt::peer_info::handshake)
-		status_vec.push_back(app().res_wstr(HAL_PEER_HANDSHAKE));		
-	if (peerInfo.flags & lbt::peer_info::connecting)
-		status_vec.push_back(app().res_wstr(HAL_PEER_CONNECTING));		
-	if (peerInfo.flags & lbt::peer_info::queued)
-		status_vec.push_back(app().res_wstr(HAL_PEER_QUEUED));
+	{
+		status_vec.push_back(app().res_wstr(HAL_PEER_HANDSHAKE));
+	}		
+	else if (peerInfo.flags & lbt::peer_info::connecting)
+	{
+		status_vec.push_back(app().res_wstr(HAL_PEER_CONNECTING));
+	}
+	else
+	{
+	#ifndef TORRENT_DISABLE_ENCRYPTION		
+		if (peerInfo.flags & lbt::peer_info::rc4_encrypted)
+			status_vec.push_back(app().res_wstr(HAL_PEER_RC4_ENCRYPTED));		
+		if (peerInfo.flags & lbt::peer_info::plaintext_encrypted)
+			status_vec.push_back(app().res_wstr(HAL_PEER_PLAINTEXT_ENCRYPTED));
+	#endif
 		
+		if (peerInfo.flags & lbt::peer_info::interesting)
+			status_vec.push_back(app().res_wstr(HAL_PEER_INTERESTING));	
+		if (peerInfo.flags & lbt::peer_info::choked)
+			status_vec.push_back(app().res_wstr(HAL_PEER_CHOKED));	
+		if (peerInfo.flags & lbt::peer_info::remote_interested)
+			status_vec.push_back(app().res_wstr(HAL_PEER_REMOTE_INTERESTING));	
+		if (peerInfo.flags & lbt::peer_info::remote_choked)
+			status_vec.push_back(app().res_wstr(HAL_PEER_REMOTE_CHOKED));	
+		if (peerInfo.flags & lbt::peer_info::supports_extensions)
+			status_vec.push_back(app().res_wstr(HAL_PEER_SUPPORT_EXTENSIONS));	
+	//	if (peerInfo.flags & lbt::peer_info::local_connection)						// Not sure whats up here?
+	//		status_vec.push_back(app().res_wstr(HAL_PEER_LOCAL_CONNECTION));			
+		if (peerInfo.flags & lbt::peer_info::queued)
+			status_vec.push_back(app().res_wstr(HAL_PEER_QUEUED));
+	}
+	
 	seed = (peerInfo.flags & lbt::peer_info::seed) ? true : false;
 	
 	if (!status_vec.empty()) status = status_vec[0];
@@ -1187,16 +1194,7 @@ void BitTorrent::getAllPeerDetails(string filename, PeerDetails& peerContainer)
 	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
-	{
-		std::vector<lbt::peer_info> peerInfo;
-		(*i).second.handle().get_peer_info(peerInfo);
-		
-		for (std::vector<lbt::peer_info>::iterator j = peerInfo.begin(); 
-			j != peerInfo.end(); ++j)
-		{
-			peerContainer.push_back(PeerDetail(*j));
-		}		
-	}
+		(*i).second.getPeerDetails(peerContainer);
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getAllPeerDetails")
 }

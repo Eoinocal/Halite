@@ -32,7 +32,7 @@ void Config::settingsThread()
 	catch(const std::exception& e)
 	{
 		hal::event().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(Event::critical, e, L"settingsThread, Load IP Filter"))); 
+			new hal::EventStdException(Event::critical, e, L"settingsThread, Load IP Filter"))); 
 	}
 	
 	try

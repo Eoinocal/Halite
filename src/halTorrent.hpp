@@ -68,7 +68,7 @@ class TorrentDetail
 {
 public:
 	TorrentDetail(std::wstring f, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
-			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, boost::int64_t tpU=0, boost::int64_t tD=0, boost::int64_t tpD=0, int p=0, int sd=0, float r=0, 
+			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, boost::int64_t tpU=0, boost::int64_t tD=0, boost::int64_t tpD=0, int prs=0, int prsCnt=0, int sds=0, int sdsCnt=0,  float r=0, 
 			time_duration eta=boost::posix_time::seconds(0), time_duration uIn=boost::posix_time::seconds(0)) :
 		filename_(f),
 		state_(s),
@@ -82,8 +82,10 @@ public:
 		totalPayloadUploaded_(tpU),
 		totalDownloaded_(tD),
 		totalPayloadDownloaded_(tpD),
-		peers_(p),
-		seeds_(sd),
+		peers_(prs),
+		connectedPeers_(prsCnt),
+		seeds_(sds),
+		connectedSeeds_(sdsCnt),
 		ratio_(r),
 		estimatedTimeLeft_(eta),
 		updateTrackerIn_(uIn),
@@ -116,8 +118,10 @@ public:
 	const boost::int64_t& totalWantedDone() const { return totalWantedDone_; }
 	const boost::int64_t& totalWanted() const { return totalWanted_; }
 	
-	const int& peers() const { return peers_; }
-	const int& seeds() const { return seeds_; }
+	int peers() const { return peers_; }
+	int peersConnected() const { return connectedPeers_; }
+	int seeds() const { return seeds_; }
+	int seedsConnected() const { return connectedSeeds_; }
 	
 	float ratio() { return ratio_; }
 	
@@ -143,7 +147,9 @@ public:
 	boost::int64_t totalPayloadDownloaded_;
 	
 	int peers_;
+	int connectedPeers_;
 	int seeds_;
+	int connectedSeeds_;
 	
 	float ratio_;
 	
@@ -287,8 +293,6 @@ public:
 	void getAllTorrentDetail_vec(TorrentDetail_vec& torrentsContainer);
 	TorrentDetail_ptr getTorrentDetail_vec(std::string filename);	
 	
-	TorrentDetails& getTorrentDetails(std::string selected, std::set<std::string> allSelected);
-	
 	void setTorrentRatio(std::string, float ratio);
 	float getTorrentRatio(std::string);
 	
@@ -332,9 +336,10 @@ public:
 	int defTorrentMaxUpload();
 	float defTorrentDownload();
 	float defTorrentUpload();	
-	
-	TorrentDetails& torrentDetails();
-	TorrentDetails& updateTorrentDetails(std::string focused, std::set<std::string> selected);
+
+	const TorrentDetails& torrentDetails();
+//	const TorrentDetails& getTorrentDetails(std::string selected, std::set<std::string> allSelected);	
+	const TorrentDetails& updateTorrentDetails(std::string focused, std::set<std::string> selected);
 	
 private:
 	BitTorrent();

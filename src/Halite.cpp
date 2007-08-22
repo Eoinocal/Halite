@@ -79,7 +79,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	
 	boost::filesystem::path::default_name_check(boost::filesystem::native);
 
-	AtlInitCommonControls(ICC_COOL_CLASSES | ICC_BAR_CLASSES);
+	AtlInitCommonControls(ICC_COOL_CLASSES | ICC_BAR_CLASSES);	
+	HINSTANCE hInstRich = ::LoadLibrary(CRichEditCtrl::GetLibraryName());
+	ATLASSERT(hInstRich != NULL);
    
 	int nRet;	
 	HRESULT hRes = _Module.Init(NULL, hInstance);
@@ -163,7 +165,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		hal::ini().save_data();
 	}
 	}
-	
+
+	::FreeLibrary(hInstRich);	
 	_Module.Term();
 	
 	return nRet;

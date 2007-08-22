@@ -250,7 +250,7 @@ void HaliteWindow::issueUiUpdate()
 				   std::inserter(allSelected, allSelected.end()), 
 				   &hal::to_utf8);	
 
-	hal::TorrentDetails& torrents = hal::bittorrent().getTorrentDetails(
+	const hal::TorrentDetails& torrents = hal::bittorrent().updateTorrentDetails(
 		hal::to_utf8(haliteList.manager().selected()), allSelected);
 
 	ui_update_signal_(torrents);

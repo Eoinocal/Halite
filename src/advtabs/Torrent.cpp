@@ -127,9 +127,9 @@ void AdvTorrentDialog::uiUpdateSingle(const hal::TorrentDetail_ptr& torrent)
 	if (torrent) 	
 	{
 /*		HAL_NAME_STATUS		  "Name: %1%, %2%."
-		HAL_SECOND			  ""
+		HAL_SECOND			  "Connected to %1% peers out of %2%. %3% seeds connected."
 		HAL_TRANSFERED		  "Transfered (Overhead): %1$.2fMB (%2$.2fMB) Down, %3$.2fMB (%4$.2fMB) Up."
-		HAL_REMAINING		  "Remaining: %1$.2fMB, ETA %2%."
+		HAL_REMAINING		  "Remaining: %1$.2fMB of %2$.2fMB, ETA %3%."
 		HAL_RATE			  "Downloading at %1$.2fkb/s, Uploading at %2$.2fkb/s, Ratio %3$.2f."
 */	
 
@@ -137,6 +137,12 @@ void AdvTorrentDialog::uiUpdateSingle(const hal::TorrentDetail_ptr& torrent)
 			wformat(hal::app().res_wstr(HAL_NAME_STATUS)) 
 				% torrent->filename()
 				% torrent->state());
+
+		SetDlgItemInfo(IDC_SECOND,
+			wformat(hal::app().res_wstr(HAL_SECOND)) 
+				% torrent->peers()
+				% torrent->totalPeers()
+				% torrent->seeds());
 
 		SetDlgItemInfo(IDC_TRANSFERED,
 			wformat(hal::app().res_wstr(HAL_TRANSFERED)) 
@@ -152,6 +158,7 @@ void AdvTorrentDialog::uiUpdateSingle(const hal::TorrentDetail_ptr& torrent)
 		SetDlgItemInfo(IDC_REMAINING,
 			wformat(hal::app().res_wstr(HAL_REMAINING))
 				% (static_cast<float>(torrent->totalWanted()-torrent->totalWantedDone())/(1024*1024))
+				% (static_cast<float>(torrent->totalWanted())/(1024*1024))
 				% eta);
 
 		float ratio = (torrent->totalPayloadDownloaded()) 

@@ -253,7 +253,7 @@ public:
 		
 		applyTrackers();
 	}
-	
+
 	bool inSession() const { return in_session_; }
 	const wstring& saveDirectory() { return save_directory_; }
 	
@@ -310,18 +310,21 @@ public:
 		setResolveCountries();
 	}
 	
+	std::vector<lbt::peer_info>& peers() { return peers_; }
+	
+	void updatePeers() const
+	{
+		if (in_session_)
+			handle_.get_peer_info(peers_);
+	}
+	
 	void getPeerDetails(PeerDetails& peerDetails) const
 	{
 		if (in_session_)
-		{
-			std::vector<lbt::peer_info> peerInfo;
-			handle_.get_peer_info(peerInfo);
-			
-			foreach (lbt::peer_info peer, peerInfo) 
+			foreach (lbt::peer_info peer, peers_) 
 			{
 				peerDetails.push_back(peer);
 			}	
-		}
 	}
 	
 private:
@@ -356,6 +359,7 @@ private:
 	
 	std::vector<TrackerDetail> trackers_;
 	std::vector<lbt::announce_entry> torrent_trackers_;
+	mutable std::vector<lbt::peer_info> peers_;
 };
 
 typedef std::map<std::string, TorrentInternal> TorrentMap;
@@ -461,11 +465,38 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr() const
 		payloadUploaded_.update(tS.total_payload_upload);
 		downloaded_.update(tS.total_download);
 		payloadDownloaded_.update(tS.total_payload_download);
+		
+		updatePeers();
+		
+		size_t totalPeers = 0;
+		size_t peersConnected = 0;
+		size_t totalSeeds = 0;
+		size_t seedsConnected = 0;
+		
+		foreach (lbt::peer_info peer, peers_) 
+		{
+			float speedSum = peer.down_speed + peer.up_speed;
+			
+			if (!peer.flags & lbt::peer_info::seed)
+			{
+				++totalPeers;
+				
+				if (speedSum > 0)
+					++peersConnected;
+			}
+			else
+			{
+				++totalSeeds;
+				
+				if (speedSum > 0)
+					++seedsConnected;
+			}
+		}			
 
 		return TorrentDetail_ptr(new TorrentDetail(filename_, state, hal::from_utf8(tS.current_tracker), 
 			pair<float, float>(tS.download_payload_rate, tS.upload_payload_rate),
 			tS.progress, tS.distributed_copies, tS.total_wanted_done, tS.total_wanted, uploaded_, payloadUploaded_,
-			downloaded_, payloadDownloaded_, tS.num_peers, tS.num_seeds, ratio_, td, tS.next_announce));
+			downloaded_, payloadDownloaded_, totalPeers, peersConnected, totalSeeds, seedsConnected, ratio_, td, tS.next_announce));
 	}
 	else
 	{
