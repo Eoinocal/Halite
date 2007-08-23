@@ -25,6 +25,7 @@ public:
 	std::wstring res_wstr(unsigned uID);
 	void set_res_dll(std::wstring dll);
 	void revert_res();
+	std::pair<void*,size_t> find_lock_res(unsigned name, unsigned type);
 	
 	void set_initial_hinstance(HINSTANCE instance) { instance_ = instance; }
 	

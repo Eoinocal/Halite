@@ -258,4 +258,6 @@
 #define HAL_REMAINING					40108
 #define HAL_RATE						40109
 #define IDC_RICHEDITABOUT				40110
+#define IDR_ABOUT_TEXT					40111
+#define HALITE_RTF_RES_TYPE				40112
 

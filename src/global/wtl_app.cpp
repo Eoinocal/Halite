@@ -82,10 +82,24 @@ std::wstring app_module::res_wstr(unsigned uID)
 	return std::wstring(buffer.elems);
 }
 
+std::pair<void*,size_t> app_module::find_lock_res(unsigned name, unsigned type)
+{
+	HRSRC rsrc = FindResource(_Module.GetResourceInstance(), (LPCTSTR)name, (LPCTSTR)type);
+	assert(rsrc);
+	
+	HGLOBAL global = LoadResource(_Module.GetResourceInstance(), rsrc);
+	assert(global);
+	
+	void* ptr = LockResource(global);
+	assert(ptr);
+	
+	return std::pair<void*,size_t>(ptr, SizeofResource(_Module.GetResourceInstance(), rsrc));
+}
+
 app_module& app()
 {
 	static app_module app;
 	return app;
 }
 
-} // namespace gbl
+} // namespace hal
