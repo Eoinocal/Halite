@@ -261,3 +261,23 @@
 #define IDR_ABOUT_TEXT					40111
 #define HALITE_RTF_RES_TYPE				40112
 
+#define IDC_NAME_STATUS_LABEL			40113
+#define IDC_PEERS_LABEL					40114
+#define IDC_TRANSFERED_LABEL			40115
+#define IDC_REMAINING_LABEL				40116
+#define IDC_RATE_LABEL					40117
+#define IDC_SEEDS_LABEL					40118
+#define IDC_OVERHEAD_LABEL				40119
+#define IDC_ETA_LABEL					40120
+#define IDC_RATIO_LABEL					40121
+	
+#define IDC_SEEDS						40122
+#define IDC_OVERHEAD					40123
+//#define IDC_ETA							40124
+//#define IDC_RATIO						40125
+	
+//#define IDC_NAME_STATUS					40126
+#define IDC_PEERS						40127
+//#define IDC_TRANSFERED					40128
+//#define IDC_REMAINING					40129
+//#define IDC_RATE						40130

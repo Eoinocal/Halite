@@ -133,17 +133,17 @@ void AdvTorrentDialog::uiUpdateSingle(const hal::TorrentDetail_ptr& torrent)
 		HAL_RATE			  "Downloading at %1$.2fkb/s, Uploading at %2$.2fkb/s, Ratio %3$.2f."
 */	
 
-		SetDlgItemInfo(IDC_NAME_STATUS, 
+/*		SetDlgItemInfo(IDC_NAME_STATUS, 
 			wformat(hal::app().res_wstr(HAL_NAME_STATUS)) 
 				% torrent->filename()
 				% torrent->state());
 
 		SetDlgItemInfo(IDC_SECOND,
-			wformat(hal::app().res_wstr(HAL_SECOND)) 
-				% torrent->peers()
+			wformat(hal::app().res_wstr(HAL_SECOND))
 				% torrent->peersConnected()
-				% torrent->seeds()
-				% torrent->seedsConnected());
+				% torrent->peers()
+				% torrent->seedsConnected()
+				% torrent->seeds());
 
 		SetDlgItemInfo(IDC_TRANSFERED,
 			wformat(hal::app().res_wstr(HAL_TRANSFERED)) 
@@ -172,7 +172,7 @@ void AdvTorrentDialog::uiUpdateSingle(const hal::TorrentDetail_ptr& torrent)
 				% (torrent->speed().first/1024)
 				% (torrent->speed().second/1024)
 				% ratio);		
-		
+		*/
 		m_prog.SetPos(static_cast<int>(torrent->completion()*100));	
 		
 		SetDlgItemText(IDC_TRACKER, torrent->currentTracker().c_str());

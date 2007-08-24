@@ -410,6 +410,9 @@ pair<float, float> TorrentInternal::getTransferSpeed()
 
 TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr() const
 {	
+	try
+	{
+
 	if (inSession())
 	{
 		lbt::torrent_status tS = handle_.status();
@@ -498,10 +501,20 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr() const
 			tS.progress, tS.distributed_copies, tS.total_wanted_done, tS.total_wanted, uploaded_, payloadUploaded_,
 			downloaded_, payloadDownloaded_, totalPeers, peersConnected, totalSeeds, seedsConnected, ratio_, td, tS.next_announce));
 	}
-	else
-	{
-		return TorrentDetail_ptr(new TorrentDetail(filename_, L"Not in Session", L"No tracker"));
+	
 	}
+	catch (const lbt::invalid_handle&)
+	{
+		event().post(shared_ptr<EventDetail>(
+			new EventInvalidTorrent(Event::critical, Event::invalidTorrent, "addTorrent", "addTorrent")));\
+	}
+	catch (const std::exception& e)
+	{
+		event().post(shared_ptr<EventDetail>(
+			new EventTorrentException(Event::critical, Event::torrentException, e.what(), "addTorrent", "addTorrent")));
+	}
+	
+	return TorrentDetail_ptr(new TorrentDetail(filename_, L"Not in Session", L"No tracker"));
 }
 
 } //namespace hal

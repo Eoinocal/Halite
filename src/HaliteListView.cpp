@@ -3,8 +3,6 @@
 #include "HaliteWindow.hpp"
 #include "halTorrent.hpp"
 
-
-
 HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	halWindow_(HalWindow),
 	iniClass("listviews/halite", "HaliteListView"),

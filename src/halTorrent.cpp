@@ -1011,6 +1011,8 @@ const TorrentDetails& BitTorrent::torrentDetails()
 
 const TorrentDetails& BitTorrent::updateTorrentDetails(std::string focused, std::set<std::string> selected)
 {
+	try {
+	
 	mutex_t::scoped_lock l(torrentDetails_.mutex_);	
 	
 	torrentDetails_.clearAll(l);
@@ -1033,6 +1035,8 @@ const TorrentDetails& BitTorrent::updateTorrentDetails(std::string focused, std:
 		torrentDetails_.torrentMap_[(*i).second.filename()] = pT;
 		torrentDetails_.torrents_.push_back(pT);
 	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "updateTorrentDetails")
 	
 	return torrentDetails_;
 }
