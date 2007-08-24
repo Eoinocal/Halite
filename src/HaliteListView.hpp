@@ -79,13 +79,19 @@ protected:
 	struct Peers : public ColAdapter_t
 	{
 		virtual bool less(tD& l, tD& r)	{ return l->peers() < r->peers(); }		
-		virtual std::wstring print(tD& t) { return lexical_cast<wstring>(t->peers()); }		
+		virtual std::wstring print(tD& t) 
+		{
+			return (wformat(L"%1% (%2%)") % t->peers() % t->peersConnected()).str(); 
+		}
 	};
 	
 	struct Seeds : public ColAdapter_t
 	{
-		virtual bool less(tD& l, tD& r)	{ return l->seeds() < r->seeds(); }		
-		virtual std::wstring print(tD& t) { return lexical_cast<wstring>(t->seeds()); }		
+		virtual bool less(tD& l, tD& r)	{ return l->seeds() < r->seeds(); }				
+		virtual std::wstring print(tD& t) 
+		{
+			return (wformat(L"%1% (%2%)") % t->seeds() % t->seedsConnected()).str(); 
+		}	
 	};
 	
 	struct ETA : public ColAdapter_t
