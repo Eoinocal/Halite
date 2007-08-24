@@ -154,7 +154,7 @@ void AdvTorrentDialog::uiUpdateSingle(const hal::TorrentDetail_ptr& torrent)
 				% (static_cast<float>(torrent->totalPayloadUploaded())/(1024*1024)));
 
 		SetDlgItemInfo(IDC_OVERHEAD,
-			wformat(L"%1$.2fMB / %2$.2fMB") 
+			wformat(L"%1$.2fMB - %2$.2fMB") 
 				% (static_cast<float>(torrent->totalDownloaded() - torrent->totalPayloadDownloaded())/(1024*1024))
 				% (static_cast<float>(torrent->totalUploaded() - torrent->totalPayloadUploaded())/(1024*1024)));
 

@@ -480,7 +480,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr() const
 		{
 			float speedSum = peer.down_speed + peer.up_speed;
 			
-			if (!peer.flags & lbt::peer_info::seed)
+			if (!(peer.flags & lbt::peer_info::seed))
 			{
 				++totalPeers;
 				
@@ -514,7 +514,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr() const
 			new EventTorrentException(Event::critical, Event::torrentException, e.what(), "addTorrent", "addTorrent")));
 	}
 	
-	return TorrentDetail_ptr(new TorrentDetail(filename_, L"Not in Session", L"No tracker"));
+	return TorrentDetail_ptr(new TorrentDetail(filename_, app().res_wstr(HAL_TORRENT_STOPPED),  app().res_wstr(IDS_NA)));
 }
 
 } //namespace hal

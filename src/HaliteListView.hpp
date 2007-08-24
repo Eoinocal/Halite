@@ -81,7 +81,7 @@ protected:
 		virtual bool less(tD& l, tD& r)	{ return l->peers() < r->peers(); }		
 		virtual std::wstring print(tD& t) 
 		{
-			return (wformat(L"%1% (%2%)") % t->peers() % t->peersConnected()).str(); 
+			return (wformat(L"%1% (%2%)") % t->peersConnected() % t->peers()).str(); 
 		}
 	};
 	
@@ -90,7 +90,7 @@ protected:
 		virtual bool less(tD& l, tD& r)	{ return l->seeds() < r->seeds(); }				
 		virtual std::wstring print(tD& t) 
 		{
-			return (wformat(L"%1% (%2%)") % t->seeds() % t->seedsConnected()).str(); 
+			return (wformat(L"%1% (%2%)") % t->seedsConnected() % t->seeds()).str(); 
 		}	
 	};
 	
