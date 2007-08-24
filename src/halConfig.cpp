@@ -94,8 +94,6 @@ void Config::settingsThread()
 			
 			hal::event().post(boost::shared_ptr<hal::EventDetail>(
 				new hal::EventDebug(Event::critical, L"settingsThread, DHT Error"))); 
-			
-//			MessageBox(0, app().res_wstr(IDS_DHTTRYANOTHERPORT).c_str(), L"DHT Error", MB_ICONERROR|MB_OK);
 		}
 	}
 	else

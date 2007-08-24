@@ -126,7 +126,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 
 LRESULT HaliteWindow::OnAdvanced(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	advancedUI = !advancedUI;		
+	advancedUI = !advancedUI;
 	setCorrectDialog();
 	
 	return 0;
@@ -429,6 +429,7 @@ LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
     sheet.DoModal();
 	
 	hal::config().settingsChanged();
+	setCorrectDialog();
 	
 	return 0;
 }
@@ -436,6 +437,7 @@ LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 LRESULT HaliteWindow::OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	hal::bittorrent().pauseAllTorrents();
+	
 	ui().update();
 	return 0;
 }
@@ -443,6 +445,7 @@ LRESULT HaliteWindow::OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	hal::bittorrent().unpauseAllTorrents();
+	
 	ui().update();
 	return 0;
 }

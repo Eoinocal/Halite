@@ -138,6 +138,8 @@ public:
 		
 		handle_.resume();
 		state_ = TorrentDetail::torrent_active;
+		
+		assert(!handle_.is_paused());
 	}
 	
 	void pause()
@@ -156,6 +158,8 @@ public:
 			
 			handle_.pause();
 			state_ = TorrentDetail::torrent_paused;	
+			
+			assert(handle_.is_paused());
 		}
 	}
 	
