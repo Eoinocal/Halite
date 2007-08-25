@@ -1,7 +1,7 @@
 ; -- Halite.iss --
 
 #define MyAppName "Halite"
-#define MyAppVerName "Halite 0.2.9"
+#define MyAppVerName "Halite 0.2.9 dev 270"
 #define MyAppPublisher "BinaryNotions.com"
 #define MyAppURL "http://www.binarynotions.com/halite.php"
 #define MyAppExeName "Halite.exe"
@@ -17,12 +17,14 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-LicenseFile=Boost License.txt
-OutputBaseFilename=Halite.0_2_9.setup
+LicenseFile=LICENSE_1_0.txt
+OutputBaseFilename=Halite.0_2_9_dev270.setup
 Compression=lzma
 SolidCompression=true
 UninstallDisplayIcon={app}\{#MyAppName}
 OutputDir=.\bin
+
+ArchitecturesInstallIn64BitMode=x64
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
@@ -33,8 +35,32 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 Name: associate_torrent; Description: {cm:AssocFileExtension,Halite,.torrent}; GroupDescription: Other tasks:; Flags: unchecked
 
 [Files]
-Source: bin\msvc-8.0\release\asynch-exceptions-on\runtime-link-static\threading-multi\Halite.exe; DestDir: {app}; Flags: ignoreversion 32bit
+Source: bin\msvc-8.0\release\asynch-exceptions-on\runtime-link-static\threading-multi\Halite.exe; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+
+Source: bin\msvc-8.0\release\asynch-exceptions-on\runtime-link-static\threading-multi\Dutch.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: bin\msvc-8.0\release\asynch-exceptions-on\runtime-link-static\threading-multi\French.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: bin\msvc-8.0\release\asynch-exceptions-on\runtime-link-static\threading-multi\German.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: bin\msvc-8.0\release\asynch-exceptions-on\runtime-link-static\threading-multi\Italian.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: bin\msvc-8.0\release\asynch-exceptions-on\runtime-link-static\threading-multi\Norwegian.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: bin\msvc-8.0\release\asynch-exceptions-on\runtime-link-static\threading-multi\Polish.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: bin\msvc-8.0\release\asynch-exceptions-on\runtime-link-static\threading-multi\Russian.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: bin\msvc-8.0\release\asynch-exceptions-on\runtime-link-static\threading-multi\Slovenian.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: bin\msvc-8.0\release\asynch-exceptions-on\runtime-link-static\threading-multi\Turkish.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+
+Source: bin\msvc-8.0\release\address-model-64\asynch-exceptions-on\runtime-link-static\threading-multi\Halite.exe; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+
+Source: bin\msvc-8.0\release\address-model-64\asynch-exceptions-on\runtime-link-static\threading-multi\Dutch.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+Source: bin\msvc-8.0\release\address-model-64\asynch-exceptions-on\runtime-link-static\threading-multi\French.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+Source: bin\msvc-8.0\release\address-model-64\asynch-exceptions-on\runtime-link-static\threading-multi\German.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+Source: bin\msvc-8.0\release\address-model-64\asynch-exceptions-on\runtime-link-static\threading-multi\Italian.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+Source: bin\msvc-8.0\release\address-model-64\asynch-exceptions-on\runtime-link-static\threading-multi\Norwegian.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+Source: bin\msvc-8.0\release\address-model-64\asynch-exceptions-on\runtime-link-static\threading-multi\Polish.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+Source: bin\msvc-8.0\release\address-model-64\asynch-exceptions-on\runtime-link-static\threading-multi\Russian.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+Source: bin\msvc-8.0\release\address-model-64\asynch-exceptions-on\runtime-link-static\threading-multi\Slovenian.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+Source: bin\msvc-8.0\release\address-model-64\asynch-exceptions-on\runtime-link-static\threading-multi\Turkish.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+
 Source: Readme.txt; DestDir: {app}; Flags: ignoreversion isreadme
+
 ;Source: G:\Program Files (x86)\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}; Flags: sharedfile 32bit; Tasks: ; Languages:
 ;Source: G:\Program Files (x86)\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}; Flags: sharedfile 32bit
 

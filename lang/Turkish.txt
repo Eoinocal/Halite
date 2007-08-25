@@ -1,21 +1,29 @@
 "Halite.ico" --->  ??? 
 "toolbar.bmp" --->  ??? 
+"About.rtf" --->  ??? 
 "English" ---> "Türkçe"
 "MS Shell Dlg" ---> "MS Shell Dlg"
 "Torrent" ---> "Torrent"
 "Tracker" ---> "İzleyici"
 "" ---> ""
 "msctls_progress32" ---> "msctls_progress32"
-"N/A" ---> "N/A"
-"Connection limits:" ---> "Bağlantı sınırları:"
-"Transfer rates (KB/s):" ---> "Aktarım hızları (KB/s):"
+"Torrent connection limits:" ---> "Torrent bağlantı sınırları:"
+"Torrent transfer rates (KB/s):" ---> "Torrent aktarım hızları (KB/s):"
 "Total" ---> "Toplam"
 "Up" ---> "Gönd."
 "Down" ---> "İnd."
+"N/A" ---> "N/A"
 "Update in:" ---> "Güncelleme:"
-"Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." ---> "İndirilen  %1%MB, Gönderilen %2%MB, Oran %3%."
 "Ratio (this session):" ---> "Oran (bu oturum):"
-"This Session Downloaded %1%MB, Uploaded %2%MB" --->  ??? 
+"Torrent:" --->  ??? 
+"Peers:" --->  ??? 
+"Transfered:" --->  ??? 
+"Remaining:" --->  ??? 
+"Rates:" --->  ??? 
+"Seeds:" --->  ??? 
+"Overhead:" --->  ??? 
+"ETA:" --->  ??? 
+"Ratio:" --->  ??? 
 "BitTorrent" ---> "Bittorrent"
 "Open a (single) port between : " ---> "Arasında (tek) port  aç: "
 "Enable DHT" --->  ??? 
@@ -25,10 +33,8 @@
 "Distributed Hash Tables" --->  ??? 
 "Port (UDP) : " ---> "Port (UDP) : "
 "(DHT will not apply to pirvate torrents)" --->  ??? 
-"Need Help?" --->  ??? 
 "General Settings" ---> "Genel Ayarlar"
 "Limit the no. of half-open connections" --->  ??? 
-"Why?" --->  ??? 
 "Proxies" --->  ??? 
 "Proxy Host/IP : " ---> "Proxy Host/IP"
 "Use a proxy." ---> "Proxy kullan"
@@ -79,7 +85,7 @@
 "Torrent Defaults" ---> "Torrent Varsayılanları"
 "These options set global maximums which will always be honoured." ---> "Bu seçenekler daima uygulanacak olan genel en üst sınırları belirtmektedir."
 "These options specify the default limits applied to new torrents." ---> "Bu seçenekler yeni torrentlere uygulanacak varsayılan sınırları belirtir."
-"Default save folder : " ---> "Varsayılan kaydetme klasörü : "
+"Default save folder :" --->  ??? 
 "..." ---> "..."
 "Prompt for alternate save folder." ---> "Alternatif kaydetme klasörü için uyar."
 "Halite shutting down..." ---> "Halite kapatılıyor..."
@@ -99,11 +105,11 @@
 "Tracker:" ---> "İzleyici"
 "Status:" ---> "Durum"
 "Time left:" ---> "Kalan süre:"
-"Torrent connection limits:" ---> "Torrent bağlantı sınırları:"
-"Torrent transfer rates (KB/s):" ---> "Torrent aktarım hızları (KB/s):"
 "Completed:" ---> "Tamamlanan:"
 "About" ---> "Hakkında"
 "Program Information" ---> "Program Bilgisi"
+"v 0.2.9 dev 270" --->  ??? 
+"RichEdit20A" --->  ??? 
 "SysTabControl32" ---> "SysTabControl32"
 "General" ---> "Genel"
 "Allow only one instance to run." ---> "Programın sadece bir kopyası çalıssın."
@@ -167,7 +173,13 @@
 "Xml Exception (%1%) with %2%." ---> "Xml İstisnası (%1%) ile %2%."
 "Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) istisnası yakalandı; %2% 'den %3% 'e."
 "Invalid torrent (%1%) from %2%." ---> "Geçersiz torrent (%1%) 'den %2%'ye."
+"%1$.2fMB of %2$.2fMB" --->  ??? 
+"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "İndirilen %1$.2fMB, Gönderilen %2$.2fMB, Oran %3$.2f."
+"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"Name: %1%, %2%." --->  ??? 
+"%1$.2fMB down - %2$.2fMB up" --->  ??? 
+"%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1% DHT node(s)" ---> "%1% DHT nodu"
 "DHT disabled" ---> "DHT Etkisiz"
 "Filtering %1% range(s)" ---> "%1% aralığı süzgeçleniyor"
@@ -188,6 +200,7 @@
 "Logging" --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
+"Auto Sort" --->  ??? 
 "Interesting" ---> "İlgileniyor"
 "Choked" ---> "Tıkandı"
 "Interested in us" ---> "Bizle ilgilendi"
@@ -209,13 +222,13 @@
 "Stopped" ---> "Durduruldu"
 "Paused" ---> "Duraklatıldı"
 "Downloading Metadata" ---> "Metadata İndiriliyor"
-"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "İsim;Durum;Tamamlanan;İndirme;Gönderme;Eşler;Kaynaklar;Kalan Süre;Kopyalar"
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio" --->  ??? 
 "100;110;60;60;60;42;45;61;45" --->  ??? 
 "Time;Message;Severity" ---> "Süre;Mesaj;Öncelik"
 "67;419;69" --->  ??? 
 "Tracker;Tier" ---> "İzleyici;Sıra"
 "287;50" --->  ??? 
-"Peer;Download;Upload;Type;Client" ---> "Eş;İndirme;Gönderme;Tür;Program"
+"Peer;Country;Download;Upload;Type;Client" --->  ??? 
 "100;70;70;70;100" --->  ??? 
-"Peer;Download;Upload;Type;Client;Status" ---> "Eş;İndirme;Gönderme;Tür;Program;Durum"
+"Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
 "95;64;64;50;100;500" --->  ??? 

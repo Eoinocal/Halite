@@ -1,21 +1,29 @@
 "Halite.ico" --->  ??? 
 "toolbar.bmp" --->  ??? 
+"About.rtf" --->  ??? 
 "English" ---> "Slovenian"
 "MS Shell Dlg" --->  ??? 
 "Torrent" ---> "Torrent"
 "Tracker" ---> "Tracker"
 "" --->  ??? 
 "msctls_progress32" --->  ??? 
-"N/A" ---> "N/A"
-"Connection limits:" ---> "Omejitev povezav:"
-"Transfer rates (KB/s):" ---> "Hitrosti prenosa (KB/s):"
+"Torrent connection limits:" ---> "Omejitev povezave na torrentu"
+"Torrent transfer rates (KB/s):" ---> "Hitrosti prenosa (KB/s):"
 "Total" ---> "Skupno"
 "Up" ---> "Gor"
 "Down" ---> "Dol"
+"N/A" ---> "N/A"
 "Update in:" ---> "Posodobitev čez:"
-"Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." ---> "Prenos dol %1%MB, Prenos gor %2%MB, Delino razmerje %3%."
 "Ratio (this session):" ---> "Delino razmerje seje:"
-"This Session Downloaded %1%MB, Uploaded %2%MB" --->  ??? 
+"Torrent:" --->  ??? 
+"Peers:" --->  ??? 
+"Transfered:" --->  ??? 
+"Remaining:" --->  ??? 
+"Rates:" --->  ??? 
+"Seeds:" --->  ??? 
+"Overhead:" --->  ??? 
+"ETA:" --->  ??? 
+"Ratio:" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
 "Open a (single) port between : " ---> "Odpri posamičen port v rangu:"
 "Enable DHT" --->  ??? 
@@ -25,10 +33,8 @@
 "Distributed Hash Tables" --->  ??? 
 "Port (UDP) : " ---> "Port (UDP) : "
 "(DHT will not apply to pirvate torrents)" --->  ??? 
-"Need Help?" --->  ??? 
 "General Settings" ---> "Splošne nastavitve"
 "Limit the no. of half-open connections" --->  ??? 
-"Why?" --->  ??? 
 "Proxies" --->  ??? 
 "Proxy Host/IP : " ---> "Proxy IP : "
 "Use a proxy." ---> "Uporabi proxy."
@@ -79,7 +85,7 @@
 "Torrent Defaults" ---> "Privzete nastavitve torrenta:"
 "These options set global maximums which will always be honoured." ---> "Nastavi globalne spremenljivke."
 "These options specify the default limits applied to new torrents." ---> "Nastavi možnosti za nove torrente."
-"Default save folder : " ---> "Privzeta mapa za shranjevanje : "
+"Default save folder :" --->  ??? 
 "..." --->  ??? 
 "Prompt for alternate save folder." ---> "Vprašaj kam naj shranim."
 "Halite shutting down..." ---> "Halite se izklaplja..."
@@ -99,11 +105,11 @@
 "Tracker:" ---> "Tracker"
 "Status:" ---> "Status:"
 "Time left:" ---> "Čas do konca:"
-"Torrent connection limits:" ---> "Omejitev povezave na torrentu"
-"Torrent transfer rates (KB/s):" ---> "Hitrosti prenosa (KB/s):"
 "Completed:" ---> "Končano:"
 "About" ---> "O programu"
 "Program Information" ---> "Informacije o programu"
+"v 0.2.9 dev 270" --->  ??? 
+"RichEdit20A" --->  ??? 
 "SysTabControl32" --->  ??? 
 "General" ---> "Splošno"
 "Allow only one instance to run." ---> "Dovoli le enkratni zagon programa"
@@ -167,7 +173,13 @@
 "Xml Exception (%1%) with %2%." ---> "Xml izjema (%1%) pri %2%."
 "Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) zaznana izjema; %2% od %3%."
 "Invalid torrent (%1%) from %2%." ---> "Neveljaven torrent (%1%) od %2%."
+"%1$.2fMB of %2$.2fMB" --->  ??? 
+"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Prenešeno %1$.2fMB, Oddano %2$.2fMB, Delilno razmerje %3$.2f."
+"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"Name: %1%, %2%." --->  ??? 
+"%1$.2fMB down - %2$.2fMB up" --->  ??? 
+"%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1% DHT node(s)" ---> "%1% DHT povezav"
 "DHT disabled" ---> "DHT onemogočen"
 "Filtering %1% range(s)" ---> "Filtriram %1% naslovov"
@@ -188,6 +200,7 @@
 "Logging" --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
+"Auto Sort" --->  ??? 
 "Interesting" ---> "Zanimanje"
 "Choked" ---> "Zadušeno"
 "Interested in us" ---> "Zainteresiran"
@@ -209,13 +222,13 @@
 "Stopped" ---> "Prekinjen"
 "Paused" ---> "Na pavzi"
 "Downloading Metadata" ---> "Prenašam metadata"
-"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "Ime;Status;Končano;Dol;Gor;Peeri;Sejalcev;ETA;Kopij"
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio" --->  ??? 
 "100;110;60;60;60;42;45;61;45" --->  ??? 
 "Time;Message;Severity" ---> "Čas;Sporočilo;Kritičnost"
 "67;419;69" --->  ??? 
 "Tracker;Tier" ---> "Tracker;Pomol"
 "287;50" --->  ??? 
-"Peer;Download;Upload;Type;Client" ---> "Peer;Dol;Gor;Kategorija;Klient"
+"Peer;Country;Download;Upload;Type;Client" --->  ??? 
 "100;70;70;70;100" --->  ??? 
-"Peer;Download;Upload;Type;Client;Status" ---> "Peer;Dol;Gor;Kategorija;Klient;Status"
+"Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
 "95;64;64;50;100;500" --->  ??? 

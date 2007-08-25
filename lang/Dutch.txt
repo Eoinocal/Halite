@@ -1,21 +1,29 @@
 "Halite.ico" --->  ??? 
 "toolbar.bmp" --->  ??? 
+"About.rtf" --->  ??? 
 "English" ---> "Nederlands"
 "MS Shell Dlg" --->  ??? 
 "Torrent" ---> "Torrent"
 "Tracker" ---> "Tracker"
 "" ---> ""
 "msctls_progress32" --->  ??? 
-"N/A" ---> "N/A"
-"Connection limits:" ---> "Connectie limieten:"
-"Transfer rates (KB/s):" ---> "Overdrachtsnelheden (KB/s)"
+"Torrent connection limits:" ---> "Torrent verbindings limiet"
+"Torrent transfer rates (KB/s):" ---> "Overdrachtsnelheden van torrent (KB/s)"
 "Total" ---> "Totaal"
 "Up" ---> "Up"
 "Down" ---> "Down"
+"N/A" ---> "N/A"
 "Update in:" ---> "Update over:"
-"Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." ---> "Gedownload %1%MB, Geupload %2%MB, Ratio %3%."
 "Ratio (this session):" ---> "Ratio (deze sessie):"
-"This Session Downloaded %1%MB, Uploaded %2%MB" --->  ??? 
+"Torrent:" --->  ??? 
+"Peers:" --->  ??? 
+"Transfered:" --->  ??? 
+"Remaining:" --->  ??? 
+"Rates:" --->  ??? 
+"Seeds:" --->  ??? 
+"Overhead:" --->  ??? 
+"ETA:" --->  ??? 
+"Ratio:" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
 "Open a (single) port between : " ---> "Open een (enkele) poort tussen : "
 "Enable DHT" --->  ??? 
@@ -25,10 +33,8 @@
 "Distributed Hash Tables" --->  ??? 
 "Port (UDP) : " ---> "Poort (UDP) : "
 "(DHT will not apply to pirvate torrents)" --->  ??? 
-"Need Help?" --->  ??? 
 "General Settings" ---> "Algemene Opties"
 "Limit the no. of half-open connections" --->  ??? 
-"Why?" --->  ??? 
 "Proxies" --->  ??? 
 "Proxy Host/IP : " ---> "Proxy Host/IP : "
 "Use a proxy." ---> "Gebruik een proxy."
@@ -79,7 +85,7 @@
 "Torrent Defaults" ---> "Torrent Standaard"
 "These options set global maximums which will always be honoured." ---> "Deze optie zet globale maxima welke altijd zullen worden gehonoreerd."
 "These options specify the default limits applied to new torrents." ---> "Deze optie specificeerd de standaard limiet die voor alle nieuwe torrents gelden."
-"Default save folder : " ---> "Standaard Download map : "
+"Default save folder :" --->  ??? 
 "..." ---> "..."
 "Prompt for alternate save folder." ---> "Vraag om alternatieve Download map."
 "Halite shutting down..." ---> "Halite is bezig met afsluiten..."
@@ -99,11 +105,11 @@
 "Tracker:" ---> "Tracker:"
 "Status:" ---> "Status:"
 "Time left:" ---> "Overgebleven tijd:"
-"Torrent connection limits:" ---> "Torrent verbindings limiet"
-"Torrent transfer rates (KB/s):" ---> "Overdrachtsnelheden van torrent (KB/s)"
 "Completed:" ---> "Voltooid:"
 "About" ---> "Over"
 "Program Information" ---> "Programma Informatie"
+"v 0.2.9 dev 270" --->  ??? 
+"RichEdit20A" --->  ??? 
 "SysTabControl32" --->  ??? 
 "General" ---> "Algemeen"
 "Allow only one instance to run." ---> "Sta maar één instantie toe."
@@ -167,7 +173,13 @@
 "Xml Exception (%1%) with %2%." ---> "Xml Exceptie (%1%) met %2%."
 "Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) exceptie afgevangen; %2% van %3%."
 "Invalid torrent (%1%) from %2%." ---> "Ongeldige torrent (%1%) van %2%."
+"%1$.2fMB of %2$.2fMB" --->  ??? 
+"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Gedownload %1$.2fMB, Geupload %2$.2fMB, Ratio %3$.2f."
+"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"Name: %1%, %2%." --->  ??? 
+"%1$.2fMB down - %2$.2fMB up" --->  ??? 
+"%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1% DHT node(s)" ---> "%1% DHT knopen"
 "DHT disabled" ---> "DHT uitgeschakeld"
 "Filtering %1% range(s)" ---> "%1% bereiken gefilterd"
@@ -188,6 +200,7 @@
 "Logging" --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
+"Auto Sort" --->  ??? 
 "Interesting" ---> "Geinteresseerd"
 "Choked" ---> "Verstopt"
 "Interested in us" ---> "Geinteresseerd in ons"
@@ -209,13 +222,13 @@
 "Stopped" ---> "Gestopt"
 "Paused" ---> "Gepauzeerd"
 "Downloading Metadata" ---> "Metadata downloaden"
-"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "Naam;Status;Voltooid;Download;Upload;Peers;Seeds;ETA;Kopieen"
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio" --->  ??? 
 "100;110;60;60;60;42;45;61;45" --->  ??? 
 "Time;Message;Severity" ---> "Tijd;Bericht;Ernst"
 "67;419;69" --->  ??? 
 "Tracker;Tier" ---> "Tracker;Laag"
 "287;50" --->  ??? 
-"Peer;Download;Upload;Type;Client" --->  ??? 
+"Peer;Country;Download;Upload;Type;Client" --->  ??? 
 "100;70;70;70;100" --->  ??? 
-"Peer;Download;Upload;Type;Client;Status" --->  ??? 
+"Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
 "95;64;64;50;100;500" --->  ??? 

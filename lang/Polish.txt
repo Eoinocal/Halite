@@ -1,21 +1,29 @@
 "Halite.ico" --->  ??? 
 "toolbar.bmp" --->  ??? 
+"About.rtf" --->  ??? 
 "English" ---> "Polish"
 "MS Shell Dlg" --->  ??? 
 "Torrent" --->  ??? 
 "Tracker" --->  ??? 
 "" --->  ??? 
 "msctls_progress32" --->  ??? 
-"N/A" --->  ??? 
-"Connection limits:" ---> "Limity połączeń:"
-"Transfer rates (KB/s):" ---> "Wykorzystanie łącza:"
+"Torrent connection limits:" ---> "Limit połączeń torrenta:"
+"Torrent transfer rates (KB/s):" ---> "Limit transferu dla torrenta (KB/s):"
 "Total" --->  ??? 
 "Up" --->  ??? 
 "Down" --->  ??? 
+"N/A" --->  ??? 
 "Update in:" ---> "Aktualizacja za:"
-"Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." ---> "Pobrano %1%MB, Wysłano %2%MB, Ratio %3%."
 "Ratio (this session):" ---> "Ratio (aktualna sesja):"
-"This Session Downloaded %1%MB, Uploaded %2%MB" --->  ??? 
+"Torrent:" --->  ??? 
+"Peers:" --->  ??? 
+"Transfered:" --->  ??? 
+"Remaining:" --->  ??? 
+"Rates:" --->  ??? 
+"Seeds:" --->  ??? 
+"Overhead:" --->  ??? 
+"ETA:" --->  ??? 
+"Ratio:" --->  ??? 
 "BitTorrent" --->  ??? 
 "Open a (single) port between : " ---> "Otwórz (pojedyńczy) port pomiędzy :"
 "Enable DHT" --->  ??? 
@@ -25,10 +33,8 @@
 "Distributed Hash Tables" --->  ??? 
 "Port (UDP) : " --->  ??? 
 "(DHT will not apply to pirvate torrents)" --->  ??? 
-"Need Help?" --->  ??? 
 "General Settings" ---> "Główne opcje"
 "Limit the no. of half-open connections" --->  ??? 
-"Why?" --->  ??? 
 "Proxies" --->  ??? 
 "Proxy Host/IP : " --->  ??? 
 "Use a proxy." ---> "Użyj proxy."
@@ -79,7 +85,7 @@
 "Torrent Defaults" --->  ??? 
 "These options set global maximums which will always be honoured." ---> "Globalne limity"
 "These options specify the default limits applied to new torrents." ---> "Limity na torrent"
-"Default save folder : " ---> "Magazynuj pliki torrent w :"
+"Default save folder :" --->  ??? 
 "..." --->  ??? 
 "Prompt for alternate save folder." ---> "Zawsze pokazuj okno wyboru folderu."
 "Halite shutting down..." ---> "Trwa zamykanie Halite..."
@@ -99,11 +105,11 @@
 "Tracker:" --->  ??? 
 "Status:" --->  ??? 
 "Time left:" ---> "Pozostało:"
-"Torrent connection limits:" ---> "Limit połączeń torrenta:"
-"Torrent transfer rates (KB/s):" ---> "Limit transferu dla torrenta (KB/s):"
 "Completed:" ---> "Ukończono:"
 "About" ---> "O programie..."
 "Program Information" ---> "O programie..."
+"v 0.2.9 dev 270" --->  ??? 
+"RichEdit20A" --->  ??? 
 "SysTabControl32" --->  ??? 
 "General" ---> "Główne"
 "Allow only one instance to run." ---> "Zezwalaj na uruchomienie tylko jednej kopii Halite."
@@ -167,7 +173,13 @@
 "Xml Exception (%1%) with %2%." --->  ??? 
 "Torrent (%1%) exception caught; %2% from %3%." --->  ??? 
 "Invalid torrent (%1%) from %2%." --->  ??? 
+"%1$.2fMB of %2$.2fMB" --->  ??? 
+"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
+"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"Name: %1%, %2%." --->  ??? 
+"%1$.2fMB down - %2$.2fMB up" --->  ??? 
+"%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1% DHT node(s)" --->  ??? 
 "DHT disabled" --->  ??? 
 "Filtering %1% range(s)" --->  ??? 
@@ -188,6 +200,7 @@
 "Logging" --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
+"Auto Sort" --->  ??? 
 "Interesting" --->  ??? 
 "Choked" --->  ??? 
 "Interested in us" --->  ??? 
@@ -209,13 +222,13 @@
 "Stopped" --->  ??? 
 "Paused" --->  ??? 
 "Downloading Metadata" --->  ??? 
-"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" --->  ??? 
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio" --->  ??? 
 "100;110;60;60;60;42;45;61;45" --->  ??? 
 "Time;Message;Severity" --->  ??? 
 "67;419;69" --->  ??? 
 "Tracker;Tier" --->  ??? 
 "287;50" --->  ??? 
-"Peer;Download;Upload;Type;Client" --->  ??? 
+"Peer;Country;Download;Upload;Type;Client" --->  ??? 
 "100;70;70;70;100" --->  ??? 
-"Peer;Download;Upload;Type;Client;Status" --->  ??? 
+"Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
 "95;64;64;50;100;500" --->  ??? 

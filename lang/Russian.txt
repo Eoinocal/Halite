@@ -1,21 +1,29 @@
 "Halite.ico" --->  ??? 
 "toolbar.bmp" --->  ??? 
+"About.rtf" --->  ??? 
 "English" ---> "Русский"
 "MS Shell Dlg" ---> "MS Shell Dlg"
 "Torrent" ---> "Торрент"
 "Tracker" ---> "Трэкер"
 "" ---> ""
 "msctls_progress32" ---> "msctls_progress32"
-"N/A" ---> "Нет доступа"
-"Connection limits:" ---> "Лимит соединений"
-"Transfer rates (KB/s):" ---> "Скорость закачки (KB/s):"
+"Torrent connection limits:" ---> "Лимит соединений торрента"
+"Torrent transfer rates (KB/s):" ---> "Скорость передачи торрента (KB/s):"
 "Total" ---> "Всего"
 "Up" ---> "Вверх"
 "Down" ---> "Вниз"
+"N/A" ---> "Нет доступа"
 "Update in:" ---> "Обновление через:"
-"Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." ---> "Скачано %1%MB, Отдано %2%MB, Соотношение %3%"
 "Ratio (this session):" ---> "Соотношение (в эту сессию):"
-"This Session Downloaded %1%MB, Uploaded %2%MB" --->  ??? 
+"Torrent:" --->  ??? 
+"Peers:" --->  ??? 
+"Transfered:" --->  ??? 
+"Remaining:" --->  ??? 
+"Rates:" --->  ??? 
+"Seeds:" --->  ??? 
+"Overhead:" --->  ??? 
+"ETA:" --->  ??? 
+"Ratio:" --->  ??? 
 "BitTorrent" ---> "БитТоррент"
 "Open a (single) port between : " ---> "Открыть (единственный) порт между : "
 "Enable DHT" --->  ??? 
@@ -25,10 +33,8 @@
 "Distributed Hash Tables" --->  ??? 
 "Port (UDP) : " ---> "Порт (UDP) : "
 "(DHT will not apply to pirvate torrents)" --->  ??? 
-"Need Help?" --->  ??? 
 "General Settings" ---> "Общие установки"
 "Limit the no. of half-open connections" --->  ??? 
-"Why?" --->  ??? 
 "Proxies" --->  ??? 
 "Proxy Host/IP : " ---> "Прокси Хост/IP"
 "Use a proxy." ---> "Использовать прокси."
@@ -79,7 +85,7 @@
 "Torrent Defaults" ---> "Установки торрента по умолчанию"
 "These options set global maximums which will always be honoured." ---> "Эти опции устанавливают глобальные максимумы, которые всегда будут соблюдаться."
 "These options specify the default limits applied to new torrents." ---> "Эти опции указывают лимиты, соблюдаемые поумолчянию."
-"Default save folder : " ---> "Папка для закачки поумолчанию : "
+"Default save folder :" --->  ??? 
 "..." ---> "..."
 "Prompt for alternate save folder." ---> "Запрашивать альтернативную папку закачки."
 "Halite shutting down..." ---> "Халит завершает выключается..."
@@ -99,11 +105,11 @@
 "Tracker:" ---> "Трэкер"
 "Status:" ---> "Статус:"
 "Time left:" ---> "Осталось времени:"
-"Torrent connection limits:" ---> "Лимит соединений торрента"
-"Torrent transfer rates (KB/s):" ---> "Скорость передачи торрента (KB/s):"
 "Completed:" ---> "Завершено:"
 "About" ---> "Информация"
 "Program Information" ---> "О программе"
+"v 0.2.9 dev 270" --->  ??? 
+"RichEdit20A" --->  ??? 
 "SysTabControl32" ---> "SysTabControl32"
 "General" ---> "Общие"
 "Allow only one instance to run." ---> "Разрешить только одну активную копию программы"
@@ -167,7 +173,13 @@
 "Xml Exception (%1%) with %2%." ---> "XML исключение (%1%) с %2%."
 "Torrent (%1%) exception caught; %2% from %3%." ---> "Получено Торрент исключение (%1%); %2% от %3%."
 "Invalid torrent (%1%) from %2%." ---> "Бракованый торрент (%1%) от %2%."
+"%1$.2fMB of %2$.2fMB" --->  ??? 
+"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> " Закачано %1$.2fMB, Выкачано %2$.2fMB, Соотношение %3$.2f."
+"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"Name: %1%, %2%." --->  ??? 
+"%1$.2fMB down - %2$.2fMB up" --->  ??? 
+"%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1% DHT node(s)" ---> "%1% нодов DHT"
 "DHT disabled" ---> "DHT отключён"
 "Filtering %1% range(s)" ---> "Фильтрация %1% массивов"
@@ -188,6 +200,7 @@
 "Logging" --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
+"Auto Sort" --->  ??? 
 "Interesting" ---> "Интересен"
 "Choked" ---> "Заглушен"
 "Interested in us" ---> "Заинтересован в нас"
@@ -209,13 +222,13 @@
 "Stopped" ---> "Остановлен"
 "Paused" ---> "В паузе"
 "Downloading Metadata" ---> "Загружаем метаинформацию"
-"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" ---> "Имя;Статус;Завершено;Закачка;Выкачка;Пиры;Сиды;Вр.ожидания;Копии"
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio" --->  ??? 
 "100;110;60;60;60;42;45;61;45" --->  ??? 
 "Time;Message;Severity" ---> "Время;Сообщение;Важность"
 "67;419;69" --->  ??? 
 "Tracker;Tier" ---> "Трэкер;Связь"
 "287;50" --->  ??? 
-"Peer;Download;Upload;Type;Client" ---> "Пир;Закачка;Выкачка;Тип;Клиент"
+"Peer;Country;Download;Upload;Type;Client" --->  ??? 
 "100;70;70;70;100" --->  ??? 
-"Peer;Download;Upload;Type;Client;Status" ---> "Пир;Закачка;Выкачка;Тип;Клиент;Статус"
+"Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
 "95;64;64;50;100;500" --->  ??? 

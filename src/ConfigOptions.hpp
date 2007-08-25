@@ -501,7 +501,7 @@ public:
 		AddPage(bitTorrentOptions);
 		AddPage(securityOptions);
 		AddPage(torrentsOptions);
-		AddPage(remoteControlOptions);
+	//	AddPage(remoteControlOptions);
 		AddPage(aboutOptions);
     }
 
