@@ -78,10 +78,14 @@ void AdvTorrentDialog::focusChanged(string& torrent_name)
 	else
 	{
 		SetDlgItemText(IDC_NAME_STATUS, L"N/A");
-	//	SetDlgItemText(IDC_SECOND, L"N/A");
+		SetDlgItemText(IDC_PEERS, L"N/A");
+		SetDlgItemText(IDC_SEEDS, L"N/A");
 		SetDlgItemText(IDC_TRANSFERED, L"N/A");
+		SetDlgItemText(IDC_OVERHEAD, L"N/A");
 		SetDlgItemText(IDC_REMAINING, L"N/A");
+		SetDlgItemText(IDC_ETA, L"N/A");
 		SetDlgItemText(IDC_RATE, L"N/A");
+		SetDlgItemText(IDC_RATIO, L"N/A");
 		SetDlgItemText(IDC_TRACKER, L"N/A");
 		SetDlgItemText(IDC_UPDATE, L"N/A");
 		

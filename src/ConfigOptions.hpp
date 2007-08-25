@@ -102,11 +102,11 @@ public:
 
     BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)
 	{	
-		helpLink.SubclassWindow(GetDlgItem(IDC_BC_HELP_LINK));
-		helpLink.SetHyperLink(L"http://www.binarynotions.com/");
+	//	helpLink.SubclassWindow(GetDlgItem(IDC_BC_HELP_LINK));
+	//	helpLink.SetHyperLink(L"http://www.binarynotions.com/");
 		
-		whyHalfConn.SubclassWindow(GetDlgItem(IDC_BC_CON_WHY));
-		whyHalfConn.SetHyperLink(L"http://www.binarynotions.com/");
+	//	whyHalfConn.SubclassWindow(GetDlgItem(IDC_BC_CON_WHY));
+	//	whyHalfConn.SetHyperLink(L"http://www.binarynotions.com/");
 		
 		BOOL retval = DoDataExchange(false);
 
@@ -294,8 +294,8 @@ public:
 
     BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)
 	{
-		helpLink.SubclassWindow(GetDlgItem(IDC_SC_HELP_LINK));
-		helpLink.SetHyperLink(L"http://www.binarynotions.com/");
+	//	helpLink.SubclassWindow(GetDlgItem(IDC_SC_HELP_LINK));
+	//	helpLink.SetHyperLink(L"http://www.binarynotions.com/");
 		
 		BOOL retval =  DoDataExchange(false);
 
