@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libtorrent", "sln\libtorren
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenSSL", "sln\OpenSSL\OpenSSL.vcproj", "{85145293-5491-4BA8-892C-F5A0C4AC9208}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "asio", "sln\asio\asio.vcproj", "{00A33D18-879A-4143-BCAD-45993CCB5A8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -43,6 +45,12 @@ Global
 		{85145293-5491-4BA8-892C-F5A0C4AC9208}.Release|Win32.Build.0 = Release|Win32
 		{85145293-5491-4BA8-892C-F5A0C4AC9208}.Release|x64.ActiveCfg = Release|x64
 		{85145293-5491-4BA8-892C-F5A0C4AC9208}.Release|x64.Build.0 = Release|x64
+		{00A33D18-879A-4143-BCAD-45993CCB5A8C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{00A33D18-879A-4143-BCAD-45993CCB5A8C}.Debug|Win32.Build.0 = Debug|Win32
+		{00A33D18-879A-4143-BCAD-45993CCB5A8C}.Debug|x64.ActiveCfg = Debug|Win32
+		{00A33D18-879A-4143-BCAD-45993CCB5A8C}.Release|Win32.ActiveCfg = Release|Win32
+		{00A33D18-879A-4143-BCAD-45993CCB5A8C}.Release|Win32.Build.0 = Release|Win32
+		{00A33D18-879A-4143-BCAD-45993CCB5A8C}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
