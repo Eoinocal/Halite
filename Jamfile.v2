@@ -51,7 +51,7 @@ LIBS =
 	/boost/$(BOOST_LIBS)/<link>static
 	/libtorrent//torrent/<link>static
 	/wtl
-	/asio
+#	/asio
 #	/stlsoft
 	
 	comctl32
