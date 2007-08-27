@@ -30,6 +30,7 @@ SOURCES =
 	
 	advtabs/Torrent.cpp
 	advtabs/Peers.cpp
+	advtabs/Files.cpp
 	advtabs/Tracker.cpp
 	advtabs/TrackerListView.cpp
 	advtabs/Debug.cpp

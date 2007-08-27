@@ -407,9 +407,11 @@ public:
 	void onFolderBrowse(UINT, int, HWND hWnd)
 	{
 		hal::bittorrent().clearIpFilter();
+		
+		wstring folderSelect = hal::app().res_wstr(HAL_FOLDER_SELECT);
 
-		CFolderDialog fldDlg (NULL, hal::app().res_wstr(HAL_FOLDER_SELECT).c_str(),
-			BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE );
+		CFolderDialog fldDlg (NULL, folderSelect.c_str(),
+			BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE);
 
 		if (IDOK == fldDlg.DoModal())
 			SetDlgItemText(IDC_BC_SAVEFOLDER, fldDlg.m_szFolderPath);

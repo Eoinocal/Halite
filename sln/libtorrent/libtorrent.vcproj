@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\..\lib\libtorrent\include&quot;;&quot;$(ProjectDir)..\..\lib\libtorrent\include\libtorrent&quot;;&quot;$(ProjectDir)..\..\lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;_DEBUG;WIN32 ;_WIN32;_WINDOWS;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -108,7 +108,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\..\lib\libtorrent\include&quot;;&quot;$(ProjectDir)..\..\lib\libtorrent\include\libtorrent&quot;;&quot;$(ProjectDir)..\..\lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;_DEBUG;WIN32 ;_WIN32;_WINDOWS;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -173,7 +173,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\..\lib\libtorrent\include&quot;;&quot;$(ProjectDir)..\..\lib\libtorrent\include\libtorrent&quot;;&quot;$(ProjectDir)..\..\lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32 ;_WIN32;_WINDOWS;NDEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
@@ -236,7 +236,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\..\lib\libtorrent\include&quot;;&quot;$(ProjectDir)..\..\lib\libtorrent\include\libtorrent&quot;;&quot;$(ProjectDir)..\..\lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32 ;_WIN32;_WINDOWS;NDEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
@@ -286,10 +286,6 @@
 			>
 			<File
 				RelativePath="..\..\lib\libtorrent\src\alert.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\lib\libtorrent\src\allocate_resources.cpp"
 				>
 			</File>
 			<File

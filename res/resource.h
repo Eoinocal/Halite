@@ -285,5 +285,8 @@
 //#define IDC_NAME_STATUS					40126
 #define IDC_PEERS						40127
 //#define IDC_TRANSFERED					40128
-//#define IDC_REMAINING					40129
-//#define IDC_RATE						40130
+#define IDD_ADVFILES					40129
+#define IDC_CONTAINER					40130
+#define HAL_FILES_TAB				    40131
+#define HAL_DIALOGFILE_LISTVIEW_ADV		40132
+

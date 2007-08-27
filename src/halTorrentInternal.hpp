@@ -335,7 +335,29 @@ public:
 				peerDetails.push_back(peer);
 			}	
 	}
-	
+
+	void getFileDetails(FileDetails& fileDetails) const
+	{
+		if (in_session_)
+		{
+			lbt::torrent_info info = handle_.get_torrent_info();
+			std::vector<lbt::file_entry> files;
+			
+			std::copy(info.begin_files(), info.end_files(), 
+				std::back_inserter(files));
+			
+			std::vector<float> fileProgress;			
+			handle_.file_progress(fileProgress);
+			
+			for(size_t i=0, e=files.size(); i<e; ++i)
+			{
+				wstring fullPath = hal::from_utf8(files[i].path.string());
+				
+				fileDetails.push_back(FileDetail(fullPath, files[i].size, fileProgress[i]));
+			}
+		}
+	}
+
 private:
 	static libtorrent::session* the_session_;
 	
@@ -350,7 +372,7 @@ private:
 	
 	std::wstring filename_;
 	std::wstring save_directory_;
-	libtorrent::torrent_handle handle_;	
+	mutable libtorrent::torrent_handle handle_;	
 	
 	libtorrent::entry metadata_;
 	libtorrent::entry resumedata_;
@@ -369,6 +391,7 @@ private:
 	std::vector<TrackerDetail> trackers_;
 	std::vector<lbt::announce_entry> torrent_trackers_;
 	mutable std::vector<lbt::peer_info> peers_;
+	
 };
 
 typedef std::map<std::string, TorrentInternal> TorrentMap;

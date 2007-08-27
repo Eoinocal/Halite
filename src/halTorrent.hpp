@@ -69,6 +69,33 @@ struct PeerDetail
 typedef shared_ptr<PeerDetail> PeerDetail_ptr;
 typedef std::vector<PeerDetail> PeerDetails;
 
+struct FileDetail
+{
+	FileDetail(boost::filesystem::wpath p, size_t s=0, float pg=0, int pr=1) :
+		path(p),
+		size(s),
+		progress(pg),
+		priority(pr)
+	{}
+	
+	bool operator==(const FileDetail& file) const
+	{
+		return (path == file.path);
+	}
+	
+	bool operator<(const FileDetail& file) const
+	{
+		return (path < file.path);
+	}
+	
+	boost::filesystem::wpath path;
+	size_t size;
+	float progress;
+	int priority;
+};
+
+typedef std::vector<FileDetail> FileDetails;
+
 class TorrentDetail 
 {
 public:
@@ -94,11 +121,13 @@ public:
 		ratio_(r),
 		estimatedTimeLeft_(eta),
 		updateTrackerIn_(uIn),
-		peerDetailsFilled_(false)
+		peerDetailsFilled_(false),
+		fileDetailsFilled_(false)
 	{}
 
 	TorrentDetail() :	
-		peerDetailsFilled_(false)
+		peerDetailsFilled_(false),
+		fileDetailsFilled_(false)
 	{};	
 	
 	enum state
@@ -134,6 +163,7 @@ public:
 	const time_duration& updateTrackerIn() { return updateTrackerIn_; }
 	
 	const PeerDetails& peerDetails() const;
+	const FileDetails& fileDetails() const;
 	
 public:
 	std::wstring filename_;
@@ -164,6 +194,9 @@ public:
 private:
 	mutable bool peerDetailsFilled_;
 	mutable PeerDetails peerDetails_;
+	
+	mutable bool fileDetailsFilled_;
+	mutable FileDetails fileDetails_;
 };
 
 typedef shared_ptr<TorrentDetail> TorrentDetail_ptr;
@@ -302,6 +335,7 @@ public:
 	float getTorrentRatio(std::string);
 	
 	void getAllPeerDetails(std::string filename, PeerDetails& peerContainer);
+	void getAllFileDetails(std::string filename, FileDetails& fileDetails);
 	
 	void resumeAll();
 	void closeAll();

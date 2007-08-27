@@ -31,6 +31,9 @@ LRESULT AdvHaliteDialog::onInitDialog(HWND, LPARAM)
 	m_peers.Create(m_tabCtrl);
 	m_tabCtrl.AddPage(m_peers, hal::app().res_wstr(HAL_PEERS_TAB).c_str());
 	
+	m_files.Create(m_tabCtrl);
+	m_tabCtrl.AddPage(m_files, hal::app().res_wstr(HAL_FILES_TAB).c_str());
+	
 	m_tracker.Create(m_tabCtrl);
 	m_tabCtrl.AddPage(m_tracker, hal::app().res_wstr(HAL_TRACKER_TAB).c_str());
 	

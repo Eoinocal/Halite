@@ -631,6 +631,13 @@ public:
 	
 	bool autoSort() { return autoSort_; }
 	
+	void ConditionallyDoAutoSort()
+	{
+		int iCol = GetSortColumn();
+		if (autoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
+			DoSortItems(iCol, IsSortDescending());	
+	}
+	
 protected:	
 	inline void* CustomItemConversion(LVCompareParam* param, int iSortCol)
 	{
@@ -664,13 +671,6 @@ protected:
 			return i->second;
 		}		
 		return NULL;
-	}
-	
-	void ConditionallyDoAutoSort()
-	{
-		int iCol = GetSortColumn();
-		if (autoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
-			DoSortItems(iCol, IsSortDescending());	
 	}
 	
 	SelectionManager manager_;

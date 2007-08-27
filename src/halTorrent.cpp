@@ -253,6 +253,17 @@ const PeerDetails& TorrentDetail::peerDetails() const
 	return peerDetails_;
 }
 
+const FileDetails& TorrentDetail::fileDetails() const
+{
+	if (!fileDetailsFilled_)
+	{
+		bittorrent().getAllFileDetails(hal::to_utf8(filename_), fileDetails_);
+		fileDetailsFilled_ = true;
+	}
+	
+	return fileDetails_;
+}
+
 bool nameLess(const TorrentDetail_ptr& left, const TorrentDetail_ptr& right)
 {
 	return left->state() < right->state();
@@ -1208,6 +1219,18 @@ void BitTorrent::getAllPeerDetails(string filename, PeerDetails& peerContainer)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getAllPeerDetails")
 }
 
+void BitTorrent::getAllFileDetails(string filename, FileDetails& fileDetails)
+{
+	try {
+	
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+		(*i).second.getFileDetails(fileDetails);
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getAllFileDetails")
+}
+
 bool BitTorrent::isTorrent(string filename)
 {	
 	try {
@@ -1291,7 +1314,7 @@ void BitTorrent::setTorrentLogin(std::string filename, std::wstring username, st
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentLogin")
 }
 
-std::pair<std::wstring, std::wstring>  BitTorrent::getTorrentLogin(std::string filename)
+std::pair<std::wstring, std::wstring> BitTorrent::getTorrentLogin(std::string filename)
 {
 	try {
 	

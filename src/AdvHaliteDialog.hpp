@@ -15,6 +15,7 @@
 #include "advtabs/Peers.hpp"
 #include "advtabs/Tracker.hpp"
 #include "advtabs/Debug.hpp"
+#include "advtabs/Files.hpp"
 
 #include "HaliteListManager.hpp"
 
@@ -42,6 +43,7 @@ public:
 	AdvHaliteDialog(HaliteWindow& halWindow) :
 		m_torrent(halWindow),
 		m_peers(halWindow),
+		m_files(halWindow),
 		m_tracker(halWindow),
 		m_debug(halWindow)
 	{}
@@ -83,6 +85,7 @@ protected:
 
 	AdvTorrentDialog m_torrent;
 	AdvPeerDialog m_peers;
+	AdvFilesDialog m_files;
 	AdvTrackerDialog m_tracker;
 	AdvDebugDialog m_debug;
 

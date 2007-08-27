@@ -61,4 +61,3 @@ private:
 	hal::ini_adapter adapter_;
 	std::string name_;	
 };
-
