@@ -18,6 +18,8 @@
 #include "../HaliteIni.hpp"
 #include "../HaliteListViewCtrl.hpp"
 
+#include "../HaliteUpdateLock.hpp"
+
 class FileListView :
 	public CHaliteSortListViewCtrl<FileListView>,
 	public CHaliteIni<FileListView>,
@@ -110,23 +112,34 @@ protected:
 	friend class treeClass;
 	
 public:	
-
 	thisClass() :
-		iniClass("treeviews/advFiles", "FileTreeView")
+		iniClass("treeviews/advFiles", "FileTreeView"),
+		updateLock_(0)
 	{}
 	
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_DESTROY(OnDestroy)
 
+		REFLECTED_NOTIFY_CODE_HANDLER(TVN_SELCHANGED, OnSelChanged)
 //		CHAIN_MSG_MAP(treeClass)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
+	
+	wpath focused() { return focused_; }
 	
 protected:
 	void OnDestroy()
 	{
 	//	saveSettings();
 	}
+	
+	LRESULT OnSelChanged(int, LPNMHDR pnmh, BOOL&);
+	
+	int updateLock_;
+	friend class UpdateLock<thisClass>;	
+	friend class TryUpdateLock<thisClass>;	
+	
+	wpath focused_;
 };
 
 template<typename T>
@@ -155,7 +168,7 @@ public:
 	
 	void EnsureValid(wpath p)
 	{		
-		wpath branchPath = p.branch_path();
+		wpath branchPath = p;
 		
 		MapType::iterator i = map_.find(branchPath);		
 		if (i == map_.end())
@@ -222,11 +235,21 @@ private:
 	MapType map_;
 };
 
+class FileStatic :
+	public CWindowImpl<FileStatic, CStatic>
+{	
+public:
+	BEGIN_MSG_MAP_EX(FileStatic)
+		REFLECT_NOTIFICATIONS()
+	END_MSG_MAP()
+};
+
 class AdvFilesDialog :
 	public CHalTabPageImpl<AdvFilesDialog>,
 	public CDialogResize<AdvFilesDialog>,
 	public CHaliteDialogBase<AdvFilesDialog>,
 	public CWinDataExchangeEx<AdvFilesDialog>,
+	public CHaliteIni<AdvFilesDialog>,
 	private boost::noncopyable
 {
 protected:
@@ -234,14 +257,21 @@ protected:
 	typedef CHalTabPageImpl<thisClass> baseClass;
 	typedef CDialogResize<thisClass> resizeClass;
 	typedef CHaliteDialogBase<thisClass> dialogBaseClass;
+	typedef CHaliteIni<thisClass> iniClass;
 
 public:
 	enum { IDD = IDD_ADVFILES };
 
 	AdvFilesDialog(HaliteWindow& halWindow) :
 		dialogBaseClass(halWindow),
-		treeManager_(tree_)
-	{}
+		treeManager_(tree_),
+		iniClass("AdvFiles", "AdvFiles"),
+		splitterPos(50)
+	{
+		Load();
+	}
+	
+	~AdvFilesDialog() { Save(); }
 	
 	BOOL PreTranslateMessage(MSG* pMsg)
 	{
@@ -251,7 +281,7 @@ public:
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_CLOSE(onClose)
-
+		
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
 		
@@ -264,6 +294,13 @@ public:
 		DLGRESIZE_CONTROL(IDC_CONTAINER, DLSZ_SIZE_X|DLSZ_SIZE_Y)
 	END_DLGRESIZE_MAP()
 
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+	{
+		ar & BOOST_SERIALIZATION_NVP(splitterPos);
+	}
+
 	LRESULT onInitDialog(HWND, LPARAM);
 	void onClose();
 	
@@ -272,6 +309,9 @@ public:
 
 protected:
 	CSplitterWindow splitter_;
+	unsigned int splitterPos;
+	
+	FileStatic static_;
 	FileTreeView tree_;
 	FileListView list_;
 	

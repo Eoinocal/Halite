@@ -10,6 +10,17 @@
 
 #include "Files.hpp"
 
+#define TVS_EX_MULTISELECT 0x0002
+#define TVS_EX_DOUBLEBUFFER 0x0004
+#define TVS_EX_NOINDENTSTATE 0x0008
+#define TVS_EX_RICHTOOLTIP 0x0010
+#define TVS_EX_AUTOHSCROLL 0x0020
+#define TVS_EX_FADEINOUTEXPANDOS 0x0040
+#define TVS_EX_PARTIALCHECKBOXES 0x0080
+#define TVS_EX_EXCLUSIONCHECKBOXES 0x0100
+#define TVS_EX_DIMMEDCHECKBOXES 0x0200
+#define TVS_EX_DRAWIMAGEASYNC 0x0400
+
 FileListView::FileListView() :
 	iniClass("listviews/advFiles", "FileListView"),
 	listClass(true,false,false)
@@ -108,26 +119,55 @@ void FileListView::uiUpdate(const hal::TorrentDetails& tD)
 	}
 }
 #endif
+
+LRESULT FileTreeView::OnSelChanged(int, LPNMHDR pnmh, BOOL&)
+{	
+	TryUpdateLock<thisClass> lock(*this);
+	if (lock)
+	{
+		CTreeItem ti = GetSelectedItem();	
+		boost::array<wchar_t, MAX_PATH> buffer;
+		
+		if (ti)
+		{
+			ti.GetText(buffer.elems, MAX_PATH);
+			wpath branch(wstring(buffer.elems));
+			
+			while (ti = ti.GetParent())
+			{
+				ti.GetText(buffer.elems, MAX_PATH);
+				branch = wstring(buffer.elems)/branch;
+			}		
+		//	MessageBox(branch.string().c_str(),L"Hi",0);
+		}
+	}
+	return 0;
+}
+
 LRESULT AdvFilesDialog::onInitDialog(HWND, LPARAM)
 {
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
 	CRect rc; GetClientRect(&rc);
 	
+	static_.SubclassWindow(GetDlgItem(IDC_CONTAINER));
+	
 	splitter_.Create(GetDlgItem(IDC_CONTAINER), rc, NULL, WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN);
 	splitter_.SetSplitterExtendedStyle(!SPLIT_PROPORTIONAL, SPLIT_PROPORTIONAL);
 	
 	list_.Create(splitter_, rc, NULL, 
-		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS);
+		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS,
+		WS_EX_STATICEDGE);
 		
 	tree_.Create(splitter_, rc, NULL, 
-		WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|TVS_HASBUTTONS|TVS_LINESATROOT|TVS_HASLINES|TVS_TRACKSELECT);
+		WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|TVS_HASBUTTONS|
+			TVS_HASLINES|TVS_TRACKSELECT|TVS_SHOWSELALWAYS,
+		TVS_EX_DOUBLEBUFFER|WS_EX_STATICEDGE);
 		
 	splitter_.SetSplitterPanes(tree_, list_);
+	splitter_.SetSplitterPos(splitterPos);
 	
 	CTreeItem ti = tree_.InsertItem(L"baz", TVI_ROOT, TVI_LAST);
-//	tree_.ShowWindow(true);
-//	list_.ShowWindow(true);
 	
 //	DoDataExchange(false);
 	
@@ -157,16 +197,20 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 	
 	std::sort(fileDetails_.begin(), fileDetails_.end());
 	
-	//tree_.DeleteAllItems();
-	//fileTreeMap_.clear();
-	treeManager_.InvalidateAll();
+	{ 	UpdateLock<FileTreeView> lock(tree_);
 	
-	foreach (hal::FileDetail file, fileDetails_)
-	{
-		treeManager_.EnsureValid(file.path);
+		treeManager_.InvalidateAll();
+		
+		foreach (hal::FileDetail file, fileDetails_)
+		{
+			treeManager_.EnsureValid(file.branch);
+		}
+		
+		treeManager_.ClearInvalid();
 	}
 	
-	treeManager_.ClearInvalid();
+	//std::pair<hal::FileDetails::iterator, hal::FileDetails::iterator> range =
+	//	std::equal_range(fileDetails_.begin(), fileDetails_.end(), FileDetail(
 	
 	TryUpdateLock<FileListView::listClass> lock(list_);
 	if (lock) 
@@ -198,16 +242,16 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 		{			
 			LV_FINDINFO findInfo; 
 			findInfo.flags = LVFI_STRING;
-			findInfo.psz = const_cast<LPTSTR>((*i).path.string().c_str());
+			findInfo.psz = const_cast<LPTSTR>((*i).filename.c_str());
 			
 			int itemPos = list_.FindItem(&findInfo, -1);
 			if (itemPos < 0)
-				itemPos = list_.AddItem(list_.GetItemCount(), 0, (*i).path.string().c_str(), 0);
+				itemPos = list_.AddItem(list_.GetItemCount(), 0, (*i).filename.c_str(), 0);
 			
 		//	list_.SetItemData(itemPos, std::distance(peerDetails_.begin(), i));
 			
-			list_.SetItemText(itemPos, 1, (*i).path.leaf().c_str());
-			list_.SetItemText(itemPos, 2, (*i).path.branch_path().string().c_str());
+			list_.SetItemText(itemPos, 1, (*i).filename.c_str());
+			list_.SetItemText(itemPos, 2, (*i).branch.string().c_str());
 			
 		//	list_.SetItemText(itemPos, 2, getColumnAdapter(2)->print(*i).c_str());
 			
@@ -217,10 +261,12 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 
 		list_.ConditionallyDoAutoSort();
 	}
+	
+	splitterPos = splitter_.GetSplitterPos();
 }
 
 void AdvFilesDialog::onClose()
-{	
+{		
 	if(::IsWindow(m_hWnd)) 
 	{
 		::DestroyWindow(m_hWnd);
