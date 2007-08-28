@@ -71,11 +71,12 @@ typedef std::vector<PeerDetail> PeerDetails;
 
 struct FileDetail
 {
-	FileDetail(boost::filesystem::wpath p, size_t s=0, float pg=0, int pr=1) :
+	FileDetail(boost::filesystem::wpath p, size_t s=0, float pg=0, int pr=1, size_t o=0) :
 		path(p),
 		size(s),
 		progress(pg),
-		priority(pr)
+		priority(pr),
+		order(o)
 	{}
 	
 	bool operator==(const FileDetail& file) const
@@ -92,6 +93,9 @@ struct FileDetail
 	size_t size;
 	float progress;
 	int priority;
+	
+private:
+	size_t order;
 };
 
 typedef std::vector<FileDetail> FileDetails;

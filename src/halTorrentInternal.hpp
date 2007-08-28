@@ -11,7 +11,7 @@ namespace hal
 class TorrentInternal;
 }
 
-BOOST_CLASS_VERSION(hal::TorrentInternal, 4)
+BOOST_CLASS_VERSION(hal::TorrentInternal, 5)
 
 namespace hal 
 {
@@ -302,6 +302,9 @@ public:
 		if (version > 2) {
 			ar & make_nvp("resolve_countries", resolve_countries_);
 		}
+		if (version > 4) {
+			ar & make_nvp("file_priorities", filePriorities_);
+		}
     }
 	
 	void setEntryData(libtorrent::entry metadata, libtorrent::entry resumedata)
@@ -349,12 +352,18 @@ public:
 			std::vector<float> fileProgress;			
 			handle_.file_progress(fileProgress);
 			
+			if (filePriorities_.size() != files.size())
+			{
+				filePriorities_.clear();
+				filePriorities_.assign(files.size(), 1);
+			}
+			
 			for(size_t i=0, e=files.size(); i<e; ++i)
 			{
 				wstring fullPath = hal::from_utf8(files[i].path.string());
 				
-				fileDetails.push_back(FileDetail(fullPath, files[i].size, fileProgress[i]));
-			}
+				fileDetails.push_back(FileDetail(fullPath, files[i].size, fileProgress[i], filePriorities_[i], i));
+			}			
 		}
 	}
 
@@ -390,8 +399,8 @@ private:
 	
 	std::vector<TrackerDetail> trackers_;
 	std::vector<lbt::announce_entry> torrent_trackers_;
-	mutable std::vector<lbt::peer_info> peers_;
-	
+	mutable std::vector<lbt::peer_info> peers_;	
+	mutable std::vector<int> filePriorities_;	
 };
 
 typedef std::map<std::string, TorrentInternal> TorrentMap;

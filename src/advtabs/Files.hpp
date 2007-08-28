@@ -118,6 +118,7 @@ public:
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_DESTROY(OnDestroy)
 
+//		CHAIN_MSG_MAP(treeClass)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 	
@@ -126,6 +127,99 @@ protected:
 	{
 	//	saveSettings();
 	}
+};
+
+template<typename T>
+class TreeViewManager
+{
+public:
+	TreeViewManager(T& t) :
+		tree_(t)
+	{}
+	
+	struct ValidTreeItem
+	{
+		ValidTreeItem() 
+		{}
+
+		ValidTreeItem(CTreeItem& t) :
+			valid(true),
+			treeItem(t)
+		{}
+		
+		bool valid;
+		CTreeItem treeItem;
+	};
+	
+	typedef std::map<wpath, ValidTreeItem> MapType;
+	
+	void EnsureValid(wpath p)
+	{		
+		wpath branchPath = p.branch_path();
+		
+		MapType::iterator i = map_.find(branchPath);		
+		if (i == map_.end())
+		{
+			CTreeItem ti = tree_.GetRootItem();
+			
+			wpath branch;
+			foreach (wstring b, branchPath)
+			{
+				branch /= b;				
+				MapType::iterator j = map_.find(branch);
+				
+				if (j == map_.end())
+				{
+					CTreeItem tmp = ti.AddTail(b.c_str(), -1);
+					ti.Expand();
+					ti = tmp;
+					map_[b] = ValidTreeItem(ti);
+				}
+				else
+				{
+					(*i).second.valid = true;
+					ti = (*i).second.treeItem;
+				}
+				
+			}
+		}
+		else
+		{
+			if (!(*i).second.valid)
+			{
+				(*i).second.valid = true;
+				EnsureValid(branchPath);
+			}
+		}
+	}
+	
+	void InvalidateAll()
+	{
+		for(MapType::iterator i=map_.begin(), e=map_.end(); i!=e; ++i)
+		{
+			(*i).second.valid = false;
+		}
+	}
+	
+	void ClearInvalid()
+	{
+		for(MapType::iterator i=map_.begin(), e=map_.end(); i!=e; /**/)
+		{
+			if ((*i).second.valid)
+			{
+				++i;
+			}
+			else
+			{
+				(*i).second.treeItem.Delete();
+				map_.erase(i++);
+			}
+		}		
+	}
+	
+private:
+	T& tree_;
+	MapType map_;
 };
 
 class AdvFilesDialog :
@@ -145,7 +239,8 @@ public:
 	enum { IDD = IDD_ADVFILES };
 
 	AdvFilesDialog(HaliteWindow& halWindow) :
-		dialogBaseClass(halWindow)
+		dialogBaseClass(halWindow),
+		treeManager_(tree_)
 	{}
 	
 	BOOL PreTranslateMessage(MSG* pMsg)
@@ -181,4 +276,6 @@ protected:
 	FileListView list_;
 	
 	hal::FileDetails fileDetails_;
+	std::map<wpath, CTreeItem> fileTreeMap_;
+	TreeViewManager<FileTreeView> treeManager_;
 };

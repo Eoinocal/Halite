@@ -121,10 +121,11 @@ LRESULT AdvFilesDialog::onInitDialog(HWND, LPARAM)
 		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS);
 		
 	tree_.Create(splitter_, rc, NULL, 
-		WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN);
+		WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|TVS_HASBUTTONS|TVS_LINESATROOT|TVS_HASLINES|TVS_TRACKSELECT);
 		
 	splitter_.SetSplitterPanes(tree_, list_);
 	
+	CTreeItem ti = tree_.InsertItem(L"baz", TVI_ROOT, TVI_LAST);
 //	tree_.ShowWindow(true);
 //	list_.ShowWindow(true);
 	
@@ -155,6 +156,17 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 	}
 	
 	std::sort(fileDetails_.begin(), fileDetails_.end());
+	
+	//tree_.DeleteAllItems();
+	//fileTreeMap_.clear();
+	treeManager_.InvalidateAll();
+	
+	foreach (hal::FileDetail file, fileDetails_)
+	{
+		treeManager_.EnsureValid(file.path);
+	}
+	
+	treeManager_.ClearInvalid();
 	
 	TryUpdateLock<FileListView::listClass> lock(list_);
 	if (lock) 
@@ -194,7 +206,8 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 			
 		//	list_.SetItemData(itemPos, std::distance(peerDetails_.begin(), i));
 			
-		//	list_.SetItemText(itemPos, 1, (*i).country.c_str());
+			list_.SetItemText(itemPos, 1, (*i).path.leaf().c_str());
+			list_.SetItemText(itemPos, 2, (*i).path.branch_path().string().c_str());
 			
 		//	list_.SetItemText(itemPos, 2, getColumnAdapter(2)->print(*i).c_str());
 			
