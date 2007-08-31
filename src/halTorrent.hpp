@@ -109,6 +109,16 @@ private:
 	size_t order;
 };
 
+inline bool FileDetailNamesEqual(const FileDetail& l, const FileDetail& r)
+{
+	return l.filename == r.filename;
+}
+
+inline bool FileDetailNamesLess(const FileDetail& l, const FileDetail& r)
+{
+	return l.filename < r.filename;
+}
+
 typedef std::vector<FileDetail> FileDetails;
 
 class TorrentDetail 

@@ -10,16 +10,7 @@
 
 #include "Files.hpp"
 
-#define TVS_EX_MULTISELECT 0x0002
 #define TVS_EX_DOUBLEBUFFER 0x0004
-#define TVS_EX_NOINDENTSTATE 0x0008
-#define TVS_EX_RICHTOOLTIP 0x0010
-#define TVS_EX_AUTOHSCROLL 0x0020
-#define TVS_EX_FADEINOUTEXPANDOS 0x0040
-#define TVS_EX_PARTIALCHECKBOXES 0x0080
-#define TVS_EX_EXCLUSIONCHECKBOXES 0x0100
-#define TVS_EX_DIMMEDCHECKBOXES 0x0200
-#define TVS_EX_DRAWIMAGEASYNC 0x0400
 
 FileListView::FileListView() :
 	iniClass("listviews/advFiles", "FileListView"),
@@ -122,25 +113,29 @@ void FileListView::uiUpdate(const hal::TorrentDetails& tD)
 
 LRESULT FileTreeView::OnSelChanged(int, LPNMHDR pnmh, BOOL&)
 {	
+	wpath branch;	
+	
 	TryUpdateLock<thisClass> lock(*this);
 	if (lock)
-	{
-		CTreeItem ti = GetSelectedItem();	
-		boost::array<wchar_t, MAX_PATH> buffer;
-		
-		if (ti)
-		{
-			ti.GetText(buffer.elems, MAX_PATH);
-			wpath branch(wstring(buffer.elems));
-			
-			while (ti = ti.GetParent())
+	{		
+		if (CTreeItem ti = GetSelectedItem())
+		{			
+			do
 			{
+				if (!ti.GetParent()) break;
+				
+				boost::array<wchar_t, MAX_PATH> buffer;
 				ti.GetText(buffer.elems, MAX_PATH);
+				
 				branch = wstring(buffer.elems)/branch;
-			}		
-		//	MessageBox(branch.string().c_str(),L"Hi",0);
+			} 
+			while (ti = ti.GetParent());
 		}
 	}
+	
+	focused_ = branch;	
+	
+	signal();
 	return 0;
 }
 
@@ -157,17 +152,19 @@ LRESULT AdvFilesDialog::onInitDialog(HWND, LPARAM)
 	
 	list_.Create(splitter_, rc, NULL, 
 		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS,
-		WS_EX_STATICEDGE);
+		WS_EX_STATICEDGE|LVS_EX_DOUBLEBUFFER);
 		
 	tree_.Create(splitter_, rc, NULL, 
 		WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|TVS_HASBUTTONS|
 			TVS_HASLINES|TVS_TRACKSELECT|TVS_SHOWSELALWAYS,
 		TVS_EX_DOUBLEBUFFER|WS_EX_STATICEDGE);
-		
+	
+	tree_.attach(bind(&AdvFilesDialog::doUiUpdate, this));
+	
 	splitter_.SetSplitterPanes(tree_, list_);
 	splitter_.SetSplitterPos(splitterPos);
 	
-	CTreeItem ti = tree_.InsertItem(L"baz", TVI_ROOT, TVI_LAST);
+	CTreeItem ti = tree_.InsertItem(hal::app().res_wstr(HAL_TORRENT_ROOT).c_str(), TVI_ROOT, TVI_LAST);
 	
 //	DoDataExchange(false);
 	
@@ -185,23 +182,35 @@ void AdvFilesDialog::DlgResize_UpdateLayout(int cxWidth, int cyHeight)
 		SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
+
+void AdvFilesDialog::doUiUpdate()
+{
+	uiUpdate(hal::bittorrent().torrentDetails());
+}
+
 void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 {
-	fileDetails_.clear();
+	hal::FileDetails fileDetails;
 	
-	foreach (const hal::TorrentDetail_ptr torrent, tD.selectedTorrents())
+//	foreach (const hal::TorrentDetail_ptr torrent, tD.selectedTorrents())
+	if (hal::TorrentDetail_ptr torrent = tD.focusedTorrent())
 	{
 		std::copy(torrent->fileDetails().begin(), torrent->fileDetails().end(), 
-			std::back_inserter(fileDetails_));
+			std::back_inserter(fileDetails));
+		
+		fileDetails.push_back(hal::FileDetail(L"a\\d"));
+		fileDetails.push_back(hal::FileDetail(L"a\\b\\c\\e"));
+		fileDetails.push_back(hal::FileDetail(L"a\\f"));
+		fileDetails.push_back(hal::FileDetail(L"a\\d\\g"));
 	}
 	
-	std::sort(fileDetails_.begin(), fileDetails_.end());
+	std::sort(fileDetails.begin(), fileDetails.end());
 	
 	{ 	UpdateLock<FileTreeView> lock(tree_);
 	
 		treeManager_.InvalidateAll();
 		
-		foreach (hal::FileDetail file, fileDetails_)
+		foreach (hal::FileDetail file, fileDetails)
 		{
 			treeManager_.EnsureValid(file.branch);
 		}
@@ -209,35 +218,42 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 		treeManager_.ClearInvalid();
 	}
 	
-	//std::pair<hal::FileDetails::iterator, hal::FileDetails::iterator> range =
-	//	std::equal_range(fileDetails_.begin(), fileDetails_.end(), FileDetail(
+	std::pair<hal::FileDetails::iterator, hal::FileDetails::iterator> range =
+		std::equal_range(fileDetails.begin(), fileDetails.end(), hal::FileDetail(tree_.focused(), L""));
+	
+	std::sort(range.first, range.second, &hal::FileDetailNamesLess);
 	
 	TryUpdateLock<FileListView::listClass> lock(list_);
 	if (lock) 
-	{			
+	{	
 		// Wipe details not present
 		for(int i = 0; i < list_.GetItemCount(); /*nothing here*/)
 		{
 			boost::array<wchar_t, MAX_PATH> fullPath;
-			list_.GetItemText(i, 0, fullPath.c_array(), MAX_PATH);
+			list_.GetItemText(i, 1, fullPath.c_array(), MAX_PATH);
 			
-			hal::FileDetail file(wstring(fullPath.data()));
+			hal::FileDetail file(L"", wstring(fullPath.c_array()));
 			hal::FileDetails::iterator iter = 
-				std::lower_bound(fileDetails_.begin(), fileDetails_.end(), file);
+				std::lower_bound(range.first, range.second, file, &hal::FileDetailNamesLess);
 			
-			if (iter == fileDetails_.end() || !((*iter) == file))
+			if (iter == range.second || !(hal::FileDetailNamesEqual((*iter), file)))
 			{
+				if (iter == range.second)
+					hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Deleting %1%") % file.filename).str().c_str())));
+				else
+					hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Deleting %1% != %2%") % file.filename % (*iter).filename).str().c_str())));
+				
 				list_.DeleteItem(i);
 			}
 			else
 			{
-				list_.SetItemData(i, std::distance(fileDetails_.begin(), iter));
+				list_.SetItemData(i, std::distance(range.first, iter));
 				++i;
 			}
 		}
 		
 		// Add additional details
-		for (hal::FileDetails::iterator i=fileDetails_.begin(), e=fileDetails_.end();
+		for (hal::FileDetails::iterator i=range.first, e=range.second;
 			i != e; ++i)
 		{			
 			LV_FINDINFO findInfo; 

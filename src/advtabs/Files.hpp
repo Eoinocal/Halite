@@ -127,6 +127,10 @@ public:
 	
 	wpath focused() { return focused_; }
 	
+	void attach(boost::function<void ()> fn) const { selection_.connect(fn); }
+	
+	void signal() { selection_(); }
+	
 protected:
 	void OnDestroy()
 	{
@@ -139,6 +143,7 @@ protected:
 	friend class UpdateLock<thisClass>;	
 	friend class TryUpdateLock<thisClass>;	
 	
+	mutable boost::signal<void ()> selection_;
 	wpath focused_;
 };
 
@@ -186,12 +191,12 @@ public:
 					CTreeItem tmp = ti.AddTail(b.c_str(), -1);
 					ti.Expand();
 					ti = tmp;
-					map_[b] = ValidTreeItem(ti);
+					map_[branch] = ValidTreeItem(ti);
 				}
 				else
 				{
-					(*i).second.valid = true;
-					ti = (*i).second.treeItem;
+					(*j).second.valid = true;
+					ti = (*j).second.treeItem;
 				}
 				
 			}
@@ -201,7 +206,7 @@ public:
 			if (!(*i).second.valid)
 			{
 				(*i).second.valid = true;
-				EnsureValid(branchPath);
+				EnsureValid(branchPath.branch_path());
 			}
 		}
 	}
@@ -216,16 +221,29 @@ public:
 	
 	void ClearInvalid()
 	{
-		for(MapType::iterator i=map_.begin(), e=map_.end(); i!=e; /**/)
+		for(MapType::reverse_iterator i=map_.rbegin(), e=map_.rend(); i!=e; /**/)
 		{
+			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Aalid %1% -- %2%, %3%") % (*i).second.valid % (*i).first.string() % map_.size()).str().c_str())));
+
 			if ((*i).second.valid)
 			{
 				++i;
 			}
 			else
 			{
+			boost::array<wchar_t, MAX_PATH> buffer;
+			(*i).second.treeItem.GetText(buffer.elems, MAX_PATH);
+			wstring tmp(buffer.elems);
+			
+				hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Valid %1% -- %2% -- %3%, %4%") % (*i).second.valid % tmp % (*i).first.string() % map_.size()).str().c_str())));
+
+				MapType::reverse_iterator j = i;
+				++j;
 				(*i).second.treeItem.Delete();
-				map_.erase(i++);
+				map_.erase(i.base());
+				if (j == e) break;
+				i = j;
+				hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Zalid %1% -- %2%, %3%") % (*i).second.valid % (*i).first.string() % map_.size()).str().c_str())));
 			}
 		}		
 	}
@@ -305,6 +323,7 @@ public:
 	void onClose();
 	
 	void DlgResize_UpdateLayout(int cxWidth, int cyHeight);
+	void doUiUpdate();
 	void uiUpdate(const hal::TorrentDetails& tD);
 
 protected:
@@ -315,7 +334,7 @@ protected:
 	FileTreeView tree_;
 	FileListView list_;
 	
-	hal::FileDetails fileDetails_;
+	//hal::FileDetails fileDetails_;
 	std::map<wpath, CTreeItem> fileTreeMap_;
 	TreeViewManager<FileTreeView> treeManager_;
 };
