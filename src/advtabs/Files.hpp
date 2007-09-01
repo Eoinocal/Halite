@@ -21,13 +21,14 @@
 #include "../HaliteUpdateLock.hpp"
 
 class FileListView :
-	public CHaliteSortListViewCtrl<FileListView>,
+	public CHaliteSortListViewCtrl<FileListView, const hal::FileDetail>,
 	public CHaliteIni<FileListView>,
 	private boost::noncopyable
 {
 public:
 	typedef FileListView thisClass;
-	typedef CHaliteSortListViewCtrl<thisClass> listClass;
+	typedef const hal::FileDetail dataClass;
+	typedef CHaliteSortListViewCtrl<thisClass, dataClass> listClass;
 	typedef CHaliteIni<thisClass> iniClass;
 
 	friend class listClass;
@@ -35,17 +36,65 @@ public:
 	struct ColumnAdapters
 	{	
 	typedef listClass::ColumnAdapter ColAdapter_t;	
+	
+	struct Size : public ColAdapter_t
+	{
+		virtual bool less(dataClass& l, dataClass& r)	{ return l.size < r.size; }		
+		virtual std::wstring print(dataClass& dc) 
+		{
+			return (wformat(L"%1$.2fMB") % 
+				(static_cast<float>(dc.size)/(1024*1024))).str(); 
+		}		
+	};
+	
+	struct Progress : public ColAdapter_t
+	{
+		virtual bool less(dataClass& l, dataClass& r)	{ return l.progress < r.progress; }		
+		virtual std::wstring print(dataClass& t) 
+		{
+			return (wformat(L"%1$.2f%%") % (t.progress*100)).str(); 
+		}		
+	};
+	
+	struct Priority : public ColAdapter_t
+	{
+		virtual bool less(dataClass& l, dataClass& r)	{ return l.priority < r.priority; }		
+		virtual std::wstring print(dataClass& dc) 
+		{
+			switch (dc.priority)
+			{
+			case 0:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_0);
+			case 1:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_1);
+			case 2:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_2);
+			case 3:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_3);
+			case 4:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_4);
+			case 5:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_5);
+			case 6:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_6);
+			case 7:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_7);
+			}	
+		}		
+	};
+	
 	};
 
 public:	
 	enum { 
-		LISTVIEW_ID_MENU = 0,
+		LISTVIEW_ID_MENU = IDR_FILESLISTVIEW_MENU,
 		LISTVIEW_ID_COLUMNNAMES = HAL_DIALOGFILE_LISTVIEW_ADV,
 		LISTVIEW_ID_COLUMNWIDTHS = 0
 	};
 	
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_DESTROY(OnDestroy)
+		COMMAND_RANGE_HANDLER_EX(ID_HAL_FILE_PRIORITY_0, ID_HAL_FILE_PRIORITY_7, OnMenuPriority)
 
 		CHAIN_MSG_MAP(listClass)
 		DEFAULT_REFLECTION_HANDLER()
@@ -68,10 +117,7 @@ public:
 		if(!listClass::SubclassWindow(hwnd))
 			return false;
 		
-		ApplyDetails();
-		
-//		SetColumnSortType(2, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedDown());
-		
+		ApplyDetails();		
 		return true;
 	}
 	
@@ -79,6 +125,8 @@ public:
 	{
 		saveSettings();
 	}
+	
+	void OnMenuPriority(UINT, int, HWND);
 	
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -88,15 +136,16 @@ public:
 			boost::serialization::base_object<listClass>(*this));
 	}
 	
-	void* CustomItemConversion(LVCompareParam* param, int iSortCol)
+	dataClass CustomItemConversion(LVCompareParam* param, int iSortCol)
 	{			
-		return 0;
+		return focused_->fileDetails()[param->dwItemData];
 	}		
 	
-	int CustomItemComparision(void* left, void* right, int iSortCol)
-	{
-		return 0;
-	}
+	void setFocused(const hal::TorrentDetail_ptr& f) { focused_ = f; }
+	const hal::TorrentDetail_ptr focused() { return focused_; }
+
+private:
+	hal::TorrentDetail_ptr focused_;
 };
 
 class FileTreeView :
@@ -221,31 +270,18 @@ public:
 	
 	void ClearInvalid()
 	{
-		for(MapType::reverse_iterator i=map_.rbegin(), e=map_.rend(); i!=e; /**/)
+		for(MapType::iterator i=map_.begin(), e=map_.end(); i!=e; /**/)
 		{
-			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Aalid %1% -- %2%, %3%") % (*i).second.valid % (*i).first.string() % map_.size()).str().c_str())));
-
 			if ((*i).second.valid)
 			{
 				++i;
 			}
 			else
 			{
-			boost::array<wchar_t, MAX_PATH> buffer;
-			(*i).second.treeItem.GetText(buffer.elems, MAX_PATH);
-			wstring tmp(buffer.elems);
-			
-				hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Valid %1% -- %2% -- %3%, %4%") % (*i).second.valid % tmp % (*i).first.string() % map_.size()).str().c_str())));
-
-				MapType::reverse_iterator j = i;
-				++j;
 				(*i).second.treeItem.Delete();
-				map_.erase(i.base());
-				if (j == e) break;
-				i = j;
-				hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Zalid %1% -- %2%, %3%") % (*i).second.valid % (*i).first.string() % map_.size()).str().c_str())));
+				map_.erase(i++);
 			}
-		}		
+		}	
 	}
 	
 private:

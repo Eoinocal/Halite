@@ -262,6 +262,26 @@ public:
 		
 		applyTrackers();
 	}
+	
+	void setFilePriorities(std::vector<int> fileIndices, int priority)
+	{
+		if (!filePriorities_.empty())
+		{
+			foreach(int i, fileIndices)
+				filePriorities_[i] = priority;
+				
+			applyFilePriorities();
+		}
+	}
+	
+	void applyFilePriorities()
+	{		
+		if (in_session_ && the_session_) 
+		{
+			if (!filePriorities_.empty())
+				handle_.prioritize_files(filePriorities_);
+		}
+	}
 
 	bool inSession() const { return in_session_; }
 	const wstring& saveDirectory() { return save_directory_; }
@@ -319,6 +339,7 @@ public:
 		setConnectionLimit();
 		setRatio();
 		applyTrackers();
+		applyFilePriorities();
 		setResolveCountries();
 	}
 	

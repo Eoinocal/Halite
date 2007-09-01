@@ -19,7 +19,7 @@ FileListView::FileListView() :
 	std::vector<wstring> names;	
 	wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
 
-	// "Path;Filename;Size;Progress;Priority"
+	// "Filename;Path;Size;Progress;Priority"
 	boost::split(names, column_names, boost::is_any_of(L";"));
 	
 	array<int, 5> widths = {100,70,70,70,70};
@@ -39,81 +39,36 @@ HWND FileListView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowNa
 	
 	ApplyDetails();
 	
+	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER);
+		
+	SetColumnSortType(2, LVCOLSORT_CUSTOM, new ColumnAdapters::Size());
+	SetColumnSortType(3, LVCOLSORT_CUSTOM, new ColumnAdapters::Progress());
+	SetColumnSortType(4, LVCOLSORT_CUSTOM, new ColumnAdapters::Priority());
+	
 	return hwnd;
 }
-#if 0
-void FileListView::uiUpdate(const hal::TorrentDetails& tD)
-{
-	TryUpdateLock<listClass> lock(*this);
-	if (lock) 
-	{		
-		peerDetails_.clear();
+
+void FileListView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
+{	
+	std::vector<int> indices;
+	
+	for (int i=0, e=GetItemCount(); i<e; ++i)
+	{
+		UINT flags = GetItemState(i, LVIS_SELECTED);
 		
-		foreach (const hal::TorrentDetail_ptr torrent, tD.selectedTorrents())
-		{
-			std::copy(torrent->peerDetails().begin(), torrent->peerDetails().end(), 
-				std::back_inserter(peerDetails_));
-		}
-		
-		std::sort(peerDetails_.begin(), peerDetails_.end());
-		
-		// Wipe details not present
-		for(int i = 0; i < GetItemCount(); /*nothing here*/)
-		{
-			boost::array<wchar_t, MAX_PATH> ip_address;
-			GetItemText(i, 0, ip_address.c_array(), MAX_PATH);
-			
-			hal::PeerDetail ip(ip_address.data());
-			hal::PeerDetails::iterator iter = 
-				std::lower_bound(peerDetails_.begin(), peerDetails_.end(), ip);
-			
-			if (iter == peerDetails_.end() || !((*iter) == ip))
-			{
-				DeleteItem(i);
-			}
-			else
-			{
-				SetItemData(i, std::distance(peerDetails_.begin(), iter));
-				++i;
-			}
-		}
-		
-		// Add additional details
-		for (hal::PeerDetails::iterator i=peerDetails_.begin(), e=peerDetails_.end();
-			i != e; ++i)
-		{			
-			LV_FINDINFO findInfo; 
-			findInfo.flags = LVFI_STRING;
-			findInfo.psz = const_cast<LPTSTR>((*i).ipAddress.c_str());
-			
-			int itemPos = FindItem(&findInfo, -1);
-			if (itemPos < 0)
-				itemPos = AddItem(GetItemCount(), 0, (*i).ipAddress.c_str(), 0);
-			
-			SetItemData(itemPos, std::distance(peerDetails_.begin(), i));
-			
-			SetItemText(itemPos, 1, (*i).country.c_str());
-			
-			SetItemText(itemPos, 2, getColumnAdapter(2)->print(*i).c_str());
-			
-			SetItemText(itemPos, 3, getColumnAdapter(3)->print(*i).c_str());
-			
-			if ((*i).seed)
-				SetItemText(itemPos, 4, L"Seed");
-			
-			SetItemText(itemPos, 5, (*i).client.c_str());
-			
-			SetItemText(itemPos, 6, (*i).status.c_str());
-		}
-		
-		ConditionallyDoAutoSort();
+		if (flags & LVIS_SELECTED)
+			indices.push_back(GetItemData(i));
 	}
+	
+	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;
+	
+	std::string torrent = hal::to_utf8(hal::bittorrent().torrentDetails().selectedTorrent()->filename());
+	hal::bittorrent().setTorrentFilePriorities(torrent, indices, priority);
 }
-#endif
 
 LRESULT FileTreeView::OnSelChanged(int, LPNMHDR pnmh, BOOL&)
-{	
-	wpath branch;	
+{		
+	wpath branch;
 	
 	TryUpdateLock<thisClass> lock(*this);
 	if (lock)
@@ -131,11 +86,11 @@ LRESULT FileTreeView::OnSelChanged(int, LPNMHDR pnmh, BOOL&)
 			} 
 			while (ti = ti.GetParent());
 		}
+		
+		signal();
 	}
 	
-	focused_ = branch;	
-	
-	signal();
+	focused_ = branch;
 	return 0;
 }
 
@@ -197,12 +152,9 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 	{
 		std::copy(torrent->fileDetails().begin(), torrent->fileDetails().end(), 
 			std::back_inserter(fileDetails));
-		
-		fileDetails.push_back(hal::FileDetail(L"a\\d"));
-		fileDetails.push_back(hal::FileDetail(L"a\\b\\c\\e"));
-		fileDetails.push_back(hal::FileDetail(L"a\\f"));
-		fileDetails.push_back(hal::FileDetail(L"a\\d\\g"));
 	}
+	
+	list_.setFocused(tD.focusedTorrent());
 	
 	std::sort(fileDetails.begin(), fileDetails.end());
 	
@@ -230,7 +182,7 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 		for(int i = 0; i < list_.GetItemCount(); /*nothing here*/)
 		{
 			boost::array<wchar_t, MAX_PATH> fullPath;
-			list_.GetItemText(i, 1, fullPath.c_array(), MAX_PATH);
+			list_.GetItemText(i, 0, fullPath.c_array(), MAX_PATH);
 			
 			hal::FileDetail file(L"", wstring(fullPath.c_array()));
 			hal::FileDetails::iterator iter = 
@@ -264,15 +216,12 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 			if (itemPos < 0)
 				itemPos = list_.AddItem(list_.GetItemCount(), 0, (*i).filename.c_str(), 0);
 			
-		//	list_.SetItemData(itemPos, std::distance(peerDetails_.begin(), i));
+			list_.SetItemData(itemPos, (*i).order());
 			
-			list_.SetItemText(itemPos, 1, (*i).filename.c_str());
-			list_.SetItemText(itemPos, 2, (*i).branch.string().c_str());
-			
-		//	list_.SetItemText(itemPos, 2, getColumnAdapter(2)->print(*i).c_str());
-			
-		//	list_.SetItemText(itemPos, 3, getColumnAdapter(3)->print(*i).c_str());
-			
+			list_.SetItemText(itemPos, 1, (*i).branch.string().c_str());			
+			list_.SetItemText(itemPos, 2, list_.getColumnAdapter(2)->print(*i).c_str());
+			list_.SetItemText(itemPos, 3, list_.getColumnAdapter(3)->print(*i).c_str());
+			list_.SetItemText(itemPos, 4, list_.getColumnAdapter(4)->print(*i).c_str());			
 		}
 
 		list_.ConditionallyDoAutoSort();

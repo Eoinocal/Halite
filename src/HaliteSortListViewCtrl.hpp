@@ -349,6 +349,19 @@ public:
 		pT->OnAttach();
 	}
 	
+	HWND Create(HWND hWndParent, ATL::_U_RECT rect = NULL, LPCTSTR szWindowName = NULL,
+			DWORD dwStyle = 0, DWORD dwExStyle = 0,
+			ATL::_U_MENUorID MenuOrID = 0U, LPVOID lpCreateParam = NULL)
+	{
+		HWND hwnd = parentClass::Create(hWndParent, 
+			rect.m_lpRect, szWindowName, dwStyle, dwExStyle, MenuOrID.m_hMenu, lpCreateParam);
+			
+		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER);
+		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
+		
+		return hwnd;
+	}
+	
 	bool SubclassWindow(HWND hwnd)
 	{
 		if(!parentClass::SubclassWindow(hwnd))
@@ -577,6 +590,18 @@ public:
 		if (autoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
 			DoSortItems(iCol, IsSortDescending());	
 	}
+		
+	ColumnAdapter* getColumnAdapter(size_t index)
+	{
+		boost::ptr_map<size_t, ColumnAdapter>::iterator 
+			i = columnAdapters_.find(index);
+	
+		if (i != columnAdapters_.end())
+		{
+			return i->second;
+		}		
+		return NULL;
+	}
 	
 protected:	
 	inline void* CustomItemConversion(LVCompareParam* param, int iSortCol)
@@ -599,18 +624,6 @@ protected:
 	{
 		assert (colAdapter);
 		columnAdapters_.insert(key, colAdapter);
-	}
-	
-	ColumnAdapter* getColumnAdapter(size_t index)
-	{
-		boost::ptr_map<size_t, ColumnAdapter>::iterator 
-			i = columnAdapters_.find(index);
-	
-		if (i != columnAdapters_.end())
-		{
-			return i->second;
-		}		
-		return NULL;
 	}
 	
 	SelectionManager manager_;

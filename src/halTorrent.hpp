@@ -77,7 +77,7 @@ struct FileDetail
 		size(s),
 		progress(pg),
 		priority(pr),
-		order(o)
+		order_(o)
 	{}
 	
 	FileDetail(boost::filesystem::wpath b, wstring f, size_t s=0, float pg=0, int pr=1, size_t o=0) :
@@ -86,7 +86,7 @@ struct FileDetail
 		size(s),
 		progress(pg),
 		priority(pr),
-		order(o)
+		order_(o)
 	{}
 	
 	bool operator==(const FileDetail& file) const
@@ -99,6 +99,8 @@ struct FileDetail
 		return (branch < file.branch);
 	}
 	
+	size_t order() { return order_; }
+	
 	boost::filesystem::wpath branch;
 	wstring filename;
 	size_t size;
@@ -106,7 +108,7 @@ struct FileDetail
 	int priority;
 	
 private:
-	size_t order;
+	size_t order_;
 };
 
 inline bool FileDetailNamesEqual(const FileDetail& l, const FileDetail& r)
@@ -390,6 +392,8 @@ public:
 	void setTorrentTrackers(std::string filename, const std::vector<TrackerDetail>& trackers);
 	void resetTorrentTrackers(std::string filename);
 	std::vector<TrackerDetail> getTorrentTrackers(std::string filename);
+	
+	void setTorrentFilePriorities(std::string filename, std::vector<int> fileIndices, int priority);
 
 	void startEventReceiver();
 	void stopEventReceiver();

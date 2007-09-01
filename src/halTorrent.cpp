@@ -1541,6 +1541,21 @@ pair<float, float> BitTorrent::getTorrentSpeed(string filename)
 	return pair<float, float>(0, 0);
 }
 
+void BitTorrent::setTorrentFilePriorities(std::string filename, 
+	std::vector<int> fileIndices, int priority)
+{
+	try {
+	
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
+	
+	if (i != pimpl->torrents.end())
+	{
+		(*i).second.setFilePriorities(fileIndices, priority);
+	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentFilePriorities")
+}
+
 void BitTorrent::setTorrentTrackers(std::string filename, 
 	const std::vector<TrackerDetail>& trackers)
 {
