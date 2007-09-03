@@ -46,6 +46,7 @@ BOOST_LIBS =
 	serialization//boost_wserialization
 	regex//boost_regex
 	filesystem//boost_filesystem
+	date_time//boost_date_time
 	;
 	
 LIBS = 

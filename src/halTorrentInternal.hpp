@@ -11,7 +11,7 @@ namespace hal
 class TorrentInternal;
 }
 
-BOOST_CLASS_VERSION(hal::TorrentInternal, 5)
+BOOST_CLASS_VERSION(hal::TorrentInternal, 6)
 
 namespace hal 
 {
@@ -42,6 +42,11 @@ class TorrentInternal
 			total_offset_(0)
 		{}
 		
+		TransferTracker(T total, T offset) :
+			total_(total),
+			total_offset_(offset)
+		{}
+		
 		void reset(T total) const
 		{
 			total_ = total;
@@ -52,8 +57,13 @@ class TorrentInternal
 		{
 			total_ += (rel_total - total_offset_);
 			total_offset_ = rel_total;
-						
+			
 			return total_;
+		}
+		
+		void setOffset(T offset) const
+		{
+			total_offset_ = offset;
 		}
 		
 		operator T() const { return total_; }
@@ -70,6 +80,40 @@ class TorrentInternal
 		mutable T total_offset_;
 	};
 	
+	class DurationTracker
+	{
+	public:
+		DurationTracker() :
+			total_(boost::posix_time::time_duration(0,0,0,0),boost::posix_time::time_duration(0,0,0,0)),
+			start_(boost::posix_time::second_clock::universal_time())
+		{}
+		
+		boost::posix_time::time_duration update() const
+		{
+			return total_.update(boost::posix_time::second_clock::universal_time() - start_);
+		}
+		
+		void reset() const
+		{
+			total_.setOffset(boost::posix_time::time_duration(0,0,0,0));
+			start_ = boost::posix_time::second_clock::universal_time();
+		}
+		
+		friend class boost::serialization::access;
+		template<class Archive>
+		void serialize(Archive& ar, const unsigned int version)
+		{
+			ar & make_nvp("total", total_);
+		}
+		
+		operator boost::posix_time::time_duration() const { return total_; }
+		
+	private:
+		TransferTracker<boost::posix_time::time_duration> total_;	
+		mutable boost::posix_time::ptime start_;
+		
+	};
+	
 public:
 	TorrentInternal() :	
 		transferLimit_(std::pair<float, float>(-1, -1)),
@@ -80,7 +124,8 @@ public:
 		state_(TorrentDetail::torrent_active),
 		in_session_(false),
 		totalUploaded_(0),
-		totalBase_(0)
+		totalBase_(0),
+		startTime_(boost::posix_time::second_clock::universal_time())
 	{}
 	
 	TorrentInternal(libtorrent::torrent_handle h, std::wstring f, wpath saveDirectory) :
@@ -95,7 +140,8 @@ public:
 		in_session_(true),
 		handle_(h),
 		totalUploaded_(0),
-		totalBase_(0)
+		totalBase_(0),
+		startTime_(boost::posix_time::second_clock::universal_time())
 	{}
 	
 	TorrentDetail_ptr getTorrentDetail_ptr() const;
@@ -143,6 +189,9 @@ public:
 		
 		handle_.resume();
 		state_ = TorrentDetail::torrent_active;
+		
+		activeDuration_.reset();
+		seedingDuration_.reset();
 		
 		assert(!handle_.is_paused());
 	}
@@ -325,6 +374,11 @@ public:
 		if (version > 4) {
 			ar & make_nvp("file_priorities", filePriorities_);
 		}
+		if (version > 5) {
+			ar & make_nvp("startTime", startTime_);
+			ar & make_nvp("activeDuration", activeDuration_);
+			ar & make_nvp("seedingDuration", seedingDuration_);
+		}
     }
 	
 	void setEntryData(libtorrent::entry metadata, libtorrent::entry resumedata)
@@ -417,6 +471,10 @@ private:
 	TransferTracker<boost::int64_t> payloadDownloaded_;
 	TransferTracker<boost::int64_t> uploaded_;
 	TransferTracker<boost::int64_t> downloaded_;
+	
+	boost::posix_time::ptime startTime_;
+	DurationTracker activeDuration_;
+	DurationTracker seedingDuration_;
 	
 	std::vector<TrackerDetail> trackers_;
 	std::vector<lbt::announce_entry> torrent_trackers_;
@@ -530,6 +588,11 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr() const
 		payloadUploaded_.update(tS.total_payload_upload);
 		downloaded_.update(tS.total_download);
 		payloadDownloaded_.update(tS.total_payload_download);
+		
+		if (isActive())
+		{
+			activeDuration_.update();
+		}
 		
 		updatePeers();
 		

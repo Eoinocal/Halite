@@ -36,6 +36,7 @@
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/split_free.hpp>
+#include <boost/date_time/posix_time/time_serialize.hpp>
 
 #include <libtorrent/file.hpp>
 #include <libtorrent/hasher.hpp>
