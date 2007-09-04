@@ -18,12 +18,12 @@ HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	std::vector<wstring> names;	
 	wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
 	
-	// "Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio"
+	// "Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time"
 	boost::split(names, column_names, boost::is_any_of(L";"));
 	
-	array<int, 12> widths = {100,110,60,60,60,42,45,61,45,45,45,45};
-	array<int, 12> order = {0,1,2,3,4,5,6,7,8,9,10,11};
-	array<bool, 12> visible = {true,true,true,true,true,true,true,true,true,true,true,true};
+	array<int, 19> widths = {100,110,60,60,60,42,45,61,45,45,45,45,45,45,45,45,45,45,45};
+	array<int, 19> order = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18};
+	array<bool, 19> visible = {true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true};
 	
 	SetDefaults(names, widths, order, visible);
 	Load();
@@ -38,7 +38,7 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	
 	SetColumnSortType(0, LVCOLSORT_CUSTOM, new ColumnAdapters::Filename());
 	SetColumnSortType(1, LVCOLSORT_CUSTOM, new ColumnAdapters::State());
-	SetColumnSortType(2, LVCOLSORT_CUSTOM, new ColumnAdapters::Completion());
+	SetColumnSortType(2, LVCOLSORT_CUSTOM, new ColumnAdapters::Progress());
 	SetColumnSortType(3, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedDown());
 	SetColumnSortType(4, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedUp());
 	SetColumnSortType(5, LVCOLSORT_CUSTOM, new ColumnAdapters::Peers());
@@ -48,6 +48,13 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	SetColumnSortType(9, LVCOLSORT_CUSTOM, new ColumnAdapters::Tracker());
 	SetColumnSortType(10, LVCOLSORT_CUSTOM, new ColumnAdapters::UpdateTrackerIn());
 	SetColumnSortType(11, LVCOLSORT_CUSTOM, new ColumnAdapters::Ratio());
+	SetColumnSortType(12, LVCOLSORT_CUSTOM, new ColumnAdapters::Completed());
+	SetColumnSortType(13, LVCOLSORT_CUSTOM, new ColumnAdapters::Remaining());
+	SetColumnSortType(14, LVCOLSORT_CUSTOM, new ColumnAdapters::Downloaded());
+	SetColumnSortType(15, LVCOLSORT_CUSTOM, new ColumnAdapters::Uploaded());
+	SetColumnSortType(16, LVCOLSORT_CUSTOM, new ColumnAdapters::ActiveTime());
+	SetColumnSortType(17, LVCOLSORT_CUSTOM, new ColumnAdapters::SeedingTime());
+	SetColumnSortType(18, LVCOLSORT_CUSTOM, new ColumnAdapters::StartTime());
 }
 
 void HaliteListViewCtrl::OnDestroy()

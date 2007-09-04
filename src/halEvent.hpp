@@ -33,7 +33,8 @@ public:
 		xmlException = HAL_EVENT_XML_EXP,
 		unicodeException = HAL_EVENT_UNICODE_EXP,
 		peer = HAL_EVENT_PEER,
-		tracker = HAL_EVENT_TRACKER
+		tracker = HAL_EVENT_TRACKER,
+		infoCode
 	};
 	
 	static std::wstring eventLevelToStr(eventLevel);	
@@ -218,6 +219,20 @@ public:
 	{
 		return (wformat(hal::app().res_wstr(code())) % msg_).str();
 	}
+	
+private:
+	std::wstring msg_;
+};
+
+class EventInfo : public EventDetail
+{
+public:
+	EventInfo(std::wstring msg) :
+		EventDetail(Event::info, boost::posix_time::second_clock::universal_time(), Event::infoCode),
+		msg_(msg)
+	{}
+	
+	virtual std::wstring msg() { return msg_; }
 	
 private:
 	std::wstring msg_;

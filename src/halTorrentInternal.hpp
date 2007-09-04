@@ -403,6 +403,8 @@ public:
 	{
 		if (in_session_)
 			handle_.get_peer_info(peers_);
+		else
+			peers_.clear();
 	}
 	
 	void getPeerDetails(PeerDetails& peerDetails) const
@@ -479,7 +481,9 @@ private:
 	std::vector<TrackerDetail> trackers_;
 	std::vector<lbt::announce_entry> torrent_trackers_;
 	mutable std::vector<lbt::peer_info> peers_;	
-	mutable std::vector<int> filePriorities_;	
+	mutable std::vector<int> filePriorities_;
+	
+	mutable lbt::torrent_status statusMemory_;
 };
 
 typedef std::map<std::string, TorrentInternal> TorrentMap;
@@ -535,98 +539,99 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr() const
 
 	if (inSession())
 	{
-		lbt::torrent_status tS = handle_.status();
-		wstring state;
-		
-		if (state_ == TorrentDetail::torrent_paused)
-			state = app().res_wstr(HAL_TORRENT_PAUSED);
-		else if (state_ == TorrentDetail::torrent_stopped)
-			state = app().res_wstr(HAL_TORRENT_STOPPED);
-		else
-		{
-			switch (tS.state)
-			{
-			case lbt::torrent_status::queued_for_checking:
-				state = app().res_wstr(HAL_TORRENT_QUEUED_CHECKING);
-				break;
-			case lbt::torrent_status::checking_files:
-				state = app().res_wstr(HAL_TORRENT_CHECKING_FILES);
-				break;
-			case lbt::torrent_status::connecting_to_tracker:
-				state = app().res_wstr(HAL_TORRENT_CONNECTING);
-				break;
-			case lbt::torrent_status::downloading_metadata:
-				state = app().res_wstr(HAL_TORRENT_METADATA);
-				break;
-			case lbt::torrent_status::downloading:
-				state = app().res_wstr(HAL_TORRENT_DOWNLOADING);
-				break;
-			case lbt::torrent_status::finished:
-				state = app().res_wstr(HAL_TORRENT_FINISHED);
-				break;
-			case lbt::torrent_status::seeding:
-				state = app().res_wstr(HAL_TORRENT_SEEDING);
-				break;
-			case lbt::torrent_status::allocating:
-				state = app().res_wstr(HAL_TORRENT_ALLOCATING);
-				break;
-			}	
-		}
-		
-		boost::posix_time::time_duration td(boost::posix_time::pos_infin);
-		
-		if (tS.download_payload_rate != 0)
-		{
-			td = boost::posix_time::seconds(	
-				long( float(tS.total_wanted-tS.total_wanted_done) / tS.download_payload_rate ));
-		}
-		
-		totalUploaded_ += (tS.total_payload_upload - totalBase_);
-		totalBase_ = tS.total_payload_upload;
-		
-		uploaded_.update(tS.total_upload);
-		payloadUploaded_.update(tS.total_payload_upload);
-		downloaded_.update(tS.total_download);
-		payloadDownloaded_.update(tS.total_payload_download);
-		
-		if (isActive())
-		{
-			activeDuration_.update();
-		}
-		
-		updatePeers();
-		
-		size_t totalPeers = 0;
-		size_t peersConnected = 0;
-		size_t totalSeeds = 0;
-		size_t seedsConnected = 0;
-		
-		foreach (lbt::peer_info peer, peers_) 
-		{
-			float speedSum = peer.down_speed + peer.up_speed;
-			
-			if (!(peer.flags & lbt::peer_info::seed))
-			{
-				++totalPeers;
-				
-				if (speedSum > 0)
-					++peersConnected;
-			}
-			else
-			{
-				++totalSeeds;
-				
-				if (speedSum > 0)
-					++seedsConnected;
-			}
-		}			
-
-		return TorrentDetail_ptr(new TorrentDetail(filename_, state, hal::from_utf8(tS.current_tracker), 
-			pair<float, float>(tS.download_payload_rate, tS.upload_payload_rate),
-			tS.progress, tS.distributed_copies, tS.total_wanted_done, tS.total_wanted, uploaded_, payloadUploaded_,
-			downloaded_, payloadDownloaded_, totalPeers, peersConnected, totalSeeds, seedsConnected, ratio_, td, tS.next_announce));
+		statusMemory_ = handle_.status();
 	}
 	
+	wstring state;
+	
+	if (state_ == TorrentDetail::torrent_paused)
+		state = app().res_wstr(HAL_TORRENT_PAUSED);
+	else if (state_ == TorrentDetail::torrent_stopped)
+		state = app().res_wstr(HAL_TORRENT_STOPPED);
+	else
+	{
+		switch (statusMemory_.state)
+		{
+		case lbt::torrent_status::queued_for_checking:
+			state = app().res_wstr(HAL_TORRENT_QUEUED_CHECKING);
+			break;
+		case lbt::torrent_status::checking_files:
+			state = app().res_wstr(HAL_TORRENT_CHECKING_FILES);
+			break;
+		case lbt::torrent_status::connecting_to_tracker:
+			state = app().res_wstr(HAL_TORRENT_CONNECTING);
+			break;
+		case lbt::torrent_status::downloading_metadata:
+			state = app().res_wstr(HAL_TORRENT_METADATA);
+			break;
+		case lbt::torrent_status::downloading:
+			state = app().res_wstr(HAL_TORRENT_DOWNLOADING);
+			break;
+		case lbt::torrent_status::finished:
+			state = app().res_wstr(HAL_TORRENT_FINISHED);
+			break;
+		case lbt::torrent_status::seeding:
+			state = app().res_wstr(HAL_TORRENT_SEEDING);
+			break;
+		case lbt::torrent_status::allocating:
+			state = app().res_wstr(HAL_TORRENT_ALLOCATING);
+			break;
+		}	
+	}
+	
+	boost::posix_time::time_duration td(boost::posix_time::pos_infin);
+	
+	if (statusMemory_.download_payload_rate != 0)
+	{
+		td = boost::posix_time::seconds(	
+			long(float(statusMemory_.total_wanted-statusMemory_.total_wanted_done) / statusMemory_.download_payload_rate));
+	}
+	
+	totalUploaded_ += (statusMemory_.total_payload_upload - totalBase_);
+	totalBase_ = statusMemory_.total_payload_upload;
+	
+	uploaded_.update(statusMemory_.total_upload);
+	payloadUploaded_.update(statusMemory_.total_payload_upload);
+	downloaded_.update(statusMemory_.total_download);
+	payloadDownloaded_.update(statusMemory_.total_payload_download);
+	
+	if (isActive())
+	{
+		activeDuration_.update();
+	}
+	
+	updatePeers();
+	
+	size_t totalPeers = 0;
+	size_t peersConnected = 0;
+	size_t totalSeeds = 0;
+	size_t seedsConnected = 0;
+	
+	foreach (lbt::peer_info peer, peers_) 
+	{
+		float speedSum = peer.down_speed + peer.up_speed;
+		
+		if (!(peer.flags & lbt::peer_info::seed))
+		{
+			++totalPeers;
+			
+			if (speedSum > 0)
+				++peersConnected;
+		}
+		else
+		{
+			++totalSeeds;
+			
+			if (speedSum > 0)
+				++seedsConnected;
+		}
+	}			
+
+	return TorrentDetail_ptr(new TorrentDetail(filename_, state, hal::from_utf8(statusMemory_.current_tracker), 
+		pair<float, float>(statusMemory_.download_payload_rate, statusMemory_.upload_payload_rate),
+		statusMemory_.progress, statusMemory_.distributed_copies, statusMemory_.total_wanted_done, statusMemory_.total_wanted, uploaded_, payloadUploaded_,
+		downloaded_, payloadDownloaded_, totalPeers, peersConnected, totalSeeds, seedsConnected, ratio_, td, statusMemory_.next_announce, activeDuration_, seedingDuration_, startTime_));
+
 	}
 	catch (const lbt::invalid_handle&)
 	{

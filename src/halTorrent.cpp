@@ -228,16 +228,16 @@ static Event::eventLevel lbtAlertToHalEvent(lbt::alert::severity_t severity)
 	switch (severity)
 	{
 	case lbt::alert::debug:
-		return Event::debug;
-		
 	case lbt::alert::info:
+		return Event::debug;
+	
 	case lbt::alert::warning:
 		return Event::info;
-		
+	
 	case lbt::alert::critical:
 	case lbt::alert::fatal:
 		return Event::critical;
-		
+	
 	default:
 		return Event::none;
 	}
@@ -312,7 +312,6 @@ public:
 		{
 			hal::event().post(boost::shared_ptr<hal::EventDetail>(
 				new hal::EventStdException(Event::critical, e, L"~BitTorrent_impl"))); 
-//			::MessageBox(0, (wformat(L"Save data exception: %1%") % e.what()).str().c_str(), L"Exception", 0);
 		}
 	}
 	
@@ -1115,6 +1114,9 @@ void BitTorrent::closeAll()
 	
 	if (!pimpl->torrents.empty() && !exists(resumeDir))
 		create_directory(resumeDir);
+
+	event().post(shared_ptr<EventDetail>(
+		new EventInfo(L"Stopping all torrents.")));
 	
 	for (TorrentMap::const_iterator i=pimpl->torrents.begin(), e=pimpl->torrents.end(); i != e; ++i)
 	{
@@ -1123,6 +1125,7 @@ void BitTorrent::closeAll()
 			(*i).second.handle().pause(); // NB. internal pause, not registered in Torrents.xml
 		}
 	}
+
 	
 	// Ok this polling loop here is a bit curde, but a blocking wait is actually appropiate.
 	lbt::session_status status = pimpl->theSession.status();	
@@ -1132,6 +1135,9 @@ void BitTorrent::closeAll()
 		status = pimpl->theSession.status();
 	}
 	
+	event().post(shared_ptr<EventDetail>(
+		new EventInfo(L"Torrents stopped.")));
+		
 	for (TorrentMap::const_iterator i=pimpl->torrents.begin(), e=pimpl->torrents.end(); i != e; ++i)
 	{
 		if ((*i).second.inSession())
@@ -1143,6 +1149,9 @@ void BitTorrent::closeAll()
 			assert(halencode_result);
 		}
 	}
+	
+	event().post(shared_ptr<EventDetail>(
+		new EventInfo(L"Resume data written.")));
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")
 }

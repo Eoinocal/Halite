@@ -72,7 +72,7 @@ protected:
 		}		
 	};
 
-	struct Completion : public ColAdapter_t
+	struct Progress : public ColAdapter_t
 	{
 		virtual bool less(tD& l, tD& r)	{ return l->completion() < r->completion(); }		
 		virtual std::wstring print(tD& t) 
@@ -152,6 +152,112 @@ protected:
 				return (wformat(L"%1$.2f") % copies).str();		
 		}		
 	};
+
+	struct Completed : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)
+		{
+			boost::int64_t left = l->totalWanted()-l->totalWantedDone();
+			boost::int64_t right = r->totalWanted()-r->totalWantedDone();
+			
+			return left < right; 
+		}
+		
+		virtual std::wstring print(tD& t) 
+		{
+			return (wformat(L"%1$.2fMB") % (static_cast<float>(t->totalWanted()-t->totalWantedDone())/(1024*1024))).str(); 
+		}		
+	};
+
+	struct Remaining : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)
+		{		
+			return l->totalWanted() < r->totalWanted(); 
+		}
+		
+		virtual std::wstring print(tD& t) 
+		{
+			return (wformat(L"%1$.2fMB") % (static_cast<float>(t->totalWanted())/(1024*1024))).str(); 
+		}		
+	};
+
+	struct Downloaded : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)
+		{		
+			return l->totalPayloadDownloaded() < r->totalPayloadDownloaded(); 
+		}
+		
+		virtual std::wstring print(tD& t) 
+		{
+			return (wformat(L"%1$.2fMB") % (static_cast<float>(t->totalPayloadDownloaded())/(1024*1024))).str(); 
+		}		
+	};
+
+	struct Uploaded : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)
+		{		
+			return l->totalPayloadUploaded() < r->totalPayloadUploaded(); 
+		}
+		
+		virtual std::wstring print(tD& t) 
+		{
+			return (wformat(L"%1$.2fMB") % (static_cast<float>(t->totalPayloadUploaded())/(1024*1024))).str(); 
+		}		
+	};
+
+	struct ActiveTime : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)	{ return l->active() < r->active(); }		
+		virtual std::wstring print(tD& t) 
+		{ 
+			if (!t->active().is_special())
+			{
+				return hal::from_utf8(
+					boost::posix_time::to_simple_string(t->active()));
+			}
+			else
+			{
+				return L"∞";		
+			}
+		}		
+	};
+	
+	struct SeedingTime : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)	{ return l->seeding() < r->seeding(); }		
+		virtual std::wstring print(tD& t) 
+		{ 
+			if (!t->seeding().is_special())
+			{
+				return hal::from_utf8(
+					boost::posix_time::to_simple_string(t->seeding()));
+			}
+			else
+			{
+				return L"∞";		
+			}
+		}		
+	};
+	
+	struct StartTime : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)	{ return l->startTime() < r->startTime(); }		
+		virtual std::wstring print(tD& t) 
+		{ 
+			if (!t->startTime().is_special())
+			{
+				return hal::from_utf8(
+					boost::posix_time::to_simple_string(t->startTime()));
+			}
+			else
+			{
+				return L"∞";		
+			}
+		}		
+	};
 	
 	};
 
@@ -203,7 +309,7 @@ private:
 	void OnAttach();
 	void OnDetach();
 	
-	enum { NumberOfColumns_s = 12 };
+	enum { NumberOfColumns_s = 19 };
 	
 	HaliteWindow& halWindow_;
 };
