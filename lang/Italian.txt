@@ -1,4 +1,4 @@
-"Halite.ico" --->  ??? 
+﻿"Halite.ico" --->  ??? 
 "toolbar.bmp" --->  ??? 
 "About.rtf" --->  ??? 
 "English" ---> "Italiano"
@@ -13,56 +13,55 @@
 "Up" --->  ??? 
 "Down" --->  ??? 
 "N/A" ---> "N/A"
-"Update in:" ---> "Aggiornamento tra:"
+"Update in:" ---> "Aggiorno tra:"
 "Ratio (this session):" ---> "Ratio (questa sessione):"
 "Torrent:" --->  ??? 
 "Peers:" --->  ??? 
-"Transfered:" --->  ??? 
-"Remaining:" --->  ??? 
-"Rates:" --->  ??? 
+"Transfered:" --->  "Trasferiti" 
+"Remaining:" --->  "Rimanenti" 
+"Rates:" --->  "Valutazione" 
 "Seeds:" --->  ??? 
 "Overhead:" --->  ??? 
 "ETA:" --->  ??? 
 "Ratio:" --->  ??? 
 "BitTorrent" --->  ??? 
 "Open a (single) port between : " ---> "Apri una (singola) porta tra :"
-"Enable DHT" --->  ??? 
+"Enable DHT" --->  "Abilita DHT" 
 "Button" --->  ??? 
 "to" ---> "a"
-"Select the (TCP) port (or range) on which to listen for incomming connections." --->  ??? 
+"Select the (TCP) port (or range) on which to listen for incomming connections." --->  "Seleziona la porta (TCP), o l'intervallo di porte da monitorare per connessioni entranti"
 "Distributed Hash Tables" --->  ??? 
 "Port (UDP) : " ---> "Porta (UDP) :"
-"(DHT will not apply to pirvate torrents)" --->  ??? 
+"(DHT will not apply to pirvate torrents)" --->  "(il DHT non funzionerà per torrent privati)" 
 "General Settings" ---> "Opzioni Generali"
-"Limit the no. of half-open connections" --->  ??? 
+"Limit the no. of half-open connections" --->  "Limita il n. di connessioni simultanee" 
 "Proxies" --->  ??? 
 "Proxy Host/IP : " --->  ??? 
 "Use a proxy." ---> "Usa un proxy."
 "Port : " ---> "Porta :"
 "Username : " ---> "Nome Utente :"
-"Password : " ---> "Password :"
+"Password : " ---> ???
 "Peer" --->  ??? 
 "Web Seed" --->  ??? 
 "DHT" --->  ??? 
-"Proxy Settings" --->  ??? 
-"Security" --->  ??? 
-"IP Filtering" --->  ??? 
+"Proxy Settings" --->  "Settaggi Proxy"
+"IP Filtering" --->  "Filtraggio IP" 
 "Enable IP filtering." ---> "Abilita filtro IP."
 "Import ipfilter.dat" ---> "Importa ipfilter.dat"
 "Clear IP database" ---> "Cancella database IP"
-"Protocol Encryption" --->  ??? 
-"Enable Protocol Encryption." --->  ??? 
-"Connection Policies" --->  ??? 
-"Incoming" --->  ??? 
-"Outcoming" --->  ??? 
-"Forced" --->  ??? 
-"Enabled" --->  ??? 
-"Disablied" --->  ??? 
-"Encoding Level" --->  ??? 
+"Protocol Encryption" --->  "Criptazione Protocollare" 
+"Enable Protocol Encryption." --->  "Abilita Criptazione"
+"Connection Policies" --->  "Comportamenti di Connessione" 
+"Incoming" --->  "Entrante" 
+"Outcoming" --->  "Uscente" 
+"Forced" --->  "Forzata" 
+"Enabled" --->  "Abilitata" 
+"Disablied" --->  "Disabilitata" 
+"Encoding Level" --->  "Livello di codifica" 
 "Plaintext" --->  ??? 
 "RC4" --->  ??? 
-"Both" --->  ??? 
-"Prefer RC4" --->  ??? 
+"Both" --->  "Entrambi" 
+"Prefer RC4" --->  "Preferisci RC4" 
 "Remote Control" ---> "Controllo Remoto"
 "Remote Control Options" ---> "Opzioni Controllo Remoto"
 "Enable Remote Control" ---> "Abilita Controllo Remoto"
@@ -85,7 +84,7 @@
 "Torrent Defaults" ---> "Limiti per file Torrent"
 "These options set global maximums which will always be honoured." ---> "Queste opzioni definiscono i limiti massimi che saranno sempre rispettati."
 "These options specify the default limits applied to new torrents." ---> "Queste opzioni definiscono i limiti applicati ai singoli nuovi torrent."
-"Default save folder :" --->  ??? 
+"Default save folder :" --->  "Cartella predefinita di salvataggio" 
 "..." --->  ??? 
 "Prompt for alternate save folder." ---> "Consenti di scegliere una cartella alternativa."
 "Halite shutting down..." ---> "Halite in chiusura...."
@@ -115,7 +114,7 @@
 "Allow only one instance to run." ---> "Consenti un solo avvio per volta"
 "Advanced GUI" ---> "Interfaccia Avanzata"
 "Minimize to tray." ---> "Riduci nella Tray"
-"Language (requires restart)" --->  ??? 
+"Language (requires restart)" --->  "Lingua (necessita riavvio)" 
 "List of Trackers." ---> "Lista dei Trackers ."
 "Send login info to trackers." ---> "Manda informazioni di login ai trackers."
 "Apply" ---> "Applica"
@@ -161,7 +160,7 @@
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "CAPS" --->  ??? 
 "0000 DHT node(s)" --->  ??? 
-"Filtering 0000000 ranges." ---> "Flitrando 0000000 intervalli."
+"Filtering 0000000 ranges." ---> "Filtrando 0000000 intervalli."
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "La sessione BitTorrent non si è avviata. Prova a selezionare un'altra porta nelle Opzioni."
 "DHT session could not start. Try selecting another port in the settings." ---> "La sessione DHT non si è avviata. Prova a selezionare un'altra porta nelle Opzioni."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Seleziona una directory in cui salvare i files, o annulla per non scaricare il torrent."
@@ -195,10 +194,10 @@
 "Peer Event: %1%." --->  ??? 
 "Tracker Event: %1%." --->  ??? 
 "Debug Event: %1%." --->  ??? 
-"Select a directory to save the downloads to. Select cancel to accept default 'incomming' location." --->  ??? 
+"Select a directory to save the downloads to. Select cancel to accept default 'incomming' location." --->  "Seleziona una cartella in cui salvare i downloads. Premi cancella per accettare la destinazione di default."
 "Peers" --->  ??? 
 "Logging" --->  ??? 
-"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
+"An invalid encoding level, %1%, was passed as an encryption setting." --->  ???
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "Auto Sort" --->  ??? 
 "Interesting" --->  ??? 
@@ -213,8 +212,8 @@
 "RC4 Encrypted" --->  ??? 
 "Plaintext Encrypted" --->  ??? 
 "Queued for Checking" ---> "In Coda per Controllo"
-"Checking Files" ---> "Sto Controllando i Files"
-"Connecting to Tracker" ---> "Sto Connettendo al Tracker"
+"Checking Files" ---> "Controllo i Files"
+"Connecting to Tracker" ---> "Connetto al Tracker"
 "Downloading" --->  ??? 
 "Finished" ---> "Finito"
 "Seeding" --->  ??? 
@@ -222,13 +221,13 @@
 "Stopped" ---> "Fermato"
 "Paused" ---> "In Pausa"
 "Downloading Metadata" ---> "Scaricando Metadata"
-"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio" --->  ??? 
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio" --->  "Nome;Stato;Completato;Download;Upload;Peers;Seeds;ETA;Copie;Tracker;Riannuncia;Ratio" 
 "100;110;60;60;60;42;45;61;45" --->  ??? 
 "Time;Message;Severity" ---> "Orario;Messaggio;Gravità"
 "67;419;69" --->  ??? 
 "Tracker;Tier" ---> "Tracker;Priorità"
 "287;50" --->  ??? 
-"Peer;Country;Download;Upload;Type;Client" --->  ??? 
+"Peer;Country;Download;Upload;Type;Client" --->  "Peer;Nazione;Download;Upload;Tipo;Client" 
 "100;70;70;70;100" --->  ??? 
-"Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
+"Peer;Country;Download;Upload;Type;Client;Status" --->  "Peer;Nazione;Download;Upload;Tipo;Client;Stato" 
 "95;64;64;50;100;500" --->  ??? 
