@@ -153,7 +153,7 @@ protected:
 		}		
 	};
 
-	struct Completed : public ColAdapter_t
+	struct Remaining : public ColAdapter_t
 	{
 		virtual bool less(tD& l, tD& r)
 		{
@@ -169,7 +169,20 @@ protected:
 		}		
 	};
 
-	struct Remaining : public ColAdapter_t
+	struct Completed : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)
+		{			
+			return l->totalWantedDone() < r->totalWantedDone(); 
+		}
+		
+		virtual std::wstring print(tD& t) 
+		{
+			return (wformat(L"%1$.2fMB") % (static_cast<float>(t->totalWantedDone())/(1024*1024))).str(); 
+		}		
+	};
+
+	struct TotalWanted : public ColAdapter_t
 	{
 		virtual bool less(tD& l, tD& r)
 		{		
@@ -300,7 +313,8 @@ public:
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
+		if (version > 1)
+			ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
     }
 	
 	tD CustomItemConversion(LVCompareParam* param, int iSortCol);
@@ -314,4 +328,5 @@ private:
 	HaliteWindow& halWindow_;
 };
 
+BOOST_CLASS_VERSION(HaliteListViewCtrl, 2)
 typedef HaliteListViewCtrl::SelectionManager ListViewManager;

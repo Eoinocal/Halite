@@ -450,8 +450,11 @@ public:
 		
 		for (int i = header_.GetItemCount(); i<listNames_.size(); i = header_.GetItemCount())
 		{
-			AddColumn(listNames_[i].c_str(), i);
-			SetColumnWidth(i, listWidths_[i]);
+			//if (listVisible_[i])
+			{
+				AddColumn(listNames_[i].c_str(), i);
+				SetColumnWidth(i, listWidths_[i]);
+			}
 		}
 		
 		SetColumnOrderArray(listNames_.size(), &listOrder_[0]);

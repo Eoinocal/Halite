@@ -175,16 +175,29 @@ public:
 		handle_.resolve_countries(resolve_countries_);
 	}
 	
-	void resume()
+	void addToSession()
 	{
 		if (!in_session_ && the_session_) 
 		{
+			string dir = to_utf8(save_directory_);
+			
+	//		if (lbt::supports_sparse_files(dir))
+	//			event().post(shared_ptr<EventDetail>(new EventInfo(L"True.")));
+	//		else
+	//			event().post(shared_ptr<EventDetail>(new EventInfo(L"False.")));
+					
 			handle_ = the_session_->add_torrent(metadata_, 
-				to_utf8(save_directory_.c_str()), resumedata_);
+				dir, resumedata_,
+				!lbt::supports_sparse_files(dir));
 				
 			in_session_ = true;
 			applySettings();
-		}		
+		}	
+	}
+	
+	void resume()
+	{
+		addToSession();	
 		assert(in_session_);
 		
 		handle_.resume();
@@ -200,14 +213,7 @@ public:
 	{
 		if (state_ != TorrentDetail::torrent_stopped)
 		{	
-			if (!in_session_ && the_session_) 
-			{
-				handle_ = the_session_->add_torrent(metadata_, 
-					to_utf8(save_directory_.c_str()), resumedata_);
-					
-				in_session_ = true;
-				applySettings();
-			}
+			addToSession();
 			assert(in_session_);
 			
 			handle_.pause();

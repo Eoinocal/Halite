@@ -912,8 +912,15 @@ void BitTorrent::addTorrent(wpath file, wpath saveDirectory)
 	
 	if (existing == pimpl->torrents.end())
 	{		
+		string dir = to_utf8(saveDirectory.string());
+		
+	//	if (lbt::supports_sparse_files(dir))
+	//		event().post(shared_ptr<EventDetail>(new EventInfo(L"True.")));
+	//	else
+	//		event().post(shared_ptr<EventDetail>(new EventInfo(L"False.")));
+		
 		lbt::torrent_handle handle = pimpl->theSession.add_torrent(metadata,
-			to_utf8(saveDirectory.string()), resumedata);
+			dir, resumedata, !lbt::supports_sparse_files(dir));
 		
 		pimpl->torrents.insert(TorrentMap::value_type(to_utf8(file.leaf()), 
 			TorrentInternal(handle, file.leaf(), saveDirectory)));

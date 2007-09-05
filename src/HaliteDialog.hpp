@@ -185,8 +185,8 @@ public:
 	BEGIN_DDX_MAP(thisClass)
         DDX_EX_INT_POSITIVE_LIMIT(IDC_EDITNCD, NoConnDown, 2, true)
         DDX_EX_INT_POSITIVE_LIMIT(IDC_EDITNCU, NoConnUp, 2, true)
-        DDX_EX_INT_FLOAT_LIMIT(IDC_EDITTLD, TranLimitDown, 5, true)
-        DDX_EX_INT_FLOAT_LIMIT(IDC_EDITTLU, TranLimitUp, 5, true)
+        DDX_EX_INT_FLOAT_LIMIT(IDC_EDITTLD, TranLimitDown, 1, false)
+        DDX_EX_INT_FLOAT_LIMIT(IDC_EDITTLU, TranLimitUp, 1, false)
     END_DDX_MAP()
 
 	BEGIN_DLGRESIZE_MAP(thisClass)
