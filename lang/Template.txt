@@ -1,35 +1,66 @@
 "English" ---> "ЏиϊсoδΣ"
+"English.rtf" --->  "../lang/Template.rtf" 
 "MS Shell Dlg" --->  ??? 
 "Torrent" --->  ??? 
 "Tracker" --->  ??? 
 "" --->  ??? 
 "msctls_progress32" --->  ??? 
-"N/A" --->  ??? 
-"Time left:" --->  ??? 
-"Connection limits:" --->  ??? 
-"Transfer rates (KB/s):" --->  ??? 
+"Torrent connection limits:" --->  ??? 
+"Torrent transfer rates (KB/s):" --->  ??? 
 "Total" --->  ??? 
 "Up" --->  ??? 
 "Down" --->  ??? 
+"N/A" --->  ??? 
 "Update in:" --->  ??? 
-"Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." --->  ??? 
 "Ratio (this session):" --->  ??? 
+"Torrent:" --->  ??? 
+"Peers:" --->  ??? 
+"Transferred:" --->  ??? 
+"Remaining:" --->  ??? 
+"Rates:" --->  ??? 
+"Seeds:" --->  ??? 
+"Overhead:" --->  ??? 
+"ETA:" --->  ??? 
 "Ratio:" --->  ??? 
 "BitTorrent" --->  ??? 
-"Global Options" --->  ??? 
 "Open a (single) port between : " --->  ??? 
-"Enable DHT. (Note neither DHT nor PEX will apply to private torrents)" --->  ??? 
-"Enable IP filtering." --->  ??? 
-"Import ipfilter.dat" --->  ??? 
-"Clear IP database" --->  ??? 
+"Enable DHT" --->  ??? 
+"Button" --->  ??? 
+"to" --->  ??? 
+"Select the (TCP) port (or range) on which to listen for incomming connections." --->  ??? 
+"Distributed Hash Tables" --->  ??? 
+"Port (UDP) : " --->  ??? 
+"(DHT will not apply to private torrents)" --->  ??? 
+"General Settings" --->  ??? 
+"Limit the no. of half-open connections" --->  ??? 
+"Proxies" --->  ??? 
 "Proxy Host/IP : " --->  ??? 
 "Use a proxy." --->  ??? 
 "Port : " --->  ??? 
 "Username : " --->  ??? 
 "Password : " --->  ??? 
-"to" --->  ??? 
-"Select a (TCP) port (or range of ports) to listen for incomming connections." --->  ??? 
-"Port (UDP) : " --->  ??? 
+"Peer" --->  ??? 
+"Web Seed" --->  ??? 
+"DHT" --->  ??? 
+"Proxy Settings" --->  ??? 
+"Security" --->  ??? 
+"IP Filtering" --->  ??? 
+"Enable IP filtering." --->  ??? 
+"Import ipfilter.dat" --->  ??? 
+"Clear IP database" --->  ??? 
+"Protocol Encryption" --->  ??? 
+"Enable Protocol Encryption." --->  ??? 
+"Connection Policies" --->  ??? 
+"Incoming" --->  ??? 
+"Outgoing" --->  ??? 
+"Forced" --->  ??? 
+"Enabled" --->  ??? 
+"Disabled" --->  ??? 
+"Encoding Level" --->  ??? 
+"Plaintext" --->  ??? 
+"RC4" --->  ??? 
+"Both" --->  ??? 
+"Prefer RC4" --->  ??? 
 "Remote Control" --->  ??? 
 "Remote Control Options" --->  ??? 
 "Enable Remote Control" --->  ??? 
@@ -52,7 +83,7 @@
 "Torrent Defaults" --->  ??? 
 "These options set global maximums which will always be honoured." --->  ??? 
 "These options specify the default limits applied to new torrents." --->  ??? 
-"Default save folder : " --->  ??? 
+"Default save folder :" --->  ??? 
 "..." --->  ??? 
 "Prompt for alternate save folder." --->  ??? 
 "Halite shutting down..." --->  ??? 
@@ -65,28 +96,23 @@
 "Have Halite acts a DHT node." --->  ??? 
 "Add" --->  ??? 
 "Pause" --->  ??? 
-"Reannounce" --->  ??? 
+"Reannounce" ---> "Reannounce"
 "Remove" --->  ??? 
 "SysListView32" --->  ??? 
 "Name:" --->  ??? 
-"Status:" --->  ??? 
 "Tracker:" --->  ??? 
-"Torrent connection limits:" --->  ??? 
-"Torrent transfer rates (KB/s):" --->  ??? 
+"Status:" --->  ??? 
+"Time left:" --->  ??? 
 "Completed:" --->  ??? 
 "About" --->  ??? 
 "Program Information" --->  ??? 
-"Halite is a BitTorrent client based on the libtorrent library from Rasterbar.com. The program is written in C++ relying on the Boost libraries and WTL. It is open sourced under a MIT and/or Boost software licence." --->  ??? 
-"This project has only been possible thanks to the excellent work others. I'd like to acknowledge some of those people." --->  ??? 
-"nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon." --->  ??? 
-"Arvid Norberg - www.rasterbar.com - Author of the libtorrent library." --->  ??? 
-"Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO." --->  ??? 
+"RichEdit20A" --->  ??? 
 "SysTabControl32" --->  ??? 
 "General" --->  ??? 
 "Allow only one instance to run." --->  ??? 
-"General Settings" --->  ??? 
 "Advanced GUI" --->  ??? 
 "Minimize to tray." --->  ??? 
+"Language (requires restart)" --->  ??? 
 "List of Trackers." --->  ??? 
 "Send login info to trackers." --->  ??? 
 "Apply" --->  ??? 
@@ -110,8 +136,6 @@
 "New" --->  ??? 
 "Edit" --->  ??? 
 "Delete" --->  ??? 
-"Halite.ico" --->  ??? 
-"toolbar.bmp" --->  ??? 
 "StringFileInfo" --->  ??? 
 "180904b0" --->  ??? 
 "Comments" --->  ??? 
@@ -131,14 +155,6 @@
 "ProductVersion" --->  ??? 
 "VarFileInfo" --->  ??? 
 "Translation" --->  ??? 
-"N" --->  ??? 
-"O" --->  ??? 
-"S" --->  ??? 
-"P" --->  ??? 
-"Z" --->  ??? 
-"X" --->  ??? 
-"C" --->  ??? 
-"V" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "CAPS" --->  ??? 
 "0000 DHT node(s)" --->  ??? 
@@ -154,7 +170,13 @@
 "Xml Exception (%1%) with %2%." --->  ??? 
 "Torrent (%1%) exception caught; %2% from %3%." --->  ??? 
 "Invalid torrent (%1%) from %2%." --->  ??? 
+"%1$.2fMB of %2$.2fMB" --->  ??? 
+"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
+"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"%1%, %2%." --->  ??? 
+"%1$.2fMB down - %2$.2fMB up" --->  ??? 
+"%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1% DHT node(s)" --->  ??? 
 "DHT disabled" --->  ??? 
 "Filtering %1% range(s)" --->  ??? 
@@ -163,11 +185,6 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "Halite not listening!" --->  ??? 
 "Port %1% open" --->  ??? 
-"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" --->  ??? 
-"Time;Message;Severity" --->  ??? 
-"Tracker;Tier" --->  ??? 
-"Peer;Download;Upload;Type;Client" --->  ??? 
-"Peer;Download;Upload;Type;Client;Status" --->  ??? 
 "Exception caught; %1%, from %2%." --->  ??? 
 "XML exception: %1%." --->  ??? 
 "Unicode exception: %1%." --->  ??? 
@@ -175,6 +192,14 @@
 "Peer Event: %1%." --->  ??? 
 "Tracker Event: %1%." --->  ??? 
 "Debug Event: %1%." --->  ??? 
+"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
+"Peers" --->  ??? 
+"Files" --->  ??? 
+"Logging" --->  ??? 
+"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
+"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
+"Auto Sort" --->  ??? 
+"Torrent Root" --->  ??? 
 "Interesting" --->  ??? 
 "Choked" --->  ??? 
 "Interested in us" --->  ??? 
@@ -184,6 +209,8 @@
 "Handshake" --->  ??? 
 "Connecting" --->  ??? 
 "Queued" --->  ??? 
+"RC4 Encrypted" --->  ??? 
+"Plaintext Encrypted" --->  ??? 
 "Queued for Checking" --->  ??? 
 "Checking Files" --->  ??? 
 "Connecting to Tracker" --->  ??? 
@@ -194,3 +221,20 @@
 "Stopped" --->  ??? 
 "Paused" --->  ??? 
 "Downloading Metadata" --->  ??? 
+"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time" --->  ??? 
+"Time;Message;Severity" --->  ??? 
+"Tracker;Tier" --->  ??? 
+"Peer;Country;Download;Upload;Type;Client" --->  ??? 
+"Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
+"Filename;Path;Size;Progress;Priority" --->  ??? 
+"Don't download" --->  ??? 
+"Normal" --->  ??? 
+"Above Normal" --->  ??? 
+"3" --->  ??? 
+"4" --->  ??? 
+"5" --->  ??? 
+"6" --->  ??? 
+"Maximum" --->  ??? 
+"Set Priority" --->  ??? 
+"Halite.ico" --->  ??? 
+"toolbar.bmp" --->  ??? 

@@ -169,10 +169,20 @@ public:
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_DESTROY(OnDestroy)
 
+		REFLECTED_NOTIFY_CODE_HANDLER(NM_RCLICK, OnRClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(TVN_SELCHANGED, OnSelChanged)
+		
+		COMMAND_RANGE_HANDLER_EX(ID_HAL_FILE_PRIORITY_0, ID_HAL_FILE_PRIORITY_7, OnMenuPriority)
 //		CHAIN_MSG_MAP(treeClass)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
+	
+	HWND Create(HWND hWndParent, ATL::_U_RECT rect = NULL, LPCTSTR szWindowName = NULL,
+		DWORD dwStyle = 0, DWORD dwExStyle = 0,
+		ATL::_U_MENUorID MenuOrID = 0U, LPVOID lpCreateParam = NULL);
+	
+	LRESULT OnRClick(int i, LPNMHDR pnmh, BOOL&);
+	void OnMenuPriority(UINT, int, HWND);
 	
 	wpath focused() { return focused_; }
 	
@@ -194,6 +204,9 @@ protected:
 	
 	mutable boost::signal<void ()> selection_;
 	wpath focused_;
+
+private:
+	WTL::CMenu menu_;
 };
 
 template<typename T>
@@ -246,8 +259,7 @@ public:
 				{
 					(*j).second.valid = true;
 					ti = (*j).second.treeItem;
-				}
-				
+				}				
 			}
 		}
 		else
@@ -320,7 +332,7 @@ public:
 		dialogBaseClass(halWindow),
 		treeManager_(tree_),
 		iniClass("AdvFiles", "AdvFiles"),
-		splitterPos(50)
+		splitterPos(150)
 	{
 		Load();
 	}

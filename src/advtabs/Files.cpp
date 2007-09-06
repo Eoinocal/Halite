@@ -4,6 +4,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <algorithm>
+
 #include "../stdAfx.hpp"
 #include "../HaliteWindow.hpp"
 #include "../HaliteListViewCtrl.hpp"
@@ -40,7 +42,7 @@ HWND FileListView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowNa
 	ApplyDetails();
 	
 	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER);
-		
+	
 	SetColumnSortType(2, LVCOLSORT_CUSTOM, new ColumnAdapters::Size());
 	SetColumnSortType(3, LVCOLSORT_CUSTOM, new ColumnAdapters::Progress());
 	SetColumnSortType(4, LVCOLSORT_CUSTOM, new ColumnAdapters::Priority());
@@ -58,6 +60,81 @@ void FileListView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 		
 		if (flags & LVIS_SELECTED)
 			indices.push_back(GetItemData(i));
+	}
+	
+	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;
+	
+	std::string torrent = hal::to_utf8(hal::bittorrent().torrentDetails().selectedTorrent()->filename());
+	hal::bittorrent().setTorrentFilePriorities(torrent, indices, priority);
+}
+
+HWND FileTreeView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowName, DWORD dwStyle, DWORD dwExStyle,
+	ATL::_U_MENUorID MenuOrID, LPVOID lpCreateParam)
+{
+	HWND hwnd = treeClass::Create(hWndParent, rect.m_lpRect, szWindowName, dwStyle, dwExStyle, MenuOrID.m_hMenu, lpCreateParam);
+	assert(hwnd);
+	
+	CMenuHandle menu;
+	BOOL menu_created = menu.LoadMenu(IDR_FILESLISTVIEW_MENU);
+	assert(menu_created);	
+	
+	menu_.Attach(menu.GetSubMenu(0));
+	
+	return hwnd;
+}
+
+LRESULT FileTreeView::OnRClick(int i, LPNMHDR pnmh, BOOL&)
+{
+	LPNMITEMACTIVATE pia = (LPNMITEMACTIVATE)pnmh;
+	
+	if (menu_)
+	{
+		assert (menu_.IsMenu());
+
+		POINT ptPoint;
+		GetCursorPos(&ptPoint);
+		menu_.TrackPopupMenu(0, ptPoint.x, ptPoint.y, m_hWnd);
+	}
+
+	return 0;
+}
+
+void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
+{	
+	hal::FileDetails fileDetails;
+	
+//	foreach (const hal::TorrentDetail_ptr torrent, tD.selectedTorrents())
+	if (hal::TorrentDetail_ptr torrent = hal::bittorrent().torrentDetails().focusedTorrent())
+	{
+		std::copy(torrent->fileDetails().begin(), torrent->fileDetails().end(), 
+			std::back_inserter(fileDetails));
+	}
+
+	wpath branch;
+	
+	if (CTreeItem ti = GetSelectedItem())
+	{			
+		do
+		{
+			if (!ti.GetParent()) break;
+			
+			boost::array<wchar_t, MAX_PATH> buffer;
+			ti.GetText(buffer.elems, MAX_PATH);
+			
+			branch = wstring(buffer.elems)/branch;
+		} 
+		while (ti = ti.GetParent());
+	}
+
+	std::vector<int> indices;
+	
+	for (hal::FileDetails::iterator i=fileDetails.begin(), e=fileDetails.end();
+		i != e; ++i)
+	{			
+		if (std::equal(branch.begin(), branch.end(), (*i).branch.begin()))
+		{
+			indices.push_back((*i).order());
+		}
 	}
 	
 	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;

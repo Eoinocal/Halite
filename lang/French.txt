@@ -1,7 +1,5 @@
-"Halite.ico" --->  ??? 
-"toolbar.bmp" --->  ??? 
-"About.rtf" --->  ??? 
 "English" ---> "French"
+"English.rtf" --->  ??? 
 "MS Shell Dlg" --->  ??? 
 "Torrent" --->  ??? 
 "Tracker" --->  ??? 
@@ -17,7 +15,7 @@
 "Ratio (this session):" ---> "Ratio de la session :"
 "Torrent:" --->  ??? 
 "Peers:" --->  ??? 
-"Transfered:" --->  ??? 
+"Transferred:" --->  ??? 
 "Remaining:" --->  ??? 
 "Rates:" --->  ??? 
 "Seeds:" --->  ??? 
@@ -32,7 +30,7 @@
 "Select the (TCP) port (or range) on which to listen for incomming connections." --->  ??? 
 "Distributed Hash Tables" --->  ??? 
 "Port (UDP) : " --->  ??? 
-"(DHT will not apply to pirvate torrents)" --->  ??? 
+"(DHT will not apply to private torrents)" --->  ??? 
 "General Settings" ---> "Paramètres généraux"
 "Limit the no. of half-open connections" --->  ??? 
 "Proxies" --->  ??? 
@@ -54,10 +52,10 @@
 "Enable Protocol Encryption." --->  ??? 
 "Connection Policies" --->  ??? 
 "Incoming" --->  ??? 
-"Outcoming" --->  ??? 
+"Outgoing" --->  ??? 
 "Forced" --->  ??? 
 "Enabled" --->  ??? 
-"Disablied" --->  ??? 
+"Disabled" --->  ??? 
 "Encoding Level" --->  ??? 
 "Plaintext" --->  ??? 
 "RC4" --->  ??? 
@@ -108,7 +106,6 @@
 "Completed:" ---> "Complété :"
 "About" ---> "A propos"
 "Program Information" ---> "Informations"
-"v 0.2.9 dev 270" --->  ??? 
 "RichEdit20A" --->  ??? 
 "SysTabControl32" --->  ??? 
 "General" ---> "Général"
@@ -177,7 +174,7 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Reçus %1$.2fMB, Envoyés %2$.2fMB, Ratio %3$.2f"
 "Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
-"Name: %1%, %2%." --->  ??? 
+"%1%, %2%." --->  ??? 
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1% DHT node(s)" --->  ??? 
@@ -195,12 +192,14 @@
 "Peer Event: %1%." --->  ??? 
 "Tracker Event: %1%." --->  ??? 
 "Debug Event: %1%." --->  ??? 
-"Select a directory to save the downloads to. Select cancel to accept default 'incomming' location." --->  ??? 
+"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Peers" --->  ??? 
+"Files" --->  ??? 
 "Logging" --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "Auto Sort" --->  ??? 
+"Torrent Root" --->  ??? 
 "Interesting" --->  ??? 
 "Choked" --->  ??? 
 "Interested in us" --->  ??? 
@@ -222,13 +221,20 @@
 "Stopped" ---> "Stoppé"
 "Paused" ---> "En pause"
 "Downloading Metadata" --->  ??? 
-"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio" --->  ??? 
-"100;110;60;60;60;42;45;61;45" --->  ??? 
+"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time" --->  ??? 
 "Time;Message;Severity" ---> "Temps;Message;Niveau"
-"67;419;69" --->  ??? 
 "Tracker;Tier" --->  ??? 
-"287;50" --->  ??? 
 "Peer;Country;Download;Upload;Type;Client" --->  ??? 
-"100;70;70;70;100" --->  ??? 
 "Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
-"95;64;64;50;100;500" --->  ??? 
+"Filename;Path;Size;Progress;Priority" --->  ??? 
+"Don't download" --->  ??? 
+"Normal" --->  ??? 
+"Above Normal" --->  ??? 
+"3" --->  ??? 
+"4" --->  ??? 
+"5" --->  ??? 
+"6" --->  ??? 
+"Maximum" --->  ??? 
+"Set Priority" --->  ??? 
+"Halite.ico" --->  ??? 
+"toolbar.bmp" --->  ??? 

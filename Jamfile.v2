@@ -38,6 +38,7 @@ SOURCES =
 	
 RESOURCES =
 	Halite.rc
+#	Icons.rc
 	;
 
 BOOST_LIBS =
