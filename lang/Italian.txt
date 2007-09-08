@@ -1,5 +1,5 @@
-"English" ---> "Italiano"
-"English.rtf" --->  ??? 
+﻿"English" ---> "Italiano"
+"English.rtf" --->  "../lang/Italiano.rtf" 
 "MS Shell Dlg" --->  ??? 
 "Torrent" --->  ??? 
 "Tracker" --->  ??? 
@@ -15,7 +15,7 @@
 "Ratio (this session):" ---> "Ratio (questa sessione):"
 "Torrent:" --->  ??? 
 "Peers:" --->  ??? 
-"Transferred:" --->  ??? 
+"Transferred:" --->  "Trasferiti" 
 "Remaining:" ---> "Rimanenti"
 "Rates:" ---> "Valutazione"
 "Seeds:" --->  ??? 
@@ -26,11 +26,11 @@
 "Open a (single) port between : " ---> "Apri una (singola) porta tra :"
 "Enable DHT" ---> "Abilita DHT"
 "Button" --->  ??? 
-"to" ---> "a"
-"Select the (TCP) port (or range) on which to listen for incomming connections." ---> "Seleziona la porta (TCP), o l'intervallo di porte da monitorare per connessioni entranti"
+"to" ---> "e"
+"Select the (TCP) port (or range) on which to listen for incomming connections." ---> "Seleziona la porta (TCP), o l'intervallo di porte da monitorare per le connessioni entranti"
 "Distributed Hash Tables" --->  ??? 
 "Port (UDP) : " ---> "Porta (UDP) :"
-"(DHT will not apply to private torrents)" --->  ??? 
+"(DHT will not apply to private torrents)" --->  "(il DHT non funzionerà per i torrents privati)" 
 "General Settings" ---> "Opzioni Generali"
 "Limit the no. of half-open connections" ---> "Limita il n. di connessioni simultanee"
 "Proxies" --->  ??? 
@@ -43,7 +43,7 @@
 "Web Seed" --->  ??? 
 "DHT" --->  ??? 
 "Proxy Settings" ---> "Settaggi Proxy"
-"Security" --->  ??? 
+"Security" --->  "Sicurezza" 
 "IP Filtering" ---> "Filtraggio IP"
 "Enable IP filtering." ---> "Abilita filtro IP."
 "Import ipfilter.dat" ---> "Importa ipfilter.dat"
@@ -52,10 +52,10 @@
 "Enable Protocol Encryption." ---> "Abilita Criptazione"
 "Connection Policies" ---> "Comportamenti di Connessione"
 "Incoming" ---> "Entrante"
-"Outgoing" --->  ??? 
+"Outgoing" --->  "Uscente" 
 "Forced" ---> "Forzata"
 "Enabled" ---> "Abilitata"
-"Disabled" --->  ??? 
+"Disabled" --->  "Disabilitata" 
 "Encoding Level" ---> "Livello di codifica"
 "Plaintext" --->  ??? 
 "RC4" --->  ??? 
@@ -117,12 +117,12 @@
 "Send login info to trackers." ---> "Manda informazioni di login ai trackers."
 "Apply" ---> "Applica"
 "Reset" ---> "Resetta"
-"Log to file." ---> "Salva Log in un file."
-"Log debug events." ---> "Log degli eventi di debug."
+"Log to file." ---> "Salva Logfile."
+"Log debug events." ---> "Log eventi di debug."
 "Add New Tracker" ---> "Aggiungi Nuovo Tracker"
 "MS Shell Dlg 2" --->  ??? 
 "OK" --->  ??? 
-"Tracker URL" --->  ??? 
+"Tracker URL" --->  "URL Tracker" 
 "Tier" ---> "Priorità"
 "_POPUP_" --->  ??? 
 "Open &Halite" ---> "Apri &Halite"
@@ -170,10 +170,10 @@
 "Xml Exception (%1%) with %2%." --->  ??? 
 "Torrent (%1%) exception caught; %2% from %3%." --->  ??? 
 "Invalid torrent (%1%) from %2%." --->  ??? 
-"%1$.2fMB of %2$.2fMB" --->  ??? 
-"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
+"%1$.2fMB of %2$.2fMB" --->  "%1$.2fMB su %2$.2fMB" 
+"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  "In questa Sessione: Scaricati %1$.2fMB, Inviati %2$.2fMB, Ratio %3$.2f." 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Scaricati %1$.2fMB, Inviati %2$.2fMB, Ratio %3$.2f"
-"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  "Trasferimenti totali, incluso overhead del protocollo; %1$.2fMB down e %2$.2fMB up." 
 "%1%, %2%." --->  ??? 
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
@@ -185,21 +185,21 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "Halite not listening!" ---> "Halite non riceve"
 "Port %1% open" ---> "Porta %1% aperta"
-"Exception caught; %1%, from %2%." --->  ??? 
-"XML exception: %1%." --->  ??? 
-"Unicode exception: %1%." --->  ??? 
-"Bittorrent Event: %1%." --->  ??? 
-"Peer Event: %1%." --->  ??? 
-"Tracker Event: %1%." --->  ??? 
-"Debug Event: %1%." --->  ??? 
-"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
+"Exception caught; %1%, from %2%." --->  "Rilevato errore; %1%, da %2%." 
+"XML exception: %1%." --->  "Errore XML: %1%." 
+"Unicode exception: %1%." --->  "Errore Unicode: %1%." 
+"Bittorrent Event: %1%." --->  "Evento Bittorrent: %1%." 
+"Peer Event: %1%." --->  "Evento Peer: %1%."  
+"Tracker Event: %1%." --->  "Evento Tracker: %1%." 
+"Debug Event: %1%." --->  "Evento Debug: %1%." 
+"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  "Seleziona una cartella in cui salvare i files. Premi annulla per accettare la destinazione predefinita." 
 "Peers" --->  ??? 
 "Files" --->  ??? 
 "Logging" --->  ??? 
-"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
-"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
-"Auto Sort" --->  ??? 
-"Torrent Root" --->  ??? 
+"An invalid encoding level, %1%, was passed as an encryption setting." --->  "Un livello di codifica non valido, %1%, è stato inserito nella configurazione di criptaggio." 
+"An invalid connection policy, %1%, was passed as an encryption setting." --->  "Un comportamento di connessione non valido, %1%, è stato inserito nella configurazione di criptaggio." 
+"Auto Sort" --->  "Ordina Automaticamente" 
+"Torrent Root" --->  "Cartella base del Torrent" 
 "Interesting" --->  ??? 
 "Choked" --->  ??? 
 "Interested in us" --->  ??? 
@@ -209,8 +209,8 @@
 "Handshake" --->  ??? 
 "Connecting" ---> "In Connessione"
 "Queued" ---> "In Coda"
-"RC4 Encrypted" --->  ??? 
-"Plaintext Encrypted" --->  ??? 
+"RC4 Encrypted" --->  "Criptato RC4" 
+"Plaintext Encrypted" --->  "Criptato Plaintext" 
 "Queued for Checking" ---> "In Coda per Controllo"
 "Checking Files" ---> "Controllo i Files"
 "Connecting to Tracker" ---> "Connetto al Tracker"
@@ -221,20 +221,20 @@
 "Stopped" ---> "Fermato"
 "Paused" ---> "In Pausa"
 "Downloading Metadata" ---> "Scaricando Metadata"
-"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time" --->  ??? 
+"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time" --->  "Nome;Stato;Progresso;Download;Upload;Peers;Seeds;ETA;Copie;Tracker;Riannuncia;Ratio;Totali;Completati;Rimanenti;Downloaded;Uploaded;Attivo;Seeding;Orario Avvio" 
 "Time;Message;Severity" ---> "Orario;Messaggio;Gravità"
 "Tracker;Tier" ---> "Tracker;Priorità"
 "Peer;Country;Download;Upload;Type;Client" ---> "Peer;Nazione;Download;Upload;Tipo;Client"
 "Peer;Country;Download;Upload;Type;Client;Status" ---> "Peer;Nazione;Download;Upload;Tipo;Client;Stato"
-"Filename;Path;Size;Progress;Priority" --->  ??? 
-"Don't download" --->  ??? 
-"Normal" --->  ??? 
-"Above Normal" --->  ??? 
+"Filename;Path;Size;Progress;Priority" --->  "Nome File;Destinazione;Dimensione;Progresso;Priorità" 
+"Don't download" --->  "Non scalicare" 
+"Normal" --->  "Normale" 
+"Above Normal" --->  "Alta" 
 "3" --->  ??? 
 "4" --->  ??? 
 "5" --->  ??? 
 "6" --->  ??? 
-"Maximum" --->  ??? 
-"Set Priority" --->  ??? 
+"Maximum" --->  "Massima" 
+"Set Priority" --->  "Priorità" 
 "Halite.ico" --->  ??? 
 "toolbar.bmp" --->  ??? 
