@@ -144,35 +144,23 @@ public:
 		startTime_(boost::posix_time::second_clock::universal_time())
 	{}
 	
-	TorrentDetail_ptr getTorrentDetail_ptr() const;
+	TorrentDetail_ptr getTorrentDetail_ptr();
 	void setTransferSpeed(float down, float up);
 	void setConnectionLimit(int maxConn, int maxUpload);
-	void setTransferSpeed();
-	void setConnectionLimit();
 	pair<float, float> getTransferSpeed();
 	pair<int, int> getConnectionLimit();
 	
 	void setRatio(float ratio) 
 	{ 
 		if (ratio < 0) ratio = 0;
-		
-		handle_.set_ratio(ratio);
 		ratio_ = ratio; 
-	}
-	
-	void setRatio()
-	{ 		
-		handle_.set_ratio(ratio_);
+		
+		applyRatio();
 	}
 	
 	float getRatio()
 	{
 		return ratio_;
-	}
-	
-	void setResolveCountries()
-	{
-		handle_.resolve_countries(resolve_countries_);
 	}
 	
 	void addToSession()
@@ -181,11 +169,6 @@ public:
 		{
 			string dir = to_utf8(save_directory_);
 			
-	//		if (lbt::supports_sparse_files(dir))
-	//			event().post(shared_ptr<EventDetail>(new EventInfo(L"True.")));
-	//		else
-	//			event().post(shared_ptr<EventDetail>(new EventInfo(L"False.")));
-					
 			handle_ = the_session_->add_torrent(metadata_, 
 				dir, resumedata_,
 				!lbt::supports_sparse_files(dir));
@@ -193,6 +176,11 @@ public:
 			in_session_ = true;
 			applySettings();
 		}	
+	}
+	
+	bool inSession() const 
+	{ 
+		return (in_session_ && the_session_); 
 	}
 	
 	void resume()
@@ -239,20 +227,12 @@ public:
 	
 	unsigned state() const { return state_; }
 	
-	void setTrackerLogin()
-	{
-		if (trackerUsername_ != L"")
-		{
-			handle_.set_tracker_login(hal::to_utf8(trackerUsername_),
-				hal::to_utf8(trackerPassword_));
-		}
-	}
-	
 	void setTrackerLogin(wstring username, wstring password)
 	{
 		trackerUsername_ = username;
 		trackerPassword_ = password;
-		setTrackerLogin();
+		
+		applyTrackerLogin();
 	}	
 	
 	pair<wstring, wstring> getTrackerLogin() const
@@ -272,13 +252,16 @@ public:
 	
 	void resetTrackers()
 	{
-		handle_.replace_trackers(torrent_trackers_);		
-		trackers_.clear();	
+		if (inSession())
+		{
+			handle_.replace_trackers(torrent_trackers_);		
+			trackers_.clear();
+		}
 	}
 	
 	const std::vector<TrackerDetail>& getTrackers()
 	{
-		if (trackers_.empty())
+		if (inSession() && trackers_.empty())
 		{
 			std::vector<lbt::announce_entry> trackers = handle_.trackers();
 			
@@ -289,25 +272,6 @@ public:
 			}
 		}		
 		return trackers_;
-	}
-	
-	void applyTrackers()
-	{
-		if (torrent_trackers_.empty())
-			torrent_trackers_ = handle_.trackers();
-		
-		if (!trackers_.empty())
-		{
-			std::vector<lbt::announce_entry> trackers;
-			
-			foreach (const TrackerDetail& tracker, trackers_)
-			{
-				trackers.push_back(
-					lbt::announce_entry(hal::to_utf8(tracker.url)));
-				trackers.back().tier = tracker.tier;
-			}
-			handle_.replace_trackers(trackers);
-		}
 	}
 	
 	void setTrackers(const std::vector<TrackerDetail>& trackerDetails)
@@ -328,17 +292,7 @@ public:
 			applyFilePriorities();
 		}
 	}
-	
-	void applyFilePriorities()
-	{		
-		if (in_session_ && the_session_) 
-		{
-			if (!filePriorities_.empty())
-				handle_.prioritize_files(filePriorities_);
-		}
-	}
 
-	bool inSession() const { return in_session_; }
 	const wstring& saveDirectory() { return save_directory_; }
 	
     friend class boost::serialization::access;
@@ -392,22 +346,12 @@ public:
 		metadata_ = metadata;
 		resumedata_ = resumedata;
 	}
-	
-	void applySettings()
-	{		
-		setTransferSpeed();
-		setConnectionLimit();
-		setRatio();
-		applyTrackers();
-		applyFilePriorities();
-		setResolveCountries();
-	}
-	
+
 	std::vector<lbt::peer_info>& peers() { return peers_; }
 	
-	void updatePeers() const
+	void updatePeers()
 	{
-		if (in_session_)
+		if (inSession())
 			handle_.get_peer_info(peers_);
 		else
 			peers_.clear();
@@ -422,9 +366,9 @@ public:
 			}	
 	}
 
-	void getFileDetails(FileDetails& fileDetails) const
+	void getFileDetails(FileDetails& fileDetails)
 	{
-		if (in_session_)
+		if (inSession())
 		{
 			lbt::torrent_info info = handle_.get_torrent_info();
 			std::vector<lbt::file_entry> files;
@@ -450,7 +394,94 @@ public:
 		}
 	}
 
-private:
+private:		
+	void applySettings()
+	{		
+		applyTransferSpeed();
+		applyConnectionLimit();
+		applyRatio();
+		applyTrackers();
+		applyTrackerLogin();
+		applyFilePriorities();
+		applyResolveCountries();
+	}
+	
+	void applyTransferSpeed()
+	{
+		if (inSession())
+		{
+			int down = (transferLimit_.first > 0) ? static_cast<int>(transferLimit_.first*1024) : -1;
+			handle_.set_download_limit(down);
+			
+			int up = (transferLimit_.second > 0) ? static_cast<int>(transferLimit_.second*1024) : -1;
+			handle_.set_upload_limit(up);
+		}
+	}
+
+	void applyConnectionLimit()
+	{
+		if (inSession())
+		{
+			handle_.set_max_connections(connections_);
+			handle_.set_max_uploads(uploads_);
+		}
+	}
+	
+	void applyRatio()
+	{ 
+		if (inSession())
+			handle_.set_ratio(ratio_);
+	}
+	
+	void applyTrackers()
+	{
+		if (inSession())
+		{
+			if (torrent_trackers_.empty())
+				torrent_trackers_ = handle_.trackers();
+			
+			if (!trackers_.empty())
+			{
+				std::vector<lbt::announce_entry> trackers;
+				
+				foreach (const TrackerDetail& tracker, trackers_)
+				{
+					trackers.push_back(
+						lbt::announce_entry(hal::to_utf8(tracker.url)));
+					trackers.back().tier = tracker.tier;
+				}
+				handle_.replace_trackers(trackers);
+			}
+		}
+	}
+	
+	void applyTrackerLogin()
+	{
+		if (inSession())
+		{
+			if (trackerUsername_ != L"")
+			{
+				handle_.set_tracker_login(hal::to_utf8(trackerUsername_),
+					hal::to_utf8(trackerPassword_));
+			}
+		}
+	}
+	
+	void applyFilePriorities()
+	{		
+		if (inSession()) 
+		{
+			if (!filePriorities_.empty())
+				handle_.prioritize_files(filePriorities_);
+		}
+	}	
+	
+	void applyResolveCountries()
+	{
+		if (inSession())
+			handle_.resolve_countries(resolve_countries_);
+	}
+	
 	static libtorrent::session* the_session_;
 	
 	std::pair<float, float> transferLimit_;
@@ -464,7 +495,7 @@ private:
 	
 	std::wstring filename_;
 	std::wstring save_directory_;
-	mutable libtorrent::torrent_handle handle_;	
+	libtorrent::torrent_handle handle_;	
 	
 	libtorrent::entry metadata_;
 	libtorrent::entry resumedata_;
@@ -472,8 +503,8 @@ private:
 	std::wstring trackerUsername_;	
 	std::wstring trackerPassword_;
 	
-	mutable boost::int64_t totalUploaded_;
-	mutable boost::int64_t totalBase_;
+	boost::int64_t totalUploaded_;
+	boost::int64_t totalBase_;
 	
 	TransferTracker<boost::int64_t> payloadUploaded_;
 	TransferTracker<boost::int64_t> payloadDownloaded_;
@@ -486,10 +517,10 @@ private:
 	
 	std::vector<TrackerDetail> trackers_;
 	std::vector<lbt::announce_entry> torrent_trackers_;
-	mutable std::vector<lbt::peer_info> peers_;	
-	mutable std::vector<int> filePriorities_;
+	std::vector<lbt::peer_info> peers_;	
+	std::vector<int> filePriorities_;
 	
-	mutable lbt::torrent_status statusMemory_;
+	lbt::torrent_status statusMemory_;
 };
 
 typedef std::map<std::string, TorrentInternal> TorrentMap;
@@ -497,17 +528,10 @@ typedef std::pair<std::string, TorrentInternal> TorrentPair;
 
 void TorrentInternal::setConnectionLimit(int maxConn, int maxUpload)
 {
-	handle_.set_max_connections(maxConn);
-	handle_.set_max_uploads(maxUpload);
-
 	connections_ = 	maxConn;
 	uploads_ = maxUpload;
-}
-
-void TorrentInternal::setConnectionLimit()
-{
-	handle_.set_max_connections(connections_);
-	handle_.set_max_uploads(uploads_);
+	
+	applyConnectionLimit();
 }
 
 pair<int, int> TorrentInternal::getConnectionLimit()
@@ -516,21 +540,10 @@ pair<int, int> TorrentInternal::getConnectionLimit()
 }
 
 void TorrentInternal::setTransferSpeed(float download, float upload)
-{
-	int down = (download > 0) ? static_cast<int>(download*1024) : -1;
-	handle_.set_download_limit(down);
-	int up = (upload > 0) ? static_cast<int>(upload*1024) : -1;
-	handle_.set_upload_limit(up);
-	
+{	
 	transferLimit_ = make_pair(download, upload);
-}
-
-void TorrentInternal::setTransferSpeed()
-{
-	int down = (transferLimit_.first > 0) ? static_cast<int>(transferLimit_.first*1024) : -1;
-	handle_.set_download_limit(down);
-	int up = (transferLimit_.second > 0) ? static_cast<int>(transferLimit_.second*1024) : -1;
-	handle_.set_upload_limit(up);
+	
+	applyTransferSpeed();
 }
 
 pair<float, float> TorrentInternal::getTransferSpeed()
@@ -538,7 +551,7 @@ pair<float, float> TorrentInternal::getTransferSpeed()
 	return transferLimit_;
 }
 
-TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr() const
+TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 {	
 	try
 	{

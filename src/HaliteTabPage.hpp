@@ -17,7 +17,7 @@ public:
 //		MSG_WM_ERASEBKGND(OnEraseBkgnd)
 		MSG_WM_CTLCOLORDLG(OnCltColorDlg)
 		MSG_WM_CTLCOLORBTN(OnCltColor)
-//		MSG_WM_CTLCOLOREDIT(OnCltColor)
+//		MSG_WM_CTLCOLOREDIT(OnCltColorEdit)
 		MSG_WM_CTLCOLORSTATIC(OnCltColor)
 
         DEFAULT_REFLECTION_HANDLER()
@@ -42,6 +42,7 @@ protected:
 		return 1;
 	}
 	
+
 	LRESULT OnCltColorDlg(HDC hDC, HWND hWnd)
 	{
 		SetMsgHandled(false);
@@ -79,5 +80,15 @@ protected:
 			}
 
 		return (LRESULT)::GetStockObject(HOLLOW_BRUSH);
+	}
+	
+	LRESULT OnCltColorEdit(HDC hDC, HWND hWnd)
+	{
+		SetMsgHandled(true);
+
+    SetTextColor(hDC, RGB(255,0,0));            // red
+   // SetBkColor(hDC, RGB(255,255,0));            // yellow
+    return (LRESULT)::GetSysColorBrush(COLOR_WINDOW);   // hilight colour
+
 	}
 };

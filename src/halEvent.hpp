@@ -6,6 +6,8 @@
 
 #pragma once
 
+#ifndef RC_INVOKED
+
 #include <string>
 #include <vector>
 
@@ -25,6 +27,7 @@ public:
 	enum eventLevel { debug, info, warning, critical, fatal, none };
 	
 	enum codes {
+		noEvent = 0,
 		unclassified = HAL_EVENT_UNCLASSIFIED,
 		debugEvent = HAL_EVENT_DEBUG,
 		invalidTorrent = HAL_EVENT_INVTORRENT,
@@ -102,9 +105,22 @@ public:
 		msg_(m)
 	{}
 	
+	EventGeneral(Event::eventLevel l, boost::posix_time::ptime t, std::wstring m) :
+		EventDetail(l, t, Event::noEvent),
+		msg_(m)
+	{}
+	
+	EventGeneral(Event::eventLevel l, boost::posix_time::ptime t, wformat f) :
+		EventDetail(l, t, Event::noEvent),
+		msg_(f.str())
+	{}
+	
 	virtual std::wstring msg()
 	{
-		return (wformat(hal::app().res_wstr(code())) % msg_).str();
+		if (Event::noEvent != code())
+			return (wformat(hal::app().res_wstr(code())) % msg_).str();
+		else
+			return msg_;
 	}
 	
 private:
@@ -243,4 +259,7 @@ class EventSession : public EventDetail
 
 };
 
+
 }// namespace hal
+
+#endif

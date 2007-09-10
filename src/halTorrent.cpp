@@ -4,6 +4,10 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#define LBT_EVENT_TORRENT_FINISHED					80001
+
+#ifndef RC_INVOKED
+
 #include "stdAfx.hpp"
 
 #include <iostream>
@@ -431,6 +435,35 @@ private:
 		timer_.expires_from_now(boost::posix_time::seconds(5));
 		timer_.async_wait(bind(&BitTorrent_impl::pop_alerts, this));
 	}
+	
+	struct
+	{
+		/*	event().post(shared_ptr<EventDetail>(
+				new EventPeerAlert(lbtAlertToHalEvent(p_alert->severity()), 
+					p_alert->timestamp(), hal::str_to_wstr(p_alert->msg()))));			
+		}
+		else
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventLibtorrent(lbtAlertToHalEvent(p_alert->severity()), 
+					p_alert->timestamp(), Event::unclassified, hal::str_to_wstr(p_alert->msg()))));
+							
+*/
+/*		void operator()(lbt::tracker_warning_alert const& a)
+		{
+			std::cout << "Tracker warning: " << a.msg << std::endl;
+		}
+*/
+		void operator()(lbt::torrent_finished_alert const& a)
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(Event::info, a.timestamp(),
+					wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
+						% hal::from_utf8(a.handle.get_torrent_info().name())
+			)	)	);			
+		}
+		
+	} alertHandler_;
 	
 	lbt::entry prepTorrent(wpath filename, wpath saveDirectory);
 	void removalThread(lbt::torrent_handle handle, bool wipeFiles);
@@ -998,7 +1031,7 @@ void BitTorrent::getAllTorrentDetail_vec(TorrentDetail_vec& torrentsContainer)
 	
 	torrentsContainer.reserve(pimpl->torrents.size());
 	
-	for (TorrentMap::const_iterator i=pimpl->torrents.begin(), e=pimpl->torrents.end(); i != e; ++i)
+	for (TorrentMap::iterator i=pimpl->torrents.begin(), e=pimpl->torrents.end(); i != e; ++i)
 	{
 		torrentsContainer.push_back((*i).second.getTorrentDetail_ptr());
 	}
@@ -1010,7 +1043,7 @@ TorrentDetail_ptr BitTorrent::getTorrentDetail_vec(string filename)
 {
 	try {
 	
-	TorrentMap::const_iterator i = pimpl->torrents.find(filename);
+	TorrentMap::iterator i = pimpl->torrents.find(filename);
 	
 	if (i != pimpl->torrents.end())
 	{
@@ -1042,7 +1075,7 @@ const TorrentDetails& BitTorrent::updateTorrentDetails(std::string focused, std:
 	
 	torrentDetails_.torrents_.reserve(pimpl->torrents.size());
 	
-	for (TorrentMap::const_iterator i=pimpl->torrents.begin(), e=pimpl->torrents.end(); i != e; ++i)
+	for (TorrentMap::iterator i=pimpl->torrents.begin(), e=pimpl->torrents.end(); i != e; ++i)
 	{	
 		string utf8Filename = hal::to_utf8((*i).second.filename());
 		TorrentDetail_ptr pT = (*i).second.getTorrentDetail_ptr();
@@ -1635,3 +1668,5 @@ float BitTorrent::defTorrentDownload() { return pimpl->defTorrentDownload_; }
 float BitTorrent::defTorrentUpload() { return pimpl->defTorrentUpload_; }
 	
 };
+
+#endif

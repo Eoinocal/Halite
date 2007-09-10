@@ -15,7 +15,7 @@
 #include "halEvent.hpp"
 
 HaliteDialog::HaliteDialog(HaliteWindow& halWindow) :
-		dialogBaseClass(halWindow)
+	dialogBaseClass(halWindow)
 {}
 
 LRESULT HaliteDialog::OnInitDialog(HWND, LPARAM)

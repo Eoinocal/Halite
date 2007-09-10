@@ -279,12 +279,7 @@
 	
 #define IDC_SEEDS						40122
 #define IDC_OVERHEAD					40123
-//#define IDC_ETA							40124
-//#define IDC_RATIO						40125
-	
-//#define IDC_NAME_STATUS					40126
 #define IDC_PEERS						40127
-//#define IDC_TRANSFERED					40128
 #define IDD_ADVFILES					40129
 #define IDC_CONTAINER					40130
 #define HAL_FILES_TAB				    40131
