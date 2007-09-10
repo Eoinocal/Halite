@@ -4,6 +4,10 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+
+#define HALITE_VERSION					0,2,9,283
+#define HALITE_VERSION_STRING			"v 0.2.9 dev 283"
+
 #define LBT_EVENT_TORRENT_FINISHED					80001
 
 #ifndef RC_INVOKED
@@ -319,32 +323,81 @@ public:
 		}
 	}
 	
-	void pop_alerts()
+	void alertHandler()
 	{
 		if (keepChecking_)
 		{
-			std::auto_ptr<lbt::alert> p_alert = theSession.pop_alert();
+		
+		std::auto_ptr<lbt::alert> p_alert = theSession.pop_alert();
+		
+		struct 
+		{
+		
+		void operator()(lbt::torrent_finished_alert const& a) const
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(Event::info, a.timestamp(),
+					wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
+						% hal::from_utf8(a.handle.get_torrent_info().name())
+			)	)	);			
+		}
+		
+		void operator()(lbt::peer_error_alert const& a) const
+		{
+	//		event().post(shared_ptr<EventDetail>(
+	//			new EventGeneral(Event::info, a.timestamp(), L"Hi"
+	//				//wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
+	//				//	% hal::from_utf8(a.handle.get_torrent_info().name())
+	//		)	)	);			
+		}
 			
-			while (p_alert.get())
-			{	
-				if (lbt::peer_error_alert* peer = dynamic_cast<lbt::peer_error_alert*>(p_alert.get()))
-				{
-					event().post(shared_ptr<EventDetail>(
-						new EventPeerAlert(lbtAlertToHalEvent(p_alert->severity()), 
-							p_alert->timestamp(), hal::str_to_wstr(p_alert->msg()))));			
-				}
-				else
-				{
-					event().post(shared_ptr<EventDetail>(
-						new EventLibtorrent(lbtAlertToHalEvent(p_alert->severity()), 
-							p_alert->timestamp(), Event::unclassified, hal::str_to_wstr(p_alert->msg()))));
-				}
-				
-				p_alert = theSession.pop_alert();
+		void operator()(lbt::alert const& a) const
+		{
+	//		event().post(shared_ptr<EventDetail>(
+	//			new EventGeneral(Event::info, a.timestamp(), L"Hi"
+	//				//wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
+	//				//	% hal::from_utf8(a.handle.get_torrent_info().name())
+	//		)	)	);			
+		}
+		
+		} handler;
+		
+		while (p_alert.get())
+		{	
+/*			if (lbt::peer_error_alert* peer = dynamic_cast<lbt::peer_error_alert*>(p_alert.get()))
+			{
+				event().post(shared_ptr<EventDetail>(
+					new EventPeerAlert(lbtAlertToHalEvent(p_alert->severity()), 
+						p_alert->timestamp(), hal::str_to_wstr(p_alert->msg()))));			
 			}
+			else
+			{
+				event().post(shared_ptr<EventDetail>(
+					new EventLibtorrent(lbtAlertToHalEvent(p_alert->severity()), 
+						p_alert->timestamp(), Event::unclassified, hal::str_to_wstr(p_alert->msg()))));
+			}
+*/			
+			try
+			{
 			
-			timer_.expires_from_now(boost::posix_time::seconds(5));
-			timer_.async_wait(bind(&BitTorrent_impl::pop_alerts, this));
+			lbt::handle_alert<
+				lbt::torrent_finished_alert,
+				lbt::peer_error_alert,
+				lbt::alert
+			>::handle_alert(p_alert, handler);
+			
+			p_alert = theSession.pop_alert();
+			
+			}
+			catch(std::exception& e)
+			{
+				event().post(shared_ptr<EventDetail>(\
+					new EventStdException(Event::critical, e, L"alertHandler")));
+			}
+		}
+		
+		timer_.expires_from_now(boost::posix_time::seconds(5));
+		timer_.async_wait(bind(&BitTorrent_impl::alertHandler, this));
 		}
 	}
 	
@@ -428,42 +481,13 @@ private:
 		}
 		
 		{	lbt::session_settings settings = theSession.settings();
-			settings.user_agent = "Halite v 0.2.9";
+			settings.user_agent = string("Halite ") + HALITE_VERSION_STRING;
 			theSession.set_settings(settings);
 		}
 		
 		timer_.expires_from_now(boost::posix_time::seconds(5));
-		timer_.async_wait(bind(&BitTorrent_impl::pop_alerts, this));
+		timer_.async_wait(bind(&BitTorrent_impl::alertHandler, this));
 	}
-	
-	struct
-	{
-		/*	event().post(shared_ptr<EventDetail>(
-				new EventPeerAlert(lbtAlertToHalEvent(p_alert->severity()), 
-					p_alert->timestamp(), hal::str_to_wstr(p_alert->msg()))));			
-		}
-		else
-		{
-			event().post(shared_ptr<EventDetail>(
-				new EventLibtorrent(lbtAlertToHalEvent(p_alert->severity()), 
-					p_alert->timestamp(), Event::unclassified, hal::str_to_wstr(p_alert->msg()))));
-							
-*/
-/*		void operator()(lbt::tracker_warning_alert const& a)
-		{
-			std::cout << "Tracker warning: " << a.msg << std::endl;
-		}
-*/
-		void operator()(lbt::torrent_finished_alert const& a)
-		{
-			event().post(shared_ptr<EventDetail>(
-				new EventGeneral(Event::info, a.timestamp(),
-					wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
-						% hal::from_utf8(a.handle.get_torrent_info().name())
-			)	)	);			
-		}
-		
-	} alertHandler_;
 	
 	lbt::entry prepTorrent(wpath filename, wpath saveDirectory);
 	void removalThread(lbt::torrent_handle handle, bool wipeFiles);

@@ -8,9 +8,6 @@
 #define IDC_STATIC (-1)
 #endif
 
-#define HALITE_VERSION					0,2,9,283
-#define HALITE_VERSION_STRING			"v 0.2.9 dev 283"
-
 #define HALITE_LANGUAGE					10
 #define IDC_DEBUGLISTVIEW               1
 #define IDR_LISTVIEW_MENU               101
