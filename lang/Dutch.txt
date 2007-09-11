@@ -1,5 +1,5 @@
 "English" ---> "Nederlands"
-"English.rtf" --->  ??? 
+"English.rtf" --->  "../lang/Dutch.rtf" 
 "MS Shell Dlg" --->  ??? 
 "Torrent" ---> "Torrent"
 "Tracker" ---> "Tracker"
@@ -16,25 +16,25 @@
 "Torrent:" --->  ??? 
 "Peers:" --->  ??? 
 "Transferred:" --->  ??? 
-"Remaining:" --->  ??? 
-"Rates:" --->  ??? 
+"Remaining:" --->  "Overgebleven" 
+"Rates:" --->  "Verhoudingen" 
 "Seeds:" --->  ??? 
 "Overhead:" --->  ??? 
 "ETA:" --->  ??? 
 "Ratio:" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
 "Open a (single) port between : " ---> "Open een (enkele) poort tussen : "
-"Enable DHT" --->  ??? 
+"Enable DHT" --->  "DHT ingeschakelen" 
 "Button" --->  ??? 
 "to" ---> "tot"
 "Select the (TCP) port (or range) on which to listen for incomming connections." --->  ??? 
 "Distributed Hash Tables" --->  ??? 
 "Port (UDP) : " ---> "Poort (UDP) : "
-"(DHT will not apply to private torrents)" --->  ??? 
+"(DHT will not apply to private torrents)" --->  "DHT zal niet gebruikt worden voor Private Trackers" 
 "General Settings" ---> "Algemene Opties"
-"Limit the no. of half-open connections" --->  ??? 
+"Limit the no. of half-open connections" --->  "Limiteer het aantal half-open connecties" 
 "Proxies" --->  ??? 
-"Proxy Host/IP : " ---> "Proxy Host/IP : "
+"Proxy Host/IP : " ---> ???
 "Use a proxy." ---> "Gebruik een proxy."
 "Port : " ---> "Poort :"
 "Username : " ---> "Gebruikersnaam : "
@@ -42,25 +42,25 @@
 "Peer" --->  ??? 
 "Web Seed" --->  ??? 
 "DHT" --->  ??? 
-"Proxy Settings" --->  ??? 
-"Security" --->  ??? 
-"IP Filtering" --->  ??? 
+"Proxy Settings" --->  "Proxy instellingen" 
+"Security" --->  "Beveiliging" 
+"IP Filtering" --->  "IP Filtering" 
 "Enable IP filtering." ---> "Schakel IP filtering in."
 "Import ipfilter.dat" ---> "Importeer ipfilter.dat"
 "Clear IP database" ---> "Leeg IP Database"
-"Protocol Encryption" --->  ??? 
-"Enable Protocol Encryption." --->  ??? 
-"Connection Policies" --->  ??? 
-"Incoming" --->  ??? 
-"Outgoing" --->  ??? 
-"Forced" --->  ??? 
-"Enabled" --->  ??? 
-"Disabled" --->  ??? 
-"Encoding Level" --->  ??? 
-"Plaintext" --->  ??? 
+"Protocol Encryption" --->  "Protocol Encryptie" 
+"Enable Protocol Encryption." --->  "Protocol Encryptie inschakelen" 
+"Connection Policies" --->  "" 
+"Incoming" --->  "Inkomend" 
+"Outgoing" --->  "Uitgaand" 
+"Forced" --->  "Geforceerd" 
+"Enabled" --->  "Inschakelen" 
+"Disabled" --->  "Uitschakelen" 
+"Encoding Level" --->  "Encoderings niveau" 
+"Plaintext" --->  "Platte Tekst" 
 "RC4" --->  ??? 
-"Both" --->  ??? 
-"Prefer RC4" --->  ??? 
+"Both" --->  "Beide" 
+"Prefer RC4" --->  "Prefereer RC4" 
 "Remote Control" ---> "Beheer op afstand"
 "Remote Control Options" ---> "Beheer op afstand opties"
 "Enable Remote Control" ---> "Schakel Beheer op afstand in"
@@ -75,7 +75,7 @@
 "Halite importing IP ranges..." ---> "Halite importeert IP bereiken..."
 "Cancel" ---> "Breek af"
 "Torrents" ---> "Torrents"
-"Global Limits" ---> "Globaal Limiet"
+"Global Limits" ---> "Globale Limieten"
 "Total max connections :" ---> "Maximaal aantal verbindingen : "
 "Total upload slots :" ---> "Totaal aantal upload slots :"
 "Download Rate (KB/s) :" ---> "Download snelheid (KB/s) :"
@@ -83,8 +83,8 @@
 "Torrent Defaults" ---> "Torrent Standaard"
 "These options set global maximums which will always be honoured." ---> "Deze optie zet globale maxima welke altijd zullen worden gehonoreerd."
 "These options specify the default limits applied to new torrents." ---> "Deze optie specificeerd de standaard limiet die voor alle nieuwe torrents gelden."
-"Default save folder :" --->  ??? 
-"..." ---> "..."
+"Default save folder :" --->  "Standaard opslag map"
+"..." ---> ???
 "Prompt for alternate save folder." ---> "Vraag om alternatieve Download map."
 "Halite shutting down..." ---> "Halite is bezig met afsluiten..."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> ""
@@ -148,32 +148,32 @@
 "InternalName" ---> "InterneNaam"
 "Halite" ---> "Halite"
 "LegalCopyright" ---> "Copyright"
-"(C) Eoin O'Callaghan 2007" ---> "(C) Eoin O'Callaghan 2007"
+"(C) Eoin O'Callaghan 2007" --->  ???
 "OriginalFilename" ---> "OrigineleBestandsnaam"
 "Halite.exe" ---> "Halite.exe"
 "ProductName" ---> "ProductNaam"
 "ProductVersion" ---> "ProductVersie"
-"VarFileInfo" ---> "VarFileInfo"
+"VarFileInfo" ---> ???
 "Translation" ---> "Vertaling"
-"(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(D-U) 0000.000KB/s - 0000.000KB/s"
-"CAPS" ---> "CAPS"
+"(D-U) 0000.000KB/s - 0000.000KB/s" ---> ???
+"CAPS" ---> ???
 "0000 DHT node(s)" ---> "0000 DHT Knopen"
 "Filtering 0000000 ranges." ---> "0000000 bereiken gefilterd"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "De Bittorrent sessie kan niet worden gestart. Probeer een andere poort te selecteren bij de Opties."
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT Sessie kon niet worden gestart. Probeer een andere poort te selecteren bij de Opties."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Selecteer een folder om de bestanden op te slaan of Afbreken om de torrent niet te downloaden."
 "None" ---> "Geen"
-"Debug" ---> "Debug"
-"Info" ---> "Info"
+"Debug" ---> ???
+"Info" ---> ???
 "Critical" ---> "Kritiek"
 "Libtorrent Peer Alert: %1%." ---> "Libtorrent Peer Waarschuwing: %1%."
 "Xml Exception (%1%) with %2%." ---> "Xml Exceptie (%1%) met %2%."
 "Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) exceptie afgevangen; %2% van %3%."
 "Invalid torrent (%1%) from %2%." ---> "Ongeldige torrent (%1%) van %2%."
-"%1$.2fMB of %2$.2fMB" --->  ??? 
-"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
+"%1$.2fMB of %2$.2fMB" --->  "%1$.2fMB van %2$.2fMB"
+"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  "Deze sessie gedownload %1$.2fMB, geupload %2$.2fMB, Verhouding %3$.2f." 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Gedownload %1$.2fMB, Geupload %2$.2fMB, Ratio %3$.2f."
-"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  "Totale overdracht inclusief protocol overhead; %1$.2fMB down en %2$.2fMB up." 
 "%1%, %2%." --->  ??? 
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
@@ -194,12 +194,12 @@
 "Debug Event: %1%." ---> "Debug Gebeurtenis: %1%."
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Peers" --->  ??? 
-"Files" --->  ??? 
-"Logging" --->  ??? 
-"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
-"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
-"Auto Sort" --->  ??? 
-"Torrent Root" --->  ??? 
+"Files" --->  "Bestanden" 
+"Logging" --->  "Loggen" 
+"An invalid encoding level, %1%, was passed as an encryption setting." --->  "Een ongeldig encoderings niveau, %1%, is doorgegaan als encryptie instelling." 
+"An invalid connection policy, %1%, was passed as an encryption setting." --->   "Een ongeldig encoderings regeling, %1%, is doorgegaan als encryptie instelling."
+"Auto Sort" --->  "Auto Sorteren" 
+"Torrent Root" --->  "Torrent wortel" 
 "Interesting" ---> "Geinteresseerd"
 "Choked" ---> "Verstopt"
 "Interested in us" ---> "Geinteresseerd in ons"
@@ -224,17 +224,17 @@
 "Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time" --->  ??? 
 "Time;Message;Severity" ---> "Tijd;Bericht;Ernst"
 "Tracker;Tier" ---> "Tracker;Laag"
-"Peer;Country;Download;Upload;Type;Client" --->  ??? 
-"Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
-"Filename;Path;Size;Progress;Priority" --->  ??? 
-"Don't download" --->  ??? 
-"Normal" --->  ??? 
-"Above Normal" --->  ??? 
+"Peer;Country;Download;Upload;Type;Client" --->  "Peer;Land;Download;Upload;Type;Client"  
+"Peer;Country;Download;Upload;Type;Client;Status" --->  "Peer;Land;Download;Upload;Type;Client;Status" 
+"Filename;Path;Size;Progress;Priority" --->  "Bestandsnaam;Pad;Grootte;Progressie;Prioriteit" 
+"Don't download" --->  "Niet Downloaden"
+"Normal" --->  "Normaal" 
+"Above Normal" --->  "Boven Normaal" 
 "3" --->  ??? 
 "4" --->  ??? 
 "5" --->  ??? 
 "6" --->  ??? 
 "Maximum" --->  ??? 
-"Set Priority" --->  ??? 
+"Set Priority" --->  "Verander Prioriteit" 
 "Halite.ico" --->  ??? 
 "toolbar.bmp" --->  ??? 
