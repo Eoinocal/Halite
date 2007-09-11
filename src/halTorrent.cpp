@@ -9,6 +9,13 @@
 #define HALITE_VERSION_STRING			"v 0.2.9 dev 283"
 
 #define LBT_EVENT_TORRENT_FINISHED					80001
+#define HAL_PEER_BAN_ALERT							80002
+#define HAL_HASH_FAIL_ALERT							80003
+#define HAL_URL_SEED_ALERT							80005
+#define HAL_TRACKER_WARNING_ALERT					80004
+#define HAL_TRACKER_ANNOUNCE_ALERT					80006
+#define HAL_TRACKER_ALERT							80007
+#define HAL_TRACKER_REPLY_ALERT						80008
 
 #ifndef RC_INVOKED
 
@@ -236,11 +243,13 @@ static Event::eventLevel lbtAlertToHalEvent(lbt::alert::severity_t severity)
 	switch (severity)
 	{
 	case lbt::alert::debug:
-	case lbt::alert::info:
 		return Event::debug;
 	
-	case lbt::alert::warning:
+	case lbt::alert::info:
 		return Event::info;
+	
+	case lbt::alert::warning:
+		return Event::warning;
 	
 	case lbt::alert::critical:
 	case lbt::alert::fatal:
@@ -338,62 +347,132 @@ public:
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(Event::info, a.timestamp(),
 					wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
-						% hal::from_utf8(a.handle.get_torrent_info().name())
-			)	)	);			
+						% hal::safe_from_utf8(a.handle.get_torrent_info().name()))
+			)	);			
 		}
 		
 		void operator()(lbt::peer_error_alert const& a) const
 		{
-	//		event().post(shared_ptr<EventDetail>(
-	//			new EventGeneral(Event::info, a.timestamp(), L"Hi"
-	//				//wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
-	//				//	% hal::from_utf8(a.handle.get_torrent_info().name())
-	//		)	)	);			
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+					wformat(hal::app().res_wstr(HAL_PEERALERT))
+						% hal::safe_from_utf8(a.msg())
+						% hal::safe_from_utf8(a.ip.address().to_string()))
+			)	);				
 		}
 			
+		void operator()(lbt::peer_ban_alert const& a) const
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+					wformat(hal::app().res_wstr(HAL_PEER_BAN_ALERT))
+						% hal::safe_from_utf8(a.handle.get_torrent_info().name())
+						% hal::safe_from_utf8(a.ip.address().to_string()))
+			)	);				
+		}
+			
+		void operator()(lbt::hash_failed_alert const& a) const
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+					wformat(hal::app().res_wstr(HAL_HASH_FAIL_ALERT))
+						% hal::safe_from_utf8(a.handle.get_torrent_info().name())
+						% a.piece_index)
+			)	);				
+		}
+			
+		void operator()(lbt::url_seed_alert const& a) const
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+					wformat(hal::app().res_wstr(HAL_URL_SEED_ALERT))
+						% hal::safe_from_utf8(a.handle.get_torrent_info().name())
+						% hal::safe_from_utf8(a.url)
+						% hal::safe_from_utf8(a.msg()))
+			)	);				
+		}
+		
+		void operator()(lbt::tracker_warning_alert const& a) const
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+					wformat(hal::app().res_wstr(HAL_TRACKER_WARNING_ALERT))
+						% hal::safe_from_utf8(a.handle.get_torrent_info().name())
+						% hal::safe_from_utf8(a.msg()))
+			)	);				
+		}
+		
+		void operator()(lbt::tracker_announce_alert const& a) const
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+					wformat(hal::app().res_wstr(HAL_TRACKER_ANNOUNCE_ALERT))
+						% hal::safe_from_utf8(a.handle.get_torrent_info().name()))
+			)	);				
+		}
+		
+		void operator()(lbt::tracker_alert const& a) const
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+					wformat(hal::app().res_wstr(HAL_TRACKER_ALERT))
+						% hal::safe_from_utf8(a.handle.get_torrent_info().name())
+						% hal::safe_from_utf8(a.msg())
+						% a.times_in_row
+						% a.status_code)
+			)	);				
+		}
+		
+		void operator()(lbt::tracker_reply_alert const& a) const
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+					wformat(hal::app().res_wstr(HAL_TRACKER_REPLY_ALERT))
+						% hal::safe_from_utf8(a.handle.get_torrent_info().name())
+						% hal::safe_from_utf8(a.msg())
+						% a.num_peers)
+			)	);				
+		}
+		
 		void operator()(lbt::alert const& a) const
 		{
-	//		event().post(shared_ptr<EventDetail>(
-	//			new EventGeneral(Event::info, a.timestamp(), L"Hi"
-	//				//wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
-	//				//	% hal::from_utf8(a.handle.get_torrent_info().name())
-	//		)	)	);			
+			event().post(shared_ptr<EventDetail>(
+					new EventLibtorrent(lbtAlertToHalEvent(a.severity()), 
+						a.timestamp(), Event::unclassified, hal::safe_from_utf8(a.msg()))));		
 		}
 		
 		} handler;
 		
 		while (p_alert.get())
 		{	
-/*			if (lbt::peer_error_alert* peer = dynamic_cast<lbt::peer_error_alert*>(p_alert.get()))
-			{
-				event().post(shared_ptr<EventDetail>(
-					new EventPeerAlert(lbtAlertToHalEvent(p_alert->severity()), 
-						p_alert->timestamp(), hal::str_to_wstr(p_alert->msg()))));			
-			}
-			else
-			{
-				event().post(shared_ptr<EventDetail>(
-					new EventLibtorrent(lbtAlertToHalEvent(p_alert->severity()), 
-						p_alert->timestamp(), Event::unclassified, hal::str_to_wstr(p_alert->msg()))));
-			}
-*/			
 			try
 			{
 			
 			lbt::handle_alert<
 				lbt::torrent_finished_alert,
 				lbt::peer_error_alert,
+				lbt::peer_ban_alert,
+				lbt::hash_failed_alert,
+				lbt::url_seed_alert,
+				lbt::tracker_alert,
+				lbt::tracker_warning_alert,
+				lbt::tracker_announce_alert,
+				lbt::tracker_reply_alert,
 				lbt::alert
-			>::handle_alert(p_alert, handler);
+			>::handle_alert(p_alert, handler);			
 			
-			p_alert = theSession.pop_alert();
-			
+			}
+			catch(lbt::unhandled_alert&)
+			{
+				handler(*p_alert);
 			}
 			catch(std::exception& e)
 			{
 				event().post(shared_ptr<EventDetail>(\
 					new EventStdException(Event::critical, e, L"alertHandler")));
 			}
+			
+			p_alert = theSession.pop_alert();
 		}
 		
 		timer_.expires_from_now(boost::posix_time::seconds(5));

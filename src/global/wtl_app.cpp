@@ -82,7 +82,9 @@ std::wstring app_module::res_wstr(unsigned uID)
 	// The upper size limit ain't nice, but at least it's safe from buffer overflow
 	const int buffer_size = 2048;
 	boost::array<wchar_t, buffer_size> buffer;
-	::LoadString(_Module.GetResourceInstance(), uID, buffer.elems, buffer_size);
+	
+	int size = ::LoadString(_Module.GetResourceInstance(), uID, buffer.elems, buffer_size);
+	assert(size != 0);
 	
 	return std::wstring(buffer.elems);
 }

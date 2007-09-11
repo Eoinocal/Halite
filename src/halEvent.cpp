@@ -48,7 +48,7 @@ std::wstring Event::eventLevelToStr(eventLevel event)
 	case info:
 		return hal::app().res_wstr(HAL_EVENTINFO);
 	case warning:
-		return hal::app().res_wstr(HAL_EVENTINFO);
+		return hal::app().res_wstr(HAL_EVENTWARNING);
 	case critical:
 		return hal::app().res_wstr(HAL_EVENTCRITICAL);
 	case fatal:

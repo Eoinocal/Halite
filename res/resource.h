@@ -179,6 +179,7 @@
 #define HAL_EVENTNONE                   40007
 #define HAL_EVENTDEBUG                  40008
 #define HAL_EVENTINFO                   40009
+#define HAL_EVENTWARNING				39999
 #define ID_TRAY_EXIT                    40009
 #define HAL_EVENTCRITICAL               40010
 #define HAL_PEERALERT                   40011
