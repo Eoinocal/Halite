@@ -367,7 +367,7 @@ public:
 
 	void setTorrentDefaults(int maxConn, int maxUpload, float download, float upload);	
 	void newTorrent(boost::filesystem::wpath filename, boost::filesystem::wpath files);
-	void addTorrent(boost::filesystem::wpath file, wpath saveDirectory);
+	void addTorrent(boost::filesystem::wpath file, wpath saveDirectory, bool startPaused=false, bool compactStorage=false);
 	void getAllTorrentDetail_vec(TorrentDetail_vec& torrentsContainer);
 	TorrentDetail_ptr getTorrentDetail_vec(std::string filename);	
 	

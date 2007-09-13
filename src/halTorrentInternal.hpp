@@ -6,15 +6,70 @@
 
 #pragma once
 
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/ordered_index.hpp>
+#include <boost/multi_index/indexed_by.hpp>
+#include <boost/multi_index/identity.hpp>
+#include <boost/multi_index/member.hpp>
+#include <boost/multi_index/tag.hpp>
+
 namespace hal 
 {
 class TorrentInternal;
 }
 
-BOOST_CLASS_VERSION(hal::TorrentInternal, 6)
+BOOST_CLASS_VERSION(hal::TorrentInternal, 8)
 
 namespace hal 
 {
+
+namespace lbt = libtorrent;
+namespace fs = boost::filesystem;
+
+using fs::path;
+using fs::ifstream;
+using fs::ofstream;
+using boost::serialization::make_nvp;
+
+lbt::entry haldecode(const wpath &file) 
+{
+	ifstream fs(file, ifstream::binary);
+	if (fs.is_open()) 
+	{
+		fs.unsetf(ifstream::skipws);
+		return lbt::bdecode(std::istream_iterator<char>(fs), std::istream_iterator<char>());
+	}
+	else return lbt::entry();
+}
+
+bool halencode(const wpath &file, const lbt::entry &e) 
+{
+	fs::ofstream fs(file, ofstream::binary);
+
+	if (!fs.is_open()) 
+		return false;
+	
+	lbt::bencode(std::ostream_iterator<char>(fs), e);
+	return true;
+}
+
+class invalidTorrent : public std::exception
+{
+public:
+	invalidTorrent(const std::wstring& who) :
+		who_(who)
+	{}
+	
+	virtual ~invalidTorrent() throw () {}
+
+	wstring who() const throw ()
+	{
+		return who_;
+	}       
+      
+private:
+	std::wstring who_;	
+};
 
 namespace lbt = libtorrent;
 namespace fs = boost::filesystem;
@@ -115,40 +170,52 @@ class TorrentInternal
 	};
 	
 public:
-	TorrentInternal() :	
-		transferLimit_(std::pair<float, float>(-1, -1)),
-		connections_(-1),
-		uploads_(-1),
-		ratio_(0),
-		resolve_countries_(true),
-		state_(TorrentDetail::torrent_active),
-		in_session_(false),
-		totalUploaded_(0),
-		totalBase_(0),
+	#define TORRENT_INTERNALS_DEFAULTS \
+		transferLimit_(std::pair<float, float>(-1, -1)), \
+		connections_(-1), \
+		uploads_(-1), \
+		ratio_(0), \
+		resolve_countries_(true), \
+		state_(TorrentDetail::torrent_active), \
+		totalUploaded_(0), \
+		totalBase_(0), \
 		startTime_(boost::posix_time::second_clock::universal_time())
+		
+	TorrentInternal() :	
+		TORRENT_INTERNALS_DEFAULTS,		
+		in_session_(false)
 	{}
 	
 	TorrentInternal(libtorrent::torrent_handle h, std::wstring f, wpath saveDirectory) :
-		transferLimit_(std::pair<float, float>(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload())),
-		connections_(bittorrent().defTorrentMaxConn()),
-		uploads_(bittorrent().defTorrentMaxUpload()),
-		ratio_(0),
-		resolve_countries_(true),                            // **********
-		state_(TorrentDetail::torrent_active),
+		TORRENT_INTERNALS_DEFAULTS,
 		filename_(f),
 		save_directory_(saveDirectory.string()),
 		in_session_(true),
-		handle_(h),
-		totalUploaded_(0),
-		totalBase_(0),
-		startTime_(boost::posix_time::second_clock::universal_time())
-	{}
+		handle_(h)
+	{
+		name_ = L"";
+	}
+	
+	TorrentInternal(wpath filename, wpath saveDirectory, wpath workingDirectory, bool compactStorage) :
+		TORRENT_INTERNALS_DEFAULTS,
+		save_directory_(saveDirectory.string()),
+		compactStorage_(compactStorage),		
+		in_session_(false)
+	{
+		assert(the_session_);
+		
+		prep(filename, save_directory_, workingDirectory);
+	}
+	
+	#undef TORRENT_INTERNALS_DEFAULTS
 	
 	TorrentDetail_ptr getTorrentDetail_ptr();
 	void setTransferSpeed(float down, float up);
 	void setConnectionLimit(int maxConn, int maxUpload);
 	pair<float, float> getTransferSpeed();
 	pair<int, int> getConnectionLimit();
+	
+	const wstring& name() const { return name_; }
 	
 	void setRatio(float ratio) 
 	{ 
@@ -162,18 +229,19 @@ public:
 	{
 		return ratio_;
 	}
-	
-	void addToSession()
+		
+	void addToSession(bool paused = false)
 	{
 		if (!in_session_ && the_session_) 
 		{
 			string dir = to_utf8(save_directory_);
 			
-			handle_ = the_session_->add_torrent(metadata_, 
-				dir, resumedata_,
-				!lbt::supports_sparse_files(dir));
+			handle_ = the_session_->add_torrent(metadata_, dir, resumedata_, compactStorage_, paused);
 				
 			in_session_ = true;
+			if (paused)
+				state_ = TorrentDetail::torrent_paused;	
+
 			applySettings();
 		}	
 	}
@@ -201,10 +269,9 @@ public:
 	{
 		if (state_ != TorrentDetail::torrent_stopped)
 		{	
-			addToSession();
+			addToSession(true);
 			assert(in_session_);
 			
-			handle_.pause();
 			state_ = TorrentDetail::torrent_paused;	
 			
 			assert(handle_.is_paused());
@@ -339,6 +406,17 @@ public:
 			ar & make_nvp("activeDuration", activeDuration_);
 			ar & make_nvp("seedingDuration", seedingDuration_);
 		}
+		if (version > 6) {
+			ar & make_nvp("name", name_);		
+		}
+		else
+		{
+			name_ = filename_;
+		}
+		if (version > 7) {
+			ar & make_nvp("compactStorage", compactStorage_);		
+		}
+		
     }
 	
 	void setEntryData(libtorrent::entry metadata, libtorrent::entry resumedata)
@@ -359,7 +437,7 @@ public:
 	
 	void getPeerDetails(PeerDetails& peerDetails) const
 	{
-		if (in_session_)
+		if (inSession())
 			foreach (lbt::peer_info peer, peers_) 
 			{
 				peerDetails.push_back(peer);
@@ -394,7 +472,54 @@ public:
 		}
 	}
 
-private:		
+private:
+	void prep(wpath filename, wpath saveDirectory, wpath workingDirectory)
+	{
+	
+		metadata_ = haldecode(filename);
+		info_ = lbt::torrent_info(metadata_);
+		
+		name_ = hal::safe_from_utf8(info_.name());
+		
+		filename_ = name_;
+		
+		if (!boost::find_last(filename_, L".torrent")) 
+			filename_ += L".torrent";		
+		
+		const wpath resumeFile = workingDirectory/L"resume"/filename_;
+		
+		//  vvv Handle old naming style!
+		const wpath oldResumeFile = workingDirectory/L"resume"/filename.leaf();
+		
+		if (resumeFile != oldResumeFile && exists(oldResumeFile))
+			fs::rename(oldResumeFile, resumeFile);
+		//  ^^^ Handle old naming style!	
+	
+		if (exists(resumeFile)) 
+		{
+			try 
+			{
+				resumedata_ = haldecode(resumeFile);
+			}
+			catch(std::exception &e) 
+			{		
+				hal::event().post(boost::shared_ptr<hal::EventDetail>(
+					new hal::EventStdException(Event::critical, e, L"prepTorrent, Resume"))); 
+		
+				remove(resumeFile);
+			}
+		}
+
+		if (!exists(workingDirectory/L"torrents"))
+			create_directory(workingDirectory/L"torrents");
+
+		if (!exists(workingDirectory/L"torrents"/filename_))
+			copy_file(filename.string(), workingDirectory/L"torrents"/filename_);
+
+		if (!exists(saveDirectory))
+			create_directory(saveDirectory);	
+	}
+	
 	void applySettings()
 	{		
 		applyTransferSpeed();
@@ -494,6 +619,7 @@ private:
 	bool resolve_countries_;
 	
 	std::wstring filename_;
+	std::wstring name_;
 	std::wstring save_directory_;
 	libtorrent::torrent_handle handle_;	
 	
@@ -521,16 +647,134 @@ private:
 	std::vector<int> filePriorities_;
 	
 	lbt::torrent_status statusMemory_;
+	lbt::torrent_info info_;
+	
+	bool compactStorage_;
 };
 
 typedef std::map<std::string, TorrentInternal> TorrentMap;
 typedef std::pair<std::string, TorrentInternal> TorrentPair;
+
+class TorrentManager
+{
+	struct TorrentHolder
+	{
+		mutable TorrentInternal torrent;
+		
+		wstring filename;
+		wstring name;		
+		
+		TorrentHolder() :
+			torrent(), filename(L""), name(L"")
+		{}
+		
+		explicit TorrentHolder(const TorrentInternal& t) :
+			torrent(t), filename(t.filename()), name(t.name())
+		{}
+		
+		TorrentHolder(const wstring& f, const wstring& n, const TorrentInternal& t) :
+			torrent(t), filename(f), name(n)
+		{}
+				
+		friend class boost::serialization::access;
+		template<class Archive>
+		void serialize(Archive& ar, const unsigned int version)
+		{
+			ar & make_nvp("torrent", torrent);
+			ar & make_nvp("filename", filename);
+			ar & make_nvp("name", name);
+		}
+	};
+	
+	struct byFilename{};
+	struct byName{};
+	
+	typedef boost::multi_index_container<
+		TorrentHolder,
+		boost::multi_index::indexed_by<
+			boost::multi_index::ordered_unique<
+				boost::multi_index::tag<byFilename>,
+				boost::multi_index::member<
+					TorrentHolder, wstring, &TorrentHolder::filename> 
+				>,
+			boost::multi_index::ordered_unique<
+				boost::multi_index::tag<byName>,
+				boost::multi_index::member<
+					TorrentHolder, wstring, &TorrentHolder::name> 
+				>
+		>
+	> TorrentMultiIndex;
+	
+public:
+	
+	typedef TorrentMultiIndex::index<byFilename>::type torrentByFilename;
+	typedef TorrentMultiIndex::index<byName>::type torrentByName;
+	
+	TorrentManager()
+	{}
+	
+	TorrentManager(const TorrentMap& map)
+	{			
+		for (TorrentMap::const_iterator i=map.begin(), e=map.end(); i != e; ++i)
+		{
+			torrents_.insert(TorrentHolder((*i).second));
+		}
+	}
+	
+	std::pair<torrentByName::iterator, bool> insert(const TorrentHolder& h)
+	{
+		return torrents_.get<byName>().insert(h);
+	}
+	
+	std::pair<torrentByName::iterator, bool> insert(const TorrentInternal& t)
+	{
+		return insert(TorrentHolder(t));
+	}
+
+	TorrentInternal& getByFile(const wstring& filename)
+	{
+		torrentByFilename::iterator it = torrents_.get<byFilename>().find(filename);
+		
+		if (it != torrents_.get<byFilename>().end())
+		{
+			return (*it).torrent;
+		}
+		
+		throw invalidTorrent(filename);
+	}
+	
+	TorrentInternal& get(const wstring& name)
+	{
+		torrentByName::iterator it = torrents_.get<byName>().find(name);
+		
+		if (it != torrents_.get<byName>().end())
+		{
+			return (*it).torrent;
+		}
+		
+		throw invalidTorrent(name);
+	}
+	
+	torrentByName::iterator begin() { return torrents_.get<byName>().begin(); }
+	torrentByName::iterator end() { return torrents_.get<byName>().end(); }
+	
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
+		ar & make_nvp("torrents", torrents_);
+	}	
+	
+private:
+	TorrentMultiIndex torrents_;
+};
 
 void TorrentInternal::setConnectionLimit(int maxConn, int maxUpload)
 {
 	connections_ = 	maxConn;
 	uploads_ = maxUpload;
 	
+		::MessageBoxA(0, "Here Alright.", "Hi", 0);
 	applyConnectionLimit();
 }
 
@@ -559,6 +803,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 	if (inSession())
 	{
 		statusMemory_ = handle_.status();
+		name_ = hal::safe_from_utf8(handle_.get_torrent_info().name());
 	}
 	
 	wstring state;

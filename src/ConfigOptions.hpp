@@ -397,7 +397,7 @@ public:
         DDX_CHECK(IDC_BC_PROMPTSAVE, hal::config().savePrompt)
     END_DDX_MAP()
 
-    BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)
+    BOOL OnInitDialog(HWND hwndFocus, LPARAM lParam)
 	{
 		BOOL retval =  DoDataExchange(false);
 

@@ -110,6 +110,11 @@ public:
 		msg_(m)
 	{}
 	
+	EventGeneral(Event::eventLevel l, std::wstring m) :
+		EventDetail(l, boost::posix_time::second_clock::universal_time(), Event::noEvent),
+		msg_(m)
+	{}
+	
 	EventGeneral(Event::eventLevel l, boost::posix_time::ptime t, wformat f) :
 		EventDetail(l, t, Event::noEvent),
 		msg_(f.str())

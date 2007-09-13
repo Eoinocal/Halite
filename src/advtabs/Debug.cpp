@@ -22,7 +22,7 @@ void AdvDebugDialog::onLoginCheck(UINT, int, HWND hWnd)
 	else
 	{
 		::EnableWindow(GetDlgItem(IDC_TRACKER_USER), false);
-		::EnableWindow(GetDlgItem(IDC_TRACKER_PASS), false);		
+		::EnableWindow(GetDlgItem(IDC_TRACKER_PASS), false);
 	}
 }
 

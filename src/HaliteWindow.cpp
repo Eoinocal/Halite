@@ -15,6 +15,7 @@
 #include "CSSFileDialog.hpp"
 #include "HaliteDialog.hpp"
 #include "AdvHaliteDialog.hpp"
+#include "AddTorrentDialog.hpp"
 
 #include "ConfigOptions.hpp"
 #include "halConfig.hpp"
@@ -289,28 +290,23 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	try
 	{
 	
-	wpath saveDirectory(hal::config().defaultSaveFolder);
+	wstring saveDirectory = wpath(hal::config().defaultSaveFolder).native_file_string();
+	bool startPaused = false;
+	bool compactStorage = false;
 	
-	if (!exists(saveDirectory))
-		create_directory(saveDirectory);
+	if (!boost::filesystem::exists(saveDirectory))
+		boost::filesystem::create_directory(saveDirectory);
 	
 	if (hal::config().savePrompt)
 	{
-		std::wstring save_prompt = hal::app().res_wstr(IDS_SAVEPROMPT);		
-		CFolderDialog fldDlg(NULL, save_prompt.c_str(),
-			BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE);
+		AddTorrentDialog addTorrent(saveDirectory, startPaused, compactStorage);	
 		
-		wstring defaultSaveFolder = saveDirectory.native_file_string();
-		fldDlg.SetInitialFolder(defaultSaveFolder.c_str());
-	 
-		if (IDOK == fldDlg.DoModal())
-			saveDirectory = wpath(fldDlg.m_szFolderPath);
-		else
+		if (IDOK != addTorrent.DoModal())
 			return;
 	}
 	
 	wpath file(lpszPath, boost::filesystem::native);	
-	hal::bittorrent().addTorrent(file, saveDirectory);
+	hal::bittorrent().addTorrent(file, wpath(saveDirectory));
 
 	ui().update();
 	

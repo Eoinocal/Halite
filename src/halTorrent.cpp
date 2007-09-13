@@ -43,6 +43,7 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/basic_xml_archive.hpp>
 #include <boost/archive/xml_woarchive.hpp>
 #include <boost/archive/xml_wiarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
@@ -52,6 +53,7 @@
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/split_free.hpp>
 #include <boost/date_time/posix_time/time_serialize.hpp>
+#include <boost/algorithm/string/find.hpp>
 
 #include <libtorrent/file.hpp>
 #include <libtorrent/hasher.hpp>
@@ -168,28 +170,6 @@ using fs::path;
 using fs::ifstream;
 using fs::ofstream;
 using boost::serialization::make_nvp;
-
-lbt::entry haldecode(const wpath &file) 
-{
-	ifstream fs(file, ifstream::binary);
-	if (fs.is_open()) 
-	{
-		fs.unsetf(ifstream::skipws);
-		return lbt::bdecode(std::istream_iterator<char>(fs), std::istream_iterator<char>());
-	}
-	else return lbt::entry();
-}
-
-bool halencode(const wpath &file, const lbt::entry &e) 
-{
-	fs::ofstream fs(file, ofstream::binary);
-
-	if (!fs.is_open()) 
-		return false;
-	
-	lbt::bencode(std::ostream_iterator<char>(fs), e);
-	return true;
-}
 
 BitTorrent& bittorrent()
 {
@@ -339,15 +319,19 @@ public:
 		
 		std::auto_ptr<lbt::alert> p_alert = theSession.pop_alert();
 		
-		struct 
+		class AlertHandler
 		{
-		
+		public:
+		AlertHandler(BitTorrent_impl& bit_impl) :
+			bit_impl_(bit_impl)
+		{}
+				
 		void operator()(lbt::torrent_finished_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(Event::info, a.timestamp(),
 					wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
-						% hal::safe_from_utf8(a.handle.get_torrent_info().name()))
+						% get(a.handle).filename())
 			)	);			
 		}
 		
@@ -441,7 +425,12 @@ public:
 						a.timestamp(), Event::unclassified, hal::safe_from_utf8(a.msg()))));		
 		}
 		
-		} handler;
+		private:
+			BitTorrent_impl& bit_impl_;
+			
+			TorrentInternal& get(lbt::torrent_handle h) const { return bit_impl_.getTorrent(h); }
+		
+		} handler(*this);
 		
 		while (p_alert.get())
 		{	
@@ -487,7 +476,7 @@ public:
 		fs::wofstream ofs(workingDirectory/L"Torrents.xml");
 		boost::archive::xml_woarchive oxa(ofs);
 		
-		oxa << make_nvp("torrents", torrents);
+		oxa << make_nvp("theTorrents", theTorrents);
 			
 		if (dht_on_) 
 		{	
@@ -506,6 +495,8 @@ public:
 	int defTorrentMaxUpload() { return defTorrentMaxUpload_; }
 	float defTorrentDownload() { return defTorrentDownload_; }
 	float defTorrentUpload() { return defTorrentUpload_; }
+	
+	const wpath workingDir() { return workingDirectory; };
 	
 private:
 	BitTorrent_impl() :
@@ -530,20 +521,50 @@ private:
 		theSession.add_extension(&lbt::create_metadata_plugin);
 		theSession.add_extension(&lbt::create_ut_pex_plugin);
 		theSession.set_max_half_open_connections(10);
-
+		
+		bool tryOld = false;
+		
 		try
-		{	
-			fs::wifstream ifs(workingDirectory/L"Torrents.xml");
-			if (ifs)
-			{
-				boost::archive::xml_wiarchive ia(ifs);			
-				ia >> make_nvp("torrents", torrents);
-			}
+		{
+		
+		fs::wifstream ifs(workingDirectory/L"Torrents.xml");
+		if (ifs)
+		{
+			boost::archive::xml_wiarchive ia(ifs);						
+			ia >> make_nvp("theTorrents", theTorrents);	
+		}
+		
+		}
+		catch (const boost::archive::archive_exception& e)
+		{
+			tryOld = true;
 		}
 		catch(const std::exception& e)
 		{
-			event().post(shared_ptr<EventDetail>(\
+			event().post(shared_ptr<EventDetail>(
 				new EventStdException(Event::fatal, e, L"Loading Torrents.xml")));
+		}
+		
+		if (tryOld)
+		{
+			try
+			{
+					
+			fs::wifstream ifs(workingDirectory/L"Torrents.xml");		
+			if (ifs)
+			{
+				boost::archive::xml_wiarchive ia(ifs);	
+				ia >> make_nvp("torrents", torrents);
+				
+				theTorrents = torrents;
+			}	
+				
+			}
+			catch(const std::exception& e)
+			{
+				event().post(shared_ptr<EventDetail>(
+					new EventStdException(Event::fatal, e, L"Loading Old Torrents.xml")));
+			}
 		}
 		
 		if (exists(workingDirectory/L"DHTState.bin"))
@@ -568,7 +589,7 @@ private:
 		timer_.async_wait(bind(&BitTorrent_impl::alertHandler, this));
 	}
 	
-	lbt::entry prepTorrent(wpath filename, wpath saveDirectory);
+	std::pair<lbt::entry, lbt::entry> prepTorrent(wpath filename, wpath saveDirectory);
 	void removalThread(lbt::torrent_handle handle, bool wipeFiles);
 	
 	lbt::session theSession;
@@ -577,6 +598,18 @@ private:
 	bool keepChecking_;
 	
 	TorrentMap torrents;
+	TorrentManager theTorrents;
+	
+	TorrentInternal& getTorrent(lbt::torrent_handle h)
+	{
+		TorrentMap::iterator i = torrents.find(h.get_torrent_info().name());
+	
+		if (i != torrents.end())
+			return (*i).second;
+		
+		throw lbt::invalid_handle();
+	}
+	
 	const wpath workingDirectory;
 	
 	int defTorrentMaxConn_;
@@ -609,6 +642,11 @@ catch (const lbt::invalid_handle&)\
 {\
 	event().post(shared_ptr<EventDetail>(\
 		new EventInvalidTorrent(Event::critical, Event::invalidTorrent, TORRENT, FUNCTION)));\
+}\
+catch (const invalidTorrent& t)\
+{\
+	event().post(shared_ptr<EventDetail>(\
+		new EventInvalidTorrent(Event::critical, Event::invalidTorrent, hal::to_utf8(t.who()), FUNCTION)));\
 }\
 catch (const std::exception& e)\
 {\
@@ -1004,10 +1042,26 @@ void BitTorrent::setTorrentDefaults(int maxConn, int maxUpload, float download, 
 	pimpl->defTorrentUpload_ = upload;
 }
 
-lbt::entry BitTorrent_impl::prepTorrent(wpath filename, wpath saveDirectory)
+std::pair<lbt::entry, lbt::entry> BitTorrent_impl::prepTorrent(wpath filename, wpath saveDirectory)
 {
+	lbt::entry metadata = haldecode(filename);
+	lbt::torrent_info info(metadata);
+ 	
+	wstring torrentName = hal::safe_from_utf8(info.name());
+	if (!boost::find_last(torrentName, L".torrent")) 
+		torrentName += L".torrent";
+	
+	wpath torrentFilename = torrentName;
+	const wpath resumeFile = workingDirectory/L"resume"/torrentFilename.leaf();
+	
+	//  vvv Handle old naming style!
+	const wpath oldResumeFile = workingDirectory/L"resume"/filename.leaf();
+	
+	if (filename.leaf() != torrentFilename.leaf() && exists(oldResumeFile))
+		fs::rename(oldResumeFile, resumeFile);
+	//  ^^^ Handle old naming style!	
+	
 	lbt::entry resumeData;	
-	const wpath resumeFile = workingDirectory/L"resume"/filename.leaf();
 	
 	if (exists(resumeFile)) 
 	{
@@ -1020,7 +1074,6 @@ lbt::entry BitTorrent_impl::prepTorrent(wpath filename, wpath saveDirectory)
 			hal::event().post(boost::shared_ptr<hal::EventDetail>(
 				new hal::EventStdException(Event::critical, e, L"prepTorrent, Resume"))); 
 	
-//			::MessageBoxW(0, hal::str_to_wstr(ex.what()).c_str(), L"Resume Exception", MB_ICONERROR|MB_OK);
 			remove(resumeFile);
 		}
 	}
@@ -1028,21 +1081,49 @@ lbt::entry BitTorrent_impl::prepTorrent(wpath filename, wpath saveDirectory)
 	if (!exists(workingDirectory/L"torrents"))
 		create_directory(workingDirectory/L"torrents");
 
-	if (!exists(workingDirectory/L"torrents"/filename.leaf()))
-		copy_file(filename.string(), workingDirectory/L"torrents"/filename.leaf());
+	if (!exists(workingDirectory/L"torrents"/torrentFilename.leaf()))
+		copy_file(filename.string(), workingDirectory/L"torrents"/torrentFilename.leaf());
 
 	if (!exists(saveDirectory))
 		create_directory(saveDirectory);
 	
-	return resumeData;
+	return std::make_pair(metadata, resumeData);
 }
 
-void BitTorrent::addTorrent(wpath file, wpath saveDirectory) 
+void BitTorrent::addTorrent(wpath file, wpath saveDirectory, bool startPaused, bool compactStorage) 
 {
 	try 
 	{	
-	lbt::entry metadata = haldecode(file);
-	lbt::entry resumedata = pimpl->prepTorrent(file, saveDirectory);
+	
+	TorrentInternal torrent(file, saveDirectory, pimpl->workingDirectory, compactStorage);
+	
+	std::pair<TorrentManager::torrentByName::iterator, bool> p =
+		pimpl->theTorrents.insert(torrent);
+	
+	if (p.second)
+	{
+			event().post(shared_ptr<EventDetail>(
+			new EventGeneral(Event::info, boost::posix_time::second_clock::universal_time(), L"Here 1")));
+		TorrentInternal& me = pimpl->theTorrents.get(torrent.name());
+			event().post(shared_ptr<EventDetail>(
+			new EventGeneral(Event::info, boost::posix_time::second_clock::universal_time(), L"Here 2")));
+		TorrentManager::torrentByName::iterator i = p.first;
+			event().post(shared_ptr<EventDetail>(
+			new EventGeneral(Event::info, boost::posix_time::second_clock::universal_time(), L"Here 3")));
+		
+		me.setTransferSpeed(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload());
+			event().post(shared_ptr<EventDetail>(
+			new EventGeneral(Event::info, boost::posix_time::second_clock::universal_time(), L"Here 4")));
+		me.setConnectionLimit(100, bittorrent().defTorrentMaxUpload());
+			event().post(shared_ptr<EventDetail>(
+			new EventGeneral(Event::info, boost::posix_time::second_clock::universal_time(), L"Here 5")));
+		
+		me.addToSession(startPaused);
+			event().post(shared_ptr<EventDetail>(
+			new EventGeneral(Event::info, boost::posix_time::second_clock::universal_time(), L"Here 6")));
+	}
+	
+/*	std::pair<lbt::entry, lbt::entry> data = pimpl->prepTorrent(file, saveDirectory);
 	
 	TorrentMap::const_iterator existing = pimpl->torrents.find(to_utf8(file.leaf()));
 	
@@ -1055,13 +1136,13 @@ void BitTorrent::addTorrent(wpath file, wpath saveDirectory)
 	//	else
 	//		event().post(shared_ptr<EventDetail>(new EventInfo(L"False.")));
 		
-		lbt::torrent_handle handle = pimpl->theSession.add_torrent(metadata,
-			dir, resumedata, !lbt::supports_sparse_files(dir));
+		lbt::torrent_handle handle = pimpl->theSession.add_torrent(data.first,
+			dir, data.second, !lbt::supports_sparse_files(dir));
 		
 		pimpl->torrents.insert(TorrentMap::value_type(to_utf8(file.leaf()), 
 			TorrentInternal(handle, file.leaf(), saveDirectory)));
 	}
-
+*/
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(to_utf8(file.string()), "addTorrent")
 }
 
@@ -1178,10 +1259,17 @@ const TorrentDetails& BitTorrent::updateTorrentDetails(std::string focused, std:
 	
 	torrentDetails_.torrents_.reserve(pimpl->torrents.size());
 	
-	for (TorrentMap::iterator i=pimpl->torrents.begin(), e=pimpl->torrents.end(); i != e; ++i)
-	{	
-		string utf8Filename = hal::to_utf8((*i).second.filename());
-		TorrentDetail_ptr pT = (*i).second.getTorrentDetail_ptr();
+	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); i != e; ++i)
+	{
+		event().post(shared_ptr<EventDetail>(
+			new EventGeneral(Event::info, boost::posix_time::second_clock::universal_time(),
+				wformat(L"Torrent %1%, %2%-%3%")
+								% (*i).torrent.name()
+								% (*i).torrent.getConnectionLimit().first
+								% (*i).torrent.getConnectionLimit().second)));
+						
+		string utf8Filename = hal::to_utf8((*i).torrent.filename());
+		TorrentDetail_ptr pT = (*i).torrent.getTorrentDetail_ptr();
 		
 		if (selected.find(utf8Filename) != selected.end())
 		{
@@ -1191,7 +1279,7 @@ const TorrentDetails& BitTorrent::updateTorrentDetails(std::string focused, std:
 		if (focused == utf8Filename)
 			torrentDetails_.selectedTorrent_ = pT;
 		
-		torrentDetails_.torrentMap_[(*i).second.filename()] = pT;
+		torrentDetails_.torrentMap_[(*i).torrent.filename()] = pT;
 		torrentDetails_.torrents_.push_back(pT);
 	}
 	
@@ -1213,10 +1301,9 @@ void BitTorrent::resumeAll()
 		{		
 			try 
 			{				
-			lbt::entry metadata = haldecode(file);
-			lbt::entry resumedata = pimpl->prepTorrent(file, (*iter).second.saveDirectory());
+			std::pair<lbt::entry, lbt::entry> data = pimpl->prepTorrent(file, (*iter).second.saveDirectory());
 			
-			(*iter).second.setEntryData(metadata, resumedata);
+			(*iter).second.setEntryData(data.first, data.second);
 			
 			if ((*iter).second.state() == TorrentDetail::torrent_paused)
 				(*iter).second.pause();
