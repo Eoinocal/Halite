@@ -5,8 +5,9 @@ use-project /libtorrent : $(/libtorrent) ;
 #use-project /stlsoft : $(/stlsoft) ;
 
 SOURCES =
+	halTorrent.cpp
 	global/logger.cpp
-	global/string_conv.cpp
+#	global/string_conv.cpp
 	global/wtl_app.cpp
 	global/ini.cpp
 	global/ini_adapter.cpp
@@ -22,7 +23,6 @@ SOURCES =
 	AdvHaliteDialog.cpp
 	ConfigOptions.cpp
 	halConfig.cpp
-	halTorrent.cpp
 	halEvent.cpp
 #	halXmlRpc.cpp
 	NTray.cpp

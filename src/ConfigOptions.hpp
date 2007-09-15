@@ -474,7 +474,7 @@ public:
 		std::pair<void*, size_t> res = hal::app().find_lock_res(IDR_ABOUT_TEXT, HALITE_RTF_RES_TYPE);
 		
 		string rtf(static_cast<char*>(res.first), res.second);		
-		wstring wrtf = hal::safe_from_utf8(rtf);
+		wstring wrtf = hal::from_utf8_safe(rtf);
 		
 		richEdit_.SendMessage(WM_SETTEXT, 0, (LPARAM)wrtf.c_str());		
 		richEdit_.SetSelNone();

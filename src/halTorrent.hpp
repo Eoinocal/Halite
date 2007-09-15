@@ -127,11 +127,12 @@ typedef std::vector<FileDetail> FileDetails;
 class TorrentDetail 
 {
 public:
-	TorrentDetail(std::wstring f, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
+	TorrentDetail(std::wstring f, std::wstring n, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
 			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, boost::int64_t tpU=0, boost::int64_t tD=0, boost::int64_t tpD=0, int prs=0, int prsCnt=0, int sds=0, int sdsCnt=0,  float r=0, 
 			time_duration eta=boost::posix_time::seconds(0), time_duration uIn=boost::posix_time::seconds(0),
 			time_duration actve=boost::posix_time::seconds(0), time_duration seding=boost::posix_time::seconds(0), ptime srt=boost::posix_time::second_clock::universal_time()) :
 		filename_(f),
+		name_(n),
 		state_(s),
 		currentTracker_(cT),
 		speed_(sp),
@@ -170,6 +171,7 @@ public:
 	};
 	
 	const std::wstring& filename() const { return filename_; }
+	const std::wstring& name() const { return name_; }
 	const std::wstring& state() const { return state_; }
 	const std::wstring& currentTracker() const { return currentTracker_; }
 	
@@ -203,6 +205,7 @@ public:
 	
 public:
 	std::wstring filename_;
+	std::wstring name_;
 	std::wstring state_;
 	std::wstring currentTracker_;
 
@@ -336,6 +339,7 @@ class BitTorrent_impl;
 class BitTorrent
 {
 public:	
+
 	void shutDownSession();
 	void saveTorrentData();
 	
@@ -368,8 +372,6 @@ public:
 	void setTorrentDefaults(int maxConn, int maxUpload, float download, float upload);	
 	void newTorrent(boost::filesystem::wpath filename, boost::filesystem::wpath files);
 	void addTorrent(boost::filesystem::wpath file, wpath saveDirectory, bool startPaused=false, bool compactStorage=false);
-	void getAllTorrentDetail_vec(TorrentDetail_vec& torrentsContainer);
-	TorrentDetail_ptr getTorrentDetail_vec(std::string filename);	
 	
 	void setTorrentRatio(std::string, float ratio);
 	float getTorrentRatio(std::string);
@@ -380,22 +382,32 @@ public:
 	void resumeAll();
 	void closeAll();
 	
-	bool isTorrent(std::string filename);
+	bool isTorrent(const std::string& filename);
+	bool isTorrent(const std::wstring& filename);	
 	
-	void pauseTorrent(std::string filename);
-	void resumeTorrent(std::string filename);
-	void stopTorrent(std::string filename);
-	bool isTorrentActive(std::string filename);
+	void pauseTorrent(const std::string& filename);
+	void pauseTorrent(const std::wstring& filename);
+	void resumeTorrent(const std::string& filename);
+	void resumeTorrent(const std::wstring& filename);
+	void stopTorrent(const std::string& filename);
+	void stopTorrent(const std::wstring& filename);
+	bool isTorrentActive(const std::string& filename);
+	bool isTorrentActive(const std::wstring& filename);
+	void reannounceTorrent(const std::string& filename);
+	void reannounceTorrent(const std::wstring& filename);
 	
 	void pauseAllTorrents();
 	void unpauseAllTorrents();
 	
-	void removeTorrent(std::string filename);
-	void removeTorrentWipeFiles(std::string filename);
-	void reannounceTorrent(std::string filename);
+	void removeTorrent(const std::string& filename);
+	void removeTorrent(const std::wstring&  filename);
+	void removeTorrentWipeFiles(const std::string& filename);
+	void removeTorrentWipeFiles(const std::wstring&  filename);
 	
-	void setTorrentLogin(std::string filename, std::wstring username, std::wstring password);
-	std::pair<std::wstring, std::wstring> getTorrentLogin(std::string filename);
+	void setTorrentLogin(const std::string& filename, std::wstring username, std::wstring password);
+	void setTorrentLogin(const std::wstring& filename, std::wstring username, std::wstring password);
+	std::pair<std::wstring, std::wstring> getTorrentLogin(const std::string& filename);
+	std::pair<std::wstring, std::wstring> getTorrentLogin(const std::wstring&  filename);
 	
 	void setTorrentLimit(std::string filename, int maxConn, int maxUpload);
 	void setTorrentSpeed(std::string filename, float download, float upload);
@@ -420,7 +432,7 @@ public:
 
 	const TorrentDetails& torrentDetails();
 //	const TorrentDetails& getTorrentDetails(std::string selected, std::set<std::string> allSelected);	
-	const TorrentDetails& updateTorrentDetails(std::string focused, std::set<std::string> selected);
+	const TorrentDetails& updateTorrentDetails(const std::wstring& focused, const std::set<std::wstring>& selected);
 	
 private:
 	BitTorrent();

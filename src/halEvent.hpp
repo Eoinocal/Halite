@@ -171,10 +171,11 @@ private:
 class EventInvalidTorrent : public EventDetail
 {
 public:
-	EventInvalidTorrent(Event::eventLevel l, Event::codes code, std::string t, std::string f) :
+	template<typename t_str, typename f_str>
+	EventInvalidTorrent(Event::eventLevel l, Event::codes code, t_str t, f_str f) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), code),
-		torrent_(hal::from_utf8(t)),
-		function_(hal::from_utf8(f))
+		torrent_(hal::to_wstr(t)),
+		function_(hal::to_wstr(f))
 	{}
 	
 	virtual std::wstring msg()
@@ -191,11 +192,12 @@ private:
 class EventTorrentException : public EventDetail
 {
 public:
-	EventTorrentException(Event::eventLevel l, Event::codes code, std::string e, std::string t, std::string f) :
+	template<typename e_str, typename t_str, typename f_str>
+	EventTorrentException(Event::eventLevel l, Event::codes code, e_str e, t_str t, f_str f) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), code),
-		torrent_(hal::from_utf8(t)),
-		function_(hal::from_utf8(f)),
-		exception_(hal::from_utf8(e))
+		torrent_(hal::to_wstr(t)),
+		function_(hal::to_wstr(f)),
+		exception_(hal::to_wstr(e))
 	{}
 	
 	virtual std::wstring msg()

@@ -249,15 +249,15 @@ void HaliteWindow::issueUiUpdate()
 	try
 	{
 	
-	std::set<string> allSelected;
+/*	std::set<string> allSelected;
 
 	std::transform(haliteList.manager().allSelected().begin(), 
 				   haliteList.manager().allSelected().end(), 
 				   std::inserter(allSelected, allSelected.end()), 
 				   &hal::to_utf8);	
-
+*/
 	const hal::TorrentDetails& torrents = hal::bittorrent().updateTorrentDetails(
-		hal::to_utf8(haliteList.manager().selected()), allSelected);
+		haliteList.manager().selected(), haliteList.manager().allSelected());
 
 	ui_update_signal_(torrents);
 

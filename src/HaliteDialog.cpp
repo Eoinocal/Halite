@@ -233,7 +233,7 @@ void HaliteDialog::uiUpdate(const hal::TorrentDetails& tD)
 	
 	if (hal::TorrentDetail_ptr torrent = tD.selectedTorrent()) 	
 	{	
-		string torrent_name = hal::to_utf8(torrent->filename());
+		string torrent_name = hal::to_utf8(torrent->name());
 		
 		if (current_torrent_name_ != torrent_name)
 		{	
@@ -241,7 +241,7 @@ void HaliteDialog::uiUpdate(const hal::TorrentDetails& tD)
 			focusChanged(current_torrent_name_);
 		}	
 		
-		SetDlgItemText(IDC_NAME, torrent->filename().c_str());
+		SetDlgItemText(IDC_NAME, torrent->name().c_str());
 		SetDlgItemText(IDC_TRACKER, torrent->currentTracker().c_str());
 		SetDlgItemText(IDC_STATUS, torrent->state().c_str());
 		m_prog.SetPos(static_cast<int>(torrent->completion()*100));

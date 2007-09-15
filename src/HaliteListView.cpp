@@ -36,7 +36,7 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	
 	ApplyDetails();
 	
-	SetColumnSortType(0, LVCOLSORT_CUSTOM, new ColumnAdapters::Filename());
+	SetColumnSortType(0, LVCOLSORT_CUSTOM, new ColumnAdapters::Name());
 	SetColumnSortType(1, LVCOLSORT_CUSTOM, new ColumnAdapters::State());
 	SetColumnSortType(2, LVCOLSORT_CUSTOM, new ColumnAdapters::Progress());
 	SetColumnSortType(3, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedDown());
@@ -110,15 +110,17 @@ HaliteListViewCtrl::tD HaliteListViewCtrl::CustomItemConversion(LVCompareParam* 
 LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind(&hal::BitTorrent::resumeTorrent, &hal::bittorrent(), bind(&hal::to_utf8, _1)));
+		bind((void (hal::BitTorrent::*)(const std::wstring&))&hal::BitTorrent::resumeTorrent, 
+			&hal::bittorrent(), _1));
 	
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-{
+{	
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind(&hal::BitTorrent::pauseTorrent, &hal::bittorrent(), bind(&hal::to_utf8, _1)));
+		bind((void (hal::BitTorrent::*)(const std::wstring&))&hal::BitTorrent::pauseTorrent,
+			&hal::bittorrent(), _1));
 	
 	return 0;
 }
@@ -126,7 +128,8 @@ LRESULT HaliteListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BO
 LRESULT HaliteListViewCtrl::OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind(&hal::BitTorrent::stopTorrent, &hal::bittorrent(),bind(&hal::to_utf8, _1)));
+		bind((void (hal::BitTorrent::*)(const std::wstring&))&hal::BitTorrent::stopTorrent, 
+			&hal::bittorrent(), _1));
 	
 	return 0;
 }
@@ -142,7 +145,8 @@ LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWn
 LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind(&hal::BitTorrent::removeTorrent, &hal::bittorrent(), bind(&hal::to_utf8, _1)));
+		bind((void (hal::BitTorrent::*)(const std::wstring&))&hal::BitTorrent::removeTorrent, 
+			&hal::bittorrent(), _1));
 
 	clearSelected();	
 	return 0;
@@ -151,7 +155,8 @@ LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind(&hal::BitTorrent::removeTorrentWipeFiles, &hal::bittorrent(), bind(&hal::to_utf8, _1)));
+		bind((void (hal::BitTorrent::*)(const std::wstring&))&hal::BitTorrent::removeTorrentWipeFiles, 
+			&hal::bittorrent(), _1));
 	
 	clearSelected();
 	return 0;

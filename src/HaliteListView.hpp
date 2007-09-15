@@ -36,6 +36,12 @@ protected:
 	
 	typedef listClass::ColumnAdapter ColAdapter_t;
 	
+	struct Name : public ColAdapter_t
+	{	
+		virtual bool less(tD& l, tD& r)	{ return l->name() < r->name(); }		
+		virtual std::wstring print(tD& t) { return t->name(); }		
+	};
+	
 	struct Filename : public ColAdapter_t
 	{	
 		virtual bool less(tD& l, tD& r)	{ return l->filename() < r->filename(); }		

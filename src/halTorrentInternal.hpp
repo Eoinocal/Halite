@@ -18,7 +18,7 @@ namespace hal
 class TorrentInternal;
 }
 
-BOOST_CLASS_VERSION(hal::TorrentInternal, 8)
+BOOST_CLASS_VERSION(hal::TorrentInternal, 9)
 
 namespace hal 
 {
@@ -171,6 +171,7 @@ class TorrentInternal
 	
 public:
 	#define TORRENT_INTERNALS_DEFAULTS \
+		originalFilename_(L""), \
 		transferLimit_(std::pair<float, float>(-1, -1)), \
 		connections_(-1), \
 		uploads_(-1), \
@@ -186,16 +187,6 @@ public:
 		in_session_(false)
 	{}
 	
-	TorrentInternal(libtorrent::torrent_handle h, std::wstring f, wpath saveDirectory) :
-		TORRENT_INTERNALS_DEFAULTS,
-		filename_(f),
-		save_directory_(saveDirectory.string()),
-		in_session_(true),
-		handle_(h)
-	{
-		name_ = L"";
-	}
-	
 	TorrentInternal(wpath filename, wpath saveDirectory, wpath workingDirectory, bool compactStorage) :
 		TORRENT_INTERNALS_DEFAULTS,
 		save_directory_(saveDirectory.string()),
@@ -204,7 +195,7 @@ public:
 	{
 		assert(the_session_);
 		
-		prep(filename, save_directory_, workingDirectory);
+		prepare(filename, save_directory_, workingDirectory);
 	}
 	
 	#undef TORRENT_INTERNALS_DEFAULTS
@@ -248,46 +239,59 @@ public:
 	
 	bool inSession() const 
 	{ 
-		return (in_session_ && the_session_); 
+		if (in_session_ && (the_session_ != 0))
+		{
+			assert(handle_.is_valid());
+			return true;
+		}
+		
+		return false;
 	}
 	
 	void resume()
 	{
-		addToSession();	
-		assert(in_session_);
+		if (state_ == TorrentDetail::torrent_stopped)
+		{	
+			addToSession(false);
+			assert(inSession());			
+		}
+		else
+		{
+			assert(inSession());
+			handle_.resume();
+		}	
 		
-		handle_.resume();
-		state_ = TorrentDetail::torrent_active;
-		
-		activeDuration_.reset();
-		seedingDuration_.reset();
-		
+		state_ = TorrentDetail::torrent_active;			
 		assert(!handle_.is_paused());
 	}
 	
 	void pause()
 	{
-		if (state_ != TorrentDetail::torrent_stopped)
+		if (state_ == TorrentDetail::torrent_stopped)
 		{	
 			addToSession(true);
-			assert(in_session_);
-			
-			state_ = TorrentDetail::torrent_paused;	
-			
-			assert(handle_.is_paused());
+			assert(inSession());			
 		}
+		else
+		{
+			assert(inSession());
+			handle_.pause();
+		}	
+		
+		state_ = TorrentDetail::torrent_paused;			
+		assert(handle_.is_paused());
 	}
 	
 	void stop()
 	{
-		if (in_session_ && the_session_) 
+		if (state_ != TorrentDetail::torrent_stopped)
 		{
 			the_session_->remove_torrent(handle_);
 			in_session_ = false;
 		}
-		assert(!in_session_);
 		
-		state_ = TorrentDetail::torrent_stopped;	
+		state_ = TorrentDetail::torrent_stopped;
+		assert(!inSession());			
 	}
 	
 	bool isActive() const { return state_ == TorrentDetail::torrent_active;	}
@@ -309,14 +313,10 @@ public:
 	
 	const std::wstring& filename() const { return filename_; }
 	
+	const std::wstring& originalFilename() const { return originalFilename_; }
+	
 	const libtorrent::torrent_handle& handle() const { return handle_; }
 
-	void setHandle(libtorrent::torrent_handle h) 
-	{ 
-		handle_ = h; 
-		in_session_ = true;
-	}
-	
 	void resetTrackers()
 	{
 		if (inSession())
@@ -368,8 +368,13 @@ public:
     {
         ar & make_nvp("transferLimit", transferLimit_);
         ar & make_nvp("connections", connections_);
-        ar & make_nvp("uploads", uploads_);
-        ar & make_nvp("filename", filename_);
+        ar & make_nvp("uploads", uploads_);		
+		if (version > 8) {
+			ar & make_nvp("filename", filename_);
+		}
+		else {
+			ar & make_nvp("filename", originalFilename_);
+		}
         ar & make_nvp("saveDirectory", save_directory_);
 		
 		if (version > 3) {
@@ -409,14 +414,12 @@ public:
 		if (version > 6) {
 			ar & make_nvp("name", name_);		
 		}
-		else
-		{
+		else {
 			name_ = filename_;
 		}
 		if (version > 7) {
 			ar & make_nvp("compactStorage", compactStorage_);		
-		}
-		
+		}		
     }
 	
 	void setEntryData(libtorrent::entry metadata, libtorrent::entry resumedata)
@@ -471,15 +474,14 @@ public:
 			}			
 		}
 	}
-
-private:
-	void prep(wpath filename, wpath saveDirectory, wpath workingDirectory)
+	
+	void prepare(wpath filename, wpath saveDirectory, wpath workingDirectory)
 	{
 	
 		metadata_ = haldecode(filename);
 		info_ = lbt::torrent_info(metadata_);
 		
-		name_ = hal::safe_from_utf8(info_.name());
+		name_ = hal::from_utf8_safe(info_.name());
 		
 		filename_ = name_;
 		
@@ -491,7 +493,7 @@ private:
 		//  vvv Handle old naming style!
 		const wpath oldResumeFile = workingDirectory/L"resume"/filename.leaf();
 		
-		if (resumeFile != oldResumeFile && exists(oldResumeFile))
+		if (resumeFile != oldResumeFile && !exists(resumeFile) && exists(oldResumeFile))
 			fs::rename(oldResumeFile, resumeFile);
 		//  ^^^ Handle old naming style!	
 	
@@ -519,6 +521,8 @@ private:
 		if (!exists(saveDirectory))
 			create_directory(saveDirectory);	
 	}
+
+private:
 	
 	void applySettings()
 	{		
@@ -621,6 +625,7 @@ private:
 	std::wstring filename_;
 	std::wstring name_;
 	std::wstring save_directory_;
+	std::wstring originalFilename_;
 	libtorrent::torrent_handle handle_;	
 	
 	libtorrent::entry metadata_;
@@ -755,6 +760,26 @@ public:
 		throw invalidTorrent(name);
 	}
 	
+	torrentByName::iterator erase(torrentByName::iterator where)
+	{
+		return torrents_.get<byName>().erase(where);
+	}
+	
+	size_t erase(const wstring& name)
+	{
+		return torrents_.get<byName>().erase(name);
+	}
+	
+	bool exists(const wstring& name)
+	{
+		torrentByName::iterator it = torrents_.get<byName>().find(name);
+		
+		if (it != torrents_.get<byName>().end())
+			return true;
+		else
+			return false;
+	}
+	
 	torrentByName::iterator begin() { return torrents_.get<byName>().begin(); }
 	torrentByName::iterator end() { return torrents_.get<byName>().end(); }
 	
@@ -803,7 +828,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 	if (inSession())
 	{
 		statusMemory_ = handle_.status();
-		name_ = hal::safe_from_utf8(handle_.get_torrent_info().name());
+		name_ = hal::from_utf8_safe(handle_.get_torrent_info().name());
 	}
 	
 	wstring state;
@@ -891,7 +916,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 		}
 	}			
 
-	return TorrentDetail_ptr(new TorrentDetail(filename_, state, hal::from_utf8(statusMemory_.current_tracker), 
+	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, state, hal::from_utf8(statusMemory_.current_tracker), 
 		pair<float, float>(statusMemory_.download_payload_rate, statusMemory_.upload_payload_rate),
 		statusMemory_.progress, statusMemory_.distributed_copies, statusMemory_.total_wanted_done, statusMemory_.total_wanted, uploaded_, payloadUploaded_,
 		downloaded_, payloadDownloaded_, totalPeers, peersConnected, totalSeeds, seedsConnected, ratio_, td, statusMemory_.next_announce, activeDuration_, seedingDuration_, startTime_));
@@ -908,7 +933,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 			new EventTorrentException(Event::critical, Event::torrentException, e.what(), "addTorrent", "addTorrent")));
 	}
 	
-	return TorrentDetail_ptr(new TorrentDetail(filename_, app().res_wstr(HAL_TORRENT_STOPPED),  app().res_wstr(IDS_NA)));
+	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, app().res_wstr(HAL_TORRENT_STOPPED),  app().res_wstr(IDS_NA)));
 }
 
 } //namespace hal
