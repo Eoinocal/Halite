@@ -28,11 +28,11 @@ void Config::settingsThread()
 	if (enableIPFilter)
 	{
 		ProgressDialog progDlg(L"Loading IP filters...", bind(
-			&BitTorrent::ensure_ip_filter_on, &bittorrent(), _1));
+			&BitTorrent::ensureIpFilterOn, &bittorrent(), _1));
 		progDlg.DoModal();
 	}
 	else
-		bittorrent().ensure_ip_filter_off();
+		bittorrent().ensureIpFilterOff();
 	}
 	catch(const std::exception& e)
 	{
@@ -44,10 +44,10 @@ void Config::settingsThread()
 	{
 	if (enablePe)
 	{
-		bittorrent().ensure_pe_on(peEncLevel, peConInPolicy, peConOutPolicy, pePerferRc4);
+		bittorrent().ensurePeOn(peEncLevel, peConInPolicy, peConOutPolicy, pePerferRc4);
 	}
 	else
-		bittorrent().ensure_pe_off();
+		bittorrent().ensurePeOff();
 	}
 	catch(const std::exception& e)
 	{
@@ -93,16 +93,16 @@ void Config::settingsThread()
 	
 	if (enableDHT)
 	{
-		if (!bittorrent().ensure_dht_on())
+		if (!bittorrent().ensureDhtOn())
 		{
-			bittorrent().ensure_dht_off();
+			bittorrent().ensureDhtOff();
 			
 			hal::event().post(boost::shared_ptr<hal::EventDetail>(
 				new hal::EventDebug(Event::critical, L"settingsThread, DHT Error"))); 
 		}
 	}
 	else
-		bittorrent().ensure_dht_off();
+		bittorrent().ensureDhtOff();
 }
 
 Config& config()

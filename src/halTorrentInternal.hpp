@@ -6,6 +6,32 @@
 
 #pragma once
 
+#define HAL_PEER_INTERESTING            40037
+#define HAL_PEER_CHOKED                 40038
+#define HAL_PEER_REMOTE_INTERESTING     40039
+#define HAL_PEER_REMOTE_CHOKED          40040
+#define HAL_PEER_SUPPORT_EXTENSIONS     40041
+#define HAL_PEER_LOCAL_CONNECTION       40042
+#define HAL_PEER_HANDSHAKE              40043
+#define HAL_PEER_CONNECTING             40044
+#define HAL_PEER_QUEUED                 40045
+#define HAL_PEER_RC4_ENCRYPTED          40046
+#define HAL_PEER_PLAINTEXT_ENCRYPTED    40047
+#define HAL_TORRENT_QUEUED_CHECKING     40050
+#define HAL_TORRENT_CHECKING_FILES      40051
+#define HAL_TORRENT_CONNECTING          40052
+#define HAL_TORRENT_DOWNLOADING         40053
+#define HAL_TORRENT_FINISHED            40054
+#define HAL_TORRENT_SEEDING             40055
+#define HAL_TORRENT_ALLOCATING          40056
+#define HAL_TORRENT_QUEUED              40057
+#define HAL_TORRENT_STOPPED             40058
+#define HAL_TORRENT_PAUSED              40059
+#define HAL_TORRENT_STOPPING            50000
+#define HAL_TORRENT_PAUSING             50001
+
+#ifndef RC_INVOKED
+
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/indexed_by.hpp>
@@ -270,15 +296,16 @@ public:
 		if (state_ == TorrentDetail::torrent_stopped)
 		{	
 			addToSession(true);
-			assert(inSession());			
+			assert(inSession());
+			state_ = TorrentDetail::torrent_paused;	
 		}
 		else
 		{
 			assert(inSession());
 			handle_.pause();
+			state_ = TorrentDetail::torrent_pausing;	
 		}	
-		
-		state_ = TorrentDetail::torrent_paused;			
+				
 		assert(handle_.is_paused());
 	}
 	
@@ -292,6 +319,15 @@ public:
 		
 		state_ = TorrentDetail::torrent_stopped;
 		assert(!inSession());			
+	}
+	
+	void completedPause()
+	{
+		if (TorrentDetail::torrent_pausing == state_ && inSession())
+		{
+			state_ = TorrentDetail::torrent_paused;	
+			assert(handle_.is_paused());
+		}
 	}
 	
 	bool isActive() const { return state_ == TorrentDetail::torrent_active;	}
@@ -711,7 +747,6 @@ class TorrentManager
 	> TorrentMultiIndex;
 	
 public:
-	
 	typedef TorrentMultiIndex::index<byFilename>::type torrentByFilename;
 	typedef TorrentMultiIndex::index<byName>::type torrentByName;
 	
@@ -833,12 +868,25 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 	
 	wstring state;
 	
-	if (state_ == TorrentDetail::torrent_paused)
-		state = app().res_wstr(HAL_TORRENT_PAUSED);
-	else if (state_ == TorrentDetail::torrent_stopped)
-		state = app().res_wstr(HAL_TORRENT_STOPPED);
-	else
+	switch (state_)
 	{
+	case TorrentDetail::torrent_paused:
+		state = app().res_wstr(HAL_TORRENT_PAUSED);
+		break;
+		
+	case TorrentDetail::torrent_pausing:
+		state = app().res_wstr(HAL_TORRENT_PAUSING);
+		break;
+		
+	case TorrentDetail::torrent_stopped:
+		state = app().res_wstr(HAL_TORRENT_STOPPED);
+		break;
+		
+	case TorrentDetail::torrent_stopping:
+		state = app().res_wstr(HAL_TORRENT_STOPPING);
+		break;
+		
+	default:
 		switch (statusMemory_.state)
 		{
 		case lbt::torrent_status::queued_for_checking:
@@ -936,4 +984,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, app().res_wstr(HAL_TORRENT_STOPPED),  app().res_wstr(IDS_NA)));
 }
 
-} //namespace hal
+} // namespace hal
+
+#endif // RC_INVOKED
+

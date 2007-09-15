@@ -167,7 +167,9 @@ public:
 	{
 		torrent_active = 0,
 		torrent_paused,
-		torrent_stopped
+		torrent_stopped,
+		torrent_pausing,
+		torrent_stopping
 	};
 	
 	const std::wstring& filename() const { return filename_; }
@@ -339,7 +341,6 @@ class BitTorrent_impl;
 class BitTorrent
 {
 public:	
-
 	void shutDownSession();
 	void saveTorrentData();
 	
@@ -347,19 +348,21 @@ public:
 	int isListeningOn();
 	void stopListening();
 	
-	bool ensure_dht_on();
-	void ensure_dht_off();
+	bool ensureDhtOn();
+	void ensureDhtOff();
 	
-	void ensure_ip_filter_on(progressCallback fn);
-	void ensure_ip_filter_off();
+	void ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4);
+	void ensurePeOff();
+	
+	void ensureIpFilterOn(progressCallback fn);
+	void ensureIpFilterOff();
+	
 	void ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 last);
 	void ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last);
 	void ip_filter_import_dat(boost::filesystem::path file, progressCallback fn, bool octalFix);
 	size_t ip_filter_size();
 	void clearIpFilter();
 	
-	void ensure_pe_on(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4);
-	void ensure_pe_off();
 	
 	void setSessionHalfOpenLimit(int halfConn);
 	void setSessionLimits(int maxConn, int maxUpload);
@@ -371,13 +374,18 @@ public:
 
 	void setTorrentDefaults(int maxConn, int maxUpload, float download, float upload);	
 	void newTorrent(boost::filesystem::wpath filename, boost::filesystem::wpath files);
-	void addTorrent(boost::filesystem::wpath file, wpath saveDirectory, bool startPaused=false, bool compactStorage=false);
+	void addTorrent(boost::filesystem::wpath file, wpath saveDirectory, 
+		bool startPaused=false, bool compactStorage=false);
 	
-	void setTorrentRatio(std::string, float ratio);
-	float getTorrentRatio(std::string);
+	void setTorrentRatio(const std::string&, float ratio);
+	void setTorrentRatio(const std::wstring&, float ratio);
+	float getTorrentRatio(const std::string&);
+	float getTorrentRatio(const std::wstring&);
 	
-	void getAllPeerDetails(std::string filename, PeerDetails& peerContainer);
-	void getAllFileDetails(std::string filename, FileDetails& fileDetails);
+	void getAllPeerDetails(const std::string& filename, PeerDetails& peerContainer);
+	void getAllPeerDetails(const std::wstring& filename, PeerDetails& peerContainer);
+	void getAllFileDetails(const std::string& filename, FileDetails& fileDetails);
+	void getAllFileDetails(const std::wstring& filename, FileDetails& fileDetails);
 	
 	void resumeAll();
 	void closeAll();
@@ -409,16 +417,24 @@ public:
 	std::pair<std::wstring, std::wstring> getTorrentLogin(const std::string& filename);
 	std::pair<std::wstring, std::wstring> getTorrentLogin(const std::wstring&  filename);
 	
-	void setTorrentLimit(std::string filename, int maxConn, int maxUpload);
-	void setTorrentSpeed(std::string filename, float download, float upload);
-	pair<int, int> getTorrentLimit(std::string filename);
-	pair<float, float> getTorrentSpeed(std::string filename);
+	void setTorrentLimit(const std::string& filename, int maxConn, int maxUpload);
+	void setTorrentLimit(const std::wstring& filename, int maxConn, int maxUpload);
+	void setTorrentSpeed(const std::string& filename, float download, float upload);
+	void setTorrentSpeed(const std::wstring& filename, float download, float upload);
+	pair<int, int> getTorrentLimit(const std::string& filename);
+	pair<int, int> getTorrentLimit(const std::wstring& filename);
+	pair<float, float> getTorrentSpeed(const std::string& filename);
+	pair<float, float> getTorrentSpeed(const std::wstring& filename);
 	
-	void setTorrentTrackers(std::string filename, const std::vector<TrackerDetail>& trackers);
-	void resetTorrentTrackers(std::string filename);
-	std::vector<TrackerDetail> getTorrentTrackers(std::string filename);
+	void setTorrentTrackers(const std::string& filename, const std::vector<TrackerDetail>& trackers);
+	void setTorrentTrackers(const std::wstring& filename, const std::vector<TrackerDetail>& trackers);
+	void resetTorrentTrackers(const std::string& filename);
+	void resetTorrentTrackers(const std::wstring& filename);
+	std::vector<TrackerDetail> getTorrentTrackers(const std::string& filename);
+	std::vector<TrackerDetail> getTorrentTrackers(const std::wstring& filename);
 	
-	void setTorrentFilePriorities(std::string filename, std::vector<int> fileIndices, int priority);
+	void setTorrentFilePriorities(const std::string& filename, std::vector<int> fileIndices, int priority);
+	void setTorrentFilePriorities(const std::wstring& filename, std::vector<int> fileIndices, int priority);
 
 	void startEventReceiver();
 	void stopEventReceiver();
@@ -431,7 +447,6 @@ public:
 	float defTorrentUpload();	
 
 	const TorrentDetails& torrentDetails();
-//	const TorrentDetails& getTorrentDetails(std::string selected, std::set<std::string> allSelected);	
 	const TorrentDetails& updateTorrentDetails(const std::wstring& focused, const std::set<std::wstring>& selected);
 	
 private:

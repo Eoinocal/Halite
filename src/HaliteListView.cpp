@@ -162,7 +162,6 @@ LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND h
 	return 0;
 }
 
-
 //LRESULT HaliteListViewCtrl::OnDeleteItem(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHandled*/)
 //{
 //	LPNMLISTVIEW pnmv=(LPNMLISTVIEW)pnmh;
