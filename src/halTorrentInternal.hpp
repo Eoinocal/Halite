@@ -6,29 +6,29 @@
 
 #pragma once
 
-#define HAL_PEER_INTERESTING            40037
-#define HAL_PEER_CHOKED                 40038
-#define HAL_PEER_REMOTE_INTERESTING     40039
-#define HAL_PEER_REMOTE_CHOKED          40040
-#define HAL_PEER_SUPPORT_EXTENSIONS     40041
-#define HAL_PEER_LOCAL_CONNECTION       40042
-#define HAL_PEER_HANDSHAKE              40043
-#define HAL_PEER_CONNECTING             40044
-#define HAL_PEER_QUEUED                 40045
-#define HAL_PEER_RC4_ENCRYPTED          40046
-#define HAL_PEER_PLAINTEXT_ENCRYPTED    40047
-#define HAL_TORRENT_QUEUED_CHECKING     40050
-#define HAL_TORRENT_CHECKING_FILES      40051
-#define HAL_TORRENT_CONNECTING          40052
-#define HAL_TORRENT_DOWNLOADING         40053
-#define HAL_TORRENT_FINISHED            40054
-#define HAL_TORRENT_SEEDING             40055
-#define HAL_TORRENT_ALLOCATING          40056
-#define HAL_TORRENT_QUEUED              40057
-#define HAL_TORRENT_STOPPED             40058
-#define HAL_TORRENT_PAUSED              40059
-#define HAL_TORRENT_STOPPING            50000
-#define HAL_TORRENT_PAUSING             50001
+#define HAL_PEER_INTERESTING            			40037
+#define HAL_PEER_CHOKED             			    40038
+#define HAL_PEER_REMOTE_INTERESTING					40039
+#define HAL_PEER_REMOTE_CHOKED						40040
+#define HAL_PEER_SUPPORT_EXTENSIONS					40041
+#define HAL_PEER_LOCAL_CONNECTION					40042
+#define HAL_PEER_HANDSHAKE							40043
+#define HAL_PEER_CONNECTING							40044
+#define HAL_PEER_QUEUED								40045
+#define HAL_PEER_RC4_ENCRYPTED						40046
+#define HAL_PEER_PLAINTEXT_ENCRYPTED				40047
+#define HAL_TORRENT_QUEUED_CHECKING					40050
+#define HAL_TORRENT_CHECKING_FILES					40051
+#define HAL_TORRENT_CONNECTING						40052
+#define HAL_TORRENT_DOWNLOADING						40053
+#define HAL_TORRENT_FINISHED						40054
+#define HAL_TORRENT_SEEDING							40055
+#define HAL_TORRENT_ALLOCATING						40056
+#define HAL_TORRENT_QUEUED							40057
+#define HAL_TORRENT_STOPPED							40058
+#define HAL_TORRENT_PAUSED							40059
+#define HAL_TORRENT_STOPPING						50000
+#define HAL_TORRENT_PAUSING							50001
 
 #ifndef RC_INVOKED
 
@@ -44,7 +44,7 @@ namespace hal
 class TorrentInternal;
 }
 
-BOOST_CLASS_VERSION(hal::TorrentInternal, 9)
+BOOST_CLASS_VERSION(hal::TorrentInternal, 10)
 
 namespace hal 
 {
@@ -330,6 +330,12 @@ public:
 		}
 	}
 	
+	void finished()
+	{
+		if (finishTime_.is_special())
+			finishTime_ = boost::posix_time::second_clock::universal_time();
+	}
+	
 	bool isActive() const { return state_ == TorrentDetail::torrent_active;	}
 	
 	unsigned state() const { return state_; }
@@ -455,6 +461,9 @@ public:
 		}
 		if (version > 7) {
 			ar & make_nvp("compactStorage", compactStorage_);		
+		}	
+		if (version > 9) {
+			ar & make_nvp("finishTime", finishTime_);		
 		}		
     }
 	
@@ -558,8 +567,7 @@ public:
 			create_directory(saveDirectory);	
 	}
 
-private:
-	
+private:	
 	void applySettings()
 	{		
 		applyTransferSpeed();
@@ -679,6 +687,7 @@ private:
 	TransferTracker<boost::int64_t> downloaded_;
 	
 	boost::posix_time::ptime startTime_;
+	boost::posix_time::ptime finishTime_;
 	DurationTracker activeDuration_;
 	DurationTracker seedingDuration_;
 	
@@ -834,7 +843,6 @@ void TorrentInternal::setConnectionLimit(int maxConn, int maxUpload)
 	connections_ = 	maxConn;
 	uploads_ = maxUpload;
 	
-		::MessageBoxA(0, "Here Alright.", "Hi", 0);
 	applyConnectionLimit();
 }
 
@@ -863,7 +871,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 	if (inSession())
 	{
 		statusMemory_ = handle_.status();
-		name_ = hal::from_utf8_safe(handle_.get_torrent_info().name());
+		//name_ = hal::from_utf8_safe(handle_.get_torrent_info().name());
 	}
 	
 	wstring state;
@@ -935,7 +943,10 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 	if (isActive())
 	{
 		activeDuration_.update();
-	}
+		
+		if (handle_.is_seed())
+			seedingDuration_.update();
+	}	
 	
 	updatePeers();
 	
@@ -967,7 +978,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, state, hal::from_utf8(statusMemory_.current_tracker), 
 		pair<float, float>(statusMemory_.download_payload_rate, statusMemory_.upload_payload_rate),
 		statusMemory_.progress, statusMemory_.distributed_copies, statusMemory_.total_wanted_done, statusMemory_.total_wanted, uploaded_, payloadUploaded_,
-		downloaded_, payloadDownloaded_, totalPeers, peersConnected, totalSeeds, seedsConnected, ratio_, td, statusMemory_.next_announce, activeDuration_, seedingDuration_, startTime_));
+		downloaded_, payloadDownloaded_, totalPeers, peersConnected, totalSeeds, seedsConnected, ratio_, td, statusMemory_.next_announce, activeDuration_, seedingDuration_, startTime_, finishTime_));
 
 	}
 	catch (const lbt::invalid_handle&)

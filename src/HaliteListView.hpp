@@ -273,7 +273,24 @@ protected:
 			}
 			else
 			{
-				return L"∞";		
+				return hal::app().res_wstr(IDS_NA);		
+			}
+		}		
+	};
+	
+	struct FinishTime : public ColAdapter_t
+	{
+		virtual bool less(tD& l, tD& r)	{ return l->finishTime() < r->finishTime(); }		
+		virtual std::wstring print(tD& t) 
+		{ 
+			if (!t->finishTime().is_special())
+			{
+				return hal::from_utf8(
+					boost::posix_time::to_simple_string(t->finishTime()));
+			}
+			else
+			{
+				return hal::app().res_wstr(IDS_NA);		
 			}
 		}		
 	};
@@ -319,7 +336,7 @@ public:
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-		if (version > 1)
+		if (version > 2)
 			ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
     }
 	
@@ -329,10 +346,10 @@ private:
 	void OnAttach();
 	void OnDetach();
 	
-	enum { NumberOfColumns_s = 19 };
+	enum { NumberOfColumns_s = 21 };
 	
 	HaliteWindow& halWindow_;
 };
 
-BOOST_CLASS_VERSION(HaliteListViewCtrl, 2)
+BOOST_CLASS_VERSION(HaliteListViewCtrl, 3)
 typedef HaliteListViewCtrl::SelectionManager ListViewManager;

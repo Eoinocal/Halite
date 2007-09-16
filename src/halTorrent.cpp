@@ -17,6 +17,10 @@
 #define HAL_TRACKER_ALERT							80007
 #define HAL_TRACKER_REPLY_ALERT						80008
 #define LBT_EVENT_TORRENT_PAUSED					80009
+#define HAL_FAST_RESUME_ALERT						80010
+#define HAL_PIECE_FINISHED_ALERT					80011
+#define HAL_BLOCK_FINISHED_ALERT					80012
+#define HAL_BLOCK_DOWNLOADING_ALERT					80013
 
 #ifndef RC_INVOKED
 
@@ -333,7 +337,9 @@ public:
 				new EventGeneral(Event::info, a.timestamp(),
 					wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
 						% get(a.handle).name())
-			)	);			
+			)	);
+			
+			get(a.handle).finished();	
 		}
 		
 		void operator()(lbt::torrent_paused_alert const& a) const
@@ -342,7 +348,7 @@ public:
 				new EventGeneral(Event::info, a.timestamp(),
 					wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 
 						% get(a.handle).name())
-			)	);	
+			)	);
 
 			get(a.handle).completedPause();
 		}
@@ -362,7 +368,7 @@ public:
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_PEER_BAN_ALERT))
-						% hal::from_utf8_safe(a.handle.get_torrent_info().name())
+						% get(a.handle).name()
 						% hal::from_utf8_safe(a.ip.address().to_string()))
 			)	);				
 		}
@@ -372,7 +378,7 @@ public:
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_HASH_FAIL_ALERT))
-						% hal::from_utf8_safe(a.handle.get_torrent_info().name())
+						% get(a.handle).name()
 						% a.piece_index)
 			)	);				
 		}
@@ -382,7 +388,7 @@ public:
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_URL_SEED_ALERT))
-						% hal::from_utf8_safe(a.handle.get_torrent_info().name())
+						% get(a.handle).name()
 						% hal::from_utf8_safe(a.url)
 						% hal::from_utf8_safe(a.msg()))
 			)	);				
@@ -393,7 +399,7 @@ public:
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_TRACKER_WARNING_ALERT))
-						% hal::from_utf8_safe(a.handle.get_torrent_info().name())
+						% get(a.handle).name()
 						% hal::from_utf8_safe(a.msg()))
 			)	);				
 		}
@@ -403,7 +409,7 @@ public:
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_TRACKER_ANNOUNCE_ALERT))
-						% hal::from_utf8_safe(a.handle.get_torrent_info().name()))
+						% get(a.handle).name())
 			)	);				
 		}
 		
@@ -412,7 +418,7 @@ public:
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_TRACKER_ALERT))
-						% hal::from_utf8_safe(a.handle.get_torrent_info().name())
+						% get(a.handle).name()
 						% hal::from_utf8_safe(a.msg())
 						% a.times_in_row
 						% a.status_code)
@@ -424,9 +430,51 @@ public:
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_TRACKER_REPLY_ALERT))
-						% hal::from_utf8_safe(a.handle.get_torrent_info().name())
+						% get(a.handle).name()
 						% hal::from_utf8_safe(a.msg())
 						% a.num_peers)
+			)	);				
+		}
+		
+		void operator()(lbt::fastresume_rejected_alert const& a) const
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+					wformat(hal::app().res_wstr(HAL_FAST_RESUME_ALERT))
+						% get(a.handle).name()
+						% hal::from_utf8_safe(a.msg()))
+			)	);				
+		}
+		
+		void operator()(lbt::piece_finished_alert const& a) const
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(Event::debug, a.timestamp(),
+					wformat(hal::app().res_wstr(HAL_PIECE_FINISHED_ALERT))
+						% get(a.handle).name()
+						% a.piece_index)
+			)	);				
+		}
+		
+		void operator()(lbt::block_finished_alert const& a) const
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(Event::debug, a.timestamp(),
+					wformat(hal::app().res_wstr(HAL_BLOCK_FINISHED_ALERT))
+						% get(a.handle).name()
+						% a.block_index
+						% a.piece_index)
+			)	);				
+		}
+		
+		void operator()(lbt::block_downloading_alert const& a) const
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(Event::debug, a.timestamp(),
+					wformat(hal::app().res_wstr(HAL_BLOCK_DOWNLOADING_ALERT))
+						% get(a.handle).name()
+						% a.block_index
+						% a.piece_index)
 			)	);				
 		}
 		
@@ -463,6 +511,10 @@ public:
 				lbt::tracker_warning_alert,
 				lbt::tracker_announce_alert,
 				lbt::tracker_reply_alert,
+				lbt::fastresume_rejected_alert,
+				lbt::piece_finished_alert,
+				lbt::block_finished_alert,
+				lbt::block_downloading_alert,
 				lbt::alert
 			>::handle_alert(p_alert, handler);			
 			
@@ -614,19 +666,7 @@ private:
 	asio::deadline_timer timer_;
 	bool keepChecking_;
 	
-//	TorrentMap torrents;
-	TorrentManager theTorrents;
-	
-/*	TorrentInternal& getTorrent(lbt::torrent_handle h)
-	{
-		TorrentMap::iterator i = torrents.find(h.get_torrent_info().name());
-	
-		if (i != torrents.end())
-			return (*i).second;
-		
-		throw lbt::invalid_handle();
-	}
-*/	
+	TorrentManager theTorrents;	
 	const wpath workingDirectory;
 	
 	int defTorrentMaxConn_;
@@ -1007,7 +1047,9 @@ void BitTorrent::ip_filter_import_dat(boost::filesystem::path file, progressCall
 				}
 				catch(...)
 				{
-					hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, from_utf8((format("Invalid IP range: %1%-%2%.") % first % last).str()))));
+					hal::event().post(shared_ptr<hal::EventDetail>(
+						new hal::EventDebug(hal::Event::info, 
+							from_utf8((format("Invalid IP range: %1%-%2%.") % first % last).str()))));
 				}
 			}
 		}
@@ -1118,7 +1160,6 @@ void BitTorrent::addTorrent(wpath file, wpath saveDirectory, bool startPaused, b
 	if (p.second)
 	{
 		TorrentInternal& me = pimpl->theTorrents.get(torrent.name());
-		TorrentManager::torrentByName::iterator i = p.first;
 		
 		me.setTransferSpeed(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload());
 		me.setConnectionLimit(bittorrent().defTorrentMaxConn(), bittorrent().defTorrentMaxUpload());
@@ -1287,13 +1328,15 @@ void BitTorrent::resumeAll()
 			}
 			catch(const lbt::duplicate_torrent&)
 			{
-				hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::debug, L"Encountered duplicate torrent")));
+				hal::event().post(shared_ptr<hal::EventDetail>(
+					new hal::EventDebug(hal::Event::debug, L"Encountered duplicate torrent")));
 				
 				++i; // Harmless, don't worry about it.
 			}
 			catch(const std::exception& e) 
 			{
-				hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventStdException(hal::Event::warning, e, L"resumeAll")));
+				hal::event().post(shared_ptr<hal::EventDetail>(
+					new hal::EventStdException(hal::Event::warning, e, L"resumeAll")));
 				
 				pimpl->theTorrents.erase(i++);
 			}			
@@ -1324,7 +1367,7 @@ void BitTorrent::closeAll()
 	{
 		if ((*i).torrent.inSession())
 		{
-			(*i).torrent.handle().pause(); // NB. internal pause, not registered in Torrents.xml
+			(*i).torrent.handle().pause(); // Internal pause, not registered in Torrents.xml
 		}
 	}
 	

@@ -243,19 +243,9 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 
 void HaliteWindow::issueUiUpdate()
 {	
-//	hal::event().post(shared_ptr<hal::EventDetail>(
-//		new hal::EventDebug(hal::Event::info, (wformat(L"issueUiUpdate")).str().c_str())));
-
 	try
 	{
 	
-/*	std::set<string> allSelected;
-
-	std::transform(haliteList.manager().allSelected().begin(), 
-				   haliteList.manager().allSelected().end(), 
-				   std::inserter(allSelected, allSelected.end()), 
-				   &hal::to_utf8);	
-*/
 	const hal::TorrentDetails& torrents = hal::bittorrent().updateTorrentDetails(
 		haliteList.manager().selected(), haliteList.manager().allSelected());
 
@@ -306,7 +296,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	}
 	
 	wpath file(lpszPath, boost::filesystem::native);	
-	hal::bittorrent().addTorrent(file, wpath(saveDirectory));
+	hal::bittorrent().addTorrent(file, wpath(saveDirectory), startPaused, compactStorage);
 
 	ui().update();
 	

@@ -18,12 +18,12 @@ HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	std::vector<wstring> names;	
 	wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
 	
-	// "Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time"
+	// "Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time"
 	boost::split(names, column_names, boost::is_any_of(L";"));
 	
-	array<int, 20> widths = {100,110,60,60,60,42,45,61,45,45,45,45,45,45,45,45,45,45,45,45};
-	array<int, 20> order = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19};
-	array<bool, 20> visible = {true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true};
+	array<int, 21> widths = {100,110,60,60,60,42,45,61,45,45,45,45,45,45,45,45,45,45,45,45,45};
+	array<int, 21> order = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+	array<bool, 21> visible = {true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true};
 	
 	SetDefaults(names, widths, order, visible);
 	Load();
@@ -56,6 +56,7 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	SetColumnSortType(17, LVCOLSORT_CUSTOM, new ColumnAdapters::ActiveTime());
 	SetColumnSortType(18, LVCOLSORT_CUSTOM, new ColumnAdapters::SeedingTime());
 	SetColumnSortType(19, LVCOLSORT_CUSTOM, new ColumnAdapters::StartTime());
+	SetColumnSortType(20, LVCOLSORT_CUSTOM, new ColumnAdapters::FinishTime());
 }
 
 void HaliteListViewCtrl::OnDestroy()

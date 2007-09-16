@@ -130,7 +130,7 @@ public:
 	TorrentDetail(std::wstring f, std::wstring n, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
 			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, boost::int64_t tpU=0, boost::int64_t tD=0, boost::int64_t tpD=0, int prs=0, int prsCnt=0, int sds=0, int sdsCnt=0,  float r=0, 
 			time_duration eta=boost::posix_time::seconds(0), time_duration uIn=boost::posix_time::seconds(0),
-			time_duration actve=boost::posix_time::seconds(0), time_duration seding=boost::posix_time::seconds(0), ptime srt=boost::posix_time::second_clock::universal_time()) :
+			time_duration actve=boost::posix_time::seconds(0), time_duration seding=boost::posix_time::seconds(0), ptime srt=boost::posix_time::second_clock::universal_time(), ptime fin=boost::posix_time::second_clock::universal_time()) :
 		filename_(f),
 		name_(n),
 		state_(s),
@@ -155,7 +155,8 @@ public:
 		fileDetailsFilled_(false),
 		active_(actve),
 		seeding_(seding),
-		startTime_(srt)
+		startTime_(srt),
+		finishTime_(fin)
 	{}
 
 	TorrentDetail() :	
@@ -204,6 +205,7 @@ public:
 	const time_duration& active() { return active_; }
 	const time_duration& seeding() { return seeding_; }
 	const ptime& startTime() { return startTime_; }
+	const ptime& finishTime() { return finishTime_; }
 	
 public:
 	std::wstring filename_;
@@ -235,6 +237,7 @@ public:
 	time_duration active_;
 	time_duration seeding_;
 	ptime startTime_;
+	ptime finishTime_;
 	
 private:
 	mutable bool peerDetailsFilled_;
