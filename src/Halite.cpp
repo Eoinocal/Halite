@@ -97,6 +97,22 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	assert (SUCCEEDED(hRes));	
 	
 	hal::ini().load_data();
+	halite_log_file_.connect();
+	
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventGeneral(hal::Event::info, boost::posix_time::second_clock::universal_time(),
+			wformat(L"Exe Path: %1%.")
+				% hal::app().exe_path())));		
+	
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventGeneral(hal::Event::info, boost::posix_time::second_clock::universal_time(),
+			wformat(L"Initial Path: %1%.")
+				% hal::app().initial_path())));		
+	
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventGeneral(hal::Event::info, boost::posix_time::second_clock::universal_time(),
+			wformat(L"Working Directory: %1%.")
+				% hal::app().working_directory())));		
 	
 	{ WinAPIMutex oneInstance(HALITE_GUID);
 	
@@ -136,9 +152,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		{	
 			hal::app().set_initial_hinstance(hInstance);
 			if (halite().dll() != L"") hal::app().set_res_dll(halite().dll());
-			
-			halite_log_file_.connect();
-			
+						
 			HaliteWindow wndMain(WMU_ARE_YOU_ME);
 			if (wndMain.CreateEx() == NULL)
 				return 1;

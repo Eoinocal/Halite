@@ -39,7 +39,8 @@ namespace hal
 {
 
 app_module::app_module() :
-	hmod_(NULL)
+	hmod_(NULL),
+	initial_path_(boost::filesystem::initial_path<boost::filesystem::wpath>())
 {
 	LPWSTR *szArglist; int nArgs;		
 	szArglist = CommandLineToArgvW(GetCommandLineW(), &nArgs);
@@ -58,6 +59,8 @@ app_module::app_module() :
 		
 		for (int i=1; i<nArgs; ++i) 
 			command_args_.push_back(szArglist[i]);
+			
+		working_directory_ = exe_path_.branch_path();
 	}		
 	LocalFree(szArglist);	
 }

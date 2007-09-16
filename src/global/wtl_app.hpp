@@ -16,6 +16,7 @@
 
 #include <boost/static_assert.hpp>
 #include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
 
 namespace hal
 {
@@ -25,6 +26,9 @@ class app_module
 public:	
 	const std::wstring& exe_string() const { return exe_string_; }
 	const boost::filesystem::wpath& exe_path() const { return exe_path_; }
+	const boost::filesystem::wpath& initial_path() const { return initial_path_; }
+	const boost::filesystem::wpath& working_directory() const { return working_directory_; }
+	
 	const std::vector<std::wstring>& command_args() const { return command_args_; }
 	
 	std::wstring res_wstr(unsigned uID);
@@ -43,7 +47,11 @@ private:
 	HINSTANCE instance_;
 	std::wstring exe_string_;
 	std::wstring res_dll_;
+	
 	boost::filesystem::wpath exe_path_;
+	boost::filesystem::wpath initial_path_;
+	boost::filesystem::wpath working_directory_;
+	
 	std::vector<std::wstring> command_args_;	
 };
 
