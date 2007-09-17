@@ -221,30 +221,24 @@ void AdvFilesDialog::doUiUpdate()
 }
 
 void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
-{
-	hal::FileDetails fileDetails;
-	
-//	foreach (const hal::TorrentDetail_ptr torrent, tD.selectedTorrents())
-	if (hal::TorrentDetail_ptr torrent = tD.focusedTorrent())
-	{
-		std::copy(torrent->fileDetails().begin(), torrent->fileDetails().end(), 
-			std::back_inserter(fileDetails));
-	}
-	
-	list_.setFocused(tD.focusedTorrent());
-	
-	std::sort(fileDetails.begin(), fileDetails.end());
-	
-	{ 	UpdateLock<FileTreeView> lock(tree_);
-	
-		treeManager_.InvalidateAll();
+{	
+	if (hal::TorrentDetail_ptr torrent = tD.selectedTorrent()) 	
+	{	
+		string torrent_name = hal::to_utf8(torrent->filename());
 		
-		foreach (hal::FileDetail file, fileDetails)
-		{
-			treeManager_.EnsureValid(file.branch);
+		if (current_torrent_name_ != torrent_name)
+		{	
+			current_torrent_name_ = torrent_name;
+			focusChanged(current_torrent_name_);
 		}
-		
-		treeManager_.ClearInvalid();
+	}
+	else
+	{	
+		if (current_torrent_name_ != "")
+		{	
+			current_torrent_name_ = "";
+			focusChanged(current_torrent_name_);
+		}	
 	}
 	
 	std::pair<hal::FileDetails::iterator, hal::FileDetails::iterator> range =
@@ -303,6 +297,36 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 
 		list_.ConditionallyDoAutoSort();
 	}
+}
+
+void AdvFilesDialog::focusChanged(string& torrent_name)
+{
+	const hal::TorrentDetails& tD = hal::bittorrent().torrentDetails();
+	
+//	foreach (const hal::TorrentDetail_ptr torrent, tD.selectedTorrents())
+	if (hal::TorrentDetail_ptr torrent = tD.focusedTorrent())
+	{
+		std::copy(torrent->fileDetails().begin(), torrent->fileDetails().end(), 
+			std::back_inserter(fileDetails));
+	}
+	
+	list_.setFocused(tD.focusedTorrent());
+	
+	std::sort(fileDetails.begin(), fileDetails.end());
+	
+	{ 	UpdateLock<FileTreeView> lock(tree_);
+	
+		treeManager_.InvalidateAll();
+		
+		foreach (hal::FileDetail file, fileDetails)
+		{
+			treeManager_.EnsureValid(file.branch);
+		}
+		
+		treeManager_.ClearInvalid();
+	}
+	
+
 	
 	splitterPos = splitter_.GetSplitterPos();
 }

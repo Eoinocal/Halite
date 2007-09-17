@@ -220,9 +220,9 @@ void HaliteDialog::focusChanged(string& torrent_name)
 	NoConnUp = connLimit.second;
 	TranLimitDown = tranLimit.first;
 	TranLimitUp = tranLimit.second;
-		
+	
 	m_list.clearAll();
-		
+	
 	DoDataExchange(false);	
 }
 

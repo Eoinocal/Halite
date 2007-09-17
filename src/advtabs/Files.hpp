@@ -373,6 +373,7 @@ public:
 	void DlgResize_UpdateLayout(int cxWidth, int cyHeight);
 	void doUiUpdate();
 	void uiUpdate(const hal::TorrentDetails& tD);
+	void focusChanged(string& torrent_name);
 
 protected:
 	CSplitterWindow splitter_;
@@ -385,4 +386,7 @@ protected:
 	//hal::FileDetails fileDetails_;
 	std::map<wpath, CTreeItem> fileTreeMap_;
 	TreeViewManager<FileTreeView> treeManager_;
+	
+	string current_torrent_name_;	
+	hal::FileDetails fileDetails;
 };

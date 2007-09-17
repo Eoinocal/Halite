@@ -571,7 +571,7 @@ private:
 		theSession(lbt::fingerprint("HL", 0, 2, 9, 0)),
 		timer_(io_),
 		keepChecking_(false),
-		workingDirectory(hal::app().exe_path().branch_path()),
+		workingDirectory(hal::app().working_directory()),
 		defTorrentMaxConn_(-1),
 		defTorrentMaxUpload_(-1),
 		defTorrentDownload_(-1),

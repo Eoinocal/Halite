@@ -26,6 +26,10 @@ Halite& halite()
 	return h;
 }
 
+namespace fs = boost::filesystem;
+using fs::ifstream;
+using fs::ofstream;
+	
 static class halite_log_file : public boost::signals::trackable
 {
 public:	
@@ -33,11 +37,11 @@ public:
 	{
 		if (halite().logToFile())
 		{
-			if (!wofs.is_open()) wofs.open("HaliteLog.txt");
+			if (!wofs.is_open()) wofs.open(hal::app().working_directory()/L"HaliteLog.txt");
 			
 			wofs << (wformat(L"%1% %2%, %3%\r\n") 
 				% event->timeStamp() % hal::Event::eventLevelToStr(event->level()) 
-				% event->msg());
+				% event->msg()).str();
 			
 			wofs.flush();
 		}
@@ -52,7 +56,7 @@ public:
 	void disconnect() { conn_.disconnect(); }
 	
 private:
-	std::wofstream wofs;
+	fs::wofstream wofs;
 	boost::signals::connection conn_;
 	
 } halite_log_file_;
@@ -152,7 +156,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		{	
 			hal::app().set_initial_hinstance(hInstance);
 			if (halite().dll() != L"") hal::app().set_res_dll(halite().dll());
-						
+			
 			HaliteWindow wndMain(WMU_ARE_YOU_ME);
 			if (wndMain.CreateEx() == NULL)
 				return 1;

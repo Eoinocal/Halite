@@ -522,9 +522,8 @@ public:
 	
 	void prepare(wpath filename, wpath saveDirectory, wpath workingDirectory)
 	{
-	
 		metadata_ = haldecode(filename);
-		info_ = lbt::torrent_info(metadata_);
+		lbt::torrent_info info_(metadata_);
 		
 		name_ = hal::from_utf8_safe(info_.name());
 		
@@ -697,7 +696,6 @@ private:
 	std::vector<int> filePriorities_;
 	
 	lbt::torrent_status statusMemory_;
-	lbt::torrent_info info_;
 	
 	bool compactStorage_;
 };
