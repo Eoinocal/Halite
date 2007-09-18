@@ -1,12 +1,12 @@
-"English" ---> "Español (España)"
+﻿"English" ---> "Español (España)"
 "English.rtf" --->  "../lang/Spanish.rtf" 
 "MS Shell Dlg" --->  ??? 
 "Torrent" --->  "Torrent" 
 "Tracker" --->  "Tracker"
 "" --->  ""
 "msctls_progress32" --->  ??? 
-"Torrent connection limits:" --->  ??? 
-"Torrent transfer rates (KB/s):" --->  ??? 
+"Torrent connection limits:" --->  "Límites de conexión del torrent:"
+"Torrent transfer rates (KB/s):" --->  "Tasas de transferencias del torrent (KB/s):"
 "Total" --->  "Total"
 "Up" --->  ??? 
 "Down" --->  ??? 
@@ -23,9 +23,9 @@
 "ETA:" --->  "Tiempo restante:"
 "Ratio:" --->  "Ratio:"
 "BitTorrent" --->  "BitTorrent"
-"Open a (single) port between : " --->  "Abrir un único puerto entre :"
+"Open a (single) port between : " --->  "Abrir un (único) puerto entre :"
 "Enable DHT" --->  "Activar DHT"
-"Button" --->  ??? 
+"Button" --->  "Botón"
 "to" --->  "a"
 "Select the (TCP) port (or range) on which to listen for incomming connections." --->  "Elige el puerto TCP (o el rango) en el que se escucharán las conexiones entrantes."
 "Distributed Hash Tables" --->  ??? 
@@ -60,7 +60,7 @@
 "Plaintext" --->  ??? 
 "RC4" --->  "RC4"
 "Both" --->  "Ambos"
-"Prefer RC4" --->  ??? 
+"Prefer RC4" --->  "Preferir RC4"
 "Remote Control" --->  "Control remoto"
 "Remote Control Options" --->  "Opciones del control remoto"
 "Enable Remote Control" --->  "Activar control remoto"
@@ -76,18 +76,18 @@
 "Cancel" --->  "Cancelar"
 "Torrents" --->  "Torrents"
 "Global Limits" --->  "Límites globales"
-"Total max connections :" --->  ??? 
+"Total max connections :" --->  "Conexiones máximas totales :"
 "Total upload slots :" --->  ??? 
 "Download Rate (KB/s) :" --->  Tasa de bajada (KB/s) :"
 "Upload Rate (KB/s) :" --->  Tasa de subida (KB/s) :"
 "Torrent Defaults" --->  ??? 
 "These options set global maximums which will always be honoured." --->  ??? 
-"These options specify the default limits applied to new torrents." --->  ??? 
+"These options specify the default limits applied to new torrents." --->  "Estas opciones especifican los límites por defecto que se aplican a los nuevos torrents."
 "Default save folder :" --->  "Directorio de guardado predeterminado :"
 "..." --->  "..."
 "Prompt for alternate save folder." --->  "Preguntar por directorio de guardado alternativo."
-"Halite shutting down..." --->  ??? 
-"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." --->  ??? 
+"Halite shutting down..." --->  "Halite se está cerrando..."
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." --->  "Le llevará un tiempo a la sesión Bittorrent a cerrarse limpiamente. Después este mensaje desaparecerá y el programa se cerrará."
 "Show this message in future" --->  "Mostrar este mensaje en el futuro"
 "Create new torrent" --->  "Crear nuevo torrent"
 "Save" --->  "Guardar"
@@ -101,7 +101,7 @@
 "SysListView32" --->  ??? 
 "Name:" --->  "Nombre:"
 "Tracker:" --->  "Tracker:"
-"Status:" --->  ??? 
+"Status:" --->  "Estado:"
 "Time left:" --->  "Tiempo restante:"
 "Completed:" --->  "Completado:"
 "About" --->  "Acerca de"
@@ -139,11 +139,11 @@
 "StringFileInfo" --->  ??? 
 "180904b0" --->  ??? 
 "Comments" --->  "Comentarios"
-"libTorrrent based client." --->  ??? 
+"libTorrrent based client." --->  "Cliente basado en libTorrent."
 "CompanyName" --->  ??? 
 "BinaryNotions.com" --->  ??? 
 "FileDescription" --->  ??? 
-"Halite BitTorrent Client" --->  ??? 
+"Halite BitTorrent Client" --->  "Cliente de Bittorrent Halite"
 "FileVersion" --->  ??? 
 "InternalName" --->  ??? 
 "Halite" --->  ??? 
@@ -188,7 +188,7 @@
 "Exception caught; %1%, from %2%." --->  ??? 
 "XML exception: %1%." --->  ??? 
 "Unicode exception: %1%." --->  ??? 
-"Bittorrent Event: %1%." --->  ??? 
+"Bittorrent Event: %1%." --->  "Evento de Bittorrent: %1%."
 "Peer Event: %1%." --->  ??? 
 "Tracker Event: %1%." --->  ??? 
 "Debug Event: %1%." --->  ??? 
@@ -202,14 +202,14 @@
 "Torrent Root" --->  ??? 
 "Interesting" --->  ??? 
 "Choked" --->  ??? 
-"Interested in us" --->  ??? 
+"Interested in us" --->  "Interesado en nosotros"
 "Has choked us" --->  ??? 
-"Supports extensions" --->  ??? 
+"Supports extensions" --->  "Soporta extensiones"
 "Local connection" --->  "Conexión local"
 "Handshake" --->  ??? 
 "Connecting" --->  "Conectando"
-"Queued" --->  ??? 
-"RC4 Encrypted" --->  ??? 
+"Queued" --->  "En cola"
+"RC4 Encrypted" --->  "Codificado en RC4"
 "Plaintext Encrypted" --->  ??? 
 "Queued for Checking" --->  ??? 
 "Checking Files" --->  "Comprobando archivos"
@@ -217,10 +217,10 @@
 "Downloading" --->  "Descargando"
 "Finished" --->  "Terminado"
 "Seeding" --->  ??? 
-"Allocating" --->  ??? 
+"Allocating" --->  "Asignando espacio"
 "Stopped" --->  "Detenido"
 "Paused" --->  "En pausa"
-"Downloading Metadata" --->  ??? 
+"Downloading Metadata" --->  "Descargando Metadata"
 "Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time" --->  "Nombre;Estado;Progreso;Descarga;Subida;Pares;Semillas;Tiempo restante;Copias;Tracker;Reanunciar;Ratio;Total;Completado;Restante;Descargado;Subido;Activo;Seeding;Hora de inicio"
 "Time;Message;Severity" --->  ??? 
 "Tracker;Tier" --->  ??? 
