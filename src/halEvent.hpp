@@ -110,14 +110,38 @@ public:
 		msg_(m)
 	{}
 	
-	EventGeneral(Event::eventLevel l, std::wstring m) :
+	template<typename str_t>
+	EventGeneral(Event::eventLevel l, str_t m) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), Event::noEvent),
-		msg_(m)
+		msg_(hal::to_wstr_shim(m))
 	{}
 	
-	EventGeneral(Event::eventLevel l, boost::posix_time::ptime t, wformat f) :
+	template<typename str_t>	
+	EventGeneral(Event::eventLevel l, boost::posix_time::ptime t, str_t m) :
 		EventDetail(l, t, Event::noEvent),
-		msg_(f.str())
+		msg_(hal::to_wstr_shim(m))
+	{}
+	
+	virtual std::wstring msg()
+	{
+		if (Event::noEvent != code())
+			return (wformat(hal::app().res_wstr(code())) % msg_).str();
+		else
+			return msg_;
+	}
+	
+private:
+	std::wstring msg_;
+};
+
+class EventMsg : public EventDetail
+{
+public:
+	template<typename str_t>
+	EventMsg(str_t m, Event::eventLevel l=Event::debug, 
+		boost::posix_time::ptime t=boost::posix_time::second_clock::universal_time(), Event::codes c=Event::noEvent) :
+		EventDetail(l, t, c),
+		msg_(hal::to_wstr_shim(m))
 	{}
 	
 	virtual std::wstring msg()
@@ -174,8 +198,8 @@ public:
 	template<typename t_str, typename f_str>
 	EventInvalidTorrent(Event::eventLevel l, Event::codes code, t_str t, f_str f) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), code),
-		torrent_(hal::to_wstr(t)),
-		function_(hal::to_wstr(f))
+		torrent_(hal::to_wstr_shim(t)),
+		function_(hal::to_wstr_shim(f))
 	{}
 	
 	virtual std::wstring msg()
@@ -195,9 +219,9 @@ public:
 	template<typename e_str, typename t_str, typename f_str>
 	EventTorrentException(Event::eventLevel l, Event::codes code, e_str e, t_str t, f_str f) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), code),
-		torrent_(hal::to_wstr(t)),
-		function_(hal::to_wstr(f)),
-		exception_(hal::to_wstr(e))
+		torrent_(hal::to_wstr_shim(t)),
+		function_(hal::to_wstr_shim(f)),
+		exception_(hal::to_wstr_shim(e))
 	{}
 	
 	virtual std::wstring msg()

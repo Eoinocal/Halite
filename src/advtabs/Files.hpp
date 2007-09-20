@@ -39,7 +39,7 @@ public:
 	
 	struct Size : public ColAdapter_t
 	{
-		virtual bool less(dataClass& l, dataClass& r)	{ return l.size < r.size; }		
+		virtual int less(dataClass& l, dataClass& r) { return equalsOrLess(l.size, r.size); }		
 		virtual std::wstring print(dataClass& dc) 
 		{
 			return (wformat(L"%1$.2fMB") % 
@@ -49,7 +49,7 @@ public:
 	
 	struct Progress : public ColAdapter_t
 	{
-		virtual bool less(dataClass& l, dataClass& r)	{ return l.progress < r.progress; }		
+		virtual int less(dataClass& l, dataClass& r) { return equalsOrLess(l.progress, r.progress); }		
 		virtual std::wstring print(dataClass& t) 
 		{
 			return (wformat(L"%1$.2f%%") % (t.progress*100)).str(); 
@@ -58,7 +58,7 @@ public:
 	
 	struct Priority : public ColAdapter_t
 	{
-		virtual bool less(dataClass& l, dataClass& r)	{ return l.priority < r.priority; }		
+		virtual int less(dataClass& l, dataClass& r) { return equalsOrLess(l.priority, r.priority); }		
 		virtual std::wstring print(dataClass& dc) 
 		{
 			switch (dc.priority)

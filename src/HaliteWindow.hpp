@@ -123,6 +123,7 @@ public:
 	}
 	
 	HaliteListViewCtrl& torrentsList() { return haliteList; }
+	LRESULT OnAreYouMe(UINT, WPARAM, LPARAM, BOOL&);
 	
 protected:
 	typedef CHaliteIni<HaliteWindow> iniClass;
@@ -166,7 +167,6 @@ protected:
 	LRESULT OnPaint(HDC dc);
 
 	LRESULT OnCopyData(HWND, PCOPYDATASTRUCT pCSD);
-	LRESULT OnAreYouMe(UINT, WPARAM, LPARAM, BOOL&) { return WM_AreYouMe_; }
 
 	void updateWindow();
 	void setCorrectDialog();

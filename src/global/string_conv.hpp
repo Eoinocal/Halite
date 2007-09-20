@@ -1,13 +1,14 @@
 
-// Copyright (c) 2007 Eóin O'Callaghan
-//
+//         Copyright Eóin O'Callaghan 2006 - 2007.
 // Distributed under the Boost Software License, Version 1.0.
-// http://www.boost.org/LICENSE_1_0.txt
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
 
 #ifndef GLOBAL_STRING_CONV
 #define GLOBAL_STRING_CONV
 
 #include <string>
+#include <boost/format.hpp>
 #include <boost/array.hpp>
 #include "unicode.hpp"
 
@@ -68,16 +69,72 @@ inline std::wstring from_utf8_safe(const std::string& s)
 	}
 }
 
-inline std::wstring to_wstr(const std::wstring& s)
+template<typename str_t>
+inline std::wstring to_wstr_shim(str_t& s)
 {
-		return s;
+	return s;
 }
 
-inline std::wstring to_wstr(const std::string& s)
+template<>
+inline std::wstring to_wstr_shim<const wchar_t *const>(const wchar_t *const& s)
 {
-		return from_utf8_safe(s);
+	return std::wstring(s);
 }
 
-} // namespace hal
+template<>
+inline std::wstring to_wstr_shim<const wchar_t *>(const wchar_t *& s)
+{
+	return std::wstring(s);
+}
+
+template<>
+inline std::wstring to_wstr_shim<const char *>(const char *& s)
+{
+	return from_utf8_safe(s);
+}
+
+template<>
+inline std::wstring to_wstr_shim<const char *const>(const char *const& s)
+{
+	return from_utf8_safe(s);
+}
+
+template<>
+inline std::wstring to_wstr_shim<const std::string>(const std::string& s)
+{
+	return from_utf8_safe(s);
+}
+
+template<>
+inline std::wstring to_wstr_shim<std::string>(std::string& s)
+{
+	return from_utf8_safe(s);
+}
+
+template<>
+inline std::wstring to_wstr_shim<const boost::wformat>(const boost::wformat& f)
+{
+	return f.str();
+}
+
+template<>
+inline std::wstring to_wstr_shim<boost::wformat>(boost::wformat& f)
+{
+	return f.str();
+}
+
+template<>
+inline std::wstring to_wstr_shim<const boost::format>(const boost::format& f)
+{
+	return from_utf8_safe(f.str());
+}
+
+template<>
+inline std::wstring to_wstr_shim<boost::format>(boost::format& f)
+{
+	return from_utf8_safe(f.str());
+}
+
+} // namespace aux
 
 #endif // GLOBAL_STRING_CONV

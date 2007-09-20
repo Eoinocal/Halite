@@ -50,7 +50,7 @@ class HaliteDialog :
 		
 		struct SpeedDown : public ColAdapter_t
 		{
-			virtual bool less(pD& l, pD& r)	{ return l.speed.first < r.speed.first; }		
+			virtual int less(pD& l, pD& r)	{ return equalsOrLess(l.speed.first, r.speed.first); }		
 			virtual std::wstring print(pD& p) 
 			{
 				return (wformat(L"%1$.2fkb/s") % (p.speed.first/1024)).str(); 
@@ -59,7 +59,7 @@ class HaliteDialog :
 		
 		struct SpeedUp : public ColAdapter_t
 		{
-			virtual bool less(pD& l, pD& r)	{ return l.speed.second < r.speed.second; }		
+			virtual int less(pD& l, pD& r)	{ return equalsOrLess(l.speed.second, r.speed.second); }		
 			virtual std::wstring print(pD& p) 
 			{
 				return (wformat(L"%1$.2fkb/s") % (p.speed.second/1024)).str(); 

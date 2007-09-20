@@ -157,7 +157,6 @@ std::ostream& operator<<(std::ostream& os, libtorrent::ip_range<asio::ip::addres
 
 } // namespace libtorrent
 
-
 #include "halTorrentInternal.hpp"
 
 namespace hal 
@@ -334,10 +333,9 @@ public:
 		void operator()(lbt::torrent_finished_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
-				new EventGeneral(Event::info, a.timestamp(),
-					wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
-						% get(a.handle).name())
-			)	);
+				new EventMsg((wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
+						% get(a.handle).name()), 
+					Event::info, a.timestamp())));
 			
 			get(a.handle).finished();	
 		}
@@ -345,10 +343,9 @@ public:
 		void operator()(lbt::torrent_paused_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
-				new EventGeneral(Event::info, a.timestamp(),
-					wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 
-						% get(a.handle).name())
-			)	);
+				new EventMsg((wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 
+						% get(a.handle).name()), 
+					Event::info, a.timestamp())));
 
 			get(a.handle).completedPause();
 		}
@@ -407,10 +404,9 @@ public:
 		void operator()(lbt::tracker_announce_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
-				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wformat(hal::app().res_wstr(HAL_TRACKER_ANNOUNCE_ALERT))
-						% get(a.handle).name())
-			)	);				
+				new EventMsg((wformat(hal::app().res_wstr(HAL_TRACKER_ANNOUNCE_ALERT)) 
+						% get(a.handle).name()), 
+					Event::info, a.timestamp())));
 		}
 		
 		void operator()(lbt::tracker_alert const& a) const
@@ -1494,7 +1490,7 @@ void BitTorrent::getAllFileDetails(const std::wstring& filename, FileDetails& fi
 
 bool BitTorrent::isTorrent(const std::string& filename)
 {	
-	return isTorrent(hal::to_wstr(filename));
+	return isTorrent(hal::to_wstr_shim(filename));
 }
 
 bool BitTorrent::isTorrent(const std::wstring& filename)
@@ -1510,7 +1506,7 @@ bool BitTorrent::isTorrent(const std::wstring& filename)
 
 void BitTorrent::pauseTorrent(const std::string& filename)
 {
-	pauseTorrent(hal::to_wstr(filename));
+	pauseTorrent(hal::to_wstr_shim(filename));
 }
 
 void BitTorrent::pauseTorrent(const std::wstring& filename)
@@ -1524,7 +1520,7 @@ void BitTorrent::pauseTorrent(const std::wstring& filename)
 
 void BitTorrent::resumeTorrent(const std::string& filename)
 {
-	resumeTorrent(hal::to_wstr(filename));
+	resumeTorrent(hal::to_wstr_shim(filename));
 }
 
 void BitTorrent::resumeTorrent(const std::wstring& filename)
@@ -1538,7 +1534,7 @@ void BitTorrent::resumeTorrent(const std::wstring& filename)
 
 void BitTorrent::stopTorrent(const std::string& filename)
 {
-	stopTorrent(hal::to_wstr(filename));
+	stopTorrent(hal::to_wstr_shim(filename));
 }
 
 void BitTorrent::stopTorrent(const std::wstring& filename)
@@ -1552,7 +1548,7 @@ void BitTorrent::stopTorrent(const std::wstring& filename)
 
 bool BitTorrent::isTorrentActive(const std::string& filename)
 {
-	return isTorrentActive(hal::to_wstr(filename));
+	return isTorrentActive(hal::to_wstr_shim(filename));
 }
 
 bool BitTorrent::isTorrentActive(const std::wstring& filename)
@@ -1568,7 +1564,7 @@ bool BitTorrent::isTorrentActive(const std::wstring& filename)
 
 void BitTorrent::reannounceTorrent(const std::string& filename)
 {
-	reannounceTorrent(hal::to_wstr(filename));
+	reannounceTorrent(hal::to_wstr_shim(filename));
 }
 
 void BitTorrent::reannounceTorrent(const std::wstring& filename)
@@ -1582,7 +1578,7 @@ void BitTorrent::reannounceTorrent(const std::wstring& filename)
 
 void BitTorrent::setTorrentLogin(const std::string& filename, std::wstring username, std::wstring password)
 {
-	setTorrentLogin(hal::to_wstr(filename), username, password);
+	setTorrentLogin(hal::to_wstr_shim(filename), username, password);
 }
 
 void BitTorrent::setTorrentLogin(const std::wstring& filename, std::wstring username, std::wstring password)
@@ -1596,7 +1592,7 @@ void BitTorrent::setTorrentLogin(const std::wstring& filename, std::wstring user
 
 std::pair<std::wstring, std::wstring> BitTorrent::getTorrentLogin(const std::string& filename)
 {
-	return getTorrentLogin(hal::to_wstr(filename));
+	return getTorrentLogin(hal::to_wstr_shim(filename));
 }
 
 std::pair<std::wstring, std::wstring> BitTorrent::getTorrentLogin(const std::wstring& filename)
@@ -1644,7 +1640,7 @@ void BitTorrent_impl::removalThread(lbt::torrent_handle handle, bool wipeFiles)
 
 void BitTorrent::removeTorrent(const std::string& filename)
 {
-	removeTorrent(hal::to_wstr(filename));
+	removeTorrent(hal::to_wstr_shim(filename));
 }
 
 void BitTorrent::removeTorrent(const std::wstring& filename)
@@ -1661,7 +1657,7 @@ void BitTorrent::removeTorrent(const std::wstring& filename)
 
 void BitTorrent::removeTorrentWipeFiles(const std::string& filename)
 {
-	removeTorrentWipeFiles(hal::to_wstr(filename));
+	removeTorrentWipeFiles(hal::to_wstr_shim(filename));
 }
 
 void BitTorrent::removeTorrentWipeFiles(const std::wstring& filename)

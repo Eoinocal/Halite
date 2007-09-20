@@ -4,8 +4,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#define HALITE_GUID L"HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}-dev"
-#define WMU_ARE_YOU_ME_STRING  L"WMU_ARE_YOU_ME_HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}-dev"
+#define HALITE_GUID L"HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}"
+#define WMU_ARE_YOU_ME_STRING  L"WMU_ARE_YOU_ME_HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}"
 #pragma comment(linker, "\"/manifestdependency:type='Win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #include "stdAfx.hpp"
@@ -103,21 +103,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	hal::ini().load_data();
 	halite_log_file_.connect();
 	
-	hal::event().post(shared_ptr<hal::EventDetail>(
-		new hal::EventGeneral(hal::Event::info, boost::posix_time::second_clock::universal_time(),
-			wformat(L"Exe Path: %1%.")
-				% hal::app().exe_path())));		
-	
-	hal::event().post(shared_ptr<hal::EventDetail>(
-		new hal::EventGeneral(hal::Event::info, boost::posix_time::second_clock::universal_time(),
-			wformat(L"Initial Path: %1%.")
-				% hal::app().initial_path())));		
-	
-	hal::event().post(shared_ptr<hal::EventDetail>(
-		new hal::EventGeneral(hal::Event::info, boost::posix_time::second_clock::universal_time(),
-			wformat(L"Working Directory: %1%.")
-				% hal::app().working_directory())));		
-	
 	{ WinAPIMutex oneInstance(HALITE_GUID);
 	
 	if (!oneInstance.owner() && halite().oneInst)
@@ -149,7 +134,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	}
 	else
 	{
-//		INI().LoadData();
+//		INI().LoadData();	
+		hal::event().post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(wformat(L"Exe Path: %1%.") % hal::app().exe_path())));		
+		
+		hal::event().post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(wformat(L"Initial Path: %1%.") % hal::app().initial_path())));		
+		
+		hal::event().post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg((wformat(L"Working Directory: %1%.") % hal::app().working_directory()), hal::Event::info)));		
 		
 		CMessageLoop theLoop;
 		_Module.AddMessageLoop(&theLoop);

@@ -92,7 +92,7 @@ public:
 	{
 		return who_;
 	}       
-      
+	
 private:
 	std::wstring who_;	
 };
@@ -305,7 +305,7 @@ public:
 			handle_.pause();
 			state_ = TorrentDetail::torrent_pausing;	
 		}	
-				
+		
 		assert(handle_.is_paused());
 	}
 	
@@ -869,7 +869,6 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 	if (inSession())
 	{
 		statusMemory_ = handle_.status();
-		//name_ = hal::from_utf8_safe(handle_.get_torrent_info().name());
 	}
 	
 	wstring state;

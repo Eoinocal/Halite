@@ -261,11 +261,18 @@ void HaliteWindow::issueUiUpdate()
 
 LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
 {
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"I recieved data.", hal::Event::info)));
+		
 	switch (pCSD->dwData)
 	{
 		case HALITE_SENDING_CMD:
 		{	
 			wstring filename(static_cast<wchar_t*>(pCSD->lpData), pCSD->cbData/sizeof(wchar_t));
+			
+			hal::event().post(shared_ptr<hal::EventDetail>(
+				new hal::EventMsg((wformat(L"Recieved data: %1%.") % filename), hal::Event::info)));
+		
 			ProcessFile(filename.c_str());
 			break;
 		}
@@ -470,4 +477,12 @@ LRESULT HaliteWindow::OnEraseBkgnd(HDC dc)
 LRESULT HaliteWindow::OnPaint(HDC dc)
 {
 	return 1;
+}
+
+LRESULT HaliteWindow::OnAreYouMe(UINT, WPARAM, LPARAM, BOOL&) 
+{
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"I tried to contact me.", hal::Event::info)));		
+
+	return WM_AreYouMe_; 
 }

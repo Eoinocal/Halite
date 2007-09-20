@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <functional>
+
 #include <boost/array.hpp>
 #include <boost/signals.hpp>
 #include <boost/algorithm/string/split.hpp>
@@ -23,6 +25,17 @@
 #define LVS_EX_DOUBLEBUFFER     0x00010000
 
 #include "HaliteUpdateLock.hpp"
+
+template<typename T>
+int equalsOrLess(const T& l, const T& r)
+{
+	if (l == r) 
+		return 0;
+	else if (l < r) 
+		return 1;
+	else 
+		return -1;
+}
 
 template <class TBase, typename adapterType=void*, size_t N=-1>
 class CHaliteSortListViewCtrl : 
@@ -281,7 +294,7 @@ public:
 	
 	struct ColumnAdapter
 	{
-		virtual bool less(adapterType& l, adapterType& r) = 0;
+		virtual int less(adapterType& l, adapterType& r) = 0;
 		virtual std::wstring print(adapterType& t) = 0;
 	};
 
@@ -618,7 +631,7 @@ protected:
 		ColumnAdapter* pCA = getColumnAdapter(iSortCol);
 		
 		if (pCA)
-			return (pCA->less(left, right)) ? 1 : -1;
+			return pCA->less(left, right);
 		else 
 			return 0;
 	}
