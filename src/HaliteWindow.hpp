@@ -105,11 +105,11 @@ public:
 
 	void ProcessFile(LPCTSTR lpszPath);
 	
-	void connectUiUpdate(boost::function<void (const hal::TorrentDetails& allTorrents)> fn) 
+	boost::signals::connection connectUiUpdate(boost::function<void (const hal::TorrentDetails& allTorrents)> fn) 
 	{ 
-		ui_update_signal_.connect(fn); 
+		return ui_update_signal_.connect(fn); 
 	}
-		
+	
 	boost::signal<void (const hal::TorrentDetails& allTorrents)> & ui_sig()
 	{ 
 		return ui_update_signal_; 

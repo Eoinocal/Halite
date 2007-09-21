@@ -289,6 +289,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\assert.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\broadcast_socket.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\bt_peer_connection.cpp"
 				>
 			</File>
@@ -302,6 +310,10 @@
 			</File>
 			<File
 				RelativePath="..\..\lib\libtorrent\src\entry.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\enum_net.cpp"
 				>
 			</File>
 			<File
@@ -378,6 +390,10 @@
 			</File>
 			<File
 				RelativePath="..\..\lib\libtorrent\src\session_impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\sha1.cpp"
 				>
 			</File>
 			<File

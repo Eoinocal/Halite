@@ -23,7 +23,7 @@ public:
 	CHaliteDialogBase(HaliteWindow& haliteWindow) :
 		haliteWindow_(haliteWindow)
 	{		
-		haliteWindow.connectUiUpdate(bind(&TBase::uiUpdate, static_cast<TBase*>(this), _1));
+		connection_ = haliteWindow.connectUiUpdate(bind(&TBase::uiUpdate, static_cast<TBase*>(this), _1));
 	}
 	
 	void InitializeHalDialogBase()
@@ -55,5 +55,6 @@ protected:
 
 private:
 	HaliteWindow& haliteWindow_;
+	boost::signals::scoped_connection connection_;
 };
 
