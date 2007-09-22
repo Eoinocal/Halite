@@ -39,7 +39,7 @@ public:
 	
 	struct Size : public ColAdapter_t
 	{
-		virtual int less(dataClass& l, dataClass& r) { return equalsOrLess(l.size, r.size); }		
+		virtual int compare(dataClass& l, dataClass& r) { return hal::compare(l.size, r.size); }		
 		virtual std::wstring print(dataClass& dc) 
 		{
 			return (wformat(L"%1$.2fMB") % 
@@ -49,7 +49,7 @@ public:
 	
 	struct Progress : public ColAdapter_t
 	{
-		virtual int less(dataClass& l, dataClass& r) { return equalsOrLess(l.progress, r.progress); }		
+		virtual int compare(dataClass& l, dataClass& r) { return hal::compare(l.progress, r.progress); }		
 		virtual std::wstring print(dataClass& t) 
 		{
 			return (wformat(L"%1$.2f%%") % (t.progress*100)).str(); 
@@ -58,7 +58,7 @@ public:
 	
 	struct Priority : public ColAdapter_t
 	{
-		virtual int less(dataClass& l, dataClass& r) { return equalsOrLess(l.priority, r.priority); }		
+		virtual int compare(dataClass& l, dataClass& r) { return hal::compare(l.priority, r.priority); }		
 		virtual std::wstring print(dataClass& dc) 
 		{
 			switch (dc.priority)
@@ -373,7 +373,7 @@ public:
 	void DlgResize_UpdateLayout(int cxWidth, int cyHeight);
 	void doUiUpdate();
 	void uiUpdate(const hal::TorrentDetails& tD);
-	void focusChanged(string& torrent_name);
+	void focusChanged(wstring& torrent_name);
 
 protected:
 	CSplitterWindow splitter_;
@@ -383,10 +383,9 @@ protected:
 	FileTreeView tree_;
 	FileListView list_;
 	
-	//hal::FileDetails fileDetails_;
 	std::map<wpath, CTreeItem> fileTreeMap_;
 	TreeViewManager<FileTreeView> treeManager_;
 	
-	string current_torrent_name_;	
+	wstring current_torrent_name_;	
 	hal::FileDetails fileDetails;
 };

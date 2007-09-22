@@ -32,7 +32,7 @@ class ini_impl
 {
 public:
 	ini_impl(std::wstring filename) :
-		working_file_(app().exe_path().branch_path()/filename)
+		working_file_(app().working_directory()/filename)
 	{}
 	
 	void load_data()
@@ -120,6 +120,9 @@ private:
 
 ini_file::ini_file(std::wstring filename) :
 	pimpl(new ini_impl(filename))
+{}
+
+ini_file::~ini_file()
 {}
 
 void ini_file::load_data()

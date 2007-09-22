@@ -703,7 +703,7 @@ private:
 typedef std::map<std::string, TorrentInternal> TorrentMap;
 typedef std::pair<std::string, TorrentInternal> TorrentPair;
 
-class TorrentManager
+class TorrentManager : public ini_adapter
 {
 	struct TorrentHolder
 	{
@@ -713,17 +713,13 @@ class TorrentManager
 		wstring name;		
 		
 		TorrentHolder() :
-			torrent(), filename(L""), name(L"")
+			torrent(), filename(torrent.filename()), name(torrent.name())
 		{}
 		
 		explicit TorrentHolder(const TorrentInternal& t) :
-			torrent(t), filename(t.filename()), name(t.name())
+			torrent(t), filename(torrent.filename()), name(torrent.name())
 		{}
-		
-		TorrentHolder(const wstring& f, const wstring& n, const TorrentInternal& t) :
-			torrent(t), filename(f), name(n)
-		{}
-				
+						
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
@@ -757,11 +753,14 @@ public:
 	typedef TorrentMultiIndex::index<byFilename>::type torrentByFilename;
 	typedef TorrentMultiIndex::index<byName>::type torrentByName;
 	
-	TorrentManager()
+	TorrentManager(ini_file& ini) :
+		ini_adapter("manager", ini)
 	{}
 	
-	TorrentManager(const TorrentMap& map)
-	{			
+	TorrentManager& operator=(const TorrentMap& map)
+	{
+		torrents_.clear();
+		
 		for (TorrentMap::const_iterator i=map.begin(), e=map.end(); i != e; ++i)
 		{
 			torrents_.insert(TorrentHolder((*i).second));
@@ -797,6 +796,15 @@ public:
 		if (it != torrents_.get<byName>().end())
 		{
 			return (*it).torrent;
+		}
+		
+		event().post(shared_ptr<EventDetail>(
+			new EventMsg(wformat(L"Invalid Torrent. theTorrents size: %1%.") % torrents_.size())));	
+
+		for (torrentByName::iterator i=begin(), e=end(); i != e; ++i)
+		{
+		event().post(shared_ptr<EventDetail>(
+			new EventMsg(wformat(L"-> %1% - %2%.") % (*i).name % (*i).torrent.name())));	
 		}
 		
 		throw invalidTorrent(name);

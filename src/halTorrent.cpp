@@ -75,6 +75,7 @@
 #include "halTorrent.hpp"
 #include "halEvent.hpp"
 #include "global/string_conv.hpp"
+#include "global/ini_adapter.hpp"
 
 #define foreach BOOST_FOREACH
 
@@ -568,6 +569,8 @@ private:
 		timer_(io_),
 		keepChecking_(false),
 		workingDirectory(hal::app().working_directory()),
+		bittorrentIni(L"BitTorrent.xml"),
+		theTorrents(bittorrentIni),
 		defTorrentMaxConn_(-1),
 		defTorrentMaxUpload_(-1),
 		defTorrentDownload_(-1),
@@ -586,12 +589,13 @@ private:
 		theSession.add_extension(&lbt::create_ut_pex_plugin);
 		theSession.set_max_half_open_connections(10);
 		
+		/*
 		bool tryOld = false;
 		
 		try
 		{
 		
-		fs::wifstream ifs(workingDirectory/L"Torrents.xml");
+		fs::wifstream ifs(workingDirectory/L"BitTorrent.xml");
 		if (ifs)
 		{
 			boost::archive::xml_wiarchive ia(ifs);						
@@ -632,6 +636,7 @@ private:
 			}
 		}
 		
+		*/
 		if (exists(workingDirectory/L"DHTState.bin"))
 		{
 			try
@@ -662,8 +667,9 @@ private:
 	asio::deadline_timer timer_;
 	bool keepChecking_;
 	
-	TorrentManager theTorrents;	
 	const wpath workingDirectory;
+	ini_file bittorrentIni;
+	TorrentManager theTorrents;	
 	
 	int defTorrentMaxConn_;
 	int defTorrentMaxUpload_;
@@ -684,6 +690,7 @@ private:
 	bool dht_on_;
 	lbt::dht_settings dht_settings_;
 	lbt::entry dht_state_;
+	
 };
 
 BitTorrent::BitTorrent() :
@@ -691,20 +698,20 @@ BitTorrent::BitTorrent() :
 {}
 
 #define HAL_GENERIC_TORRENT_EXCEPTION_CATCH(TORRENT, FUNCTION) \
-catch (const lbt::invalid_handle&)\
+catch (const lbt::invalid_handle&) \
 {\
-	event().post(shared_ptr<EventDetail>(\
-		new EventInvalidTorrent(Event::critical, Event::invalidTorrent, TORRENT, std::string(FUNCTION))));\
+	event().post(shared_ptr<EventDetail>( \
+		new EventInvalidTorrent(Event::critical, Event::invalidTorrent, TORRENT, std::string(FUNCTION)))); \
 }\
-catch (const invalidTorrent& t)\
+catch (const invalidTorrent& t) \
 {\
-	event().post(shared_ptr<EventDetail>(\
-		new EventInvalidTorrent(Event::critical, Event::invalidTorrent, t.who(), std::string(FUNCTION))));\
+	event().post(shared_ptr<EventDetail>( \
+		new EventInvalidTorrent(Event::info, Event::invalidTorrent, t.who(), std::string(FUNCTION)))); \
 }\
-catch (const std::exception& e)\
+catch (const std::exception& e) \
 {\
-	event().post(shared_ptr<EventDetail>(\
-		new EventTorrentException(Event::critical, Event::torrentException, std::string(e.what()), TORRENT, std::string(FUNCTION))));\
+	event().post(shared_ptr<EventDetail>( \
+		new EventTorrentException(Event::critical, Event::torrentException, std::string(e.what()), TORRENT, std::string(FUNCTION)))); \
 }
 
 void BitTorrent::shutDownSession()

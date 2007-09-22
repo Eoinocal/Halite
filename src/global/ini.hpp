@@ -23,6 +23,9 @@ class ini_impl;
 class ini_file
 {
 public:	
+	ini_file(std::wstring filename);
+	~ini_file();
+	
 	void load_data();
 	void save_data();
 	
@@ -33,10 +36,8 @@ public:
 	
 	friend ini_file& ini();
 	
-private:
-	ini_file(std::wstring filename);
-	
-	boost::scoped_ptr<ini_impl> pimpl;
+private:	
+	std::auto_ptr<ini_impl> pimpl;
 };
 
 ini_file& ini();

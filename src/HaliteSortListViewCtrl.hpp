@@ -26,15 +26,20 @@
 
 #include "HaliteUpdateLock.hpp"
 
+namespace hal
+{
+
 template<typename T>
-int equalsOrLess(const T& l, const T& r)
+int compare(const T& l, const T& r)
 {
 	if (l == r) 
 		return 0;
-	else if (l < r) 
+	else if (l > r) 
 		return 1;
 	else 
 		return -1;
+}
+
 }
 
 template <class TBase, typename adapterType=void*, size_t N=-1>
@@ -294,7 +299,7 @@ public:
 	
 	struct ColumnAdapter
 	{
-		virtual int less(adapterType& l, adapterType& r) = 0;
+		virtual int compare(adapterType& l, adapterType& r) = 0;
 		virtual std::wstring print(adapterType& t) = 0;
 	};
 
@@ -631,7 +636,7 @@ protected:
 		ColumnAdapter* pCA = getColumnAdapter(iSortCol);
 		
 		if (pCA)
-			return pCA->less(left, right);
+			return pCA->compare(left, right);
 		else 
 			return 0;
 	}

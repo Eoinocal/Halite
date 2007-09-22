@@ -38,31 +38,31 @@ protected:
 	
 	struct Name : public ColAdapter_t
 	{	
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->name(), r->name()); }		
+		virtual int compare(tD& l, tD& r) { return hal::compare(l->name(), r->name()); }		
 		virtual std::wstring print(tD& t) { return t->name(); }		
 	};
 	
 	struct Filename : public ColAdapter_t
 	{	
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->filename(), r->filename()); }		
+		virtual int compare(tD& l, tD& r) { return hal::compare(l->filename(), r->filename()); }		
 		virtual std::wstring print(tD& t) { return t->filename(); }		
 	};
 	
 	struct State : public ColAdapter_t
 	{	
-		virtual int less(tD& l, tD& r) { return equalsOrLess(l->state(), r->state()); }		
+		virtual int compare(tD& l, tD& r) { return hal::compare(l->state(), r->state()); }		
 		virtual std::wstring print(tD& t) { return t->state(); }		
 	};
 	
 	struct Tracker : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->currentTracker(), r->currentTracker()); }		
+		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->currentTracker(), r->currentTracker()); }		
 		virtual std::wstring print(tD& t) { return t->currentTracker(); }		
 	};
 	
 	struct SpeedDown : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->speed().first, r->speed().first); }		
+		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->speed().first, r->speed().first); }		
 		virtual std::wstring print(tD& t) 
 		{
 			return (wformat(L"%1$.2fkb/s") % (t->speed().first/1024)).str(); 
@@ -71,7 +71,7 @@ protected:
 	
 	struct SpeedUp : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->speed().second, r->speed().second); }		
+		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->speed().second, r->speed().second); }		
 		virtual std::wstring print(tD& t) 
 		{
 			return (wformat(L"%1$.2fkb/s") % (t->speed().second/1024)).str(); 
@@ -80,7 +80,7 @@ protected:
 
 	struct Progress : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->completion(), r->completion()); }		
+		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->completion(), r->completion()); }		
 		virtual std::wstring print(tD& t) 
 		{
 			return (wformat(L"%1$.2f%%") % (t->completion()*100)).str(); 
@@ -89,7 +89,7 @@ protected:
 
 	struct Peers : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->peers(), r->peers()); }		
+		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->peers(), r->peers()); }		
 		virtual std::wstring print(tD& t) 
 		{
 			return (wformat(L"%1% (%2%)") % t->peersConnected() % t->peers()).str(); 
@@ -98,7 +98,7 @@ protected:
 	
 	struct Seeds : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->seeds(), r->seeds()); }				
+		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->seeds(), r->seeds()); }				
 		virtual std::wstring print(tD& t) 
 		{
 			return (wformat(L"%1% (%2%)") % t->seedsConnected() % t->seeds()).str(); 
@@ -107,7 +107,7 @@ protected:
 	
 	struct ETA : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->estimatedTimeLeft(), r->estimatedTimeLeft()); }		
+		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->estimatedTimeLeft(), r->estimatedTimeLeft()); }		
 		virtual std::wstring print(tD& t) 
 		{ 
 			if (!t->estimatedTimeLeft().is_special())
@@ -124,7 +124,7 @@ protected:
 	
 	struct UpdateTrackerIn : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->updateTrackerIn(), r->updateTrackerIn()); }		
+		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->updateTrackerIn(), r->updateTrackerIn()); }		
 		virtual std::wstring print(tD& t) 
 		{ 
 			if (!t->updateTrackerIn().is_special())
@@ -141,13 +141,13 @@ protected:
 	
 	struct Ratio : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->ratio(), r->ratio()); }		
+		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->ratio(), r->ratio()); }		
 		virtual std::wstring print(tD& t) { return lexical_cast<wstring>(t->ratio()); }		
 	};
 	
 	struct DistributedCopies : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->distributedCopies(), r->distributedCopies()); }		
+		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->distributedCopies(), r->distributedCopies()); }		
 		virtual std::wstring print(tD& t) 
 		{ 
 			float copies = t->distributedCopies();
@@ -161,12 +161,12 @@ protected:
 
 	struct Remaining : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)
+		virtual int compare(tD& l, tD& r)
 		{
 			boost::int64_t left = l->totalWanted()-l->totalWantedDone();
 			boost::int64_t right = r->totalWanted()-r->totalWantedDone();
 			
-			return equalsOrLess(left, right); 
+			return hal::compare(left, right); 
 		}
 		
 		virtual std::wstring print(tD& t) 
@@ -177,9 +177,9 @@ protected:
 
 	struct Completed : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)
+		virtual int compare(tD& l, tD& r)
 		{			
-			return equalsOrLess(l->totalWantedDone(), r->totalWantedDone()); 
+			return hal::compare(l->totalWantedDone(), r->totalWantedDone()); 
 		}
 		
 		virtual std::wstring print(tD& t) 
@@ -190,9 +190,9 @@ protected:
 
 	struct TotalWanted : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)
+		virtual int compare(tD& l, tD& r)
 		{		
-			return equalsOrLess(l->totalWanted(), r->totalWanted()); 
+			return hal::compare(l->totalWanted(), r->totalWanted()); 
 		}
 		
 		virtual std::wstring print(tD& t) 
@@ -203,9 +203,9 @@ protected:
 
 	struct Downloaded : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)
+		virtual int compare(tD& l, tD& r)
 		{		
-			return equalsOrLess(l->totalPayloadDownloaded(), r->totalPayloadDownloaded()); 
+			return hal::compare(l->totalPayloadDownloaded(), r->totalPayloadDownloaded()); 
 		}
 		
 		virtual std::wstring print(tD& t) 
@@ -216,9 +216,9 @@ protected:
 
 	struct Uploaded : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)
+		virtual int compare(tD& l, tD& r)
 		{		
-			return equalsOrLess(l->totalPayloadUploaded(), r->totalPayloadUploaded()); 
+			return hal::compare(l->totalPayloadUploaded(), r->totalPayloadUploaded()); 
 		}
 		
 		virtual std::wstring print(tD& t) 
@@ -229,7 +229,7 @@ protected:
 
 	struct ActiveTime : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->active(), r->active()); }		
+		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->active(), r->active()); }		
 		virtual std::wstring print(tD& t) 
 		{ 
 			if (!t->active().is_special())
@@ -246,7 +246,7 @@ protected:
 	
 	struct SeedingTime : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->seeding(), r->seeding()); }		
+		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->seeding(), r->seeding()); }		
 		virtual std::wstring print(tD& t) 
 		{ 
 			if (!t->seeding().is_special())
@@ -263,7 +263,7 @@ protected:
 	
 	struct StartTime : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->startTime(), r->startTime()); }		
+		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->startTime(), r->startTime()); }		
 		virtual std::wstring print(tD& t) 
 		{ 
 			if (!t->startTime().is_special())
@@ -280,7 +280,7 @@ protected:
 	
 	struct FinishTime : public ColAdapter_t
 	{
-		virtual int less(tD& l, tD& r)	{ return equalsOrLess(l->finishTime(), r->finishTime()); }		
+		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->finishTime(), r->finishTime()); }		
 		virtual std::wstring print(tD& t) 
 		{ 
 			if (!t->finishTime().is_special())

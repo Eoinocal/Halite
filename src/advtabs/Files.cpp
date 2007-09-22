@@ -221,24 +221,16 @@ void AdvFilesDialog::doUiUpdate()
 }
 
 void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
-{	
+{
+	wstring torrent_name = L"";
+	
 	if (hal::TorrentDetail_ptr torrent = tD.selectedTorrent()) 	
+		torrent_name = torrent->filename();
+	
+	if (current_torrent_name_ != torrent_name)
 	{	
-		string torrent_name = hal::to_utf8(torrent->filename());
-		
-		if (current_torrent_name_ != torrent_name)
-		{	
-			current_torrent_name_ = torrent_name;
-			focusChanged(current_torrent_name_);
-		}
-	}
-	else
-	{	
-		if (current_torrent_name_ != "")
-		{	
-			current_torrent_name_ = "";
-			focusChanged(current_torrent_name_);
-		}	
+		current_torrent_name_ = torrent_name;
+		focusChanged(current_torrent_name_);
 	}
 	
 	std::pair<hal::FileDetails::iterator, hal::FileDetails::iterator> range =
@@ -299,7 +291,7 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 	}
 }
 
-void AdvFilesDialog::focusChanged(string& torrent_name)
+void AdvFilesDialog::focusChanged(wstring& torrent_name)
 {
 	const hal::TorrentDetails& tD = hal::bittorrent().torrentDetails();
 	
@@ -325,9 +317,7 @@ void AdvFilesDialog::focusChanged(string& torrent_name)
 		
 		treeManager_.ClearInvalid();
 	}
-	
-
-	
+		
 	splitterPos = splitter_.GetSplitterPos();
 }
 

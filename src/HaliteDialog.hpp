@@ -24,7 +24,6 @@ class HaliteDialog :
 	public CHaliteDialogBase<HaliteDialog>,
 	private boost::noncopyable
 {	
-
 	typedef HaliteDialog thisClass;
 	typedef CDialogImpl<HaliteDialog> baseClass;
 	typedef CDialogResize<HaliteDialog> resizeClass;
@@ -50,7 +49,7 @@ class HaliteDialog :
 		
 		struct SpeedDown : public ColAdapter_t
 		{
-			virtual int less(pD& l, pD& r)	{ return equalsOrLess(l.speed.first, r.speed.first); }		
+			virtual int compare(pD& l, pD& r)	{ return hal::compare(l.speed.first, r.speed.first); }		
 			virtual std::wstring print(pD& p) 
 			{
 				return (wformat(L"%1$.2fkb/s") % (p.speed.first/1024)).str(); 
@@ -59,7 +58,7 @@ class HaliteDialog :
 		
 		struct SpeedUp : public ColAdapter_t
 		{
-			virtual int less(pD& l, pD& r)	{ return equalsOrLess(l.speed.second, r.speed.second); }		
+			virtual int compare(pD& l, pD& r)	{ return hal::compare(l.speed.second, r.speed.second); }		
 			virtual std::wstring print(pD& p) 
 			{
 				return (wformat(L"%1$.2fkb/s") % (p.speed.second/1024)).str(); 
@@ -139,16 +138,6 @@ class HaliteDialog :
 		{			
 			return peerDetails_[param->dwItemData];
 		}		
-		
-		int CustomItemComparision(pD left, pD right, int iSortCol)
-		{
-			ColumnAdapter* pCA = getColumnAdapter(iSortCol);
-			
-			if (pCA)
-				return (pCA->less(left, right)) ? 1 : -1;
-			else 
-				return 0;
-		}
 		
 		void uiUpdate(const hal::TorrentDetails& tD);
 		
