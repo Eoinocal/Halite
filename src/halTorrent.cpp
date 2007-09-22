@@ -5,8 +5,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 
-#define HALITE_VERSION					0,2,9,293
-#define HALITE_VERSION_STRING			"v 0.2.9 dev 293"
+#define HALITE_VERSION					0,2,9,304
+#define HALITE_VERSION_STRING			"v 0.2.9 dev 304"
 
 #define LBT_EVENT_TORRENT_FINISHED					80001
 #define HAL_PEER_BAN_ALERT							80002
@@ -538,10 +538,13 @@ public:
 	{	try
 		{
 		
-		fs::wofstream ofs(workingDirectory/L"Torrents.xml");
-		boost::archive::xml_woarchive oxa(ofs);
+//		fs::wofstream ofs(workingDirectory/L"Torrents.xml");
+//		boost::archive::xml_woarchive oxa(ofs);
 		
-		oxa << make_nvp("theTorrents", theTorrents);
+//		oxa << make_nvp("theTorrents", theTorrents);
+		
+		theTorrents.save();
+		bittorrentIni.save_data();
 			
 		if (dht_on_) 
 		{	
@@ -583,60 +586,42 @@ private:
 	{
 		TorrentInternal::the_session_ = &theSession;
 		
-		theSession.set_severity_level(lbt::alert::debug);
-		
+		theSession.set_severity_level(lbt::alert::debug);		
 		theSession.add_extension(&lbt::create_metadata_plugin);
 		theSession.add_extension(&lbt::create_ut_pex_plugin);
 		theSession.set_max_half_open_connections(10);
 		
-		/*
-		bool tryOld = false;
-		
+		bittorrentIni.load_data();
+		theTorrents.load();
+					
 		try
+		{						
+		if (fs::exists(workingDirectory/L"Torrents.xml"))
 		{
+			{
+			fs::wifstream ifs(workingDirectory/L"Torrents.xml");
 		
-		fs::wifstream ifs(workingDirectory/L"BitTorrent.xml");
-		if (ifs)
-		{
-			boost::archive::xml_wiarchive ia(ifs);						
-			ia >> make_nvp("theTorrents", theTorrents);	
-		}
+			event().post(shared_ptr<EventDetail>(new EventMsg(L"Loading old Torrents.xml")));
 		
-		}
-		catch (const boost::archive::archive_exception& e)
-		{
-			tryOld = true;
+			TorrentMap torrents;
+			boost::archive::xml_wiarchive ia(ifs);	
+			ia >> make_nvp("torrents", torrents);
+			
+			theTorrents = torrents;
+			}
+			
+			event().post(shared_ptr<EventDetail>(new EventMsg(
+				wformat(L"Total %1%.") % theTorrents.size())));				
+			
+			fs::rename(workingDirectory/L"Torrents.xml", workingDirectory/L"Torrents.xml.safe.to.delete");
+		}			
 		}
 		catch(const std::exception& e)
 		{
 			event().post(shared_ptr<EventDetail>(
-				new EventStdException(Event::fatal, e, L"Loading Torrents.xml")));
-		}
-		
-		if (tryOld)
-		{
-			try
-			{
-					
-			fs::wifstream ifs(workingDirectory/L"Torrents.xml");		
-			if (ifs)
-			{
-				TorrentMap torrents;
-				boost::archive::xml_wiarchive ia(ifs);	
-				ia >> make_nvp("torrents", torrents);
+				new EventStdException(Event::fatal, e, L"Loading Old Torrents.xml")));
+		}		
 				
-				theTorrents = torrents;
-			}	
-				
-			}
-			catch(const std::exception& e)
-			{
-				event().post(shared_ptr<EventDetail>(
-					new EventStdException(Event::fatal, e, L"Loading Old Torrents.xml")));
-			}
-		}
-		
-		*/
 		if (exists(workingDirectory/L"DHTState.bin"))
 		{
 			try
@@ -1267,9 +1252,8 @@ const TorrentDetails& BitTorrent::updateTorrentDetails(const std::wstring& focus
 	
 	mutex_t::scoped_lock l(torrentDetails_.mutex_);	
 	
-	torrentDetails_.clearAll(l);
-	
-//	torrentDetails_.torrents_.reserve(pimpl->torrents.size());
+	torrentDetails_.clearAll(l);	
+	torrentDetails_.torrents_.reserve(pimpl->theTorrents.size());
 	
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); i != e; ++i)
 	{
@@ -1299,13 +1283,8 @@ void BitTorrent::resumeAll()
 	
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); i != e;)
 	{
-		wpath file = wpath(pimpl->workingDirectory)/L"torrents"/wpath((*i).torrent.filename());;
-		
-		//  vvv Handle old naming style!
-		if ((*i).torrent.originalFilename() != L"")
-			file = wpath(pimpl->workingDirectory)/L"torrents"/wpath((*i).torrent.originalFilename());
-		//  ^^^ Handle old naming style!	
-		
+		wpath file = wpath(pimpl->workingDirectory)/L"torrents"/(*i).torrent.filename();
+				
 		if (exists(file))
 		{		
 			try 

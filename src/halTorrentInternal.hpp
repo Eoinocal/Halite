@@ -39,12 +39,14 @@
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/tag.hpp>
 
+#include "HaliteIni.hpp"
+
 namespace hal 
 {
 class TorrentInternal;
 }
 
-BOOST_CLASS_VERSION(hal::TorrentInternal, 10)
+BOOST_CLASS_VERSION(hal::TorrentInternal, 7)
 
 namespace hal 
 {
@@ -191,8 +193,7 @@ class TorrentInternal
 		
 	private:
 		TransferTracker<boost::posix_time::time_duration> total_;	
-		mutable boost::posix_time::ptime start_;
-		
+		mutable boost::posix_time::ptime start_;		
 	};
 	
 public:
@@ -209,7 +210,8 @@ public:
 		startTime_(boost::posix_time::second_clock::universal_time())
 		
 	TorrentInternal() :	
-		TORRENT_INTERNALS_DEFAULTS,		
+		TORRENT_INTERNALS_DEFAULTS,
+		compactStorage_(true),
 		in_session_(false)
 	{}
 	
@@ -410,13 +412,19 @@ public:
     {
         ar & make_nvp("transferLimit", transferLimit_);
         ar & make_nvp("connections", connections_);
-        ar & make_nvp("uploads", uploads_);		
-		if (version > 8) {
+        ar & make_nvp("uploads", uploads_);	
+		
+		if (version > 6) {
 			ar & make_nvp("filename", filename_);
 		}
-		else {
-			ar & make_nvp("filename", originalFilename_);
+		else 
+		{
+			wstring originalFilename;
+			ar & make_nvp("filename", originalFilename);
+			
+			updatePreVersion7Files(originalFilename);
 		}
+		
         ar & make_nvp("saveDirectory", save_directory_);
 		
 		if (version > 3) {
@@ -454,18 +462,39 @@ public:
 			ar & make_nvp("seedingDuration", seedingDuration_);
 		}
 		if (version > 6) {
-			ar & make_nvp("name", name_);		
+			ar & make_nvp("name", name_);
+			ar & make_nvp("compactStorage", compactStorage_);
+			ar & make_nvp("finishTime", finishTime_);
 		}
-		else {
-			name_ = filename_;
-		}
-		if (version > 7) {
-			ar & make_nvp("compactStorage", compactStorage_);		
-		}	
-		if (version > 9) {
-			ar & make_nvp("finishTime", finishTime_);		
-		}		
     }
+	
+	void updatePreVersion7Files(wstring originalFilename)
+	{
+		try 
+		{
+
+		wpath oldFile = app().working_directory()/L"torrents"/originalFilename;
+		
+		if (exists(oldFile)) 
+			extractNames(haldecode(oldFile));
+		
+		wpath oldResumeFile = app().working_directory()/L"resume"/originalFilename;
+		
+		if (filename_ != originalFilename)
+		{
+			fs::rename(oldFile, app().working_directory()/L"torrents"/filename_);
+			
+			if (fs::exists(oldResumeFile))
+				fs::rename(oldResumeFile, app().working_directory()/L"resume"/filename_);
+		}
+		
+		}
+		catch(std::exception &e) 
+		{		
+			hal::event().post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(Event::critical, e, L"updatePreVersion7Files"))); 
+		}
+	}
 	
 	void setEntryData(libtorrent::entry metadata, libtorrent::entry resumedata)
 	{		
@@ -522,48 +551,40 @@ public:
 	
 	void prepare(wpath filename, wpath saveDirectory, wpath workingDirectory)
 	{
-		metadata_ = haldecode(filename);
-		lbt::torrent_info info_(metadata_);
-		
-		name_ = hal::from_utf8_safe(info_.name());
-		
-		filename_ = name_;
-		
-		if (!boost::find_last(filename_, L".torrent")) 
-			filename_ += L".torrent";		
-		
 		const wpath resumeFile = workingDirectory/L"resume"/filename_;
+		const wpath torrentFile = workingDirectory/L"torrents"/filename_;
 		
-		//  vvv Handle old naming style!
-		const wpath oldResumeFile = workingDirectory/L"resume"/filename.leaf();
+		event().post(shared_ptr<EventDetail>(new EventMsg(
+					wformat(L"File: %1%, %2%.") % resumeFile % torrentFile)));
 		
-		if (resumeFile != oldResumeFile && !exists(resumeFile) && exists(oldResumeFile))
-			fs::rename(oldResumeFile, resumeFile);
-		//  ^^^ Handle old naming style!	
-	
 		if (exists(resumeFile)) 
-		{
-			try 
-			{
-				resumedata_ = haldecode(resumeFile);
-			}
-			catch(std::exception &e) 
-			{		
-				hal::event().post(boost::shared_ptr<hal::EventDetail>(
-					new hal::EventStdException(Event::critical, e, L"prepTorrent, Resume"))); 
-		
-				remove(resumeFile);
-			}
-		}
+			resumedata_ = haldecode(resumeFile);
+		if (exists(filename)) 
+			metadata_ = haldecode(filename);
 
 		if (!exists(workingDirectory/L"torrents"))
 			create_directory(workingDirectory/L"torrents");
 
-		if (!exists(workingDirectory/L"torrents"/filename_))
-			copy_file(filename.string(), workingDirectory/L"torrents"/filename_);
+		if (!exists(torrentFile))
+			copy_file(filename.string(), torrentFile);
 
 		if (!exists(saveDirectory))
-			create_directory(saveDirectory);	
+			create_directory(saveDirectory);
+			
+		extractNames(metadata_);			
+	}
+	
+	void extractNames(lbt::entry& metadata)
+	{
+		lbt::torrent_info info(metadata);				
+		name_ = hal::from_utf8_safe(info.name());
+			
+		filename_ = name_;
+		if (!boost::find_last(filename_, L".torrent")) 
+				filename_ += L".torrent";
+		
+		event().post(shared_ptr<EventDetail>(new EventMsg(
+			wformat(L"Loaded names: %1%, %2%") % name_ % filename_)));
 	}
 
 private:	
@@ -703,8 +724,12 @@ private:
 typedef std::map<std::string, TorrentInternal> TorrentMap;
 typedef std::pair<std::string, TorrentInternal> TorrentPair;
 
-class TorrentManager : public ini_adapter
+class TorrentManager : 
+	public CHaliteIni<TorrentManager>
 {
+	typedef TorrentManager thisClass;
+	typedef CHaliteIni<thisClass> iniClass;
+	
 	struct TorrentHolder
 	{
 		mutable TorrentInternal torrent;
@@ -754,7 +779,7 @@ public:
 	typedef TorrentMultiIndex::index<byName>::type torrentByName;
 	
 	TorrentManager(ini_file& ini) :
-		ini_adapter("manager", ini)
+		iniClass("bittorrent", "TorrentManager", ini)
 	{}
 	
 	TorrentManager& operator=(const TorrentMap& map)
@@ -762,9 +787,14 @@ public:
 		torrents_.clear();
 		
 		for (TorrentMap::const_iterator i=map.begin(), e=map.end(); i != e; ++i)
-		{
+		{		
+			event().post(shared_ptr<EventDetail>(new EventMsg(
+				wformat(L"Converting %1%.") % (*i).second.name())));
+			
 			torrents_.insert(TorrentHolder((*i).second));
 		}
+		
+		return *this;
 	}
 	
 	std::pair<torrentByName::iterator, bool> insert(const TorrentHolder& h)
@@ -813,6 +843,11 @@ public:
 	torrentByName::iterator erase(torrentByName::iterator where)
 	{
 		return torrents_.get<byName>().erase(where);
+	}
+	
+	size_t size()
+	{
+		return torrents_.size();
 	}
 	
 	size_t erase(const wstring& name)
