@@ -551,6 +551,11 @@ public:
 	
 	void prepare(wpath filename, wpath saveDirectory, wpath workingDirectory)
 	{
+		if (exists(filename)) 
+			metadata_ = haldecode(filename);
+		
+		extractNames(metadata_);			
+		
 		const wpath resumeFile = workingDirectory/L"resume"/filename_;
 		const wpath torrentFile = workingDirectory/L"torrents"/filename_;
 		
@@ -559,8 +564,6 @@ public:
 		
 		if (exists(resumeFile)) 
 			resumedata_ = haldecode(resumeFile);
-		if (exists(filename)) 
-			metadata_ = haldecode(filename);
 
 		if (!exists(workingDirectory/L"torrents"))
 			create_directory(workingDirectory/L"torrents");
@@ -570,15 +573,13 @@ public:
 
 		if (!exists(saveDirectory))
 			create_directory(saveDirectory);
-			
-		extractNames(metadata_);			
 	}
 	
 	void extractNames(lbt::entry& metadata)
 	{
 		lbt::torrent_info info(metadata);				
 		name_ = hal::from_utf8_safe(info.name());
-			
+		
 		filename_ = name_;
 		if (!boost::find_last(filename_, L".torrent")) 
 				filename_ += L".torrent";

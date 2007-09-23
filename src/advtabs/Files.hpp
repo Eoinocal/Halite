@@ -190,6 +190,8 @@ public:
 	
 	void signal() { selection_(); }
 	
+	void determineFocused();
+	
 protected:
 	void OnDestroy()
 	{
@@ -387,5 +389,6 @@ protected:
 	TreeViewManager<FileTreeView> treeManager_;
 	
 	wstring current_torrent_name_;	
-	hal::FileDetails fileDetails;
+	hal::FileDetails fileDetails_;
+	std::pair<hal::FileDetails::iterator, hal::FileDetails::iterator> range_;
 };

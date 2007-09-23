@@ -143,31 +143,36 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	hal::bittorrent().setTorrentFilePriorities(torrent, indices, priority);
 }
 
-LRESULT FileTreeView::OnSelChanged(int, LPNMHDR pnmh, BOOL&)
-{		
+void FileTreeView::determineFocused()
+{
 	wpath branch;
 	
-	TryUpdateLock<thisClass> lock(*this);
-	if (lock)
-	{		
-		if (CTreeItem ti = GetSelectedItem())
-		{			
-			do
-			{
-				if (!ti.GetParent()) break;
-				
-				boost::array<wchar_t, MAX_PATH> buffer;
-				ti.GetText(buffer.elems, MAX_PATH);
-				
-				branch = wstring(buffer.elems)/branch;
-			} 
-			while (ti = ti.GetParent());
-		}
-		
-		signal();
+	if (CTreeItem ti = GetSelectedItem())
+	{			
+		do
+		{
+			if (!ti.GetParent()) break;
+			
+			boost::array<wchar_t, MAX_PATH> buffer;
+			ti.GetText(buffer.elems, MAX_PATH);
+			
+			branch = wstring(buffer.elems)/branch;
+		} 
+		while (ti = ti.GetParent());
 	}
 	
 	focused_ = branch;
+}
+
+LRESULT FileTreeView::OnSelChanged(int, LPNMHDR pnmh, BOOL&)
+{	
+	TryUpdateLock<thisClass> lock(*this);
+	if (lock)
+	{		
+		determineFocused();
+		signal();
+	}
+	
 	return 0;
 }
 
@@ -214,9 +219,11 @@ void AdvFilesDialog::DlgResize_UpdateLayout(int cxWidth, int cyHeight)
 		SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
-
 void AdvFilesDialog::doUiUpdate()
 {
+	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"doUiUpdate %1%") % current_torrent_name_).str().c_str())));
+
+	current_torrent_name_ = L"";
 	uiUpdate(hal::bittorrent().torrentDetails());
 }
 
@@ -227,16 +234,14 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 	if (hal::TorrentDetail_ptr torrent = tD.selectedTorrent()) 	
 		torrent_name = torrent->filename();
 	
+//	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"uiUpdate %1%, %2%") % current_torrent_name_ % torrent_name).str().c_str())));
+	
 	if (current_torrent_name_ != torrent_name)
 	{	
-		current_torrent_name_ = torrent_name;
-		focusChanged(current_torrent_name_);
+		focusChanged(torrent_name);
 	}
 	
-	std::pair<hal::FileDetails::iterator, hal::FileDetails::iterator> range =
-		std::equal_range(fileDetails.begin(), fileDetails.end(), hal::FileDetail(tree_.focused(), L""));
-	
-	std::sort(range.first, range.second, &hal::FileDetailNamesLess);
+	if (fileDetails_.empty()) return;
 	
 	TryUpdateLock<FileListView::listClass> lock(list_);
 	if (lock) 
@@ -249,11 +254,11 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 			
 			hal::FileDetail file(L"", wstring(fullPath.c_array()));
 			hal::FileDetails::iterator iter = 
-				std::lower_bound(range.first, range.second, file, &hal::FileDetailNamesLess);
+				std::lower_bound(range_.first, range_.second, file, &hal::FileDetailNamesLess);
 			
-			if (iter == range.second || !(hal::FileDetailNamesEqual((*iter), file)))
+			if (iter == range_.second || !(hal::FileDetailNamesEqual((*iter), file)))
 			{
-				if (iter == range.second)
+				if (iter == range_.second)
 					hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Deleting %1%") % file.filename).str().c_str())));
 				else
 					hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Deleting %1% != %2%") % file.filename % (*iter).filename).str().c_str())));
@@ -262,13 +267,13 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 			}
 			else
 			{
-				list_.SetItemData(i, std::distance(range.first, iter));
+				list_.SetItemData(i, std::distance(range_.first, iter));
 				++i;
 			}
 		}
 		
 		// Add additional details
-		for (hal::FileDetails::iterator i=range.first, e=range.second;
+		for (hal::FileDetails::iterator i=range_.first, e=range_.second;
 			i != e; ++i)
 		{			
 			LV_FINDINFO findInfo; 
@@ -293,31 +298,43 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 
 void AdvFilesDialog::focusChanged(wstring& torrent_name)
 {
+	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"focusChanged %1%, %2% : %3%") % current_torrent_name_ % torrent_name % tree_.focused()).str().c_str())));
+
+	current_torrent_name_ = torrent_name;
+	
 	const hal::TorrentDetails& tD = hal::bittorrent().torrentDetails();
 	
+	fileDetails_.clear();
 //	foreach (const hal::TorrentDetail_ptr torrent, tD.selectedTorrents())
 	if (hal::TorrentDetail_ptr torrent = tD.focusedTorrent())
 	{
 		std::copy(torrent->fileDetails().begin(), torrent->fileDetails().end(), 
-			std::back_inserter(fileDetails));
+			std::back_inserter(fileDetails_));
 	}
 	
 	list_.setFocused(tD.focusedTorrent());
 	
-	std::sort(fileDetails.begin(), fileDetails.end());
+	std::sort(fileDetails_.begin(), fileDetails_.end());
 	
 	{ 	UpdateLock<FileTreeView> lock(tree_);
 	
 		treeManager_.InvalidateAll();
 		
-		foreach (hal::FileDetail file, fileDetails)
+		foreach (hal::FileDetail file, fileDetails_)
 		{
 			treeManager_.EnsureValid(file.branch);
 		}
 		
 		treeManager_.ClearInvalid();
 	}
-		
+	
+	tree_.determineFocused();
+	
+	range_ = std::equal_range(fileDetails_.begin(), fileDetails_.end(),
+		hal::FileDetail(tree_.focused(), L""));
+	
+	std::sort(range_.first, range_.second, &hal::FileDetailNamesLess);
+	
 	splitterPos = splitter_.GetSplitterPos();
 }
 
