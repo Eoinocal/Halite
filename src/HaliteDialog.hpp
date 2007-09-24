@@ -207,7 +207,7 @@ public:
 	END_DLGRESIZE_MAP()
 	
 	void uiUpdate(const hal::TorrentDetails& allTorrents); 
-	void focusChanged(string& torrent_name);
+	void focusChanged(const hal::TorrentDetail_ptr pT);
 	
 protected:
 	LRESULT OnInitDialog(HWND, LPARAM);

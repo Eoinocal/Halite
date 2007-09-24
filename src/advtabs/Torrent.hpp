@@ -134,7 +134,7 @@ public:
 	void uiUpdateMultiple(const hal::TorrentDetail_vec& torrents);
 	void uiUpdateSingle(const hal::TorrentDetail_ptr& torrent);
 	void uiUpdateNone();
-	void focusChanged(string& torrent_name);
+	void focusChanged(const hal::TorrentDetail_ptr pT);
 
 protected:
 	CProgressBarCtrl m_prog;

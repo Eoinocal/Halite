@@ -56,18 +56,18 @@ LRESULT AdvTorrentDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl
 	return 0;
 }
 
-void AdvTorrentDialog::focusChanged(string& torrent_name) 
+void AdvTorrentDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 {
 	pair<float, float> tranLimit(-1.0, -1.0);
 	pair<int, int> connLimit(-1, -1);
 	float ratio = 0;
 
-	if (hal::bittorrent().isTorrent(torrent_name))
+	if (pT)
 	{
-		tranLimit = hal::bittorrent().getTorrentSpeed(torrent_name);
-		connLimit = hal::bittorrent().getTorrentLimit(torrent_name);
+		tranLimit = hal::bittorrent().getTorrentSpeed(pT->name());
+		connLimit = hal::bittorrent().getTorrentLimit(pT->name());
 		
-		ratio = hal::bittorrent().getTorrentRatio(torrent_name);
+		ratio = hal::bittorrent().getTorrentRatio(pT->name());
 		
 		::EnableWindow(GetDlgItem(IDC_EDITTLD), true);
 		::EnableWindow(GetDlgItem(IDC_EDITTLU), true);
@@ -109,25 +109,9 @@ void AdvTorrentDialog::focusChanged(string& torrent_name)
 
 void AdvTorrentDialog::uiUpdate(const hal::TorrentDetails& tD)
 {	
-	if (hal::TorrentDetail_ptr torrent = tD.selectedTorrent()) 	
-	{	
-		string torrent_name = hal::to_utf8(torrent->filename());
-		
-		if (current_torrent_name_ != torrent_name)
-		{	
-			current_torrent_name_ = torrent_name;
-			focusChanged(current_torrent_name_);
-		}
-		
-		uiUpdateSingle(tD.selectedTorrent());	
-	}
-	else
-	{	
-		if (current_torrent_name_ != "")
-		{	
-			current_torrent_name_ = "";
-			focusChanged(current_torrent_name_);
-		}	
+	if (hal::TorrentDetail_ptr torrent = tD.focusedTorrent()) 	
+	{			
+		uiUpdateSingle(torrent);	
 	}
 }
 
@@ -141,7 +125,6 @@ void AdvTorrentDialog::uiUpdateSingle(const hal::TorrentDetail_ptr& torrent)
 		HAL_REMAINING		  "Remaining: %1$.2fMB of %2$.2fMB, ETA %3%."
 		HAL_RATE			  "Downloading at %1$.2fkb/s, Uploading at %2$.2fkb/s, Ratio %3$.2f."
 */	
-
 		SetDlgItemInfo(IDC_NAME_STATUS, 
 			wformat(hal::app().res_wstr(HAL_NAME_STATUS)) 
 				% torrent->filename()

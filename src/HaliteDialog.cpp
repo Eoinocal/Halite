@@ -171,17 +171,17 @@ void HaliteDialog::DialogListView::uiUpdate(const hal::TorrentDetails& tD)
 	}
 }
 
-void HaliteDialog::focusChanged(string& torrent_name) 
+void HaliteDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 {
 	pair<float, float> tranLimit(-1.0, -1.0);
 	pair<int, int> connLimit(-1, -1);
 	
-	if (hal::bittorrent().isTorrent(torrent_name))
+	if (pT)
 	{
-		tranLimit = hal::bittorrent().getTorrentSpeed(torrent_name);
-		connLimit = hal::bittorrent().getTorrentLimit(torrent_name);
+		tranLimit = hal::bittorrent().getTorrentSpeed(pT->name());
+		connLimit = hal::bittorrent().getTorrentLimit(pT->name());
 		
-		if (!hal::bittorrent().isTorrentActive(torrent_name))
+		if (!hal::bittorrent().isTorrentActive(pT->name()))
 			SetDlgItemText(BTNPAUSE, L"Resume");
 		else		
 			SetDlgItemText(BTNPAUSE, L"Pause");
@@ -235,12 +235,6 @@ void HaliteDialog::uiUpdate(const hal::TorrentDetails& tD)
 	{	
 		string torrent_name = hal::to_utf8(torrent->name());
 		
-		if (current_torrent_name_ != torrent_name)
-		{	
-			current_torrent_name_ = torrent_name;
-			focusChanged(current_torrent_name_);
-		}	
-		
 		SetDlgItemText(IDC_NAME, torrent->name().c_str());
 		SetDlgItemText(IDC_TRACKER, torrent->currentTracker().c_str());
 		SetDlgItemText(IDC_STATUS, torrent->state().c_str());
@@ -264,13 +258,5 @@ void HaliteDialog::uiUpdate(const hal::TorrentDetails& tD)
 			).str().c_str());
 		
 		m_list.uiUpdate(tD);
-	}
-	else
-	{	
-		if (current_torrent_name_ != "")
-		{	
-			current_torrent_name_ = "";
-			focusChanged(current_torrent_name_);
-		}	
 	}
 }

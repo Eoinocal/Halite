@@ -223,24 +223,12 @@ void AdvFilesDialog::doUiUpdate()
 {
 	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"doUiUpdate %1%") % current_torrent_name_).str().c_str())));
 
-	current_torrent_name_ = L"";
+	focusChanged(hal::bittorrent().torrentDetails().focusedTorrent());
 	uiUpdate(hal::bittorrent().torrentDetails());
 }
 
 void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 {
-	wstring torrent_name = L"";
-	
-	if (hal::TorrentDetail_ptr torrent = tD.selectedTorrent()) 	
-		torrent_name = torrent->filename();
-	
-//	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"uiUpdate %1%, %2%") % current_torrent_name_ % torrent_name).str().c_str())));
-	
-	if (current_torrent_name_ != torrent_name)
-	{	
-		focusChanged(torrent_name);
-	}
-	
 	if (fileDetails_.empty()) return;
 	
 	TryUpdateLock<FileListView::listClass> lock(list_);
@@ -296,23 +284,16 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 	}
 }
 
-void AdvFilesDialog::focusChanged(wstring& torrent_name)
+void AdvFilesDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 {
-	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"focusChanged %1%, %2% : %3%") % current_torrent_name_ % torrent_name % tree_.focused()).str().c_str())));
-
-	current_torrent_name_ = torrent_name;
-	
-	const hal::TorrentDetails& tD = hal::bittorrent().torrentDetails();
-	
 	fileDetails_.clear();
-//	foreach (const hal::TorrentDetail_ptr torrent, tD.selectedTorrents())
-	if (hal::TorrentDetail_ptr torrent = tD.focusedTorrent())
+	if (pT)
 	{
-		std::copy(torrent->fileDetails().begin(), torrent->fileDetails().end(), 
+		std::copy(pT->fileDetails().begin(), pT->fileDetails().end(), 
 			std::back_inserter(fileDetails_));
 	}
 	
-	list_.setFocused(tD.focusedTorrent());
+	list_.setFocused(pT);
 	
 	std::sort(fileDetails_.begin(), fileDetails_.end());
 	

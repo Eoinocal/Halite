@@ -353,6 +353,7 @@ public:
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
 		
+		CHAIN_MSG_MAP(dialogBaseClass)
 		CHAIN_MSG_MAP(resizeClass)
 		CHAIN_MSG_MAP(baseClass)
 		REFLECT_NOTIFICATIONS()
@@ -375,7 +376,7 @@ public:
 	void DlgResize_UpdateLayout(int cxWidth, int cyHeight);
 	void doUiUpdate();
 	void uiUpdate(const hal::TorrentDetails& tD);
-	void focusChanged(wstring& torrent_name);
+	void focusChanged(const hal::TorrentDetail_ptr pT);
 
 protected:
 	CSplitterWindow splitter_;

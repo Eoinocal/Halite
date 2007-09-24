@@ -181,7 +181,7 @@ protected:
 		ar & BOOST_SERIALIZATION_NVP(advancedUI);
 		ar & BOOST_SERIALIZATION_NVP(activeTab);
 	}
-		
+	
 	friend class GeneralOptions;
 
 private:

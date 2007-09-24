@@ -23,7 +23,28 @@ public:
 	CHaliteDialogBase(HaliteWindow& haliteWindow) :
 		haliteWindow_(haliteWindow)
 	{		
-		connection_ = haliteWindow.connectUiUpdate(bind(&TBase::uiUpdate, static_cast<TBase*>(this), _1));
+		connection_ = haliteWindow.connectUiUpdate(bind(&thisClass::handleUiUpdate, this, _1));
+	}
+
+	BEGIN_MSG_MAP_EX(thisClass)
+		MSG_WM_SHOWWINDOW(OnShow)
+//		REFLECT_NOTIFICATIONS()
+	END_MSG_MAP()
+	
+	void OnShow(bool show, int flags)
+	{
+		if (show)
+		{
+			hal::event().post(shared_ptr<hal::EventDetail>(
+				new hal::EventMsg(L"True")));
+			connection_.unblock();
+		}
+		else
+		{
+			hal::event().post(shared_ptr<hal::EventDetail>(
+				new hal::EventMsg(L"False")));
+			connection_.block();
+		}
 	}
 	
 	void InitializeHalDialogBase()
@@ -40,6 +61,26 @@ public:
 	}
 	
 	void uiUpdate(const hal::TorrentDetails& tD)
+	{}	
+	
+	void handleUiUpdate(const hal::TorrentDetails& tD)
+	{
+		TBase* pT = static_cast<TBase*>(this);
+		wstring torrent_name = L"";
+		
+		if (hal::TorrentDetail_ptr torrent = tD.selectedTorrent()) 	
+			torrent_name = torrent->filename();
+		
+		if (current_torrent_name_ != torrent_name)
+		{	
+			current_torrent_name_ = torrent_name;
+			pT->focusChanged(tD.focusedTorrent());
+		}
+	
+		pT->uiUpdate(tD);
+	}
+
+	void focusChanged(const hal::TorrentDetail_ptr pT)
 	{}
 	
 	template<typename T>
@@ -52,6 +93,7 @@ public:
 	}
 	
 protected:
+	wstring current_torrent_name_;
 
 private:
 	HaliteWindow& haliteWindow_;
