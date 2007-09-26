@@ -131,6 +131,9 @@ public:
 
 		SetItemText(itemPos, 2,
 			hal::Event::eventLevelToStr(event->level()).c_str());
+			
+		if (halite().logListLen() <= GetItemCount())
+			DeleteItem(halite().logListLen());
 	}
 
 	void saveStatus() {}

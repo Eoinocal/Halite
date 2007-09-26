@@ -27,6 +27,7 @@ public:
 		logDebug_(false),
 		showMessage(true),
 		logToFile_(true),
+		logListLen_(128),
 		dll_(L"")
 	{
 		load();
@@ -40,6 +41,8 @@ public:
 		ar & BOOST_SERIALIZATION_NVP(logDebug_);
         ar & BOOST_SERIALIZATION_NVP(showMessage);
 		ar & BOOST_SERIALIZATION_NVP(logToFile_);
+		if (version > 1)
+			ar & BOOST_SERIALIZATION_NVP(logListLen_);
 		if (version > 0)
 			ar & BOOST_SERIALIZATION_NVP(dll_);
 	}	
@@ -47,6 +50,7 @@ public:
 	bool logToFile() { return logToFile_; }
 	bool logDebug() { return logDebug_; }
 	const wstring& dll() { return dll_; }
+	const size_t logListLen() { return logListLen_; }
 	
 	friend class GeneralOptions;
 	friend class SplashDialog;
@@ -59,8 +63,9 @@ private:
 	bool logDebug_;
 	bool showMessage;
 	bool logToFile_;
+	size_t logListLen_;
 };
 
 Halite& halite();
 
-BOOST_CLASS_VERSION(Halite, 1)
+BOOST_CLASS_VERSION(Halite, 2)

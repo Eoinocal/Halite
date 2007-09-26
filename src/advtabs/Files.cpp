@@ -85,6 +85,7 @@ HWND FileTreeView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowNa
 
 LRESULT FileTreeView::OnRClick(int i, LPNMHDR pnmh, BOOL&)
 {
+	determineFocused();
 	LPNMITEMACTIVATE pia = (LPNMITEMACTIVATE)pnmh;
 	
 	if (menu_)
@@ -141,6 +142,12 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	
 	std::string torrent = hal::to_utf8(hal::bittorrent().torrentDetails().selectedTorrent()->filename());
 	hal::bittorrent().setTorrentFilePriorities(torrent, indices, priority);
+	
+//	TryUpdateLock<thisClass> lock(*this);
+//	if (lock)
+//	{			
+		signal();
+//	}
 }
 
 void FileTreeView::determineFocused()
@@ -234,13 +241,15 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 	TryUpdateLock<FileListView::listClass> lock(list_);
 	if (lock) 
 	{	
+		const hal::TorrentDetail_ptr pT = tD.focusedTorrent();
+		
 		// Wipe details not present
 		for(int i = 0; i < list_.GetItemCount(); /*nothing here*/)
 		{
 			boost::array<wchar_t, MAX_PATH> fullPath;
 			list_.GetItemText(i, 0, fullPath.c_array(), MAX_PATH);
 			
-			hal::FileDetail file(L"", wstring(fullPath.c_array()));
+			hal::FileDetail file(wstring(fullPath.c_array()));
 			hal::FileDetails::iterator iter = 
 				std::lower_bound(range_.first, range_.second, file, &hal::FileDetailNamesLess);
 			
@@ -263,7 +272,9 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 		// Add additional details
 		for (hal::FileDetails::iterator i=range_.first, e=range_.second;
 			i != e; ++i)
-		{			
+		{
+			*i = pT->fileDetails()[(*i).order()];
+			
 			LV_FINDINFO findInfo; 
 			findInfo.flags = LVFI_STRING;
 			findInfo.psz = const_cast<LPTSTR>((*i).filename.c_str());
@@ -312,7 +323,7 @@ void AdvFilesDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 	tree_.determineFocused();
 	
 	range_ = std::equal_range(fileDetails_.begin(), fileDetails_.end(),
-		hal::FileDetail(tree_.focused(), L""));
+		hal::FileDetail(tree_.focused()/L"leaf"));
 	
 	std::sort(range_.first, range_.second, &hal::FileDetailNamesLess);
 	
