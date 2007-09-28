@@ -17,7 +17,7 @@
 "Peers:" --->  ??? 
 "Transferred:" --->  "Trasferiti" 
 "Remaining:" ---> "Rimanenti"
-"Rates:" ---> "Valutazione"
+"Rates:" ---> "Rapporto"
 "Seeds:" --->  ??? 
 "Overhead:" --->  ??? 
 "ETA:" --->  ??? 
