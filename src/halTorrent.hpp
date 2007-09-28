@@ -72,9 +72,10 @@ typedef std::vector<PeerDetail> PeerDetails;
 
 struct FileDetail
 {
-	FileDetail(boost::filesystem::wpath p, size_t s=0, float pg=0, int pr=1, size_t o=0) :
+	FileDetail(boost::filesystem::wpath p, unsigned t=FileDetail::file, size_t s=0, float pg=0, int pr=1, size_t o=0) :
 		branch(p.branch_path()),
 		filename(p.leaf()),
+		type(t),
 		size(s),
 		progress(pg),
 		priority(pr),
@@ -91,10 +92,17 @@ struct FileDetail
 		return (branch < file.branch);
 	}
 	
+	enum FileType
+	{
+		folder,
+		file
+	};
+	
 	size_t order() { return order_; }
 	
 	boost::filesystem::wpath branch;
 	wstring filename;
+	unsigned type;
 	size_t size;
 	float progress;
 	int priority;

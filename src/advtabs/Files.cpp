@@ -143,11 +143,8 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	std::string torrent = hal::to_utf8(hal::bittorrent().torrentDetails().selectedTorrent()->filename());
 	hal::bittorrent().setTorrentFilePriorities(torrent, indices, priority);
 	
-//	TryUpdateLock<thisClass> lock(*this);
-//	if (lock)
-//	{			
-		signal();
-//	}
+	TryUpdateLock<thisClass> lock(*this);
+	if (lock) signal();
 }
 
 void FileTreeView::determineFocused()
@@ -242,6 +239,7 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 	if (lock) 
 	{	
 		const hal::TorrentDetail_ptr pT = tD.focusedTorrent();
+		if (pT->fileDetails().size() != fileDetails_.size()) return;
 		
 		// Wipe details not present
 		for(int i = 0; i < list_.GetItemCount(); /*nothing here*/)
