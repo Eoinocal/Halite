@@ -38,6 +38,7 @@ extern CAppModule _Module;
 #include <atlddx.h>
 #include <atlscrl.h>
 
+#include "AtlAutosizeDlg.h"
 //#include <stlsoft/util/nulldef.h>
 
 #include "global/wtl_app.hpp"

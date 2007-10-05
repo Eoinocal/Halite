@@ -233,13 +233,13 @@ void AdvFilesDialog::doUiUpdate()
 
 void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 {
-	if (fileDetails_.empty()) return;
+	if (fileLinks_.empty()) return;
 	
 	TryUpdateLock<FileListView::listClass> lock(list_);
 	if (lock) 
 	{	
 		const hal::TorrentDetail_ptr pT = tD.focusedTorrent();
-		if (pT->fileDetails().size() != fileDetails_.size()) return;
+		if (pT->fileDetails().size() != fileLinks_.size()) return;
 		
 		// Wipe details not present
 		for(int i = 0; i < list_.GetItemCount(); /*nothing here*/)
@@ -247,11 +247,11 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 			boost::array<wchar_t, MAX_PATH> fullPath;
 			list_.GetItemText(i, 0, fullPath.c_array(), MAX_PATH);
 			
-			hal::FileDetail file(wstring(fullPath.c_array()));
-			hal::FileDetails::iterator iter = 
-				std::lower_bound(range_.first, range_.second, file, &hal::FileDetailNamesLess);
+			FileLink file(wstring(fullPath.c_array()));
+			std::vector<FileLink>::iterator iter = 
+				std::lower_bound(range_.first, range_.second, file, &FileLinkNamesLess);
 			
-			if (iter == range_.second || !(hal::FileDetailNamesEqual((*iter), file)))
+			if (iter == range_.second || !(FileLinkNamesEqual((*iter), file)))
 			{
 				if (iter == range_.second)
 					hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Deleting %1%") % file.filename).str().c_str())));
@@ -268,10 +268,14 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 		}
 		
 		// Add additional details
-		for (hal::FileDetails::iterator i=range_.first, e=range_.second;
+		for (std::vector<FileLink>::iterator i=range_.first, e=range_.second;
 			i != e; ++i)
 		{
-			*i = pT->fileDetails()[(*i).order()];
+			
+		hal::event().post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(wformat(L"-> %1% - %2%.") % (*i).filename % (*i).order())));	
+			
+			hal::FileDetail fileD = pT->fileDetails()[(*i).order()];
 			
 			LV_FINDINFO findInfo; 
 			findInfo.flags = LVFI_STRING;
@@ -284,9 +288,9 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 			list_.SetItemData(itemPos, (*i).order());
 			
 			list_.SetItemText(itemPos, 1, (*i).branch.string().c_str());			
-			list_.SetItemText(itemPos, 2, list_.getColumnAdapter(2)->print(*i).c_str());
-			list_.SetItemText(itemPos, 3, list_.getColumnAdapter(3)->print(*i).c_str());
-			list_.SetItemText(itemPos, 4, list_.getColumnAdapter(4)->print(*i).c_str());			
+			list_.SetItemText(itemPos, 2, list_.getColumnAdapter(2)->print(fileD).c_str());
+			list_.SetItemText(itemPos, 3, list_.getColumnAdapter(3)->print(fileD).c_str());
+			list_.SetItemText(itemPos, 4, list_.getColumnAdapter(4)->print(fileD).c_str());			
 		}
 
 		list_.ConditionallyDoAutoSort();
@@ -295,22 +299,22 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 
 void AdvFilesDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 {
-	fileDetails_.clear();
+	fileLinks_.clear();
 	if (pT)
 	{
 		std::copy(pT->fileDetails().begin(), pT->fileDetails().end(), 
-			std::back_inserter(fileDetails_));
+			std::back_inserter(fileLinks_));
 	}
 	
 	list_.setFocused(pT);
 	
-	std::sort(fileDetails_.begin(), fileDetails_.end());
+	std::sort(fileLinks_.begin(), fileLinks_.end());
 	
 	{ 	UpdateLock<FileTreeView> lock(tree_);
 	
 		treeManager_.InvalidateAll();
 		
-		foreach (hal::FileDetail file, fileDetails_)
+		foreach (FileLink file, fileLinks_)
 		{
 			treeManager_.EnsureValid(file.branch);
 		}
@@ -320,10 +324,10 @@ void AdvFilesDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 	
 	tree_.determineFocused();
 	
-	range_ = std::equal_range(fileDetails_.begin(), fileDetails_.end(),
-		hal::FileDetail(tree_.focused()/L"leaf"));
+	range_ = std::equal_range(fileLinks_.begin(), fileLinks_.end(),
+		FileLink(tree_.focused()));
 	
-	std::sort(range_.first, range_.second, &hal::FileDetailNamesLess);
+	std::sort(range_.first, range_.second, &FileLinkNamesLess);
 	
 	splitterPos = splitter_.GetSplitterPos();
 }

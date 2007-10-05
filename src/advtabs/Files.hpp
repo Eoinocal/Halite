@@ -20,6 +20,65 @@
 
 #include "../HaliteUpdateLock.hpp"
 
+struct FileLink
+{
+	FileLink(const boost::filesystem::wpath& b, size_t o=0) :
+		branch(b),
+		filename(L""),
+		order_(o)
+	{}
+
+	FileLink(const wstring& f, size_t o=0) :
+		branch(L""),
+		filename(f),
+		order_(o)
+	{}
+
+	FileLink(const hal::FileDetail& f) :
+		branch(f.branch),
+		filename(f.filename),
+		order_(f.order())
+	{
+		hal::event().post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(wformat(L"Con -> %1% - %2%.") % filename % order())));	}
+	
+	bool operator==(const FileLink& f) const
+	{
+		return (branch == f.branch);
+	}
+	
+	bool operator<(const FileLink& f) const
+	{
+		return (branch < f.branch);
+	}
+	
+	enum FileType
+	{
+		folder,
+		file
+	};
+	
+	size_t order() { return order_; }
+	
+	boost::filesystem::wpath branch;
+	wstring filename;
+	unsigned type;
+	
+private:
+	size_t order_;
+};
+
+
+inline bool FileLinkNamesEqual(const FileLink& l, const FileLink& r)
+{
+	return l.filename == r.filename;
+}
+
+inline bool FileLinkNamesLess(const FileLink& l, const FileLink& r)
+{
+	return l.filename < r.filename;
+}
+
 class FileListView :
 	public CHaliteSortListViewCtrl<FileListView, const hal::FileDetail>,
 	public CHaliteIni<FileListView>,
@@ -389,7 +448,9 @@ protected:
 	std::map<wpath, CTreeItem> fileTreeMap_;
 	TreeViewManager<FileTreeView> treeManager_;
 	
-	wstring current_torrent_name_;	
+	wstring current_torrent_name_;
+	std::vector<FileLink> fileLinks_;
+	
 	hal::FileDetails fileDetails_;
-	std::pair<hal::FileDetails::iterator, hal::FileDetails::iterator> range_;
+	std::pair<std::vector<FileLink>::iterator, std::vector<FileLink>::iterator> range_;
 };
