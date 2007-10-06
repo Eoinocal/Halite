@@ -2213,8 +2213,8 @@ protected:
 			}
 
 			::ShowWindow(hWnd, SW_HIDE);
-			WNDPROC wpOld = (WNDPROC)::SetWindowLongPtr(hWnd, GWL_WNDPROC, (LONG_PTR)wp);
-			ATLVERIFY(::SetWindowLongPtr(hWnd, GWL_USERDATA, (LONG_PTR)wpOld) == 0);
+			WNDPROC wpOld = (WNDPROC)::SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)wp);
+			ATLVERIFY(::SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)wpOld) == 0);
 		}
 
 		return TRUE;
@@ -2369,7 +2369,7 @@ protected:
 			}
 		}
 
-		WNDPROC wp = (WNDPROC)(LONG_PTR)::GetWindowLongPtr(hWnd, GWL_USERDATA);
+		WNDPROC wp = (WNDPROC)(LONG_PTR)::GetWindowLongPtr(hWnd, GWLP_USERDATA);
 		return ::CallWindowProc(wp, hWnd, uMsg, wParam, lParam);
 	}
 

@@ -17,7 +17,7 @@
 LRESULT AdvTorrentDialog::onInitDialog(HWND, LPARAM)
 {
 	dialogBaseClass::InitializeHalDialogBase();	
-	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
+//	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
 {	m_prog.Attach(GetDlgItem(TORRENTPROG));
 	m_prog.SetRange(0, 100);

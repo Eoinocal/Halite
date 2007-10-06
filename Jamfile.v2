@@ -79,8 +79,10 @@ exe Halite
 	<runtime-link>static
 	<threading>multi
 	<asynch-exceptions>on
-	<warnings>off
 	
+	<variant>release:<linkflags>/OPT:ICF=5
+	<variant>release:<linkflags>/OPT:REF
+	<variant>release:<warnings>off
 	<variant>release:<define>NDEBUG
 	
 	<define>_UNICODE
