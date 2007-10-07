@@ -23,7 +23,7 @@ class Halite :
 public:
 	Halite() :
 		CHaliteIni<Halite>("globals/halite", "Halite"),
-		oneInst(true),
+		oneInst(false),
 		logDebug_(false),
 		showMessage(true),
 		logToFile_(true),
