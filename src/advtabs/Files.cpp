@@ -253,11 +253,11 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 			
 			if (iter == range_.second || !(FileLinkNamesEqual((*iter), file)))
 			{
-				if (iter == range_.second)
+/*				if (iter == range_.second)
 					hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Deleting %1%") % file.filename).str().c_str())));
 				else
 					hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Deleting %1% != %2%") % file.filename % (*iter).filename).str().c_str())));
-				
+	*/			
 				list_.DeleteItem(i);
 			}
 			else

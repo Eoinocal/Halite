@@ -17,11 +17,9 @@
 LRESULT AdvTorrentDialog::onInitDialog(HWND, LPARAM)
 {
 	dialogBaseClass::InitializeHalDialogBase();	
-//	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
-{	m_prog.Attach(GetDlgItem(TORRENTPROG));
-	m_prog.SetRange(0, 100);
-}	
+	m_prog.Attach(GetDlgItem(TORRENTPROG));
+	m_prog.SetRange(0, 100);	
 	
 	NoConnDown = -1;
 	NoConnUp = -1;
@@ -32,6 +30,44 @@ LRESULT AdvTorrentDialog::onInitDialog(HWND, LPARAM)
 	return 0;
 }
 
+AdvTorrentDialog::CWindowMapStruct* AdvTorrentDialog::GetWindowMap()
+{
+	#define TORRENT_LIMITS_LAYOUT \
+	WMB_HEAD(WMB_COL(_exp|20), WMB_COL(_exp|30), WMB_COL(_exp|20), WMB_COL(_exp|30)), \
+		WMB_ROW(10,	IDC_TL,	_r, _r, _r), \
+		WMB_ROW(11,	IDC_TLD, IDC_EDITTLD, IDC_TLU, IDC_EDITTLU), \
+		WMB_ROW(10,	IDC_NC,	_r, _r, _r), \
+		WMB_ROW(11,	IDC_NCD, IDC_EDITNCD, IDC_NCU, IDC_EDITNCU), \
+		WMB_ROW(11,	IDC_RATIOESTATIC, _r, _r, IDC_EDITRATIO), \
+	WMB_END()
+
+#define TORRENT_STATUS_LAYOUT \
+	WMB_HEAD(WMB_COL(45), WMB_COLNOMIN(_exp|150), WMB_COL(_eq|0), WMB_COL(_exp|100)), \
+		WMB_ROW(10,	IDC_NAME_STATUS_LABEL, IDC_NAME_STATUS, _r, _r), \
+		WMB_ROW(10,	IDC_PEERS_LABEL, IDC_PEERS, IDC_SEEDS_LABEL, IDC_SEEDS), \
+		WMB_ROW(10,	IDC_TRANSFERED_LABEL, IDC_TRANSFERED, IDC_OVERHEAD_LABEL, IDC_OVERHEAD), \
+		WMB_ROW(10,	IDC_REMAINING_LABEL, IDC_REMAINING, IDC_ETA_LABEL, IDC_ETA), \
+		WMB_ROW(10,	IDC_RATE_LABEL, IDC_RATE, IDC_RATIO_LABEL, IDC_RATIO), \
+	WMB_END()
+		
+#define TORRENT_REANNOUNCE_LAYOUT \
+	WMB_HEAD(WMB_COL(50), WMB_COLNOMIN(_exp)), \
+		WMB_ROW(10,	IDC_UPDATESTAT, IDC_UPDATE), \
+	WMB_END()	
+
+	BEGIN_WINDOW_MAP_INLINE(AdvTorrentDialog, 6, 6, 3, 3)
+		WMB_HEAD(WMB_COL(_gap), WMB_COL(_exp), WMB_COL(120), WMB_COL(_gap)), 
+			WMB_ROW(_gap|3,	IDC_GROUP_TORRENT, _r, _r, _r), 
+			WMB_ROW(_auto,	_d, TORRENT_STATUS_LAYOUT, TORRENT_LIMITS_LAYOUT), 
+			WMB_ROWMIN(_exp, 8,	_d, TORRENTPROG, _r), 
+			WMB_ROW(_gap,	_d), 
+			WMB_ROW(_gap|3,	IDC_GROUP_TRACKER, _r, _r, _r), 
+			WMB_ROW(_auto,	_d, IDC_TRACKER, TORRENT_REANNOUNCE_LAYOUT), 
+			WMB_ROW(_gap,	_d), 
+		WMB_END() 
+	END_WINDOW_MAP_INLINE()	
+}
+	
 void AdvTorrentDialog::onClose()
 {
 	if(::IsWindow(m_hWnd)) 
@@ -154,7 +190,7 @@ void AdvTorrentDialog::uiUpdateSingle(const hal::TorrentDetail_ptr& torrent)
 			wformat(hal::app().res_wstr(HAL_REMAINING))
 				% (static_cast<float>(torrent->totalWanted()-torrent->totalWantedDone())/(1024*1024))
 				% (static_cast<float>(torrent->totalWanted())/(1024*1024)));
-				
+		
 		wstring eta = L"∞";			
 		if (!torrent->estimatedTimeLeft().is_special())
 			eta = hal::from_utf8(boost::posix_time::to_simple_string(torrent->estimatedTimeLeft()));
@@ -170,7 +206,7 @@ void AdvTorrentDialog::uiUpdateSingle(const hal::TorrentDetail_ptr& torrent)
 			? static_cast<float>(torrent->totalPayloadUploaded())
 				/ static_cast<float>(torrent->totalPayloadDownloaded())
 			: 0;
-			
+		
 		SetDlgItemInfo(IDC_RATIO, 
 			wformat(L"%1$.2f") % ratio);		
 		

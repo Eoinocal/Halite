@@ -29,14 +29,14 @@ public:
 		
 		fn_ = fn;
 		
-		return ::CreateTimerQueueTimer(
+		return (::CreateTimerQueueTimer(
 			&timer_,
 			NULL,
 			&TimerProc,
 			(LPVOID)this,
 			dueTime, 
 			period, 
-			WT_EXECUTEINTIMERTHREAD);
+			WT_EXECUTEINTIMERTHREAD) == TRUE);
 	}
 
 private:

@@ -108,6 +108,11 @@
 "Program Information" ---> "Programm Information"
 "RichEdit20A" ---> "RichEdit20A"
 "SysTabControl32" ---> "SysTabControl32"
+"Add Torrent" --->  ??? 
+"Ok" --->  ??? 
+"Use Compact Allocation." --->  ??? 
+"Start Paused" --->  ??? 
+"Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "General" ---> "Allgemein"
 "Allow only one instance to run." ---> "Nur eine Instanz erlauben"
 "Advanced GUI" ---> "Erweiterte GUI"
@@ -162,14 +167,6 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Die BT-Sitzung konnte nicht gestartet werden. Verwende einen anderen Port."
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT Sitzung konnte nicht gestartet werden. Verwende einen anderen Port."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Verzeichnis zum speichern der Dateien auswählen oder um abzubrechen um das Torrent nicht komplett zu laden."
-"None" ---> "Keine"
-"Debug" ---> "Debug"
-"Info" ---> "Info"
-"Critical" ---> "Kritisch"
-"Libtorrent Peer Alert: %1%." ---> "Libtorrent Peer Alarm: %1%."
-"Xml Exception (%1%) with %2%." ---> "XML Fehler (%1%) bei (%2%)"
-"Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) Fehler; (%2%) von (%3%)."
-"Invalid torrent (%1%) from %2%." ---> "fehlerhafter Torrent (%1%) von (%2%)"
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB von %2$.2fMB"
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "In dieser Sitzung Runtergeladen: %1$.2fMB, Hochgeladen: %2$.2fMB, Ratio: %3$.2f."
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Geladen %1$.2fMB, Gesendet %2$.2fMB, Ratio %3$.2f."
@@ -185,13 +182,6 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(D-U) %1$.2fKB/s - %2$.2fKB/s"
 "Halite not listening!" ---> "Halite hat keine Verbindung"
 "Port %1% open" ---> "Port %1% offen"
-"Exception caught; %1%, from %2%." ---> "Ausnahme aufgetreten; %1%, von %2%."
-"XML exception: %1%." ---> "XML Fehler: %1%."
-"Unicode exception: %1%." ---> "Unicode Ausnahme: %1%."
-"Bittorrent Event: %1%." ---> "Bittorrent Ereignis: %1%."
-"Peer Event: %1%." ---> "Peer Ereignis: %1%."
-"Tracker Event: %1%." ---> "Tracker Ereignis: %1%."
-"Debug Event: %1%." ---> "Debug Ereignis: %1%."
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Peers" ---> "Peers"
 "Files" --->  ??? 
@@ -220,8 +210,10 @@
 "Allocating" ---> "Zuteilend"
 "Stopped" ---> "Angehalten"
 "Paused" ---> "Pausiert"
+"Stopping" --->  ??? 
+"Pausing" --->  ??? 
 "Downloading Metadata" ---> "Lade Metadaten"
-"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time" ---> "Name;Status;Fertiggestellt;Download;Upload;Peers;Seeds;ETA;Kopien;Tracker;Neuankündigung;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time"
+"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
 "Time;Message;Severity" ---> "Zeit;Meldung;Schwere"
 "Tracker;Tier" ---> "Tracker;Rang"
 "Peer;Country;Download;Upload;Type;Client" ---> "Peer;Land;Download;Upload;Typ;Client"
@@ -238,3 +230,35 @@
 "Set Priority" --->  ??? 
 "Halite.ico" ---> "Halite.ico"
 "toolbar.bmp" ---> "toolbar.bmp"
+"None" ---> "Keine"
+"Debug" ---> "Debug"
+"Info" ---> "Info"
+"Warning" --->  ??? 
+"Critical" ---> "Kritisch"
+"Peer %2%: %1%." --->  ??? 
+"Peer banned %2%. (%1%)" --->  ??? 
+"Hash failed for piece %2% of %1%." --->  ??? 
+"URL Seed %2%, %3%. (%1%)" --->  ??? 
+"Tracker warning: %2%! (%1%)" --->  ??? 
+"Tracker Announce. (%1%)" --->  ??? 
+"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
+"%2%. %3% Peers. (%1%)" --->  ??? 
+"Fast rusume failed: %2%. (%1%)" --->  ??? 
+"Piece %2% finished. (%1%)" --->  ??? 
+"Block %2% of piece %3% finished. (%1%)" --->  ??? 
+"Block %2% of piece %3% downloading. (%1%)" --->  ??? 
+"Successfully %1%." --->  ??? 
+"Failed, %1%." --->  ??? 
+"IP Filter blocked %1%, %2%." --->  ??? 
+"Xml Exception (%1%) with %2%." ---> "XML Fehler (%1%) bei (%2%)"
+"Torrent %1% finished." --->  ??? 
+"Torrent %1% paused." --->  ??? 
+"Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) Fehler; (%2%) von (%3%)."
+"Invalid torrent (%1%) from %2%." ---> "fehlerhafter Torrent (%1%) von (%2%)"
+"Exception caught; %1%, from %2%." ---> "Ausnahme aufgetreten; %1%, von %2%."
+"XML exception: %1%." ---> "XML Fehler: %1%."
+"Unicode exception: %1%." ---> "Unicode Ausnahme: %1%."
+"Bittorrent Event: %1%." ---> "Bittorrent Ereignis: %1%."
+"Peer Event: %1%." ---> "Peer Ereignis: %1%."
+"Tracker Event: %1%." ---> "Tracker Ereignis: %1%."
+"Debug Event: %1%." ---> "Debug Ereignis: %1%."

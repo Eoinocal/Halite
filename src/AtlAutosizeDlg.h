@@ -86,12 +86,20 @@ namespace ATL
 		} \
 		return TRUE; \
 	}
-	
+
 /// The main "facility" to control the positioning and sizing of the ctrls.
 /** The BEGIN_WINDOW_MAP() MUST be paired by a END_WINDOW_MAP(). 
  *  \param theClass Name of the class using the facility
  *  \param ... In order: LeftRightBorder, TopBottomBorder, HorizontalGap, VerticalGap. Positive if DLGUnits, negative for Pixels
  */
+ 
+#define BEGIN_WINDOW_MAP_INLINE(theClass, /*LeftRightBorder, TopBottomBorder, HGap, VGap*/...) \
+	ATLASSERT(sizeof(int) == sizeof(theClass::CCtrlCounter) && "\"Strange\" compiler. The library is not compatible"); \
+		CRowsIndex *p = NULL; p; \
+		const int _auto = WMSRC_AUTO, _exp = WMSRC_EXPANDABLE, _contr = WMSRC_CONTRACTABLE, _eq = WMSRC_EQUAL, _gap = WMSRC_GAP, _gapm = WMSRC_GAPM, _nog = WMSRC_NOGAP, _ = WMSCTRL_EMPTY, __ = WMSCTRL_EMPTY, _r = WMSCTRL_EXPRIGHT, _d = WMSCTRL_EXPDOWN; \
+		_auto; _exp; _contr; _eq; _gap, _gapm, _nog; _; __; _r; _d; \
+		static CCtrlCounter s_iCtrls[] = {0, _FirstParam(__VA_ARGS__), _SecondParam(__VA_ARGS__), _ThirdParam(__VA_ARGS__), _FourthParam(__VA_ARGS__), 
+
 #define BEGIN_WINDOW_MAP(theClass, /*LeftRightBorder, TopBottomBorder, HGap, VGap*/...) \
 	static CWindowMapStruct* GetWindowMap() \
 	{ \
@@ -102,10 +110,17 @@ namespace ATL
 		static CCtrlCounter s_iCtrls[] = {0, _FirstParam(__VA_ARGS__), _SecondParam(__VA_ARGS__), _ThirdParam(__VA_ARGS__), _FourthParam(__VA_ARGS__), 
 
 /// "Footer" of the Window Map.
+#define END_WINDOW_MAP_INLINE() \
+		}; ATLASSERT(!p); \
+		return (CWindowMapStruct*)s_iCtrls; 
+		
+		
+/// "Footer" of the Window Map.
 #define END_WINDOW_MAP() \
 		}; ATLASSERT(!p); \
 		return (CWindowMapStruct*)s_iCtrls; \
 	}
+
 
 /*@}*/
 
@@ -222,33 +237,33 @@ namespace ATL
 /** \param _size The size and type of the row. For example WMSRC_AUTO/_auto or WMSRC_EXPANDABLE/_exp
  *  \param ... Comma separated list of IDs if ctrls (or WMB_HEAD()/WMB_END() ctrl groups, or WMSCTRL_EMPTY/_/__ or WMSCTRL_EXPRIGHT/_r or WMSCTRL_EXPDOWN/_d)
  */
-#define WMB_ROWNOMIN(_size)						(_IncRow(p), WMR_BEGIN), _size, 0, WMSRCMM_SIZECALC, __VA_ARGS__, WMR_END
+#define WMB_ROWNOMIN(_size, ...)						(_IncRow(p), WMR_BEGIN), _size, 0, WMSRCMM_SIZECALC, __VA_ARGS__, WMR_END
 
 /// Auto-min and infinite-max row. To be used with WMB_HEAD()
 /** \param _size The size and type of the row. For example WMSRC_AUTO/_auto or WMSRC_EXPANDABLE/_exp
  *  \param ... Comma separated list of IDs if ctrls (or WMB_HEAD()/WMB_END() ctrl groups, or WMSCTRL_EMPTY/_/__ or WMSCTRL_EXPRIGHT/_r or WMSCTRL_EXPDOWN/_d)
  */
-#define WMB_ROWNOMAX(_size)						(_IncRow(p), WMR_BEGIN), _size, WMSRCMM_SIZECALC, WMSRCMM_MAXVAL, __VA_ARGS__, WMR_END
+#define WMB_ROWNOMAX(_size, ...)						(_IncRow(p), WMR_BEGIN), _size, WMSRCMM_SIZECALC, WMSRCMM_MAXVAL, __VA_ARGS__, WMR_END
 
 /// 0-min and infinite-max row. To be used with WMB_HEAD()
 /** \param _size The size and type of the row. For example WMSRC_AUTO/_auto or WMSRC_EXPANDABLE/_exp
  *  \param ... Comma separated list of IDs if ctrls (or WMB_HEAD()/WMB_END() ctrl groups, or WMSCTRL_EMPTY/_/__ or WMSCTRL_EXPRIGHT/_r or WMSCTRL_EXPDOWN/_d)
  */
-#define WMB_ROWNOMINNOMAX(_size)				(_IncRow(p), WMR_BEGIN), _size, 0, WMSRCMM_MAXVAL, __VA_ARGS__, WMR_END
+#define WMB_ROWNOMINNOMAX(_size, ...)				(_IncRow(p), WMR_BEGIN), _size, 0, WMSRCMM_MAXVAL, __VA_ARGS__, WMR_END
 
 /// Fixed-min and infinite-max row. To be used with WMB_HEAD()
 /** \param _size The size and type of the row. For example WMSRC_AUTO/_auto or WMSRC_EXPANDABLE/_exp
  *	\param _min Min-size of the row. Positive if DLGUnits, negative for Pixels
  *  \param ... Comma separated list of IDs if ctrls (or WMB_HEAD()/WMB_END() ctrl groups, or WMSCTRL_EMPTY/_/__ or WMSCTRL_EXPRIGHT/_r or WMSCTRL_EXPDOWN/_d)
  */
-#define WMB_ROWMINNOMAX(_size, _min)			(_IncRow(p), WMR_BEGIN), _size, _min, WMSRCMM_MAXVAL, __VA_ARGS__, WMR_END
+#define WMB_ROWMINNOMAX(_size, _min, ...)			(_IncRow(p), WMR_BEGIN), _size, _min, WMSRCMM_MAXVAL, __VA_ARGS__, WMR_END
 
 /// 0-min and fixed-max row. To be used with WMB_HEAD()
 /** \param _size The size and type of the row. For example WMSRC_AUTO/_auto or WMSRC_EXPANDABLE/_exp
  *	\param _max Max-size of the row. Positive if DLGUnits, negative for Pixels
  *  \param ... Comma separated list of IDs if ctrls (or WMB_HEAD()/WMB_END() ctrl groups, or WMSCTRL_EMPTY/_/__ or WMSCTRL_EXPRIGHT/_r or WMSCTRL_EXPDOWN/_d)
  */
-#define WMB_ROWNOMINMAX(_size, _max)			(_IncRow(p), WMR_BEGIN), _size, 0, _max, __VA_ARGS__, WMR_END
+#define WMB_ROWNOMINMAX(_size, _max, ...)			(_IncRow(p), WMR_BEGIN), _size, 0, _max, __VA_ARGS__, WMR_END
 
 /*@}*/
 

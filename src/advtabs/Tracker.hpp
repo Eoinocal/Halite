@@ -4,6 +4,10 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#define IDC_TRACKER_LABEL 	100001
+
+#ifndef RC_INVOKED
+
 #pragma once
 
 #include "../stdAfx.hpp"
@@ -19,15 +23,15 @@
 
 class AdvTrackerDialog :
 	public CHalTabPageImpl<AdvTrackerDialog>,
-	public CDialogResize<AdvTrackerDialog>,
+	public CAutoSizeWindow<AdvTrackerDialog, false>,
 	public CHaliteDialogBase<AdvTrackerDialog>,
 	public CWinDataExchangeEx<AdvTrackerDialog>
 {
 protected:
 	typedef AdvTrackerDialog thisClass;
-	typedef CHalTabPageImpl<AdvTrackerDialog> baseClass;
-	typedef CDialogResize<AdvTrackerDialog> resizeClass;
-	typedef CHaliteDialogBase<AdvTrackerDialog> dialogBaseClass;
+	typedef CHalTabPageImpl<thisClass> baseClass;
+	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
+	typedef CHaliteDialogBase<thisClass> dialogBaseClass;
 
 public:
 	enum { IDD = IDD_ADVTRACKER };
@@ -55,7 +59,7 @@ public:
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
 
-		CHAIN_MSG_MAP(resizeClass)
+		CHAIN_MSG_MAP(autosizeClass)
 		CHAIN_MSG_MAP(baseClass)
 		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
@@ -64,19 +68,9 @@ public:
 		DDX_EX_STDWSTRING(IDC_TRACKER_USER, username_);
 		DDX_EX_STDWSTRING(IDC_TRACKER_PASS, password_);
     END_DDX_MAP()
+	
+	static CWindowMapStruct* GetWindowMap();
 
-	BEGIN_DLGRESIZE_MAP(thisClass)
-		DLGRESIZE_CONTROL(IDC_TRACKERLIST, DLSZ_SIZE_X|DLSZ_SIZE_Y)
-		DLGRESIZE_CONTROL(IDC_TRACKER_RESET, DLSZ_MOVE_X)
-		DLGRESIZE_CONTROL(IDC_TRACKER_APPLY, DLSZ_MOVE_X)
-
-		DLGRESIZE_CONTROL(IDC_TRACKER_LOGINCHECK, DLSZ_MOVE_X)
-		DLGRESIZE_CONTROL(IDC_TRACKER_USER_S, DLSZ_MOVE_X)
-		DLGRESIZE_CONTROL(IDC_TRACKER_USER, DLSZ_MOVE_X)
-		DLGRESIZE_CONTROL(IDC_TRACKER_PASS_S, DLSZ_MOVE_X)
-		DLGRESIZE_CONTROL(IDC_TRACKER_PASS, DLSZ_MOVE_X)
-		DLGRESIZE_CONTROL(BTNREANNOUNCE, DLSZ_MOVE_X)
-	END_DLGRESIZE_MAP()
 
 	LRESULT onInitDialog(HWND, LPARAM);
 	void onClose();
@@ -99,3 +93,5 @@ protected:
 	wstring username_;
 	wstring password_;
 };
+
+#endif // RC_INVOKED

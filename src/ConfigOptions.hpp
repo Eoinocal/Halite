@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include "../res/ConfigDefines.h"
+
 #include "stdAfx.hpp"
 
 #include "Halite.hpp"
@@ -259,17 +261,14 @@ public:
 
 class SecurityOptions :
     public CPropertyPageImpl<SecurityOptions>,
+	public CAutoSizeWindow<SecurityOptions, false>,
     public CWinDataExchangeEx<SecurityOptions>
 {
 	typedef SecurityOptions thisClass;
+	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
+	
 public:
     enum { IDD = IDD_CONFIGSECURITY };
-
-	SecurityOptions()
-	{}
-
-	~SecurityOptions()
-	{}
 
     BEGIN_MSG_MAP_EX(thisClass)
         MSG_WM_INITDIALOG(OnInitDialog)
@@ -281,6 +280,7 @@ public:
 		COMMAND_ID_HANDLER_EX(IDC_SC_ENABLE_PE, onPeCheck)
 		
         CHAIN_MSG_MAP(CPropertyPageImpl<thisClass>)
+        CHAIN_MSG_MAP(autosizeClass)
     END_MSG_MAP()
 
     BEGIN_DDX_MAP(thisClass)
@@ -291,6 +291,33 @@ public:
         DDX_RADIO(IDC_SC_PE_CP_IN_FORCED, hal::config().peConInPolicy)
         DDX_RADIO(IDC_SC_PE_CP_OUT_FORCED, hal::config().peConOutPolicy)
     END_DDX_MAP()
+	
+	#define SECURITY_IPF_LAYOUT \
+	WMB_HEAD(WMB_COLNOMAX(_exp), WMB_COLNOMAX(_exp), WMB_COLNOMAX(_exp)), \
+		WMB_ROW(_auto,	IDC_BC_FILTERCHECK,	IDC_BC_FILTERCLEAR, IDC_BC_FILTERLOAD), \
+	WMB_END()
+
+#define TORRENT_STATUS_LAYOUT \
+	WMB_HEAD(WMB_COL(45), WMB_COLNOMIN(_exp|150), WMB_COL(_eq|0), WMB_COL(_exp|100)), \
+		WMB_ROW(10,	IDC_NAME_STATUS_LABEL, IDC_NAME_STATUS, _r, _r), \
+		WMB_ROW(10,	IDC_PEERS_LABEL, IDC_PEERS, IDC_SEEDS_LABEL, IDC_SEEDS), \
+		WMB_ROW(10,	IDC_TRANSFERED_LABEL, IDC_TRANSFERED, IDC_OVERHEAD_LABEL, IDC_OVERHEAD), \
+		WMB_ROW(10,	IDC_REMAINING_LABEL, IDC_REMAINING, IDC_ETA_LABEL, IDC_ETA), \
+		WMB_ROW(10,	IDC_RATE_LABEL, IDC_RATE, IDC_RATIO_LABEL, IDC_RATIO), \
+	WMB_END()
+		
+#define TORRENT_REANNOUNCE_LAYOUT \
+	WMB_HEAD(WMB_COL(50), WMB_COLNOMIN(_exp)), \
+		WMB_ROW(10,	IDC_UPDATESTAT, IDC_UPDATE), \
+	WMB_END()	
+
+	BEGIN_WINDOW_MAP(thisClass, 6, 6, 3, 3)
+		WMB_HEAD(WMB_COL(_gap), WMB_COLNOMAX(_exp), WMB_COL(_gap)), 
+			WMB_ROW(_gap|3,	IDC_SECURITY_IPF_GB, _r, _r), 
+			WMB_ROW(_auto,	_d, SECURITY_IPF_LAYOUT), 
+			WMB_ROW(_gap,	_d), 
+		WMB_END()
+	END_WINDOW_MAP()	
 
     BOOL OnInitDialog (HWND hwndFocus, LPARAM lParam)
 	{
@@ -516,8 +543,9 @@ public:
     {
         if (wParam == TRUE)
             Center();
-
-        bHandled = FALSE;
+		
+		bHandled = FALSE;
+		
         return 0;
     }
 
@@ -537,3 +565,4 @@ public:
 	RemoteOptions remoteControlOptions;
 	AboutOptions aboutOptions;
 };
+

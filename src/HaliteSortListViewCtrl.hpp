@@ -466,7 +466,7 @@ public:
 		header_.Attach(this->GetHeader());
 		header_.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
 		
-		for (int i = header_.GetItemCount(); i<listNames_.size(); i = header_.GetItemCount())
+		for (int i = header_.GetItemCount(); i<int(listNames_.size()); i = header_.GetItemCount())
 		{
 			//if (listVisible_[i])
 			{

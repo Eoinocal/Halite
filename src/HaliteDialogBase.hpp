@@ -31,7 +31,7 @@ public:
 //		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
 	
-	void OnShow(bool show, int flags)
+	void OnShow(BOOL show, int flags)
 	{
 		if (show)
 		{

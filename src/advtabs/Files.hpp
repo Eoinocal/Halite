@@ -138,6 +138,8 @@ public:
 				return hal::app().res_wstr(HAL_FILE_PRIORITY_6);
 			case 7:
 				return hal::app().res_wstr(HAL_FILE_PRIORITY_7);
+			default:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_0);
 			}	
 		}		
 	};
@@ -232,7 +234,6 @@ public:
 		REFLECTED_NOTIFY_CODE_HANDLER(TVN_SELCHANGED, OnSelChanged)
 		
 		COMMAND_RANGE_HANDLER_EX(ID_HAL_FILE_PRIORITY_0, ID_HAL_FILE_PRIORITY_7, OnMenuPriority)
-//		CHAIN_MSG_MAP(treeClass)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 	
@@ -419,7 +420,7 @@ public:
 	END_MSG_MAP()
 
 	BEGIN_DLGRESIZE_MAP(thisClass)
-		DLGRESIZE_CONTROL(IDC_CONTAINER, DLSZ_SIZE_X|DLSZ_SIZE_Y)
+		DLGRESIZE_CONTROL(IDC_CONTAINER, DLSZ_SIZE_X|DLSZ_SIZE_Y|DLSZ_REPAINT)
 	END_DLGRESIZE_MAP()
 
     friend class boost::serialization::access;

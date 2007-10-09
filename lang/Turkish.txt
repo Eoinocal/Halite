@@ -108,6 +108,11 @@
 "Program Information" ---> "Program Bilgisi"
 "RichEdit20A" --->  ??? 
 "SysTabControl32" ---> "SysTabControl32"
+"Add Torrent" --->  ??? 
+"Ok" --->  ??? 
+"Use Compact Allocation." --->  ??? 
+"Start Paused" --->  ??? 
+"Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "General" ---> "Genel"
 "Allow only one instance to run." ---> "Programın sadece bir kopyası çalıssın."
 "Advanced GUI" ---> "Gelişmiş GUI"
@@ -162,14 +167,6 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Bittorent oturumu başlatılamadı. Ayarlardan başka bir port seçin."
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT oturumu başlatılamadı. Ayarlardan başka bir port seçin."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Dosyaları kaydetmek için bir dizin seçin veya torrenti indirmemek için iptal edin."
-"None" ---> "Hiçbiri"
-"Debug" ---> "Hata Ayıkla"
-"Info" ---> "Bilgi"
-"Critical" ---> "Critical"
-"Libtorrent Peer Alert: %1%." ---> "Libtorrent Eş Uyarısı: %1%."
-"Xml Exception (%1%) with %2%." ---> "Xml İstisnası (%1%) ile %2%."
-"Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) istisnası yakalandı; %2% 'den %3% 'e."
-"Invalid torrent (%1%) from %2%." ---> "Geçersiz torrent (%1%) 'den %2%'ye."
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "İndirilen %1$.2fMB, Gönderilen %2$.2fMB, Oran %3$.2f."
@@ -185,13 +182,6 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(İ-G) %1$.2fKB/s - %2$.2fKB/s"
 "Halite not listening!" ---> "Halite portu kullanamıyor!"
 "Port %1% open" ---> "%1% portu açık"
-"Exception caught; %1%, from %2%." ---> "Yakalanan istisna; %1%, %2%'den."
-"XML exception: %1%." ---> "XML istisnası %1%."
-"Unicode exception: %1%." ---> "Unicode istisnası: %1%."
-"Bittorrent Event: %1%." ---> "Bittorrent ile İlgili Durum: %1%."
-"Peer Event: %1%." ---> "Eş ile İlgili Durum: %1%."
-"Tracker Event: %1%." ---> "İzleyici ile İlgili Durum: %1%."
-"Debug Event: %1%." ---> "Hata Ayıklama ile İlgili Durum: %1%."
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Peers" --->  ??? 
 "Files" --->  ??? 
@@ -220,8 +210,10 @@
 "Allocating" ---> "Yer Hesaplanıyor"
 "Stopped" ---> "Durduruldu"
 "Paused" ---> "Duraklatıldı"
+"Stopping" --->  ??? 
+"Pausing" --->  ??? 
 "Downloading Metadata" ---> "Metadata İndiriliyor"
-"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time" --->  ??? 
+"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
 "Time;Message;Severity" ---> "Süre;Mesaj;Öncelik"
 "Tracker;Tier" ---> "İzleyici;Sıra"
 "Peer;Country;Download;Upload;Type;Client" --->  ??? 
@@ -238,3 +230,35 @@
 "Set Priority" --->  ??? 
 "Halite.ico" --->  ??? 
 "toolbar.bmp" --->  ??? 
+"None" ---> "Hiçbiri"
+"Debug" ---> "Hata Ayıkla"
+"Info" ---> "Bilgi"
+"Warning" --->  ??? 
+"Critical" ---> "Critical"
+"Peer %2%: %1%." --->  ??? 
+"Peer banned %2%. (%1%)" --->  ??? 
+"Hash failed for piece %2% of %1%." --->  ??? 
+"URL Seed %2%, %3%. (%1%)" --->  ??? 
+"Tracker warning: %2%! (%1%)" --->  ??? 
+"Tracker Announce. (%1%)" --->  ??? 
+"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
+"%2%. %3% Peers. (%1%)" --->  ??? 
+"Fast rusume failed: %2%. (%1%)" --->  ??? 
+"Piece %2% finished. (%1%)" --->  ??? 
+"Block %2% of piece %3% finished. (%1%)" --->  ??? 
+"Block %2% of piece %3% downloading. (%1%)" --->  ??? 
+"Successfully %1%." --->  ??? 
+"Failed, %1%." --->  ??? 
+"IP Filter blocked %1%, %2%." --->  ??? 
+"Xml Exception (%1%) with %2%." ---> "Xml İstisnası (%1%) ile %2%."
+"Torrent %1% finished." --->  ??? 
+"Torrent %1% paused." --->  ??? 
+"Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) istisnası yakalandı; %2% 'den %3% 'e."
+"Invalid torrent (%1%) from %2%." ---> "Geçersiz torrent (%1%) 'den %2%'ye."
+"Exception caught; %1%, from %2%." ---> "Yakalanan istisna; %1%, %2%'den."
+"XML exception: %1%." ---> "XML istisnası %1%."
+"Unicode exception: %1%." ---> "Unicode istisnası: %1%."
+"Bittorrent Event: %1%." ---> "Bittorrent ile İlgili Durum: %1%."
+"Peer Event: %1%." ---> "Eş ile İlgili Durum: %1%."
+"Tracker Event: %1%." ---> "İzleyici ile İlgili Durum: %1%."
+"Debug Event: %1%." ---> "Hata Ayıklama ile İlgili Durum: %1%."

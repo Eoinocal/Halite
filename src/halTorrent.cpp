@@ -5,8 +5,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 
-#define HALITE_VERSION					0,2,9,310
-#define HALITE_VERSION_STRING			"v 0.2.9 dev 310"
+#define HALITE_VERSION					0,2,9,313
+#define HALITE_VERSION_STRING			"v 0.2.9 dev 313"
 
 #define LBT_EVENT_TORRENT_FINISHED					80001
 #define HAL_PEER_BAN_ALERT							80002
@@ -21,6 +21,9 @@
 #define HAL_PIECE_FINISHED_ALERT					80011
 #define HAL_BLOCK_FINISHED_ALERT					80012
 #define HAL_BLOCK_DOWNLOADING_ALERT					80013
+#define HAL_LISTEN_SUCCEEDED_ALERT					80014
+#define HAL_LISTEN_FAILED_ALERT						80015
+#define HAL_IPFILTER_ALERT							80016
 
 #ifndef RC_INVOKED
 
@@ -59,6 +62,8 @@
 #include <boost/serialization/split_free.hpp>
 #include <boost/date_time/posix_time/time_serialize.hpp>
 #include <boost/algorithm/string/find.hpp>
+
+#define TORRENT_MAX_ALERT_TYPES 20
 
 #include <libtorrent/file.hpp>
 #include <libtorrent/hasher.hpp>
@@ -475,6 +480,34 @@ public:
 			)	);				
 		}
 		
+		void operator()(lbt::listen_failed_alert const& a) const
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(Event::info, a.timestamp(),
+					wformat(hal::app().res_wstr(HAL_LISTEN_FAILED_ALERT))
+						% hal::from_utf8_safe(a.msg()))
+			)	);				
+		}
+		
+		void operator()(lbt::listen_succeeded_alert const& a) const
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(Event::info, a.timestamp(),
+					wformat(hal::app().res_wstr(HAL_LISTEN_SUCCEEDED_ALERT))
+						% hal::from_utf8_safe(a.msg()))
+			)	);				
+		}
+		
+		void operator()(lbt::peer_blocked_alert const& a) const
+		{
+			event().post(shared_ptr<EventDetail>(
+				new EventGeneral(Event::debug, a.timestamp(),
+					wformat(hal::app().res_wstr(HAL_IPFILTER_ALERT))
+						% hal::from_utf8_safe(a.ip.to_string())
+						% hal::from_utf8_safe(a.msg()))
+			)	);				
+		}
+		
 		void operator()(lbt::alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
@@ -512,6 +545,9 @@ public:
 				lbt::piece_finished_alert,
 				lbt::block_finished_alert,
 				lbt::block_downloading_alert,
+				lbt::listen_failed_alert,
+				lbt::listen_succeeded_alert,
+				lbt::peer_blocked_alert,
 				lbt::alert
 			>::handle_alert(p_alert, handler);			
 			

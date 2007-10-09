@@ -50,7 +50,7 @@ public:
 	bool logToFile() { return logToFile_; }
 	bool logDebug() { return logDebug_; }
 	const wstring& dll() { return dll_; }
-	const size_t logListLen() { return logListLen_; }
+	const int logListLen() { return logListLen_; }
 	
 	friend class GeneralOptions;
 	friend class SplashDialog;

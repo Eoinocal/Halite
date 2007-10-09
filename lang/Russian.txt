@@ -108,6 +108,11 @@
 "Program Information" ---> "О программе"
 "RichEdit20A" --->  ??? 
 "SysTabControl32" ---> "SysTabControl32"
+"Add Torrent" --->  ??? 
+"Ok" --->  ??? 
+"Use Compact Allocation." --->  ??? 
+"Start Paused" --->  ??? 
+"Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "General" ---> "Общие"
 "Allow only one instance to run." ---> "Разрешить только одну активную копию программы"
 "Advanced GUI" ---> "Расширенный интерфейс"
@@ -162,14 +167,6 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Сессия БитТоррента не смогла запуститься. Попробуйте выбрать другой порт в установках."
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT сессия не смогла запуститься. Попробуйте выбрать другой порт в установках."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Выберите папку для сохранения файлов или отмените, чобы вообще не загружать торрент."
-"None" ---> "Никакой"
-"Debug" ---> "Отладка"
-"Info" ---> "Информация"
-"Critical" ---> "Критическая"
-"Libtorrent Peer Alert: %1%." ---> "Пиров на libtorrent: %1%."
-"Xml Exception (%1%) with %2%." ---> "XML исключение (%1%) с %2%."
-"Torrent (%1%) exception caught; %2% from %3%." ---> "Получено Торрент исключение (%1%); %2% от %3%."
-"Invalid torrent (%1%) from %2%." ---> "Бракованый торрент (%1%) от %2%."
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> " Закачано %1$.2fMB, Выкачано %2$.2fMB, Соотношение %3$.2f."
@@ -185,13 +182,6 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(З-В) %1$.2fKB/s - %2$.2fKB/s"
 "Halite not listening!" ---> "Халит не ожидает"
 "Port %1% open" ---> "Порт %1% открыт"
-"Exception caught; %1%, from %2%." ---> "Исключение поймано; %1%, от %2%."
-"XML exception: %1%." --->  ??? 
-"Unicode exception: %1%." ---> "Исключение юникода: %1%."
-"Bittorrent Event: %1%." ---> "Событие битторрента: %1%."
-"Peer Event: %1%." ---> "Событие пира: %1%."
-"Tracker Event: %1%." ---> "Событие трэкера: %1%."
-"Debug Event: %1%." ---> "Событие отладки: %1%."
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Peers" --->  ??? 
 "Files" --->  ??? 
@@ -220,8 +210,10 @@
 "Allocating" ---> "Размещаем"
 "Stopped" ---> "Остановлен"
 "Paused" ---> "В паузе"
+"Stopping" --->  ??? 
+"Pausing" --->  ??? 
 "Downloading Metadata" ---> "Загружаем метаинформацию"
-"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time" --->  ??? 
+"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
 "Time;Message;Severity" ---> "Время;Сообщение;Важность"
 "Tracker;Tier" ---> "Трэкер;Связь"
 "Peer;Country;Download;Upload;Type;Client" --->  ??? 
@@ -238,3 +230,35 @@
 "Set Priority" --->  ??? 
 "Halite.ico" --->  ??? 
 "toolbar.bmp" --->  ??? 
+"None" ---> "Никакой"
+"Debug" ---> "Отладка"
+"Info" ---> "Информация"
+"Warning" --->  ??? 
+"Critical" ---> "Критическая"
+"Peer %2%: %1%." --->  ??? 
+"Peer banned %2%. (%1%)" --->  ??? 
+"Hash failed for piece %2% of %1%." --->  ??? 
+"URL Seed %2%, %3%. (%1%)" --->  ??? 
+"Tracker warning: %2%! (%1%)" --->  ??? 
+"Tracker Announce. (%1%)" --->  ??? 
+"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
+"%2%. %3% Peers. (%1%)" --->  ??? 
+"Fast rusume failed: %2%. (%1%)" --->  ??? 
+"Piece %2% finished. (%1%)" --->  ??? 
+"Block %2% of piece %3% finished. (%1%)" --->  ??? 
+"Block %2% of piece %3% downloading. (%1%)" --->  ??? 
+"Successfully %1%." --->  ??? 
+"Failed, %1%." --->  ??? 
+"IP Filter blocked %1%, %2%." --->  ??? 
+"Xml Exception (%1%) with %2%." ---> "XML исключение (%1%) с %2%."
+"Torrent %1% finished." --->  ??? 
+"Torrent %1% paused." --->  ??? 
+"Torrent (%1%) exception caught; %2% from %3%." ---> "Получено Торрент исключение (%1%); %2% от %3%."
+"Invalid torrent (%1%) from %2%." ---> "Бракованый торрент (%1%) от %2%."
+"Exception caught; %1%, from %2%." ---> "Исключение поймано; %1%, от %2%."
+"XML exception: %1%." --->  ??? 
+"Unicode exception: %1%." ---> "Исключение юникода: %1%."
+"Bittorrent Event: %1%." ---> "Событие битторрента: %1%."
+"Peer Event: %1%." ---> "Событие пира: %1%."
+"Tracker Event: %1%." ---> "Событие трэкера: %1%."
+"Debug Event: %1%." ---> "Событие отладки: %1%."

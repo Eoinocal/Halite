@@ -51,6 +51,29 @@ void AdvTrackerDialog::uiUpdate(const hal::TorrentDetails& tD)
 
 }
 
+AdvTrackerDialog::CWindowMapStruct* AdvTrackerDialog::GetWindowMap()
+{
+#define TRACKER_LOGIN_LAYOUT \
+	WMB_HEAD(WMB_COL(_exp|50), WMB_COL(_exp|66), WMB_COL(_exp|33)), \
+		WMB_ROW(_auto,	IDC_TRACKER_LOGINCHECK,	_r,	_r), \
+		WMB_ROW(_auto,	IDC_TRACKER_USER_S, IDC_TRACKER_USER, _r), \
+		WMB_ROW(_auto,	IDC_TRACKER_PASS_S,	IDC_TRACKER_PASS, _r), \
+		WMB_ROW(_auto,	_, BTNREANNOUNCE), \
+	WMB_END()
+
+#define TRACKER_LIST_LAYOUT \
+	WMB_HEAD(WMB_COL(_exp), WMB_COLNOMIN(_exp|25), WMB_COL(_exp|25)), \
+		WMB_ROW(_auto,	IDC_TRACKER_LABEL, IDC_TRACKER_RESET, IDC_TRACKER_APPLY), \
+		WMB_ROW(_exp,	IDC_TRACKERLIST, _r, _r), \
+	WMB_END()
+
+	BEGIN_WINDOW_MAP_INLINE(AdvTrackerDialog, 6, 6, 3, 3)
+		WMB_HEAD(WMB_COL(_exp|160), WMB_COL(_exp)),
+			WMB_ROWNOMINNOMAX(_exp, TRACKER_LIST_LAYOUT, TRACKER_LOGIN_LAYOUT),
+		WMB_END() 
+	END_WINDOW_MAP_INLINE()	
+}
+
 void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
 {
 	LRESULT result = ::SendMessage(hWnd, BM_GETCHECK, 0, 0);
@@ -69,7 +92,8 @@ void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
 		password_ = L"";
 		
 		if (hal::bittorrent().torrentDetails().selectedTorrent())
-			hal::bittorrent().setTorrentLogin(hal::to_utf8(hal::bittorrent().torrentDetails().selectedTorrent()->filename()),
+			hal::bittorrent().setTorrentLogin(
+				hal::to_utf8(hal::bittorrent().torrentDetails().selectedTorrent()->filename()),
 				username_, password_);
 		
 		DoDataExchange(false);		
@@ -79,7 +103,6 @@ void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
 LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 {
 	dialogBaseClass::InitializeHalDialogBase();	
-	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
 	m_list.Attach(GetDlgItem(IDC_TRACKERLIST));	
 	m_list.attachEditedConnection(bind(&AdvTrackerDialog::trackerListEdited, this));
@@ -207,3 +230,4 @@ void AdvTrackerDialog::onApply(UINT, int, HWND)
 	
 	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), false);
 }
+

@@ -1,7 +1,7 @@
 ; -- Halite.iss --
 
 #define MyAppName "Halite"
-#define MyAppVerName "Halite 0.2.9 dev 283"
+#define MyAppVerName "Halite 0.2.9 dev 313"
 #define MyAppPublisher "BinaryNotions.com"
 #define MyAppURL "http://www.binarynotions.com/halite.php"
 #define MyAppExeName "Halite.exe"
@@ -18,7 +18,7 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=LICENSE_1_0.txt
-OutputBaseFilename=Halite.0_2_9_dev283.setup
+OutputBaseFilename=Halite.0_2_9_dev313.setup
 Compression=lzma
 SolidCompression=true
 UninstallDisplayIcon={app}\{#MyAppName}
@@ -45,6 +45,7 @@ Source: lang\bin\x86\Norwegian.dll; DestDir: {app}; Check: not Is64BitInstallMod
 Source: lang\bin\x86\Polish.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
 Source: lang\bin\x86\Russian.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
 Source: lang\bin\x86\Slovenian.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\x86\Spanish.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
 Source: lang\bin\x86\Turkish.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
 
 Source: bin\msvc-8.0\release\address-model-64\asynch-exceptions-on\runtime-link-static\threading-multi\Halite.exe; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
@@ -57,6 +58,7 @@ Source: lang\bin\x64\Norwegian.dll; DestDir: {app}; Check: Is64BitInstallMode; F
 Source: lang\bin\x64\Polish.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
 Source: lang\bin\x64\Russian.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
 Source: lang\bin\x64\Slovenian.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+Source: lang\bin\x64\Spanish.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
 Source: lang\bin\x64\Turkish.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
 
 Source: Readme.txt; DestDir: {app}; Flags: ignoreversion isreadme
