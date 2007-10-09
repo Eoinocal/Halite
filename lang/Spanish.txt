@@ -40,7 +40,7 @@
 "Username : " --->  "Nombre de usuario : "
 "Password : " --->  "Contraseña : "
 "Peer" --->  "Par"
-"Web Seed" --->  ??? 
+"Web Seed" --->  "Semilla web"
 "DHT" --->  "DHT"
 "Proxy Settings" --->  "Opciones del proxy"
 "Security" --->  "Seguridad"
@@ -50,7 +50,7 @@
 "Clear IP database" --->  "Borrar la base de datos de IPs"
 "Protocol Encryption" --->  "Codificación de protocolo"
 "Enable Protocol Encryption." --->  "Activar codificación de protocolo."
-"Connection Policies" --->  ??? 
+"Connection Policies" --->  "Políticas de conexión"
 "Incoming" --->  "Entrantes"
 "Outgoing" --->  "Salientes"
 "Forced" --->  "Forzado"
@@ -77,17 +77,17 @@
 "Torrents" --->  "Torrents"
 "Global Limits" --->  "Límites globales"
 "Total max connections :" --->  "Conexiones máximas totales :"
-"Total upload slots :" --->  ??? 
-"Download Rate (KB/s) :" --->  Tasa de bajada (KB/s) :"
-"Upload Rate (KB/s) :" --->  Tasa de subida (KB/s) :"
+"Total upload slots :" --->  "Ranuras de subida totales :"
+"Download Rate (KB/s) :" --->  "Tasa de bajada (KB/s) :"
+"Upload Rate (KB/s) :" --->  "Tasa de subida (KB/s) :"
 "Torrent Defaults" --->  ??? 
-"These options set global maximums which will always be honoured." --->  ??? 
+"These options set global maximums which will always be honoured." --->  "Estas opciones ajustan los máximos globales y siempre serán respetados."
 "These options specify the default limits applied to new torrents." --->  "Estas opciones especifican los límites por defecto que se aplican a los nuevos torrents."
 "Default save folder :" --->  "Directorio de guardado predeterminado :"
 "..." --->  "..."
 "Prompt for alternate save folder." --->  "Preguntar por directorio de guardado alternativo."
 "Halite shutting down..." --->  "Halite se está cerrando..."
-"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." --->  "Le llevará un tiempo a la sesión Bittorrent a cerrarse limpiamente. Después este mensaje desaparecerá y el programa se cerrará."
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." --->  "La sesión BitTorrent tardará un tiempo en cerrarse limpiamente. Después este mensaje desaparecerá y el programa se cerrará."
 "Show this message in future" --->  "Mostrar este mensaje en el futuro"
 "Create new torrent" --->  "Crear nuevo torrent"
 "Save" --->  "Guardar"
@@ -167,12 +167,12 @@
 "Info" --->  ??? 
 "Critical" --->  ??? 
 "Libtorrent Peer Alert: %1%." --->  ??? 
-"Xml Exception (%1%) with %2%." --->  ??? 
-"Torrent (%1%) exception caught; %2% from %3%." --->  ??? 
-"Invalid torrent (%1%) from %2%." --->  ??? 
-"%1$.2fMB of %2$.2fMB" --->  ??? 
-"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
-"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
+"Xml Exception (%1%) with %2%." --->  "Excepción Xml (%1%) con %2%."
+"Torrent (%1%) exception caught; %2% from %3%." --->  "Se capturó una excepción del torrent (%1%); %2% de %3%."
+"Invalid torrent (%1%) from %2%." --->  "Torrent no válido (%1%) de %2%."
+"%1$.2fMB of %2$.2fMB" --->  "%1$.2fMB de %2$.2fMB"
+"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  "En esta sesión se han descargado %1$.2fMB y subido %2$.2fMB. Ratio %3$.2f."
+"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  "Descargado %1$.2fMB, subido %2$.2fMB, ratio %3$.2f."
 "Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
 "%1%, %2%." --->  ??? 
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
@@ -181,25 +181,25 @@
 "DHT disabled" --->  "DHT desactivado"
 "Filtering %1% range(s)" --->  "Filtrando %1% rango(s)"
 "IP filter disabled" --->  "Filtrado de IPs desactivado"
-"Standard exception (%1%) thrown from %2%." --->  ??? 
-"(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
-"Halite not listening!" --->  ??? 
+"Standard exception (%1%) thrown from %2%." --->  "Excepción estándar (%1%) lanzada desde %2%."
+"(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  "(D-S) %1$.2fKB/s - %2$.2fKB/s"
+"Halite not listening!" --->  "¡Halite no está escuchando!"
 "Port %1% open" --->  "Puerto %1% abierto"
-"Exception caught; %1%, from %2%." --->  ??? 
-"XML exception: %1%." --->  ??? 
-"Unicode exception: %1%." --->  ??? 
+"Exception caught; %1%, from %2%." --->  "Excepción atrapada; %1%, de %2%."
+"XML exception: %1%." --->  "Excepción XML: %1%."
+"Unicode exception: %1%." --->  "Excepción unicode: %1%."
 "Bittorrent Event: %1%." --->  "Evento de Bittorrent: %1%."
-"Peer Event: %1%." --->  ??? 
-"Tracker Event: %1%." --->  ??? 
-"Debug Event: %1%." --->  ??? 
+"Peer Event: %1%." --->  "Evento de par: %1%."
+"Tracker Event: %1%." --->  "Evento de tracker: %1%."
+"Debug Event: %1%." --->  "Evento de depuración: %1%."
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  "Selecciona un directorio donde guardar las descargas. Pulsa Cancelar para aceptar el directorio por defecto."
 "Peers" --->  "Pares"
 "Files" --->  "Archivos"
 "Logging" --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
-"Auto Sort" --->  ??? 
-"Torrent Root" --->  ??? 
+"Auto Sort" --->  "Auto ordenar"
+"Torrent Root" --->  "Raíz del torrent"
 "Interesting" --->  ??? 
 "Choked" --->  ??? 
 "Interested in us" --->  "Interesado en nosotros"
@@ -211,7 +211,7 @@
 "Queued" --->  "En cola"
 "RC4 Encrypted" --->  "Codificado en RC4"
 "Plaintext Encrypted" --->  ??? 
-"Queued for Checking" --->  ??? 
+"Queued for Checking" --->  "En cola para comprobación"
 "Checking Files" --->  "Comprobando archivos"
 "Connecting to Tracker" --->  "Conectándose al Tracker"
 "Downloading" --->  "Descargando"
