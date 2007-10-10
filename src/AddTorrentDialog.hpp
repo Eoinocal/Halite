@@ -73,7 +73,10 @@ public:
 		fldDlg.SetInitialFolder(defaultSaveFolder.c_str());
 	 
 		if (IDOK == fldDlg.DoModal())
+		{
 			saveDirectory_ = wstring(fldDlg.m_szFolderPath);
+			DoDataExchange(false);
+		}
 	}
 	
 private:

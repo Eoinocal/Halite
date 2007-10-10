@@ -20,8 +20,6 @@ HaliteDialog::HaliteDialog(HaliteWindow& halWindow) :
 
 LRESULT HaliteDialog::OnInitDialog(HWND, LPARAM)
 {
-	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
-	
 	m_prog.Attach(GetDlgItem(TORRENTPROG));
 	m_prog.SetRange(0, 100);
 	
@@ -34,6 +32,44 @@ LRESULT HaliteDialog::OnInitDialog(HWND, LPARAM)
 	
 	DoDataExchange(false);
 	return 0;
+}
+
+HaliteDialog::CWindowMapStruct* HaliteDialog::GetWindowMap()
+{
+#define TORRENT_LIMITS_LAYOUT \
+	WMB_HEAD(WMB_COL(_exp|20), WMB_COL(_exp|30), WMB_COL(_exp|20), WMB_COL(_exp|30)), \
+		WMB_ROW(10,	IDC_TL,	_r, _r, _r), \
+		WMB_ROW(11,	IDC_TLD, IDC_EDITTLD, IDC_TLU, IDC_EDITTLU), \
+		WMB_ROW(10,	IDC_NC,	_r, _r, _r), \
+		WMB_ROW(11,	IDC_NCD, IDC_EDITNCD, IDC_NCU, IDC_EDITNCU), \
+	WMB_END()
+
+#define TORRENT_STATUS_LAYOUT \
+	WMB_HEAD(WMB_COL(45), WMB_COLNOMIN(_exp|100), WMB_COL(_eq|0), WMB_COL(_exp|200)), \
+		WMB_ROW(_auto,	IDC_NAME_STATIC, IDC_NAME, _r, _r), \
+		WMB_ROW(_auto,	IDC_TRACKER_STATIC, IDC_TRACKER, _r, _r), \
+		WMB_ROW(_auto,	IDC_STATUS_STATIC, IDC_STATUS, _r, _r), \
+		WMB_ROW(_auto,	IDC_TIME_STATIC, IDC_AVAIL, IDC_COMPLETED_STATIC, IDC_COMPLETE), \
+	WMB_END()
+	
+#define TORRENT_BUTTON_LAYOUT \
+	WMB_HEAD(WMB_COL(_exp)), \
+		WMB_ROW(_gap), \
+		WMB_ROWMINNOMAX(_exp, 13, BTNPAUSE), \
+		WMB_ROWMINNOMAX(_exp, 13, BTNREANNOUNCE), \
+		WMB_ROWMINNOMAX(_exp, 13, BTNREMOVE), \
+	WMB_END()	
+
+	BEGIN_WINDOW_MAP_INLINE(HaliteDialog, 6, 6, 3, 3)
+		WMB_HEAD(WMB_COL(_gap), WMB_COL(_exp), WMB_COL(120), WMB_COL(60), WMB_COL(_gap)), 
+			WMB_ROW(_gap,	IDC_DETAILS_GROUP, _r, _r, _r, _r), 
+			WMB_ROW(_auto,	_d, TORRENT_STATUS_LAYOUT, TORRENT_LIMITS_LAYOUT, TORRENT_BUTTON_LAYOUT), 
+			WMB_ROWMIN(_auto, 8, _d, TORRENTPROG, _r, _r), 
+			WMB_ROW(_gap, _d), 
+			WMB_ROWNOMAX(_exp, _d, LISTPEERS, _r, _r), 
+			WMB_ROW(_gap,	_d), 
+		WMB_END() 
+	END_WINDOW_MAP_INLINE()	
 }
 
 void HaliteDialog::saveStatus()

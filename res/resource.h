@@ -62,14 +62,15 @@
 #define IDC_TRACKER                     1009
 #define IDC_STATUS                      1010
 #define IDC_AVAIL                       1011
-#define BTNREMOVE                       1012
-#define BTNREANNOUNCE                   1013
 #define IDC_EDITTLU                     1014
 #define IDC_EDITTLD                     1015
 #define IDC_EDITNCD                     1016
 #define IDC_EDITNCU                     1017
 #define IDC_EDITRATIO                   1018
 #define IDC_TLD                         1019
+#define BTNREMOVE                       1012
+#define BTNREANNOUNCE                   1013
+#define BTNPAUSE                        1034
 #define IDC_TLU                         1020
 #define IDC_TL                          1021
 #define IDC_NCU                         1022

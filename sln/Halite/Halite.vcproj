@@ -544,6 +544,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\HaliteUpdateLock.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\HaliteWindow.hpp"
 				>
 			</File>

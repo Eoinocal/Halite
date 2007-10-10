@@ -6,6 +6,14 @@
 
 #pragma once
 
+#define IDC_NAME_STATIC                 15012
+#define IDC_TRACKER_STATIC              15013
+#define IDC_STATUS_STATIC               15014
+#define IDC_TIME_STATIC                 15015
+#define IDC_COMPLETED_STATIC            15016
+
+#ifndef RC_INVOKED
+
 #include "stdAfx.hpp"
 #include "DdxEx.hpp"
 #include "HaliteSortListViewCtrl.hpp"
@@ -19,15 +27,15 @@ class ui_signal;
 
 class HaliteDialog :
 	public CDialogImpl<HaliteDialog>,
-	public CDialogResize<HaliteDialog>,
+	public CAutoSizeWindow<HaliteDialog, false>,
 	public CWinDataExchangeEx<HaliteDialog>,
 	public CHaliteDialogBase<HaliteDialog>,
 	private boost::noncopyable
 {	
 	typedef HaliteDialog thisClass;
-	typedef CDialogImpl<HaliteDialog> baseClass;
-	typedef CDialogResize<HaliteDialog> resizeClass;
-	typedef CHaliteDialogBase<HaliteDialog> dialogBaseClass;
+	typedef CDialogImpl<thisClass> baseClass;
+	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
+	typedef CHaliteDialogBase<thisClass> dialogBaseClass;
 		
 	class DialogListView :
 		public CHaliteSortListViewCtrl<DialogListView, const hal::PeerDetail>,
@@ -167,7 +175,7 @@ public:
 
 	//	MSG_WM_CTLCOLORSTATIC(OnCltColor)
 
-		CHAIN_MSG_MAP(resizeClass)
+		CHAIN_MSG_MAP(autosizeClass)
 		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
 
@@ -178,7 +186,9 @@ public:
         DDX_EX_INT_FLOAT_LIMIT(IDC_EDITTLU, TranLimitUp, 1, false)
     END_DDX_MAP()
 
-	BEGIN_DLGRESIZE_MAP(thisClass)
+	static CWindowMapStruct* GetWindowMap();
+	
+/*	BEGIN_DLGRESIZE_MAP(thisClass)
 		DLGRESIZE_CONTROL(BTNPAUSE, (DLSZ_MOVE_X))
 		DLGRESIZE_CONTROL(BTNREANNOUNCE, (DLSZ_MOVE_X))
 		DLGRESIZE_CONTROL(BTNREMOVE, (DLSZ_MOVE_X))
@@ -205,7 +215,7 @@ public:
 		DLGRESIZE_CONTROL(LISTPEERS, (DLSZ_SIZE_X | DLSZ_SIZE_Y))
 		DLGRESIZE_CONTROL(IDC_DETAILS_GROUP, (DLSZ_SIZE_X | DLSZ_SIZE_Y))
 	END_DLGRESIZE_MAP()
-	
+*/	
 	void uiUpdate(const hal::TorrentDetails& allTorrents); 
 	void focusChanged(const hal::TorrentDetail_ptr pT);
 	
@@ -219,6 +229,7 @@ protected:
 
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl);
 	LRESULT OnCltColor(HDC hDC, HWND hWnd);
+	
 
 private:
 	CButton m_btn_start;
@@ -231,3 +242,5 @@ private:
 	int NoConnDown, NoConnUp;
 	float TranLimitDown, TranLimitUp;
 };
+
+#endif // RC_INVOKED
