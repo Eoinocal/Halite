@@ -254,7 +254,7 @@ const PeerDetails& TorrentDetail::peerDetails() const
 {
 	if (!peerDetailsFilled_)
 	{
-		bittorrent().getAllPeerDetails(hal::to_utf8(filename_), peerDetails_);
+		bittorrent().getAllPeerDetails(hal::to_utf8(name_), peerDetails_);
 		peerDetailsFilled_ = true;
 	}
 	
@@ -265,7 +265,7 @@ const FileDetails& TorrentDetail::fileDetails() const
 {
 	if (!fileDetailsFilled_)
 	{
-		bittorrent().getAllFileDetails(hal::to_utf8(filename_), fileDetails_);
+		bittorrent().getAllFileDetails(hal::to_utf8(name_), fileDetails_);
 		fileDetailsFilled_ = true;
 	}
 	
@@ -1425,7 +1425,6 @@ PeerDetail::PeerDetail(lbt::peer_info& peerInfo) :
 	ipAddress(hal::from_utf8_safe(peerInfo.ip.address().to_string())),
 	country(L""),
 	speed(make_pair(peerInfo.payload_down_speed, peerInfo.payload_up_speed)),
-	seed(peerInfo.seed),
 	client(hal::from_utf8_safe(peerInfo.client))
 {
 	std::vector<wstring> status_vec;

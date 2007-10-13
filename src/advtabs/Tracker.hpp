@@ -84,6 +84,7 @@ public:
 
 	void setLoginUiState(const string& torrent_name);	
 	void uiUpdate(const hal::TorrentDetails& tD);
+	void focusChanged(const hal::TorrentDetail_ptr pT);
 	void trackerListEdited();
 
 protected:

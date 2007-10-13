@@ -126,7 +126,7 @@ typedef std::vector<FileDetail> FileDetails;
 class TorrentDetail 
 {
 public:
-	TorrentDetail(std::wstring f, std::wstring n, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
+	TorrentDetail(std::wstring n, std::wstring f, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
 			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, boost::int64_t tpU=0, boost::int64_t tD=0, boost::int64_t tpD=0, int prs=0, int prsCnt=0, int sds=0, int sdsCnt=0,  float r=0, 
 			time_duration eta=boost::posix_time::seconds(0), time_duration uIn=boost::posix_time::seconds(0),
 			time_duration actve=boost::posix_time::seconds(0), time_duration seding=boost::posix_time::seconds(0), ptime srt=boost::posix_time::second_clock::universal_time(), ptime fin=boost::posix_time::second_clock::universal_time()) :
@@ -172,7 +172,7 @@ public:
 		torrent_stopping
 	};
 	
-	const std::wstring& filename() const { return filename_; }
+//	const std::wstring& filename() const { return filename_; }
 	const std::wstring& name() const { return name_; }
 	const std::wstring& state() const { return state_; }
 	const std::wstring& currentTracker() const { return currentTracker_; }
@@ -273,8 +273,6 @@ public:
 		return selectedTorrent_; 
 	}
 	
-	const TorrentDetail_ptr selectedTorrent() const { return focusedTorrent(); }
-	
 	const TorrentDetail_ptr get(std::wstring filename) const
 	{
 		mutex_t::scoped_lock l(mutex_);	
@@ -314,6 +312,11 @@ struct TrackerDetail
 {
 	TrackerDetail() {}
 	TrackerDetail(std::wstring u, int t) : url(u), tier(t) {}
+	
+	bool operator<(const TrackerDetail& t) const
+	{
+		return (tier < t.tier);
+	}
 	
 	std::wstring url;
 	int tier;

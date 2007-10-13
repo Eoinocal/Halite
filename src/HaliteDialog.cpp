@@ -89,9 +89,9 @@ void HaliteDialog::OnClose()
 
 void HaliteDialog::OnPause(UINT, int, HWND)
 {
-	if (hal::TorrentDetail_ptr torrent = hal::bittorrent().torrentDetails().selectedTorrent()) 
+	if (hal::TorrentDetail_ptr torrent = hal::bittorrent().torrentDetails().focusedTorrent()) 
 	{
-		string torrentName = hal::to_utf8(torrent->filename());
+		string torrentName = hal::to_utf8(torrent->name());
 		
 		if (!hal::bittorrent().isTorrentActive(torrentName))
 		{
@@ -110,15 +110,15 @@ void HaliteDialog::OnPause(UINT, int, HWND)
 
 void HaliteDialog::OnReannounce(UINT, int, HWND)
 {
-	if (hal::TorrentDetail_ptr torrent = hal::bittorrent().torrentDetails().selectedTorrent()) 
-		hal::bittorrent().reannounceTorrent(hal::to_utf8(torrent->filename()));
+	if (hal::TorrentDetail_ptr torrent = hal::bittorrent().torrentDetails().focusedTorrent()) 
+		hal::bittorrent().reannounceTorrent(hal::to_utf8(torrent->name()));
 }
 
 void HaliteDialog::OnRemove(UINT, int, HWND)
 {
-	if (hal::TorrentDetail_ptr torrent = hal::bittorrent().torrentDetails().selectedTorrent()) 
+	if (hal::TorrentDetail_ptr torrent = hal::bittorrent().torrentDetails().focusedTorrent()) 
 	{
-		string torrentName = hal::to_utf8(torrent->filename());
+		string torrentName = hal::to_utf8(torrent->name());
 
 		hal::bittorrent().removeTorrent(torrentName);
 		torrentsList().clearFocused();
@@ -129,9 +129,9 @@ LRESULT HaliteDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {
 	DoDataExchange(true);
 	
-	if (hal::TorrentDetail_ptr torrent = hal::bittorrent().torrentDetails().selectedTorrent()) 
+	if (hal::TorrentDetail_ptr torrent = hal::bittorrent().torrentDetails().focusedTorrent()) 
 	{
-		string torrentName = hal::to_utf8(torrent->filename());
+		string torrentName = hal::to_utf8(torrent->name());
 		
 		hal::bittorrent().setTorrentSpeed(torrentName, TranLimitDown, TranLimitUp);
 		hal::bittorrent().setTorrentLimit(torrentName, NoConnDown, NoConnUp);
@@ -152,7 +152,7 @@ void HaliteDialog::DialogListView::uiUpdate(const hal::TorrentDetails& tD)
 	TryUpdateLock<listClass> lock(*this);
 	if (lock) 
 	{		
-		peerDetails_ = tD.selectedTorrent()->peerDetails();
+		peerDetails_ = tD.focusedTorrent()->peerDetails();
 		
 		std::sort(peerDetails_.begin(), peerDetails_.end());
 		
@@ -267,7 +267,7 @@ void HaliteDialog::uiUpdate(const hal::TorrentDetails& tD)
 	pair<float, float> tranLimit(-1.0, -1.0);
 	pair<int, int> connLimit(-1, -1);
 	
-	if (hal::TorrentDetail_ptr torrent = tD.selectedTorrent()) 	
+	if (hal::TorrentDetail_ptr torrent = tD.focusedTorrent()) 	
 	{	
 		string torrent_name = hal::to_utf8(torrent->name());
 		

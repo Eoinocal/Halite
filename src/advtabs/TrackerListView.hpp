@@ -63,7 +63,7 @@ public:
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 
-	void uiUpdate(const hal::TorrentDetails& tD);
+	void uiUpdate(const hal::TorrentDetail_ptr pT);
 	void enterNewTracker();
 	void saveSettings();
 

@@ -68,12 +68,16 @@ public:
 		TBase* pT = static_cast<TBase*>(this);
 		wstring torrent_name = L"";
 		
-		if (hal::TorrentDetail_ptr torrent = tD.selectedTorrent()) 	
-			torrent_name = torrent->filename();
+		if (hal::TorrentDetail_ptr torrent = tD.focusedTorrent()) 	
+			torrent_name = torrent->name();
 		
 		if (current_torrent_name_ != torrent_name)
 		{	
 			current_torrent_name_ = torrent_name;
+			
+			hal::event().post(shared_ptr<hal::EventDetail>(
+				new hal::EventMsg(L"focusChanged")));
+				
 			pT->focusChanged(tD.focusedTorrent());
 		}
 	

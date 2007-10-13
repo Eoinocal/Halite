@@ -64,7 +64,7 @@ void FileListView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	
 	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;
 	
-	std::string torrent = hal::to_utf8(hal::bittorrent().torrentDetails().selectedTorrent()->filename());
+	std::string torrent = hal::to_utf8(hal::bittorrent().torrentDetails().focusedTorrent()->name());
 	hal::bittorrent().setTorrentFilePriorities(torrent, indices, priority);
 }
 
@@ -140,7 +140,7 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	
 	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;
 	
-	std::string torrent = hal::to_utf8(hal::bittorrent().torrentDetails().selectedTorrent()->filename());
+	std::string torrent = hal::to_utf8(hal::bittorrent().torrentDetails().focusedTorrent()->name());
 	hal::bittorrent().setTorrentFilePriorities(torrent, indices, priority);
 	
 	TryUpdateLock<thisClass> lock(*this);

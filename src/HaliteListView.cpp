@@ -80,11 +80,11 @@ void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
 	{
 		LV_FINDINFO findInfo; 
 		findInfo.flags = LVFI_STRING;
-		findInfo.psz = const_cast<LPTSTR>(td->filename().c_str());
+		findInfo.psz = const_cast<LPTSTR>(td->name().c_str());
 		
 		int itemPos = FindItem(&findInfo, -1);
 		if (itemPos < 0)
-			itemPos = AddItem(0, 0, td->filename().c_str(), 0);
+			itemPos = AddItem(0, 0, td->name().c_str(), 0);
 
 		for (size_t i=1; i<HaliteListViewCtrl::NumberOfColumns_s; ++i)
 		{

@@ -255,7 +255,12 @@ public:
 		{
 			string dir = to_utf8(save_directory_);
 			
-			handle_ = the_session_->add_torrent(metadata_, dir, resumedata_, compactStorage_, paused);
+			lbt::storage_mode_t storage = lbt::storage_mode_sparse;
+			
+			if (compactStorage_)
+				storage = lbt::storage_mode_compact;
+			
+			handle_ = the_session_->add_torrent(metadata_, dir, resumedata_, storage, paused);
 				
 			in_session_ = true;
 			if (paused)
@@ -544,7 +549,7 @@ public:
 			{
 				wstring fullPath = hal::from_utf8(files[i].path.string());
 				
-				fileDetails.push_back(FileDetail(fullPath, files[i].size, fileProgress[i], filePriorities_[i], i));
+				fileDetails.push_back(FileDetail(fullPath, static_cast<size_t>(files[i].size), fileProgress[i], filePriorities_[i], i));
 			}			
 		}
 	}

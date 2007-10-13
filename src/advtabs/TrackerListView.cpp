@@ -32,20 +32,15 @@ void TrackerListViewCtrl::saveSettings()
 	save();
 }
 
-void TrackerListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
-{	
-	if (!tD.selectedTorrent())
-		return;
-		
-	string torrent_name = hal::to_utf8(tD.selectedTorrent()->filename());
-
-	if (hal::bittorrent().isTorrent(torrent_name))
+void TrackerListViewCtrl::uiUpdate(const hal::TorrentDetail_ptr pT)
+{
+	if (pT)
 	{			
 		TryUpdateLock<listClass> lock(*this);
 		if (lock) 
 		{			
 			std::vector<hal::TrackerDetail> trackers =
-				hal::bittorrent().getTorrentTrackers(torrent_name);
+				hal::bittorrent().getTorrentTrackers(pT->name());
 			clearAll();
 			
 			foreach (const hal::TrackerDetail& tracker, trackers)

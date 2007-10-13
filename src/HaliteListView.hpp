@@ -42,12 +42,12 @@ protected:
 		virtual std::wstring print(tD& t) { return t->name(); }		
 	};
 	
-	struct Filename : public ColAdapter_t
+/*	struct Filename : public ColAdapter_t
 	{	
 		virtual int compare(tD& l, tD& r) { return hal::compare(l->filename(), r->filename()); }		
 		virtual std::wstring print(tD& t) { return t->filename(); }		
 	};
-	
+*/	
 	struct State : public ColAdapter_t
 	{	
 		virtual int compare(tD& l, tD& r) { return hal::compare(l->state(), r->state()); }		
