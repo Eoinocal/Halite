@@ -75,9 +75,6 @@ public:
 		{	
 			current_torrent_name_ = torrent_name;
 			
-			hal::event().post(shared_ptr<hal::EventDetail>(
-				new hal::EventMsg(L"focusChanged")));
-				
 			pT->focusChanged(tD.focusedTorrent());
 		}
 	

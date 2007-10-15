@@ -160,13 +160,10 @@
 #define ED_CON                          3000
 #define IDPANE_STATUS                   40000
 #define ID_LVM_RESUME                   40000
-#define ID_TLVM_NEW                     40000
 #define IDPANE_CAPS_INDICATOR           40001
-#define ID_TLVM_EDIT                    40001
 #define ID__LVM_PAUSE                   40001
 #define IDPANE_DHT                      40002
 #define ID_LVM_STOP                     40002
-#define ID_TLVM_DELETE                  40002
 #define IDPANE_FILTER                   40003
 #define ID_LVM_REANNOUNCE               40003
 #define IDS_TRYANOTHERPORT              40004

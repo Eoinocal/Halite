@@ -5,9 +5,6 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include "TrackerListView.hpp"
-
-//#include "../GlobalIni.hpp"
-//#include "../ini/Window.hpp"
 #include "../halTorrent.hpp"
 #include "TrackerAddDialog.hpp"
 
@@ -118,5 +115,28 @@ LRESULT TrackerListViewCtrl::OnDelete(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 	DeleteItem(manager().selectedIndex());
 	listEdited_();
 	
+	return 0;
+}
+
+LRESULT TrackerListViewCtrl::OnPrimary(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{	
+	TryUpdateLock<listClass> lock(*this);
+	if (lock) 
+	{	
+	
+	for (int i=0, e=GetItemCount(); i<e; ++i)
+	{
+		array<wchar_t, MAX_PATH> buffer;		
+		GetItemText(i, 1, buffer.elems, buffer.size());
+		
+		if (wstring(buffer.elems) == L"0")
+			SetItemText(i, 1, L"1");
+	}
+	
+	SetItemText(manager().selectedIndex(), 1, L"0");
+	
+	listEdited_();
+	
+	}	
 	return 0;
 }

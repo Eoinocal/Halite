@@ -141,8 +141,29 @@ protected:
 	
 	struct Ratio : public ColAdapter_t
 	{
-		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->ratio(), r->ratio()); }		
-		virtual std::wstring print(tD& t) { return lexical_cast<wstring>(t->ratio()); }		
+		virtual int compare(tD& l, tD& r)	
+		{ 
+			float left = (l->totalPayloadDownloaded()) 
+					? static_cast<float>(l->totalPayloadUploaded())
+						/ static_cast<float>(l->totalPayloadDownloaded())
+					: 0;
+			
+			float right = (r->totalPayloadDownloaded()) 
+					? static_cast<float>(r->totalPayloadUploaded())
+						/ static_cast<float>(r->totalPayloadDownloaded())
+					: 0;
+			
+			return hal::compare(left, right); 
+		}		
+		virtual std::wstring print(tD& t)
+		{
+			float ratio = (t->totalPayloadDownloaded()) 
+					? static_cast<float>(t->totalPayloadUploaded())
+						/ static_cast<float>(t->totalPayloadDownloaded())
+					: 0;
+			
+			return (wformat(L"%1$.2f") % ratio).str(); 
+		}		
 	};
 	
 	struct DistributedCopies : public ColAdapter_t

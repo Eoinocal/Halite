@@ -1630,7 +1630,13 @@ std::pair<std::wstring, std::wstring> BitTorrent::getTorrentLogin(const std::wst
 void BitTorrent_impl::removalThread(lbt::torrent_handle handle, bool wipeFiles)
 {
 	try {
-	
+
+	if (wipeFiles)
+		theSession.remove_torrent(handle, lbt::session::delete_files);
+	else
+		theSession.remove_torrent(handle);
+		
+#if 0	
 	if (!wipeFiles)
 		theSession.remove_torrent(handle);
 	else
@@ -1655,7 +1661,7 @@ void BitTorrent_impl::removalThread(lbt::torrent_handle handle, bool wipeFiles)
 				remove_all(dir_path);
 		}
 	}	
-	
+#endif	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "removalThread")
 }
 

@@ -4,7 +4,13 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#pragma once
+#define ID_TLVM_BEGIN	 	11000
+#define ID_TLVM_NEW 		ID_TLVM_BEGIN +	1
+#define ID_TLVM_EDIT 		1526
+#define ID_TLVM_DELETE	 	ID_TLVM_BEGIN +	3
+#define ID_TLVM_PRIMARY 	ID_TLVM_BEGIN +	4
+
+#ifndef RC_INVOKED
 
 #include <boost/signals.hpp>
 #include <boost/function.hpp>
@@ -56,6 +62,7 @@ public:
 		COMMAND_ID_HANDLER(ID_TLVM_NEW, OnNew)
 		COMMAND_ID_HANDLER(ID_TLVM_EDIT, OnEdit)
 		COMMAND_ID_HANDLER(ID_TLVM_DELETE, OnDelete)
+		COMMAND_ID_HANDLER(ID_TLVM_PRIMARY, OnPrimary)
 
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_DBLCLK, OnDoubleClick)
 
@@ -78,6 +85,7 @@ public:
 	LRESULT OnNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnEdit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnDelete(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnPrimary(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
 	void attachEditedConnection(boost::function<void ()> fn) { listEdited_.connect(fn); }
 
@@ -89,3 +97,5 @@ private:
 };
 
 typedef TrackerListViewCtrl::SelectionManager TrackerListViewManager;
+
+#endif // RC_INVOKED

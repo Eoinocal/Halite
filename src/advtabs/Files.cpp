@@ -271,10 +271,6 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 		for (std::vector<FileLink>::iterator i=range_.first, e=range_.second;
 			i != e; ++i)
 		{
-			
-		hal::event().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(wformat(L"-> %1% - %2%.") % (*i).filename % (*i).order())));	
-			
 			hal::FileDetail fileD = pT->fileDetails()[(*i).order()];
 			
 			LV_FINDINFO findInfo; 
