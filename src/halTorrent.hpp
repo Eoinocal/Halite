@@ -246,7 +246,9 @@ private:
 	mutable FileDetails fileDetails_;
 };
 
-typedef shared_ptr<TorrentDetail> TorrentDetail_ptr;
+typedef boost::shared_ptr<TorrentDetail> TorrentDetail_ptr;
+typedef boost::scoped_ptr<TorrentDetail> TorrentDetail_sptr;
+typedef boost::weak_ptr<TorrentDetail> TorrentDetail_wptr;
 typedef std::vector<TorrentDetail_ptr> TorrentDetail_vec;
 typedef std::map<std::wstring, TorrentDetail_ptr> TorrentDetail_map;
 

@@ -25,7 +25,7 @@ public:
 	{		
 		connection_ = haliteWindow.connectUiUpdate(bind(&thisClass::handleUiUpdate, this, _1));
 	}
-
+	
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_SHOWWINDOW(OnShow)
 //		REFLECT_NOTIFICATIONS()
@@ -50,39 +50,41 @@ public:
 	void InitializeHalDialogBase()
 	{}
 	
-	void requestUiUpdate()
-	{
-		haliteWindow_.issueUiUpdate();
-	}
-	
 	HaliteListViewCtrl& torrentsList() 
 	{ 
 		return haliteWindow_.torrentsList(); 
 	}
 	
-	void uiUpdate(const hal::TorrentDetails& tD)
-	{}	
+	void requestUiUpdate()
+	{
+		haliteWindow_.issueUiUpdate();
+	}
+	
+	#define logical_xor !=0==!
 	
 	void handleUiUpdate(const hal::TorrentDetails& tD)
 	{
 		TBase* pT = static_cast<TBase*>(this);
-		wstring torrent_name = L"";
 		
-		if (hal::TorrentDetail_ptr torrent = tD.focusedTorrent()) 	
-			torrent_name = torrent->name();
+		hal::TorrentDetail_ptr focused = tD.focusedTorrent();
 		
-		if (current_torrent_name_ != torrent_name)
-		{	
-			current_torrent_name_ = torrent_name;
-			
-			pT->focusChanged(tD.focusedTorrent());
-		}
+		if ((focusedTorrent_ logical_xor focused) ||
+				(focused && focusedTorrent_->name() != focused->name()))
+			pT->focusChanged(focusedTorrent_ = focused);
+		else
+			focusedTorrent_ = focused;
 	
 		pT->uiUpdate(tD);
+		focusedTorrent_.reset();
 	}
 
+	void uiUpdate(const hal::TorrentDetails& tD)
+	{}	
+	
 	void focusChanged(const hal::TorrentDetail_ptr pT)
 	{}
+	
+	const hal::TorrentDetail_ptr focusedTorrent() { return focusedTorrent_; }
 	
 	template<typename T>
 	BOOL SetDlgItemInfo(int nID, T info)
@@ -94,7 +96,8 @@ public:
 	}
 	
 protected:
-	wstring current_torrent_name_;
+//	wstring current_torrent_name_;
+	hal::TorrentDetail_ptr focusedTorrent_;
 
 private:
 	HaliteWindow& haliteWindow_;

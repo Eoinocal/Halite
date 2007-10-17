@@ -104,7 +104,6 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {	
 	hal::FileDetails fileDetails;
 	
-//	foreach (const hal::TorrentDetail_ptr torrent, tD.selectedTorrents())
 	if (hal::TorrentDetail_ptr torrent = hal::bittorrent().torrentDetails().focusedTorrent())
 	{
 		std::copy(torrent->fileDetails().begin(), torrent->fileDetails().end(), 
@@ -233,13 +232,13 @@ void AdvFilesDialog::doUiUpdate()
 
 void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 {
-	if (fileLinks_.empty()) return;
+	if (fileLinks_.empty() || !focusedTorrent()) return;
 	
 	TryUpdateLock<FileListView::listClass> lock(list_);
 	if (lock) 
 	{	
-		const hal::TorrentDetail_ptr pT = tD.focusedTorrent();
-		if (pT->fileDetails().size() != fileLinks_.size()) return;
+	//	const hal::TorrentDetail_ptr pT = tD.focusedTorrent();
+		if (focusedTorrent()->fileDetails().size() != fileLinks_.size()) return;
 		
 		// Wipe details not present
 		for(int i = 0; i < list_.GetItemCount(); /*nothing here*/)
@@ -253,11 +252,6 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 			
 			if (iter == range_.second || !(FileLinkNamesEqual((*iter), file)))
 			{
-/*				if (iter == range_.second)
-					hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Deleting %1%") % file.filename).str().c_str())));
-				else
-					hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"Deleting %1% != %2%") % file.filename % (*iter).filename).str().c_str())));
-	*/			
 				list_.DeleteItem(i);
 			}
 			else
@@ -271,7 +265,7 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 		for (std::vector<FileLink>::iterator i=range_.first, e=range_.second;
 			i != e; ++i)
 		{
-			hal::FileDetail fileD = pT->fileDetails()[(*i).order()];
+			hal::FileDetail fileD = focusedTorrent()->fileDetails()[(*i).order()];
 			
 			LV_FINDINFO findInfo; 
 			findInfo.flags = LVFI_STRING;
