@@ -210,10 +210,10 @@
 "Allocating" ---> "Bezig met Alloceren"
 "Stopped" ---> "Gestopt"
 "Paused" ---> "Gepauzeerd"
-"Stopping" --->  ??? 
-"Pausing" --->  ??? 
+"Stopping" --->  "Stopt" 
+"Pausing" --->  "Pauzeert" 
 "Downloading Metadata" ---> "Metadata downloaden"
-"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
+"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  "Naam;Status;Progressie;Download;Upload;Peers;Seeds;ETA;Kopieen;Tracker;Heromroeping;Ratio;Totaal;Voltooid;Overgebleven;Gedownload;Geupload;Actief;Seeden;Start Tijd" 
 "Time;Message;Severity" ---> "Tijd;Bericht;Ernst"
 "Tracker;Tier" ---> "Tracker;Laag"
 "Peer;Country;Download;Upload;Type;Client" ---> "Peer;Land;Download;Upload;Type;Client"
@@ -233,26 +233,26 @@
 "None" ---> "Geen"
 "Debug" --->  ??? 
 "Info" --->  ??? 
-"Warning" --->  ??? 
+"Warning" --->  "Waarschuwing" 
 "Critical" ---> "Kritiek"
 "Peer %2%: %1%." --->  ??? 
-"Peer banned %2%. (%1%)" --->  ??? 
-"Hash failed for piece %2% of %1%." --->  ??? 
-"URL Seed %2%, %3%. (%1%)" --->  ??? 
-"Tracker warning: %2%! (%1%)" --->  ??? 
-"Tracker Announce. (%1%)" --->  ??? 
-"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
+"Peer banned %2%. (%1%)" --->  "Peer verbannen %2%. (%1%)" 
+"Hash failed for piece %2% of %1%." --->  "Hash gefaald voor deel %2% van %1%" 
+"URL Seed %2%, %3%. (%1%)" --->  ???
+"Tracker warning: %2%! (%1%)" --->  "Tracker waarschuwing: %2%! (%1%)" 
+"Tracker Announce. (%1%)" --->  ???
+"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  "Alert %2%, Status code: %4%, Aantal keer %3%. (%1%)" 
 "%2%. %3% Peers. (%1%)" --->  ??? 
-"Fast rusume failed: %2%. (%1%)" --->  ??? 
-"Piece %2% finished. (%1%)" --->  ??? 
-"Block %2% of piece %3% finished. (%1%)" --->  ??? 
-"Block %2% of piece %3% downloading. (%1%)" --->  ??? 
-"Successfully %1%." --->  ??? 
-"Failed, %1%." --->  ??? 
-"IP Filter blocked %1%, %2%." --->  ??? 
+"Fast rusume failed: %2%. (%1%)" --->  "Snel hervatten gefaald: %2%. (%1%)" 
+"Piece %2% finished. (%1%)" --->  "Deel %2% voltooid. (%1%)" 
+"Block %2% of piece %3% finished. (%1%)" --->  "Blok %2% van deel %3% voltooid. (%1%)"
+"Block %2% of piece %3% downloading. (%1%)" --->  "Blok %2% van deel %3% aan het downloaden. (%1%)"
+"Successfully %1%." --->  "Succesvol %1%."
+"Failed, %1%." --->  "Gefaald, %1%." 
+"IP Filter blocked %1%, %2%." --->  "IP Filter blokkeerde %1%, %2%."
 "Xml Exception (%1%) with %2%." ---> "Xml Exceptie (%1%) met %2%."
-"Torrent %1% finished." --->  ??? 
-"Torrent %1% paused." --->  ??? 
+"Torrent %1% finished." --->  "Torrent %1% voltooid." 
+"Torrent %1% paused." --->  "Torrent %1% gepauzeerd." 
 "Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) exceptie afgevangen; %2% van %3%."
 "Invalid torrent (%1%) from %2%." ---> "Ongeldige torrent (%1%) van %2%."
 "Exception caught; %1%, from %2%." ---> "Exceptie gevangen; %1%, van %2%."
