@@ -15,7 +15,7 @@
 "Ratio (this session):" ---> "Ratio (diese Sitzung):"
 "Torrent:" ---> "Torrent:"
 "Peers:" ---> "Peers:"
-"Transferred:" --->  ??? 
+"Transferred:" ---> "Übertragen:"
 "Remaining:" ---> "Verbleibend:"
 "Rates:" ---> "Teile:"
 "Seeds:" ---> "Seeds:"
@@ -30,7 +30,7 @@
 "Select the (TCP) port (or range) on which to listen for incomming connections." ---> "Den (TCP) Port (oder Bereich) für eingehende Verbindungen festlegen."
 "Distributed Hash Tables" ---> "DHT (verteilte Hashtabelle)"
 "Port (UDP) : " ---> "Port (UDP): "
-"(DHT will not apply to private torrents)" --->  ??? 
+"(DHT will not apply to private torrents)" ---> "(DHT wird nicht für private Torrents verwendet)"
 "General Settings" ---> "Allgemeines"
 "Limit the no. of half-open connections" ---> "Anzahl der Halb-Offenen Verbindungen limitieren"
 "Proxies" ---> "Proxies"
@@ -52,10 +52,10 @@
 "Enable Protocol Encryption." ---> "Protokoll Verschlüsselung aktivieren"
 "Connection Policies" ---> "Verbindungsstrategien"
 "Incoming" ---> "Eingehend"
-"Outgoing" --->  ??? 
+"Outgoing" ---> "Ausgehend"
 "Forced" ---> "Erzwungen"
 "Enabled" ---> "Aktiviert"
-"Disabled" --->  ??? 
+"Disabled" ---> "Deaktiviert"
 "Encoding Level" ---> "Verschlüsselungsgrad"
 "Plaintext" ---> "Klartext"
 "RC4" ---> "RC4"
@@ -76,8 +76,8 @@
 "Cancel" ---> "Abbrechen"
 "Torrents" ---> "Torrents"
 "Global Limits" ---> "Globale Limitierungen"
-"Total max connections :" ---> "Max. Anzahl Verbindungen:"
-"Total upload slots :" ---> "Max. Anzahl Upload Slots:"
+"Total max connections :" ---> "max. Anzahl Verbindungen:"
+"Total upload slots :" ---> "max. Anzahl Upload Slots:"
 "Download Rate (KB/s) :" ---> "Download Rate (KB/s):"
 "Upload Rate (KB/s) :" ---> "Upload Rate (KB/s):"
 "Torrent Defaults" ---> "Torrent Standards"
@@ -91,7 +91,7 @@
 "Show this message in future" ---> "Diese Meldung in Zukunft anzeigen"
 "Create new torrent" ---> "Neuen Torrent erstellen"
 "Save" ---> "Speichern"
-"Select a file or directory to construct the torrent." ---> "TTorrent erzeugen für (Datei oder Verzeichnis wählen):"
+"Select a file or directory to construct the torrent." ---> "Torrent erzeugen für (Datei oder Verzeichnis wählen):"
 "Enter the tracker URLs for the torrent." ---> "Tracker-URL eingeben:"
 "Have Halite acts a DHT node." ---> "Halite als DHT-Knoten verwenden?"
 "Add" ---> "Hinzufügen"
@@ -103,16 +103,16 @@
 "Tracker:" ---> "Tracker:"
 "Status:" ---> "Status:"
 "Time left:" ---> "Zeit übrig:"
-"Completed:" ---> "Fertig"
+"Completed:" ---> "Fertig:"
 "About" ---> "Über"
 "Program Information" ---> "Programm Information"
 "RichEdit20A" ---> "RichEdit20A"
 "SysTabControl32" ---> "SysTabControl32"
-"Add Torrent" --->  ??? 
-"Ok" --->  ??? 
-"Use Compact Allocation." --->  ??? 
-"Start Paused" --->  ??? 
-"Note. Compact Allocation is incompatible with File Selection" --->  ??? 
+"Add Torrent" ---> "Torrent hinzufügen"
+"Ok" ---> "Ok"
+"Use Compact Allocation." ---> "kompakte Zuweiseung verwenden"
+"Start Paused" ---> "pausiert starten"
+"Note. Compact Allocation is incompatible with File Selection" ---> "Info: kompakte Zuweiseung ist mit der Dateiauswahl nicht möglich"
 "General" ---> "Allgemein"
 "Allow only one instance to run." ---> "Nur eine Instanz erlauben"
 "Advanced GUI" ---> "Erweiterte GUI"
@@ -140,6 +140,7 @@
 "Torrent and Data" ---> "Torrent und Daten"
 "New" ---> "Neu"
 "Edit" ---> "Bearbeiten"
+"Set as Primary" --->  ??? 
 "Delete" ---> "Löschen"
 "StringFileInfo" ---> "StringFileInfo"
 "180904b0" ---> "180904b0"
@@ -148,7 +149,7 @@
 "CompanyName" ---> "CompanyName"
 "BinaryNotions.com" ---> "BinaryNotions.com"
 "FileDescription" ---> "FileDescription"
-"Halite BitTorrent Client" ---> "Halite BitTorrent Client"
+"Halite Bittorrent Client" --->  ??? 
 "FileVersion" ---> "FileVersion"
 "InternalName" ---> "InternalName"
 "Halite" ---> "Halite"
@@ -171,7 +172,7 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "In dieser Sitzung Runtergeladen: %1$.2fMB, Hochgeladen: %2$.2fMB, Ratio: %3$.2f."
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Geladen %1$.2fMB, Gesendet %2$.2fMB, Ratio %3$.2f."
 "Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." ---> "Gesmatübertragung inklusive Protkollmehraufwand; %1$.2fMB runter und %2$.2fMB hoch."
-"%1%, %2%." --->  ??? 
+"%1%, %2%." ---> "%1%, %2%."
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB runter - %2$.2fMB hoch"
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s runter - %2$.2fKB/s hoch"
 "%1% DHT node(s)" ---> "%1% DHT Knoten"
@@ -182,14 +183,14 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(D-U) %1$.2fKB/s - %2$.2fKB/s"
 "Halite not listening!" ---> "Halite hat keine Verbindung"
 "Port %1% open" ---> "Port %1% offen"
-"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
+"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Verzeichnis auswählen wo die Downloads gespeichert werden. Abbrechen auswählen, damit das Standard Downloadverzeichnis verwendet wird."
 "Peers" ---> "Peers"
-"Files" --->  ??? 
+"Files" ---> "Dateien"
 "Logging" ---> "Protokoll"
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Ein ungültiges Verschlüsselungslevel, %1%, wurde als Verschlüsselungseinstellung verwendet."
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Eine ungültige Verbindungsstrategie, %1%, wurde als Verschlüsselungseinstellung verwendet."
 "Auto Sort" ---> "auto. Sortierung"
-"Torrent Root" --->  ??? 
+"Torrent Root" ---> "Torrent Root"
 "Interesting" ---> "Interessiert"
 "Choked" ---> "Gedrosselt"
 "Interested in us" ---> "Interessiert an uns"
@@ -210,49 +211,49 @@
 "Allocating" ---> "Zuteilend"
 "Stopped" ---> "Angehalten"
 "Paused" ---> "Pausiert"
-"Stopping" --->  ??? 
-"Pausing" --->  ??? 
+"Stopping" ---> "Anhalten"
+"Pausing" ---> "Pausieren"
 "Downloading Metadata" ---> "Lade Metadaten"
-"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
+"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" ---> "Name;Status;Fortschritt;Download;Upload;Peers;Seeds;ETA;Kopien;Tracker;Neuankündigung;Ratio;Total;Komplett;Verbleibend;Downloaded;Uploaded;Aktiv;Seedend;Startzeit;Endzeit"
 "Time;Message;Severity" ---> "Zeit;Meldung;Schwere"
 "Tracker;Tier" ---> "Tracker;Rang"
 "Peer;Country;Download;Upload;Type;Client" ---> "Peer;Land;Download;Upload;Typ;Client"
 "Peer;Country;Download;Upload;Type;Client;Status" ---> "Peer;Land;Download;Upload;Typ;Client;Status"
-"Filename;Path;Size;Progress;Priority" --->  ??? 
-"Don't download" --->  ??? 
-"Normal" --->  ??? 
-"Above Normal" --->  ??? 
-"3" --->  ??? 
-"4" --->  ??? 
-"5" --->  ??? 
-"6" --->  ??? 
-"Maximum" --->  ??? 
-"Set Priority" --->  ??? 
+"Filename;Path;Size;Progress;Priority" ---> "Dateiname;Pfad;Größe;Fortschritt;Priorität"
+"Don't download" ---> "Nicht runterladen"
+"Normal" ---> "Normal"
+"Above Normal" ---> "Über Normal"
+"3" ---> "3"
+"4" ---> "4"
+"5" ---> "5"
+"6" ---> "6"
+"Maximum" ---> "Maximum"
+"Set Priority" ---> "Priorität festlegen"
 "Halite.ico" ---> "Halite.ico"
 "toolbar.bmp" ---> "toolbar.bmp"
 "None" ---> "Keine"
 "Debug" ---> "Debug"
 "Info" ---> "Info"
-"Warning" --->  ??? 
+"Warning" ---> "Warnung"
 "Critical" ---> "Kritisch"
-"Peer %2%: %1%." --->  ??? 
-"Peer banned %2%. (%1%)" --->  ??? 
-"Hash failed for piece %2% of %1%." --->  ??? 
-"URL Seed %2%, %3%. (%1%)" --->  ??? 
-"Tracker warning: %2%! (%1%)" --->  ??? 
-"Tracker Announce. (%1%)" --->  ??? 
-"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
-"%2%. %3% Peers. (%1%)" --->  ??? 
-"Fast rusume failed: %2%. (%1%)" --->  ??? 
-"Piece %2% finished. (%1%)" --->  ??? 
-"Block %2% of piece %3% finished. (%1%)" --->  ??? 
-"Block %2% of piece %3% downloading. (%1%)" --->  ??? 
-"Successfully %1%." --->  ??? 
-"Failed, %1%." --->  ??? 
-"IP Filter blocked %1%, %2%." --->  ??? 
+"Peer %2%: %1%." ---> "Peer %2%: %1%."
+"Peer banned %2%. (%1%)" ---> "Peer %2% gebannt. (%1%)"
+"Hash failed for piece %2% of %1%." ---> "Hash für Teil %2% von %1% fehlgeschlagen."
+"URL Seed %2%, %3%. (%1%)" ---> "URL Seed %2%, %3%. (%1%)"
+"Tracker warning: %2%! (%1%)" ---> "Tracker Warnung: %2%! (%1%)"
+"Tracker Announce. (%1%)" ---> "Tracker Ankündigung. (%1%)"
+"Alert %2%, Status code: %4%, Times %3%. (%1%)" ---> "Alarm %2%, Statuscode: %4%, Zeiten %3%. (%1%)"
+"%2%. %3% Peers. (%1%)" ---> "%2%. %3% Peers. (%1%)"
+"Fast rusume failed: %2%. (%1%)" ---> "schnelles Fortsetzen fehlgeschlagen: %2%. (%1%)"
+"Piece %2% finished. (%1%)" ---> "Teil %2% fertiggestellt. (%1%)"
+"Block %2% of piece %3% finished. (%1%)" ---> "Block %2% des Teils %3% fertiggestellt. (%1%)"
+"Block %2% of piece %3% downloading. (%1%)" ---> "Block %2% des Teils %3% runterladend. (%1%)"
+"Successfully %1%." ---> "%1% erfolgreich."
+"Failed, %1%" --->  ??? 
+"IP Filter blocked %1%, %2%." ---> "IP Filter blockiert %1%, %2%."
 "Xml Exception (%1%) with %2%." ---> "XML Fehler (%1%) bei (%2%)"
-"Torrent %1% finished." --->  ??? 
-"Torrent %1% paused." --->  ??? 
+"Torrent %1% finished." ---> "Torrent %1% fertiggestellt."
+"Torrent %1% paused." ---> "Torrent %1% pausiert."
 "Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) Fehler; (%2%) von (%3%)."
 "Invalid torrent (%1%) from %2%." ---> "fehlerhafter Torrent (%1%) von (%2%)"
 "Exception caught; %1%, from %2%." ---> "Ausnahme aufgetreten; %1%, von %2%."

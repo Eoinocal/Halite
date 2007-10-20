@@ -25,7 +25,7 @@
 "BitTorrent" ---> "Bittorrent"
 "Open a (single) port between : " ---> "Arasında (tek) port  aç: "
 "Enable DHT" --->  ??? 
-"Button" ---> "Düğme"
+"Button" ---> "Button"
 "to" ---> "-"
 "Select the (TCP) port (or range) on which to listen for incomming connections." --->  ??? 
 "Distributed Hash Tables" --->  ??? 
@@ -140,6 +140,7 @@
 "Torrent and Data" ---> "Torrent ve Veri"
 "New" ---> "Yeni"
 "Edit" ---> "Düzenle"
+"Set as Primary" --->  ??? 
 "Delete" ---> "Sil"
 "StringFileInfo" ---> "StringFileInfo"
 "180904b0" ---> "180904b0"
@@ -148,7 +149,7 @@
 "CompanyName" ---> "CompanyName"
 "BinaryNotions.com" ---> "BinaryNotions.com"
 "FileDescription" ---> "FileDescription"
-"Halite BitTorrent Client" ---> "Halite BitTorrent Programı"
+"Halite Bittorrent Client" --->  ??? 
 "FileVersion" ---> "FileVersion"
 "InternalName" ---> "InternalName"
 "Halite" ---> "Halite"
@@ -248,7 +249,7 @@
 "Block %2% of piece %3% finished. (%1%)" --->  ??? 
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Successfully %1%." --->  ??? 
-"Failed, %1%." --->  ??? 
+"Failed, %1%" --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml İstisnası (%1%) ile %2%."
 "Torrent %1% finished." --->  ??? 

@@ -5,8 +5,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 
-#define HALITE_VERSION					0,2,9,313
-#define HALITE_VERSION_STRING			"v 0.2.9 dev 313"
+#define HALITE_VERSION					0,2,9,320
+#define HALITE_VERSION_STRING			"v 0.2.9 dev 320"
 
 #define LBT_EVENT_TORRENT_FINISHED					80001
 #define HAL_PEER_BAN_ALERT							80002

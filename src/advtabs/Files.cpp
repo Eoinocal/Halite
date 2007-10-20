@@ -226,20 +226,20 @@ void AdvFilesDialog::doUiUpdate()
 {
 	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"doUiUpdate %1%") % current_torrent_name_).str().c_str())));
 
-	focusChanged(hal::bittorrent().torrentDetails().focusedTorrent());
-	uiUpdate(hal::bittorrent().torrentDetails());
+	requestUiUpdate();
 }
 
 void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 {
-	if (fileLinks_.empty() || !focusedTorrent()) return;
+	if (fileLinks_.empty() || !focusedTorrent()) 
+	{
+		list_.DeleteAllItems();
+		return;
+	}
 	
 	TryUpdateLock<FileListView::listClass> lock(list_);
 	if (lock) 
-	{	
-	//	const hal::TorrentDetail_ptr pT = tD.focusedTorrent();
-		if (focusedTorrent()->fileDetails().size() != fileLinks_.size()) return;
-		
+	{			
 		// Wipe details not present
 		for(int i = 0; i < list_.GetItemCount(); /*nothing here*/)
 		{

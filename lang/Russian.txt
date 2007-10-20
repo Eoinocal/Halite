@@ -140,6 +140,7 @@
 "Torrent and Data" ---> "Торрент файл и данные"
 "New" ---> "Новый"
 "Edit" ---> "Редактировать"
+"Set as Primary" --->  ??? 
 "Delete" ---> "Стереть"
 "StringFileInfo" ---> "StringFileInfo"
 "180904b0" ---> "180904b0"
@@ -148,7 +149,7 @@
 "CompanyName" ---> "Название компании"
 "BinaryNotions.com" ---> "BinaryNotions.com"
 "FileDescription" ---> "Описание файла"
-"Halite BitTorrent Client" ---> "Халит БитТоррент Клиент"
+"Halite Bittorrent Client" --->  ??? 
 "FileVersion" ---> "Версия Файла"
 "InternalName" ---> "Внутренне имя"
 "Halite" ---> "Халит"
@@ -248,7 +249,7 @@
 "Block %2% of piece %3% finished. (%1%)" --->  ??? 
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Successfully %1%." --->  ??? 
-"Failed, %1%." --->  ??? 
+"Failed, %1%" --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "XML исключение (%1%) с %2%."
 "Torrent %1% finished." --->  ??? 

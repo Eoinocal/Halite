@@ -140,6 +140,7 @@
 "Torrent and Data" ---> "Plik torrent i dane"
 "New" ---> "Nowy"
 "Edit" ---> "Edytuj"
+"Set as Primary" --->  ??? 
 "Delete" ---> "Usuń"
 "StringFileInfo" --->  ??? 
 "180904b0" --->  ??? 
@@ -148,7 +149,7 @@
 "CompanyName" --->  ??? 
 "BinaryNotions.com" --->  ??? 
 "FileDescription" --->  ??? 
-"Halite BitTorrent Client" --->  ??? 
+"Halite Bittorrent Client" --->  ??? 
 "FileVersion" --->  ??? 
 "InternalName" --->  ??? 
 "Halite" --->  ??? 
@@ -248,7 +249,7 @@
 "Block %2% of piece %3% finished. (%1%)" --->  ??? 
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Successfully %1%." --->  ??? 
-"Failed, %1%." --->  ??? 
+"Failed, %1%" --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
 "Xml Exception (%1%) with %2%." --->  ??? 
 "Torrent %1% finished." --->  ??? 

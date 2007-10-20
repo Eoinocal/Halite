@@ -140,6 +140,7 @@
 "Torrent and Data" ---> "Torrent og Data"
 "New" ---> "Ny"
 "Edit" ---> "Endre"
+"Set as Primary" --->  ??? 
 "Delete" ---> "Slett"
 "StringFileInfo" --->  ??? 
 "180904b0" --->  ??? 
@@ -148,7 +149,7 @@
 "CompanyName" ---> "Firmanavn"
 "BinaryNotions.com" --->  ??? 
 "FileDescription" ---> "Filbeskrivelse"
-"Halite BitTorrent Client" ---> "Halite BitTorrent Klient"
+"Halite Bittorrent Client" --->  ??? 
 "FileVersion" ---> "FilVersion"
 "InternalName" ---> "Internt Navn"
 "Halite" --->  ??? 
@@ -248,7 +249,7 @@
 "Block %2% of piece %3% finished. (%1%)" --->  ??? 
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Successfully %1%." --->  ??? 
-"Failed, %1%." --->  ??? 
+"Failed, %1%" --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml unntak (%1%) med %2%."
 "Torrent %1% finished." --->  ??? 

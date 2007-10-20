@@ -70,12 +70,16 @@ public:
 		
 		if ((focusedTorrent_ logical_xor focused) ||
 				(focused && focusedTorrent_->name() != focused->name()))
+		{
 			pT->focusChanged(focusedTorrent_ = focused);
+			
+			hal::event().post(shared_ptr<hal::EventDetail>(
+				new hal::EventMsg(L"focusChanged 3")));
+		}
 		else
 			focusedTorrent_ = focused;
 	
 		pT->uiUpdate(tD);
-		focusedTorrent_.reset();
 	}
 
 	void uiUpdate(const hal::TorrentDetails& tD)
