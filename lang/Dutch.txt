@@ -183,26 +183,26 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "Halite not listening!" ---> "Halite luistert niet!"
 "Port %1% open" ---> "Poort %1% open"
-"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
+"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  "Kies een map om de download op te slaan. Kies cancel om de standaard map te gebruiken."
 "Peers" --->  ??? 
 "Files" ---> "Bestanden"
 "Logging" ---> "Loggen"
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Een ongeldig encoderings niveau, %1%, is doorgegaan als encryptie instelling."
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Een ongeldig encoderings regeling, %1%, is doorgegaan als encryptie instelling."
 "Auto Sort" ---> "Auto Sorteren"
-"Torrent Root" ---> "Torrent wortel"
+"Torrent Root" ---> ???
 "Interesting" ---> "Geinteresseerd"
-"Choked" ---> "Verstopt"
+"Choked" ---> ???
 "Interested in us" ---> "Geinteresseerd in ons"
-"Has choked us" ---> "Heeft ons verstopt"
+"Has choked us" ---> "Choked ons"
 "Supports extensions" ---> "Ondersteund extensies"
 "Local connection" ---> "Lokale verbinding"
 "Handshake" ---> "Handdruk"
 "Connecting" ---> "Maakt verbinding"
-"Queued" ---> "Wachtend"
+"Queued" ---> "In wachtrij"
 "RC4 Encrypted" ---> "RC4 encryptie"
 "Plaintext Encrypted" ---> "Gewone text encryptie"
-"Queued for Checking" ---> "Wachtend op Controle"
+"Queued for Checking" ---> "In wachtrij voor controle"
 "Checking Files" ---> "Bestanden controleren"
 "Connecting to Tracker" ---> "Verbinden met Tracker"
 "Downloading" ---> "Bezig met Downloaden"
@@ -249,7 +249,7 @@
 "Block %2% of piece %3% finished. (%1%)" ---> "Blok %2% van deel %3% voltooid. (%1%)"
 "Block %2% of piece %3% downloading. (%1%)" ---> "Blok %2% van deel %3% aan het downloaden. (%1%)"
 "Successfully %1%." ---> "Succesvol %1%."
-"Failed, %1%" --->  ??? 
+"Failed, %1%" --->  "Mislukt, %1%"
 "IP Filter blocked %1%, %2%." ---> "IP Filter blokkeerde %1%, %2%."
 "Xml Exception (%1%) with %2%." ---> "Xml Exceptie (%1%) met %2%."
 "Torrent %1% finished." ---> "Torrent %1% voltooid."
