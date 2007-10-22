@@ -61,6 +61,7 @@ public:
 	BEGIN_MSG_MAP_EX(HaliteWindow)
 		MSG_WM_CREATE(OnCreate)
 		MSG_WM_CLOSE(OnClose)
+		MSG_WM_DESTROY(OnDestroy)
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_MOVE(OnMove)
 		MSG_WM_ERASEBKGND(OnEraseBkgnd)
@@ -148,6 +149,7 @@ protected:
 	LRESULT OnCreate(LPCREATESTRUCT lpcs);
     void OnTimer(UINT uTimerID);
 	void OnClose();
+	void OnDestroy();
 	void OnSize(UINT, CSize);
 	void OnMove(CSize);
 	LRESULT OnTrayNotification(UINT, WPARAM wParam, LPARAM lParam);

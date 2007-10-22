@@ -9,7 +9,6 @@
 #pragma comment(linker, "\"/manifestdependency:type='Win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #include "stdAfx.hpp"
-// #include <vld.h>
 
 #include "WinAPIMutex.hpp"
 
@@ -148,7 +147,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		
 		CMessageLoop theLoop;
 		_Module.AddMessageLoop(&theLoop);
-		{	
+			
 			hal::app().set_initial_hinstance(hInstance);
 			if (halite().dll() != L"") hal::app().set_res_dll(halite().dll());
 			
@@ -165,7 +164,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			wndMain.ShowWindow(nCmdShow);
 			
 			nRet = theLoop.Run();				
-		}	
+		
 		_Module.RemoveMessageLoop();
 		
 		hal::bittorrent().stopEventReceiver();

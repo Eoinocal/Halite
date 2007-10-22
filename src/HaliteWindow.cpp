@@ -40,6 +40,7 @@ HaliteWindow::HaliteWindow(unsigned areYouMe = 0) :
 HaliteWindow::~HaliteWindow()
 {
 	save();
+	ATLASSERT(!::IsWindow(m_hWnd));
 }
 
 BOOL HaliteWindow::PreTranslateMessage(MSG* pMsg)
@@ -335,10 +336,13 @@ void HaliteWindow::OnClose()
 	hal::config().save();
 	save();
 	
-	mp_dlg->saveStatus();
-	
-	SetMsgHandled(false);
-}	
+	DestroyWindow();
+}
+ 
+void HaliteWindow::OnDestroy()
+{
+	PostQuitMessage(0);
+}
 
 void HaliteWindow::OnSize(UINT type, CSize)
 {

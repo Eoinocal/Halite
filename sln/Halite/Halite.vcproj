@@ -472,6 +472,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\AtlAutosizeDlg.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\ConfigOptions.hpp"
 				>
 			</File>
@@ -589,6 +593,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\WinAPIMutex.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\WinAPIWaitableTimer.hpp"
 				>
 			</File>
 			<Filter
