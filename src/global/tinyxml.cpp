@@ -45,6 +45,7 @@ void base::put_string( const TIXML_STRING& str, TIXML_STRING* outString )
 	{
 		unsigned char c = (unsigned char) str[i];
 
+
 		if (    c == '&' 
 		     && i < ( (int)str.length() - 2 )
 			 && str[i+1] == '#'
@@ -93,7 +94,9 @@ void base::put_string( const TIXML_STRING& str, TIXML_STRING* outString )
 			outString->append( entity_[4].str, entity_[4].strLength );
 			++i;
 		}
-		else if ( c < 32 )
+		else 
+
+		if ( c < 32 )
 		{
 			// Easy pass at non-alpha/numeric/symbol
 			// Below 32 is symbolic.
@@ -112,6 +115,7 @@ void base::put_string( const TIXML_STRING& str, TIXML_STRING* outString )
 		}
 		else
 		{
+
 			//char realc = (char) c;
 			//outString->append( &realc, 1 );
 			*outString += (char) c;	// somewhat more efficient function call.
@@ -1870,12 +1874,20 @@ bool printer::visit( const text& text_ )
 	}
 	else if ( simpleTextPrint )
 	{
-		buffer += text_.value();
+		TIXML_STRING tmp_buffer;
+		base::put_string( text_.value(), &tmp_buffer );
+
+		buffer += tmp_buffer;
 	}
 	else
 	{
 		do_indent();
-		buffer += text_.value();
+
+		TIXML_STRING tmp_buffer;
+		base::put_string( text_.value(), &tmp_buffer );
+
+		buffer += tmp_buffer;
+
 		do_line_break();
 	}
 	return true;

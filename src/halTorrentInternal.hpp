@@ -990,7 +990,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 	{
 		activeDuration_.update();
 		
-		if (handle_.is_seed())
+		if (lbt::torrent_status::seeding == statusMemory_.state)
 			seedingDuration_.update();
 	}	
 	

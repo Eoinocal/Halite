@@ -278,6 +278,10 @@ public:
 
 		TIXML_ERROR_STRING_COUNT
 	};
+	
+	// Puts a string to a stream, expanding entities as it goes.
+	// Note this should not contian the '<', '>', etc, or they will be transformed into entities!
+	static void put_string( const TIXML_STRING& str, TIXML_STRING* out );
 
 protected:
 
@@ -354,10 +358,6 @@ protected:
 			return 0;
 		}
 	}
-
-	// Puts a string to a stream, expanding entities as it goes.
-	// Note this should not contian the '<', '>', etc, or they will be transformed into entities!
-	static void put_string( const TIXML_STRING& str, TIXML_STRING* out );
 
 	// Return true if the next_ characters in the stream are any of the endTag sequences.
 	// Ignore case only works for english, and should only be relied on when comparing

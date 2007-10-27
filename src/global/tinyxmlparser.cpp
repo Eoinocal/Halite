@@ -512,7 +512,7 @@ const char* base::get_entity( const char* p, char* value_, int* length, encoding
 		}
 		return p + delta + 1;
 	}
-
+#if 1
 	// Now try to match it.
 	for( i=0; i<NUM_ENTITY; ++i )
 	{
@@ -524,7 +524,7 @@ const char* base::get_entity( const char* p, char* value_, int* length, encoding
 			return ( p + entity_[i].strLength );
 		}
 	}
-
+#endif
 	// So it wasn't an entity_, its unrecognized, or something like that.
 	*value_ = *p;	// Don't put back the last_ one, since we return it!
 	//*length = 1;	// Leave unrecognized entities - this doesn't really work.

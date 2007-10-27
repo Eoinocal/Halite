@@ -627,9 +627,15 @@ private:
 		theSession.add_extension(&lbt::create_ut_pex_plugin);
 		theSession.set_max_half_open_connections(10);
 		
+		hal::event().post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(L"Loading BitTorrent.xml.", hal::Event::info)));		
 		bittorrentIni.load_data();
+		hal::event().post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(L"Loading torrent parameters.", hal::Event::info)));	
 		theTorrents.load();
-					
+		hal::event().post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(L"Loading done!", hal::Event::info)));
+		
 		try
 		{						
 		if (fs::exists(workingDirectory/L"Torrents.xml"))

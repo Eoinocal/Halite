@@ -184,7 +184,7 @@ public:
 	
 	virtual std::wstring msg()
 	{
-		return (wformat(hal::app().res_wstr(HAL_EVENT_XMLEXP)) % exp_ % msg_).str();
+		return (wformat(hal::app().res_wstr(HAL_EVENT_XML_EXP)) % exp_ % msg_).str();
 	}
 	
 private:
