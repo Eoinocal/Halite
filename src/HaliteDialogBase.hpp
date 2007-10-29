@@ -35,14 +35,14 @@ public:
 	{
 		if (show)
 		{
-			hal::event().post(shared_ptr<hal::EventDetail>(
-				new hal::EventMsg(L"True")));
+		//	hal::event().post(shared_ptr<hal::EventDetail>(
+		//		new hal::EventMsg(L"True")));
 			connection_.unblock();
 		}
 		else
 		{
-			hal::event().post(shared_ptr<hal::EventDetail>(
-				new hal::EventMsg(L"False")));
+		//	hal::event().post(shared_ptr<hal::EventDetail>(
+		//		new hal::EventMsg(L"False")));
 			connection_.block();
 		}
 	}

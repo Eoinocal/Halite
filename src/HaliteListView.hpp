@@ -117,7 +117,7 @@ protected:
 			}
 			else
 			{
-				return L"∞";		
+				return hal::app().res_wstr(HAL_INF);		
 			}
 		}		
 	};
@@ -134,7 +134,7 @@ protected:
 			}
 			else
 			{
-				return L"∞";		
+				return hal::app().res_wstr(HAL_INF);		
 			}
 		}		
 	};
@@ -260,7 +260,7 @@ protected:
 			}
 			else
 			{
-				return L"∞";		
+				return hal::app().res_wstr(HAL_INF);		
 			}
 		}		
 	};
@@ -277,7 +277,7 @@ protected:
 			}
 			else
 			{
-				return L"∞";		
+				return hal::app().res_wstr(HAL_INF);		
 			}
 		}		
 	};

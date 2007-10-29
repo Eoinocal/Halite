@@ -48,13 +48,6 @@ public:
 		try 
 		{
 		
-		{
-			fs::wofstream ofs(wpath(hal::app().working_directory()/boost::lexical_cast<wstring>(std::rand())), std::ios::binary);
-			ofs << xml_data.str();
-
-		//	MessageBoxA(NULL, xml_data.str().c_str(), "Hmmm", 0);
-		}
-
 		boost::archive::xml_wiarchive ixml(xml_data);	
 		
 		T* pT = static_cast<T*>(this);	

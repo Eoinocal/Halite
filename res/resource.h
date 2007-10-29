@@ -284,4 +284,6 @@
 #define IDD_ADD_TORRENT					40200
 #define IDC_CHECK_COMPACT				40201
 #define IDC_CHECK_PAUSED				40202
+#define HAL_INF							40203
+#define HAL_NA							IDS_NA
 

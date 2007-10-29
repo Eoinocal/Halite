@@ -226,6 +226,13 @@ void AdvFilesDialog::doUiUpdate()
 {
 	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"doUiUpdate %1%") % current_torrent_name_).str().c_str())));
 
+	tree_.determineFocused();
+	
+	range_ = std::equal_range(fileLinks_.begin(), fileLinks_.end(),
+		FileLink(tree_.focused()));
+	
+	std::sort(range_.first, range_.second, &FileLinkNamesLess);
+	
 	requestUiUpdate();
 }
 

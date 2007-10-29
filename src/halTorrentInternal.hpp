@@ -46,7 +46,7 @@ namespace hal
 class TorrentInternal;
 }
 
-BOOST_CLASS_VERSION(hal::TorrentInternal, 7)
+BOOST_CLASS_VERSION(hal::TorrentInternal, 8)
 
 namespace hal 
 {
@@ -167,12 +167,18 @@ class TorrentInternal
 	{
 	public:
 		DurationTracker() :
-			total_(boost::posix_time::time_duration(0,0,0,0),boost::posix_time::time_duration(0,0,0,0)),
-			start_(boost::posix_time::second_clock::universal_time())
+			total_(boost::posix_time::time_duration(0,0,0,0), 
+				boost::posix_time::time_duration(0,0,0,0))
 		{}
 		
 		boost::posix_time::time_duration update() const
 		{
+			if (start_.is_not_a_date_time()) 
+				start_ = boost::posix_time::second_clock::universal_time();
+
+			if (static_cast<boost::posix_time::time_duration>(total_).is_special()) 
+				total_.setOffset(boost::posix_time::time_duration(0,0,0,0));
+			
 			return total_.update(boost::posix_time::second_clock::universal_time() - start_);
 		}
 		
@@ -432,7 +438,14 @@ public:
 		
         ar & make_nvp("saveDirectory", save_directory_);
 		
-		if (version > 3) {
+		if (version > 7) {
+			ar & make_nvp("payloadUploaded_", payloadUploaded_);
+			ar & make_nvp("payloadDownloaded_", payloadDownloaded_);
+			ar & make_nvp("uploaded_", uploaded_);
+			ar & make_nvp("downloaded_", downloaded_);	
+			ar & make_nvp("ratio", ratio_);	
+		} 
+		else if (version > 3) {
 			ar & make_nvp("payloadUploaded_", payloadUploaded_);
 			ar & make_nvp("payloadDownloaded_", payloadDownloaded_);
 			ar & make_nvp("uploaded_", uploaded_);
