@@ -1,4 +1,4 @@
-"English" ---> "Italiano"
+﻿"English" ---> "Italiano"
 "English.rtf" ---> "../lang/Italian.rtf"
 "MS Shell Dlg" --->  ??? 
 "Torrent" --->  ??? 
@@ -140,7 +140,7 @@
 "Torrent and Data" ---> "Torrent e Dati"
 "New" ---> "Nuovo"
 "Edit" ---> "Modifica"
-"Set as Primary" --->  ??? 
+"Set as Primary" --->  "Seleziona come Primario" 
 "Delete" ---> "Elimina"
 "StringFileInfo" --->  ??? 
 "180904b0" --->  ??? 
