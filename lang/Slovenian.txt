@@ -149,7 +149,7 @@
 "CompanyName" ---> "CompanyName"
 "BinaryNotions.com" ---> "BinaryNotions.com"
 "FileDescription" ---> "FileDescription"
-"Halite Bittorrent Client" --->  ??? 
+"Halite BitTorrent Client" --->  ??? 
 "FileVersion" ---> "FileVersion"
 "InternalName" ---> "InternalName"
 "Halite" ---> "Halite"
@@ -168,6 +168,7 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Prišlo je do napake, prosimo spremenite port."
 "DHT session could not start. Try selecting another port in the settings." ---> "Napaka DHT vtičnika, prosimo spremenite port."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Izberite mapo za shrambo datotek."
+"∞" --->  ??? 
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB od %2$.2fMB"
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "V tej seji ste prenesli  %1$.2fMB podatkov in oddali %2$.2fMB podatkov. Delilno razmerje seje: %3$.2f."
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Prenešeno %1$.2fMB, Oddano %2$.2fMB, Delilno razmerje %3$.2f."
@@ -251,13 +252,12 @@
 "Successfully %1%." --->  ??? 
 "Failed, %1%" --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
-"Xml Exception (%1%) with %2%." ---> "Xml izjema (%1%) pri %2%."
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
 "Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) zaznana izjema; %2% od %3%."
 "Invalid torrent (%1%) from %2%." ---> "Neveljaven torrent (%1%) od %2%."
 "Exception caught; %1%, from %2%." ---> "Izjema ujeta; %1%, od %2%."
-"XML exception: %1%." ---> "XML izjema: %1%."
+"Xml Exception (%1%) with %2%." ---> "Xml izjema (%1%) pri %2%."
 "Unicode exception: %1%." ---> "Unicode izjema: %1%."
 "Bittorrent Event: %1%." ---> "Bittorrent dogodek: %1%."
 "Peer Event: %1%." ---> "Peer dogodek: %1%."

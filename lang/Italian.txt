@@ -149,7 +149,7 @@
 "CompanyName" --->  ??? 
 "BinaryNotions.com" --->  ??? 
 "FileDescription" --->  ??? 
-"Halite Bittorrent Client" --->  ??? 
+"Halite BitTorrent Client" --->  ??? 
 "FileVersion" --->  ??? 
 "InternalName" --->  ??? 
 "Halite" --->  ??? 
@@ -168,6 +168,7 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "La sessione BitTorrent non si è avviata. Prova a selezionare un'altra porta nelle Opzioni."
 "DHT session could not start. Try selecting another port in the settings." ---> "La sessione DHT non si è avviata. Prova a selezionare un'altra porta nelle Opzioni."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Seleziona una directory in cui salvare i files, o annulla per non scaricare il torrent."
+"∞" --->  ??? 
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB su %2$.2fMB"
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "In questa Sessione: Scaricati %1$.2fMB, Inviati %2$.2fMB, Ratio %3$.2f."
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Scaricati %1$.2fMB, Inviati %2$.2fMB, Ratio %3$.2f"
@@ -251,13 +252,12 @@
 "Successfully %1%." --->  ??? 
 "Failed, %1%" --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
-"Xml Exception (%1%) with %2%." --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% finito"
 "Torrent %1% paused." ---> "Torrent %1% in pausa"
 "Torrent (%1%) exception caught; %2% from %3%." --->  ??? 
 "Invalid torrent (%1%) from %2%." ---> "Torrent non valido (%1%) da %2%."
 "Exception caught; %1%, from %2%." ---> "Rilevato errore; %1%, da %2%."
-"XML exception: %1%." ---> "Errore XML: %1%."
+"Xml Exception (%1%) with %2%." --->  ??? 
 "Unicode exception: %1%." ---> "Errore Unicode: %1%."
 "Bittorrent Event: %1%." ---> "Evento Bittorrent: %1%."
 "Peer Event: %1%." ---> "Evento Peer: %1%."

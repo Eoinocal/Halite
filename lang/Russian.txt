@@ -149,7 +149,7 @@
 "CompanyName" ---> "Название компании"
 "BinaryNotions.com" ---> "BinaryNotions.com"
 "FileDescription" ---> "Описание файла"
-"Halite Bittorrent Client" --->  ??? 
+"Halite BitTorrent Client" --->  ??? 
 "FileVersion" ---> "Версия Файла"
 "InternalName" ---> "Внутренне имя"
 "Halite" ---> "Халит"
@@ -168,6 +168,7 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Сессия БитТоррента не смогла запуститься. Попробуйте выбрать другой порт в установках."
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT сессия не смогла запуститься. Попробуйте выбрать другой порт в установках."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Выберите папку для сохранения файлов или отмените, чобы вообще не загружать торрент."
+"∞" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> " Закачано %1$.2fMB, Выкачано %2$.2fMB, Соотношение %3$.2f."
@@ -251,13 +252,12 @@
 "Successfully %1%." --->  ??? 
 "Failed, %1%" --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
-"Xml Exception (%1%) with %2%." ---> "XML исключение (%1%) с %2%."
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
 "Torrent (%1%) exception caught; %2% from %3%." ---> "Получено Торрент исключение (%1%); %2% от %3%."
 "Invalid torrent (%1%) from %2%." ---> "Бракованый торрент (%1%) от %2%."
 "Exception caught; %1%, from %2%." ---> "Исключение поймано; %1%, от %2%."
-"XML exception: %1%." --->  ??? 
+"Xml Exception (%1%) with %2%." ---> "XML исключение (%1%) с %2%."
 "Unicode exception: %1%." ---> "Исключение юникода: %1%."
 "Bittorrent Event: %1%." ---> "Событие битторрента: %1%."
 "Peer Event: %1%." ---> "Событие пира: %1%."

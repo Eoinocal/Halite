@@ -1,7 +1,7 @@
 ; -- Halite.iss --
 
 #define MyAppName "Halite"
-#define MyAppVerName "Halite 0.2.9 dev 320"
+#define MyAppVerName "Halite 0.2.9 dev 326"
 #define MyAppPublisher "BinaryNotions.com"
 #define MyAppURL "http://www.binarynotions.com/halite.php"
 #define MyAppExeName "Halite.exe"
@@ -18,7 +18,7 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=LICENSE_1_0.txt
-OutputBaseFilename=Halite.0_2_9_dev320.setup
+OutputBaseFilename=Halite.0_2_9_dev326.setup
 Compression=lzma
 SolidCompression=true
 UninstallDisplayIcon={app}\{#MyAppName}

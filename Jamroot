@@ -7,3 +7,4 @@ path-constant /openssl : lib/OpenSSL ;
 path-constant /libtorrent : lib/libtorrent ;
 path-constant /wtl : lib/WTL ;
 path-constant /asio : lib/Asio ;
+path-constant /sqlite3x : lib/sqlite3x ;

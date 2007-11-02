@@ -2,6 +2,7 @@
 use-project /boost : $(/boost) ;
 use-project /wtl : $(/wtl) ;
 use-project /libtorrent : $(/libtorrent) ;
+#use-project /sqlite3x : $(/sqlite3x) ;
 #use-project /stlsoft : $(/stlsoft) ;
 
 SOURCES =
@@ -53,6 +54,7 @@ LIBS =
 	/boost/$(BOOST_LIBS)/<link>static
 	/libtorrent//torrent/<link>static
 	/wtl
+#	/sqlite3x//sqlite3x/<link>static
 #	/asio
 #	/stlsoft
 	

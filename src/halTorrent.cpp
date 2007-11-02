@@ -604,7 +604,7 @@ public:
 	
 private:
 	BitTorrent_impl() :
-		theSession(lbt::fingerprint("HL", 0, 2, 9, 0)),
+		theSession(lbt::fingerprint("HL", 0, 2, 9, 5)),
 		timer_(io_),
 		keepChecking_(false),
 		workingDirectory(hal::app().working_directory()),
