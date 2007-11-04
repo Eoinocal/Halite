@@ -238,7 +238,7 @@ void AdvFilesDialog::doUiUpdate()
 
 void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 {
-	if (fileLinks_.empty() || !focusedTorrent()) 
+	if (fileLinks_.empty() || !(focusedTorrent() && !focusedTorrent()->fileDetails().empty())) 
 	{
 		list_.DeleteAllItems();
 		return;
