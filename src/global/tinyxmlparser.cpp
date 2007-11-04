@@ -2,13 +2,13 @@
 www.sourceforge.net/projects/tinyxml
 Original code (2.0 and earlier )copyright (c) 2000-2002 Lee Thomason (www.grinninglizard.com)
 
-This software is provided 'as-is', without any express or implied 
+this software is provided 'as-is', without any express or implied 
 warranty. In no_ event will the authors be held liable for any 
 damages arising from the use of this software.
 
 Permission is granted to anyone to use this software for any 
-purpose, including commercial applications, and to alter it and 
-redistribute it freely, subject to the following restrictions:
+purpose, including commercial applications, and to alter it_ and 
+redistribute it_ freely, subject to the following restrictions:
 
 1. The origin of this software must not be misrepresented; you must 
 not claim that you wrote the original software. If you use this
@@ -18,7 +18,7 @@ would be appreciated but is not required.
 2. Altered source versions must be plainly marked as such, and 
 must not be misrepresented as being the original software.
 
-3. This notice may not be removed or altered from any source 
+3. this notice may not be removed or altered from any source 
 distribution.
 */
 
@@ -26,6 +26,9 @@ distribution.
 #include <stddef.h>
 
 #include "tinyxml.hpp"
+
+namespace tinyxml
+{
 
 //#define DEBUG_PARSER
 #if defined( DEBUG_PARSER )
@@ -37,10 +40,8 @@ distribution.
 #	endif
 #endif
 
-namespace tinyxml {
-
-// Note tha "put_string" hardcodes the same list. This
-// is less flexible than it appears. Changing the entries
+// Note tha "PutString" hardcodes the same list. this
+// is less flexible than it_ appears. Changing the entries
 // or order will break putstring.	
 base::entity base::entity_[ NUM_ENTITY ] = 
 {
@@ -53,9 +54,9 @@ base::entity base::entity_[ NUM_ENTITY ] =
 
 // Bunch of unicode info at:
 //		http://www.unicode.org/faq/utf_bom.html
-// Including the basic of this table, which determines the #bytes in the
+// Including the basic_ of this table, which determines the #bytes in the
 // sequence from the lead byte. 1 placed for invalid sequences --
-// although the result will be junk, pass it through as much as possible.
+// although the result will be junk, pass it_ through as much as possible.
 // Beware of the non-characters in UTF-8:	
 //				ef bb bf (Microsoft "lead bytes")
 //				ef bf be
@@ -87,7 +88,7 @@ const int base::utf8ByteTable[256] =
 };
 
 
-void base::convert_u_t_f32_to_u_t_f8( unsigned long input, char* output, int* length )
+void base::convert_u_t_f32_to_u_t_f8( unsigned long input, char* output_, int* length )
 {
 	const unsigned long BYTE_MASK = 0xBF;
 	const unsigned long BYTE_MARK = 0x80;
@@ -102,36 +103,36 @@ void base::convert_u_t_f32_to_u_t_f8( unsigned long input, char* output, int* le
 	else if ( input < 0x200000 )
 		*length = 4;
 	else
-		{ *length = 0; return; }	// This code won't covert this correctly anyway.
+		{ *length = 0; return; }	// this code won't covert this correctly anyway.
 
-	output += *length;
+	output_ += *length;
 
 	// Scary scary fall throughs.
 	switch (*length) 
 	{
 		case 4:
-			--output; 
-			*output = (char)((input | BYTE_MARK) & BYTE_MASK); 
+			--output_; 
+			*output_ = (char)((input | BYTE_MARK) & BYTE_MASK); 
 			input >>= 6;
 		case 3:
-			--output; 
-			*output = (char)((input | BYTE_MARK) & BYTE_MASK); 
+			--output_; 
+			*output_ = (char)((input | BYTE_MARK) & BYTE_MASK); 
 			input >>= 6;
 		case 2:
-			--output; 
-			*output = (char)((input | BYTE_MARK) & BYTE_MASK); 
+			--output_; 
+			*output_ = (char)((input | BYTE_MARK) & BYTE_MASK); 
 			input >>= 6;
 		case 1:
-			--output; 
-			*output = (char)(input | FIRST_BYTE_MARK[*length]);
+			--output_; 
+			*output_ = (char)(input | FIRST_BYTE_MARK[*length]);
 	}
 }
 
 
 /*static*/ int base::is_alpha( unsigned char anyByte, encoding /*encoding_*/ )
 {
-	// This will only work for low-ascii, everything else is assumed to be a valid
-	// letter. I'm not sure this is the best approach, but it is quite tricky trying
+	// this will only work for low_-ascii, everything else is assumed to be a valid
+	// letter. I'm not sure this is the best approach, but it_ is quite tricky trying
 	// to figure out alhabetical vs. not across encoding_. So take a very 
 	// conservative approach.
 
@@ -140,7 +141,7 @@ void base::convert_u_t_f32_to_u_t_f8( unsigned long input, char* output, int* le
 		if ( anyByte < 127 )
 			return isalpha( anyByte );
 		else
-			return 1;	// What else to do? The unicode set is huge...get the english ones right.
+			return 1;	// What else to do_? The unicode set is huge...get the english ones right.
 //	}
 //	else
 //	{
@@ -151,8 +152,8 @@ void base::convert_u_t_f32_to_u_t_f8( unsigned long input, char* output, int* le
 
 /*static*/ int base::is_alpha_num( unsigned char anyByte, encoding /*encoding_*/ )
 {
-	// This will only work for low-ascii, everything else is assumed to be a valid
-	// letter. I'm not sure this is the best approach, but it is quite tricky trying
+	// this will only work for low_-ascii, everything else is assumed to be a valid
+	// letter. I'm not sure this is the best approach, but it_ is quite tricky trying
 	// to figure out alhabetical vs. not across encoding_. So take a very 
 	// conservative approach.
 
@@ -161,7 +162,7 @@ void base::convert_u_t_f32_to_u_t_f8( unsigned long input, char* output, int* le
 		if ( anyByte < 127 )
 			return isalnum( anyByte );
 		else
-			return 1;	// What else to do? The unicode set is huge...get the english ones right.
+			return 1;	// What else to do_? The unicode set is huge...get the english ones right.
 //	}
 //	else
 //	{
@@ -180,10 +181,10 @@ class parsing_data
 
   private:
 	// Only used by the document_!
-	parsing_data( const char* start, int _tabsize, int row_, int col )
+	parsing_data( const char* start_, int _tabsize, int row_, int col )
 	{
-		assert( start );
-		stamp_ = start;
+		assert( start_ );
+		stamp_ = start_;
 		tabsize = _tabsize;
 		cursor_.row_ = row_;
 		cursor_.col = col;
@@ -199,7 +200,7 @@ void parsing_data::stamp( const char* now, encoding encoding_ )
 {
 	assert( now );
 
-	// Do nothing if the tabsize is 0.
+	// do nothing if the tabsize is 0.
 	if ( tabsize < 1 )
 	{
 		return;
@@ -219,12 +220,12 @@ void parsing_data::stamp( const char* now, encoding encoding_ )
 		// Code contributed by Fletcher Dunn: (modified by lee)
 		switch (*pU) {
 			case 0:
-				// We *should* never get here, but in case we do, don't
+				// We *should* never get here, but in case we do_, don't
 				// advance past the terminating null character, ever
 				return;
 
 			case '\r':
-				// bump down to the next_ line
+				// bump down to the next_ line_
 				++row_;
 				col = 0;				
 				// Eat the character
@@ -237,7 +238,7 @@ void parsing_data::stamp( const char* now, encoding encoding_ )
 				break;
 
 			case '\n':
-				// bump down to the next_ line
+				// bump down to the next_ line_
 				++row_;
 				col = 0;
 
@@ -256,7 +257,7 @@ void parsing_data::stamp( const char* now, encoding encoding_ )
 				// Eat the character
 				++p;
 
-				// Skip to next_ tab stop
+				// Skip to next_ tab_ stop
 				col = (col / tabsize + 1) * tabsize;
 				break;
 
@@ -265,7 +266,7 @@ void parsing_data::stamp( const char* now, encoding encoding_ )
 				{
 					if ( *(p+1) && *(p+2) )
 					{
-						// In these cases, don't advance the column_. These are
+						// In these cases, don't advance the column_. These are_
 						// 0-width spaces.
 						if ( *(pU+1)==TIXML_UTF_LEAD_1 && *(pU+2)==TIXML_UTF_LEAD_2 )
 							p += 3;	
@@ -348,7 +349,7 @@ const char* base::skip_white_space( const char* p, encoding encoding_ )
 				continue;
 			}
 
-			if ( is_white_space( *p ) || *p == '\n' || *p =='\r' )		// Still using old rules for white space.
+			if ( is_white_space( *p ) || *p == '\n' || *p =='\r' )		// Still using old rules for white_ space.
 				++p;
 			else
 				break;
@@ -381,7 +382,7 @@ const char* base::skip_white_space( const char* p, encoding encoding_ )
 
 /*static*/ bool base::stream_to( std::istream * in, int character, TIXML_STRING * tag )
 {
-	//assert( character > 0 && character < 128 );	// else it won't work in utf-8
+	//assert( character > 0 && character < 128 );	// else it_ won't work in utf-8
 	while ( in->good() )
 	{
 		int c = in->peek();
@@ -408,17 +409,17 @@ const char* base::read_name( const char* p, TIXML_STRING * name_, encoding encod
 	*name_ = "";
 	assert( p );
 
-	// Names start with letters or underscores.
+	// Names start_ with letters or underscores.
 	// Of course, in unicode, tinyxml has no_ idea what a letter *is*. The
 	// algorithm is generous.
 	//
 	// After that, they can be letters, underscores, numbers,
-	// hyphens, or colons. (Colons are valid ony for namespaces,
+	// hyphens, or colons. (Colons are_ valid ony for namespaces,
 	// but tinyxml can't tell namespaces from names.)
 	if (    p && *p 
 		 && ( is_alpha( (unsigned char) *p, encoding_ ) || *p == '_' ) )
 	{
-		const char* start = p;
+		const char* start_ = p;
 		while(		p && *p
 				&&	(		is_alpha_num( (unsigned char ) *p, encoding_ ) 
 						 || *p == '_'
@@ -429,8 +430,8 @@ const char* base::read_name( const char* p, TIXML_STRING * name_, encoding encod
 			//(*name_) += *p; // expensive
 			++p;
 		}
-		if ( p-start > 0 ) {
-			name_->assign( start, p-start );
+		if ( p-start_ > 0 ) {
+			name_->assign( start_, p-start_ );
 		}
 		return p;
 	}
@@ -439,7 +440,7 @@ const char* base::read_name( const char* p, TIXML_STRING * name_, encoding encod
 
 const char* base::get_entity( const char* p, char* value_, int* length, encoding encoding_ )
 {
-	// Presume an entity_, and pull it out.
+	// Presume an entity_, and pull it_ out.
     TIXML_STRING ent;
 	int i;
 	*length = 0;
@@ -512,8 +513,8 @@ const char* base::get_entity( const char* p, char* value_, int* length, encoding
 		}
 		return p + delta + 1;
 	}
-#if 1
-	// Now try to match it.
+
+	// Now try to match it_.
 	for( i=0; i<NUM_ENTITY; ++i )
 	{
 		if ( strncmp( entity_[i].str, p, entity_[i].strLength ) == 0 )
@@ -524,9 +525,9 @@ const char* base::get_entity( const char* p, char* value_, int* length, encoding
 			return ( p + entity_[i].strLength );
 		}
 	}
-#endif
-	// So it wasn't an entity_, its unrecognized, or something like that.
-	*value_ = *p;	// Don't put back the last_ one, since we return it!
+
+	// So it_ wasn't an entity_, its unrecognized, or something like that.
+	*value_ = *p;	// Don't put back the last_ one, since we return it_!
 	//*length = 1;	// Leave unrecognized entities - this doesn't really work.
 					// Just writes strange XML.
 	return p+1;
@@ -581,10 +582,10 @@ const char* base::read_text(	const char* p,
 									encoding encoding_ )
 {
     *text_ = "";
-	if (    !trimWhiteSpace			// certain tags always keep whitespace
-		 || !condenseWhiteSpace )	// if true, whitespace is always kept
+	if (    !trimWhiteSpace			// certain tags always keep whitespace_
+		 || !condenseWhiteSpace )	// if true, whitespace_ is always kept
 	{
-		// Keep all the white space.
+		// Keep all the white_ space.
 		while (	   p && *p
 				&& !string_equal( p, endTag, caseInsensitive, encoding_ )
 			  )
@@ -597,31 +598,31 @@ const char* base::read_text(	const char* p,
 	}
 	else
 	{
-		bool whitespace = false;
+		bool whitespace_ = false;
 
-		// remove leading white space:
+		// remove leading white_ space:
 		p = skip_white_space( p, encoding_ );
 		while (	   p && *p
 				&& !string_equal( p, endTag, caseInsensitive, encoding_ ) )
 		{
 			if ( *p == '\r' || *p == '\n' )
 			{
-				whitespace = true;
+				whitespace_ = true;
 				++p;
 			}
 			else if ( is_white_space( *p ) )
 			{
-				whitespace = true;
+				whitespace_ = true;
 				++p;
 			}
 			else
 			{
-				// If we've found whitespace, add_ it before the
-				// new character. Any whitespace just becomes a space.
-				if ( whitespace )
+				// If we've found whitespace_, add_ it_ before the
+				// new character. Any whitespace_ just becomes a space.
+				if ( whitespace_ )
 				{
 					(*text_) += ' ';
-					whitespace = false;
+					whitespace_ = false;
 				}
 				int len;
 				char cArr[4] = { 0, 0, 0, 0 };
@@ -642,11 +643,11 @@ const char* base::read_text(	const char* p,
 
 void document::stream_in( std::istream * in, TIXML_STRING * tag )
 {
-	// The basic issue with a document_ is that we don't know what we're
-	// streaming. Read something presumed to be a tag (and hope), then
-	// identify_ it, and call the appropriate stream method on the tag.
+	// The basic_ issue with a document_ is that we don't know what we're
+	// streaming_. read something presumed to be a tag (and hope), then
+	// identify_ it_, and call the appropriate stream_ method on the tag.
 	//
-	// This "pre-streaming" will never read the closing ">" so the
+	// this "pre-streaming" will never read_ the closing ">" so the
 	// sub-tag can orient itself.
 
 	if ( !stream_to( in, '<', tag ) ) 
@@ -672,8 +673,8 @@ void document::stream_in( std::istream * in, TIXML_STRING * tag )
 		if ( in->good() )
 		{
 			// We now have something we presume to be a node_ of 
-			// some sort. identify it, and call the node_ to
-			// continue streaming.
+			// some sort. identify it_, and call the node_ to
+			// continue streaming_.
 			node* node_ = identify( tag->c_str() + tagIndex, TIXML_DEFAULT_ENCODING );
 
 			if ( node_ )
@@ -683,7 +684,7 @@ void document::stream_in( std::istream * in, TIXML_STRING * tag )
 				delete node_;
 				node_ = 0;
 
-				// If this is the root element_, we're done. Parsing will be
+				// If this is the root_ element_, we're done. parsing will be
 				// done by the >> operator.
 				if ( isElement )
 				{
@@ -709,7 +710,7 @@ const char* document::parse( const char* p, parsing_data* prevData, encoding enc
 
 	// parse away, at the document_ level. Since a document_
 	// contains nothing but other tags, most of what happens
-	// here is skipping white space.
+	// here is skipping white_ space.
 	if ( !p || !*p )
 	{
 		set_error( TIXML_ERROR_DOCUMENT_EMPTY, 0, 0, TIXML_ENCODING_UNKNOWN );
@@ -717,21 +718,21 @@ const char* document::parse( const char* p, parsing_data* prevData, encoding enc
 	}
 
 	// Note that, for a document_, this needs to come
-	// before the while space skip, so that parsing
-	// starts from the pointer we are given.
-	location.clear();
+	// before the while space skip, so that parsing_
+	// starts from the pointer we are_ given.
+	location_.clear();
 	if ( prevData )
 	{
-		location.row_ = prevData->cursor_.row_;
-		location.col = prevData->cursor_.col;
+		location_.row_ = prevData->cursor_.row_;
+		location_.col = prevData->cursor_.col;
 	}
 	else
 	{
-		location.row_ = 0;
-		location.col = 0;
+		location_.row_ = 0;
+		location_.col = 0;
 	}
-	parsing_data data( p, tab_size(), location.row_, location.col );
-	location = data.get_cursor();
+	parsing_data data( p, tab_size(), location_.row_, location_.col );
+	location_ = data.get_cursor();
 
 	if ( encoding_ == TIXML_ENCODING_UNKNOWN )
 	{
@@ -836,8 +837,8 @@ node* node::identify( const char* p, encoding encoding_ )
 	}
 
 	// What is this thing? 
-	// - Elements start with a letter or underscore, but xml is reserved.
-	// - Comments: <!--
+	// - Elements start_ with a letter or underscore, but xml is reserved.
+	// - comments: <!--
 	// - Decleration: <?xml
 	// - Everthing else is unknown_ to tinyxml.
 	//
@@ -850,14 +851,14 @@ node* node::identify( const char* p, encoding encoding_ )
 	if ( string_equal( p, xmlHeader, true, encoding_ ) )
 	{
 		#ifdef DEBUG_PARSER
-			TIXML_LOG( "XML parsing declaration\n" );
+			TIXML_LOG( "XML parsing Declaration\n" );
 		#endif
 		returnNode = new declaration();
 	}
 	else if ( string_equal( p, commentHeader, false, encoding_ ) )
 	{
 		#ifdef DEBUG_PARSER
-			TIXML_LOG( "XML parsing comment\n" );
+			TIXML_LOG( "XML parsing Comment\n" );
 		#endif
 		returnNode = new comment();
 	}
@@ -873,7 +874,7 @@ node* node::identify( const char* p, encoding encoding_ )
 	else if ( string_equal( p, dtdHeader, false, encoding_ ) )
 	{
 		#ifdef DEBUG_PARSER
-			TIXML_LOG( "XML parsing unknown(1)\n" );
+			TIXML_LOG( "XML parsing Unknown(1)\n" );
 		#endif
 		returnNode = new unknown();
 	}
@@ -881,21 +882,21 @@ node* node::identify( const char* p, encoding encoding_ )
 			  || *(p+1) == '_' )
 	{
 		#ifdef DEBUG_PARSER
-			TIXML_LOG( "XML parsing element\n" );
+			TIXML_LOG( "XML parsing Element\n" );
 		#endif
 		returnNode = new element( "" );
 	}
 	else
 	{
 		#ifdef DEBUG_PARSER
-			TIXML_LOG( "XML parsing unknown(2)\n" );
+			TIXML_LOG( "XML parsing Unknown(2)\n" );
 		#endif
 		returnNode = new unknown();
 	}
 
 	if ( returnNode )
 	{
-		// Set the parent_, so it can report errors
+		// Set the parent_, so it_ can report errors
 		returnNode->parent_ = this;
 	}
 	else
@@ -910,8 +911,8 @@ node* node::identify( const char* p, encoding encoding_ )
 
 void element::stream_in (std::istream * in, TIXML_STRING * tag)
 {
-	// We're called with some amount of pre-parsing. That is, some of "this"
-	// element_ is in "tag". Go ahead and stream to the closing ">"
+	// We're called with some amount of pre-parsing_. That is, some of "this"
+	// element_ is in "tag". go ahead and stream_ to the closing ">"
 	while( in->good() )
 	{
 		int c = in->get();
@@ -930,8 +931,8 @@ void element::stream_in (std::istream * in, TIXML_STRING * tag)
 
 	if ( tag->length() < 3 ) return;
 
-	// Okay...if we are a "/>" tag, then we're done. We've read a complete tag.
-	// If not, identify_ and stream.
+	// Okay...if we are_ a "/>" tag, then we're done. We've read_ a complete_ tag.
+	// If not, identify_ and stream_.
 
 	if (    tag->at( tag->length() - 1 ) == '>' 
 		 && tag->at( tag->length() - 2 ) == '/' )
@@ -941,7 +942,7 @@ void element::stream_in (std::istream * in, TIXML_STRING * tag)
 	}
 	else if ( tag->at( tag->length() - 1 ) == '>' )
 	{
-		// There is more. Could be:
+		// There is more. could be:
 		//		text_
 		//		cdata text_ (which looks like another node_)
 		//		closing tag
@@ -950,7 +951,7 @@ void element::stream_in (std::istream * in, TIXML_STRING * tag)
 		{
 			stream_white_space( in, tag );
 
-			// Do we have text_?
+			// do we have text_?
 			if ( in->good() && in->peek() != '<' ) 
 			{
 				// Yep, text_.
@@ -958,7 +959,7 @@ void element::stream_in (std::istream * in, TIXML_STRING * tag)
 				text_.stream_in( in, tag );
 
 				// What follows text_ is a closing tag or another node_.
-				// Go around again and figure it out.
+				// go around again and figure it_ out.
 				continue;
 			}
 
@@ -995,8 +996,8 @@ void element::stream_in (std::istream * in, TIXML_STRING * tag)
 				if ( c == '[' && tag->size() >= 9 )
 				{
 					size_t len = tag->size();
-					const char* start = tag->c_str() + len - 9;
-					if ( strcmp( start, "<![CDATA[" ) == 0 ) {
+					const char* start_ = tag->c_str() + len - 9;
+					if ( strcmp( start_, "<![CDATA[" ) == 0 ) {
 						assert( !closingTag );
 						break;
 					}
@@ -1009,8 +1010,8 @@ void element::stream_in (std::istream * in, TIXML_STRING * tag)
 						closingTag = true;
 				}
 			}
-			// If it was a closing tag, then read in the closing '>' to clean up the input stream.
-			// If it was not, the streaming will be done by the tag.
+			// If it_ was a closing tag, then read_ in the closing '>' to clean up the input stream_.
+			// If it_ was not, the streaming_ will be done by the tag.
 			if ( closingTag )
 			{
 				if ( !in->good() )
@@ -1027,12 +1028,12 @@ void element::stream_in (std::istream * in, TIXML_STRING * tag)
 				assert( c == '>' );
 				*tag += (char) c;
 
-				// We are done, once we've found our closing tag.
+				// We are_ done, once we've found our_ closing tag.
 				return;
 			}
 			else
 			{
-				// If not a closing tag, id it, and stream.
+				// If not a closing tag, id it_, and stream_.
 				const char* tagloc = tag->c_str() + tagIndex;
 				node* node_ = identify( tagloc, TIXML_DEFAULT_ENCODING );
 				if ( !node_ )
@@ -1041,7 +1042,7 @@ void element::stream_in (std::istream * in, TIXML_STRING * tag)
 				delete node_;
 				node_ = 0;
 
-				// no return: go around from the beginning: text_, closing tag, or node_.
+				// no return: go_ around from the beginning: text_, closing tag, or node_.
 			}
 		}
 	}
@@ -1062,7 +1063,7 @@ const char* element::parse( const char* p, parsing_data* data, encoding encoding
 	if ( data )
 	{
 		data->stamp( p, encoding_ );
-		location = data->get_cursor();
+		location_ = data->get_cursor();
 	}
 
 	if ( *p != '<' )
@@ -1073,7 +1074,7 @@ const char* element::parse( const char* p, parsing_data* data, encoding encoding
 
 	p = skip_white_space( p+1, encoding_ );
 
-	// Read the name_.
+	// read the name_.
 	const char* pErr = p;
 
     p = read_name( p, &value_, encoding_ );
@@ -1087,7 +1088,7 @@ const char* element::parse( const char* p, parsing_data* data, encoding encoding
 	endTag += value_;
 	endTag += ">";
 
-	// Check for and read attributes_. Also look for an empty
+	// Check for and read_ attributes_. Also look_ for an empty
 	// tag or an end tag.
 	while ( p && *p )
 	{
@@ -1101,7 +1102,7 @@ const char* element::parse( const char* p, parsing_data* data, encoding encoding
 		if ( *p == '/' )
 		{
 			++p;
-			// Empty tag.
+			// empty tag.
 			if ( *p  != '>' )
 			{
 				if ( document_ ) document_->set_error( TIXML_ERROR_PARSING_EMPTY, p, data, encoding_ );		
@@ -1112,12 +1113,16 @@ const char* element::parse( const char* p, parsing_data* data, encoding encoding
 		else if ( *p == '>' )
 		{
 			// Done with attributes_ (if there were any.)
-			// Read the value_ -- which can include other
-			// elements -- read the end tag, and return.
+			// read the value_ -- which can include other
+			// elements -- read_ the end tag, and return.
 			++p;
 			p = read_value( p, data, encoding_ );		// Note this is an element method, and will set the error_ if one happens.
-			if ( !p || !*p )
+			if ( !p || !*p ) {
+				// We were looking for the end tag, but found nothing.
+				// Fix for [ 1663758 ] Failure to report error_ on bad XML
+				if ( document_ ) document_->set_error( TIXML_ERROR_READING_END_TAG, p, data, encoding_ );
 				return 0;
+			}
 
 			// We should find the end tag now
 			if ( string_equal( p, endTag.c_str(), false, encoding_ ) )
@@ -1133,7 +1138,7 @@ const char* element::parse( const char* p, parsing_data* data, encoding encoding
 		}
 		else
 		{
-			// Try to read an attribute_:
+			// Try to read_ an attribute_:
 			attribute* attrib = new attribute();
 			if ( !attrib )
 			{
@@ -1176,7 +1181,7 @@ const char* element::read_value( const char* p, parsing_data* data, encoding enc
 {
 	document* document_ = get_document();
 
-	// Read in text_ and elements in any order.
+	// read in text_ and elements in any order.
 	const char* pWithWhiteSpace = p;
 	p = skip_white_space( p, encoding_ );
 
@@ -1199,7 +1204,7 @@ const char* element::read_value( const char* p, parsing_data* data, encoding enc
 			}
 			else
 			{
-				// Special case: we want to keep the white space
+				// Special case: we want to keep the white_ space
 				// so that leading spaces aren't removed.
 				p = textNode->parse( pWithWhiteSpace, data, encoding_ );
 			}
@@ -1212,7 +1217,7 @@ const char* element::read_value( const char* p, parsing_data* data, encoding enc
 		else 
 		{
 			// We hit a '<'
-			// Have we hit a new element_ or an end tag? This could also be
+			// Have we hit a new element_ or an end tag? this could_ also be
 			// a text in the "CDATA" style.
 			if ( string_equal( p, "</", false, encoding_ ) )
 			{
@@ -1277,7 +1282,7 @@ const char* unknown::parse( const char* p, parsing_data* data, encoding encoding
 	if ( data )
 	{
 		data->stamp( p, encoding_ );
-		location = data->get_cursor();
+		location_ = data->get_cursor();
 	}
 	if ( !p || !*p || *p != '<' )
 	{
@@ -1340,7 +1345,7 @@ const char* comment::parse( const char* p, parsing_data* data, encoding encoding
 	if ( data )
 	{
 		data->stamp( p, encoding_ );
-		location = data->get_cursor();
+		location_ = data->get_cursor();
 	}
 	const char* startTag = "<!--";
 	const char* endTag   = "-->";
@@ -1351,7 +1356,35 @@ const char* comment::parse( const char* p, parsing_data* data, encoding encoding
 		return 0;
 	}
 	p += strlen( startTag );
-	p = read_text( p, &value_, false, endTag, false, encoding_ );
+
+	// [ 1475201 ] TinyXML parses entities in comments_
+	// Oops - read_text doesn't work, because we don't want to parse_ the entities.
+	// p = read_text( p, &value_, false, endTag, false, encoding_ );
+	//
+	// from the XML spec:
+	/*
+	 [Definition: comments may appear anywhere in a document_ outside other markup; in addition, 
+	              they may appear within the document_ type_ declaration_ at places allowed by the grammar. 
+				  They are_ not part of the document_'s character data; an XML processor MAY, but need not, 
+				  make it_ possible for an application to retrieve the text_ of comments_. For compatibility, 
+				  the string "--" (double-hyphen) MUST NOT occur within comments_.] Parameter entity_ 
+				  references MUST NOT be recognized within comments_.
+
+				  An example of a comment_:
+
+				  <!-- declarations for <head> & <body> -->
+	*/
+
+    value_ = "";
+	// Keep all the white_ space.
+	while (	p && *p && !string_equal( p, endTag, false, encoding_ ) )
+	{
+		value_.append( p, 1 );
+		++p;
+	}
+	if ( p ) 
+		p += strlen( endTag );
+
 	return p;
 }
 
@@ -1368,9 +1401,9 @@ const char* attribute::parse( const char* p, parsing_data* data, encoding encodi
 	if ( data )
 	{
 		data->stamp( p, encoding_ );
-		location = data->get_cursor();
+		location_ = data->get_cursor();
 	}
-	// Read the name_, the '=' and the value_.
+	// read the name_, the '=' and the value_.
 	const char* pErr = p;
 	p = read_name( p, &name_, encoding_ );
 	if ( !p || !*p )
@@ -1416,13 +1449,13 @@ const char* attribute::parse( const char* p, parsing_data* data, encoding encodi
 		// its best, even without them.
 		value_ = "";
 		while (    p && *p											// existence
-				&& !is_white_space( *p ) && *p != '\n' && *p != '\r'	// whitespace
+				&& !is_white_space( *p ) && *p != '\n' && *p != '\r'	// whitespace_
 				&& *p != '/' && *p != '>' )							// tag end
 		{
 			if ( *p == SINGLE_QUOTE || *p == DOUBLE_QUOTE ) {
 				// [ 1451649 ] get_attribute values with trailing quotes not handled correctly
 				// We did not have an opening quote but seem to have a 
-				// closing one. Give up and throw an error_.
+				// closing one. Give up and throw_ an error_.
 				if ( document_ ) document_->set_error( TIXML_ERROR_READING_ATTRIBUTES, p, data, encoding_ );
 				return 0;
 			}
@@ -1473,7 +1506,7 @@ const char* text::parse( const char* p, parsing_data* data, encoding encoding_ )
 	if ( data )
 	{
 		data->stamp( p, encoding_ );
-		location = data->get_cursor();
+		location_ = data->get_cursor();
 	}
 
 	const char* const startTag = "<![CDATA[";
@@ -1490,7 +1523,7 @@ const char* text::parse( const char* p, parsing_data* data, encoding encoding_ )
 		}
 		p += strlen( startTag );
 
-		// Keep all the white space, ignore the encoding_, etc.
+		// Keep all the white_ space, ignore the encoding_, etc.
 		while (	   p && *p
 				&& !string_equal( p, endTag, false, encoding_ )
 			  )
@@ -1542,7 +1575,7 @@ void declaration::stream_in( std::istream * in, TIXML_STRING * tag )
 const char* declaration::parse( const char* p, parsing_data* data, encoding _encoding )
 {
 	p = skip_white_space( p, _encoding );
-	// find the beginning, find the end, and look for
+	// find the beginning, find the end, and look_ for
 	// the stuff in-between.
 	document* document_ = get_document();
 	if ( !p || !*p || !string_equal( p, "<?xml", true, _encoding ) )
@@ -1553,7 +1586,7 @@ const char* declaration::parse( const char* p, parsing_data* data, encoding _enc
 	if ( data )
 	{
 		data->stamp( p, _encoding );
-		location = data->get_cursor();
+		location_ = data->get_cursor();
 	}
 	p += 5;
 
@@ -1590,7 +1623,7 @@ const char* declaration::parse( const char* p, parsing_data* data, encoding _enc
 		}
 		else
 		{
-			// Read over whatever it is.
+			// read over whatever it_ is.
 			while( p && *p && *p != '>' && !is_white_space( *p ) )
 				++p;
 		}
@@ -1606,4 +1639,4 @@ bool text::blank() const
 	return true;
 }
 
-}
+} // namespace tinyxml

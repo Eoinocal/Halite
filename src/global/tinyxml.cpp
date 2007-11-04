@@ -2,13 +2,13 @@
 www.sourceforge.net/projects/tinyxml
 Original code (2.0 and earlier )copyright (c) 2000-2006 Lee Thomason (www.grinninglizard.com)
 
-This software is provided 'as-is', without any express or implied
+this software is provided 'as-is', without any express or implied
 warranty. In no_ event will the authors be held liable for any
 damages arising from the use of this software.
 
 Permission is granted to anyone to use this software for any
-purpose, including commercial applications, and to alter it and
-redistribute it freely, subject to the following restrictions:
+purpose, including commercial applications, and to alter it_ and
+redistribute it_ freely, subject to the following restrictions:
 
 1. The origin of this software must not be misrepresented; you must
 not claim that you wrote the original software. If you use this
@@ -18,12 +18,11 @@ would be appreciated but is not required.
 2. Altered source versions must be plainly marked as such, and
 must not be misrepresented as being the original software.
 
-3. This notice may not be removed or altered from any source
+3. this notice may not be removed or altered from any source
 distribution.
 */
 
 #include <ctype.h>
-#include <wchar.h>
 
 #ifdef TIXML_USE_STL
 #include <sstream>
@@ -32,19 +31,32 @@ distribution.
 
 #include "tinyxml.hpp"
 
-
-namespace tinyxml {
+namespace tinyxml
+{
 
 bool base::condenseWhiteSpace = true;
 
-void base::put_string( const TIXML_STRING& str, TIXML_STRING* outString )
+// Microsoft compiler security
+FILE* f_open( const char* filename, const char* mode )
+{
+	#if defined(_MSC_VER) && (_MSC_VER >= 1400 )
+		FILE* fp = 0;
+		errno_t err = fopen_s( &fp, filename, mode );
+		if ( !err && fp )
+			return fp;
+		return 0;
+	#else
+		return fopen( filename, mode );
+	#endif
+}
+
+void base::encode_string( const TIXML_STRING& str, TIXML_STRING* outString )
 {
 	int i=0;
 
 	while( i<(int)str.length() )
 	{
 		unsigned char c = (unsigned char) str[i];
-
 
 		if (    c == '&' 
 		     && i < ( (int)str.length() - 2 )
@@ -55,9 +67,9 @@ void base::put_string( const TIXML_STRING& str, TIXML_STRING* outString )
 			// Pass through unchanged.
 			// &#xA9;	-- copyright symbol, for example.
 			//
-			// The -1 is a bug fix from Rob Laveaux. It keeps
+			// The -1 is a bug_ fix from Rob Laveaux. it keeps
 			// an overflow from happening if there is no_ ';'.
-			// There are actually 2 ways to exit this loop -
+			// There are_ actually 2 ways to exit this loop -
 			// while fails (error_ case) and break (semicolon found).
 			// However, there is no_ mechanism (currently) for
 			// this function to return an error_.
@@ -94,9 +106,7 @@ void base::put_string( const TIXML_STRING& str, TIXML_STRING* outString )
 			outString->append( entity_[4].str, entity_[4].strLength );
 			++i;
 		}
-		else 
-
-		if ( c < 32 )
+		else if ( c < 32 )
 		{
 			// Easy pass at non-alpha/numeric/symbol
 			// Below 32 is symbolic.
@@ -115,10 +125,9 @@ void base::put_string( const TIXML_STRING& str, TIXML_STRING* outString )
 		}
 		else
 		{
-
 			//char realc = (char) c;
 			//outString->append( &realc, 1 );
-			*outString += (char) c;	// somewhat more efficient function call.
+			*outString += (char) c;	// somewhat_ more efficient function call.
 			++i;
 		}
 	}
@@ -194,7 +203,7 @@ node* node::link_end_child( node* node_ )
 	if ( lastChild )
 		lastChild->next_ = node_;
 	else
-		firstChild = node_;			// it was an empty list.
+		firstChild = node_;			// it_ was an empty list.
 
 	lastChild = node_;
 	return node_;
@@ -512,11 +521,11 @@ element::element( const std::string& _value )
 #endif
 
 
-element::element( const element& copy)
+element::element( const element& copy_)
 	: node( node::ELEMENT )
 {
 	firstChild = lastChild = 0;
-	copy.copy_to( this );	
+	copy_.copy_to( this );	
 }
 
 
@@ -778,10 +787,10 @@ void element::print( FILE* cfile, int depth ) const
 		attrib->print( cfile, depth );
 	}
 
-	// There are 3 different formatting approaches:
-	// 1) An element_ without children is printed as a <foo /> node_
+	// There are_ 3 different formatting approaches:
+	// 1) An element_ without children_ is printed as a <foo /> node_
 	// 2) An element_ with only a text_ child_ is printed as <foo> text_ </foo>
-	// 3) An element_ with children is printed on multiple lines.
+	// 3) An element_ with children_ is printed on multiple lines.
 	node* node_;
 	if ( !firstChild )
 	{
@@ -824,7 +833,7 @@ void element::copy_to( element* target ) const
 	node::copy_to( target );
 
 	// element class: 
-	// clone the attributes_, then clone_ the children.
+	// clone the attributes_, then clone_ the children_.
 	const attribute* attribute_ = 0;
 	for(	attribute_ = attributeSet.first();
 	attribute_;
@@ -905,16 +914,16 @@ document::document( const std::string& documentName ) : node( node::DOCUMENT )
 #endif
 
 
-document::document( const document& copy ) : node( node::DOCUMENT )
+document::document( const document& copy_ ) : node( node::DOCUMENT )
 {
-	copy.copy_to( this );
+	copy_.copy_to( this );
 }
 
 
-void document::operator=( const document& copy )
+void document::operator=( const document& copy_ )
 {
 	clear();
-	copy.copy_to( this );
+	copy_.copy_to( this );
 }
 
 
@@ -941,23 +950,23 @@ bool document::save_file() const
 
 bool document::load_file( const char* _filename, encoding encoding_ )
 {
-	// There was a really terrifying little bug here. The code:
+	// There was a really terrifying little bug_ here. The code:
 	//		value_ = filename
-	// in the STL case, cause the assignment method of the std::string to
+	// in the STL case, cause the assignment_ method of the std::string to
 	// be called. What is strange, is that the std::string had the same
-	// address as it's c_str() method, and so bad things happen. Looks
-	// like a bug in the Microsoft STL implementation.
+	// address as it_'s c_str() method, and so bad things happen. Looks
+	// like a bug_ in the Microsoft STL implementation.
 	// add an extra string to avoid the crash.
 	TIXML_STRING filename( _filename );
 	value_ = filename;
 
 	// reading in binary mode so that tinyxml can normalize the EOL
-	FILE* file = fopen( value_.c_str (), "rb" );	
+	FILE* file_ = f_open( value_.c_str (), "rb" );	
 
-	if ( file )
+	if ( file_ )
 	{
-		bool result = load_file( file, encoding_ );
-		fclose( file );
+		bool result = load_file( file_, encoding_ );
+		fclose( file_ );
 		return result;
 	}
 	else
@@ -985,9 +994,9 @@ bool document::load_file( const wchar_t* _filename, encoding encoding_ )
 	}
 }
 
-bool document::load_file( FILE* file, encoding encoding_ )
+bool document::load_file( FILE* file_, encoding encoding_ )
 {
-	if ( !file ) 
+	if ( !file_ ) 
 	{
 		set_error( TIXML_ERROR_OPENING_FILE, 0, 0, TIXML_ENCODING_UNKNOWN );
 		return false;
@@ -995,42 +1004,42 @@ bool document::load_file( FILE* file, encoding encoding_ )
 
 	// Delete the existing data:
 	clear();
-	location.clear();
+	location_.clear();
 
-	// Get the file size, so we can pre-allocate the string. HUGE speed impact.
+	// Get the file_ size, so we can pre-allocate the string. HUGE speed impact.
 	long length = 0;
-	fseek( file, 0, SEEK_END );
-	length = ftell( file );
-	fseek( file, 0, SEEK_SET );
+	fseek( file_, 0, SEEK_END );
+	length = ftell( file_ );
+	fseek( file_, 0, SEEK_SET );
 
 	// Strange case, but good to handle_ up front.
-	if ( length == 0 )
+	if ( length <= 0 )
 	{
 		set_error( TIXML_ERROR_DOCUMENT_EMPTY, 0, 0, TIXML_ENCODING_UNKNOWN );
 		return false;
 	}
 
-	// If we have a file, assume it is all one big XML file, and read it in.
-	// The document_ parser may decide the document_ ends sooner than the entire file, however.
+	// If we have a file_, assume it_ is all one big XML file_, and read_ it_ in.
+	// The document_ parser may decide the document_ ends sooner than the entire file_, however.
 	TIXML_STRING data;
 	data.reserve( length );
 
-	// Subtle bug here. TinyXml did use fgets. But from the XML spec:
-	// 2.11 End-of-Line Handling
+	// Subtle bug_ here. TinyXml did use fgets. But from the XML spec:
+	// 2.11 End-of-line Handling
 	// <snip>
 	// <quote>
-	// ...the XML processor MUST behave as if it normalized all line breaks in external 
-	// parsed entities (including the document_ entity_) on input, before parsing, by translating 
+	// ...the XML processor MUST behave as if it_ normalized all line_ breaks in external 
+	// parsed entities (including the document_ entity_) on input, before parsing_, by translating 
 	// both the two-character sequence #xD #xA and any #xD that is not followed by #xA to 
 	// a single #xA character.
 	// </quote>
 	//
-	// It is not clear_ fgets does that, and certainly isn't clear_ it works cross platform. 
+	// it is not clear_ fgets does that, and certainly isn't clear_ it_ works cross platform. 
 	// Generally, you expect fgets to translate from the convention of the OS to the c/unix
 	// convention, and not work generally.
 
 	/*
-	while( fgets( buf, sizeof(buf), file ) )
+	while( fgets( buf, sizeof(buf), file_ ) )
 	{
 		data += buf;
 	}
@@ -1039,7 +1048,7 @@ bool document::load_file( FILE* file, encoding encoding_ )
 	char* buf = new char[ length+1 ];
 	buf[0] = 0;
 
-	if ( fread( buf, length, 1, file ) != 1 ) {
+	if ( fread( buf, length, 1, file_ ) != 1 ) {
 		delete [] buf;
 		set_error( TIXML_ERROR_OPENING_FILE, 0, 0, TIXML_ENCODING_UNKNOWN );
 		return false;
@@ -1063,18 +1072,18 @@ bool document::load_file( FILE* file, encoding encoding_ )
 			// Carriage return. Append what we have so far, then
 			// handle_ moving forward in the buffer.
 			if ( (p-lastPos) > 0 ) {
-				data.append( lastPos, p-lastPos );	// do not add_ the CR
+				data.append( lastPos, p-lastPos );	// do_ not add_ the CR
 			}
 			data += (char)0xa;						// a proper newline
 
 			if ( *(p+1) == 0xa ) {
-				// Carriage return - new line sequence
+				// Carriage return - new line_ sequence
 				p += 2;
 				lastPos = p;
 				assert( p <= (buf+length) );
 			}
 			else {
-				// it was followed by something else...that is presumably characters again.
+				// it_ was followed by something else...that is presumably characters again.
 				++p;
 				lastPos = p;
 				assert( p <= (buf+length) );
@@ -1103,7 +1112,7 @@ bool document::load_file( FILE* file, encoding encoding_ )
 bool document::save_file( const char * filename ) const
 {
 	// The old c stuff lives on...
-	FILE* fp = fopen( filename, "w" );
+	FILE* fp = f_open( filename, "w" );
 	if ( fp )
 	{
 		bool result = save_file( fp );
@@ -1148,7 +1157,11 @@ void document::copy_to( document* target ) const
 	node::copy_to( target );
 
 	target->error_ = error_;
-	target->errorDesc = errorDesc.c_str ();
+	target->errorId = errorId;
+	target->errorDesc = errorDesc;
+	target->tabsize = tabsize;
+	target->errorLocation = errorLocation;
+	target->useMicrosoftBOM = useMicrosoftBOM;
 
 	node* node_ = 0;
 	for ( node_ = firstChild; node_; node_ = node_->next_sibling() )
@@ -1196,7 +1209,7 @@ bool document::accept( visitor* visitor_ ) const
 
 const attribute* attribute::next() const
 {
-	// We are using knowledge of the sentinel. The sentinel
+	// We are_ using knowledge of the sentinel. The sentinel
 	// have a value_ or name_.
 	if ( next_->value_.empty() && next_->name_.empty() )
 		return 0;
@@ -1206,7 +1219,7 @@ const attribute* attribute::next() const
 /*
 attribute* attribute::next()
 {
-	// We are using knowledge of the sentinel. The sentinel
+	// We are_ using knowledge of the sentinel. The sentinel
 	// have a value_ or name_.
 	if ( next_->value_.empty() && next_->name_.empty() )
 		return 0;
@@ -1216,7 +1229,7 @@ attribute* attribute::next()
 
 const attribute* attribute::previous() const
 {
-	// We are using knowledge of the sentinel. The sentinel
+	// We are_ using knowledge of the sentinel. The sentinel
 	// have a value_ or name_.
 	if ( prev->value_.empty() && prev->name_.empty() )
 		return 0;
@@ -1226,7 +1239,7 @@ const attribute* attribute::previous() const
 /*
 attribute* attribute::previous()
 {
-	// We are using knowledge of the sentinel. The sentinel
+	// We are_ using knowledge of the sentinel. The sentinel
 	// have a value_ or name_.
 	if ( prev->value_.empty() && prev->name_.empty() )
 		return 0;
@@ -1238,8 +1251,8 @@ void attribute::print( FILE* cfile, int /*depth*/, TIXML_STRING* str ) const
 {
 	TIXML_STRING n, v;
 
-	put_string( name_, &n );
-	put_string( value_, &v );
+	encode_string( name_, &n );
+	encode_string( value_, &v );
 
 	if (value_.find ('\"') == TIXML_STRING::npos) {
 		if ( cfile ) {
@@ -1259,17 +1272,16 @@ void attribute::print( FILE* cfile, int /*depth*/, TIXML_STRING* str ) const
 	}
 }
 
-
 int attribute::query_int_value( int* ival ) const
 {
-	if ( sscanf( value_.c_str(), "%d", ival ) == 1 )
+	if ( TIXML_SSCANF( value_.c_str(), "%d", ival ) == 1 )
 		return TIXML_SUCCESS;
 	return TIXML_WRONG_TYPE;
 }
 
 int attribute::query_double_value( double* dval ) const
 {
-	if ( sscanf( value_.c_str(), "%lf", dval ) == 1 )
+	if ( TIXML_SSCANF( value_.c_str(), "%lf", dval ) == 1 )
 		return TIXML_SUCCESS;
 	return TIXML_WRONG_TYPE;
 }
@@ -1307,9 +1319,9 @@ double  attribute::double_value() const
 }
 
 
-comment::comment( const comment& copy ) : node( node::COMMENT )
+comment::comment( const comment& copy_ ) : node( node::COMMENT )
 {
-	copy.copy_to( this );
+	copy_.copy_to( this );
 }
 
 
@@ -1365,12 +1377,12 @@ void text::print( FILE* cfile, int depth ) const
 		for ( i=0; i<depth; i++ ) {
 			fprintf( cfile, "    " );
 		}
-		fprintf( cfile, "<![CDATA[%s]]>\n", value_.c_str() );	// unformatted output
+		fprintf( cfile, "<![CDATA[%s]]>\n", value_.c_str() );	// unformatted output_
 	}
 	else
 	{
 		TIXML_STRING buffer;
-		put_string( value_, &buffer );
+		encode_string( value_, &buffer );
 		fprintf( cfile, "%s", buffer.c_str() );
 	}
 }
@@ -1426,17 +1438,17 @@ declaration::declaration(	const std::string& _version,
 #endif
 
 
-declaration::declaration( const declaration& copy )
+declaration::declaration( const declaration& copy_ )
 	: node( node::DECLARATION )
 {
-	copy.copy_to( this );	
+	copy_.copy_to( this );	
 }
 
 
-void declaration::operator=( const declaration& copy )
+void declaration::operator=( const declaration& copy_ )
 {
 	clear();
-	copy.copy_to( this );
+	copy_.copy_to( this );
 }
 
 
@@ -1833,7 +1845,7 @@ bool printer::visit_exit( const element& element_ )
 {
 	--depth;
 	if ( !element_.first_child() ) 
-	{		
+	{
 		#if defined (HAL_BOOST_SERIALIZATION_COMPAT)
 		buffer += "</";
 		buffer += element_.value();
@@ -1874,20 +1886,16 @@ bool printer::visit( const text& text_ )
 	}
 	else if ( simpleTextPrint )
 	{
-		TIXML_STRING tmp_buffer;
-		base::put_string( text_.value(), &tmp_buffer );
-
-		buffer += tmp_buffer;
+		TIXML_STRING str;
+		base::encode_string( text_.value_t_str(), &str );
+		buffer += str;
 	}
 	else
 	{
 		do_indent();
-
-		TIXML_STRING tmp_buffer;
-		base::put_string( text_.value(), &tmp_buffer );
-
-		buffer += tmp_buffer;
-
+		TIXML_STRING str;
+		base::encode_string( text_.value_t_str(), &str );
+		buffer += str;
 		do_line_break();
 	}
 	return true;
@@ -1924,4 +1932,4 @@ bool printer::visit( const unknown& unknown_ )
 	return true;
 }
 
-}
+} // namespace tinyxml
