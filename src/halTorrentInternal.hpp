@@ -32,6 +32,7 @@
 
 #ifndef RC_INVOKED
 
+#include <boost/tuple/tuple.hpp>
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/indexed_by.hpp>
@@ -46,7 +47,7 @@ namespace hal
 class TorrentInternal;
 }
 
-BOOST_CLASS_VERSION(hal::TorrentInternal, 8)
+BOOST_CLASS_VERSION(hal::TorrentInternal, 9)
 
 namespace hal 
 {
@@ -213,6 +214,7 @@ public:
 		state_(TorrentDetail::torrent_active), \
 		totalUploaded_(0), \
 		totalBase_(0), \
+		progress_(0), \
 		startTime_(boost::posix_time::second_clock::universal_time())
 		
 	TorrentInternal() :	
@@ -254,7 +256,7 @@ public:
 	{
 		return ratio_;
 	}
-		
+	
 	void addToSession(bool paused = false)
 	{
 		if (!in_session_ && the_session_) 
@@ -267,11 +269,11 @@ public:
 				storage = lbt::storage_mode_compact;
 			
 			handle_ = the_session_->add_torrent(metadata_, dir, resumedata_, storage, paused);
-				
+			
 			in_session_ = true;
 			if (paused)
 				state_ = TorrentDetail::torrent_paused;	
-
+			
 			applySettings();
 		}	
 	}
@@ -370,7 +372,7 @@ public:
 	
 	const std::wstring& originalFilename() const { return originalFilename_; }
 	
-	const libtorrent::torrent_handle& handle() const { return handle_; }
+	const lbt::torrent_handle& handle() const { return handle_; }
 
 	void resetTrackers()
 	{
@@ -379,6 +381,14 @@ public:
 			handle_.replace_trackers(torrent_trackers_);		
 			trackers_.clear();
 		}
+	}
+	
+	void setTrackers(const std::vector<TrackerDetail>& trackerDetails)
+	{
+		trackers_.clear();
+		trackers_.assign(trackerDetails.begin(), trackerDetails.end());
+		
+		applyTrackers();
 	}
 	
 	const std::vector<TrackerDetail>& getTrackers()
@@ -394,14 +404,6 @@ public:
 			}
 		}		
 		return trackers_;
-	}
-	
-	void setTrackers(const std::vector<TrackerDetail>& trackerDetails)
-	{
-		trackers_.clear();
-		trackers_.assign(trackerDetails.begin(), trackerDetails.end());
-		
-		applyTrackers();
 	}
 	
 	void setFilePriorities(std::vector<int> fileIndices, int priority)
@@ -484,6 +486,9 @@ public:
 			ar & make_nvp("compactStorage", compactStorage_);
 			ar & make_nvp("finishTime", finishTime_);
 		}
+		if (version > 8) {
+			ar & make_nvp("progress", progress_);
+		}
     }
 	
 	void updatePreVersion7Files(wstring originalFilename)
@@ -522,36 +527,60 @@ public:
 
 	std::vector<lbt::peer_info>& peers() { return peers_; }
 	
-	void updatePeers()
+	boost::tuple<size_t, size_t, size_t, size_t> updatePeers()
 	{
 		if (inSession())
 			handle_.get_peer_info(peers_);
-		else
-			peers_.clear();
+		
+		size_t totalPeers = 0;
+		size_t peersConnected = 0;
+		size_t totalSeeds = 0;
+		size_t seedsConnected = 0;
+		
+		foreach (lbt::peer_info& peer, peers_) 
+		{
+			float speedSum = peer.down_speed + peer.up_speed;
+			
+			if (!(peer.flags & lbt::peer_info::seed))
+			{
+				++totalPeers;
+				
+				if (speedSum > 0)
+					++peersConnected;
+			}
+			else
+			{
+				++totalSeeds;
+				
+				if (speedSum > 0)
+					++seedsConnected;
+			}
+		}	
+		
+		return boost::make_tuple(totalPeers, peersConnected, totalSeeds, seedsConnected);
 	}
 	
 	void getPeerDetails(PeerDetails& peerDetails) const
 	{
 		if (inSession())
+		{
 			foreach (lbt::peer_info peer, peers_) 
 			{
 				peerDetails.push_back(peer);
 			}	
+		}
 	}
 
 	void getFileDetails(FileDetails& fileDetails)
 	{
-		if (inSession())
+		if (fileDetailsMemory_.empty())
 		{
-			lbt::torrent_info info = handle_.get_torrent_info();
+			lbt::torrent_info& info = infoMemory();
 			std::vector<lbt::file_entry> files;
 			
 			std::copy(info.begin_files(), info.end_files(), 
-				std::back_inserter(files));
-			
-			std::vector<float> fileProgress;			
-			handle_.file_progress(fileProgress);
-			
+				std::back_inserter(files));					
+				
 			if (filePriorities_.size() != files.size())
 			{
 				filePriorities_.clear();
@@ -561,10 +590,25 @@ public:
 			for(size_t i=0, e=files.size(); i<e; ++i)
 			{
 				wstring fullPath = hal::from_utf8(files[i].path.string());
+				size_t size = static_cast<size_t>(files[i].size);
 				
-				fileDetails.push_back(FileDetail(fullPath, static_cast<size_t>(files[i].size), fileProgress[i], filePriorities_[i], i));
+				fileDetailsMemory_.push_back(FileDetail(fullPath, size, 0, filePriorities_[i], i));
+			}	
+		}		
+		
+		if (inSession())
+		{			
+			std::vector<float> fileProgress;			
+			handle_.file_progress(fileProgress);
+			
+			for(size_t i=0, e=fileDetailsMemory_.size(); i<e; ++i)
+			{
+				fileDetailsMemory_[i].progress =  fileProgress[i];
+				fileDetailsMemory_[i].priority =  filePriorities_[i];
 			}			
 		}
+		
+		fileDetails = fileDetailsMemory_;
 	}
 	
 	void prepare(wpath filename, wpath saveDirectory, wpath workingDirectory)
@@ -578,7 +622,7 @@ public:
 		const wpath torrentFile = workingDirectory/L"torrents"/filename_;
 		
 		event().post(shared_ptr<EventDetail>(new EventMsg(
-					wformat(L"File: %1%, %2%.") % resumeFile % torrentFile)));
+			wformat(L"File: %1%, %2%.") % resumeFile % torrentFile)));
 		
 		if (exists(resumeFile)) 
 			resumedata_ = haldecode(resumeFile);
@@ -694,6 +738,13 @@ private:
 			handle_.resolve_countries(resolve_countries_);
 	}
 	
+	lbt::torrent_info& infoMemory()
+	{
+		if (!infoMemory_.is_valid()) infoMemory_ = lbt::torrent_info(metadata_);
+		
+		return infoMemory_;
+	}
+	
 	static libtorrent::session* the_session_;
 	
 	std::pair<float, float> transferLimit_;
@@ -709,10 +760,10 @@ private:
 	std::wstring name_;
 	std::wstring save_directory_;
 	std::wstring originalFilename_;
-	libtorrent::torrent_handle handle_;	
+	lbt::torrent_handle handle_;	
 	
-	libtorrent::entry metadata_;
-	libtorrent::entry resumedata_;
+	lbt::entry metadata_;
+	lbt::entry resumedata_;
 	
 	std::wstring trackerUsername_;	
 	std::wstring trackerPassword_;
@@ -735,7 +786,11 @@ private:
 	std::vector<lbt::peer_info> peers_;	
 	std::vector<int> filePriorities_;
 	
+	float progress_;
+	
+	lbt::torrent_info infoMemory_;
 	lbt::torrent_status statusMemory_;
+	FileDetails fileDetailsMemory_;
 	
 	bool compactStorage_;
 };
@@ -931,6 +986,15 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 	if (inSession())
 	{
 		statusMemory_ = handle_.status();
+		progress_ = statusMemory_.progress;
+	}
+	else
+	{
+		// Wipe these cause they don't make sense for a non-active torrent.
+		
+		statusMemory_.download_payload_rate = 0;
+		statusMemory_.upload_payload_rate = 0;
+		statusMemory_.next_announce = boost::posix_time::seconds(0);		
 	}
 	
 	wstring state;
@@ -1007,37 +1071,12 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 			seedingDuration_.update();
 	}	
 	
-	updatePeers();
-	
-	size_t totalPeers = 0;
-	size_t peersConnected = 0;
-	size_t totalSeeds = 0;
-	size_t seedsConnected = 0;
-	
-	foreach (lbt::peer_info peer, peers_) 
-	{
-		float speedSum = peer.down_speed + peer.up_speed;
-		
-		if (!(peer.flags & lbt::peer_info::seed))
-		{
-			++totalPeers;
-			
-			if (speedSum > 0)
-				++peersConnected;
-		}
-		else
-		{
-			++totalSeeds;
-			
-			if (speedSum > 0)
-				++seedsConnected;
-		}
-	}			
+	boost::tuple<size_t, size_t, size_t, size_t> connections = updatePeers();		
 
 	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, state, hal::from_utf8(statusMemory_.current_tracker), 
 		pair<float, float>(statusMemory_.download_payload_rate, statusMemory_.upload_payload_rate),
-		statusMemory_.progress, statusMemory_.distributed_copies, statusMemory_.total_wanted_done, statusMemory_.total_wanted, uploaded_, payloadUploaded_,
-		downloaded_, payloadDownloaded_, totalPeers, peersConnected, totalSeeds, seedsConnected, ratio_, td, statusMemory_.next_announce, activeDuration_, seedingDuration_, startTime_, finishTime_));
+		progress_, statusMemory_.distributed_copies, statusMemory_.total_wanted_done, statusMemory_.total_wanted, uploaded_, payloadUploaded_,
+		downloaded_, payloadDownloaded_, connections, ratio_, td, statusMemory_.next_announce, activeDuration_, seedingDuration_, startTime_, finishTime_));
 
 	}
 	catch (const lbt::invalid_handle&)

@@ -449,7 +449,6 @@ protected:
 	std::map<wpath, CTreeItem> fileTreeMap_;
 	TreeViewManager<FileTreeView> treeManager_;
 	
-	wstring current_torrent_name_;
 	std::vector<FileLink> fileLinks_;
 	
 	hal::FileDetails fileDetails_;

@@ -10,6 +10,7 @@
 #include <vector>
 #include <set>
 
+#include <boost/tuple/tuple.hpp>
 #include <boost/signal.hpp>
 #include <boost/optional.hpp>
 #include <boost/function.hpp>
@@ -127,7 +128,7 @@ class TorrentDetail
 {
 public:
 	TorrentDetail(std::wstring n, std::wstring f, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
-			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, boost::int64_t tpU=0, boost::int64_t tD=0, boost::int64_t tpD=0, int prs=0, int prsCnt=0, int sds=0, int sdsCnt=0,  float r=0, 
+			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, boost::int64_t tpU=0, boost::int64_t tD=0, boost::int64_t tpD=0, boost::tuple<size_t, size_t, size_t, size_t> connections = boost::tuple<size_t, size_t, size_t, size_t>(0,0,0,0),  float r=0, 
 			time_duration eta=boost::posix_time::seconds(0), time_duration uIn=boost::posix_time::seconds(0),
 			time_duration actve=boost::posix_time::seconds(0), time_duration seding=boost::posix_time::seconds(0), ptime srt=boost::posix_time::second_clock::universal_time(), ptime fin=boost::posix_time::second_clock::universal_time()) :
 		filename_(f),
@@ -143,10 +144,10 @@ public:
 		totalPayloadUploaded_(tpU),
 		totalDownloaded_(tD),
 		totalPayloadDownloaded_(tpD),
-		peers_(prs),
-		connectedPeers_(prsCnt),
-		seeds_(sds),
-		connectedSeeds_(sdsCnt),
+		peers_(connections.get<0>()),
+		connectedPeers_(connections.get<1>()),
+		seeds_(connections.get<2>()),
+		connectedSeeds_(connections.get<3>()),
 		ratio_(r),
 		estimatedTimeLeft_(eta),
 		updateTrackerIn_(uIn),

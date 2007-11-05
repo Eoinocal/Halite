@@ -224,7 +224,7 @@ void AdvFilesDialog::DlgResize_UpdateLayout(int cxWidth, int cyHeight)
 
 void AdvFilesDialog::doUiUpdate()
 {
-	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"doUiUpdate %1%") % current_torrent_name_).str().c_str())));
+//	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"doUiUpdate %1%") % current_torrent_name_).str().c_str())));
 
 	tree_.determineFocused();
 	
@@ -238,6 +238,8 @@ void AdvFilesDialog::doUiUpdate()
 
 void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 {
+	list_.setFocused(focusedTorrent());
+	
 	if (fileLinks_.empty() || !(focusedTorrent() && !focusedTorrent()->fileDetails().empty())) 
 	{
 		list_.DeleteAllItems();
