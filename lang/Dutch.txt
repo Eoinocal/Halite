@@ -1,8 +1,8 @@
 "English" ---> "Nederlands"
 "English.rtf" ---> "../lang/Dutch.rtf"
 "MS Shell Dlg" --->  ??? 
-"Torrent" ---> "Torrent"
-"Tracker" ---> "Tracker"
+"Torrent" ---> ???
+"Tracker" ---> ???
 "" ---> ""
 "msctls_progress32" --->  ??? 
 "Torrent connection limits:" ---> "Torrent verbindings limiet"
@@ -108,11 +108,11 @@
 "Program Information" ---> "Programma Informatie"
 "RichEdit20A" --->  ??? 
 "SysTabControl32" --->  ??? 
-"Add Torrent" --->  ??? 
+"Add Torrent" --->  "Torrent toevoegen" 
 "Ok" --->  ??? 
-"Use Compact Allocation." --->  ??? 
-"Start Paused" --->  ??? 
-"Note. Compact Allocation is incompatible with File Selection" --->  ??? 
+"Use Compact Allocation." --->  "Gebruik compacte allocatie." 
+"Start Paused" --->  "Start gepauzeerd" 
+"Note. Compact Allocation is incompatible with File Selection" --->  "nb. Compacte allocatie is niet compatible met Bestands Selectie" 
 "General" ---> "Algemeen"
 "Allow only one instance to run." ---> "Sta maar één instantie toe."
 "Advanced GUI" ---> "Geavanceerde GUI"
@@ -140,7 +140,7 @@
 "Torrent and Data" ---> "Torrent en Data"
 "New" ---> "Nieuw"
 "Edit" ---> "Bewerken"
-"Set as Primary" --->  ??? 
+"Set as Primary" --->  "Zet als Primair" 
 "Delete" ---> "Verwijderen"
 "StringFileInfo" --->  ??? 
 "180904b0" --->  ??? 
@@ -187,7 +187,7 @@
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Kies een map om de download op te slaan. Kies cancel om de standaard map te gebruiken."
 "Peers" --->  ??? 
 "Files" ---> "Bestanden"
-"Logging" ---> "Loggen"
+"Logging" ---> ???
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Een ongeldig encoderings niveau, %1%, is doorgegaan als encryptie instelling."
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Een ongeldig encoderings regeling, %1%, is doorgegaan als encryptie instelling."
 "Auto Sort" ---> "Auto Sorteren"
