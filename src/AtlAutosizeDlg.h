@@ -47,6 +47,8 @@
 #error atlautosizedlg.h requires atlwin.h to be included first
 #endif
 
+#define TRACEAUTOSIZE
+
 //
 
 namespace ATL
