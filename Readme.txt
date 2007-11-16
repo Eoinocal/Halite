@@ -1,6 +1,6 @@
 Halite: A Free Open-Source BitTorrent client
 
-Version: 0.2.9 Revision 326 Snapshot released 30th October 2007
+Version: 0.2.9 Revision 335 Snapshot released 17th November 2007
 
 NOTE! This is a snapshot build, as such there are incomplete features.
 Please see the forum for the most up to date details.

@@ -98,6 +98,33 @@ exe Halite
 	<linkflags>/SUBSYSTEM:WINDOWS
 	;
 
+exe ClientTest
+	:
+	./src/test/client_test.cpp
+	: 	
+	<library>$(LIBS)
+	<library>/boost/program_options//boost_program_options/<link>static
+	
+	<runtime-link>static
+	<threading>multi
+	<asynch-exceptions>on
+	
+	<variant>release:<linkflags>/OPT:ICF=5
+	<variant>release:<linkflags>/OPT:REF
+	<variant>release:<warnings>off
+	<variant>release:<define>NDEBUG
+	
+	<define>_UNICODE
+	<define>UNICODE
+	<define>WIN32
+	<define>_WINDOWS	
+	<define>_CRT_SECURE_NO_DEPRECATE
+	<define>_SCL_SECURE_NO_DEPRECATE
+	<define>_CRT_SECURE_NO_WARNINGS
+	
+	<linkflags>/SUBSYSTEM:CONSOLE
+	;
+
 lib comctl32 : : <name>comctl32.lib ;
 lib user32 : : <name>user32.lib ;
 lib kernel32 : : <name>kernel32.lib ;
