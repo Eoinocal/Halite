@@ -574,11 +574,6 @@ public:
 	{	try
 		{
 		
-//		fs::wofstream ofs(workingDirectory/L"Torrents.xml");
-//		boost::archive::xml_woarchive oxa(ofs);
-		
-//		oxa << make_nvp("theTorrents", theTorrents);
-		
 		theTorrents.save();
 		bittorrentIni.save_data();
 			
