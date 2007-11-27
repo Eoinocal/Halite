@@ -6,7 +6,12 @@
 
 #pragma once
 
-#include "Halite.hpp"
+#ifndef HALITE_MINI
+#	include "Halite.hpp"
+#else
+#	include "HaliteMini.hpp"
+#endif
+
 #include "halTorrent.hpp"
 
 class SplashDialog :

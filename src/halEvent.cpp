@@ -26,7 +26,11 @@
 
 #include "halEvent.hpp"
 #include "global/string_conv.hpp"
-#include "Halite.hpp"
+#ifndef HALITE_MINI
+#	include "Halite.hpp"
+#else
+#	include "HaliteMini.hpp"
+#endif
 
 #define foreach BOOST_FOREACH
 

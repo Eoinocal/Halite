@@ -16,9 +16,7 @@ SOURCES =
 	global/tinyxmlerror.cpp
 	global/tinyxmlparser.cpp
 	
-	Halite.cpp
 	stdAfx.cpp
-	HaliteWindow.cpp
 	HaliteListView.cpp
 	HaliteDialog.cpp
 	AdvHaliteDialog.cpp
@@ -36,6 +34,19 @@ SOURCES =
 	advtabs/TrackerListView.cpp
 	advtabs/Debug.cpp
 	;
+	
+if false
+{
+	SOURCES += HaliteMini.cpp ;
+	SOURCES += HaliteWindowMini.cpp ;
+#	SOURCES += Halite.cpp ;
+#	SOURCES += HaliteWindow.cpp ;
+}
+else
+{
+	SOURCES += HaliteMini.cpp ;
+	SOURCES += HaliteWindowMini.cpp ;
+}
 	
 RESOURCES =
 	Halite.rc
