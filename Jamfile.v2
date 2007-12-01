@@ -35,18 +35,8 @@ SOURCES =
 	advtabs/Debug.cpp
 	;
 	
-if false
-{
-	SOURCES += HaliteMini.cpp ;
-	SOURCES += HaliteWindowMini.cpp ;
-#	SOURCES += Halite.cpp ;
-#	SOURCES += HaliteWindow.cpp ;
-}
-else
-{
-	SOURCES += HaliteMini.cpp ;
-	SOURCES += HaliteWindowMini.cpp ;
-}
+	SOURCES += Halite.cpp ;
+	SOURCES += HaliteWindow.cpp ;
 	
 RESOURCES =
 	Halite.rc

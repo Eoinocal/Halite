@@ -6,29 +6,30 @@
 
 #pragma once
 
-#define HAL_PEER_INTERESTING            			40037
-#define HAL_PEER_CHOKED             			    40038
-#define HAL_PEER_REMOTE_INTERESTING					40039
-#define HAL_PEER_REMOTE_CHOKED						40040
-#define HAL_PEER_SUPPORT_EXTENSIONS					40041
-#define HAL_PEER_LOCAL_CONNECTION					40042
-#define HAL_PEER_HANDSHAKE							40043
-#define HAL_PEER_CONNECTING							40044
-#define HAL_PEER_QUEUED								40045
-#define HAL_PEER_RC4_ENCRYPTED						40046
-#define HAL_PEER_PLAINTEXT_ENCRYPTED				40047
-#define HAL_TORRENT_QUEUED_CHECKING					40050
-#define HAL_TORRENT_CHECKING_FILES					40051
-#define HAL_TORRENT_CONNECTING						40052
-#define HAL_TORRENT_DOWNLOADING						40053
-#define HAL_TORRENT_FINISHED						40054
-#define HAL_TORRENT_SEEDING							40055
-#define HAL_TORRENT_ALLOCATING						40056
-#define HAL_TORRENT_QUEUED							40057
-#define HAL_TORRENT_STOPPED							40058
-#define HAL_TORRENT_PAUSED							40059
-#define HAL_TORRENT_STOPPING						50000
-#define HAL_TORRENT_PAUSING							50001
+#define HAL_TORRENT_INT_BEGIN 				40500
+#define HAL_PEER_INTERESTING            	HAL_TORRENT_INT_BEGIN + 1
+#define HAL_PEER_CHOKED             		HAL_TORRENT_INT_BEGIN + 2
+#define HAL_PEER_REMOTE_INTERESTING			HAL_TORRENT_INT_BEGIN + 3
+#define HAL_PEER_REMOTE_CHOKED				HAL_TORRENT_INT_BEGIN + 4
+#define HAL_PEER_SUPPORT_EXTENSIONS			HAL_TORRENT_INT_BEGIN + 5
+#define HAL_PEER_LOCAL_CONNECTION			HAL_TORRENT_INT_BEGIN + 6
+#define HAL_PEER_HANDSHAKE					HAL_TORRENT_INT_BEGIN + 7
+#define HAL_PEER_CONNECTING					HAL_TORRENT_INT_BEGIN + 8
+#define HAL_PEER_QUEUED						HAL_TORRENT_INT_BEGIN + 9
+#define HAL_PEER_RC4_ENCRYPTED				HAL_TORRENT_INT_BEGIN + 10
+#define HAL_PEER_PLAINTEXT_ENCRYPTED		HAL_TORRENT_INT_BEGIN + 11
+#define HAL_TORRENT_QUEUED_CHECKING			HAL_TORRENT_INT_BEGIN + 12
+#define HAL_TORRENT_CHECKING_FILES			HAL_TORRENT_INT_BEGIN + 13
+#define HAL_TORRENT_CONNECTING				HAL_TORRENT_INT_BEGIN + 14
+#define HAL_TORRENT_DOWNLOADING				HAL_TORRENT_INT_BEGIN + 15
+#define HAL_TORRENT_FINISHED				HAL_TORRENT_INT_BEGIN + 16
+#define HAL_TORRENT_SEEDING					HAL_TORRENT_INT_BEGIN + 17
+#define HAL_TORRENT_ALLOCATING				HAL_TORRENT_INT_BEGIN + 18
+#define HAL_TORRENT_QUEUED					HAL_TORRENT_INT_BEGIN + 19
+#define HAL_TORRENT_STOPPED					HAL_TORRENT_INT_BEGIN + 20
+#define HAL_TORRENT_PAUSED					HAL_TORRENT_INT_BEGIN + 21
+#define HAL_TORRENT_STOPPING				HAL_TORRENT_INT_BEGIN + 22
+#define HAL_TORRENT_PAUSING					HAL_TORRENT_INT_BEGIN + 23
 
 #ifndef RC_INVOKED
 
@@ -231,7 +232,7 @@ public:
 	{
 		assert(the_session_);
 		
-		prepare(filename, save_directory_, workingDirectory);
+		prepare(filename, save_directory_);
 	}
 	
 	#undef TORRENT_INTERNALS_DEFAULTS
@@ -268,14 +269,30 @@ public:
 			if (compactStorage_)
 				storage = lbt::storage_mode_compact;
 			
-			handle_ = the_session_->add_torrent(metadata_, dir, resumedata_, storage, paused);
+			handle_ = the_session_->add_torrent(metadata_, dir, resumedata_, storage, paused);			
+			assert(handle_.is_valid());
+			
+			clearResumeData();
 			
 			in_session_ = true;
 			if (paused)
 				state_ = TorrentDetail::torrent_paused;	
-			
+				
 			applySettings();
 		}	
+	}
+	
+	void removeFromSession()
+	{
+		assert(inSession());
+		
+		resumedata_ = handle_.write_resume_data(); // Update the fast-resume data
+		writeResumeData();
+		
+		the_session_->remove_torrent(handle_);
+		in_session_ = false;		
+		
+		assert(!inSession());	
 	}
 	
 	bool inSession() const 
@@ -328,21 +345,38 @@ public:
 	{
 		if (state_ != TorrentDetail::torrent_stopped)
 		{
-			the_session_->remove_torrent(handle_);
-			in_session_ = false;
+			if (state_ == TorrentDetail::torrent_active)
+			{
+				assert(inSession());
+				handle_.pause();
+				state_ = TorrentDetail::torrent_stopping;
+			}
+			else if (state_ == TorrentDetail::torrent_paused)
+			{			
+				removeFromSession();
+
+				state_ = TorrentDetail::torrent_stopped;				
+			}
 		}
-		
-		state_ = TorrentDetail::torrent_stopped;
-		assert(!inSession());			
 	}
 	
-	void completedPause()
+	void writeResumeData()
+	{				
+		wpath resumeDir = workingDir_/L"resume";
+		
+		if (!exists(resumeDir))
+			create_directory(resumeDir);
+				
+		bool halencode_result = halencode(resumeDir/filename_, resumedata_);
+		assert(halencode_result);
+	}
+	
+	void clearResumeData()
 	{
-		if (TorrentDetail::torrent_pausing == state_ && inSession())
-		{
-			state_ = TorrentDetail::torrent_paused;	
-			assert(handle_.is_paused());
-		}
+		wpath resumeFile = workingDir_/L"resume"/filename_;
+		
+		if (exists(resumeFile))
+			remove(resumeFile);
 	}
 	
 	void finished()
@@ -611,15 +645,15 @@ public:
 		fileDetails = fileDetailsMemory_;
 	}
 	
-	void prepare(wpath filename, wpath saveDirectory, wpath workingDirectory)
+	void prepare(wpath filename, wpath saveDirectory)
 	{
 		if (exists(filename)) 
 			metadata_ = haldecode(filename);
 		
 		extractNames(metadata_);			
 		
-		const wpath resumeFile = workingDirectory/L"resume"/filename_;
-		const wpath torrentFile = workingDirectory/L"torrents"/filename_;
+		const wpath resumeFile = workingDir_/L"resume"/filename_;
+		const wpath torrentFile = workingDir_/L"torrents"/filename_;
 		
 		event().post(shared_ptr<EventDetail>(new EventMsg(
 			wformat(L"File: %1%, %2%.") % resumeFile % torrentFile)));
@@ -627,8 +661,8 @@ public:
 		if (exists(resumeFile)) 
 			resumedata_ = haldecode(resumeFile);
 
-		if (!exists(workingDirectory/L"torrents"))
-			create_directory(workingDirectory/L"torrents");
+		if (!exists(workingDir_/L"torrents"))
+			create_directory(workingDir_/L"torrents");
 
 		if (!exists(torrentFile))
 			copy_file(filename.string(), torrentFile);
@@ -745,7 +779,28 @@ private:
 		return infoMemory_;
 	}
 	
+	void completedPauseEvent()
+	{
+		event().post(shared_ptr<EventDetail>(
+			new EventInfo(L"completedPauseEvent")));
+		
+		assert(inSession());		
+		
+		if (TorrentDetail::torrent_pausing == state_)
+		{
+			state_ = TorrentDetail::torrent_paused;	
+			assert(handle_.is_paused());
+		}
+		else if (TorrentDetail::torrent_stopping == state_)
+		{
+			removeFromSession();
+			
+			state_ = TorrentDetail::torrent_stopped;
+		}
+	}
+	
 	static libtorrent::session* the_session_;
+	static wpath workingDir_;
 	
 	std::pair<float, float> transferLimit_;
 	

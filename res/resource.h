@@ -206,7 +206,6 @@
 #define HAL_EVENT_UNCLASSIFIED          40033
 #define HAL_EVENT_PEER                  40034
 #define HAL_EVENT_TRACKER               40035
-#define HAL_TORRENT_PAUSED              40059
 #define HAL_TORRENT_METADATA            40060
 #define HAL_DIALOGPEER_LISTVIEW_ADV		40070
 #define HAL_ABOUT_BOX					40080

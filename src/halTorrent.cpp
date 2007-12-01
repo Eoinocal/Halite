@@ -168,6 +168,7 @@ std::ostream& operator<<(std::ostream& os, libtorrent::ip_range<asio::ip::addres
 namespace hal 
 {
 	libtorrent::session* TorrentInternal::the_session_ = 0;
+	wpath TorrentInternal::workingDir_;
 }
 
 namespace hal 
@@ -353,7 +354,7 @@ public:
 						% get(a.handle).name()), 
 					Event::info, a.timestamp())));
 
-			get(a.handle).completedPause();
+			get(a.handle).completedPauseEvent();
 		}
 		
 		void operator()(lbt::peer_error_alert const& a) const
@@ -602,7 +603,6 @@ private:
 		theSession(lbt::fingerprint("HL", 0, 2, 9, 5)),
 		timer_(io_),
 		keepChecking_(false),
-		workingDirectory(hal::app().working_directory()),
 		bittorrentIni(L"BitTorrent.xml"),
 		theTorrents(bittorrentIni),
 		defTorrentMaxConn_(-1),
@@ -616,7 +616,8 @@ private:
 		dht_on_(false)
 	{
 		TorrentInternal::the_session_ = &theSession;
-		
+		TorrentInternal::workingDir_ = workingDir();
+				
 		theSession.set_severity_level(lbt::alert::debug);		
 		theSession.add_extension(&lbt::create_metadata_plugin);
 		theSession.add_extension(&lbt::create_ut_pex_plugin);
@@ -689,7 +690,7 @@ private:
 	asio::deadline_timer timer_;
 	bool keepChecking_;
 	
-	const wpath workingDirectory;
+	static wpath workingDirectory;
 	ini_file bittorrentIni;
 	TorrentManager theTorrents;	
 	
@@ -714,6 +715,9 @@ private:
 	lbt::entry dht_state_;
 	
 };
+
+
+wpath BitTorrent_impl::workingDirectory = hal::app().working_directory();
 
 BitTorrent::BitTorrent() :
 	pimpl(new BitTorrent_impl())
@@ -1327,7 +1331,7 @@ void BitTorrent::resumeAll()
 			try 
 			{
 				
-			(*i).torrent.prepare(file, (*i).torrent.saveDirectory(), pimpl->workingDirectory);	
+			(*i).torrent.prepare(file, (*i).torrent.saveDirectory());	
 
 			switch ((*i).torrent.state())
 			{
@@ -1373,13 +1377,8 @@ void BitTorrent::closeAll()
 {
 	try {
 	
-	wpath resumeDir=pimpl->workingDirectory/L"resume";
-	
-	if (!exists(resumeDir))
-		create_directory(resumeDir);
-
 	event().post(shared_ptr<EventDetail>(
-		new EventInfo(L"Stopping all torrents.")));
+		new EventInfo(L"Stopping all torrents...")));
 	
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); 
 		i != e; ++i)
@@ -1391,33 +1390,33 @@ void BitTorrent::closeAll()
 	}
 	
 	// Ok this polling loop here is a bit curde, but a blocking wait is actually appropiate.
-	for (bool allPaused = true; !allPaused; )
+	for (bool nonePaused = true; !nonePaused; )
 	{
 		for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); 
 				i != e; ++i)
-			allPaused &= (TorrentDetail::torrent_paused == (*i).torrent.state());
+		{
+			// NB. this checks for an internal paused state.
+			nonePaused &= ((*i).torrent.inSession() ? (*i).torrent.handle().is_paused() : true);
+		}
 		
 		Sleep(200);
 	}
 	
 	event().post(shared_ptr<EventDetail>(
-		new EventInfo(L"Torrents stopped.")));
+		new EventInfo(L"All torrents stopped.")));
 		
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); 
 		i != e; ++i)
 	{
 		if ((*i).torrent.inSession())
 		{
-			lbt::entry resumedata = (*i).torrent.handle().write_resume_data();
-			pimpl->theSession.remove_torrent((*i).torrent.handle());
-			
-			bool halencode_result = halencode(resumeDir/(*i).torrent.filename(), resumedata);
-			assert(halencode_result);
+			(*i).torrent.removeFromSession();
+			(*i).torrent.writeResumeData();
 		}
 	}
 	
 	event().post(shared_ptr<EventDetail>(
-		new EventInfo(L"Resume data written.")));
+		new EventInfo(L"Fast-resume data written.")));
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")
 }
