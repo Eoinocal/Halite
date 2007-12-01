@@ -1116,34 +1116,25 @@ public:
 		return insert(TorrentHolder(t));
 	}
 
-	TorrentInternal& getByFile(const wstring& filename)
+	TorrentInternal_ptr getByFile(const wstring& filename)
 	{
 		torrentByFilename::iterator it = torrents_.get<byFilename>().find(filename);
 		
-		if (it != torrents_.get<byFilename>().end())
+		if (it != torrents_.get<byFilename>().end() && (*it).torrent)
 		{
-			return *(*it).torrent;
+			return (*it).torrent;
 		}
 		
 		throw invalidTorrent(filename);
 	}
 	
-	TorrentInternal& get(const wstring& name)
+	TorrentInternal_ptr get(const wstring& name)
 	{
 		torrentByName::iterator it = torrents_.get<byName>().find(name);
 		
-		if (it != torrents_.get<byName>().end())
+		if (it != torrents_.get<byName>().end() && (*it).torrent)
 		{
-			return *(*it).torrent;
-		}
-		
-		event().post(shared_ptr<EventDetail>(
-			new EventMsg(wformat(L"Invalid Torrent. theTorrents size: %1%.") % torrents_.size())));	
-
-		for (torrentByName::iterator i=begin(), e=end(); i != e; ++i)
-		{
-		event().post(shared_ptr<EventDetail>(
-			new EventMsg(wformat(L"-> %1% - %2%.") % (*i).name % (*i).torrent->name())));	
+			return (*it).torrent;
 		}
 		
 		throw invalidTorrent(name);
