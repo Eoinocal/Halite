@@ -40,15 +40,19 @@
 #include <boost/multi_index/identity.hpp>
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/tag.hpp>
+#include <boost/serialization/shared_ptr.hpp>
 
 #include "HaliteIni.hpp"
 
 namespace hal 
 {
+class TorrentInternalOld;
 class TorrentInternal;
+
 }
 
-BOOST_CLASS_VERSION(hal::TorrentInternal, 9)
+BOOST_CLASS_VERSION(hal::TorrentInternalOld, 9)
+
 
 namespace hal 
 {
@@ -109,101 +113,266 @@ using fs::ifstream;
 using fs::ofstream;
 using boost::serialization::make_nvp;
 
-class TorrentInternal
+	
+template<typename T>
+class TransferTracker
 {
-	friend class BitTorrent_impl;
+public:
+	TransferTracker() :
+		total_(0),
+		total_offset_(0)
+	{}
 	
-	template<typename T>
-	class TransferTracker
-	{
-	public:
-		TransferTracker() :
-			total_(0),
-			total_offset_(0)
-		{}
-		
-		TransferTracker(T total) :
-			total_(total),
-			total_offset_(0)
-		{}
-		
-		TransferTracker(T total, T offset) :
-			total_(total),
-			total_offset_(offset)
-		{}
-		
-		void reset(T total) const
-		{
-			total_ = total;
-			total_offset_ = 0;
-		}
-		
-		T update(T rel_total) const
-		{
-			total_ += (rel_total - total_offset_);
-			total_offset_ = rel_total;
-			
-			return total_;
-		}
-		
-		void setOffset(T offset) const
-		{
-			total_offset_ = offset;
-		}
-		
-		operator T() const { return total_; }
-		
-		friend class boost::serialization::access;
-		template<class Archive>
-		void serialize(Archive& ar, const unsigned int version)
-		{
-			ar & make_nvp("total", total_);
-		}
-		
-	private:
-		mutable T total_;
-		mutable T total_offset_;
-	};
+	TransferTracker(T total) :
+		total_(total),
+		total_offset_(0)
+	{}
 	
-	class DurationTracker
+	TransferTracker(T total, T offset) :
+		total_(total),
+		total_offset_(offset)
+	{}
+	
+	void reset(T total) const
 	{
-	public:
-		DurationTracker() :
-			total_(boost::posix_time::time_duration(0,0,0,0), 
-				boost::posix_time::time_duration(0,0,0,0))
-		{}
+		total_ = total;
+		total_offset_ = 0;
+	}
+	
+	T update(T rel_total) const
+	{
+		total_ += (rel_total - total_offset_);
+		total_offset_ = rel_total;
 		
-		boost::posix_time::time_duration update() const
-		{
-			if (start_.is_not_a_date_time()) 
-				start_ = boost::posix_time::second_clock::universal_time();
+		return total_;
+	}
+	
+	void setOffset(T offset) const
+	{
+		total_offset_ = offset;
+	}
+	
+	operator T() const { return total_; }
+	
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
+		ar & make_nvp("total", total_);
+	}
+	
+private:
+	mutable T total_;
+	mutable T total_offset_;
+};
 
-			if (static_cast<boost::posix_time::time_duration>(total_).is_special()) 
-				total_.setOffset(boost::posix_time::time_duration(0,0,0,0));
-			
-			return total_.update(boost::posix_time::second_clock::universal_time() - start_);
-		}
-		
-		void reset() const
-		{
-			total_.setOffset(boost::posix_time::time_duration(0,0,0,0));
-			start_ = boost::posix_time::second_clock::universal_time();
-		}
-		
-		friend class boost::serialization::access;
-		template<class Archive>
-		void serialize(Archive& ar, const unsigned int version)
-		{
-			ar & make_nvp("total", total_);
-		}
-		
-		operator boost::posix_time::time_duration() const { return total_; }
-		
-	private:
-		TransferTracker<boost::posix_time::time_duration> total_;	
-		mutable boost::posix_time::ptime start_;		
-	};
+class DurationTracker
+{
+public:
+	DurationTracker() :
+		total_(boost::posix_time::time_duration(0,0,0,0), 
+			boost::posix_time::time_duration(0,0,0,0))
+	{}
 	
+	boost::posix_time::time_duration update() const
+	{
+		if (start_.is_not_a_date_time()) 
+			start_ = boost::posix_time::second_clock::universal_time();
+
+		if (static_cast<boost::posix_time::time_duration>(total_).is_special()) 
+			total_.setOffset(boost::posix_time::time_duration(0,0,0,0));
+		
+		return total_.update(boost::posix_time::second_clock::universal_time() - start_);
+	}
+	
+	void reset() const
+	{
+		total_.setOffset(boost::posix_time::time_duration(0,0,0,0));
+		start_ = boost::posix_time::second_clock::universal_time();
+	}
+	
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
+		ar & make_nvp("total", total_);
+	}
+	
+	operator boost::posix_time::time_duration() const { return total_; }
+	
+private:
+	TransferTracker<boost::posix_time::time_duration> total_;	
+	mutable boost::posix_time::ptime start_;		
+};
+	
+class TorrentInternalOld
+{
+public:	
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+        ar & make_nvp("transferLimit", transferLimit_);
+        ar & make_nvp("connections", connections_);
+        ar & make_nvp("uploads", uploads_);	
+		
+		if (version > 6) {
+			ar & make_nvp("filename", filename_);
+		}
+		else 
+		{
+			wstring originalFilename;
+			ar & make_nvp("filename", originalFilename);
+			
+			updatePreVersion7Files(originalFilename);
+		}
+		
+        ar & make_nvp("saveDirectory", save_directory_);
+		
+		if (version > 7) {
+			ar & make_nvp("payloadUploaded_", payloadUploaded_);
+			ar & make_nvp("payloadDownloaded_", payloadDownloaded_);
+			ar & make_nvp("uploaded_", uploaded_);
+			ar & make_nvp("downloaded_", downloaded_);	
+			ar & make_nvp("ratio", ratio_);	
+		} 
+		else if (version > 3) {
+			ar & make_nvp("payloadUploaded_", payloadUploaded_);
+			ar & make_nvp("payloadDownloaded_", payloadDownloaded_);
+			ar & make_nvp("uploaded_", uploaded_);
+			ar & make_nvp("downloaded_", downloaded_);		
+		} 
+		else if (version > 1)
+		{
+			ar & make_nvp("totalUploaded", totalUploaded_);
+			ar & make_nvp("ratio", ratio_);
+			
+			payloadUploaded_.reset(totalUploaded_);
+		}
+		
+		if (version > 0) {
+			ar & make_nvp("trackerUsername", trackerUsername_);
+			ar & make_nvp("trackerPassword", trackerPassword_);
+		}
+		if (version > 1) {
+			ar & make_nvp("state", state_);
+			ar & make_nvp("trackers", trackers_);
+		}
+	
+		if (version > 2) {
+			ar & make_nvp("resolve_countries", resolve_countries_);
+		}
+		if (version > 4) {
+			ar & make_nvp("file_priorities", filePriorities_);
+		}
+		if (version > 5) {
+			ar & make_nvp("startTime", startTime_);
+			ar & make_nvp("activeDuration", activeDuration_);
+			ar & make_nvp("seedingDuration", seedingDuration_);
+		}
+		if (version > 6) {
+			ar & make_nvp("name", name_);
+			ar & make_nvp("compactStorage", compactStorage_);
+			ar & make_nvp("finishTime", finishTime_);
+		}
+		if (version > 8) {
+			ar & make_nvp("progress", progress_);
+		}
+    }
+	
+	void extractNames(lbt::entry& metadata)
+	{		
+		lbt::torrent_info info(metadata);				
+		name_ = hal::from_utf8_safe(info.name());
+		
+		filename_ = name_;
+		if (!boost::find_last(filename_, L".torrent")) 
+				filename_ += L".torrent";
+		
+		event().post(shared_ptr<EventDetail>(new EventMsg(
+			wformat(L"Loaded names: %1%, %2%") % name_ % filename_)));
+	}
+	
+	void updatePreVersion7Files(wstring originalFilename)
+	{
+		try 
+		{
+
+		wpath oldFile = app().working_directory()/L"torrents"/originalFilename;
+		
+		if (exists(oldFile)) 
+			extractNames(haldecode(oldFile));
+		
+		wpath oldResumeFile = app().working_directory()/L"resume"/originalFilename;
+		
+		if (filename_ != originalFilename)
+		{
+			fs::rename(oldFile, app().working_directory()/L"torrents"/filename_);
+			
+			if (fs::exists(oldResumeFile))
+				fs::rename(oldResumeFile, app().working_directory()/L"resume"/filename_);
+		}
+		
+		}
+		catch(std::exception &e) 
+		{		
+			hal::event().post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(Event::critical, e, L"updatePreVersion7Files"))); 
+		}
+	}
+	
+	std::pair<float, float> transferLimit_;
+	
+	unsigned state_;
+	int connections_;
+	int uploads_;
+	bool in_session_;
+	float ratio_;
+	bool resolve_countries_;
+	
+	std::wstring filename_;
+	std::wstring name_;
+	std::wstring save_directory_;
+	std::wstring originalFilename_;
+	lbt::torrent_handle handle_;	
+	
+	lbt::entry metadata_;
+	lbt::entry resumedata_;
+	
+	std::wstring trackerUsername_;	
+	std::wstring trackerPassword_;
+	
+	boost::int64_t totalUploaded_;
+	boost::int64_t totalBase_;
+	
+	TransferTracker<boost::int64_t> payloadUploaded_;
+	TransferTracker<boost::int64_t> payloadDownloaded_;
+	TransferTracker<boost::int64_t> uploaded_;
+	TransferTracker<boost::int64_t> downloaded_;
+	
+	boost::posix_time::ptime startTime_;
+	boost::posix_time::ptime finishTime_;
+	DurationTracker activeDuration_;
+	DurationTracker seedingDuration_;
+	
+	std::vector<TrackerDetail> trackers_;
+	std::vector<lbt::announce_entry> torrent_trackers_;
+	std::vector<lbt::peer_info> peers_;	
+	std::vector<int> filePriorities_;
+	
+	float progress_;
+	
+	lbt::torrent_info infoMemory_;
+	lbt::torrent_status statusMemory_;
+	FileDetails fileDetailsMemory_;
+	
+	bool compactStorage_;
+};
+
+class TorrentInternal : 
+	boost::noncopyable
+{
+	friend class BitTorrent_impl;	
 public:
 	#define TORRENT_INTERNALS_DEFAULTS \
 		originalFilename_(L""), \
@@ -235,6 +404,44 @@ public:
 		prepare(filename, save_directory_);
 	}
 	
+	TorrentInternal(const TorrentInternalOld& t) :
+		transferLimit_(t.transferLimit_),
+		state_(t.state_),
+		connections_(t.connections_),
+		uploads_(t.uploads_),
+		in_session_(false),
+		ratio_(t.ratio_),
+		resolve_countries_(t.resolve_countries_),
+		filename_(t.filename_),
+		name_(t.name_),
+		save_directory_(t.save_directory_),
+		originalFilename_(t.originalFilename_),
+		handle_(t.handle_),
+		metadata_(t.metadata_),
+		resumedata_(t.resumedata_),
+		trackerUsername_(t.trackerUsername_),	
+		trackerPassword_(t.trackerPassword_),
+		totalUploaded_(t.totalUploaded_),
+		totalBase_(t.totalBase_),
+		payloadUploaded_(t.payloadUploaded_),
+		payloadDownloaded_(t.payloadDownloaded_),
+		uploaded_(t.uploaded_),
+		downloaded_(t.downloaded_),
+		startTime_(t.startTime_),
+		finishTime_(t.finishTime_),
+		activeDuration_(t.activeDuration_),
+		seedingDuration_(t.seedingDuration_),
+		trackers_(t.trackers_),
+		torrent_trackers_(t.torrent_trackers_),
+		peers_(t.peers_),
+		filePriorities_(t.filePriorities_),
+		progress_(t.progress_),
+		infoMemory_(t.infoMemory_),
+		statusMemory_(t.statusMemory_),
+		fileDetailsMemory_(t.fileDetailsMemory_),
+		compactStorage_(t.compactStorage_)
+	{}
+	
 	#undef TORRENT_INTERNALS_DEFAULTS
 	
 	TorrentDetail_ptr getTorrentDetail_ptr();
@@ -260,8 +467,16 @@ public:
 	
 	void addToSession(bool paused = false)
 	{
+		mutex_t::scoped_lock l(mutex_);
+		
+		event().post(shared_ptr<EventDetail>(
+			new EventMsg(wformat(L"    +-> %1%.") % paused)));	
+		
 		if (!in_session_ && the_session_) 
 		{
+			event().post(shared_ptr<EventDetail>(
+				new EventMsg(wformat(L"    +-> in session."))));	
+			
 			string dir = to_utf8(save_directory_);
 			
 			lbt::storage_mode_t storage = lbt::storage_mode_sparse;
@@ -280,10 +495,13 @@ public:
 				
 			applySettings();
 		}	
+			event().post(shared_ptr<EventDetail>(
+				new EventMsg(wformat(L"    +-> leaving addToSsession."))));
 	}
 	
 	void removeFromSession()
 	{
+		mutex_t::scoped_lock l(mutex_);
 		assert(inSession());
 		
 		resumedata_ = handle_.write_resume_data(); // Update the fast-resume data
@@ -295,11 +513,13 @@ public:
 		assert(!inSession());	
 	}
 	
-	bool inSession() const 
+	bool inSession() const
 	{ 
+		mutex_t::scoped_lock l(mutex_);
+		
 		if (in_session_ && (the_session_ != 0))
 		{
-			assert(handle_.is_valid());
+		//	assert(handle_.is_valid());			
 			return true;
 		}
 		
@@ -308,6 +528,7 @@ public:
 	
 	void resume()
 	{
+		mutex_t::scoped_lock l(mutex_);
 		if (state_ == TorrentDetail::torrent_stopped)
 		{	
 			addToSession(false);
@@ -325,6 +546,7 @@ public:
 	
 	void pause()
 	{
+		mutex_t::scoped_lock l(mutex_);
 		if (state_ == TorrentDetail::torrent_stopped)
 		{	
 			addToSession(true);
@@ -343,6 +565,7 @@ public:
 	
 	void stop()
 	{
+		mutex_t::scoped_lock l(mutex_);
 		if (state_ != TorrentDetail::torrent_stopped)
 		{
 			if (state_ == TorrentDetail::torrent_active)
@@ -459,100 +682,36 @@ public:
     {
         ar & make_nvp("transferLimit", transferLimit_);
         ar & make_nvp("connections", connections_);
-        ar & make_nvp("uploads", uploads_);	
-		
-		if (version > 6) {
-			ar & make_nvp("filename", filename_);
-		}
-		else 
-		{
-			wstring originalFilename;
-			ar & make_nvp("filename", originalFilename);
-			
-			updatePreVersion7Files(originalFilename);
-		}
-		
+        ar & make_nvp("uploads", uploads_);			
+		ar & make_nvp("filename", filename_);		
         ar & make_nvp("saveDirectory", save_directory_);
 		
-		if (version > 7) {
-			ar & make_nvp("payloadUploaded_", payloadUploaded_);
-			ar & make_nvp("payloadDownloaded_", payloadDownloaded_);
-			ar & make_nvp("uploaded_", uploaded_);
-			ar & make_nvp("downloaded_", downloaded_);	
-			ar & make_nvp("ratio", ratio_);	
-		} 
-		else if (version > 3) {
-			ar & make_nvp("payloadUploaded_", payloadUploaded_);
-			ar & make_nvp("payloadDownloaded_", payloadDownloaded_);
-			ar & make_nvp("uploaded_", uploaded_);
-			ar & make_nvp("downloaded_", downloaded_);		
-		} 
-		else if (version > 1)
-		{
-			ar & make_nvp("totalUploaded", totalUploaded_);
-			ar & make_nvp("ratio", ratio_);
-			
-			payloadUploaded_.reset(totalUploaded_);
-		}
+		ar & make_nvp("payloadUploaded_", payloadUploaded_);
+		ar & make_nvp("payloadDownloaded_", payloadDownloaded_);
+		ar & make_nvp("uploaded_", uploaded_);
+		ar & make_nvp("downloaded_", downloaded_);	
+		ar & make_nvp("ratio", ratio_);	
+		ar & make_nvp("trackerUsername", trackerUsername_);
+		ar & make_nvp("trackerPassword", trackerPassword_);
 		
-		if (version > 0) {
-			ar & make_nvp("trackerUsername", trackerUsername_);
-			ar & make_nvp("trackerPassword", trackerPassword_);
-		}
-		if (version > 1) {
-			ar & make_nvp("state", state_);
-			ar & make_nvp("trackers", trackers_);
-		}
-	
-		if (version > 2) {
-			ar & make_nvp("resolve_countries", resolve_countries_);
-		}
-		if (version > 4) {
-			ar & make_nvp("file_priorities", filePriorities_);
-		}
-		if (version > 5) {
-			ar & make_nvp("startTime", startTime_);
-			ar & make_nvp("activeDuration", activeDuration_);
-			ar & make_nvp("seedingDuration", seedingDuration_);
-		}
-		if (version > 6) {
-			ar & make_nvp("name", name_);
-			ar & make_nvp("compactStorage", compactStorage_);
-			ar & make_nvp("finishTime", finishTime_);
-		}
-		if (version > 8) {
-			ar & make_nvp("progress", progress_);
-		}
+		ar & make_nvp("state", state_);
+		ar & make_nvp("trackers", trackers_);
+		
+		ar & make_nvp("resolve_countries", resolve_countries_);
+		
+		ar & make_nvp("file_priorities", filePriorities_);
+		
+		ar & make_nvp("startTime", startTime_);
+		ar & make_nvp("activeDuration", activeDuration_);
+		ar & make_nvp("seedingDuration", seedingDuration_);
+		
+		ar & make_nvp("name", name_);
+		ar & make_nvp("compactStorage", compactStorage_);
+		ar & make_nvp("finishTime", finishTime_);
+		
+		ar & make_nvp("progress", progress_);
     }
-	
-	void updatePreVersion7Files(wstring originalFilename)
-	{
-		try 
-		{
 
-		wpath oldFile = app().working_directory()/L"torrents"/originalFilename;
-		
-		if (exists(oldFile)) 
-			extractNames(haldecode(oldFile));
-		
-		wpath oldResumeFile = app().working_directory()/L"resume"/originalFilename;
-		
-		if (filename_ != originalFilename)
-		{
-			fs::rename(oldFile, app().working_directory()/L"torrents"/filename_);
-			
-			if (fs::exists(oldResumeFile))
-				fs::rename(oldResumeFile, app().working_directory()/L"resume"/filename_);
-		}
-		
-		}
-		catch(std::exception &e) 
-		{		
-			hal::event().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(Event::critical, e, L"updatePreVersion7Files"))); 
-		}
-	}
-	
 	void setEntryData(libtorrent::entry metadata, libtorrent::entry resumedata)
 	{		
 		metadata_ = metadata;
@@ -647,6 +806,8 @@ public:
 	
 	void prepare(wpath filename, wpath saveDirectory)
 	{
+		mutex_t::scoped_lock l(mutex_);
+		
 		if (exists(filename)) 
 			metadata_ = haldecode(filename);
 		
@@ -673,6 +834,8 @@ public:
 	
 	void extractNames(lbt::entry& metadata)
 	{
+		mutex_t::scoped_lock l(mutex_);
+		
 		lbt::torrent_info info(metadata);				
 		name_ = hal::from_utf8_safe(info.name());
 		
@@ -781,6 +944,8 @@ private:
 	
 	void completedPauseEvent()
 	{
+		mutex_t::scoped_lock l(mutex_);
+		
 		event().post(shared_ptr<EventDetail>(
 			new EventInfo(L"completedPauseEvent")));
 		
@@ -801,6 +966,8 @@ private:
 	
 	static libtorrent::session* the_session_;
 	static wpath workingDir_;
+	
+	mutable mutex_t mutex_;
 	
 	std::pair<float, float> transferLimit_;
 	
@@ -850,35 +1017,46 @@ private:
 	bool compactStorage_;
 };
 
-typedef std::map<std::string, TorrentInternal> TorrentMap;
-typedef std::pair<std::string, TorrentInternal> TorrentPair;
+typedef std::map<std::string, TorrentInternalOld> TorrentMap;
+typedef std::pair<std::string, TorrentInternalOld> TorrentPair;
+typedef shared_ptr<TorrentInternal> TorrentInternal_ptr;
 
 class TorrentManager : 
 	public CHaliteIni<TorrentManager>
 {
 	typedef TorrentManager thisClass;
 	typedef CHaliteIni<thisClass> iniClass;
-	
+
 	struct TorrentHolder
 	{
-		mutable TorrentInternal torrent;
+		mutable TorrentInternal_ptr torrent;
 		
 		wstring filename;
 		wstring name;		
 		
-		TorrentHolder() :
-			torrent(), filename(torrent.filename()), name(torrent.name())
+		TorrentHolder()
 		{}
 		
-		explicit TorrentHolder(const TorrentInternal& t) :
-			torrent(t), filename(torrent.filename()), name(torrent.name())
+		explicit TorrentHolder(TorrentInternal_ptr t) :
+			torrent(t), filename(torrent->filename()), name(torrent->name())
 		{}
 						
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
-			ar & make_nvp("torrent", torrent);
+			if (version < 1)
+			{
+				TorrentInternalOld t;
+				ar & make_nvp("torrent", t);
+				
+				torrent.reset(new TorrentInternal(t));
+			}
+			else
+			{
+				ar & make_nvp("torrent", torrent);
+			} 
+			
 			ar & make_nvp("filename", filename);
 			ar & make_nvp("name", name);
 		}
@@ -916,11 +1094,13 @@ public:
 		torrents_.clear();
 		
 		for (TorrentMap::const_iterator i=map.begin(), e=map.end(); i != e; ++i)
-		{		
-			event().post(shared_ptr<EventDetail>(new EventMsg(
-				wformat(L"Converting %1%.") % (*i).second.name())));
+		{	
+			TorrentInternal_ptr TIp(new TorrentInternal((*i).second));
 			
-			torrents_.insert(TorrentHolder((*i).second));
+			event().post(shared_ptr<EventDetail>(new EventMsg(
+				wformat(L"Converting %1%.") % TIp->name())));
+			
+			torrents_.insert(TorrentHolder(TIp));
 		}
 		
 		return *this;
@@ -931,7 +1111,7 @@ public:
 		return torrents_.get<byName>().insert(h);
 	}
 	
-	std::pair<torrentByName::iterator, bool> insert(const TorrentInternal& t)
+	std::pair<torrentByName::iterator, bool> insert(TorrentInternal_ptr t)
 	{
 		return insert(TorrentHolder(t));
 	}
@@ -942,7 +1122,7 @@ public:
 		
 		if (it != torrents_.get<byFilename>().end())
 		{
-			return (*it).torrent;
+			return *(*it).torrent;
 		}
 		
 		throw invalidTorrent(filename);
@@ -954,7 +1134,7 @@ public:
 		
 		if (it != torrents_.get<byName>().end())
 		{
-			return (*it).torrent;
+			return *(*it).torrent;
 		}
 		
 		event().post(shared_ptr<EventDetail>(
@@ -963,7 +1143,7 @@ public:
 		for (torrentByName::iterator i=begin(), e=end(); i != e; ++i)
 		{
 		event().post(shared_ptr<EventDetail>(
-			new EventMsg(wformat(L"-> %1% - %2%.") % (*i).name % (*i).torrent.name())));	
+			new EventMsg(wformat(L"-> %1% - %2%.") % (*i).name % (*i).torrent->name())));	
 		}
 		
 		throw invalidTorrent(name);
@@ -1010,7 +1190,7 @@ private:
 
 void TorrentInternal::setConnectionLimit(int maxConn, int maxUpload)
 {
-	connections_ = 	maxConn;
+	connections_ = maxConn;
 	uploads_ = maxUpload;
 	
 	applyConnectionLimit();
@@ -1137,18 +1317,20 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 	catch (const lbt::invalid_handle&)
 	{
 		event().post(shared_ptr<EventDetail>(
-			new EventInvalidTorrent(Event::critical, Event::invalidTorrent, "addTorrent", "addTorrent")));\
+			new EventInvalidTorrent(Event::critical, Event::invalidTorrent, to_utf8(name_), "getTorrentDetail_ptr")));
 	}
 	catch (const std::exception& e)
 	{
 		event().post(shared_ptr<EventDetail>(
-			new EventTorrentException(Event::critical, Event::torrentException, e.what(), "addTorrent", "addTorrent")));
+			new EventTorrentException(Event::critical, Event::torrentException, e.what(), to_utf8(name_), "getTorrentDetail_ptr")));
 	}
 	
 	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, app().res_wstr(HAL_TORRENT_STOPPED),  app().res_wstr(IDS_NA)));
 }
 
 } // namespace hal
+
+BOOST_CLASS_VERSION(hal::TorrentManager::TorrentHolder, 1)
 
 #endif // RC_INVOKED
 

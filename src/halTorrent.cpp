@@ -1181,14 +1181,14 @@ void BitTorrent::addTorrent(wpath file, wpath saveDirectory, bool startPaused, b
 	try 
 	{	
 	
-	TorrentInternal torrent(file, saveDirectory, pimpl->workingDirectory, compactStorage);
+	TorrentInternal_ptr TIp(new TorrentInternal(file, saveDirectory, pimpl->workingDirectory, compactStorage));
 	
 	std::pair<TorrentManager::torrentByName::iterator, bool> p =
-		pimpl->theTorrents.insert(torrent);
+		pimpl->theTorrents.insert(TIp);
 	
 	if (p.second)
 	{
-		TorrentInternal& me = pimpl->theTorrents.get(torrent.name());
+		TorrentInternal& me = pimpl->theTorrents.get(TIp->name());
 		
 		me.setTransferSpeed(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload());
 		me.setConnectionLimit(bittorrent().defTorrentMaxConn(), bittorrent().defTorrentMaxUpload());
@@ -1298,8 +1298,8 @@ const TorrentDetails& BitTorrent::updateTorrentDetails(const std::wstring& focus
 	
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); i != e; ++i)
 	{
-		wstring utf8Name = (*i).torrent.name();
-		TorrentDetail_ptr pT = (*i).torrent.getTorrentDetail_ptr();
+		wstring utf8Name = (*i).torrent->name();
+		TorrentDetail_ptr pT = (*i).torrent->getTorrentDetail_ptr();
 		
 		if (selected.find(utf8Name) != selected.end())
 		{
@@ -1309,7 +1309,7 @@ const TorrentDetails& BitTorrent::updateTorrentDetails(const std::wstring& focus
 		if (focused == utf8Name)
 			torrentDetails_.selectedTorrent_ = pT;
 		
-		torrentDetails_.torrentMap_[(*i).torrent.name()] = pT;
+		torrentDetails_.torrentMap_[(*i).torrent->name()] = pT;
 		torrentDetails_.torrents_.push_back(pT);
 	}
 	
@@ -1324,25 +1324,29 @@ void BitTorrent::resumeAll()
 	
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); i != e;)
 	{
-		wpath file = wpath(pimpl->workingDirectory)/L"torrents"/(*i).torrent.filename();
+		wpath file = wpath(pimpl->workingDirectory)/L"torrents"/(*i).torrent->filename();
+		
+		
+		event().post(shared_ptr<EventDetail>(
+			new EventMsg(wformat(L"rAll -> %1% - %2%.") % (*i).torrent->filename() % (*i).torrent->state())));	
 				
 		if (exists(file))
 		{		
 			try 
 			{
 				
-			(*i).torrent.prepare(file, (*i).torrent.saveDirectory());	
+			(*i).torrent->prepare(file, (*i).torrent->saveDirectory());	
 
-			switch ((*i).torrent.state())
+			switch ((*i).torrent->state())
 			{
 				case TorrentDetail::torrent_stopped:
 					break;
 				case TorrentDetail::torrent_paused:
 				case TorrentDetail::torrent_pausing:
-					(*i).torrent.addToSession(true);
+					(*i).torrent->addToSession(true);
 					break;
 				case TorrentDetail::torrent_active:
-					(*i).torrent.addToSession(false);
+					(*i).torrent->addToSession(false);
 					break;
 			};
 			
@@ -1383,9 +1387,9 @@ void BitTorrent::closeAll()
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); 
 		i != e; ++i)
 	{
-		if ((*i).torrent.inSession())
+		if ((*i).torrent->inSession())
 		{
-			(*i).torrent.handle().pause(); // Internal pause, not registered in Torrents.xml
+			(*i).torrent->handle().pause(); // Internal pause, not registered in Torrents.xml
 		}
 	}
 	
@@ -1396,7 +1400,7 @@ void BitTorrent::closeAll()
 				i != e; ++i)
 		{
 			// NB. this checks for an internal paused state.
-			nonePaused &= ((*i).torrent.inSession() ? (*i).torrent.handle().is_paused() : true);
+			nonePaused &= ((*i).torrent->inSession() ? (*i).torrent->handle().is_paused() : true);
 		}
 		
 		Sleep(200);
@@ -1408,10 +1412,10 @@ void BitTorrent::closeAll()
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); 
 		i != e; ++i)
 	{
-		if ((*i).torrent.inSession())
+		if ((*i).torrent->inSession())
 		{
-			(*i).torrent.removeFromSession();
-			(*i).torrent.writeResumeData();
+			(*i).torrent->removeFromSession();
+			(*i).torrent->writeResumeData();
 		}
 	}
 	
@@ -1706,8 +1710,8 @@ void BitTorrent::pauseAllTorrents()
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end();
 		i != e; ++i)
 	{		
-		if ((*i).torrent.inSession())
-			(*i).torrent.pause();
+		if ((*i).torrent->inSession())
+			(*i).torrent->pause();
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "pauseAllTorrents")
@@ -1720,8 +1724,8 @@ void BitTorrent::unpauseAllTorrents()
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end();
 		i != e; ++i)
 	{
-		if ((*i).torrent.inSession() && (*i).torrent.state() == TorrentDetail::torrent_paused)
-			(*i).torrent.resume();
+		if ((*i).torrent->inSession() && (*i).torrent->state() == TorrentDetail::torrent_paused)
+			(*i).torrent->resume();
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "unpauseAllTorrents")
