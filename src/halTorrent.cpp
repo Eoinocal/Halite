@@ -5,8 +5,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 
-#define HALITE_VERSION					0,2,9,339
-#define HALITE_VERSION_STRING			"v 0.2.9 dev 339"
+#define HALITE_VERSION					0,2,9,341
+#define HALITE_VERSION_STRING			"v 0.2.9 dev 341"
 
 #define LBT_EVENT_TORRENT_FINISHED					80001
 #define HAL_PEER_BAN_ALERT							80002
@@ -683,7 +683,7 @@ private:
 	}
 	
 	std::pair<lbt::entry, lbt::entry> prepTorrent(wpath filename, wpath saveDirectory);
-	void removalThread(lbt::torrent_handle handle, bool wipeFiles);
+	void removalThread(TorrentInternal_ptr pIT, bool wipeFiles);
 	
 	lbt::session theSession;
 	asio::io_service io_;
@@ -1631,41 +1631,74 @@ std::pair<std::wstring, std::wstring> BitTorrent::getTorrentLogin(const std::wst
 	return std::make_pair(L"", L"");
 }
 
-void BitTorrent_impl::removalThread(lbt::torrent_handle handle, bool wipeFiles)
+void BitTorrent_impl::removalThread(TorrentInternal_ptr pIT, bool wipeFiles)
 {
 	try {
 
-	if (wipeFiles)
-		theSession.remove_torrent(handle, lbt::session::delete_files);
-	else
-		theSession.remove_torrent(handle);
-		
-#if 0	
+		event().post(shared_ptr<EventDetail>(
+			new EventMsg(wformat(L"	***	-> A"))));
+				
 	if (!wipeFiles)
-		theSession.remove_torrent(handle);
+	{
+		event().post(shared_ptr<EventDetail>(
+			new EventMsg(wformat(L"	***	-> B"))));
+				
+		theSession.remove_torrent(pIT->handle());
+	}
 	else
 	{
-		fs::path saveDirectory = handle.save_path();
-		lbt::torrent_info info = handle.get_torrent_info();
-		
-		theSession.remove_torrent(handle);
-		
-		foreach (const lbt::file_entry& entry, make_pair(info.begin_files(), info.end_files()))
-		{
-			path file_path = saveDirectory / entry.path;
+		event().post(shared_ptr<EventDetail>(
+			new EventMsg(wformat(L"	***	-> C"))));
 			
-			if (exists(file_path) && !file_path.empty())
-				remove_all(file_path);
-		}
-		
-		if (info.num_files() != 1)
+		if (pIT->inSession())
 		{
-			path dir_path = saveDirectory / info.name();
-			if (exists(dir_path) && is_empty(dir_path))
-				remove_all(dir_path);
+			theSession.remove_torrent(pIT->handle(), lbt::session::delete_files);
 		}
-	}	
-#endif	
+		else
+		{
+		
+		event().post(shared_ptr<EventDetail>(
+			new EventMsg(wformat(L"	***	-> D"))));
+			
+			lbt::torrent_info m_info = pIT->infoMemory();
+			
+			// delete the files from disk
+			std::string error;
+			std::set<std::string> directories;
+			typedef std::set<std::string>::iterator iter_t;
+			
+			for (lbt::torrent_info::file_iterator i = m_info.begin_files(true)
+				, end(m_info.end_files(true)); i != end; ++i)
+			{
+				std::string p = (hal::to_utf8(pIT->saveDirectory()) / i->path).string();
+				fs::path bp = i->path.branch_path();
+				
+				std::pair<iter_t, bool> ret;
+				ret.second = true;
+				while (ret.second && !bp.empty())
+				{
+					std::pair<iter_t, bool> ret = directories.insert((hal::to_utf8(pIT->saveDirectory()) / bp).string());
+					bp = bp.branch_path();
+				}
+				if (!fs::remove(hal::from_utf8(p).c_str()) && errno != ENOENT)
+					error = std::strerror(errno);
+			}
+
+			// remove the directories. Reverse order to delete subdirectories first
+
+			for (std::set<std::string>::reverse_iterator i = directories.rbegin()
+				, end(directories.rend()); i != end; ++i)
+			{
+				if (!fs::remove(hal::from_utf8(*i).c_str()) && errno != ENOENT)
+					error = std::strerror(errno);
+			}
+		}
+	
+	}
+
+		event().post(shared_ptr<EventDetail>(
+			new EventMsg(wformat(L"	***	-> E"))));
+
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "removalThread")
 }
 
@@ -1678,10 +1711,11 @@ void BitTorrent::removeTorrent(const std::wstring& filename)
 {
 	try {
 	
-	lbt::torrent_handle handle = pimpl->theTorrents.get(filename)->handle();
+	TorrentInternal_ptr pTI = pimpl->theTorrents.get(filename);
+	lbt::torrent_handle handle = pTI->handle();
 	pimpl->theTorrents.erase(filename);
 		
-	thread t(bind(&BitTorrent_impl::removalThread, &*pimpl, handle, false));
+	thread t(bind(&BitTorrent_impl::removalThread, &*pimpl, pTI, false));	
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "removeTorrent")
 }
@@ -1695,10 +1729,11 @@ void BitTorrent::removeTorrentWipeFiles(const std::wstring& filename)
 {
 	try {
 		
-	lbt::torrent_handle handle = pimpl->theTorrents.get(filename)->handle();
+	TorrentInternal_ptr pTI = pimpl->theTorrents.get(filename);
+	lbt::torrent_handle handle = pTI->handle();
 	pimpl->theTorrents.erase(filename);
 		
-	thread t(bind(&BitTorrent_impl::removalThread, &*pimpl, handle, true));
+	thread t(bind(&BitTorrent_impl::removalThread, &*pimpl, pTI, true));	
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "removeTorrentWipeFiles")
 }

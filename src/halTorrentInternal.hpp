@@ -846,6 +846,13 @@ public:
 		event().post(shared_ptr<EventDetail>(new EventMsg(
 			wformat(L"Loaded names: %1%, %2%") % name_ % filename_)));
 	}
+	
+	lbt::torrent_info& infoMemory()
+	{
+		if (!infoMemory_.is_valid()) infoMemory_ = lbt::torrent_info(metadata_);
+		
+		return infoMemory_;
+	}
 
 private:	
 	void applySettings()
@@ -933,13 +940,6 @@ private:
 	{
 		if (inSession())
 			handle_.resolve_countries(resolve_countries_);
-	}
-	
-	lbt::torrent_info& infoMemory()
-	{
-		if (!infoMemory_.is_valid()) infoMemory_ = lbt::torrent_info(metadata_);
-		
-		return infoMemory_;
 	}
 	
 	void completedPauseEvent()

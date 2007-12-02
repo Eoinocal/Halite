@@ -39,8 +39,9 @@ struct FileLink
 		filename(f.filename),
 		order_(f.order())
 	{
-		hal::event().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(wformat(L"Con -> %1% - %2%.") % filename % order())));	}
+//		hal::event().post(shared_ptr<hal::EventDetail>(
+//			new hal::EventMsg(wformat(L"Con -> %1% - %2%.") % filename % order())));	
+	}
 	
 	bool operator==(const FileLink& f) const
 	{
