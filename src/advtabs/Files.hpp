@@ -15,7 +15,7 @@
 #include "../HaliteTabPage.hpp"
 #include "../HaliteListManager.hpp"
 #include "../HaliteDialogBase.hpp"
-#include "../HaliteIni.hpp"
+#include "../halIni.hpp"
 #include "../HaliteListViewCtrl.hpp"
 
 #include "../HaliteUpdateLock.hpp"

@@ -13,7 +13,7 @@
 #include "global/string_conv.hpp"
 #include "global/wtl_app.hpp"
 
-#include "HaliteIni.hpp"
+#include "halIni.hpp"
 
 class BitTorrentOptions;
 class SecurityOptions;

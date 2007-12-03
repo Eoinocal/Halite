@@ -13,7 +13,7 @@
 #include <boost/signals.hpp>
 #include <boost/serialization/vector.hpp>
 
-#include "HaliteIni.hpp"
+#include "halIni.hpp"
 #include "HaliteListViewCtrl.hpp"
 #include "HaliteSortListViewCtrl.hpp"
 

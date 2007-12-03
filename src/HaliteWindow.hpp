@@ -10,7 +10,7 @@
 #include "DropFileTarget.h"
 #include "NTray.hpp"
 #include "HaliteListView.hpp"
-#include "HaliteIni.hpp"
+#include "halIni.hpp"
 #include "halTorrent.hpp"
 
 #include <boost/archive/xml_oarchive.hpp>

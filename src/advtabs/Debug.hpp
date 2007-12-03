@@ -17,7 +17,7 @@
 #include "../HaliteTabPage.hpp"
 #include "../HaliteListManager.hpp"
 #include "../HaliteDialogBase.hpp"
-#include "../HaliteIni.hpp"
+#include "../halIni.hpp"
 #include "../HaliteListViewCtrl.hpp"
 
 class LogEdit : public CWindowImpl<LogEdit, CEdit>

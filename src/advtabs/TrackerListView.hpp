@@ -17,7 +17,7 @@
 
 #include "../stdAfx.hpp"
 #include "../global/string_conv.hpp"
-#include "../HaliteIni.hpp"
+#include "../halIni.hpp"
 #include "../HaliteSortListViewCtrl.hpp"
 
 class TrackerListViewCtrl :

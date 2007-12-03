@@ -42,7 +42,7 @@
 #include <boost/multi_index/tag.hpp>
 #include <boost/serialization/shared_ptr.hpp>
 
-#include "HaliteIni.hpp"
+#include "halIni.hpp"
 
 namespace hal 
 {

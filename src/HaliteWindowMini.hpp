@@ -11,7 +11,7 @@
 #include "stdAfx.hpp"
 #include "DropFileTarget.h"
 #include "NTray.hpp"
-#include "HaliteIni.hpp"
+#include "halIni.hpp"
 #include "halTorrent.hpp"
 
 #include <boost/archive/xml_oarchive.hpp>
@@ -48,7 +48,7 @@ class HaliteWindow :
 	public CDropFileTarget<HaliteWindow>,
 	public CMessageFilter,
 	public CIdleHandler,
-	public CHaliteIni<HaliteWindow>,
+	public ChalIni<HaliteWindow>,
 	private boost::noncopyable
 {
 public:
@@ -127,7 +127,7 @@ public:
 	LRESULT OnAreYouMe(UINT, WPARAM, LPARAM, BOOL&);
 	
 protected:
-	typedef CHaliteIni<HaliteWindow> iniClass;
+	typedef ChalIni<HaliteWindow> iniClass;
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 

@@ -15,16 +15,16 @@
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/version.hpp>
 
-#include "HaliteIni.hpp"
+#include "halIni.hpp"
 #include "../res/resource.h"
 	
 class Halite :
-	public CHaliteIni<Halite>,
+	public ChalIni<Halite>,
 	private boost::noncopyable
 {
 public:
 	Halite() :
-		CHaliteIni<Halite>("globals/halite", "Halite"),
+		ChalIni<Halite>("globals/halite", "Halite"),
 		oneInst(false),
 		logDebug_(false),
 		showMessage(true),
