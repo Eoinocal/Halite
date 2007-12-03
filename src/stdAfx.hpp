@@ -42,6 +42,7 @@ extern CAppModule _Module;
 //#include <stlsoft/util/nulldef.h>
 
 #include "global/wtl_app.hpp"
+#include "global/string_conv.hpp"
 
 template<class T>
 class RedrawLock
@@ -83,11 +84,10 @@ private:
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/tuple/tuple.hpp>
 
 using std::string;
 using std::wstring;
-using std::pair;
-using std::make_pair;
 
 using boost::lexical_cast;
 using boost::array;
@@ -103,8 +103,12 @@ using boost::noncopyable;
 
 namespace hal
 {
-	typedef boost::recursive_mutex mutex_t;
-	typedef boost::thread thread_t;
+	
+	using std::pair;
+	using std::make_pair;
+	
+	using boost::tuple;
+	
 }
 
 #define foreach BOOST_FOREACH

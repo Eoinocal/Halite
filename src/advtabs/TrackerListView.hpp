@@ -22,11 +22,11 @@
 
 class TrackerListViewCtrl :
 	public CHaliteSortListViewCtrl<TrackerListViewCtrl>,
-	public CHaliteIni<TrackerListViewCtrl>,
+	public hal::IniBase<TrackerListViewCtrl>,
 	private boost::noncopyable
 {
 
-	typedef CHaliteIni<TrackerListViewCtrl> iniClass;
+	typedef hal::IniBase<TrackerListViewCtrl> iniClass;
 	typedef CHaliteSortListViewCtrl<TrackerListViewCtrl> listClass;
 
 	friend class listClass;

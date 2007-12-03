@@ -21,11 +21,11 @@ class HaliteWindow;
 
 class HaliteListViewCtrl :
 	public CHaliteSortListViewCtrl<HaliteListViewCtrl, const hal::TorrentDetail_ptr>,
-	private CHaliteIni<HaliteListViewCtrl>,
+	private hal::IniBase<HaliteListViewCtrl>,
 	private boost::noncopyable
 {
 protected:
-	typedef CHaliteIni<HaliteListViewCtrl> iniClass;
+	typedef hal::IniBase<HaliteListViewCtrl> iniClass;
 	typedef CHaliteSortListViewCtrl<HaliteListViewCtrl, const hal::TorrentDetail_ptr> listClass;
 	typedef const hal::TorrentDetail_ptr tD;
 

@@ -28,7 +28,7 @@ LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 		::EnableWindow(GetDlgItem(IDC_TRACKER_LOGINCHECK), true);
 		::EnableWindow(GetDlgItem(IDC_TRACKERLIST), true);
 		
-		pair<wstring, wstring> details = 
+		std::pair<std::wstring, std::wstring> details = 
 			hal::bittorrent().getTorrentLogin(torrent_name);
 		
 		username_ = details.first;
@@ -92,7 +92,7 @@ void AdvTrackerDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 		::EnableWindow(GetDlgItem(IDC_TRACKER_LOGINCHECK), true);
 		::EnableWindow(GetDlgItem(IDC_TRACKERLIST), true);
 		
-		pair<wstring, wstring> details = 
+		std::pair<wstring, wstring> details = 
 			hal::bittorrent().getTorrentLogin(pT->name());
 		
 		username_ = details.first;

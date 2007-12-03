@@ -14,9 +14,11 @@
 #include <boost/signal.hpp>
 #include <boost/optional.hpp>
 #include <boost/function.hpp>
+
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/smart_ptr.hpp>
 #include <boost/algorithm/string.hpp>
+
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -24,15 +26,14 @@
 #include <asio/ip/tcp.hpp>
 #include <asio/ip/udp.hpp>
 
-using boost::filesystem::path;
-using boost::posix_time::time_duration;
-using boost::posix_time::ptime;
-
 namespace libtorrent { struct peer_info; }
 
 namespace hal 
 {
 
+typedef boost::recursive_mutex mutex_t;
+typedef boost::thread thread_t;
+	
 struct torrentBriefDetail 
 {
 	std::wstring filename;
@@ -60,8 +61,8 @@ struct PeerDetail
 		return (ipAddress < peer.ipAddress);
 	}
 	
-	wstring ipAddress;
-	wstring country;
+	std::wstring ipAddress;
+	std::wstring country;
 	std::pair<float,float> speed;
 	bool seed;
 	std::wstring client;
@@ -102,7 +103,7 @@ struct FileDetail
 	size_t order() const { return order_; }
 	
 	boost::filesystem::wpath branch;
-	wstring filename;
+	std::wstring filename;
 	unsigned type;
 	size_t size;
 	float progress;
@@ -128,9 +129,9 @@ class TorrentDetail
 {
 public:
 	TorrentDetail(std::wstring n, std::wstring f, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
-			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, boost::int64_t tpU=0, boost::int64_t tD=0, boost::int64_t tpD=0, boost::tuple<size_t, size_t, size_t, size_t> connections = boost::tuple<size_t, size_t, size_t, size_t>(0,0,0,0),  float r=0, 
-			time_duration eta=boost::posix_time::seconds(0), time_duration uIn=boost::posix_time::seconds(0),
-			time_duration actve=boost::posix_time::seconds(0), time_duration seding=boost::posix_time::seconds(0), ptime srt=boost::posix_time::second_clock::universal_time(), ptime fin=boost::posix_time::second_clock::universal_time()) :
+			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, boost::int64_t tpU=0, boost::int64_t tD=0, boost::int64_t tpD=0, boost::tuple<size_t, size_t, size_t, size_t> connections = boost::tuple<size_t, size_t, size_t, size_t>(0,0,0,0), float r=0, 
+			boost::posix_time::time_duration eta=boost::posix_time::seconds(0), boost::posix_time::time_duration uIn=boost::posix_time::seconds(0),
+			boost::posix_time::time_duration actve=boost::posix_time::seconds(0), boost::posix_time::time_duration seding=boost::posix_time::seconds(0), boost::posix_time::ptime srt=boost::posix_time::second_clock::universal_time(), boost::posix_time::ptime fin=boost::posix_time::second_clock::universal_time()) :
 		filename_(f),
 		name_(n),
 		state_(s),
@@ -196,16 +197,16 @@ public:
 	
 	float ratio() { return ratio_; }
 	
-	const time_duration& estimatedTimeLeft() { return estimatedTimeLeft_; }
-	const time_duration& updateTrackerIn() { return updateTrackerIn_; }
+	const boost::posix_time::time_duration& estimatedTimeLeft() { return estimatedTimeLeft_; }
+	const boost::posix_time::time_duration& updateTrackerIn() { return updateTrackerIn_; }
 	
 	const PeerDetails& peerDetails() const;
 	const FileDetails& fileDetails() const;
 	
-	const time_duration& active() { return active_; }
-	const time_duration& seeding() { return seeding_; }
-	const ptime& startTime() { return startTime_; }
-	const ptime& finishTime() { return finishTime_; }
+	const boost::posix_time::time_duration& active() { return active_; }
+	const boost::posix_time::time_duration& seeding() { return seeding_; }
+	const boost::posix_time::ptime& startTime() { return startTime_; }
+	const boost::posix_time::ptime& finishTime() { return finishTime_; }
 	
 public:
 	std::wstring filename_;
@@ -231,13 +232,13 @@ public:
 	
 	float ratio_;
 	
-	time_duration estimatedTimeLeft_;
-	time_duration updateTrackerIn_;
+	boost::posix_time::time_duration estimatedTimeLeft_;
+	boost::posix_time::time_duration updateTrackerIn_;
 	
-	time_duration active_;
-	time_duration seeding_;
-	ptime startTime_;
-	ptime finishTime_;
+	boost::posix_time::time_duration active_;
+	boost::posix_time::time_duration seeding_;
+	boost::posix_time::ptime startTime_;
+	boost::posix_time::ptime finishTime_;
 	
 private:
 	mutable bool peerDetailsFilled_;
@@ -382,7 +383,7 @@ public:
 
 	void setTorrentDefaults(int maxConn, int maxUpload, float download, float upload);	
 	void newTorrent(boost::filesystem::wpath filename, boost::filesystem::wpath files);
-	void addTorrent(boost::filesystem::wpath file, wpath saveDirectory, 
+	void addTorrent(boost::filesystem::wpath file, boost::filesystem::wpath saveDirectory, 
 		bool startPaused=false, bool compactStorage=false);
 	
 	void setTorrentRatio(const std::string&, float ratio);
@@ -429,10 +430,10 @@ public:
 	void setTorrentLimit(const std::wstring& filename, int maxConn, int maxUpload);
 	void setTorrentSpeed(const std::string& filename, float download, float upload);
 	void setTorrentSpeed(const std::wstring& filename, float download, float upload);
-	pair<int, int> getTorrentLimit(const std::string& filename);
-	pair<int, int> getTorrentLimit(const std::wstring& filename);
-	pair<float, float> getTorrentSpeed(const std::string& filename);
-	pair<float, float> getTorrentSpeed(const std::wstring& filename);
+	std::pair<int, int> getTorrentLimit(const std::string& filename);
+	std::pair<int, int> getTorrentLimit(const std::wstring& filename);
+	std::pair<float, float> getTorrentSpeed(const std::string& filename);
+	std::pair<float, float> getTorrentSpeed(const std::wstring& filename);
 	
 	void setTorrentTrackers(const std::string& filename, const std::vector<TrackerDetail>& trackers);
 	void setTorrentTrackers(const std::wstring& filename, const std::vector<TrackerDetail>& trackers);

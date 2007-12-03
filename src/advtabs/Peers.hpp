@@ -18,12 +18,12 @@
 
 class PeerListView :
 	public CHaliteSortListViewCtrl<PeerListView, const hal::PeerDetail>,
-	public CHaliteIni<PeerListView>,
+	public hal::IniBase<PeerListView>,
 	private boost::noncopyable
 {
 protected:
 	typedef PeerListView thisClass;
-	typedef CHaliteIni<thisClass> iniClass;
+	typedef hal::IniBase<thisClass> iniClass;
 	typedef CHaliteSortListViewCtrl<thisClass, const hal::PeerDetail> listClass;
 	typedef const hal::PeerDetail pD;
 

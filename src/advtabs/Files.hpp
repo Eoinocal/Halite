@@ -82,14 +82,14 @@ inline bool FileLinkNamesLess(const FileLink& l, const FileLink& r)
 
 class FileListView :
 	public CHaliteSortListViewCtrl<FileListView, const hal::FileDetail>,
-	public CHaliteIni<FileListView>,
+	public hal::IniBase<FileListView>,
 	private boost::noncopyable
 {
 public:
 	typedef FileListView thisClass;
 	typedef const hal::FileDetail dataClass;
 	typedef CHaliteSortListViewCtrl<thisClass, dataClass> listClass;
-	typedef CHaliteIni<thisClass> iniClass;
+	typedef hal::IniBase<thisClass> iniClass;
 
 	friend class listClass;
 	
@@ -212,13 +212,13 @@ private:
 
 class FileTreeView :
 	public CWindowImpl<FileTreeView, CTreeViewCtrlEx>,
-	public CHaliteIni<FileTreeView>,
+	public hal::IniBase<FileTreeView>,
 	private boost::noncopyable
 {
 protected:
 	typedef FileTreeView thisClass;
 	typedef CWindowImpl<thisClass, CTreeViewCtrlEx> treeClass;
-	typedef CHaliteIni<thisClass> iniClass;
+	typedef hal::IniBase<thisClass> iniClass;
 
 	friend class treeClass;
 	
@@ -378,7 +378,7 @@ class AdvFilesDialog :
 	public CDialogResize<AdvFilesDialog>,
 	public CHaliteDialogBase<AdvFilesDialog>,
 	public CWinDataExchangeEx<AdvFilesDialog>,
-	public CHaliteIni<AdvFilesDialog>,
+	public hal::IniBase<AdvFilesDialog>,
 	private boost::noncopyable
 {
 protected:
@@ -386,7 +386,7 @@ protected:
 	typedef CHalTabPageImpl<thisClass> baseClass;
 	typedef CDialogResize<thisClass> resizeClass;
 	typedef CHaliteDialogBase<thisClass> dialogBaseClass;
-	typedef CHaliteIni<thisClass> iniClass;
+	typedef hal::IniBase<thisClass> iniClass;
 
 public:
 	enum { IDD = IDD_ADVFILES };

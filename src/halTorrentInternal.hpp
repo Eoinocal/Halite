@@ -47,72 +47,67 @@
 namespace hal 
 {
 class TorrentInternalOld;
-class TorrentInternal;
-
 }
 
 BOOST_CLASS_VERSION(hal::TorrentInternalOld, 9)
-
 
 namespace hal 
 {
 
 namespace lbt = libtorrent;
 namespace fs = boost::filesystem;
+namespace pt = boost::posix_time;
 
-using fs::path;
-using fs::ifstream;
-using fs::ofstream;
+typedef std::wstring wstring_t;
+typedef std::string string_t;
+
+typedef boost::wformat wformat_t;
+typedef boost::format format_t;
+
+typedef boost::filesystem::wpath wpath_t;
+typedef boost::filesystem::path path_t;
+
 using boost::serialization::make_nvp;
 
-lbt::entry haldecode(const wpath &file) 
+lbt::entry haldecode(const wpath_t &file) 
 {
-	ifstream fs(file, ifstream::binary);
-	if (fs.is_open()) 
+	fs::ifstream ifs(file, fs::ifstream::binary);
+	if (ifs.is_open()) 
 	{
-		fs.unsetf(ifstream::skipws);
-		return lbt::bdecode(std::istream_iterator<char>(fs), std::istream_iterator<char>());
+		ifs.unsetf(fs::ifstream::skipws);
+		return lbt::bdecode(std::istream_iterator<char>(ifs), std::istream_iterator<char>());
 	}
 	else return lbt::entry();
 }
 
-bool halencode(const wpath &file, const lbt::entry &e) 
+bool halencode(const wpath_t &file, const lbt::entry &e) 
 {
-	fs::ofstream fs(file, ofstream::binary);
+	fs::ofstream ofs(file, fs::ofstream::binary);
 
-	if (!fs.is_open()) 
+	if (!ofs.is_open()) 
 		return false;
 	
-	lbt::bencode(std::ostream_iterator<char>(fs), e);
+	lbt::bencode(std::ostream_iterator<char>(ofs), e);
 	return true;
 }
 
 class invalidTorrent : public std::exception
 {
 public:
-	invalidTorrent(const std::wstring& who) :
+	invalidTorrent(const wstring_t& who) :
 		who_(who)
 	{}
 	
 	virtual ~invalidTorrent() throw () {}
 
-	wstring who() const throw ()
+	wstring_t who() const throw ()
 	{
 		return who_;
 	}       
 	
 private:
-	std::wstring who_;	
+	wstring_t who_;	
 };
-
-namespace lbt = libtorrent;
-namespace fs = boost::filesystem;
-
-using fs::path;
-using fs::ifstream;
-using fs::ofstream;
-using boost::serialization::make_nvp;
-
 	
 template<typename T>
 class TransferTracker
@@ -221,7 +216,7 @@ public:
 		}
 		else 
 		{
-			wstring originalFilename;
+			wstring_t originalFilename;
 			ar & make_nvp("filename", originalFilename);
 			
 			updatePreVersion7Files(originalFilename);
@@ -290,20 +285,20 @@ public:
 				filename_ += L".torrent";
 		
 		event().post(shared_ptr<EventDetail>(new EventMsg(
-			wformat(L"Loaded names: %1%, %2%") % name_ % filename_)));
+			wformat_t(L"Loaded names: %1%, %2%") % name_ % filename_)));
 	}
 	
-	void updatePreVersion7Files(wstring originalFilename)
+	void updatePreVersion7Files(wstring_t originalFilename)
 	{
 		try 
 		{
 
-		wpath oldFile = app().working_directory()/L"torrents"/originalFilename;
+		wpath_t oldFile = app().working_directory()/L"torrents"/originalFilename;
 		
-		if (exists(oldFile)) 
+		if (fs::exists(oldFile)) 
 			extractNames(haldecode(oldFile));
 		
-		wpath oldResumeFile = app().working_directory()/L"resume"/originalFilename;
+		wpath_t oldResumeFile = app().working_directory()/L"resume"/originalFilename;
 		
 		if (filename_ != originalFilename)
 		{
@@ -330,17 +325,17 @@ public:
 	float ratio_;
 	bool resolve_countries_;
 	
-	std::wstring filename_;
-	std::wstring name_;
-	std::wstring save_directory_;
-	std::wstring originalFilename_;
+	wstring_t filename_;
+	wstring_t name_;
+	wstring_t save_directory_;
+	wstring_t originalFilename_;
 	lbt::torrent_handle handle_;	
 	
 	lbt::entry metadata_;
 	lbt::entry resumedata_;
 	
-	std::wstring trackerUsername_;	
-	std::wstring trackerPassword_;
+	wstring_t trackerUsername_;	
+	wstring_t trackerPassword_;
 	
 	boost::int64_t totalUploaded_;
 	boost::int64_t totalBase_;
@@ -393,7 +388,7 @@ public:
 		in_session_(false)
 	{}
 	
-	TorrentInternal(wpath filename, wpath saveDirectory, wpath workingDirectory, bool compactStorage) :
+	TorrentInternal(wpath_t filename, wpath_t saveDirectory, wpath_t workingDirectory, bool compactStorage) :
 		TORRENT_INTERNALS_DEFAULTS,
 		save_directory_(saveDirectory.string()),
 		compactStorage_(compactStorage),		
@@ -447,10 +442,10 @@ public:
 	TorrentDetail_ptr getTorrentDetail_ptr();
 	void setTransferSpeed(float down, float up);
 	void setConnectionLimit(int maxConn, int maxUpload);
-	pair<float, float> getTransferSpeed();
-	pair<int, int> getConnectionLimit();
+	std::pair<float, float> getTransferSpeed();
+	std::pair<int, int> getConnectionLimit();
 	
-	const wstring& name() const { return name_; }
+	const wstring_t& name() const { return name_; }
 	
 	void setRatio(float ratio) 
 	{ 
@@ -470,14 +465,14 @@ public:
 		mutex_t::scoped_lock l(mutex_);
 		
 		event().post(shared_ptr<EventDetail>(
-			new EventMsg(wformat(L"    +-> %1%.") % paused)));	
+			new EventMsg(wformat_t(L"    +-> %1%.") % paused)));	
 		
 		if (!in_session_ && the_session_) 
 		{
 			event().post(shared_ptr<EventDetail>(
-				new EventMsg(wformat(L"    +-> in session."))));	
+				new EventMsg(wformat_t(L"    +-> in session."))));	
 			
-			string dir = to_utf8(save_directory_);
+			string_t dir = to_utf8(save_directory_);
 			
 			lbt::storage_mode_t storage = lbt::storage_mode_sparse;
 			
@@ -496,7 +491,7 @@ public:
 			applySettings();
 		}	
 			event().post(shared_ptr<EventDetail>(
-				new EventMsg(wformat(L"    +-> leaving addToSsession."))));
+				new EventMsg(wformat_t(L"    +-> leaving addToSsession."))));
 	}
 	
 	void removeFromSession()
@@ -518,9 +513,11 @@ public:
 		mutex_t::scoped_lock l(mutex_);
 		
 		if (in_session_ && (the_session_ != 0))
-		{
-		//	assert(handle_.is_valid());			
-			return true;
+		{		
+			if (handle_.is_valid())
+			{
+				return true;
+			}
 		}
 		
 		return false;
@@ -585,7 +582,7 @@ public:
 	
 	void writeResumeData()
 	{				
-		wpath resumeDir = workingDir_/L"resume";
+		wpath_t resumeDir = workingDir_/L"resume";
 		
 		if (!exists(resumeDir))
 			create_directory(resumeDir);
@@ -596,7 +593,7 @@ public:
 	
 	void clearResumeData()
 	{
-		wpath resumeFile = workingDir_/L"resume"/filename_;
+		wpath_t resumeFile = workingDir_/L"resume"/filename_;
 		
 		if (exists(resumeFile))
 			remove(resumeFile);
@@ -612,7 +609,7 @@ public:
 	
 	unsigned state() const { return state_; }
 	
-	void setTrackerLogin(wstring username, wstring password)
+	void setTrackerLogin(wstring_t username, wstring_t password)
 	{
 		trackerUsername_ = username;
 		trackerPassword_ = password;
@@ -620,14 +617,14 @@ public:
 		applyTrackerLogin();
 	}	
 	
-	pair<wstring, wstring> getTrackerLogin() const
+	std::pair<wstring_t, wstring_t> getTrackerLogin() const
 	{
 		return make_pair(trackerUsername_, trackerPassword_);
 	}
 	
-	const std::wstring& filename() const { return filename_; }
+	const wstring_t& filename() const { return filename_; }
 	
-	const std::wstring& originalFilename() const { return originalFilename_; }
+	const wstring_t& originalFilename() const { return originalFilename_; }
 	
 	const lbt::torrent_handle& handle() const { return handle_; }
 
@@ -674,7 +671,7 @@ public:
 		}
 	}
 
-	const wstring& saveDirectory() { return save_directory_; }
+	const wstring_t& saveDirectory() { return save_directory_; }
 	
     friend class boost::serialization::access;
     template<class Archive>
@@ -782,7 +779,7 @@ public:
 			
 			for(size_t i=0, e=files.size(); i<e; ++i)
 			{
-				wstring fullPath = hal::from_utf8(files[i].path.string());
+				wstring_t fullPath = hal::from_utf8(files[i].path.string());
 				size_t size = static_cast<size_t>(files[i].size);
 				
 				fileDetailsMemory_.push_back(FileDetail(fullPath, size, 0, filePriorities_[i], i));
@@ -804,20 +801,20 @@ public:
 		fileDetails = fileDetailsMemory_;
 	}
 	
-	void prepare(wpath filename, wpath saveDirectory)
+	void prepare(wpath_t filename, wpath_t saveDirectory)
 	{
 		mutex_t::scoped_lock l(mutex_);
 		
-		if (exists(filename)) 
+		if (fs::exists(filename)) 
 			metadata_ = haldecode(filename);
 		
 		extractNames(metadata_);			
 		
-		const wpath resumeFile = workingDir_/L"resume"/filename_;
-		const wpath torrentFile = workingDir_/L"torrents"/filename_;
+		const wpath_t resumeFile = workingDir_/L"resume"/filename_;
+		const wpath_t torrentFile = workingDir_/L"torrents"/filename_;
 		
 		event().post(shared_ptr<EventDetail>(new EventMsg(
-			wformat(L"File: %1%, %2%.") % resumeFile % torrentFile)));
+			wformat_t(L"File: %1%, %2%.") % resumeFile % torrentFile)));
 		
 		if (exists(resumeFile)) 
 			resumedata_ = haldecode(resumeFile);
@@ -844,7 +841,7 @@ public:
 				filename_ += L".torrent";
 		
 		event().post(shared_ptr<EventDetail>(new EventMsg(
-			wformat(L"Loaded names: %1%, %2%") % name_ % filename_)));
+			wformat_t(L"Loaded names: %1%, %2%") % name_ % filename_)));
 	}
 	
 	lbt::torrent_info& infoMemory()
@@ -964,8 +961,8 @@ private:
 		}
 	}
 	
-	static libtorrent::session* the_session_;
-	static wpath workingDir_;
+	static lbt::session* the_session_;
+	static wpath_t workingDir_;
 	
 	mutable mutex_t mutex_;
 	
@@ -978,17 +975,17 @@ private:
 	float ratio_;
 	bool resolve_countries_;
 	
-	std::wstring filename_;
-	std::wstring name_;
-	std::wstring save_directory_;
-	std::wstring originalFilename_;
+	wstring_t filename_;
+	wstring_t name_;
+	wstring_t save_directory_;
+	wstring_t originalFilename_;
 	lbt::torrent_handle handle_;	
 	
 	lbt::entry metadata_;
 	lbt::entry resumedata_;
 	
-	std::wstring trackerUsername_;	
-	std::wstring trackerPassword_;
+	wstring_t trackerUsername_;	
+	wstring_t trackerPassword_;
 	
 	boost::int64_t totalUploaded_;
 	boost::int64_t totalBase_;
@@ -998,8 +995,8 @@ private:
 	TransferTracker<boost::int64_t> uploaded_;
 	TransferTracker<boost::int64_t> downloaded_;
 	
-	boost::posix_time::ptime startTime_;
-	boost::posix_time::ptime finishTime_;
+	pt::ptime startTime_;
+	pt::ptime finishTime_;
 	DurationTracker activeDuration_;
 	DurationTracker seedingDuration_;
 	
@@ -1022,17 +1019,17 @@ typedef std::pair<std::string, TorrentInternalOld> TorrentPair;
 typedef shared_ptr<TorrentInternal> TorrentInternal_ptr;
 
 class TorrentManager : 
-	public CHaliteIni<TorrentManager>
+	public hal::IniBase<TorrentManager>
 {
 	typedef TorrentManager thisClass;
-	typedef CHaliteIni<thisClass> iniClass;
+	typedef hal::IniBase<thisClass> iniClass;
 
 	struct TorrentHolder
 	{
 		mutable TorrentInternal_ptr torrent;
 		
-		wstring filename;
-		wstring name;		
+		wstring_t filename;
+		wstring_t name;		
 		
 		TorrentHolder()
 		{}
@@ -1071,12 +1068,12 @@ class TorrentManager :
 			boost::multi_index::ordered_unique<
 				boost::multi_index::tag<byFilename>,
 				boost::multi_index::member<
-					TorrentHolder, wstring, &TorrentHolder::filename> 
+					TorrentHolder, wstring_t, &TorrentHolder::filename> 
 				>,
 			boost::multi_index::ordered_unique<
 				boost::multi_index::tag<byName>,
 				boost::multi_index::member<
-					TorrentHolder, wstring, &TorrentHolder::name> 
+					TorrentHolder, wstring_t, &TorrentHolder::name> 
 				>
 		>
 	> TorrentMultiIndex;
@@ -1098,7 +1095,7 @@ public:
 			TorrentInternal_ptr TIp(new TorrentInternal((*i).second));
 			
 			event().post(shared_ptr<EventDetail>(new EventMsg(
-				wformat(L"Converting %1%.") % TIp->name())));
+				wformat_t(L"Converting %1%.") % TIp->name())));
 			
 			torrents_.insert(TorrentHolder(TIp));
 		}
@@ -1116,7 +1113,7 @@ public:
 		return insert(TorrentHolder(t));
 	}
 
-	TorrentInternal_ptr getByFile(const wstring& filename)
+	TorrentInternal_ptr getByFile(const wstring_t& filename)
 	{
 		torrentByFilename::iterator it = torrents_.get<byFilename>().find(filename);
 		
@@ -1128,7 +1125,7 @@ public:
 		throw invalidTorrent(filename);
 	}
 	
-	TorrentInternal_ptr get(const wstring& name)
+	TorrentInternal_ptr get(const wstring_t& name)
 	{
 		torrentByName::iterator it = torrents_.get<byName>().find(name);
 		
@@ -1150,12 +1147,12 @@ public:
 		return torrents_.size();
 	}
 	
-	size_t erase(const wstring& name)
+	size_t erase(const wstring_t& name)
 	{
 		return torrents_.get<byName>().erase(name);
 	}
 	
-	bool exists(const wstring& name)
+	bool exists(const wstring_t& name)
 	{
 		torrentByName::iterator it = torrents_.get<byName>().find(name);
 		
@@ -1187,19 +1184,19 @@ void TorrentInternal::setConnectionLimit(int maxConn, int maxUpload)
 	applyConnectionLimit();
 }
 
-pair<int, int> TorrentInternal::getConnectionLimit()
+std::pair<int, int> TorrentInternal::getConnectionLimit()
 {
-	return make_pair(connections_, uploads_);
+	return std::make_pair(connections_, uploads_);
 }
 
 void TorrentInternal::setTransferSpeed(float download, float upload)
 {	
-	transferLimit_ = make_pair(download, upload);
+	transferLimit_ = std::make_pair(download, upload);
 	
 	applyTransferSpeed();
 }
 
-pair<float, float> TorrentInternal::getTransferSpeed()
+std::pair<float, float> TorrentInternal::getTransferSpeed()
 {
 	return transferLimit_;
 }
@@ -1223,7 +1220,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 		statusMemory_.next_announce = boost::posix_time::seconds(0);		
 	}
 	
-	wstring state;
+	wstring_t state;
 	
 	switch (state_)
 	{
@@ -1273,7 +1270,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 		}	
 	}
 	
-	boost::posix_time::time_duration td(boost::posix_time::pos_infin);
+	pt::time_duration td(pt::pos_infin);
 	
 	if (statusMemory_.download_payload_rate != 0)
 	{
@@ -1300,7 +1297,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 	boost::tuple<size_t, size_t, size_t, size_t> connections = updatePeers();		
 
 	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, state, hal::from_utf8(statusMemory_.current_tracker), 
-		pair<float, float>(statusMemory_.download_payload_rate, statusMemory_.upload_payload_rate),
+		std::pair<float, float>(statusMemory_.download_payload_rate, statusMemory_.upload_payload_rate),
 		progress_, statusMemory_.distributed_copies, statusMemory_.total_wanted_done, statusMemory_.total_wanted, uploaded_, payloadUploaded_,
 		downloaded_, payloadDownloaded_, connections, ratio_, td, statusMemory_.next_announce, activeDuration_, seedingDuration_, startTime_, finishTime_));
 

@@ -12,17 +12,14 @@
 #include <boost/archive/xml_woarchive.hpp>
 #include <boost/archive/xml_wiarchive.hpp>
 
-namespace fs = boost::filesystem;
-
-using fs::path;
-using fs::ifstream;
-using fs::ofstream;
+namespace hal 
+{
 
 template <class T>
-class CHaliteIni
+class IniBase
 {
 public:
-	CHaliteIni(boost::filesystem::path location, std::string name, hal::ini_file& ini = hal::ini()) :
+	IniBase(boost::filesystem::path location, std::string name, hal::ini_file& ini = hal::ini()) :
 		adapter_(location, ini),
 		name_(name)
 	{}
@@ -67,3 +64,6 @@ private:
 	hal::ini_adapter adapter_;
 	std::string name_;	
 };
+
+}
+

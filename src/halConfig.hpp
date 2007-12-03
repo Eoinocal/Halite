@@ -24,12 +24,12 @@ namespace hal
 {
 
 class Config :
-	public CHaliteIni<Config>,
+	public hal::IniBase<Config>,
 	private boost::noncopyable
 {
 public:
 	Config() :
-		CHaliteIni<Config>("globals/bittorrent", "Config"),
+		hal::IniBase<Config>("globals/bittorrent", "Config"),
 		maxConnections(200),
 		maxUploads(20),
 		downRate(-1),

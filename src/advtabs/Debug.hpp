@@ -62,11 +62,11 @@ private:
 
 class LogListViewCtrl :
 	public CHaliteSortListViewCtrl<LogListViewCtrl>,
-	public CHaliteIni<LogListViewCtrl>,
+	public hal::IniBase<LogListViewCtrl>,
 	private boost::noncopyable
 {
 protected:
-	typedef CHaliteIni<LogListViewCtrl> iniClass;
+	typedef hal::IniBase<LogListViewCtrl> iniClass;
 	typedef CHaliteSortListViewCtrl<LogListViewCtrl> listClass;
 
 	friend class listClass;
