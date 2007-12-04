@@ -8,6 +8,10 @@
 #define HALITE_VERSION					0,2,9,344
 #define HALITE_VERSION_STRING			"v 0.2.9 dev 344"
 
+#ifndef HAL_NA
+#define HAL_NA 40013
+#endif
+
 #define HAL_TORRENT_EXT_BEGIN 				80000
 #define LBT_EVENT_TORRENT_FINISHED			HAL_TORRENT_EXT_BEGIN + 1
 #define HAL_PEER_BAN_ALERT					HAL_TORRENT_EXT_BEGIN + 2
@@ -25,32 +29,11 @@
 #define HAL_LISTEN_SUCCEEDED_ALERT			HAL_TORRENT_EXT_BEGIN + 14
 #define HAL_LISTEN_FAILED_ALERT				HAL_TORRENT_EXT_BEGIN + 15
 #define HAL_IPFILTER_ALERT					HAL_TORRENT_EXT_BEGIN + 16
+#define HAL_INCORRECT_ENCODING_LEVEL		HAL_TORRENT_EXT_BEGIN + 17
+#define HAL_INCORRECT_CONNECT_POLICY    	HAL_TORRENT_EXT_BEGIN + 18
+#define HAL_PEER_ALERT						HAL_TORRENT_EXT_BEGIN + 19
 
 #ifndef RC_INVOKED
-
-//#include "stdAfx.hpp"
-#include <winsock2.h>
-#include <shellapi.h>
-#include <atlbase.h>
-#include <atlapp.h>
-
-extern CAppModule _Module;
-#define _ATL_USE_DDX_FLOAT
-
-#include <atlwin.h>
-#include <atlframe.h>
-#include <atlmisc.h>
-#include <atlcrack.h>
-#include <atldlgs.h>
-#include <atlsplit.h>
-#include <atlctrls.h>
-#include <atlctrlw.h>
-#include <atlctrlx.h>
-#include <atlddx.h>
-#include <atlscrl.h>
-
-#include "AtlAutosizeDlg.h"
-#include "global/wtl_app.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -100,10 +83,12 @@ extern CAppModule _Module;
 #include <libtorrent/extensions/metadata_transfer.hpp>
 #include <libtorrent/extensions/ut_pex.hpp>
 
-#include "halTorrent.hpp"
-#include "halEvent.hpp"
+#include "global/wtl_app.hpp"
 #include "global/string_conv.hpp"
 #include "global/ini_adapter.hpp"
+
+#include "halTorrent.hpp"
+#include "halEvent.hpp"
 
 #define foreach BOOST_FOREACH
 
@@ -391,7 +376,7 @@ public:
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wformat_t(hal::app().res_wstr(HAL_PEERALERT))
+					wformat_t(hal::app().res_wstr(HAL_PEER_ALERT))
 						% hal::from_utf8_safe(a.msg())
 						% hal::from_utf8_safe(a.ip.address().to_string()))
 			)	);				

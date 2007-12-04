@@ -25,7 +25,6 @@
 #define IDR_APP_ICON                    114
 #define IDD_THEMETEST                   115
 #define IDD_DEBUGDIALOG                 116
-#define IDD_PROGRESS                    117
 #define IDD_CONFIGTORRENT               118
 #define IDD_ADVOVERVIEW                 119
 #define IDD_ADVTRACKER                  120
@@ -109,9 +108,7 @@
 #define IDC_GENERAL_TRAY                1045
 #define IDC_RADIO1                      1046
 #define IDC_BC_DHT                      1048
-#define IDC_PROG_PROGRESS               1048
 #define IDC_BC_FILTERCHECK              1049
-#define IDC_PROG_CANCEL                 1049
 #define IDC_BC_FILTERLOAD               1052
 #define IDC_BC_FILTERCLEAR              1053
 #define IDC_BC_PROXYIP                  1055
@@ -180,11 +177,8 @@
 #define HAL_EVENTWARNING				39999
 #define ID_TRAY_EXIT                    40009
 #define HAL_EVENTCRITICAL               40010
-#define HAL_PEERALERT                   40011
 #define HAL_EVENT_XMLEXP                40012
 #define IDS_NA                          40013
-#define HAL_EVENT_TORRENTEXP            40014
-#define HAL_EVENT_INVTORRENT            40015
 #define HAL_DOWNLOAD_SUMMARY            40016
 #define HAL_DHT_ON                      40017
 #define HAL_DHT_OFF                     40018
@@ -199,14 +193,6 @@
 #define HAL_DEBUG_LISTVIEW_COLUMNS      40027
 #define HAL_TRACKER_LISTVIEW_COLUMNS	40028
 #define HAL_DIALOGPEER_LISTVIEW_COS     40029
-#define HAL_EVENT_EXP                   40030
-#define HAL_EVENT_XML_EXP               40031
-#define HAL_EVENT_UNICODE_EXP           40032
-#define HAL_EVENT_DEBUG                 40036
-#define HAL_EVENT_UNCLASSIFIED          40033
-#define HAL_EVENT_PEER                  40034
-#define HAL_EVENT_TRACKER               40035
-#define HAL_TORRENT_METADATA            40060
 #define HAL_DIALOGPEER_LISTVIEW_ADV		40070
 #define HAL_ABOUT_BOX					40080
 #define HAL_FOLDER_SELECT				40081
@@ -214,8 +200,6 @@
 #define HAL_PEERS_TAB				    40083
 #define HAL_TRACKER_TAB				    40084
 #define HAL_DEBUG_TAB				    40085
-#define HAL_INCORRECT_ENCODING_LEVEL	40086
-#define HAL_INCORRECT_CONNECT_POLICY    40087
 #define HAL_LISTVIEW_DEFAULTS			40088
 #define HAL_DEBUG_LISTVIEW_DEFAULTS		40089
 #define HAL_TRACKER_LISTVIEW_DEFAULTS	40090
@@ -284,5 +268,8 @@
 #define IDC_CHECK_COMPACT				40201
 #define IDC_CHECK_PAUSED				40202
 #define HAL_INF							40203
-#define HAL_NA							IDS_NA
+
+#ifndef HAL_NA
+#define HAL_NA IDS_NA
+#endif						
 

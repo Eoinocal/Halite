@@ -6,10 +6,10 @@ use-project /libtorrent : $(/libtorrent) ;
 #use-project /stlsoft : $(/stlsoft) ;
 
 SOURCES =
+	global/wtl_app.cpp
 	halTorrent.cpp
 	global/logger.cpp
 #	global/string_conv.cpp
-	global/wtl_app.cpp
 	global/ini.cpp
 	global/ini_adapter.cpp
 	global/tinyxml.cpp

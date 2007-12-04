@@ -6,7 +6,7 @@
 
 #pragma once
 
-#define HAL_TORRENT_INT_BEGIN 				40500
+#define HAL_TORRENT_INT_BEGIN 				80500
 #define HAL_PEER_INTERESTING            	HAL_TORRENT_INT_BEGIN + 1
 #define HAL_PEER_CHOKED             		HAL_TORRENT_INT_BEGIN + 2
 #define HAL_PEER_REMOTE_INTERESTING			HAL_TORRENT_INT_BEGIN + 3
@@ -30,6 +30,7 @@
 #define HAL_TORRENT_PAUSED					HAL_TORRENT_INT_BEGIN + 21
 #define HAL_TORRENT_STOPPING				HAL_TORRENT_INT_BEGIN + 22
 #define HAL_TORRENT_PAUSING					HAL_TORRENT_INT_BEGIN + 23
+#define HAL_TORRENT_METADATA            	HAL_TORRENT_INT_BEGIN + 24
 
 #ifndef RC_INVOKED
 
@@ -1313,7 +1314,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 			new EventTorrentException(Event::critical, Event::torrentException, e.what(), to_utf8(name_), "getTorrentDetail_ptr")));
 	}
 	
-	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, app().res_wstr(HAL_TORRENT_STOPPED),  app().res_wstr(IDS_NA)));
+	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, app().res_wstr(HAL_TORRENT_STOPPED), app().res_wstr(HAL_NA)));
 }
 
 } // namespace hal

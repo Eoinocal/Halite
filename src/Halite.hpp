@@ -49,7 +49,7 @@ public:
 	
 	bool logToFile() { return logToFile_; }
 	bool logDebug() { return logDebug_; }
-	const wstring& dll() { return dll_; }
+	const std::wstring& dll() { return dll_; }
 	const int logListLen() { return logListLen_; }
 	
 	friend class GeneralOptions;
@@ -58,7 +58,7 @@ public:
 	friend int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 	
 private:
-	wstring dll_;
+	std::wstring dll_;
 	bool oneInst;
 	bool logDebug_;
 	bool showMessage;

@@ -148,8 +148,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		CMessageLoop theLoop;
 		_Module.AddMessageLoop(&theLoop);
 			
-			hal::app().set_initial_hinstance(hInstance);
-			if (halite().dll() != L"") hal::app().set_res_dll(halite().dll());
+			if (halite().dll() != L"") hal::app().res_set_dll(halite().dll());
 			
 			HaliteWindow wndMain(WMU_ARE_YOU_ME);
 			if (wndMain.CreateEx() == NULL)

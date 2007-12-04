@@ -6,11 +6,11 @@
 
 #pragma once
 
-#include "global/ini_adapter.hpp"
-#include "halEvent.hpp"
-
 #include <boost/archive/xml_woarchive.hpp>
 #include <boost/archive/xml_wiarchive.hpp>
+
+#include "global/ini_adapter.hpp"
+#include "halEvent.hpp"
 
 namespace hal 
 {

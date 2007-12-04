@@ -1,10 +1,17 @@
 
-//         Copyright Eóin O'Callaghan 2006 - 2007.
+//         Copyright EÃ³in O'Callaghan 2006 - 2007.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
+
+#define IDD_PROGRESS_BEGIN				1900
+#define IDD_PROGRESS                    1901
+#define IDC_PROG_CANCEL                 IDD_PROGRESS_BEGIN + 2
+#define IDC_PROG_PROGRESS               IDD_PROGRESS_BEGIN + 3
+
+#ifndef RC_INVOKED
 
 #include <boost/function.hpp>
 #include "halTorrent.hpp"
@@ -76,3 +83,5 @@ private:
 	bool stop_;
 	CProgressBarCtrl prog_;
 };
+
+#endif // RC_INVOKED

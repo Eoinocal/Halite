@@ -21,38 +21,29 @@
 namespace hal
 {
 
+class app_impl;
+
 class app_module
 {
 public:	
-	const std::wstring& exe_string() const { return exe_string_; }
-	const boost::filesystem::wpath& exe_path() const { return exe_path_; }
-	const boost::filesystem::wpath& initial_path() const { return initial_path_; }
-	const boost::filesystem::wpath& working_directory() const { return working_directory_; }
+	const std::wstring& exe_string() const;
+	const boost::filesystem::wpath& exe_path() const;
+	const boost::filesystem::wpath& initial_path() const;
+	const boost::filesystem::wpath& working_directory() const;
 	
-	const std::vector<std::wstring>& command_args() const { return command_args_; }
+	const std::vector<std::wstring>& command_args() const;
 	
-	std::wstring res_wstr(unsigned uID);
-	void set_res_dll(std::wstring dll);
-	void revert_res();
-	std::pair<void*,size_t> find_lock_res(unsigned name, unsigned type);
-	
-	void set_initial_hinstance(HINSTANCE instance) { instance_ = instance; }
+	std::wstring res_wstr(unsigned uID);	
+	void res_set_dll(std::wstring dll);
+	void res_revert();
+	std::pair<void*,size_t> res_find_lock(unsigned name, unsigned type);
 	
 	friend app_module& app();
 	
 private:
+	boost::scoped_ptr<app_impl> pimpl;
+	
 	app_module();
-	
-	HMODULE hmod_;
-	HINSTANCE instance_;
-	std::wstring exe_string_;
-	std::wstring res_dll_;
-	
-	boost::filesystem::wpath exe_path_;
-	boost::filesystem::wpath initial_path_;
-	boost::filesystem::wpath working_directory_;
-	
-	std::vector<std::wstring> command_args_;	
 };
 
 app_module& app();

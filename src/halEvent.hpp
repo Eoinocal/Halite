@@ -6,6 +6,17 @@
 
 #pragma once
 
+#define HAL_EVENT_BEGIN 				81000
+#define HAL_EVENT_EXP                   HAL_EVENT_BEGIN + 1
+#define HAL_EVENT_XML_EXP               HAL_EVENT_BEGIN + 2
+#define HAL_EVENT_UNICODE_EXP           HAL_EVENT_BEGIN + 3
+#define HAL_EVENT_DEBUG                 HAL_EVENT_BEGIN + 4
+#define HAL_EVENT_UNCLASSIFIED          HAL_EVENT_BEGIN + 5
+#define HAL_EVENT_PEER                  HAL_EVENT_BEGIN + 6
+#define HAL_EVENT_TRACKER               HAL_EVENT_BEGIN + 7
+#define HAL_EVENT_TORRENTEXP            HAL_EVENT_BEGIN + 8
+#define HAL_EVENT_INVTORRENT            HAL_EVENT_BEGIN + 9
+
 #ifndef RC_INVOKED
 
 #include <string>
@@ -14,9 +25,10 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/smart_ptr.hpp>
 
-#include "halTorrent.hpp"
+#include "global/wtl_app.hpp"
 #include "global/string_conv.hpp"
-#include "../res/resource.h"
+
+#include "halTorrent.hpp"
 
 namespace hal 
 {
