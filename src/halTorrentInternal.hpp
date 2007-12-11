@@ -781,7 +781,7 @@ public:
 			for(size_t i=0, e=files.size(); i<e; ++i)
 			{
 				wstring_t fullPath = hal::from_utf8(files[i].path.string());
-				size_t size = static_cast<size_t>(files[i].size);
+				boost::int64_t size = static_cast<boost::int64_t>(files[i].size);
 				
 				fileDetailsMemory_.push_back(FileDetail(fullPath, size, 0, filePriorities_[i], i));
 			}	

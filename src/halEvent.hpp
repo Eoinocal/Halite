@@ -55,13 +55,13 @@ public:
 	static std::wstring eventLevelToStr(eventLevel);	
 	void post(boost::shared_ptr<EventDetail> event);
 	
-	boost::signals::connection attach(boost::function<void (shared_ptr<EventDetail>)> fn)
+	boost::signals::connection attach(boost::function<void (boost::shared_ptr<EventDetail>)> fn)
 	{
 		return event_signal_.connect(fn);
 	}
 	
 private:
-	boost::signal<void (shared_ptr<EventDetail>)> event_signal_;
+	boost::signal<void (boost::shared_ptr<EventDetail>)> event_signal_;
 };
 
 Event& event();
@@ -301,7 +301,6 @@ class EventSession : public EventDetail
 {
 
 };
-
 
 }// namespace hal
 

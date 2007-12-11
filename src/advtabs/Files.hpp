@@ -103,7 +103,7 @@ public:
 		virtual std::wstring print(dataClass& dc) 
 		{
 			return (wformat(L"%1$.2fMB") % 
-				(static_cast<float>(dc.size)/(1024*1024))).str(); 
+				(static_cast<double>(dc.size)/(1024*1024))).str(); 
 		}		
 	};
 	

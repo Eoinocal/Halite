@@ -144,12 +144,12 @@ private:
 	bool enableIPFilter;
 	
 	bool enableProxy;
-	wstring proxyHost;
+	std::wstring proxyHost;
 	int proxyPort;
-	wstring proxyUsername;
-	wstring proxyPassword;
+	std::wstring proxyUsername;
+	std::wstring proxyPassword;
 	
-	wstring defaultSaveFolder;
+	std::wstring defaultSaveFolder;
 	bool savePrompt;
 
     bool enablePe;

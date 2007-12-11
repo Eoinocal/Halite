@@ -10,6 +10,18 @@
 #include <vector>
 #include <set>
 
+#include <boost/foreach.hpp>
+#include <boost/format.hpp>
+#include <boost/array.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/bind.hpp>
+
+#include <boost/thread/thread.hpp>
+#include <boost/thread/recursive_mutex.hpp>
+#include <boost/smart_ptr.hpp>
+
+#include <boost/noncopyable.hpp>
+
 #include <boost/tuple/tuple.hpp>
 #include <boost/signal.hpp>
 #include <boost/optional.hpp>
@@ -69,12 +81,12 @@ struct PeerDetail
 	std::wstring status;
 };
 
-typedef shared_ptr<PeerDetail> PeerDetail_ptr;
+typedef boost::shared_ptr<PeerDetail> PeerDetail_ptr;
 typedef std::vector<PeerDetail> PeerDetails;
 
 struct FileDetail
 {
-	FileDetail(boost::filesystem::wpath p, size_t s=0, float pg=0, int pr=1, size_t o=0, unsigned t=FileDetail::file) :
+	FileDetail(boost::filesystem::wpath p, boost::int64_t s=0, float pg=0, int pr=1, size_t o=0, unsigned t=FileDetail::file) :
 		branch(p.branch_path()),
 		filename(p.leaf()),
 		type(t),
@@ -105,7 +117,7 @@ struct FileDetail
 	boost::filesystem::wpath branch;
 	std::wstring filename;
 	unsigned type;
-	size_t size;
+	boost::int64_t size;
 	float progress;
 	int priority;
 	

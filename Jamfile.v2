@@ -5,9 +5,15 @@ use-project /libtorrent : $(/libtorrent) ;
 #use-project /sqlite3x : $(/sqlite3x) ;
 #use-project /stlsoft : $(/stlsoft) ;
 
+LIB_SOURCES =
+	halTorrent.cpp
+	halConfig.cpp
+	halEvent.cpp
+#	halXmlRpc.cpp
+	;
+
 SOURCES =
 	global/wtl_app.cpp
-	halTorrent.cpp
 	global/logger.cpp
 #	global/string_conv.cpp
 	global/ini.cpp
@@ -21,9 +27,6 @@ SOURCES =
 	HaliteDialog.cpp
 	AdvHaliteDialog.cpp
 	ConfigOptions.cpp
-	halConfig.cpp
-	halEvent.cpp
-#	halXmlRpc.cpp
 	NTray.cpp
 	UxthemeWrapper.cpp
 	
@@ -58,7 +61,6 @@ LIBS =
 #	/sqlite3x//sqlite3x/<link>static
 #	/asio
 #	/stlsoft
-	
 	comctl32
 	user32
 	kernel32
@@ -70,15 +72,23 @@ LIBS =
 
 exe Halite
 	:
+	./src/$(LIB_SOURCES)
 	./src/$(SOURCES)
 	./res/$(RESOURCES)
-	: 	
+	: 
 	<library>$(LIBS)
+	<library>/boost/$(BOOST_LIBS)/<link>static
+	<library>/libtorrent//torrent/<link>static
+#	<library>/Halite//libHalite/<link>static
+	<library>/wtl
+#	<library>/sqlite3x//sqlite3x/<link>static
+#	<library>/asio
+#	<library>/stlsoft
 	
 	<pch>on
 	<pch-source>./src/stdAfx.cpp
 	<pch-header>./src/stdAfx.hpp
-	
+
 	<runtime-link>static
 	<threading>multi
 	<asynch-exceptions>on
