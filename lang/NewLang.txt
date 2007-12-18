@@ -1,0 +1,196 @@
+"English" --->  ??? 
+"MS Shell Dlg" --->  ??? 
+"Torrent" --->  ??? 
+"Tracker" --->  ??? 
+"" --->  ??? 
+"msctls_progress32" --->  ??? 
+"N/A" --->  ??? 
+"Time left:" --->  ??? 
+"Connection limits:" --->  ??? 
+"Transfer rates (KB/s):" --->  ??? 
+"Total" --->  ??? 
+"Up" --->  ??? 
+"Down" --->  ??? 
+"Update in:" --->  ??? 
+"Downloaded %1%MB, Uploaded %2%MB, Ratio %3%." --->  ??? 
+"Ratio (this session):" --->  ??? 
+"Ratio:" --->  ??? 
+"BitTorrent" --->  ??? 
+"Global Options" --->  ??? 
+"Open a (single) port between : " --->  ??? 
+"Enable DHT. (Note neither DHT nor PEX will apply to private torrents)" --->  ??? 
+"Enable IP filtering." --->  ??? 
+"Import ipfilter.dat" --->  ??? 
+"Clear IP database" --->  ??? 
+"Proxy Host/IP : " --->  ??? 
+"Use a proxy." --->  ??? 
+"Port : " --->  ??? 
+"Username : " --->  ??? 
+"Password : " --->  ??? 
+"to" --->  ??? 
+"Select a (TCP) port (or range of ports) to listen for incomming connections." --->  ??? 
+"Port (UDP) : " --->  ??? 
+"Remote Control" --->  ??? 
+"Remote Control Options" --->  ??? 
+"Enable Remote Control" --->  ??? 
+"Port to listen on : " --->  ??? 
+"*** Disabled ***" --->  ??? 
+"Check1" --->  ??? 
+"Button1" --->  ??? 
+"Radio1" --->  ??? 
+"Static" --->  ??? 
+"Halite Debug Dialog" --->  ??? 
+"MS Sans Serif" --->  ??? 
+"Halite importing IP ranges..." --->  ??? 
+"Cancel" --->  ??? 
+"Torrents" --->  ??? 
+"Global Limits" --->  ??? 
+"Total max connections :" --->  ??? 
+"Total upload slots :" --->  ??? 
+"Download Rate (KB/s) :" --->  ??? 
+"Upload Rate (KB/s) :" --->  ??? 
+"Torrent Defaults" --->  ??? 
+"These options set global maximums which will always be honoured." --->  ??? 
+"These options specify the default limits applied to new torrents." --->  ??? 
+"Default save folder : " --->  ??? 
+"..." --->  ??? 
+"Prompt for alternate save folder." --->  ??? 
+"Halite shutting down..." --->  ??? 
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." --->  ??? 
+"Show this message in future" --->  ??? 
+"Create new torrent" --->  ??? 
+"Save" --->  ??? 
+"Select a file or directory to construct the torrent." --->  ??? 
+"Enter the tracker URLs for the torrent." --->  ??? 
+"Have Halite acts a DHT node." --->  ??? 
+"Add" --->  ??? 
+"Pause" --->  ??? 
+"Reannounce" --->  ??? 
+"Remove" --->  ??? 
+"SysListView32" --->  ??? 
+"Name:" --->  ??? 
+"Status:" --->  ??? 
+"Tracker:" --->  ??? 
+"Torrent connection limits:" --->  ??? 
+"Torrent transfer rates (KB/s):" --->  ??? 
+"Completed:" --->  ??? 
+"About" --->  ??? 
+"Program Information" --->  ??? 
+"Halite is a BitTorrent client based on the libtorrent library from Rasterbar.com. The program is written in C++ relying on the Boost libraries and WTL. It is open sourced under a MIT and/or Boost software licence." --->  ??? 
+"This project has only been possible thanks to the excellent work others. I'd like to acknowledge some of those people." --->  ??? 
+"nudone (Nick Pearson) - wtfcody.com / nudsville.com - Designed the Icon." --->  ??? 
+"Arvid Norberg - www.rasterbar.com - Author of the libtorrent library." --->  ??? 
+"Christopher Kohlhoff - asio.sourceforge.net - Author of Boost.ASIO." --->  ??? 
+"SysTabControl32" --->  ??? 
+"General" --->  ??? 
+"Allow only one instance to run." --->  ??? 
+"General Settings" --->  ??? 
+"Advanced GUI" --->  ??? 
+"Minimize to tray." --->  ??? 
+"List of Trackers." --->  ??? 
+"Send login info to trackers." --->  ??? 
+"Apply" --->  ??? 
+"Reset" --->  ??? 
+"Log to file." --->  ??? 
+"Log debug events." --->  ??? 
+"Add New Tracker" --->  ??? 
+"MS Shell Dlg 2" --->  ??? 
+"OK" --->  ??? 
+"Tracker URL" --->  ??? 
+"Tier" --->  ??? 
+"_POPUP_" --->  ??? 
+"Open &Halite" --->  ??? 
+"&Pause All" --->  ??? 
+"&Resume All" --->  ??? 
+"E&xit" --->  ??? 
+"Resume" --->  ??? 
+"Stop" --->  ??? 
+"Torrent File" --->  ??? 
+"Torrent and Data" --->  ??? 
+"New" --->  ??? 
+"Edit" --->  ??? 
+"Delete" --->  ??? 
+"Halite.ico" --->  ??? 
+"toolbar.bmp" --->  ??? 
+"StringFileInfo" --->  ??? 
+"180904b0" --->  ??? 
+"Comments" --->  ??? 
+"libTorrrent based client." --->  ??? 
+"CompanyName" --->  ??? 
+"BinaryNotions.com" --->  ??? 
+"FileDescription" --->  ??? 
+"Halite BitTorrent Client" --->  ??? 
+"FileVersion" --->  ??? 
+"InternalName" --->  ??? 
+"Halite" --->  ??? 
+"LegalCopyright" --->  ??? 
+"(C) Eoin O'Callaghan 2007" --->  ??? 
+"OriginalFilename" --->  ??? 
+"Halite.exe" --->  ??? 
+"ProductName" --->  ??? 
+"ProductVersion" --->  ??? 
+"VarFileInfo" --->  ??? 
+"Translation" --->  ??? 
+"N" --->  ??? 
+"O" --->  ??? 
+"S" --->  ??? 
+"P" --->  ??? 
+"Z" --->  ??? 
+"X" --->  ??? 
+"C" --->  ??? 
+"V" --->  ??? 
+"(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
+"CAPS" --->  ??? 
+"0000 DHT node(s)" --->  ??? 
+"Filtering 0000000 ranges." --->  ??? 
+"The BitTorrent session could not start. Try selecting another port in the settings." --->  ??? 
+"DHT session could not start. Try selecting another port in the settings." --->  ??? 
+"Select a directory to save the files to or cancel to not download torrent at all." --->  ??? 
+"None" --->  ??? 
+"Debug" --->  ??? 
+"Info" --->  ??? 
+"Critical" --->  ??? 
+"Libtorrent Peer Alert: %1%." --->  ??? 
+"Xml Exception (%1%) with %2%." --->  ??? 
+"Torrent (%1%) exception caught; %2% from %3%." --->  ??? 
+"Invalid torrent (%1%) from %2%." --->  ??? 
+"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
+"%1% DHT node(s)" --->  ??? 
+"DHT disabled" --->  ??? 
+"Filtering %1% range(s)" --->  ??? 
+"IP filter disabled" --->  ??? 
+"Standard exception (%1%) thrown from %2%." --->  ??? 
+"(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
+"Halite not listening!" --->  ??? 
+"Port %1% open" --->  ??? 
+"Name;Status;Completed;Download;Upload;Peers;Seeds;ETA;Copies" --->  ??? 
+"Time;Message;Severity" --->  ??? 
+"Tracker;Tier" --->  ??? 
+"Peer;Download;Upload;Type;Client" --->  ??? 
+"Peer;Download;Upload;Type;Client;Status" --->  ??? 
+"Exception caught; %1%, from %2%." --->  ??? 
+"XML exception: %1%." --->  ??? 
+"Unicode exception: %1%." --->  ??? 
+"Bittorrent Event: %1%." --->  ??? 
+"Peer Event: %1%." --->  ??? 
+"Tracker Event: %1%." --->  ??? 
+"Debug Event: %1%." --->  ??? 
+"Interesting" --->  ??? 
+"Choked" --->  ??? 
+"Interested in us" --->  ??? 
+"Has choked us" --->  ??? 
+"Supports extensions" --->  ??? 
+"Local connection" --->  ??? 
+"Handshake" --->  ??? 
+"Connecting" --->  ??? 
+"Queued" --->  ??? 
+"Queued for Checking" --->  ??? 
+"Checking Files" --->  ??? 
+"Connecting to Tracker" --->  ??? 
+"Downloading" --->  ??? 
+"Finished" --->  ??? 
+"Seeding" --->  ??? 
+"Allocating" --->  ??? 
+"Stopped" --->  ??? 
+"Paused" --->  ??? 
+"Downloading Metadata" --->  ??? 
