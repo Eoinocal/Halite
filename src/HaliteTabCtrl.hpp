@@ -33,12 +33,12 @@ public:
 	void SetCurrentPage(unsigned index)
 	{
 		if (currentPage_)
-			::ShowWindow(currentPage_, false);
+			::ShowWindow(currentPage_, SW_HIDE);
 
 		if (!pages_.empty())
 		{
 			currentPage_ = pages_[index];
-			::ShowWindow(currentPage_, true);
+			::ShowWindow(currentPage_, SW_SHOW);
 
 			RECT rect;
 			GetClientRect(&rect);

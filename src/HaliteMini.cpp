@@ -19,7 +19,8 @@
 #include "HaliteWindowMini.hpp"
 #include "SplashDialog.hpp"
 
-#include "HaliteMini.hpp"
+#define HALITE_MINI
+#include "Halite.hpp"
 
 Halite& halite()
 {
@@ -148,8 +149,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		CMessageLoop theLoop;
 		_Module.AddMessageLoop(&theLoop);
 			
-			hal::app().set_initial_hinstance(hInstance);
-			if (halite().dll() != L"") hal::app().set_res_dll(halite().dll());
+			if (halite().dll() != L"") hal::app().res_set_dll(halite().dll());
 			
 			HaliteWindow wndMain(WMU_ARE_YOU_ME);
 			if (wndMain.CreateEx() == NULL)
@@ -161,6 +161,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				wndMain.ProcessFile(hal::app().command_args().front().c_str());
 			
 			wndMain.SetIcon(LoadIcon(hInstance, MAKEINTRESOURCE(IDR_APP_ICON)), false);	
+			wndMain.ShowWindow(nCmdShow);
 			
 			nRet = theLoop.Run();				
 		

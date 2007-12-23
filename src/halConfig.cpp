@@ -10,12 +10,7 @@
 
 #include "halConfig.hpp"
 //#include "ProgressDialog.hpp"
-
-#ifndef HALITE_MINI
-#	include "Halite.hpp"
-#else
-#	include "HaliteMini.hpp"
-#endif
+#include "Halite.hpp"
 
 namespace hal
 {

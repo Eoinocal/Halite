@@ -463,16 +463,10 @@ public:
 	
 	void addToSession(bool paused = false)
 	{
-		mutex_t::scoped_lock l(mutex_);
-		
-		event().post(shared_ptr<EventDetail>(
-			new EventMsg(wformat_t(L"    +-> %1%.") % paused)));	
+		mutex_t::scoped_lock l(mutex_);	
 		
 		if (!in_session_ && the_session_) 
-		{
-			event().post(shared_ptr<EventDetail>(
-				new EventMsg(wformat_t(L"    +-> in session."))));	
-			
+		{			
 			string_t dir = to_utf8(save_directory_);
 			
 			lbt::storage_mode_t storage = lbt::storage_mode_sparse;
@@ -491,8 +485,6 @@ public:
 				
 			applySettings();
 		}	
-			event().post(shared_ptr<EventDetail>(
-				new EventMsg(wformat_t(L"    +-> leaving addToSsession."))));
 	}
 	
 	void removeFromSession()

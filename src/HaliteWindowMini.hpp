@@ -7,6 +7,7 @@
 #pragma once
 
 #define HALITE_MINI
+#include "../res/resource.h"
 
 #include "stdAfx.hpp"
 #include "DropFileTarget.h"
@@ -46,9 +47,9 @@ class HaliteWindow :
 	public CFrameWindowImpl<HaliteWindow>,
 	public CUpdateUI<HaliteWindow>,
 	public CDropFileTarget<HaliteWindow>,
-	public CMessageFilter,
+//	public CMessageFilter,
 	public CIdleHandler,
-	public ChalIni<HaliteWindow>,
+	public hal::IniBase<HaliteWindow>,
 	private boost::noncopyable
 {
 public:
@@ -127,9 +128,9 @@ public:
 	LRESULT OnAreYouMe(UINT, WPARAM, LPARAM, BOOL&);
 	
 protected:
-	typedef ChalIni<HaliteWindow> iniClass;
+	typedef hal::IniBase<HaliteWindow> iniClass;
 
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
+//	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 	virtual BOOL OnIdle()
 	{

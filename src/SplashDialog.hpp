@@ -9,7 +9,7 @@
 #ifndef HALITE_MINI
 #	include "Halite.hpp"
 #else
-#	include "HaliteMini.hpp"
+#	include "Halite.hpp"
 #endif
 
 #include "halTorrent.hpp"

@@ -35,20 +35,21 @@ public:
 	{
 		if (show)
 		{
-		//	hal::event().post(shared_ptr<hal::EventDetail>(
-		//		new hal::EventMsg(L"True")));
 			connection_.unblock();
 		}
 		else
 		{
-		//	hal::event().post(shared_ptr<hal::EventDetail>(
-		//		new hal::EventMsg(L"False")));
 			connection_.block();
 		}
+		
+		SetMsgHandled(false);
 	}
 	
 	void InitializeHalDialogBase()
-	{}
+	{
+		TBase* pT = static_cast<TBase*>(this);	
+		OnShow(pT->IsWindowVisible(), 0);
+	}
 	
 	HaliteListViewCtrl& torrentsList() 
 	{ 
@@ -74,7 +75,7 @@ public:
 			pT->focusChanged(focusedTorrent_ = focused);
 			
 			hal::event().post(shared_ptr<hal::EventDetail>(
-				new hal::EventMsg(L"focusChanged 3")));
+				new hal::EventMsg(L"Adv dialog focusChanged")));
 		}
 		else
 			focusedTorrent_ = focused;
@@ -100,7 +101,6 @@ public:
 	}
 	
 protected:
-//	wstring current_torrent_name_;
 	hal::TorrentDetail_ptr focusedTorrent_;
 
 private:

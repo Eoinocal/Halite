@@ -19,12 +19,12 @@
 #include "../res/resource.h"
 	
 class Halite :
-	public ChalIni<Halite>,
+	public hal::IniBase<Halite>,
 	private boost::noncopyable
 {
 public:
 	Halite() :
-		ChalIni<Halite>("globals/halite", "Halite"),
+		hal::IniBase<Halite>("globals/halite", "Halite"),
 		oneInst(false),
 		logDebug_(false),
 		showMessage(true),
