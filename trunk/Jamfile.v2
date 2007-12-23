@@ -23,6 +23,8 @@ SOURCES =
 	global/tinyxmlparser.cpp
 	
 	stdAfx.cpp
+	Halite.cpp
+	HaliteWindow.cpp
 	HaliteListView.cpp
 	HaliteDialog.cpp
 	AdvHaliteDialog.cpp
@@ -38,8 +40,21 @@ SOURCES =
 	advtabs/Debug.cpp
 	;
 	
-	SOURCES += Halite.cpp ;
-	SOURCES += HaliteWindow.cpp ;
+SOURCES_MINI =
+	global/wtl_app.cpp
+	global/logger.cpp
+#	global/string_conv.cpp
+	global/ini.cpp
+	global/ini_adapter.cpp
+	global/tinyxml.cpp
+	global/tinyxmlerror.cpp
+	global/tinyxmlparser.cpp
+	
+	stdAfx.cpp
+	Halite.cpp
+	HaliteWindowMini.cpp
+	NTray.cpp
+	;
 	
 RESOURCES =
 	Halite.rc
@@ -72,8 +87,8 @@ LIBS =
 
 exe Halite
 	:
-	./src/$(LIB_SOURCES)
 	./src/$(SOURCES)
+	./src/$(LIB_SOURCES)
 	./res/$(RESOURCES)
 	: 
 	<library>$(LIBS)
@@ -109,32 +124,32 @@ exe Halite
 	<linkflags>/SUBSYSTEM:WINDOWS
 	;
 
-exe ClientTest
-	:
-	./src/test/client_test.cpp
-	: 	
-	<library>$(LIBS)
-	<library>/boost/program_options//boost_program_options/<link>static
-	
-	<runtime-link>static
-	<threading>multi
-	<asynch-exceptions>on
-	
-	<variant>release:<linkflags>/OPT:ICF=5
-	<variant>release:<linkflags>/OPT:REF
-	<variant>release:<warnings>off
-	<variant>release:<define>NDEBUG
-	
-	<define>_UNICODE
-	<define>UNICODE
-	<define>WIN32
-	<define>_WINDOWS	
-	<define>_CRT_SECURE_NO_DEPRECATE
-	<define>_SCL_SECURE_NO_DEPRECATE
-	<define>_CRT_SECURE_NO_WARNINGS
-	
-	<linkflags>/SUBSYSTEM:CONSOLE
-	;
+#exe ClientTest
+#	:
+#	./src/test/client_test.cpp
+#	: 	
+#	<library>$(LIBS)
+#	<library>/boost/program_options//boost_program_options/<link>static
+#	
+#	<runtime-link>static
+#	<threading>multi
+#	<asynch-exceptions>on
+#	
+#	<variant>release:<linkflags>/OPT:ICF=5
+#	<variant>release:<linkflags>/OPT:REF
+#	<variant>release:<warnings>off
+#	<variant>release:<define>NDEBUG
+#	
+#	<define>_UNICODE
+#	<define>UNICODE
+#	<define>WIN32
+#	<define>_WINDOWS	
+#	<define>_CRT_SECURE_NO_DEPRECATE
+#	<define>_SCL_SECURE_NO_DEPRECATE
+#	<define>_CRT_SECURE_NO_WARNINGS
+#	
+#	<linkflags>/SUBSYSTEM:CONSOLE
+#	;
 
 lib comctl32 : : <name>comctl32.lib ;
 lib user32 : : <name>user32.lib ;

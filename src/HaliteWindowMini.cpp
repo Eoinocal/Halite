@@ -54,11 +54,14 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	hal::config().settingsChanged();
 	
 	RECT rc; GetClientRect(&rc);
-	SetMenu(0);
-	
+	SetMenu(0);	
 	
 	m_trayIcon.Create(this, IDR_TRAY_MENU, L"Halite", 
 		CTrayNotifyIcon::LoadIconResource(IDR_APP_ICON), WM_TRAYNOTIFY, IDR_TRAY_MENU);
+	
+	// Register StatusBar for UIUpdates
+	UISetCheck(ID_VIEW_STATUS_BAR, 1);
+	UISetCheck(IDR_TRAY_MENU, 1);
 	
 	// Register UIEvents and the timer for the monitoring interval
 	SetTimer(ID_UPDATE_TIMER, 500);

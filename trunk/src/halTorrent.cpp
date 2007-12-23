@@ -1323,10 +1323,6 @@ void BitTorrent::resumeAll()
 	{
 		wpath_t file = wpath_t(pimpl->workingDirectory)/L"torrents"/(*i).torrent->filename();
 		
-		
-		event().post(shared_ptr<EventDetail>(
-			new EventMsg(wformat_t(L"rAll -> %1% - %2%.") % (*i).torrent->filename() % (*i).torrent->state())));	
-		
 		if (exists(file))
 		{		
 			try 

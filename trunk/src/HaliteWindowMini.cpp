@@ -36,15 +36,6 @@ HaliteWindow::~HaliteWindow()
 	ATLASSERT(!::IsWindow(m_hWnd));
 }
 
-BOOL HaliteWindow::PreTranslateMessage(MSG* pMsg)
-{
-	if(CFrameWindowImpl<HaliteWindow>::PreTranslateMessage(pMsg))
-		return TRUE;
-		
-	return FALSE;
-
-}
-
 LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 {
 	SetWindowText(L"Halite");
@@ -54,11 +45,39 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	hal::config().settingsChanged();
 	
 	RECT rc; GetClientRect(&rc);
-	SetMenu(0);
+	SetMenu(0);	
 	
+	//Init ToolBar
+	HWND hWndToolBar = CreateSimpleToolBarCtrl(m_hWnd, IDR_MAINFRAME, FALSE, ATL_SIMPLE_TOOLBAR_PANE_STYLE);
 	
+	// Init ReBar
+	CreateSimpleReBar(ATL_SIMPLE_REBAR_NOBORDER_STYLE);
+	AddSimpleReBarBand(hWndToolBar, NULL, TRUE);
+	
+	// Init the StatusBar	
+	m_hWndStatusBar = m_StatusBar.Create(*this);
+	UIAddStatusBar(m_hWndStatusBar);
+	
+	int panes[] = {ID_DEFAULT_PANE, IDPANE_FILTER, IDPANE_DHT, IDPANE_STATUS};
+	m_StatusBar.SetPanes(panes, 4, false);
+	
+	// Create the Splitter Control
+	m_Split.Create(m_hWnd, rc, NULL, WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN);
+	m_Split.SetSplitterExtendedStyle(!SPLIT_PROPORTIONAL, SPLIT_PROPORTIONAL);
+	m_Split.SetSplitterPos(splitterPos);
+	
+	m_hWndClient = m_Split.m_hWnd;
+	
+	// Create the tray icon.
 	m_trayIcon.Create(this, IDR_TRAY_MENU, L"Halite", 
 		CTrayNotifyIcon::LoadIconResource(IDR_APP_ICON), WM_TRAYNOTIFY, IDR_TRAY_MENU);
+	m_trayIcon.Hide();
+	
+	// Add ToolBar and register it along with StatusBar for UIUpdates
+	UIAddToolBar(hWndToolBar);
+	UISetCheck(ID_VIEW_TOOLBAR, 1);
+	UISetCheck(ID_VIEW_STATUS_BAR, 1);
+	UISetCheck(IDR_TRAY_MENU, 1);
 	
 	// Register UIEvents and the timer for the monitoring interval
 	SetTimer(ID_UPDATE_TIMER, 500);
@@ -70,7 +89,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	// Register object for message filtering and idle updates
 	CMessageLoop* pLoop = _Module.GetMessageLoop();
 	assert(pLoop != NULL);
-	pLoop->AddMessageFilter(this);
+//	pLoop->AddMessageFilter(this);
 	pLoop->AddIdleHandler(this);
 	
 	hal::bittorrent().startEventReceiver();
@@ -186,6 +205,7 @@ void HaliteWindow::issueUiUpdate()
 //		haliteList.manager().selected(), haliteList.manager().allSelected());
 
 //	ui_update_signal_(torrents);
+	updateWindow();
 
 	}
 	catch (std::exception& e)

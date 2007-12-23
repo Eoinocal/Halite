@@ -59,6 +59,7 @@ public:
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
 
+		CHAIN_MSG_MAP(dialogBaseClass)
 		CHAIN_MSG_MAP(autosizeClass)
 		CHAIN_MSG_MAP(baseClass)
 		REFLECT_NOTIFICATIONS()

@@ -150,14 +150,14 @@ void HaliteWindow::setCorrectDialog()
 {
 	if (!advancedUI)
 	{		
-		mp_dlg->ShowWindow(true);
-		mp_advDlg->ShowWindow(false);
+		mp_dlg->ShowWindow(SW_SHOW);
+		mp_advDlg->ShowWindow(SW_HIDE);
 		m_Split.SetSplitterPanes(haliteList, *mp_dlg);
 	}
 	else
 	{		
-		mp_dlg->ShowWindow(false);
-		mp_advDlg->ShowWindow(true);
+		mp_dlg->ShowWindow(SW_HIDE);
+		mp_advDlg->ShowWindow(SW_SHOW);
 		m_Split.SetSplitterPanes(haliteList, *mp_advDlg);
 	}
 	ui().update();
