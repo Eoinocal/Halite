@@ -400,7 +400,7 @@ public:
 		Load();
 	}
 	
-	~AdvFilesDialog() { Save(); }
+	~AdvFilesDialog() {}
 	
 	BOOL PreTranslateMessage(MSG* pMsg)
 	{

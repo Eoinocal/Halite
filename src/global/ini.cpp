@@ -33,7 +33,15 @@ class ini_impl
 public:
 	ini_impl(std::wstring filename) :
 		working_file_(app().working_directory()/filename)
-	{}
+	{
+		boost::filesystem::wpath backup = app().working_directory()/(filename + L".pre");
+		
+		if (boost::filesystem::exists(backup))
+			boost::filesystem::remove(backup);
+			
+		if (boost::filesystem::exists(working_file_))
+			boost::filesystem::copy_file(working_file_, backup);
+	}
 	
 	void load_data()
 	{

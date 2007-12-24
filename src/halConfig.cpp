@@ -6,10 +6,10 @@
 
 #pragma once
 
-//#include "stdAfx.hpp"
+#include "stdAfx.hpp"
 
 #include "halConfig.hpp"
-//#include "ProgressDialog.hpp"
+#include "ProgressDialog.hpp"
 #include "Halite.hpp"
 
 namespace hal
@@ -27,9 +27,9 @@ void Config::settingsThread()
 	{
 	if (enableIPFilter)
 	{
-//		ProgressDialog progDlg(L"Loading IP filters...", bind(
-//			&BitTorrent::ensureIpFilterOn, &bittorrent(), _1));
-//		progDlg.DoModal();
+		ProgressDialog progDlg(L"Loading IP filters...", bind(
+			&BitTorrent::ensureIpFilterOn, &bittorrent(), _1));
+		progDlg.DoModal();
 	}
 	else
 		bittorrent().ensureIpFilterOff();
