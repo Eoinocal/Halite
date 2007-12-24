@@ -394,7 +394,7 @@ public:
 	AdvFilesDialog(HaliteWindow& halWindow) :
 		dialogBaseClass(halWindow),
 		treeManager_(tree_),
-		iniClass("AdvFiles", "AdvFiles"),
+		iniClass("AdvFiles/dialog", "AdvFiles"),
 		splitterPos(150)
 	{
 		Load();
