@@ -6,6 +6,11 @@
 
 #pragma once
 
+#define ID_WINDOW_BEGIN	 			13000
+#define HAL_WINDOW_CLOSECONFRIM		ID_WINDOW_BEGIN + 1
+
+#ifndef RC_INVOKED
+
 #include "stdAfx.hpp"
 #include "DropFileTarget.h"
 #include "NTray.hpp"
@@ -182,6 +187,10 @@ protected:
 		ar & BOOST_SERIALIZATION_NVP(use_tray);
 		ar & BOOST_SERIALIZATION_NVP(advancedUI);
 		ar & BOOST_SERIALIZATION_NVP(activeTab);
+		if (version > 0) {
+			ar & BOOST_SERIALIZATION_NVP(closeToTray);
+			ar & BOOST_SERIALIZATION_NVP(confirmClose);
+		}
 	}
 	
 	friend class GeneralOptions;
@@ -194,7 +203,7 @@ private:
 	CCommandBarCtrl m_CmdBar;
 	CHorSplitterWindow m_Split;
     CMultiPaneStatusBarCtrl m_StatusBar;
-	CTrayNotifyIcon m_trayIcon;
+	CTrayNotifyIcon trayIcon_;
 
 	HaliteListViewCtrl haliteList;
 	
@@ -211,7 +220,11 @@ private:
 	unsigned int splitterPos;
 	bool use_tray;
 	bool advancedUI;
+	bool closeToTray;
+	bool confirmClose;
 	int activeTab;
 };
 
-BOOST_CLASS_VERSION(HaliteWindow, 0)
+BOOST_CLASS_VERSION(HaliteWindow, 1)
+
+#endif // RC_INVOKED
