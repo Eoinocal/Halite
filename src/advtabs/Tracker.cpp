@@ -18,32 +18,12 @@ LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 	m_list.Attach(GetDlgItem(IDC_TRACKERLIST));	
 	m_list.attachEditedConnection(bind(&AdvTrackerDialog::trackerListEdited, this));
 
-	string torrent_name;	
+	::EnableWindow(GetDlgItem(IDC_TRACKER_LOGINCHECK), false);
+	::EnableWindow(GetDlgItem(IDC_TRACKERLIST), false);
 	
-	if (hal::bittorrent().torrentDetails().focusedTorrent())
-		torrent_name = hal::to_utf8(hal::bittorrent().torrentDetails().focusedTorrent()->name());
-	
-	if (hal::bittorrent().isTorrent(torrent_name))
-	{		
-		::EnableWindow(GetDlgItem(IDC_TRACKER_LOGINCHECK), true);
-		::EnableWindow(GetDlgItem(IDC_TRACKERLIST), true);
+	username_ = L"";
+	password_ = L"";
 		
-		std::pair<std::wstring, std::wstring> details = 
-			hal::bittorrent().getTorrentLogin(torrent_name);
-		
-		username_ = details.first;
-		password_ = details.second;
-	}
-	else
-	{		
-		::EnableWindow(GetDlgItem(IDC_TRACKER_LOGINCHECK), false);
-		::EnableWindow(GetDlgItem(IDC_TRACKERLIST), false);
-		
-		username_ = L"";
-		password_ = L"";
-	}
-		
-	setLoginUiState(torrent_name);
 	DoDataExchange(false);	
 	return 0;
 }

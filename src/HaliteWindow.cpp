@@ -27,6 +27,8 @@ HaliteWindow::HaliteWindow(unsigned areYouMe = 0) :
 	splitterPos(100),
 	use_tray(true),
 	advancedUI(false),
+	closeToTray(false),
+	confirmClose(true),
 	activeTab(0)
 {
 	rect.top = 10;
@@ -53,11 +55,32 @@ BOOL HaliteWindow::PreTranslateMessage(MSG* pMsg)
 
 LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 {
+	try
+	{
+	
 	SetWindowText(L"Halite");
 	MoveWindow(rect.left, rect.top,	rect.right-rect.left, rect.bottom-rect.top, false);	
-	
+
+
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"Loading Halite config...")));
 	hal::config().load();
-	hal::config().settingsChanged();
+	
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"Applying setting...")));
+	if (!hal::config().settingsChanged())
+	{
+		hal::event().post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventDebug(hal::Event::critical, hal::app().res_wstr(HAL_WINDOW_SOCKETS_FAILED))));
+			
+		MessageBox(hal::app().res_wstr(HAL_WINDOW_SOCKETS_FAILED).c_str(), 0, 0);
+		
+		DestroyWindow();
+		return 0;
+	}
+	
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"Starting GUI...")));
 	
 	RECT rc; GetClientRect(&rc);
 	SetMenu(0);
@@ -82,26 +105,36 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	m_Split.SetSplitterPos(splitterPos);
 	
 	m_hWndClient = m_Split.m_hWnd;
-	
+
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"Creating main listview...")));	
 	// Create ListView and Dialog
 	haliteList.Create(m_Split.m_hWnd, rc, NULL, 
 		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS);
 	haliteList.manager().attach(bind(&HaliteWindow::issueUiUpdate, this));
-	
+
+
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"Creating classic dialog...")));		
 	mp_dlg.reset(new HaliteDialog(*this)),
 	mp_dlg->Create(m_Split.m_hWnd);
 //	mp_dlg->ShowWindow(true);
 	
+
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"Creating advanced dialog...")));	
 	mp_advDlg.reset(new AdvHaliteDialog(*this));
 	mp_advDlg->Create(m_Split.m_hWnd);
 //	mp_advDlg->ShowWindow(true);
 	
 //	m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
 	
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"Creating tray icon...")));	
 	// Create the tray icon.
-	m_trayIcon.Create(this, IDR_TRAY_MENU, L"Halite", 
+	trayIcon_.Create(this, IDR_TRAY_MENU, L"Halite", 
 		CTrayNotifyIcon::LoadIconResource(IDR_APP_ICON), WM_TRAYNOTIFY, IDR_TRAY_MENU);
-	m_trayIcon.Hide();
+	trayIcon_.Hide();
 	
 	// Add ToolBar and register it along with StatusBar for UIUpdates
 	UIAddToolBar(hWndToolBar);
@@ -114,6 +147,8 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	SetTimer(ID_SAVE_TIMER, 5000);
 	connectUiUpdate(bind(&HaliteWindow::updateWindow, this));
 	
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"Registering drop target...")));	
 	RegisterDropTarget();
 	
 	// Register object for message filtering and idle updates
@@ -125,8 +160,21 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 //	haliteList.manager().setSelected(0);
 	setCorrectDialog();
 	
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"Starting event reciever...")));
 	hal::bittorrent().startEventReceiver();
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"Initial setup complete!")));
 	issueUiUpdate();
+	
+	}
+	catch(const std::exception& e)
+	{
+		hal::event().post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(hal::Event::critical, e, L"HaliteWindow::OnCreate"))); 
+
+		DestroyWindow();
+	}
 	
 	return 0;
 }
@@ -141,7 +189,7 @@ LRESULT HaliteWindow::OnAdvanced(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnTrayNotification(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam)
 {
-    m_trayIcon.OnTrayNotification(wParam, lParam);
+    trayIcon_.OnTrayNotification(wParam, lParam);
     
     return 0;
 }
@@ -181,7 +229,7 @@ void HaliteWindow::updateWindow()
 			% (details.speed.second/1024)).str();
 	
 	UISetText(3, downloadRates.c_str());	
-	m_trayIcon.SetTooltipText(downloadRates.c_str());
+	trayIcon_.SetTooltipText(downloadRates.c_str());
 	
 	if (details.dht_on)
 	{
@@ -263,7 +311,7 @@ void HaliteWindow::issueUiUpdate()
 LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
 {
 	hal::event().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"I recieved data.", hal::Event::info)));
+		new hal::EventMsg(L"I recieved data.")));
 		
 	switch (pCSD->dwData)
 	{
@@ -307,20 +355,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	hal::bittorrent().addTorrent(file, wpath(saveDirectory), startPaused, compactStorage);
 
 	ui().update();
-	
-/*	int itemPos = haliteList.GetSelectionMark();
-	if (itemPos == -1)
-	{
-		LV_FINDINFO findInfo = { sizeof(LV_FINDINFO) }; 
-		findInfo.flags = LVFI_STRING;
-		
-		wstring filename = file.leaf();		
-		findInfo.psz = filename.c_str();
-		
-		int itemPos = haliteList.FindItem(&findInfo, -1);	
-		haliteList.manager().setSelected(itemPos);
-	}	
-*/	
+
 	}
 	catch(const boost::filesystem::filesystem_error&)
 	{
@@ -331,16 +366,28 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 
 void HaliteWindow::OnClose()
 {
-	splitterPos = m_Split.GetSplitterPos();
-
-	hal::config().save();
-	save();
-	
-	DestroyWindow();
+	if (closeToTray && trayIcon_.IsHidden())
+	{		
+		ShowWindow(SW_HIDE);
+		trayIcon_.Show();
+	}
+	else
+	{
+		if (!confirmClose || (confirmClose && 
+			MessageBox(hal::app().res_wstr(HAL_WINDOW_CLOSECONFRIM).c_str(), 
+				hal::app().res_wstr(HAL_HALITE).c_str(), MB_YESNO) == IDYES))
+		{
+			DestroyWindow();
+		}
+	}
 }
  
 void HaliteWindow::OnDestroy()
 {
+	splitterPos = m_Split.GetSplitterPos();
+
+	hal::config().save();
+	save();
 	PostQuitMessage(0);
 }
 
@@ -351,7 +398,7 @@ void HaliteWindow::OnSize(UINT type, CSize)
 		if (use_tray)
 		{
 			ShowWindow(SW_HIDE);
-			m_trayIcon.Show();
+			trayIcon_.Show();
 		}
 	}
 	else
@@ -373,8 +420,8 @@ void HaliteWindow::OnMove(CSize)
 
 LRESULT HaliteWindow::OnTrayOpenHalite(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
+	trayIcon_.Hide();
 	ShowWindow(SW_RESTORE);
-	m_trayIcon.Hide();
 	
 	return 0;
 }
@@ -486,7 +533,7 @@ LRESULT HaliteWindow::OnPaint(HDC dc)
 LRESULT HaliteWindow::OnAreYouMe(UINT, WPARAM, LPARAM, BOOL&) 
 {
 	hal::event().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"I tried to contact me.", hal::Event::info)));		
+		new hal::EventMsg(L"I tried to contact me.")));		
 
 	return WM_AreYouMe_; 
 }

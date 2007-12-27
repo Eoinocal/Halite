@@ -24,7 +24,11 @@ public:
 	Halite() :
 		hal::IniBase<Halite>("globals/halite", "Halite"),
 		oneInst(false),
+#ifdef _DEBUG
+		logDebug_(true),
+#else
 		logDebug_(false),
+#endif
 		showMessage(true),
 		logToFile_(true),
 		logListLen_(128),

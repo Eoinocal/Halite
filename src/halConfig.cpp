@@ -15,14 +15,34 @@
 namespace hal
 {
 
-void Config::settingsChanged()
+bool Config::settingsChanged()
 {
 //	thread settings(bind(&BitTConfig::settingsThread, this));
-	settingsThread();
+	return settingsThread();
 }
 
-void Config::settingsThread()
+bool Config::settingsThread()
 {
+	try
+	{
+	bool success = bittorrent().listenOn(
+		std::make_pair(portFrom, portTo));
+	if (!success)
+	{
+		hal::event().post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventDebug(Event::critical, L"settingsThread, Init")));
+		
+		return false;
+	}
+	}
+	catch(const std::exception& e)
+	{
+		hal::event().post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(Event::critical, e, L"settingsThread, Init"))); 
+		
+		return false;
+	}
+	
 	try
 	{
 	if (enableIPFilter)
@@ -55,25 +75,6 @@ void Config::settingsThread()
 				new hal::EventStdException(Event::critical, e, L"settingsThread, Protocol Encryption"))); 
 	}
 	
-	try
-	{
-	bool success = bittorrent().listenOn(
-		std::make_pair(portFrom, portTo));
-	if (!success)
-	{
-		hal::event().post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventDebug(Event::critical, L"settingsThread, Init"))); 
-
-//		MessageBox(0, app().res_wstr(IDS_TRYANOTHERPORT).c_str(), L"Init Exception", MB_ICONERROR|MB_OK);
-	}
-	}
-	catch(const std::exception& e)
-	{
-		hal::event().post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(Event::critical, e, L"settingsThread, Init"))); 
-//		::MessageBoxA(0, e.what(), "Init Exception", MB_ICONERROR|MB_OK);
-	}
-	
 	bittorrent().setSessionHalfOpenLimit(halfConnLimit);
 	
 	bittorrent().resumeAll();	
@@ -103,6 +104,8 @@ void Config::settingsThread()
 	}
 	else
 		bittorrent().ensureDhtOff();
+		
+	return true;
 }
 
 Config& config()

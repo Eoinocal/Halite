@@ -767,6 +767,9 @@ void BitTorrent::saveTorrentData()
 
 bool BitTorrent::listenOn(std::pair<int, int> const& range)
 {
+	try
+	{
+	
 	if (!pimpl->theSession.is_listening())
 	{
 		return pimpl->theSession.listen_on(range);
@@ -779,6 +782,12 @@ bool BitTorrent::listenOn(std::pair<int, int> const& range)
 			return pimpl->theSession.listen_on(range);	
 		else
 			return true;
+	}
+	
+	}
+	catch(...)
+	{
+		return false;
 	}
 }
 
@@ -904,6 +913,9 @@ void  BitTorrent_impl::ip_filter_import(std::vector<lbt::ip_range<asio::ip::addr
 
 void BitTorrent::ensureIpFilterOn(progressCallback fn)
 {
+	try
+	{
+	
 	if (!pimpl->ip_filter_loaded_)
 	{
 		pimpl->ip_filter_load(fn);
@@ -915,6 +927,15 @@ void BitTorrent::ensureIpFilterOn(progressCallback fn)
 		pimpl->theSession.set_ip_filter(pimpl->ip_filter_);
 		pimpl->ip_filter_on_ = true;
 		pimpl->ip_filter_count();
+	}
+	
+	}
+	catch(const std::exception& e)
+	{		
+		hal::event().post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(Event::critical, e, L"ensureIpFilterOn"))); 
+
+		ensureIpFilterOff();
 	}
 }
 
@@ -988,7 +1009,19 @@ void BitTorrent::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy
 	
 	pe.prefer_rc4 = prefer_rc4;
 	
+	try
+	{
+	
 	pimpl->theSession.set_pe_settings(pe);
+	
+	}
+	catch(const std::exception& e)
+	{
+		hal::event().post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(Event::critical, e, L"ensurePeOn"))); 
+				
+		ensurePeOff();		
+	}
 }
 
 void BitTorrent::ensurePeOff()
