@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halite", "sln\Halite\Halite.vcproj", "{ED987C84-FFF9-4656-8F27-2A65FC0847FD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{85145293-5491-4BA8-892C-F5A0C4AC9208} = {85145293-5491-4BA8-892C-F5A0C4AC9208}
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8} = {333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libtorrent", "sln\libtorrent\libtorrent.vcproj", "{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenSSL", "sln\OpenSSL\OpenSSL.vcproj", "{85145293-5491-4BA8-892C-F5A0C4AC9208}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "asio", "sln\asio\asio.vcproj", "{00A33D18-879A-4143-BCAD-45993CCB5A8C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Debug|Win32.Build.0 = Debug|Win32
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Debug|x64.ActiveCfg = Debug|x64
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Debug|x64.Build.0 = Debug|x64
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Release|Win32.ActiveCfg = Release|Win32
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Release|Win32.Build.0 = Release|Win32
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Release|x64.ActiveCfg = Release|x64
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Release|x64.Build.0 = Release|x64
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Debug|Win32.Build.0 = Debug|Win32
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Debug|x64.ActiveCfg = Debug|x64
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Debug|x64.Build.0 = Debug|x64
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Release|Win32.ActiveCfg = Release|Win32
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Release|Win32.Build.0 = Release|Win32
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Release|x64.ActiveCfg = Release|x64
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Release|x64.Build.0 = Release|x64
+		{85145293-5491-4BA8-892C-F5A0C4AC9208}.Debug|Win32.ActiveCfg = Debug|Win32
+		{85145293-5491-4BA8-892C-F5A0C4AC9208}.Debug|Win32.Build.0 = Debug|Win32
+		{85145293-5491-4BA8-892C-F5A0C4AC9208}.Debug|x64.ActiveCfg = Debug|x64
+		{85145293-5491-4BA8-892C-F5A0C4AC9208}.Debug|x64.Build.0 = Debug|x64
+		{85145293-5491-4BA8-892C-F5A0C4AC9208}.Release|Win32.ActiveCfg = Release|Win32
+		{85145293-5491-4BA8-892C-F5A0C4AC9208}.Release|Win32.Build.0 = Release|Win32
+		{85145293-5491-4BA8-892C-F5A0C4AC9208}.Release|x64.ActiveCfg = Release|x64
+		{85145293-5491-4BA8-892C-F5A0C4AC9208}.Release|x64.Build.0 = Release|x64
+		{00A33D18-879A-4143-BCAD-45993CCB5A8C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{00A33D18-879A-4143-BCAD-45993CCB5A8C}.Debug|Win32.Build.0 = Debug|Win32
+		{00A33D18-879A-4143-BCAD-45993CCB5A8C}.Debug|x64.ActiveCfg = Debug|Win32
+		{00A33D18-879A-4143-BCAD-45993CCB5A8C}.Release|Win32.ActiveCfg = Release|Win32
+		{00A33D18-879A-4143-BCAD-45993CCB5A8C}.Release|Win32.Build.0 = Release|Win32
+		{00A33D18-879A-4143-BCAD-45993CCB5A8C}.Release|x64.ActiveCfg = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
