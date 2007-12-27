@@ -268,8 +268,9 @@
 #define IDC_CHECK_COMPACT				40201
 #define IDC_CHECK_PAUSED				40202
 #define HAL_INF							40203
+#define HAL_HALITE						40204
 
 #ifndef HAL_NA
 #define HAL_NA IDS_NA
-#endif						
+#endif
 

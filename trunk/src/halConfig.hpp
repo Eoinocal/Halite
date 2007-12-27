@@ -108,7 +108,7 @@ public:
 		}
 	}
 	
-	void settingsChanged();
+	bool settingsChanged();
 	
 	friend class HaliteWindow;
 	friend class BitTorrentOptions;
@@ -117,7 +117,7 @@ public:
 	friend class TorrentsOptions;
 
 private:
-	void settingsThread();
+	bool settingsThread();
 	
 	int maxConnections;
 	int maxUploads;
