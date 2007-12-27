@@ -363,6 +363,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\magnet_uri.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\mapped_storage.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\metadata_transfer.cpp"
 				>
 			</File>
@@ -399,6 +407,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\smart_ban.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\socks4_stream.cpp"
 				>
 			</File>
@@ -431,11 +443,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\udp_socket.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\udp_tracker_connection.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\lib\libtorrent\src\upnp.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\ut_metadata.cpp"
 				>
 			</File>
 			<File

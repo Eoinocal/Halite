@@ -1,9 +1,6 @@
 Halite: A Free Open-Source BitTorrent client
 
-Version: 0.2.9 Revision 344 Snapshot released 2nd December 2007
-
-NOTE! This is a snapshot build, as such there are incomplete features.
-Please see the forum for the most up to date details.
+Version: 0.3 released 26th December 2007
 
 WWW: http://www.binarynotions.com/halite.php Forum:
 http://www.binarynotions.com/forum.php
@@ -22,30 +19,17 @@ that is because I want to ensure it does the basic stuff well.
 
 That said, it supports:
 
-  + Multiple downloads.
-  + Displays more detailed information for the selected torrent.
-  + Connection limits both global and per-torrent.
-  + Transfer rate limits again global and per-torrent.
-  + Minimize to tray with transfer rate summary.
+  + File selection and/or file priority specifications.
   + Trackerless torrents (using the Mainline kademlia DHT protocol).
-  + IP filtering with eMule ipfilter.dat import.
-  + Association with ".torrent" files.
-  + Option to limit the number of instances to one.
-  + Estimated time remaining indicator.
-  + Full Unicode support through UTF-8 and native Windows wide-char
-    strings.
+  + IP filtering with eMule style ipfilter.dat import.
+  + Protocol Encryption support.
+  + Translations of the UI into a number of languages through the help 
+    of volunteers. (if you wish to help with a translation then please do)
+  + Minimize to tray with transfer rate summary.
+  + Full Unicode support through UTF-8 and native Windows wide-char strings.
   + Login support where tracker requires it.
   + Ability to edit trackers specified in the torrent.
-
-Planned in near future:
-
-Listed here is what is being worked on in the short term; for a more
-detailed list see [http://www.binarynotions.com/halite/roadmap.php].
-
-  + Translations of the UI into a number of languages through the help
-    of volunteers.
-  + Improved and extended information on the details given for
-    connected peers. 
+  + Transfer rate and connection limits both global and per-torrent.
 
 Requirements: Windows 2000, XP, Server 2003 and Vista (Note currently
 Vista users need to install the application to a directory where they
@@ -64,6 +48,13 @@ associated torrent file from the 'torrents' subdirectory.
 
 Changes:
 
+ - from v 0.2.9 to 0.3: 
+   1) File selection and/or priority settings.
+   2) Protocol Encryption.
+   3) New tabbed interface makes better use of screen real estate.
+   4) Updated to recent versions of Boost (1.34.1) and libtorrent.
+   5) Numerous bug fixes.
+   
  - from v 0.2.8 to 0.2.9: 
    1) Full Unicode support!
    2) Rewitten XML fileformat with greatly improved robustness.
@@ -71,9 +62,7 @@ Changes:
    4) Ability to edit Trackers and set login details.
    5) Comprehensive logging for diagnosing problems.
    6) Windows 2000 and Server 2003 supported fully.
-   7) Updated to recent versions of Boost and libtorrent.
-   8) Numerous bug fixes.
-   9) Switched to MSVC 2005 compiler (8.0) for improved reliability
+   7) Switched to MSVC 2005 compiler (8.0) for improved reliability
       though at the cost of slightly bigger executables.
    
 - from v 0.2.7 to 0.2.8: 
@@ -112,7 +101,7 @@ Changes:
 
 Subversion: svn://svn.geekisp.com/halite
 
-In addition you can check out the Trac site(trac.geekisp.com/halite)
+In addition you can check out the Trac site (trac.geekisp.com/halite)
 but I haven't really done much with it ... yet.
 
 Thanks:
