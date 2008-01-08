@@ -196,6 +196,8 @@ typedef boost::filesystem::wpath wpath_t;
 typedef boost::filesystem::path path_t;
 
 using boost::serialization::make_nvp;
+using boost::shared_ptr;
+using boost::bind;
 
 BitTorrent& bittorrent()
 {

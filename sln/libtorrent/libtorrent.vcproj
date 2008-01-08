@@ -556,15 +556,19 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\lib\libtorrent\include\libtorrent\allocate_resources.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\lib\libtorrent\include\libtorrent\assert.hpp"
 					>
 				</File>
 				<File
+					RelativePath="..\..\lib\libtorrent\include\libtorrent\bandwidth_limit.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\lib\libtorrent\include\libtorrent\bandwidth_manager.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\lib\libtorrent\include\libtorrent\bandwidth_queue_entry.hpp"
 					>
 				</File>
 				<File
@@ -725,10 +729,6 @@
 				</File>
 				<File
 					RelativePath="..\..\lib\libtorrent\include\libtorrent\random_sample.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\lib\libtorrent\include\libtorrent\resource_request.hpp"
 					>
 				</File>
 				<File
