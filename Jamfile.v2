@@ -99,7 +99,7 @@ exe Halite
 #	<library>/sqlite3x//sqlite3x/<link>static
 #	<library>/asio
 #	<library>/stlsoft
-	
+
 	<pch>on
 	<pch-source>./src/stdAfx.cpp
 	<pch-header>./src/stdAfx.hpp
@@ -112,7 +112,7 @@ exe Halite
 	<variant>release:<linkflags>/OPT:REF
 	<variant>release:<warnings>off
 	<variant>release:<define>NDEBUG
-	
+
 	<define>_UNICODE
 	<define>UNICODE
 	<define>WIN32
