@@ -57,7 +57,6 @@ public:
 
 	void OnSize(UINT, CSize)
 	{
-//		MessageBox(L"Here in size", L"Msg", 0);
 		RECT rect;
 		GetClientRect(&rect);
 		AdjustRect(false, &rect);

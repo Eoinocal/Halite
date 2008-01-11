@@ -122,7 +122,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	
 
 	hal::event().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"Creating advanced dialog...")));	
+		new hal::EventMsg(L"Creating advanced dialog...")));
 	mp_advDlg.reset(new AdvHaliteDialog(*this));
 	mp_advDlg->Create(m_Split.m_hWnd);
 //	mp_advDlg->ShowWindow(true);
