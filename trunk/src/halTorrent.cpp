@@ -1,11 +1,11 @@
 
-//         Copyright Eóin O'Callaghan 2006 - 2007.
+//         Copyright Eóin O'Callaghan 2006 - 2008.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 
-#define HALITE_VERSION					0,3,0,354
+#define HALITE_VERSION					0,3,0,370
 #define HALITE_VERSION_STRING			"v 0.3"
 
 #ifndef HAL_NA
@@ -617,7 +617,7 @@ public:
 	
 private:
 	BitTorrent_impl() :
-		theSession(lbt::fingerprint("HL", 0, 3, 0, 0)),
+		theSession(lbt::fingerprint("HL", 0, 3, 0, 1)),
 		timer_(io_),
 		keepChecking_(false),
 		bittorrentIni(L"BitTorrent.xml"),
