@@ -6,7 +6,7 @@
 
 
 #define HALITE_VERSION					0,3,0,370
-#define HALITE_VERSION_STRING			"v 0.3"
+#define HALITE_VERSION_STRING			"v 0.3.0.1"
 
 #ifndef HAL_NA
 #define HAL_NA 40013

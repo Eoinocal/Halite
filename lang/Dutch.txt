@@ -105,7 +105,6 @@
 "Time left:" ---> "Overgebleven tijd:"
 "Completed:" ---> "Voltooid:"
 "About" ---> "Over"
-"Program Information" ---> "Programma Informatie"
 "RichEdit20A" --->  ??? 
 "SysTabControl32" --->  ??? 
 "Add Torrent" ---> "Torrent toevoegen"
@@ -114,9 +113,11 @@
 "Start Paused" ---> "Start gepauzeerd"
 "Note. Compact Allocation is incompatible with File Selection" ---> "nb. Compacte allocatie is niet compatible met Bestands Selectie"
 "General" ---> "Algemeen"
-"Allow only one instance to run." ---> "Sta maar één instantie toe."
+"Allow only one instance to run" --->  ??? 
 "Advanced GUI" ---> "Geavanceerde GUI"
 "Minimize to tray." ---> "Minimaliseer naar systeemvak."
+"Close to tray" --->  ??? 
+"Confirm on close" --->  ??? 
 "Language (requires restart)" --->  ??? 
 "List of Trackers." ---> "Lijst van Trackers."
 "Send login info to trackers." ---> "Stuur login gegevens naar Tracker."
@@ -154,7 +155,7 @@
 "InternalName" ---> "InterneNaam"
 "Halite" ---> "Halite"
 "LegalCopyright" ---> "Copyright"
-"(C) Eoin O'Callaghan 2007" --->  ??? 
+"(C) Eoin O'Callaghan 2008" --->  ??? 
 "OriginalFilename" ---> "OrigineleBestandsnaam"
 "Halite.exe" ---> "Halite.exe"
 "ProductName" ---> "ProductNaam"
@@ -192,6 +193,8 @@
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Een ongeldig encoderings regeling, %1%, is doorgegaan als encryptie instelling."
 "Auto Sort" ---> "Auto Sorteren"
 "Torrent Root" --->  ??? 
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
 "Interesting" ---> "Geinteresseerd"
 "Choked" --->  ??? 
 "Interested in us" ---> "Geinteresseerd in ons"
@@ -223,10 +226,10 @@
 "Filename;Path;Size;Progress;Priority" ---> "Bestandsnaam;Pad;Grootte;Progressie;Prioriteit"
 "Don't download" ---> "Niet Downloaden"
 "Normal" ---> "Normaal"
-"Above Normal" ---> "Boven Normaal"
+"2" --->  ??? 
 "3" --->  ??? 
 "4" --->  ??? 
-"5" --->  ??? 
+"Above Normal" ---> "Boven Normaal"
 "6" --->  ??? 
 "Maximum" --->  ??? 
 "Set Priority" ---> "Verander Prioriteit"

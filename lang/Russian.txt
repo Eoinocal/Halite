@@ -105,7 +105,6 @@
 "Time left:" ---> "Осталось времени:"
 "Completed:" ---> "Завершено:"
 "About" ---> "Информация"
-"Program Information" ---> "О программе"
 "RichEdit20A" --->  ??? 
 "SysTabControl32" ---> "SysTabControl32"
 "Add Torrent" --->  ??? 
@@ -114,9 +113,11 @@
 "Start Paused" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "General" ---> "Общие"
-"Allow only one instance to run." ---> "Разрешить только одну активную копию программы"
+"Allow only one instance to run" --->  ??? 
 "Advanced GUI" ---> "Расширенный интерфейс"
 "Minimize to tray." ---> "Свернуть в трей"
+"Close to tray" --->  ??? 
+"Confirm on close" --->  ??? 
 "Language (requires restart)" --->  ??? 
 "List of Trackers." ---> "Список трэкеров."
 "Send login info to trackers." ---> "Послать информацию связи трэкерам"
@@ -154,7 +155,7 @@
 "InternalName" ---> "Внутренне имя"
 "Halite" ---> "Халит"
 "LegalCopyright" ---> "Легальное авторское право"
-"(C) Eoin O'Callaghan 2007" ---> "(C) Eoin O'Callaghan 2007"
+"(C) Eoin O'Callaghan 2008" --->  ??? 
 "OriginalFilename" ---> "Оригинальное имя файла"
 "Halite.exe" ---> "Halite.exe"
 "ProductName" ---> "Название продукта"
@@ -192,6 +193,8 @@
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "Auto Sort" --->  ??? 
 "Torrent Root" --->  ??? 
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
 "Interesting" ---> "Интересен"
 "Choked" ---> "Заглушен"
 "Interested in us" ---> "Заинтересован в нас"
@@ -223,10 +226,10 @@
 "Filename;Path;Size;Progress;Priority" --->  ??? 
 "Don't download" --->  ??? 
 "Normal" --->  ??? 
-"Above Normal" --->  ??? 
+"2" --->  ??? 
 "3" --->  ??? 
 "4" --->  ??? 
-"5" --->  ??? 
+"Above Normal" --->  ??? 
 "6" --->  ??? 
 "Maximum" --->  ??? 
 "Set Priority" --->  ??? 
