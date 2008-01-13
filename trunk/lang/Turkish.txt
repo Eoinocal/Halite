@@ -105,7 +105,6 @@
 "Time left:" ---> "Kalan süre:"
 "Completed:" ---> "Tamamlanan:"
 "About" ---> "Hakkında"
-"Program Information" ---> "Program Bilgisi"
 "RichEdit20A" --->  ??? 
 "SysTabControl32" ---> "SysTabControl32"
 "Add Torrent" --->  ??? 
@@ -114,9 +113,11 @@
 "Start Paused" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "General" ---> "Genel"
-"Allow only one instance to run." ---> "Programın sadece bir kopyası çalıssın."
+"Allow only one instance to run" --->  ??? 
 "Advanced GUI" ---> "Gelişmiş GUI"
 "Minimize to tray." ---> "Simge Durumuna Küçült"
+"Close to tray" --->  ??? 
+"Confirm on close" --->  ??? 
 "Language (requires restart)" ---> "Dil (yeniden başlatma gerektirir)"
 "List of Trackers." ---> "İzleyici Listesi."
 "Send login info to trackers." ---> "İzleyicilere giriş bilgisi gönder."
@@ -154,7 +155,7 @@
 "InternalName" ---> "InternalName"
 "Halite" ---> "Halite"
 "LegalCopyright" ---> "LegalCopyright"
-"(C) Eoin O'Callaghan 2007" ---> "(C) Eoin O'Callaghan 2007"
+"(C) Eoin O'Callaghan 2008" --->  ??? 
 "OriginalFilename" ---> "OriginalFilename"
 "Halite.exe" ---> "Halite.exe"
 "ProductName" ---> "ProductName"
@@ -192,6 +193,8 @@
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "Auto Sort" --->  ??? 
 "Torrent Root" --->  ??? 
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
 "Interesting" ---> "İlgileniyor"
 "Choked" ---> "Tıkandı"
 "Interested in us" ---> "Bizle ilgilendi"
@@ -223,10 +226,10 @@
 "Filename;Path;Size;Progress;Priority" --->  ??? 
 "Don't download" --->  ??? 
 "Normal" --->  ??? 
-"Above Normal" --->  ??? 
+"2" --->  ??? 
 "3" --->  ??? 
 "4" --->  ??? 
-"5" --->  ??? 
+"Above Normal" --->  ??? 
 "6" --->  ??? 
 "Maximum" --->  ??? 
 "Set Priority" --->  ??? 

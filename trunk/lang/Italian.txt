@@ -105,7 +105,6 @@
 "Time left:" ---> "Al termine"
 "Completed:" ---> "Completato"
 "About" ---> "A proposito di"
-"Program Information" ---> "Informazioni Programma"
 "RichEdit20A" --->  ??? 
 "SysTabControl32" --->  ??? 
 "Add Torrent" ---> "Aggiungi Torrent"
@@ -114,9 +113,11 @@
 "Start Paused" ---> "Aggiungi in Pausa"
 "Note. Compact Allocation is incompatible with File Selection" ---> "Nota: l'Allocazione Compatta è incompatibile con la Selezione File"
 "General" ---> "Generale"
-"Allow only one instance to run." ---> "Consenti un solo avvio per volta"
+"Allow only one instance to run" --->  ??? 
 "Advanced GUI" ---> "Interfaccia Avanzata"
 "Minimize to tray." ---> "Riduci nella Tray"
+"Close to tray" --->  ??? 
+"Confirm on close" --->  ??? 
 "Language (requires restart)" ---> "Lingua (necessita riavvio)"
 "List of Trackers." ---> "Lista dei Trackers ."
 "Send login info to trackers." ---> "Manda informazioni di login ai trackers."
@@ -154,7 +155,7 @@
 "InternalName" --->  ??? 
 "Halite" --->  ??? 
 "LegalCopyright" --->  ??? 
-"(C) Eoin O'Callaghan 2007" --->  ??? 
+"(C) Eoin O'Callaghan 2008" --->  ??? 
 "OriginalFilename" --->  ??? 
 "Halite.exe" --->  ??? 
 "ProductName" --->  ??? 
@@ -192,6 +193,8 @@
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Un comportamento di connessione non valido, %1%, è stato inserito nella configurazione di criptaggio."
 "Auto Sort" ---> "Ordina Automaticamente"
 "Torrent Root" ---> "Cartella base del Torrent"
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
 "Interesting" --->  ??? 
 "Choked" --->  ??? 
 "Interested in us" --->  ??? 
@@ -223,10 +226,10 @@
 "Filename;Path;Size;Progress;Priority" ---> "Nome File;Destinazione;Dimensione;Progresso;Priorità"
 "Don't download" ---> "Non scaricare"
 "Normal" ---> "Normale"
-"Above Normal" ---> "Alta"
+"2" --->  ??? 
 "3" --->  ??? 
 "4" --->  ??? 
-"5" --->  ??? 
+"Above Normal" ---> "Alta"
 "6" --->  ??? 
 "Maximum" ---> "Massima"
 "Set Priority" ---> "Priorità"

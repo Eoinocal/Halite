@@ -105,7 +105,6 @@
 "Time left:" ---> "Zeit übrig:"
 "Completed:" ---> "Fertig:"
 "About" ---> "Über"
-"Program Information" ---> "Programm Information"
 "RichEdit20A" ---> "RichEdit20A"
 "SysTabControl32" ---> "SysTabControl32"
 "Add Torrent" ---> "Torrent hinzufügen"
@@ -114,9 +113,11 @@
 "Start Paused" ---> "pausiert starten"
 "Note. Compact Allocation is incompatible with File Selection" ---> "Info: kompakte Zuweiseung ist mit der Dateiauswahl nicht möglich"
 "General" ---> "Allgemein"
-"Allow only one instance to run." ---> "Nur eine Instanz erlauben"
+"Allow only one instance to run" --->  ??? 
 "Advanced GUI" ---> "Erweiterte GUI"
 "Minimize to tray." ---> "Ins Tray minimieren"
+"Close to tray" --->  ??? 
+"Confirm on close" --->  ??? 
 "Language (requires restart)" ---> "Sprache (Neustart erforderlich)"
 "List of Trackers." ---> "Liste der Tracker"
 "Send login info to trackers." ---> "Auf Trackern einloggen"
@@ -154,7 +155,7 @@
 "InternalName" ---> "InternalName"
 "Halite" ---> "Halite"
 "LegalCopyright" ---> "LegalCopyright"
-"(C) Eoin O'Callaghan 2007" ---> "(C) Eoin O'Callaghan 2007"
+"(C) Eoin O'Callaghan 2008" --->  ??? 
 "OriginalFilename" ---> "OriginalFilename"
 "Halite.exe" ---> "Halite.exe"
 "ProductName" ---> "ProductName"
@@ -192,6 +193,8 @@
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Eine ungültige Verbindungsstrategie, %1%, wurde als Verschlüsselungseinstellung verwendet."
 "Auto Sort" ---> "auto. Sortierung"
 "Torrent Root" ---> "Torrent Root"
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
 "Interesting" ---> "Interessiert"
 "Choked" ---> "Gedrosselt"
 "Interested in us" ---> "Interessiert an uns"
@@ -223,10 +226,10 @@
 "Filename;Path;Size;Progress;Priority" ---> "Dateiname;Pfad;Größe;Fortschritt;Priorität"
 "Don't download" ---> "Nicht runterladen"
 "Normal" ---> "Normal"
-"Above Normal" ---> "Über Normal"
+"2" --->  ??? 
 "3" ---> "3"
 "4" ---> "4"
-"5" ---> "5"
+"Above Normal" ---> "Über Normal"
 "6" ---> "6"
 "Maximum" ---> "Maximum"
 "Set Priority" ---> "Priorität festlegen"

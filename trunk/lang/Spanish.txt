@@ -105,7 +105,6 @@
 "Time left:" ---> "Tiempo restante:"
 "Completed:" ---> "Completado:"
 "About" ---> "Acerca de"
-"Program Information" ---> "Información del programa"
 "RichEdit20A" --->  ??? 
 "SysTabControl32" --->  ??? 
 "Add Torrent" --->  ??? 
@@ -114,9 +113,11 @@
 "Start Paused" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "General" ---> "General"
-"Allow only one instance to run." ---> "Permitir que se ejecute solo una instancia."
+"Allow only one instance to run" --->  ??? 
 "Advanced GUI" ---> "GUI avanzada"
 "Minimize to tray." ---> "Minimizar a la bandeja."
+"Close to tray" --->  ??? 
+"Confirm on close" --->  ??? 
 "Language (requires restart)" ---> "Idioma (requiere reiniciar)"
 "List of Trackers." ---> "Lista de Trackers."
 "Send login info to trackers." --->  ??? 
@@ -154,7 +155,7 @@
 "InternalName" --->  ??? 
 "Halite" --->  ??? 
 "LegalCopyright" --->  ??? 
-"(C) Eoin O'Callaghan 2007" --->  ??? 
+"(C) Eoin O'Callaghan 2008" --->  ??? 
 "OriginalFilename" --->  ??? 
 "Halite.exe" --->  ??? 
 "ProductName" --->  ??? 
@@ -192,6 +193,8 @@
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "Auto Sort" ---> "Auto ordenar"
 "Torrent Root" ---> "Raíz del torrent"
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
 "Interesting" --->  ??? 
 "Choked" --->  ??? 
 "Interested in us" ---> "Interesado en nosotros"
@@ -223,10 +226,10 @@
 "Filename;Path;Size;Progress;Priority" ---> "Nombre de archivo;Ruta;Tamaño;Progreso;Prioridad"
 "Don't download" ---> "No descargar"
 "Normal" ---> "Normal"
-"Above Normal" ---> "Mayor de lo normal"
+"2" --->  ??? 
 "3" ---> "3"
 "4" ---> "4"
-"5" ---> "5"
+"Above Normal" ---> "Mayor de lo normal"
 "6" ---> "6"
 "Maximum" ---> "Máximo"
 "Set Priority" ---> "Ajustar prioridad"

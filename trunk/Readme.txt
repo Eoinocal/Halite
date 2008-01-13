@@ -1,6 +1,6 @@
 Halite: A Free Open-Source BitTorrent client
 
-Version: 0.3 released 26th December 2007
+Version: 0.3 released 12th January 2008
 
 WWW: http://www.binarynotions.com/halite.php Forum:
 http://www.binarynotions.com/forum.php
@@ -126,4 +126,12 @@ leaving someone out. If I have done so let me know.
   + Everyone who has been in touch with me through email or the forum
     and have shared their ideas and feature requests for the client.
     They have given the project direction and purpose.
+
+  + And of course all the translators:
+    - devGod – Nederlandse vertaling.
+    - MaikelChan - maikelchan88@gmail.com - Traducción en Español de España.
+    - Prome – prome.lwaku.info – Avtor slovenskega prevoda.
+    - Tw@in 28 (Giulio Pascali) – twain_28@hotmail.com - Traduttore Italiano.
+    - u!^DEV  - germanpg.hacker.to - deutsche Übersetzung.
+    - webdr - www.langturk.com - Türkçe çeviri.
 
