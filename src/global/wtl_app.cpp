@@ -122,7 +122,7 @@ void app_module::res_revert()
 void app_module::res_set_dll(std::wstring dll)
 {
 	if (pimpl->hmod_) FreeLibrary(pimpl->hmod_);
-	pimpl->res_dll_ = dll;	
+	pimpl->res_dll_ = dll;
 	
 	HMODULE hmod_ = ::LoadLibraryEx(dll.c_str(), 0, LOAD_LIBRARY_AS_DATAFILE);
 	_Module.SetResourceInstance(reinterpret_cast<HINSTANCE>(hmod_));
