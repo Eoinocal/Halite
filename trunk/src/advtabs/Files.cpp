@@ -71,7 +71,7 @@ void FileListView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 HWND FileTreeView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowName, DWORD dwStyle, DWORD dwExStyle,
 	ATL::_U_MENUorID MenuOrID, LPVOID lpCreateParam)
 {
-	HWND hwnd = treeClass::Create(hWndParent, rect.m_lpRect, szWindowName, dwStyle, dwExStyle, MenuOrID.m_hMenu, lpCreateParam);
+	HWND hwnd = treeClass::Create(hWndParent, (RECT &)rect.m_lpRect, szWindowName, dwStyle, dwExStyle, (UINT)MenuOrID.m_hMenu, lpCreateParam);
 	assert(hwnd);
 	
 	CMenuHandle menu;
