@@ -769,6 +769,7 @@ void BitTorrent::saveTorrentData()
 
 bool BitTorrent::listenOn(std::pair<int, int> const& range)
 {
+
 	try
 	{
 	
@@ -784,6 +785,7 @@ bool BitTorrent::listenOn(std::pair<int, int> const& range)
 			return pimpl->theSession.listen_on(range);	
 		else
 			return true;
+
 	}
 	
 	}
@@ -844,6 +846,16 @@ void BitTorrent::setDhtSettings(int max_peers_reply, int search_branching,
 	{
 		pimpl->dht_settings_ = settings;
 		pimpl->theSession.set_dht_settings(pimpl->dht_settings_);
+	}
+}
+
+void BitTorrent::startUPnP()
+{
+	if (pimpl->theSession.is_listening())
+	{
+		pimpl->theSession.start_lsd();
+		pimpl->theSession.start_upnp();
+		pimpl->theSession.start_natpmp();
 	}
 }
 

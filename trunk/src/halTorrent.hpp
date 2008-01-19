@@ -377,6 +377,8 @@ public:
 	
 	void ensureIpFilterOn(progressCallback fn);
 	void ensureIpFilterOff();
+
+	void startUPnP();
 	
 	void ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 last);
 	void ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last);
