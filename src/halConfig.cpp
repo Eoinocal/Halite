@@ -42,6 +42,8 @@ bool Config::settingsThread()
 		
 		return false;
 	}
+
+	bittorrent().startUPnP();
 	
 	try
 	{
