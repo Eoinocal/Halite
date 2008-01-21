@@ -16,6 +16,7 @@
 #define HAL_EVENT_TRACKER               HAL_EVENT_BEGIN + 7
 #define HAL_EVENT_TORRENTEXP            HAL_EVENT_BEGIN + 8
 #define HAL_EVENT_INVTORRENT            HAL_EVENT_BEGIN + 9
+#define HAL_EVENT_DEV                   HAL_EVENT_BEGIN + 10
 
 #ifndef RC_INVOKED
 
@@ -30,18 +31,23 @@
 
 #include "halTorrent.hpp"
 
+#define HAL_DEV_MSG(msg) \
+		hal::event().post(shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(msg, hal::Event::dev))); 
+
 namespace hal 
 {
 
 class Event
 {
 public:
-	enum eventLevel { debug, info, warning, critical, fatal, none };
+	enum eventLevel { dev, debug, info, warning, critical, fatal, none };
 	
 	enum codes {
 		noEvent = 0,
 		unclassified = HAL_EVENT_UNCLASSIFIED,
 		debugEvent = HAL_EVENT_DEBUG,
+		devEvent = HAL_EVENT_DEV,
 		invalidTorrent = HAL_EVENT_INVTORRENT,
 		torrentException = HAL_EVENT_TORRENTEXP,
 		generalException = HAL_EVENT_EXP,

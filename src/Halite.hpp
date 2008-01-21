@@ -24,7 +24,7 @@ public:
 	Halite() :
 		hal::IniBase<Halite>("globals/halite", "Halite"),
 		oneInst(false),
-#ifdef _DEBUG
+#ifdef TORRENT_LOGGING
 		logDebug_(true),
 #else
 		logDebug_(false),
