@@ -1,6 +1,6 @@
 Halite: A Free Open-Source BitTorrent client
 
-Version: 0.3 released 12th January 2008
+Version: 0.3.0.2 released 24th January 2008
 
 WWW: http://www.binarynotions.com/halite.php Forum:
 http://www.binarynotions.com/forum.php
@@ -47,6 +47,12 @@ restart automatically can be done so manually by loading the
 associated torrent file from the 'torrents' subdirectory.
 
 Changes:
+
+ - from v 0.3 to 0.3.0.2: 
+   Mainly a bugfix release.
+   1) Fixed a bug with Tray Icon rmeaining after window was restored.
+   2) Torrent Connection and Transfer setting mapped to incorrect editbox.
+   3) Subtle bug where some settings didn't register straight away.
 
  - from v 0.2.9 to 0.3: 
    1) File selection and/or priority settings.

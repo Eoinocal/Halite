@@ -1,5 +1,5 @@
 
-//         Copyright Eóin O'Callaghan 2006 - 2007.
+//         Copyright Eóin O'Callaghan 2006 - 2008.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -867,6 +867,8 @@ private:
 			
 			int up = (transferLimit_.second > 0) ? static_cast<int>(transferLimit_.second*1024) : -1;
 			handle_.set_upload_limit(up);
+
+			HAL_DEV_MSG(wformat_t(L"Applying Transfer Speed %1% - %2%") % down % up);
 		}
 	}
 
@@ -876,13 +878,19 @@ private:
 		{
 			handle_.set_max_connections(connections_);
 			handle_.set_max_uploads(uploads_);
+
+			HAL_DEV_MSG(wformat_t(L"Applying Connection Limit %1% - %2%") % connections_ % uploads_);
 		}
 	}
 	
 	void applyRatio()
 	{ 
 		if (inSession())
+		{
 			handle_.set_ratio(ratio_);
+
+			HAL_DEV_MSG(wformat_t(L"Applying Ratio %1%") % ratio_);
+		}
 	}
 	
 	void applyTrackers()
@@ -904,6 +912,8 @@ private:
 				}
 				handle_.replace_trackers(trackers);
 			}
+			
+			HAL_DEV_MSG(L"Applying Trackers");
 		}
 	}
 	
@@ -916,6 +926,8 @@ private:
 				handle_.set_tracker_login(hal::to_utf8(trackerUsername_),
 					hal::to_utf8(trackerPassword_));
 			}
+
+			HAL_DEV_MSG(wformat_t(L"Applying Tracker Login User: %1%, Pass: %2%") % trackerUsername_ %trackerPassword_ );
 		}
 	}
 	
@@ -925,13 +937,19 @@ private:
 		{
 			if (!filePriorities_.empty())
 				handle_.prioritize_files(filePriorities_);
+			
+			HAL_DEV_MSG(L"Applying File Priorities");
 		}
 	}	
 	
 	void applyResolveCountries()
 	{
 		if (inSession())
+		{
 			handle_.resolve_countries(resolve_countries_);
+			
+			HAL_DEV_MSG(wformat_t(L"Applying Resolve Countries %1%") % resolve_countries_);
+		}
 	}
 	
 	void completedPauseEvent()

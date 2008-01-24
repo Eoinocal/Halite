@@ -266,3 +266,4 @@
 "Peer Event: %1%." ---> "Peer dogodek: %1%."
 "Tracker Event: %1%." ---> "Tracker dogodek: %1%."
 "Debug Event: %1%." ---> "Debug dogodek: %1%."
+"Dev Msg: %1%." --->  ??? 
