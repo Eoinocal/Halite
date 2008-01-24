@@ -36,6 +36,14 @@ public:
 	{
 		load();
 	}
+
+	void saveIniData()
+	{
+		HAL_DEV_MSG(L"Halite saving INI");
+
+		save();		
+		hal::ini().save_data();
+	}
 	
 	friend class boost::serialization::access;
 	template<class Archive>

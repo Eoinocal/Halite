@@ -1,5 +1,5 @@
 
-//         Copyright Eóin O'Callaghan 2006 - 2007.
+//         Copyright Eóin O'Callaghan 2006 - 2008.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -274,7 +274,7 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 		try
 		{
 		
-		hal::ini().save_data();
+		halite().saveIniData();
 		hal::bittorrent().saveTorrentData();	
 	
 		}
@@ -368,8 +368,7 @@ void HaliteWindow::OnClose()
 {
 	if (closeToTray && trayIcon_.IsHidden())
 	{		
-		ShowWindow(SW_HIDE);
-		trayIcon_.Show();
+		ShowWindow(SW_MINIMIZE);
 	}
 	else
 	{
@@ -393,6 +392,8 @@ void HaliteWindow::OnDestroy()
 
 void HaliteWindow::OnSize(UINT type, CSize)
 {
+	HAL_DEV_MSG(wformat(L"OnSize type %1%") % type);
+
 	if (type == SIZE_MINIMIZED)
 	{
 		if (use_tray)
@@ -402,7 +403,12 @@ void HaliteWindow::OnSize(UINT type, CSize)
 		}
 	}
 	else
+	{
+		if (trayIcon_.IsShowing())
+			trayIcon_.Hide();
+
 		GetWindowRect(rect);
+	}
 	
 	SetMsgHandled(false);
 }	
@@ -416,6 +422,13 @@ void HaliteWindow::OnMove(CSize)
 		GetWindowRect(rect);
 
 	SetMsgHandled(false);	
+}
+
+void HaliteWindow::OnShowWindow(BOOL bShow, UINT nStatus)
+{
+	HAL_DEV_MSG(wformat(L"OnShowWindow %1%, status %2%") % bShow % nStatus);
+
+	SetMsgHandled(false);
 }
 
 LRESULT HaliteWindow::OnTrayOpenHalite(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)

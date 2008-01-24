@@ -70,6 +70,7 @@ public:
 		MSG_WM_DESTROY(OnDestroy)
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_MOVE(OnMove)
+		MSG_WM_SHOWWINDOW(OnShowWindow)
 		MSG_WM_ERASEBKGND(OnEraseBkgnd)
 		MSG_WM_TIMER(OnTimer)
 		MSG_WM_COPYDATA(OnCopyData);
@@ -158,6 +159,7 @@ protected:
 	void OnDestroy();
 	void OnSize(UINT, CSize);
 	void OnMove(CSize);
+	void OnShowWindow(BOOL bShow, UINT nStatus);
 	LRESULT OnTrayNotification(UINT, WPARAM wParam, LPARAM lParam);
 	LRESULT OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnTrayOpenHalite(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);

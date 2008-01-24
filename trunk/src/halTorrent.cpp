@@ -5,8 +5,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 
-#define HALITE_VERSION					0,3,0,370
-#define HALITE_VERSION_STRING			"v 0.3.0.1"
+#define HALITE_VERSION					0,3,0,376
+#define HALITE_VERSION_STRING			"v 0.3.0.2"
+#define	HALITE_FINGERPRINT				"HL", 0, 3, 0, 2
 
 #ifndef HAL_NA
 #define HAL_NA 40013
@@ -617,7 +618,7 @@ public:
 	
 private:
 	BitTorrent_impl() :
-		theSession(lbt::fingerprint("HL", 0, 3, 0, 1)),
+		theSession(lbt::fingerprint(HALITE_FINGERPRINT)),
 		timer_(io_),
 		keepChecking_(false),
 		bittorrentIni(L"BitTorrent.xml"),

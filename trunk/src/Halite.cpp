@@ -86,7 +86,7 @@ static BOOL CALLBACK hwndSearcher(HWND hWnd, LPARAM lParam)
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 
-	HAL_DEV_MSG(L"Hello")
+//	HAL_DEV_MSG(L"Hello");
 
 //	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, L"Hello")));
 	
@@ -99,7 +99,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	HINSTANCE hInstRich = ::LoadLibrary(CRichEditCtrl::GetLibraryName());
 	ATLASSERT(hInstRich != NULL);
    
-	int nRet;	
+	int nRet = 0;	
 	HRESULT hRes = _Module.Init(NULL, hInstance);
 	assert (SUCCEEDED(hRes));	
 	
