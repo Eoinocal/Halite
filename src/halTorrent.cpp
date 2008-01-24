@@ -733,7 +733,6 @@ private:
 	
 };
 
-
 wpath_t BitTorrent_impl::workingDirectory = hal::app().working_directory();
 
 BitTorrent::BitTorrent() :
@@ -769,7 +768,6 @@ void BitTorrent::saveTorrentData()
 
 bool BitTorrent::listenOn(std::pair<int, int> const& range)
 {
-
 	try
 	{
 	
@@ -863,6 +861,10 @@ void BitTorrent::setSessionLimits(int maxConn, int maxUpload)
 {		
 	pimpl->theSession.set_max_uploads(maxUpload);
 	pimpl->theSession.set_max_connections(maxConn);
+	
+	event().post(shared_ptr<EventDetail>(new EventMsg(
+		wformat_t(L"Set connections totals %1% and uploads %2%.") 
+			% maxConn % maxUpload)));
 }
 
 void BitTorrent::setSessionSpeed(float download, float upload)
@@ -871,6 +873,10 @@ void BitTorrent::setSessionSpeed(float download, float upload)
 	pimpl->theSession.set_download_rate_limit(down);
 	int up = (upload > 0) ? static_cast<int>(upload*1024) : -1;
 	pimpl->theSession.set_upload_rate_limit(up);
+	
+	event().post(shared_ptr<EventDetail>(new EventMsg(
+		wformat_t(L"Set session rates at download %1% and upload %2%.") 
+			% pimpl->theSession.download_rate_limit() % pimpl->theSession.upload_rate_limit())));
 }
 
 void BitTorrent_impl::ip_filter_count()
@@ -951,12 +957,16 @@ void BitTorrent::ensureIpFilterOn(progressCallback fn)
 
 		ensureIpFilterOff();
 	}
+
+	event().post(shared_ptr<EventDetail>(new EventMsg(L"IP filters on.")));	
 }
 
 void BitTorrent::ensureIpFilterOff()
 {
 	pimpl->theSession.set_ip_filter(lbt::ip_filter());
 	pimpl->ip_filter_on_ = false;
+	
+	event().post(shared_ptr<EventDetail>(new EventMsg(L"IP filters off.")));	
 }
 
 #ifndef TORRENT_DISABLE_ENCRYPTION	
@@ -1036,6 +1046,8 @@ void BitTorrent::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy
 				
 		ensurePeOff();		
 	}
+	
+	event().post(shared_ptr<EventDetail>(new EventMsg(L"Protocol encryption on.")));
 }
 
 void BitTorrent::ensurePeOff()
@@ -1048,6 +1060,8 @@ void BitTorrent::ensurePeOff()
 	pe.prefer_rc4 = true;
 	
 	pimpl->theSession.set_pe_settings(pe);
+
+	event().post(shared_ptr<EventDetail>(new EventMsg(L"Protocol encryption off.")));
 }
 #endif
 
@@ -1180,14 +1194,24 @@ const SessionDetail BitTorrent::getSessionDetails()
 void BitTorrent::setSessionHalfOpenLimit(int halfConn)
 {
 	pimpl->theSession.set_max_half_open_connections(halfConn);
+
+	event().post(shared_ptr<EventDetail>(new EventMsg(
+		wformat_t(L"Set half-open connections limit to %1%.") % pimpl->theSession.max_half_open_connections())));
 }
 
 void BitTorrent::setTorrentDefaults(int maxConn, int maxUpload, float download, float upload)
 {
 	pimpl->defTorrentMaxConn_ = maxConn;
 	pimpl->defTorrentMaxUpload_ = maxUpload;
+
+	event().post(shared_ptr<EventDetail>(new EventMsg(
+		wformat_t(L"Set torrent connections total %1% and uploads %2%.") % maxConn % maxUpload)));
+
 	pimpl->defTorrentDownload_ = download;
 	pimpl->defTorrentUpload_ = upload;
+
+	event().post(shared_ptr<EventDetail>(new EventMsg(
+		wformat_t(L"Set torrent default rates at %1$.2fkb/s down and %2$.2fkb/s upload.") % download % upload)));
 }
 
 std::pair<lbt::entry, lbt::entry> BitTorrent_impl::prepTorrent(wpath_t filename, wpath_t saveDirectory)
@@ -1365,6 +1389,8 @@ const TorrentDetails& BitTorrent::updateTorrentDetails(const wstring_t& focused,
 void BitTorrent::resumeAll()
 {
 	try {
+		
+	event().post(shared_ptr<EventDetail>(new EventMsg(L"Resuming torrent.")));
 	
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); i != e;)
 	{
@@ -1421,8 +1447,7 @@ void BitTorrent::closeAll()
 {
 	try {
 	
-	event().post(shared_ptr<EventDetail>(
-		new EventInfo(L"Stopping all torrents...")));
+	event().post(shared_ptr<EventDetail>(new EventInfo(L"Stopping all torrents...")));
 	
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); 
 		i != e; ++i)
@@ -1446,8 +1471,7 @@ void BitTorrent::closeAll()
 		Sleep(200);
 	}
 	
-	event().post(shared_ptr<EventDetail>(
-		new EventInfo(L"All torrents stopped.")));
+	event().post(shared_ptr<EventDetail>(new EventInfo(L"All torrents stopped.")));
 		
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); 
 		i != e; ++i)
@@ -1459,8 +1483,7 @@ void BitTorrent::closeAll()
 		}
 	}
 	
-	event().post(shared_ptr<EventDetail>(
-		new EventInfo(L"Fast-resume data written.")));
+	event().post(shared_ptr<EventDetail>(new EventInfo(L"Fast-resume data written.")));
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")
 }

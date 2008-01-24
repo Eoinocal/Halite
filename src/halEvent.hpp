@@ -31,9 +31,13 @@
 
 #include "halTorrent.hpp"
 
-#define HAL_DEV_MSG(msg) \
+#ifdef TORRENT_LOGGING
+#	define HAL_DEV_MSG(msg) \
 		hal::event().post(shared_ptr<hal::EventDetail>( \
 			new hal::EventMsg(msg, hal::Event::dev))); 
+#else
+#	define HAL_DEV_MSG(msg)
+#endif
 
 namespace hal 
 {
