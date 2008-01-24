@@ -56,13 +56,13 @@ protected:
 	
 	struct Tracker : public ColAdapter_t
 	{
-		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->currentTracker(), r->currentTracker()); }		
+		virtual int compare(tD& l, tD& r) { return hal::compare(l->currentTracker(), r->currentTracker()); }		
 		virtual std::wstring print(tD& t) { return t->currentTracker(); }		
 	};
 	
 	struct SpeedDown : public ColAdapter_t
 	{
-		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->speed().first, r->speed().first); }		
+		virtual int compare(tD& l, tD& r) { return hal::compare(l->speed().first, r->speed().first); }		
 		virtual std::wstring print(tD& t) 
 		{
 			return (wformat(L"%1$.2fkb/s") % (t->speed().first/1024)).str(); 
@@ -71,7 +71,7 @@ protected:
 	
 	struct SpeedUp : public ColAdapter_t
 	{
-		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->speed().second, r->speed().second); }		
+		virtual int compare(tD& l, tD& r) { return hal::compare(l->speed().second, r->speed().second); }		
 		virtual std::wstring print(tD& t) 
 		{
 			return (wformat(L"%1$.2fkb/s") % (t->speed().second/1024)).str(); 
@@ -80,7 +80,7 @@ protected:
 
 	struct Progress : public ColAdapter_t
 	{
-		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->completion(), r->completion()); }		
+		virtual int compare(tD& l, tD& r) { return hal::compare(l->completion(), r->completion()); }		
 		virtual std::wstring print(tD& t) 
 		{
 			return (wformat(L"%1$.2f%%") % (t->completion()*100)).str(); 
@@ -89,7 +89,7 @@ protected:
 
 	struct Peers : public ColAdapter_t
 	{
-		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->peers(), r->peers()); }		
+		virtual int compare(tD& l, tD& r) { return hal::compare(l->peers(), r->peers()); }		
 		virtual std::wstring print(tD& t) 
 		{
 			return (wformat(L"%1% (%2%)") % t->peersConnected() % t->peers()).str(); 
@@ -98,7 +98,7 @@ protected:
 	
 	struct Seeds : public ColAdapter_t
 	{
-		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->seeds(), r->seeds()); }				
+		virtual int compare(tD& l, tD& r) { return hal::compare(l->seeds(), r->seeds()); }				
 		virtual std::wstring print(tD& t) 
 		{
 			return (wformat(L"%1% (%2%)") % t->seedsConnected() % t->seeds()).str(); 
@@ -107,7 +107,7 @@ protected:
 	
 	struct ETA : public ColAdapter_t
 	{
-		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->estimatedTimeLeft(), r->estimatedTimeLeft()); }		
+		virtual int compare(tD& l, tD& r) { return hal::compare(l->estimatedTimeLeft(), r->estimatedTimeLeft()); }		
 		virtual std::wstring print(tD& t) 
 		{ 
 			if (!t->estimatedTimeLeft().is_special())
@@ -124,7 +124,7 @@ protected:
 	
 	struct UpdateTrackerIn : public ColAdapter_t
 	{
-		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->updateTrackerIn(), r->updateTrackerIn()); }		
+		virtual int compare(tD& l, tD& r) { return hal::compare(l->updateTrackerIn(), r->updateTrackerIn()); }		
 		virtual std::wstring print(tD& t) 
 		{ 
 			if (!t->updateTrackerIn().is_special())
@@ -168,7 +168,7 @@ protected:
 	
 	struct DistributedCopies : public ColAdapter_t
 	{
-		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->distributedCopies(), r->distributedCopies()); }		
+		virtual int compare(tD& l, tD& r) { return hal::compare(l->distributedCopies(), r->distributedCopies()); }		
 		virtual std::wstring print(tD& t) 
 		{ 
 			float copies = t->distributedCopies();
@@ -267,7 +267,7 @@ protected:
 	
 	struct SeedingTime : public ColAdapter_t
 	{
-		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->seeding(), r->seeding()); }		
+		virtual int compare(tD& l, tD& r) { return hal::compare(l->seeding(), r->seeding()); }		
 		virtual std::wstring print(tD& t) 
 		{ 
 			if (!t->seeding().is_special())
@@ -301,7 +301,7 @@ protected:
 	
 	struct FinishTime : public ColAdapter_t
 	{
-		virtual int compare(tD& l, tD& r)	{ return hal::compare(l->finishTime(), r->finishTime()); }		
+		virtual int compare(tD& l, tD& r) { return hal::compare(l->finishTime(), r->finishTime()); }		
 		virtual std::wstring print(tD& t) 
 		{ 
 			if (!t->finishTime().is_special())

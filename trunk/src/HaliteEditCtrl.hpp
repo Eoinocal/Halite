@@ -73,17 +73,17 @@ public:
 			
 		if (range_inc_)
 		{
-			if (value_ < range_lwr_) value_ = -102;
+			if (value_ < range_lwr_) value_ = -1;
 		}
 		else
 		{
-			if (value_ <= range_lwr_) value_ = -103;
+			if (value_ <= range_lwr_) value_ = -1;
 		}
 			
 		}        
 		catch(boost::bad_lexical_cast &)
 		{
-		value_ = -101;
+		value_ = -1;
 		}
 		
 		if (value_ < 0)	SetWindowText(hal::app().res_wstr(HAL_INF).c_str());
@@ -120,11 +120,11 @@ public:
 		
 		if (range_inc_)
 		{
-			if (val < range_lwr_) val = -102;
+			if (val < range_lwr_) val = -1;
 		}
 		else
 		{
-			if (val <= range_lwr_) val = -103;
+			if (val <= range_lwr_) val = -1;
 		}
 		
 		if (val < 0)	
