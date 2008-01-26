@@ -18,6 +18,7 @@
 #include "stdAfx.hpp"
 #include "../res/resource.h"
 #include "halTorrent.hpp"
+#include "halEvent.hpp"
 #include "WinAPIWaitableTimer.hpp"
 
 #include "UxthemeWrapper.hpp"
@@ -264,24 +265,23 @@ public:
 	class CHaliteHeaderCtrl : public CWindowImpl<CHaliteHeaderCtrl, CHeaderCtrl>
 	{
 	public:
+		enum { COL_MENU_NAMES = 123, COL_MAX_NAMES = 256};
+
+		CHaliteHeaderCtrl(thisClass& listView) :
+			listView_(listView)
+		{}
+
 		BEGIN_MSG_MAP(CHaliteHeaderCtrl)
 			REFLECTED_NOTIFY_CODE_HANDLER(NM_RCLICK, OnRClick)
+			COMMAND_RANGE_HANDLER(COL_MENU_NAMES, COL_MENU_NAMES+COL_MAX_NAMES, OnMenuNames)
+
+			DEFAULT_REFLECTION_HANDLER()
 		END_MSG_MAP()
 		
 		void Attach(HWND hWndNew)
 		{
 			ATLASSERT(::IsWindow(hWndNew));
 			CWindowImpl<CHaliteHeaderCtrl, CHeaderCtrl>::SubclassWindow(hWndNew);
-
-			menu_.CreatePopupMenu();
-			
-			MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
-			minfo.fMask = MIIM_STRING|MIIM_ID|MIIM_FTYPE|MIIM_STATE;
-			minfo.fType = MFT_STRING;
-			minfo.fState = MFS_CHECKED;
-			minfo.dwTypeData = L"Hello";
-			
-			menu_.InsertMenuItem(0, false, &minfo);
 		}
 		
 		LRESULT OnRClick(int i, LPNMHDR pnmh, BOOL&)
@@ -292,9 +292,31 @@ public:
 
 			return 0;
 		}
+
+		LRESULT OnMenuNames(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+		{		
+			ATLASSERT(wID-COL_MENU_NAMES <= GetItemCount());
+
+			bool visible = listView_.OnNameChecked(wID-COL_MENU_NAMES);
+
+			MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
+		
+			minfo.fMask = MIIM_STATE;
+			minfo.fState = visible ? MFS_CHECKED : MFS_UNCHECKED;
+		
+			menu_.SetMenuItemInfo(wID, false, &minfo);
+
+			return 0;
+		}
+
+		WTL::CMenu& Menu()
+		{
+			return menu_;
+		}
 		
 	private:
 		WTL::CMenu menu_;
+		thisClass& listView_;
 	};
 	
 	struct ColumnAdapter
@@ -309,6 +331,7 @@ public:
 	
 	thisClass(bool resMenu=true, bool resNames=true, bool resWidthsAndOrder=true) :
 		manager_(*this),
+		header_(*this),
 		updateLock_(0),
 		autoSort_(false),
 		descending_(false),
@@ -349,10 +372,8 @@ public:
 	BEGIN_MSG_MAP_EX(thisClass)
 		COMMAND_ID_HANDLER(ID_LVM_AUTOSORT, OnAutoSort)
 		
-	//	REFLECTED_NOTIFY_CODE_HANDLER(NM_CLICK, OnClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_RCLICK, OnRClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_ITEMCHANGED, OnItemChanged)
-	//	REFLECTED_NOTIFY_CODE_HANDLER(LVN_COLUMNCLICK , OnColClick)
 
 		DEFAULT_REFLECTION_HANDLER()
 		CHAIN_MSG_MAP(parentClass)
@@ -465,14 +486,31 @@ public:
 		
 		header_.Attach(this->GetHeader());
 		header_.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
-		
-		for (int i = header_.GetItemCount(); i<int(listNames_.size()); i = header_.GetItemCount())
+
+		header_.Menu().CreatePopupMenu();
+
+		for (int i=header_.GetItemCount(), e=int(listNames_.size()); i<e; ++i)
 		{
-			//if (listVisible_[i])
+			MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
+			minfo.fMask = MIIM_STRING|MIIM_ID|MIIM_FTYPE|MIIM_STATE;
+			minfo.fType = MFT_STRING;
+			minfo.dwTypeData = (LPWSTR)listNames_[i].c_str();
+			minfo.wID = CHaliteHeaderCtrl::COL_MENU_NAMES+i;
+
+			AddColumn(listNames_[i].c_str(), i);
+
+			if (listVisible_[i])
 			{
-				AddColumn(listNames_[i].c_str(), i);
+				minfo.fState = MFS_CHECKED;			
 				SetColumnWidth(i, listWidths_[i]);
 			}
+			else
+			{
+				minfo.fState = MFS_UNCHECKED;
+				SetColumnWidth(i, 0);
+			}
+
+			header_.Menu().InsertMenuItem(header_.Menu().GetMenuItemCount(), false, &minfo);
 		}
 		
 		SetColumnOrderArray(listNames_.size(), &listOrder_[0]);
@@ -488,7 +526,8 @@ public:
 		
 		for (size_t i=0; i<listNames_.size(); ++i)
 		{
-			listWidths_[i] = GetColumnWidth(i);
+			if (listVisible_[i])
+				listWidths_[i] = GetColumnWidth(i);
 		}
 		
 		GetColumnOrderArray(listNames_.size(), &listOrder_[0]);
@@ -509,6 +548,39 @@ public:
 		menu_.SetMenuItemInfo(ID_LVM_AUTOSORT, false, &minfo);
 		
 		return 0;
+	}
+
+	bool OnNameChecked(int i)
+	{
+		if (!listVisible_[i])
+		{		
+			GetColumnOrderArray(listNames_.size(), &listOrder_[0]);
+			SetColumnWidth(i, listWidths_[i]);
+
+			listOrder_.erase(std::find(listOrder_.begin(), listOrder_.end(), i));
+			
+			int index = i + std::count(listVisible_.begin()+i, listVisible_.end(), false) - 1;
+			listOrder_.insert(listOrder_.begin()+index, i);
+
+			SetColumnOrderArray(listNames_.size(), &listOrder_[0]);
+			listVisible_[i] = true;
+		}
+		else
+		{
+			listWidths_[i] = GetColumnWidth(i);	
+			GetColumnOrderArray(listNames_.size(), &listOrder_[0]);
+
+			SetColumnWidth(i, 0);
+
+			listOrder_.erase(std::find(listOrder_.begin(), listOrder_.end(), i));
+			listOrder_.insert(listOrder_.begin(), i);
+
+			SetColumnOrderArray(listNames_.size(), &listOrder_[0]);
+			listVisible_[i] = false;
+		}
+	
+		InvalidateRect(NULL, true);
+		return listVisible_[i];
 	}
 
 	LRESULT OnClick(int, LPNMHDR pnmh, BOOL&)
