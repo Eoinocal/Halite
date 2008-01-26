@@ -69,6 +69,7 @@ public:
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_DESTROY(OnDestroy)
 		MSG_WM_SIZE(OnSize)
+		MSG_WM_SHOWWINDOW(OnShowWindow)
 		MSG_WM_MOVE(OnMove)
 		MSG_WM_SHOWWINDOW(OnShowWindow)
 		MSG_WM_ERASEBKGND(OnEraseBkgnd)
