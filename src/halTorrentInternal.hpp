@@ -379,7 +379,6 @@ public:
 		uploads_(-1), \
 		ratio_(0), \
 		resolve_countries_(true), \
-		state_(TorrentDetail::torrent_active), \
 		totalUploaded_(0), \
 		totalBase_(0), \
 		progress_(0), \
@@ -388,13 +387,15 @@ public:
 	TorrentInternal() :	
 		TORRENT_INTERNALS_DEFAULTS,
 		compactStorage_(true),
+		state_(TorrentDetail::torrent_stopped),	
 		in_session_(false)
 	{}
 	
 	TorrentInternal(wpath_t filename, wpath_t saveDirectory, wpath_t workingDirectory, bool compactStorage) :
 		TORRENT_INTERNALS_DEFAULTS,
 		save_directory_(saveDirectory.string()),
-		compactStorage_(compactStorage),		
+		compactStorage_(compactStorage),	
+		state_(TorrentDetail::torrent_stopped),	
 		in_session_(false)
 	{
 		assert(the_session_);
@@ -484,8 +485,11 @@ public:
 			in_session_ = true;
 			if (paused)
 				state_ = TorrentDetail::torrent_paused;	
+			else
+				state_ = TorrentDetail::torrent_active;	
 				
 			applySettings();
+			handle_.force_reannounce();
 		}	
 	}
 	
@@ -642,9 +646,9 @@ public:
 	
 	const std::vector<TrackerDetail>& getTrackers()
 	{
-		if (inSession() && trackers_.empty())
+		if (trackers_.empty())
 		{
-			std::vector<lbt::announce_entry> trackers = handle_.trackers();
+			std::vector<lbt::announce_entry> trackers = infoMemory_.trackers();
 			
 			foreach (const lbt::announce_entry& entry, trackers)
 			{
@@ -927,7 +931,7 @@ private:
 					hal::to_utf8(trackerPassword_));
 			}
 
-			HAL_DEV_MSG(wformat_t(L"Applying Tracker Login User: %1%, Pass: %2%") % trackerUsername_ %trackerPassword_ );
+			HAL_DEV_MSG(wformat_t(L"Applying Tracker Login User: %1%, Pass: %2%") % trackerUsername_ % trackerPassword_ );
 		}
 	}
 	

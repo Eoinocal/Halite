@@ -16,6 +16,7 @@
 #include "HaliteDialog.hpp"
 #include "AdvHaliteDialog.hpp"
 #include "AddTorrentDialog.hpp"
+#include "NewTorrentDialog.hpp"
 
 #include "ConfigOptions.hpp"
 #include "halConfig.hpp"
@@ -460,6 +461,9 @@ LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
+	NewTorrentDialog newTorrent;	
+    newTorrent.DoModal();
+
 	MessageBox(L"This feature is under development and currently disabled", 
 		L"Feature not availible", 0);
 	return 0;
