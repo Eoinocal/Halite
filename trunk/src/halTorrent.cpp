@@ -788,6 +788,13 @@ bool BitTorrent::listenOn(std::pair<int, int> const& range)
 	}
 	
 	}
+	catch (const std::exception& e)
+	{
+		event().post(shared_ptr<EventDetail>(
+			new EventStdException(Event::fatal, e, L"From BitTorrent::listenOn.")));
+
+		return false;
+	}
 	catch(...)
 	{
 		return false;
@@ -1280,7 +1287,7 @@ void BitTorrent::addTorrent(wpath_t file, wpath_t saveDirectory, bool startPause
 		me->setTransferSpeed(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload());
 		me->setConnectionLimit(bittorrent().defTorrentMaxConn(), bittorrent().defTorrentMaxUpload());
 		
-		me->addToSession(startPaused);
+	//	me->addToSession(startPaused);
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(to_utf8(file.string()), "addTorrent")
