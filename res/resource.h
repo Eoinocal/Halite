@@ -19,7 +19,6 @@
 #define IDD_CLOSESPLASH                 105
 #define IDD_HALITEDLG                   106
 #define IDR_TRAY_MENU                   107
-#define IDD_NEWTORRENT                  111
 #define IDD_CONFIGGENERAL               112
 #define IDD_ADVHALITEDLG                114
 #define IDR_APP_ICON                    114

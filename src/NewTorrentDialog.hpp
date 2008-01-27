@@ -7,7 +7,7 @@
 #pragma once
 
 #define IDD_NEWTORRENT_BEGIN			1950
-//#define IDD_PROGRESS                    1901
+#define IDD_NEWTORRENT                  IDD_NEWTORRENT_BEGIN+1
 //#define IDC_PROG_CANCEL                 IDD_NEWTORRENT_BEGIN + 2
 //#define IDC_PROG_PROGRESS               IDD_NEWTORRENT_BEGIN + 3
 
@@ -34,17 +34,7 @@ public:
 //		COMMAND_ID_HANDLER_EX(IDC_PROG_CANCEL, onCancel)
     END_MSG_MAP()
 	
-	LRESULT OnInitDialog(...)
-	{
-		CenterWindow();
-/*		SetWindowText(windowText_.c_str());
-		prog_.Attach(GetDlgItem(IDC_PROG_PROGRESS));
-		prog_.SetRange(0, 100);
-		
-		thread_ptr.reset(new thread(bind(&ProgressDialog::ProgressThread, this)));
-*/		
-		return TRUE;
-	}
+	LRESULT OnInitDialog(...);
 
 	void ProgressThread()
 	{
@@ -65,10 +55,7 @@ public:
 //		return this->IsDialogMessage(pMsg);
 	}
 	
-	void onCancel(UINT, int, HWND hWnd)
-	{
-//		stop_ = true;
-	}
+	void onCancel(UINT, int, HWND hWnd);
 	
 private:
 

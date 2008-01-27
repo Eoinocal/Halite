@@ -383,6 +383,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\NewTorrentDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\NTray.cpp"
 				>
 			</File>
@@ -562,6 +566,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\halTorrentInternal.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\NewTorrentDialog.hpp"
 				>
 			</File>
 			<File
