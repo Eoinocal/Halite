@@ -362,6 +362,13 @@ class BitTorrent_impl;
 class BitTorrent
 {
 public:	
+	enum mappings
+	{
+		mappingNone = 0,
+		mappingUPnP,
+		mappingNatPMP
+	};
+
 	void shutDownSession();
 	void saveTorrentData();
 	
@@ -378,8 +385,8 @@ public:
 	void ensureIpFilterOn(progressCallback fn);
 	void ensureIpFilterOff();
 
-	void startUPnP();
-	
+	void setMapping(int mapping);
+
 	void ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 last);
 	void ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last);
 	void ip_filter_import_dat(boost::filesystem::path file, progressCallback fn, bool octalFix);
@@ -392,6 +399,7 @@ public:
 	void setSessionSpeed(float download, float upload);
 	void setDhtSettings(int max_peers_reply, int search_branching, 
 		int service_port, int max_fail_count);
+	void setTimeouts(int peers, int tracker);
 	
 	const SessionDetail getSessionDetails();
 

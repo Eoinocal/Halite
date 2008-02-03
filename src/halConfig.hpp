@@ -57,7 +57,10 @@ public:
 		peConInPolicy(1),
 		peConOutPolicy(1),
 		halfConn(true),
-		halfConnLimit(10)
+		halfConnLimit(10),
+		mappingType(0),
+		peerTimeout(120),
+		trackerTimeout(60)
 	{}
 	
 	friend class boost::serialization::access;
@@ -105,6 +108,11 @@ public:
 		if (version > 1) {
 			ar & BOOST_SERIALIZATION_NVP(halfConn);
 			ar & BOOST_SERIALIZATION_NVP(halfConnLimit);
+		}
+		if (version > 2) {
+			ar & BOOST_SERIALIZATION_NVP(mappingType);
+			ar & BOOST_SERIALIZATION_NVP(peerTimeout);
+			ar & BOOST_SERIALIZATION_NVP(trackerTimeout);
 		}
 	}
 	
@@ -160,10 +168,14 @@ private:
 	
 	bool halfConn;
 	int halfConnLimit;
+
+	int mappingType;
+	int peerTimeout;
+	int trackerTimeout;	
 };
 
 Config& config();
 
 } // namespace hal
 
-BOOST_CLASS_VERSION(hal::Config, 2)
+BOOST_CLASS_VERSION(hal::Config, 3)

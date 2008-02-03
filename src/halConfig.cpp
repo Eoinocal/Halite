@@ -25,6 +25,8 @@ bool Config::settingsThread()
 {	
 	event().post(shared_ptr<EventDetail>(new EventMsg(L"Applying BitTorrent session settings.")));	
 
+	bittorrent().setMapping(mappingType);	
+
 	event().post(shared_ptr<EventDetail>(new EventMsg(
 			wformat(L"Trying port in range %1% - %2%.") % portFrom % portTo)));
 	try
@@ -48,10 +50,6 @@ bool Config::settingsThread()
 	}
 
 	event().post(shared_ptr<EventDetail>(new EventMsg(wformat(L"Opened listen port; %1%.") % bittorrent().isListeningOn())));
-
-	//bittorrent().startUPnP();
-	
-	//event().post(shared_ptr<EventDetail>(new EventMsg(L"Mapped listen port.")));	
 	
 	try
 	{
@@ -68,8 +66,7 @@ bool Config::settingsThread()
 	{
 		hal::event().post(boost::shared_ptr<hal::EventDetail>(
 			new hal::EventStdException(Event::critical, e, L"settingsThread, Load IP Filter"))); 
-	}
-	
+	}	
 
 	try
 	{
@@ -102,6 +99,8 @@ bool Config::settingsThread()
 	bittorrent().setDhtSettings(dhtMaxPeersReply, 
 		dhtSearchBranching, dhtServicePort, 
 		dhtMaxFailCount);
+
+	bittorrent().setTimeouts(peerTimeout, trackerTimeout);
 	
 	if (enableDHT)
 	{

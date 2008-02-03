@@ -24,3 +24,16 @@ void NewTorrentDialog::onCancel(UINT, int, HWND hWnd)
 {
 //	stop_ = true;
 }
+
+NewTorrentDialog::CWindowMapStruct* NewTorrentDialog::GetWindowMap()
+{
+
+}
+
+void NewTorrentDialog::OnClose()
+{
+	if(::IsWindow(m_hWnd)) 
+	{
+		::DestroyWindow(m_hWnd);
+	}
+}
