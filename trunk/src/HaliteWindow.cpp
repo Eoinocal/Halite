@@ -393,8 +393,6 @@ void HaliteWindow::OnDestroy()
 
 void HaliteWindow::OnSize(UINT type, CSize)
 {
-	HAL_DEV_MSG(wformat(L"OnSize type %1%") % type);
-
 	if (type == SIZE_MINIMIZED)
 	{
 		if (use_tray)
@@ -427,8 +425,6 @@ void HaliteWindow::OnMove(CSize)
 
 void HaliteWindow::OnShowWindow(BOOL bShow, UINT nStatus)
 {
-	HAL_DEV_MSG(wformat(L"OnShowWindow %1%, status %2%") % bShow % nStatus);
-
 	SetMsgHandled(false);
 }
 

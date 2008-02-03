@@ -17,7 +17,8 @@
 #include "halTorrent.hpp"
 
 class NewTorrentDialog :
-	public CDialogImpl<NewTorrentDialog>
+	public CDialogImpl<NewTorrentDialog>,
+	public CAutoSizeWindow<NewTorrentDialog, false>
 {
 protected:
 	typedef NewTorrentDialog thisClass;
@@ -31,10 +32,12 @@ public:
 
     BEGIN_MSG_MAP_EX(thisClass)
         MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+		MSG_WM_CLOSE(OnClose)
 //		COMMAND_ID_HANDLER_EX(IDC_PROG_CANCEL, onCancel)
     END_MSG_MAP()
 	
 	LRESULT OnInitDialog(...);
+	static CWindowMapStruct* GetWindowMap();
 
 	void ProgressThread()
 	{
@@ -56,6 +59,7 @@ public:
 	}
 	
 	void onCancel(UINT, int, HWND hWnd);
+	void OnClose();
 	
 private:
 

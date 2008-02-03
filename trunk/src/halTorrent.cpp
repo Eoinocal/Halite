@@ -302,6 +302,59 @@ void TorrentDetails::sort(
 	std::stable_sort(torrents_.begin(), torrents_.end(), fn);
 }
 
+struct once
+{
+	template<typename S>
+	once(S& s, boost::function<void ()> f) :
+		f_(f)
+	{
+		c_ = s.connect(*this);
+		HAL_DEV_MSG(L"Once ctor");
+	}
+
+	void operator()() 
+	{
+		f_();
+		
+		HAL_DEV_MSG(L"Once disconnecting");
+
+		c_.disconnect();
+	}
+
+	boost::function<void ()> f_;
+	boost::signals::connection c_;
+};
+
+template<typename S=boost::signal<void()> >
+class signaler
+{
+public:
+
+	void connectRepeat(const typename S::slot_type& slot)
+	{
+		repeat_.connect(slot);
+	}
+
+	void connectOnce(const typename S::slot_type& slot)
+	{
+		once_.connect(slot);
+	}
+
+	void operator()() 
+	{
+		repeat_();
+
+		
+		HAL_DEV_MSG(L"Once disconnecting");
+		once_();
+		once_.disconnect_all_slots();
+	}	
+
+private:
+	S repeat_;
+	S once_;
+};
+
 class BitTorrent_impl
 {
 	friend class BitTorrent;
@@ -340,7 +393,13 @@ public:
 				new hal::EventStdException(Event::critical, e, L"~BitTorrent_impl"))); 
 		}
 	}
-	
+
+	struct 
+	{
+		signaler<> successfulListen;
+	} 
+	signals;
+		
 	void alertHandler()
 	{
 		if (keepChecking_)
@@ -514,7 +573,9 @@ public:
 				new EventGeneral(Event::info, a.timestamp(),
 					wformat_t(hal::app().res_wstr(HAL_LISTEN_SUCCEEDED_ALERT))
 						% hal::from_utf8_safe(a.msg()))
-			)	);				
+			)	);	
+
+			bit_impl_.signals.successfulListen();
 		}
 		
 		void operator()(lbt::peer_blocked_alert const& a) const
@@ -615,7 +676,7 @@ public:
 	float defTorrentUpload() { return defTorrentUpload_; }
 	
 	const wpath_t workingDir() { return workingDirectory; };
-	
+
 private:
 	BitTorrent_impl() :
 		theSession(lbt::fingerprint(HALITE_FINGERPRINT)),
@@ -783,8 +844,11 @@ bool BitTorrent::listenOn(std::pair<int, int> const& range)
 		if (port < range.first || port > range.second)
 			return pimpl->theSession.listen_on(range);	
 		else
+		{
+			pimpl->signals.successfulListen();
+			
 			return true;
-
+		}
 	}
 	
 	}
@@ -855,14 +919,45 @@ void BitTorrent::setDhtSettings(int max_peers_reply, int search_branching,
 	}
 }
 
-void BitTorrent::startUPnP()
+void BitTorrent::setMapping(int mapping)
 {
-	if (pimpl->theSession.is_listening())
+	if (mapping != mappingNone)
 	{
-		pimpl->theSession.start_lsd();
-		pimpl->theSession.start_upnp();
-		pimpl->theSession.start_natpmp();
+		if (mapping == mappingUPnP)
+		{
+			event().post(shared_ptr<EventDetail>(new EventMsg(L"Starting UPnP mapping.")));
+			pimpl->theSession.stop_upnp();
+			pimpl->theSession.stop_natpmp();
+
+			pimpl->signals.successfulListen.connectOnce(bind(&lbt::session::start_upnp, &pimpl->theSession));
+		}
+		else
+		{
+			event().post(shared_ptr<EventDetail>(new EventMsg(L"Starting NAT-PMP mapping.")));
+			pimpl->theSession.stop_upnp();
+			pimpl->theSession.stop_natpmp();
+
+			pimpl->signals.successfulListen.connectOnce(bind(&lbt::session::start_natpmp, &pimpl->theSession));
+		}
 	}
+	else
+	{
+		event().post(shared_ptr<EventDetail>(new EventMsg(L"No mapping.")));
+		pimpl->theSession.stop_upnp();
+		pimpl->theSession.stop_natpmp();
+	}
+}
+
+void BitTorrent::setTimeouts(int peers, int tracker)
+{
+	lbt::session_settings settings = pimpl->theSession.settings();
+	settings.peer_timeout = peers;
+	settings.tracker_completion_timeout = tracker;
+
+	pimpl->theSession.set_settings(settings);
+
+	event().post(shared_ptr<EventDetail>(new EventMsg(
+		wformat_t(L"Set Timeouts, peer %1%, tracker %2%") % peers % tracker)));
 }
 
 void BitTorrent::setSessionLimits(int maxConn, int maxUpload)
