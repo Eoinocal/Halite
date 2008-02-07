@@ -25,6 +25,7 @@ SOURCES =
 	stdAfx.cpp
 	Halite.cpp
 	HaliteWindow.cpp
+	NewTorrentDialog.cpp
 	HaliteListView.cpp
 	HaliteDialog.cpp
 	AdvHaliteDialog.cpp
@@ -53,6 +54,7 @@ SOURCES_MINI =
 	stdAfx.cpp
 	Halite.cpp
 	HaliteWindowMini.cpp
+	NewTorrentDialog.cpp
 	NTray.cpp
 	;
 	

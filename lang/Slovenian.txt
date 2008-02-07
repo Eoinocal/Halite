@@ -33,6 +33,11 @@
 "(DHT will not apply to private torrents)" ---> "(DHT se uporablja samo pri t.i. "
 "General Settings" ---> "Splošne nastavitve"
 "Limit the no. of half-open connections" ---> "Omejitev števila pol-odprtih povezav"
+"Port Forwarding" --->  ??? 
+"None (Managed Externally)" --->  ??? 
+"UnPlug and Play" --->  ??? 
+"NAT-PMG" --->  ??? 
+"Test" --->  ??? 
 "Proxies" ---> "Proxji"
 "Proxy Host/IP : " ---> "Proxy IP : "
 "Use a proxy." ---> "Uporabi proxy."
@@ -110,7 +115,7 @@
 "Add Torrent" --->  ??? 
 "Ok" --->  ??? 
 "Use Compact Allocation." --->  ??? 
-"Start Paused" --->  ??? 
+"Stopped initially (Allows changing advanced setting)." --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "General" ---> "Splošno"
 "Allow only one instance to run" --->  ??? 
@@ -169,7 +174,7 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Prišlo je do napake, prosimo spremenite port."
 "DHT session could not start. Try selecting another port in the settings." ---> "Napaka DHT vtičnika, prosimo spremenite port."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Izberite mapo za shrambo datotek."
-"∞" --->  ??? 
+"inf" --->  ??? 
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB od %2$.2fMB"
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "V tej seji ste prenesli  %1$.2fMB podatkov in oddali %2$.2fMB podatkov. Delilno razmerje seje: %3$.2f."
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Prenešeno %1$.2fMB, Oddano %2$.2fMB, Delilno razmerje %3$.2f."

@@ -5,9 +5,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 
-#define HALITE_VERSION					0,3,0,376
-#define HALITE_VERSION_STRING			"v 0.3.0.2"
-#define	HALITE_FINGERPRINT				"HL", 0, 3, 0, 2
+#define HALITE_VERSION					0, 3, 0, 381
+#define HALITE_VERSION_STRING			"v 0.3.0.3 dev 381"
+#define	HALITE_FINGERPRINT				"HL", 0, 3, 0, 3
 
 #ifndef HAL_NA
 #define HAL_NA 40013
@@ -951,7 +951,7 @@ void BitTorrent::setMapping(int mapping)
 void BitTorrent::setTimeouts(int peers, int tracker)
 {
 	lbt::session_settings settings = pimpl->theSession.settings();
-	settings.peer_timeout = peers;
+	settings.peer_connect_timeout = peers;
 	settings.tracker_completion_timeout = tracker;
 
 	pimpl->theSession.set_settings(settings);
@@ -1365,7 +1365,7 @@ std::pair<lbt::entry, lbt::entry> BitTorrent_impl::prepTorrent(wpath_t filename,
 	return std::make_pair(metadata, resumeData);
 }
 
-void BitTorrent::addTorrent(wpath_t file, wpath_t saveDirectory, bool startPaused, bool compactStorage) 
+void BitTorrent::addTorrent(wpath_t file, wpath_t saveDirectory, bool startStopped, bool compactStorage) 
 {
 	try 
 	{	
@@ -1382,12 +1382,11 @@ void BitTorrent::addTorrent(wpath_t file, wpath_t saveDirectory, bool startPause
 		me->setTransferSpeed(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload());
 		me->setConnectionLimit(bittorrent().defTorrentMaxConn(), bittorrent().defTorrentMaxUpload());
 		
-	//	me->addToSession(startPaused);
+		if (!startStopped) me->addToSession();
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(to_utf8(file.string()), "addTorrent")
 }
-
 
 void add_files(lbt::torrent_info& t, fs::path const& p, fs::path const& l)
 {

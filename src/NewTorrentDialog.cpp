@@ -19,7 +19,6 @@ LRESULT NewTorrentDialog::OnInitDialog(...)
 	return TRUE;
 }
 
-
 void NewTorrentDialog::onCancel(UINT, int, HWND hWnd)
 {
 //	stop_ = true;
@@ -27,8 +26,10 @@ void NewTorrentDialog::onCancel(UINT, int, HWND hWnd)
 
 NewTorrentDialog::CWindowMapStruct* NewTorrentDialog::GetWindowMap()
 {
-
-}
+	BEGIN_WINDOW_MAP_INLINE(NewTorrentDialog, 6, 6, 3, 3)
+		WMB_HEAD(WMB_COL(_gap), WMB_COL(_exp), WMB_COL(120), WMB_COL(_gap)), 
+		WMB_END() 
+	END_WINDOW_MAP_INLINE()	}
 
 void NewTorrentDialog::OnClose()
 {

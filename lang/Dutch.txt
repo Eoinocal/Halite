@@ -33,6 +33,11 @@
 "(DHT will not apply to private torrents)" ---> "DHT zal niet gebruikt worden voor Private Trackers"
 "General Settings" ---> "Algemene Opties"
 "Limit the no. of half-open connections" ---> "Limiteer het aantal half-open connecties"
+"Port Forwarding" --->  ??? 
+"None (Managed Externally)" --->  ??? 
+"UnPlug and Play" --->  ??? 
+"NAT-PMG" --->  ??? 
+"Test" --->  ??? 
 "Proxies" --->  ??? 
 "Proxy Host/IP : " --->  ??? 
 "Use a proxy." ---> "Gebruik een proxy."
@@ -110,7 +115,7 @@
 "Add Torrent" ---> "Torrent toevoegen"
 "Ok" --->  ??? 
 "Use Compact Allocation." ---> "Gebruik compacte allocatie."
-"Start Paused" ---> "Start gepauzeerd"
+"Stopped initially (Allows changing advanced setting)." --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "nb. Compacte allocatie is niet compatible met Bestands Selectie"
 "General" ---> "Algemeen"
 "Allow only one instance to run" --->  ??? 
@@ -169,7 +174,7 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "De Bittorrent sessie kan niet worden gestart. Probeer een andere poort te selecteren bij de Opties."
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT Sessie kon niet worden gestart. Probeer een andere poort te selecteren bij de Opties."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Selecteer een folder om de bestanden op te slaan of Afbreken om de torrent niet te downloaden."
-"∞" --->  ??? 
+"inf" --->  ??? 
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB van %2$.2fMB"
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Deze sessie gedownload %1$.2fMB, geupload %2$.2fMB, Verhouding %3$.2f."
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Gedownload %1$.2fMB, Geupload %2$.2fMB, Ratio %3$.2f."
