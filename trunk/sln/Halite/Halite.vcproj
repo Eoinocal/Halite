@@ -44,7 +44,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
-				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_LOGGING;TORRENT_VERBOSE_LOGGING;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0"
+				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_LOGGING;TORRENT_VERBOSE_LOGGING;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
@@ -363,6 +363,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="2"
+				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;NDEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_LOGGING;TORRENT_VERBOSE_LOGGING;TORRENT_UPNP_LOGGING;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
@@ -385,11 +386,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="&quot;$(SolutionDir)lib\openssl\bin\release\link-static\runtime-link-static\threading-multi\libeay32.lib&quot; &quot;$(SolutionDir)lib\openssl\bin\release\link-static\runtime-link-static\threading-multi\ssleay32.lib&quot;"
-				LinkIncremental="1"
+				LinkIncremental="0"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				LinkTimeCodeGeneration="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -509,10 +511,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\src\AdvHaliteDialog.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\ConfigOptions.cpp"
 				>
 			</File>
@@ -591,6 +589,10 @@
 			<Filter
 				Name="global"
 				>
+				<File
+					RelativePath="..\..\src\AdvHaliteDialog.cpp"
+					>
+				</File>
 				<File
 					RelativePath="..\..\src\global\ini.cpp"
 					>

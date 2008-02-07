@@ -33,6 +33,11 @@
 "(DHT will not apply to private torrents)" ---> "(il DHT non funzionerà per i torrents privati)"
 "General Settings" ---> "Opzioni Generali"
 "Limit the no. of half-open connections" ---> "Limita il n. di connessioni simultanee"
+"Port Forwarding" --->  ??? 
+"None (Managed Externally)" --->  ??? 
+"UnPlug and Play" --->  ??? 
+"NAT-PMG" --->  ??? 
+"Test" --->  ??? 
 "Proxies" --->  ??? 
 "Proxy Host/IP : " --->  ??? 
 "Use a proxy." ---> "Usa un proxy."
@@ -110,7 +115,7 @@
 "Add Torrent" ---> "Aggiungi Torrent"
 "Ok" --->  ??? 
 "Use Compact Allocation." ---> "Usa Allocazione Compatta"
-"Start Paused" ---> "Aggiungi in Pausa"
+"Stopped initially (Allows changing advanced setting)." --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Nota: l'Allocazione Compatta è incompatibile con la Selezione File"
 "General" ---> "Generale"
 "Allow only one instance to run" --->  ??? 
@@ -169,7 +174,7 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "La sessione BitTorrent non si è avviata. Prova a selezionare un'altra porta nelle Opzioni."
 "DHT session could not start. Try selecting another port in the settings." ---> "La sessione DHT non si è avviata. Prova a selezionare un'altra porta nelle Opzioni."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Seleziona una directory in cui salvare i files, o annulla per non scaricare il torrent."
-"∞" --->  ??? 
+"inf" --->  ??? 
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB su %2$.2fMB"
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "In questa Sessione: Scaricati %1$.2fMB, Inviati %2$.2fMB, Ratio %3$.2f."
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Scaricati %1$.2fMB, Inviati %2$.2fMB, Ratio %3$.2f"

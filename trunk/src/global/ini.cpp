@@ -5,6 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/foreach.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #define WINVER 0x0500
 #define _WIN32_WINNT 0x0500
@@ -32,19 +33,37 @@ class ini_impl
 {
 public:
 	ini_impl(std::wstring filename) :
-		working_file_(app().working_directory()/filename)
-	{
-		boost::filesystem::wpath backup = app().working_directory()/(filename + L".pre");
-		
-		if (boost::filesystem::exists(backup))
-			boost::filesystem::remove(backup);
-			
+		main_file_(app().working_directory()/filename),
+		working_file_(app().working_directory()/(filename + L".working"))
+	{		
 		if (boost::filesystem::exists(working_file_))
-			boost::filesystem::copy_file(working_file_, backup);
+		{			
+			std::wstringstream sstr;
+			boost::posix_time::wtime_facet* facet = new boost::posix_time::wtime_facet(L"%Y-%m-%d.%H-%M-%S");
+			sstr.imbue(std::locale(std::cout.getloc(), facet));
+			sstr << boost::posix_time::second_clock::universal_time();
+
+			boost::filesystem::rename(working_file_, app().working_directory()/(filename + L"." + sstr.str()));			
+		}
+
+		boost::filesystem::copy_file(main_file_, working_file_);
+	}
+
+	~ini_impl()
+	{
+		if (boost::filesystem::exists(working_file_))
+		{
+			if (boost::filesystem::last_write_time(main_file_) ==
+					boost::filesystem::last_write_time(working_file_))
+			{
+				boost::filesystem::remove(working_file_);
+			}
+		}
 	}
 	
 	void load_data()
 	{
+
 		if (!xml_.load_file(working_file_.string()))
 		{
 			generate_default_file();
@@ -53,8 +72,13 @@ public:
 	
 	void save_data()
 	{		
-	//	::MessageBox(0, to_wstr(working_file_.string()).c_str(), L"INI", 0);
 		xml_.save_file(working_file_.string());
+
+		if (boost::filesystem::exists(working_file_))
+		{
+			boost::filesystem::remove(main_file_);
+			boost::filesystem::copy_file(working_file_, main_file_);
+		}
 	}
 	
 	bool save(boost::filesystem::path location, std::string data)
@@ -122,6 +146,7 @@ private:
 		return data_node;
 	}
 	
+	boost::filesystem::wpath main_file_;
 	boost::filesystem::wpath working_file_;
 	tinyxml::document xml_;
 };

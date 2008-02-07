@@ -33,6 +33,11 @@
 "(DHT will not apply to private torrents)" --->  ??? 
 "General Settings" ---> "Общие установки"
 "Limit the no. of half-open connections" --->  ??? 
+"Port Forwarding" --->  ??? 
+"None (Managed Externally)" --->  ??? 
+"UnPlug and Play" --->  ??? 
+"NAT-PMG" --->  ??? 
+"Test" --->  ??? 
 "Proxies" --->  ??? 
 "Proxy Host/IP : " ---> "Прокси Хост/IP"
 "Use a proxy." ---> "Использовать прокси."
@@ -110,7 +115,7 @@
 "Add Torrent" --->  ??? 
 "Ok" --->  ??? 
 "Use Compact Allocation." --->  ??? 
-"Start Paused" --->  ??? 
+"Stopped initially (Allows changing advanced setting)." --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "General" ---> "Общие"
 "Allow only one instance to run" --->  ??? 
@@ -169,7 +174,7 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Сессия БитТоррента не смогла запуститься. Попробуйте выбрать другой порт в установках."
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT сессия не смогла запуститься. Попробуйте выбрать другой порт в установках."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Выберите папку для сохранения файлов или отмените, чобы вообще не загружать торрент."
-"∞" --->  ??? 
+"inf" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> " Закачано %1$.2fMB, Выкачано %2$.2fMB, Соотношение %3$.2f."

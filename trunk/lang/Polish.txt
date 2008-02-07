@@ -33,6 +33,11 @@
 "(DHT will not apply to private torrents)" --->  ??? 
 "General Settings" ---> "Główne opcje"
 "Limit the no. of half-open connections" --->  ??? 
+"Port Forwarding" --->  ??? 
+"None (Managed Externally)" --->  ??? 
+"UnPlug and Play" --->  ??? 
+"NAT-PMG" --->  ??? 
+"Test" --->  ??? 
 "Proxies" --->  ??? 
 "Proxy Host/IP : " --->  ??? 
 "Use a proxy." ---> "Użyj proxy."
@@ -110,7 +115,7 @@
 "Add Torrent" --->  ??? 
 "Ok" --->  ??? 
 "Use Compact Allocation." --->  ??? 
-"Start Paused" --->  ??? 
+"Stopped initially (Allows changing advanced setting)." --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "General" ---> "Główne"
 "Allow only one instance to run" --->  ??? 
@@ -169,7 +174,7 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." --->  ??? 
 "DHT session could not start. Try selecting another port in the settings." --->  ??? 
 "Select a directory to save the files to or cancel to not download torrent at all." --->  ??? 
-"∞" --->  ??? 
+"inf" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 

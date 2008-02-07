@@ -59,7 +59,7 @@ public:
 		halfConn(true),
 		halfConnLimit(10),
 		mappingType(0),
-		peerTimeout(120),
+		peerTimeout(30),
 		trackerTimeout(60)
 	{}
 	
