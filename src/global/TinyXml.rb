@@ -7,7 +7,7 @@ map = Hash.new
 
 # We'll go through each file to generate the map prior to making any changes
 
-ARGV.each do |arg| 
+ARGV.each do |arg|
     whole_file = File.open(arg).gets(nil)
 
     # First we strip comments so they don't confuse the map
@@ -54,35 +54,35 @@ map.each { |key, value| puts key + ' -> '+ value }
 # Now go through the files again this time making the substitutions everywhere
 # EXCEPT within quoted text.
 
-ARGV.each do |arg| 
+ARGV.each do |arg|
     whole_file = File.open(arg).gets(nil)
-	
-	cycle = true
-	
+
+    cycle = true
+
     whole_file.gsub!(/\\"/) { "escaped-single-quote" }
     whole_file.gsub!(/""/) { "empty-double-quote" }
-	
-    r = Regexp.new('[^"]+', Regexp::MULTILINE)
-	
-    whole_file.gsub!(r) do |non_quote|
-			
-		if (cycle)		
-			non_quote.gsub!(/\w+/) do |word|				
 
-				if map.has_key?(word)
-					map[word]
-				elsif map.has_value?(word)
-					word+'_'
-				else
-					word
-				end
-			end		
-		end		
-		cycle = !cycle
-		
-		non_quote		
-	end
-	
+    r = Regexp.new('[^"]+', Regexp::MULTILINE)
+
+    whole_file.gsub!(r) do |non_quote|
+
+        if (cycle)
+            non_quote.gsub!(/\w+/) do |word|
+
+                if map.has_key?(word)
+                    map[word]
+                elsif map.has_value?(word)
+                    word+'_'
+                else
+                    word
+                end
+            end
+        end
+        cycle = !cycle
+
+        non_quote
+    end
+
     whole_file.gsub!(/escaped-single-quote/) { '\"' }
     whole_file.gsub!(/empty-double-quote/) { '""' }
 

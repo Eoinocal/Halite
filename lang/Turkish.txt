@@ -174,7 +174,7 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Bittorent oturumu başlatılamadı. Ayarlardan başka bir port seçin."
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT oturumu başlatılamadı. Ayarlardan başka bir port seçin."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Dosyaları kaydetmek için bir dizin seçin veya torrenti indirmemek için iptal edin."
-"inf" --->  ??? 
+"∞" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "İndirilen %1$.2fMB, Gönderilen %2$.2fMB, Oran %3$.2f."

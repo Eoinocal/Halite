@@ -174,7 +174,7 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." --->  ??? 
 "DHT session could not start. Try selecting another port in the settings." --->  ??? 
 "Select a directory to save the files to or cancel to not download torrent at all." --->  ??? 
-"inf" --->  ??? 
+"∞" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
