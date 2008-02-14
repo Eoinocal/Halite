@@ -174,7 +174,7 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Prišlo je do napake, prosimo spremenite port."
 "DHT session could not start. Try selecting another port in the settings." ---> "Napaka DHT vtičnika, prosimo spremenite port."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Izberite mapo za shrambo datotek."
-"inf" --->  ??? 
+"∞" --->  ??? 
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB od %2$.2fMB"
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "V tej seji ste prenesli  %1$.2fMB podatkov in oddali %2$.2fMB podatkov. Delilno razmerje seje: %3$.2f."
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Prenešeno %1$.2fMB, Oddano %2$.2fMB, Delilno razmerje %3$.2f."

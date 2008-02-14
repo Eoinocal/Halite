@@ -174,7 +174,7 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "BitTorrent sesjonen kunne ikke starte. Prøv en annen port i instillingene."
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT sesjonen kunne ikke starte. Prøv en annen port i instillingene."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Velg en mappe for lagring av filene eller avbryt for ikke å laste ned torrenten."
-"inf" --->  ??? 
+"∞" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Lastet ned %1$.2fMB, Lastet opp %2$.2fMB, Ratio %3$.2f."
