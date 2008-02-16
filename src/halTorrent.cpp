@@ -33,6 +33,7 @@
 #define HAL_INCORRECT_ENCODING_LEVEL		HAL_TORRENT_EXT_BEGIN + 17
 #define HAL_INCORRECT_CONNECT_POLICY    	HAL_TORRENT_EXT_BEGIN + 18
 #define HAL_PEER_ALERT						HAL_TORRENT_EXT_BEGIN + 19
+#define HAL_LISTEN_V6_FAILED_ALERT			HAL_TORRENT_EXT_BEGIN + 20
 
 #ifndef RC_INVOKED
 
@@ -560,11 +561,21 @@ public:
 		
 		void operator()(lbt::listen_failed_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
-				new EventGeneral(Event::info, a.timestamp(),
-					wformat_t(hal::app().res_wstr(HAL_LISTEN_FAILED_ALERT))
-						% hal::from_utf8_safe(a.msg()))
-			)	);				
+			if (a.endpoint.address().is_v6())
+			{	
+				event().post(shared_ptr<EventDetail>(
+					new EventGeneral(Event::info, a.timestamp(),
+						hal::app().res_wstr(HAL_LISTEN_V6_FAILED_ALERT))
+				)	);		
+			}
+			else
+			{
+				event().post(shared_ptr<EventDetail>(
+					new EventGeneral(Event::info, a.timestamp(),
+						wformat_t(hal::app().res_wstr(HAL_LISTEN_FAILED_ALERT))
+							% hal::from_utf8_safe(a.msg()))
+				)	);
+			}
 		}
 		
 		void operator()(lbt::listen_succeeded_alert const& a) const
@@ -638,8 +649,9 @@ public:
 			}
 			catch(std::exception& e)
 			{
+				// These are logged as debug because they are rarely important to act on!
 				event().post(shared_ptr<EventDetail>(\
-					new EventStdException(Event::critical, e, L"alertHandler")));
+					new EventStdException(Event::debug, e, L"alertHandler")));
 			}
 			
 			p_alert = theSession.pop_alert();
