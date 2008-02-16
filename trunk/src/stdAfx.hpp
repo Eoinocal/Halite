@@ -86,6 +86,9 @@ private:
 #include <boost/noncopyable.hpp>
 #include <boost/tuple/tuple.hpp>
 
+#include <boost/archive/xml_woarchive.hpp>
+#include <boost/archive/xml_wiarchive.hpp>
+
 using std::string;
 using std::wstring;
 
@@ -100,6 +103,15 @@ using boost::scoped_ptr;
 using boost::filesystem::path;
 using boost::filesystem::wpath;
 using boost::noncopyable;
+
+template<class Archive>
+void serialize(Archive& ar, CRect& rect, const unsigned int version)
+{
+	ar & BOOST_SERIALIZATION_NVP(rect.top);
+	ar & BOOST_SERIALIZATION_NVP(rect.bottom);
+	ar & BOOST_SERIALIZATION_NVP(rect.left);
+	ar & BOOST_SERIALIZATION_NVP(rect.right);
+}
 
 namespace hal
 {

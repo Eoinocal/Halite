@@ -31,6 +31,7 @@
 #define IDR_MAINFRAME                   128
 #define IDD_TRACKEDIT                   130
 #define IDD_ADVPEER                     131
+#define IDD_NEWTORRENT					133
 #define IDR_TRACKERLV_MENU              132
 #define IDC_TRANS_SES                   1004
 #define IDC_TRANS_ETA                   1005

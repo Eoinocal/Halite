@@ -46,7 +46,8 @@ public:
 			boost::filesystem::rename(working_file_, app().working_directory()/(filename + L"." + sstr.str()));			
 		}
 
-		boost::filesystem::copy_file(main_file_, working_file_);
+		if (boost::filesystem::exists(main_file_))
+			boost::filesystem::copy_file(main_file_, working_file_);
 	}
 
 	~ini_impl()
@@ -63,7 +64,6 @@ public:
 	
 	void load_data()
 	{
-
 		if (!xml_.load_file(working_file_.string()))
 		{
 			generate_default_file();

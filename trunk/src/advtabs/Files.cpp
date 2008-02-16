@@ -333,10 +333,13 @@ void AdvFilesDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 
 void AdvFilesDialog::onClose()
 {	 
-	Save(); 
-
 	if(::IsWindow(m_hWnd)) 
 	{
 		::DestroyWindow(m_hWnd);
 	}
+}
+
+void AdvFilesDialog::OnDestroy()
+{	 	
+	Save(); 
 }

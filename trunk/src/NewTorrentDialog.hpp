@@ -7,7 +7,13 @@
 #pragma once
 
 #define IDD_NEWTORRENT_BEGIN			1950
-#define IDD_NEWTORRENT                  IDD_NEWTORRENT_BEGIN+1
+#define IDC_NEWTORRENT_SELECT_TEXT		IDD_NEWTORRENT_BEGIN+1
+#define IDC_NEWTORRENT_TRACKERS_TEXT	IDD_NEWTORRENT_BEGIN+2
+#define IDC_NEWTORRENT_CREATOR_TEXT		IDD_NEWTORRENT_BEGIN+3
+#define IDC_NEWTORRENT_CREATOR			IDD_NEWTORRENT_BEGIN+4
+#define IDC_NEWTORRENT_COMMENT_TEXT		IDD_NEWTORRENT_BEGIN+5
+#define IDC_NEWTORRENT_COMMENT			IDD_NEWTORRENT_BEGIN+6
+#define IDC_NEWTORRENT_PRIVATE			IDD_NEWTORRENT_BEGIN+7
 //#define IDC_PROG_CANCEL                 IDD_NEWTORRENT_BEGIN + 2
 //#define IDC_PROG_PROGRESS               IDD_NEWTORRENT_BEGIN + 3
 
@@ -15,28 +21,54 @@
 
 #include <boost/function.hpp>
 #include "halTorrent.hpp"
+#include "halIni.hpp"
+#include "halEvent.hpp"
 
 class NewTorrentDialog :
-	public CDialogImpl<NewTorrentDialog>,
+	public CDialogImpl<NewTorrentDialog>,	
+	public hal::IniBase<NewTorrentDialog>,
 	public CAutoSizeWindow<NewTorrentDialog, false>
 {
 protected:
 	typedef NewTorrentDialog thisClass;
 	typedef CDialogImpl<thisClass> baseClass;
+	typedef hal::IniBase<NewTorrentDialog> iniClass;
+	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
 
 public:
-	thisClass()
+	NewTorrentDialog() :
+		iniClass("NewTorrents", "Dialog"),
+		rect_(50,50,400,500)
+	{		
+		Load();
+	}
+
+	~NewTorrentDialog()
 	{}
 	
 	enum { IDD = IDD_NEWTORRENT };
 
     BEGIN_MSG_MAP_EX(thisClass)
-        MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_CLOSE(OnClose)
-//		COMMAND_ID_HANDLER_EX(IDC_PROG_CANCEL, onCancel)
+		MSG_WM_SIZE(OnSize)
+		MSG_WM_DESTROY(OnDestroy)
+
+		COMMAND_ID_HANDLER_EX(IDCANCEL, onCancel)
+		COMMAND_ID_HANDLER_EX(IDOK, onCancel)
+
+		CHAIN_MSG_MAP(autosizeClass)
+		REFLECT_NOTIFICATIONS()
     END_MSG_MAP()
-	
-	LRESULT OnInitDialog(...);
+
+	friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+	{
+		ar & BOOST_SERIALIZATION_NVP(rect_);
+	}
+
+	LRESULT onInitDialog(HWND, LPARAM);
 	static CWindowMapStruct* GetWindowMap();
 
 	void ProgressThread()
@@ -60,9 +92,11 @@ public:
 	
 	void onCancel(UINT, int, HWND hWnd);
 	void OnClose();
+	void OnSize(UINT, CSize);
+	void OnDestroy();
 	
 private:
-
+	CRect rect_;
 };
 
 #endif // RC_INVOKED

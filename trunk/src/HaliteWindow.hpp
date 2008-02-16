@@ -28,15 +28,6 @@
 class HaliteDialog;
 class AdvHaliteDialog;
 
-template<class Archive>
-void serialize(Archive& ar, CRect& rect, const unsigned int version)
-{
-	ar & BOOST_SERIALIZATION_NVP(rect.top);
-	ar & BOOST_SERIALIZATION_NVP(rect.bottom);
-	ar & BOOST_SERIALIZATION_NVP(rect.left);
-	ar & BOOST_SERIALIZATION_NVP(rect.right);
-}
-
 class ui_signal : noncopyable
 {
 public:

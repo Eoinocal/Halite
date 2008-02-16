@@ -394,13 +394,14 @@ public:
 	AdvFilesDialog(HaliteWindow& halWindow) :
 		dialogBaseClass(halWindow),
 		treeManager_(tree_),
-		iniClass("AdvFiles", "AdvFiles"),
+		iniClass("AdvFilesDlg", "settings"),
 		splitterPos(150)
 	{
 		Load();
 	}
 	
-	~AdvFilesDialog() {}
+	~AdvFilesDialog() 
+	{}
 	
 	BOOL PreTranslateMessage(MSG* pMsg)
 	{
@@ -410,6 +411,7 @@ public:
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_CLOSE(onClose)
+		MSG_WM_DESTROY(OnDestroy)
 		
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
@@ -438,6 +440,7 @@ public:
 	void doUiUpdate();
 	void uiUpdate(const hal::TorrentDetails& tD);
 	void focusChanged(const hal::TorrentDetail_ptr pT);
+	void OnDestroy();
 
 protected:
 	CSplitterWindow splitter_;
