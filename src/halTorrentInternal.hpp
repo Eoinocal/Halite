@@ -791,11 +791,11 @@ public:
 			handle_.file_progress(fileProgress);
 			
 			for(size_t i=0, e=fileDetailsMemory_.size(); i<e; ++i)
-			{
-				fileDetailsMemory_[i].progress =  fileProgress[i];
-				fileDetailsMemory_[i].priority =  filePriorities_[i];
-			}			
+				fileDetailsMemory_[i].progress =  fileProgress[i];			
 		}
+
+		for(size_t i=0, e=fileDetailsMemory_.size(); i<e; ++i)
+			fileDetailsMemory_[i].priority =  filePriorities_[i];
 		
 		fileDetails = fileDetailsMemory_;
 	}
@@ -1313,7 +1313,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 	
 	boost::tuple<size_t, size_t, size_t, size_t> connections = updatePeers();		
 
-	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, state, hal::from_utf8(statusMemory_.current_tracker), 
+	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, saveDirectory(), state, hal::from_utf8(statusMemory_.current_tracker), 
 		std::pair<float, float>(statusMemory_.download_payload_rate, statusMemory_.upload_payload_rate),
 		progress_, statusMemory_.distributed_copies, statusMemory_.total_wanted_done, statusMemory_.total_wanted, uploaded_, payloadUploaded_,
 		downloaded_, payloadDownloaded_, connections, ratio_, td, statusMemory_.next_announce, activeDuration_, seedingDuration_, startTime_, finishTime_));
@@ -1330,7 +1330,7 @@ TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 			new EventTorrentException(Event::critical, Event::torrentException, e.what(), to_utf8(name_), "getTorrentDetail_ptr")));
 	}
 	
-	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, app().res_wstr(HAL_TORRENT_STOPPED), app().res_wstr(HAL_NA)));
+	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, saveDirectory(), app().res_wstr(HAL_TORRENT_STOPPED), app().res_wstr(HAL_NA)));
 }
 
 } // namespace hal

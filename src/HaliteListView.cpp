@@ -163,6 +163,46 @@ LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND h
 	return 0;
 }
 
+LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	HAL_DEV_MSG(L"OnDownloadFolder");
+
+	std::set<wpath> uniquePaths;
+
+	for(std::set<wstring>::const_iterator i=manager().allSelected().begin(), e=manager().allSelected().end();
+		i != e; ++i)
+	{
+		wstring saveDir = hal::bittorrent().torrentDetails().get(*i)->saveDirectory();		
+		HAL_DEV_MSG(wformat(L"Name %1%, Save dir: %2%.") % *i % saveDir);
+
+		uniquePaths.insert(saveDir);
+	}
+
+	SHELLEXECUTEINFO sei = { sizeof(SHELLEXECUTEINFO) };
+
+	for(std::set<wpath>::const_iterator i=uniquePaths.begin(), e=uniquePaths.end();
+		i != e; ++i)
+	{	
+		HAL_DEV_MSG(wformat(L"Unique Save dir: %1%.") % *i);
+
+		sei.lpDirectory = (*i).string().c_str();
+		sei.lpFile = (*i).string().c_str();
+		sei.lpVerb = L"open";
+		sei.nShow = true;
+
+		if (!::ShellExecuteEx(&sei))
+		{
+			HAL_DEV_MSG(L"Fail");
+		}
+		else
+		{
+			HAL_DEV_MSG(L"Success");
+		}
+	}	
+
+	return 0;
+}
+
 //LRESULT HaliteListViewCtrl::OnDeleteItem(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHandled*/)
 //{
 //	LPNMLISTVIEW pnmv=(LPNMLISTVIEW)pnmh;

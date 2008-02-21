@@ -140,12 +140,13 @@ typedef std::vector<FileDetail> FileDetails;
 class TorrentDetail 
 {
 public:
-	TorrentDetail(std::wstring n, std::wstring f, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
+	TorrentDetail(std::wstring n, std::wstring f, std::wstring sd, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
 			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, boost::int64_t tpU=0, boost::int64_t tD=0, boost::int64_t tpD=0, boost::tuple<size_t, size_t, size_t, size_t> connections = boost::tuple<size_t, size_t, size_t, size_t>(0,0,0,0), float r=0, 
 			boost::posix_time::time_duration eta=boost::posix_time::seconds(0), boost::posix_time::time_duration uIn=boost::posix_time::seconds(0),
 			boost::posix_time::time_duration actve=boost::posix_time::seconds(0), boost::posix_time::time_duration seding=boost::posix_time::seconds(0), boost::posix_time::ptime srt=boost::posix_time::second_clock::universal_time(), boost::posix_time::ptime fin=boost::posix_time::second_clock::universal_time()) :
 		filename_(f),
 		name_(n),
+		saveDir_(sd),
 		state_(s),
 		currentTracker_(cT),
 		speed_(sp),
@@ -188,6 +189,7 @@ public:
 	
 //	const std::wstring& filename() const { return filename_; }
 	const std::wstring& name() const { return name_; }
+	const std::wstring& saveDirectory() const { return saveDir_; }
 	const std::wstring& state() const { return state_; }
 	const std::wstring& currentTracker() const { return currentTracker_; }
 	
@@ -223,6 +225,7 @@ public:
 public:
 	std::wstring filename_;
 	std::wstring name_;
+	std::wstring saveDir_;
 	std::wstring state_;
 	std::wstring currentTracker_;
 

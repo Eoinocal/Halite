@@ -58,6 +58,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 {
 	try
 	{
+	HAL_DEV_MSG(L"HaliteWindow::OnCreate");
 	
 	SetWindowText(L"Halite");
 	MoveWindow(rect.left, rect.top,	rect.right-rect.left, rect.bottom-rect.top, false);	
