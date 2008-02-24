@@ -91,15 +91,17 @@
 "Default save folder :" --->  ??? 
 "..." ---> "..."
 "Prompt for alternate save folder." ---> "Запрашивать альтернативную папку закачки."
-"Halite shutting down..." ---> "Халит завершает выключается..."
-"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Чтобы корректно завершить сессию, Битторренту потребуется несколько мгновений и данное сообщение исчезнет, как только программа закроется."
-"Show this message in future" ---> "Показывать это сообщение вдальнейшем?"
 "Create new torrent" ---> "Создать новый торрент"
 "Save" ---> "Сохранить"
 "Select a file or directory to construct the torrent." ---> "Выбрать файл или папку чтобы создать торрент."
 "Enter the tracker URLs for the torrent." ---> "Ввести адрес трэкера для торрента."
-"Have Halite acts a DHT node." ---> "Позволить Халиту выступать в качестве DHT нода"
+"Private" --->  ??? 
 "Add" ---> "Добавить"
+"Comment." --->  ??? 
+"Creator" --->  ??? 
+"Halite shutting down..." ---> "Халит завершает выключается..."
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Чтобы корректно завершить сессию, Битторренту потребуется несколько мгновений и данное сообщение исчезнет, как только программа закроется."
+"Show this message in future" ---> "Показывать это сообщение вдальнейшем?"
 "Pause" ---> "Пауза"
 "Reannounce" ---> "Объявить снова"
 "Remove" ---> "Убрать"
@@ -144,6 +146,7 @@
 "Stop" ---> "Остановить"
 "Torrent File" ---> "Торрент файл"
 "Torrent and Data" ---> "Торрент файл и данные"
+"Open Download Folder" --->  ??? 
 "New" ---> "Новый"
 "Edit" ---> "Редактировать"
 "Set as Primary" --->  ??? 
@@ -259,6 +262,7 @@
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Failed, %1%" --->  ??? 
+"IP version 6 listen atempt failed. Not serious." --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 

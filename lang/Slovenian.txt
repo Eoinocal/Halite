@@ -91,15 +91,17 @@
 "Default save folder :" ---> "Privzeta mapa za shranjevanje :"
 "..." ---> "..."
 "Prompt for alternate save folder." ---> "Vprašaj kam naj shranim."
-"Halite shutting down..." ---> "Halite se izklaplja..."
-"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Prosimo počakajte nekaj sekund, da se program zapre."
-"Show this message in future" ---> "V prihodnosti mi prikaži to sporočilo"
 "Create new torrent" ---> "Ustvari nov torrent"
 "Save" ---> "Shrani"
 "Select a file or directory to construct the torrent." ---> "Izberi datoteko ali mapo za ustvarjanje torrent datoteke"
 "Enter the tracker URLs for the torrent." ---> "Vpiši sledilnikov (announce) URL."
-"Have Halite acts a DHT node." ---> "Uporabi DHT omrežje."
+"Private" --->  ??? 
 "Add" ---> "Dodaj"
+"Comment." --->  ??? 
+"Creator" --->  ??? 
+"Halite shutting down..." ---> "Halite se izklaplja..."
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Prosimo počakajte nekaj sekund, da se program zapre."
+"Show this message in future" ---> "V prihodnosti mi prikaži to sporočilo"
 "Pause" ---> "Premor"
 "Reannounce" ---> "Posodobi sledilnik"
 "Remove" ---> "Odstrani"
@@ -144,6 +146,7 @@
 "Stop" ---> "Prekini"
 "Torrent File" ---> "Torrent datoteko"
 "Torrent and Data" ---> "Torrent datoteko in podatke"
+"Open Download Folder" --->  ??? 
 "New" ---> "Novo"
 "Edit" ---> "Uredi"
 "Set as Primary" --->  ??? 
@@ -259,6 +262,7 @@
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Failed, %1%" --->  ??? 
+"IP version 6 listen atempt failed. Not serious." --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 

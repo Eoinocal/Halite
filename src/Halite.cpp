@@ -138,7 +138,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	}
 	else
 	{
-//		INI().LoadData();	
 		hal::event().post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(wformat(L"Exe Path: %1%.") % hal::app().exe_path())));		
 		
@@ -181,9 +180,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			hal::bittorrent().closeAll();
 			hal::bittorrent().shutDownSession();		
 		}
-		
-//		INI().SaveData();
-		
+				
 		halite().save();
 		hal::ini().save_data();
 	}
@@ -200,6 +197,5 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	MessageBoxA(0, e.what(), "Exception Thrown!", 0);
 	
 	return -1;
-	}
-	
+	}	
 }

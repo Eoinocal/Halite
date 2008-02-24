@@ -14,6 +14,9 @@
 #define IDC_NEWTORRENT_COMMENT_TEXT		IDD_NEWTORRENT_BEGIN+5
 #define IDC_NEWTORRENT_COMMENT			IDD_NEWTORRENT_BEGIN+6
 #define IDC_NEWTORRENT_PRIVATE			IDD_NEWTORRENT_BEGIN+7
+#define IDC_NEWT_FILE_BROWSE			IDD_NEWTORRENT_BEGIN+8
+#define IDC_NEWT_DIR_BROWSE				IDD_NEWTORRENT_BEGIN+9
+#define IDC_NEWT_LISTFILES				IDD_NEWTORRENT_BEGIN+10
 //#define IDC_PROG_CANCEL                 IDD_NEWTORRENT_BEGIN + 2
 //#define IDC_PROG_PROGRESS               IDD_NEWTORRENT_BEGIN + 3
 
@@ -54,6 +57,9 @@ public:
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_DESTROY(OnDestroy)
 
+		COMMAND_ID_HANDLER_EX(IDC_NEWT_FILE_BROWSE, OnFileBrowse)
+		COMMAND_ID_HANDLER_EX(IDC_NEWT_DIR_BROWSE, OnDirBrowse)
+
 		COMMAND_ID_HANDLER_EX(IDCANCEL, onCancel)
 		COMMAND_ID_HANDLER_EX(IDOK, onCancel)
 
@@ -90,6 +96,8 @@ public:
 //		return this->IsDialogMessage(pMsg);
 	}
 	
+	void OnFileBrowse(UINT, int, HWND hWnd);
+	void OnDirBrowse(UINT, int, HWND hWnd);
 	void onCancel(UINT, int, HWND hWnd);
 	void OnClose();
 	void OnSize(UINT, CSize);

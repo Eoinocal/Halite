@@ -91,15 +91,17 @@
 "Default save folder :" ---> "Cartella predefinita di salvataggio"
 "..." --->  ??? 
 "Prompt for alternate save folder." ---> "Consenti di scegliere una cartella alternativa."
-"Halite shutting down..." ---> "Halite in chiusura...."
-"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Ci vorrà qualche momento per la chiusura corretta della sessione BitTorrent, al termine della quale questo messaggio sparirà."
-"Show this message in future" ---> "Mostra messaggio in futuro"
 "Create new torrent" ---> "Crea nuovo torrent"
 "Save" ---> "Salva"
 "Select a file or directory to construct the torrent." ---> "Seleziona un file o una directory da aggiungere al file torrent."
 "Enter the tracker URLs for the torrent." ---> "Inserisci gli indirizzi dei tracker per il torrent."
-"Have Halite acts a DHT node." ---> "Abilita nodo DHT Hailte."
+"Private" --->  ??? 
 "Add" ---> "Aggiungi"
+"Comment." --->  ??? 
+"Creator" --->  ??? 
+"Halite shutting down..." ---> "Halite in chiusura...."
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Ci vorrà qualche momento per la chiusura corretta della sessione BitTorrent, al termine della quale questo messaggio sparirà."
+"Show this message in future" ---> "Mostra messaggio in futuro"
 "Pause" ---> "Pausa"
 "Reannounce" ---> "Riannuncia"
 "Remove" ---> "Rimuovi"
@@ -144,6 +146,7 @@
 "Stop" ---> "Ferma"
 "Torrent File" ---> "File Torrent"
 "Torrent and Data" ---> "Torrent e Dati"
+"Open Download Folder" --->  ??? 
 "New" ---> "Nuovo"
 "Edit" ---> "Modifica"
 "Set as Primary" ---> "Seleziona come Primario"
@@ -259,6 +262,7 @@
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Failed, %1%" --->  ??? 
+"IP version 6 listen atempt failed. Not serious." --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% finito"
 "Torrent %1% paused." ---> "Torrent %1% in pausa"

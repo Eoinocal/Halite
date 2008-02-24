@@ -91,15 +91,17 @@
 "Default save folder :" ---> "Standardverzeichnis:"
 "..." ---> "..."
 "Prompt for alternate save folder." ---> "Nach alternativen Speicherort fragen"
-"Halite shutting down..." ---> "Halite wird geschloßen"
-"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Es wird einige Zeit dauern, bis die BitTorrent Sitzung sauber geschloßen wurde.\nDiese Mitteilung verschwindet und das Programm schließt sich."
-"Show this message in future" ---> "Diese Meldung in Zukunft anzeigen"
 "Create new torrent" ---> "Neuen Torrent erstellen"
 "Save" ---> "Speichern"
 "Select a file or directory to construct the torrent." ---> "Torrent erzeugen für (Datei oder Verzeichnis wählen):"
 "Enter the tracker URLs for the torrent." ---> "Tracker-URL eingeben:"
-"Have Halite acts a DHT node." ---> "Halite als DHT-Knoten verwenden?"
+"Private" --->  ??? 
 "Add" ---> "Hinzufügen"
+"Comment." --->  ??? 
+"Creator" --->  ??? 
+"Halite shutting down..." ---> "Halite wird geschloßen"
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Es wird einige Zeit dauern, bis die BitTorrent Sitzung sauber geschloßen wurde.\nDiese Mitteilung verschwindet und das Programm schließt sich."
+"Show this message in future" ---> "Diese Meldung in Zukunft anzeigen"
 "Pause" ---> "Pause"
 "Reannounce" ---> "Neuankündigen"
 "Remove" ---> "Entfernen"
@@ -144,6 +146,7 @@
 "Stop" ---> "Stop"
 "Torrent File" ---> "Torrent"
 "Torrent and Data" ---> "Torrent und Daten"
+"Open Download Folder" --->  ??? 
 "New" ---> "Neu"
 "Edit" ---> "Bearbeiten"
 "Set as Primary" --->  ??? 
@@ -259,6 +262,7 @@
 "Block %2% of piece %3% downloading. (%1%)" ---> "Block %2% des Teils %3% runterladend. (%1%)"
 "Successfully %1%." ---> "%1% erfolgreich."
 "Failed, %1%" --->  ??? 
+"IP version 6 listen atempt failed. Not serious." --->  ??? 
 "IP Filter blocked %1%, %2%." ---> "IP Filter blockiert %1%, %2%."
 "Torrent %1% finished." ---> "Torrent %1% fertiggestellt."
 "Torrent %1% paused." ---> "Torrent %1% pausiert."

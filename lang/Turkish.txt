@@ -91,15 +91,17 @@
 "Default save folder :" --->  ??? 
 "..." ---> "..."
 "Prompt for alternate save folder." ---> "Alternatif kaydetme klasörü için uyar."
-"Halite shutting down..." ---> "Halite kapatılıyor..."
-"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Bu mesaj kaybolduktan ve program kapandıktan sonra Bittorrent oturumunun düzgün bir biçimde kapatılması biraz zaman alacaktır."
-"Show this message in future" ---> "Bu mesajı ilerde de göster"
 "Create new torrent" ---> "Yeni torrent oluştur"
 "Save" ---> "Kaydet"
 "Select a file or directory to construct the torrent." ---> "Torrent oluşturmak için bir dizin ya da dosya seçin."
 "Enter the tracker URLs for the torrent." ---> "Torrent için izleyici URL'lerini girin"
-"Have Halite acts a DHT node." ---> "Halite bir DHT nodu gibi davransın."
+"Private" --->  ??? 
 "Add" ---> "Ekle"
+"Comment." --->  ??? 
+"Creator" --->  ??? 
+"Halite shutting down..." ---> "Halite kapatılıyor..."
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Bu mesaj kaybolduktan ve program kapandıktan sonra Bittorrent oturumunun düzgün bir biçimde kapatılması biraz zaman alacaktır."
+"Show this message in future" ---> "Bu mesajı ilerde de göster"
 "Pause" ---> "Duraklat"
 "Reannounce" ---> "Tekrar Duyur"
 "Remove" ---> "Kaldır"
@@ -144,6 +146,7 @@
 "Stop" ---> "Durdur"
 "Torrent File" ---> "Torrent Dosyası"
 "Torrent and Data" ---> "Torrent ve Veri"
+"Open Download Folder" --->  ??? 
 "New" ---> "Yeni"
 "Edit" ---> "Düzenle"
 "Set as Primary" --->  ??? 
@@ -259,6 +262,7 @@
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Failed, %1%" --->  ??? 
+"IP version 6 listen atempt failed. Not serious." --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 

@@ -91,15 +91,17 @@
 "Default save folder :" --->  ??? 
 "..." --->  ??? 
 "Prompt for alternate save folder." ---> "Zawsze pokazuj okno wyboru folderu."
-"Halite shutting down..." ---> "Trwa zamykanie Halite..."
-"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Poprawne zakończenie sesji BitTorrent może potrwać chwile, po czym ta wiadomość zniknie, a program zostanie zamknięty."
-"Show this message in future" ---> "Pokazuj tą wiadomość w przyszłości"
 "Create new torrent" ---> "Utwórz nowy torrent"
 "Save" ---> "Zapisz"
 "Select a file or directory to construct the torrent." ---> "Wybierz plik lub folder."
 "Enter the tracker URLs for the torrent." ---> "URL trackera."
-"Have Halite acts a DHT node." --->  ??? 
+"Private" --->  ??? 
 "Add" ---> "Dodaj"
+"Comment." --->  ??? 
+"Creator" --->  ??? 
+"Halite shutting down..." ---> "Trwa zamykanie Halite..."
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Poprawne zakończenie sesji BitTorrent może potrwać chwile, po czym ta wiadomość zniknie, a program zostanie zamknięty."
+"Show this message in future" ---> "Pokazuj tą wiadomość w przyszłości"
 "Pause" ---> "Pauza"
 "Reannounce" ---> "Aktualizuj tracker"
 "Remove" ---> "Usuń"
@@ -144,6 +146,7 @@
 "Stop" --->  ??? 
 "Torrent File" ---> "Plik torrent"
 "Torrent and Data" ---> "Plik torrent i dane"
+"Open Download Folder" --->  ??? 
 "New" ---> "Nowy"
 "Edit" ---> "Edytuj"
 "Set as Primary" --->  ??? 
@@ -259,6 +262,7 @@
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Failed, %1%" --->  ??? 
+"IP version 6 listen atempt failed. Not serious." --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 

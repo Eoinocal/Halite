@@ -191,13 +191,9 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 		sei.nShow = true;
 
 		if (!::ShellExecuteEx(&sei))
-		{
 			HAL_DEV_MSG(L"Fail");
-		}
 		else
-		{
 			HAL_DEV_MSG(L"Success");
-		}
 	}	
 
 	return 0;
