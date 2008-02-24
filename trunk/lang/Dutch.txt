@@ -91,15 +91,17 @@
 "Default save folder :" ---> "Standaard opslag map"
 "..." --->  ??? 
 "Prompt for alternate save folder." ---> "Vraag om alternatieve Download map."
-"Halite shutting down..." ---> "Halite is bezig met afsluiten..."
-"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." --->  ??? 
-"Show this message in future" ---> "Toon dit bericht in de toekomst"
 "Create new torrent" ---> "Maak Torrent"
 "Save" ---> "Opslaan"
 "Select a file or directory to construct the torrent." ---> "Selecteer een bestand of map om de torrent te construeren."
 "Enter the tracker URLs for the torrent." ---> "Vul de tracker URLs in voor de torrent."
-"Have Halite acts a DHT node." ---> "Laat Halite als DHT knoop werken."
+"Private" --->  ??? 
 "Add" ---> "Voeg toe"
+"Comment." --->  ??? 
+"Creator" --->  ??? 
+"Halite shutting down..." ---> "Halite is bezig met afsluiten..."
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." --->  ??? 
+"Show this message in future" ---> "Toon dit bericht in de toekomst"
 "Pause" ---> "Pauzeer"
 "Reannounce" ---> "Heromroepen"
 "Remove" ---> "Verwijder"
@@ -144,6 +146,7 @@
 "Stop" ---> "Stop"
 "Torrent File" ---> "Torrent bestand"
 "Torrent and Data" ---> "Torrent en Data"
+"Open Download Folder" --->  ??? 
 "New" ---> "Nieuw"
 "Edit" ---> "Bewerken"
 "Set as Primary" ---> "Zet als Primair"
@@ -259,6 +262,7 @@
 "Block %2% of piece %3% downloading. (%1%)" ---> "Blok %2% van deel %3% aan het downloaden. (%1%)"
 "Successfully %1%." ---> "Succesvol %1%."
 "Failed, %1%" ---> "Mislukt, %1%"
+"IP version 6 listen atempt failed. Not serious." --->  ??? 
 "IP Filter blocked %1%, %2%." ---> "IP Filter blokkeerde %1%, %2%."
 "Torrent %1% finished." ---> "Torrent %1% voltooid."
 "Torrent %1% paused." ---> "Torrent %1% gepauzeerd."

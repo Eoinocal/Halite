@@ -91,15 +91,17 @@
 "Default save folder :" ---> "Directorio de guardado predeterminado :"
 "..." ---> "..."
 "Prompt for alternate save folder." ---> "Preguntar por directorio de guardado alternativo."
-"Halite shutting down..." ---> "Halite se está cerrando..."
-"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "La sesión BitTorrent tardará un tiempo en cerrarse limpiamente. Después este mensaje desaparecerá y el programa se cerrará."
-"Show this message in future" ---> "Mostrar este mensaje en el futuro"
 "Create new torrent" ---> "Crear nuevo torrent"
 "Save" ---> "Guardar"
 "Select a file or directory to construct the torrent." ---> "Elige un archivo o directorio para construir el torrent."
 "Enter the tracker URLs for the torrent." ---> "Introduce las URLs de los trackers del torrent."
-"Have Halite acts a DHT node." ---> "Permitir que Halite actúe como nodo DHT."
+"Private" --->  ??? 
 "Add" ---> "Añadir"
+"Comment." --->  ??? 
+"Creator" --->  ??? 
+"Halite shutting down..." ---> "Halite se está cerrando..."
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "La sesión BitTorrent tardará un tiempo en cerrarse limpiamente. Después este mensaje desaparecerá y el programa se cerrará."
+"Show this message in future" ---> "Mostrar este mensaje en el futuro"
 "Pause" ---> "Pausa"
 "Reannounce" ---> "Reanunciar"
 "Remove" ---> "Borrar"
@@ -144,6 +146,7 @@
 "Stop" ---> "Detener"
 "Torrent File" ---> "Archivo Torrent"
 "Torrent and Data" ---> "Torrend y datos"
+"Open Download Folder" --->  ??? 
 "New" ---> "Nuevo"
 "Edit" ---> "Editar"
 "Set as Primary" --->  ??? 
@@ -259,6 +262,7 @@
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Failed, %1%" --->  ??? 
+"IP version 6 listen atempt failed. Not serious." --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
