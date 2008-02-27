@@ -93,11 +93,14 @@
 "Prompt for alternate save folder." ---> "Spør om alternativ lagringsmappe."
 "Create new torrent" ---> "Lag en ny torrent"
 "Save" ---> "Lagre"
-"Select a file or directory to construct the torrent." ---> "Velg en fil eller mappe for å lage torrenten."
+"Select a file or directory from which to construct the torrent." --->  ??? 
+"File" --->  ??? 
+"Dir." --->  ??? 
+"SysListView32" --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Legg til tracker URL'er for torrenten."
 "Private" --->  ??? 
 "Add" ---> "Legg til"
-"Comment." --->  ??? 
+"Comment" --->  ??? 
 "Creator" --->  ??? 
 "Halite shutting down..." ---> "Halite lukkes..."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Det vil ta BitTorrent sesjonen et øyeblikk å stenges korrekt. Denne meldingen vil da forsvinne og programmet vil lukkes."
@@ -105,7 +108,6 @@
 "Pause" --->  ??? 
 "Reannounce" ---> "Oppdater Tracker"
 "Remove" ---> "Fjern"
-"SysListView32" --->  ??? 
 "Name:" ---> "Navn:"
 "Tracker:" --->  ??? 
 "Status:" --->  ??? 

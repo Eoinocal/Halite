@@ -93,11 +93,14 @@
 "Prompt for alternate save folder." ---> "Vprašaj kam naj shranim."
 "Create new torrent" ---> "Ustvari nov torrent"
 "Save" ---> "Shrani"
-"Select a file or directory to construct the torrent." ---> "Izberi datoteko ali mapo za ustvarjanje torrent datoteke"
+"Select a file or directory from which to construct the torrent." --->  ??? 
+"File" --->  ??? 
+"Dir." --->  ??? 
+"SysListView32" ---> "SysListView32"
 "Enter the tracker URLs for the torrent." ---> "Vpiši sledilnikov (announce) URL."
 "Private" --->  ??? 
 "Add" ---> "Dodaj"
-"Comment." --->  ??? 
+"Comment" --->  ??? 
 "Creator" --->  ??? 
 "Halite shutting down..." ---> "Halite se izklaplja..."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Prosimo počakajte nekaj sekund, da se program zapre."
@@ -105,7 +108,6 @@
 "Pause" ---> "Premor"
 "Reannounce" ---> "Posodobi sledilnik"
 "Remove" ---> "Odstrani"
-"SysListView32" ---> "SysListView32"
 "Name:" ---> "Ime:"
 "Tracker:" ---> "Tracker"
 "Status:" ---> "Status:"

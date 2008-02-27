@@ -93,11 +93,14 @@
 "Prompt for alternate save folder." ---> "Запрашивать альтернативную папку закачки."
 "Create new torrent" ---> "Создать новый торрент"
 "Save" ---> "Сохранить"
-"Select a file or directory to construct the torrent." ---> "Выбрать файл или папку чтобы создать торрент."
+"Select a file or directory from which to construct the torrent." --->  ??? 
+"File" --->  ??? 
+"Dir." --->  ??? 
+"SysListView32" ---> "SysListView32"
 "Enter the tracker URLs for the torrent." ---> "Ввести адрес трэкера для торрента."
 "Private" --->  ??? 
 "Add" ---> "Добавить"
-"Comment." --->  ??? 
+"Comment" --->  ??? 
 "Creator" --->  ??? 
 "Halite shutting down..." ---> "Халит завершает выключается..."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Чтобы корректно завершить сессию, Битторренту потребуется несколько мгновений и данное сообщение исчезнет, как только программа закроется."
@@ -105,7 +108,6 @@
 "Pause" ---> "Пауза"
 "Reannounce" ---> "Объявить снова"
 "Remove" ---> "Убрать"
-"SysListView32" ---> "SysListView32"
 "Name:" ---> "Имя:"
 "Tracker:" ---> "Трэкер"
 "Status:" ---> "Статус:"
