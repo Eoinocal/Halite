@@ -5,9 +5,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 
-#define HALITE_VERSION					0, 3, 0, 381
-#define HALITE_VERSION_STRING			"v 0.3.0.3 dev 381"
-#define	HALITE_FINGERPRINT				"HL", 0, 3, 0, 3
+#define HALITE_VERSION					0, 3, 0, 386
+#define HALITE_VERSION_STRING			"v 0.3.0.4 dev 386"
+#define	HALITE_FINGERPRINT				"HL", 0, 3, 0, 4
 
 #ifndef HAL_NA
 #define HAL_NA 40013

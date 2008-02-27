@@ -32,6 +32,8 @@
 #define IDD_TRACKEDIT                   130
 #define IDD_ADVPEER                     131
 #define IDD_NEWTORRENT					133
+#define IDD_NEWT_TRACKERS				134
+#define IDD_NEWT_DETAILS				135
 #define IDR_TRACKERLV_MENU              132
 #define IDC_TRANS_SES                   1004
 #define IDC_TRANS_ETA                   1005

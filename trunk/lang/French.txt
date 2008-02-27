@@ -93,11 +93,14 @@
 "Prompt for alternate save folder." ---> "Dossier de réception alternatif"
 "Create new torrent" ---> "Créer un nouveau torrent"
 "Save" ---> "Enregister"
-"Select a file or directory to construct the torrent." ---> "Choisissez un fichier ou un dossier pour former le torrent."
+"Select a file or directory from which to construct the torrent." --->  ??? 
+"File" --->  ??? 
+"Dir." --->  ??? 
+"SysListView32" --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Entrer l'URL du tracker pour le torrent."
 "Private" --->  ??? 
 "Add" ---> "Ajouter"
-"Comment." --->  ??? 
+"Comment" --->  ??? 
 "Creator" --->  ??? 
 "Halite shutting down..." ---> "Halite est en cours de fermeture..."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Cela prend un moment pour que la session soit fermée proprement. Quand ce message disparaîtra, le programme se fermera."
@@ -105,7 +108,6 @@
 "Pause" --->  ??? 
 "Reannounce" ---> "Réanoncer"
 "Remove" ---> "Supprimer"
-"SysListView32" --->  ??? 
 "Name:" ---> "Nom :"
 "Tracker:" ---> "Tracker :"
 "Status:" ---> "Statut :"

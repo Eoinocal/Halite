@@ -93,11 +93,14 @@
 "Prompt for alternate save folder." ---> "Consenti di scegliere una cartella alternativa."
 "Create new torrent" ---> "Crea nuovo torrent"
 "Save" ---> "Salva"
-"Select a file or directory to construct the torrent." ---> "Seleziona un file o una directory da aggiungere al file torrent."
+"Select a file or directory from which to construct the torrent." --->  ??? 
+"File" --->  ??? 
+"Dir." --->  ??? 
+"SysListView32" --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Inserisci gli indirizzi dei tracker per il torrent."
 "Private" --->  ??? 
 "Add" ---> "Aggiungi"
-"Comment." --->  ??? 
+"Comment" --->  ??? 
 "Creator" --->  ??? 
 "Halite shutting down..." ---> "Halite in chiusura...."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Ci vorrà qualche momento per la chiusura corretta della sessione BitTorrent, al termine della quale questo messaggio sparirà."
@@ -105,7 +108,6 @@
 "Pause" ---> "Pausa"
 "Reannounce" ---> "Riannuncia"
 "Remove" ---> "Rimuovi"
-"SysListView32" --->  ??? 
 "Name:" ---> "Nome"
 "Tracker:" --->  ??? 
 "Status:" ---> "Stato"
