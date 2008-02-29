@@ -51,7 +51,7 @@ BOOL HaliteWindow::PreTranslateMessage(MSG* pMsg)
 	if(CFrameWindowImpl<HaliteWindow>::PreTranslateMessage(pMsg))
 		return TRUE;
 
-	return mp_dlg->PreTranslateMessage(pMsg);
+	return mp_advDlg->PreTranslateMessage(pMsg);
 }
 
 LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)

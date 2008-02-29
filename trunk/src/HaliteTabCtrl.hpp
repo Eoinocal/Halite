@@ -9,8 +9,27 @@
 #include "stdAfx.hpp"
 #include "HaliteTabPage.hpp"
 
-class CHalTabCtrl : public CWindowImpl<CHalTabCtrl, CTabCtrl>
+class CHalTabCtrl : 
+	public CWindowImpl<CHalTabCtrl, CTabCtrl>,
+	public CMessageFilter
 {
+	struct CHalTabPage
+	{
+		CHalTabPage() :
+			hWnd(0),
+			msgFilter(NULL)
+		{}
+
+		template <class T>
+		CHalTabPage(CHalTabPageImpl<T>& tabPage) :
+			hWnd(tabPage),
+			msgFilter(&tabPage)
+		{}
+
+		HWND hWnd;
+		WTL::CMessageFilter* msgFilter;
+	};
+
 public:
 	CHalTabCtrl() :
 		currentPage_(0)
@@ -18,11 +37,18 @@ public:
 
     BEGIN_MSG_MAP_EX(CHalTabCtrl)
 		MSG_WM_SIZE(OnSize)
-//		MSG_WM_ERASEBKGND(OnEraseBkgnd)
-//        MESSAGE_HANDLER(WM_CREATE, OnCreate)
+
 		REFLECTED_NOTIFY_CODE_HANDLER_EX(TCN_SELCHANGE, OnSelChange)
+
         DEFAULT_REFLECTION_HANDLER()
     END_MSG_MAP()
+
+	virtual BOOL PreTranslateMessage(MSG* pMsg)
+	{
+		assert(pages_[GetCurSel()].msgFilter);
+		
+		return pages_[GetCurSel()].msgFilter->PreTranslateMessage(pMsg);
+	}
 
 	void Attach(HWND hWndNew)
 	{
@@ -37,7 +63,7 @@ public:
 
 		if (!pages_.empty())
 		{
-			currentPage_ = pages_[index];
+			currentPage_ = pages_[index].hWnd;
 			::ShowWindow(currentPage_, SW_SHOW);
 
 			RECT rect;
@@ -57,31 +83,25 @@ public:
 
 	void OnSize(UINT, CSize)
 	{
-		RECT rect;
+		CRect rect;
 		GetClientRect(&rect);
 		AdjustRect(false, &rect);
 
 		::MoveWindow(currentPage_,  rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top, true);
 	}
 
-	void AddPage(HWND hWnd, wstring wndText)
+	template <class T>
+	void AddPage(CHalTabPageImpl<T>& tabPage, wstring wndText)
 	{
 		TCITEM tie = { TCIF_TEXT, 0, 0, const_cast<wchar_t*>(wndText.c_str()), 0, -1, 0 };
 		InsertItem(pages_.size(), &tie);
 
-		pages_.push_back(hWnd);
-
-/*		::ShowWindow(hWnd, true);
-
-		RECT rect;
-		GetClientRect(&rect);
-		AdjustRect(false, &rect);
-
-		::SetWindowPos(hWnd, HWND_TOP, rect.left, rect.top, 0, 0, SWP_NOSIZE);
-*/
+		pages_.push_back(CHalTabPage(tabPage));
 	}
 
+	HWND GetCurrentPage() const	{ return currentPage_; }
+
 protected:
-	std::vector<HWND> pages_;
+	std::vector<CHalTabPage> pages_;
 	HWND currentPage_;
 };

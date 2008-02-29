@@ -9,8 +9,10 @@
 #include "stdAfx.hpp"
 #include "UxthemeWrapper.hpp"
 
-template <class T, class TBase = CWindow>
-class ATL_NO_VTABLE CHalTabPageImpl : public ATL::CDialogImpl< T >
+template <class T>
+class ATL_NO_VTABLE CHalTabPageImpl : 
+	public ATL::CDialogImpl< T >,
+	public CMessageFilter
 {
 public:
     BEGIN_MSG_MAP_EX(CHalTabPageImpl)
