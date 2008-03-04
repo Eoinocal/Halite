@@ -50,7 +50,7 @@
 "Clear IP database" ---> "Leeg IP Database"
 "Protocol Encryption" ---> "Protocol Encryptie"
 "Enable Protocol Encryption." ---> "Protocol Encryptie inschakelen"
-"Connection Policies" --->  ??? 
+"Connection Policies" --->  "Verbindings Regels" 
 "Incoming" ---> "Inkomend"
 "Outgoing" ---> "Uitgaand"
 "Forced" ---> "Geforceerd"
@@ -191,9 +191,9 @@
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Een ongeldig encoderings niveau, %1%, is doorgegaan als encryptie instelling."
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Een ongeldig encoderings regeling, %1%, is doorgegaan als encryptie instelling."
 "Auto Sort" ---> "Auto Sorteren"
-"Torrent Root" --->  ??? 
+"Torrent Root" --->  "Torrent Wortel" 
 "Interesting" ---> "Geinteresseerd"
-"Choked" --->  ??? 
+"Choked" --->  "Verstopt" 
 "Interested in us" ---> "Geinteresseerd in ons"
 "Has choked us" ---> "Choked ons"
 "Supports extensions" ---> "Ondersteund extensies"
