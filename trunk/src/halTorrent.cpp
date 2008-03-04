@@ -1522,12 +1522,13 @@ void BitTorrent::resumeAll()
 				case TorrentDetail::torrent_stopped:
 					break;
 				case TorrentDetail::torrent_paused:
-				case TorrentDetail::torrent_pausing:
 					(*i).torrent->addToSession(true);
 					break;
 				case TorrentDetail::torrent_active:
 					(*i).torrent->addToSession(false);
 					break;
+				default:
+					assert(false);
 			};
 			
 			++i;

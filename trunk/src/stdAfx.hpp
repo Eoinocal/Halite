@@ -88,6 +88,7 @@ private:
 
 #include <boost/archive/xml_woarchive.hpp>
 #include <boost/archive/xml_wiarchive.hpp>
+#include <boost/date_time/posix_time/time_serialize.hpp>
 
 using std::string;
 using std::wstring;
@@ -116,6 +117,9 @@ void serialize(Archive& ar, CRect& rect, const unsigned int version)
 namespace hal
 {
 	
+	namespace fs = boost::filesystem;
+	namespace pt = boost::posix_time;
+
 	using std::pair;
 	using std::make_pair;
 	
