@@ -45,7 +45,7 @@ int compare(const T& l, const T& r)
 
 template <class TBase, typename adapterType=void*, size_t N=-1>
 class CHaliteSortListViewCtrl : 
-	public CSortListViewCtrlImpl<CHaliteSortListViewCtrl<TBase, adapterType, N> >
+	public WTL::CSortListViewCtrlImpl<CHaliteSortListViewCtrl<TBase, adapterType, N> >
 {
 public:
 	typedef CHaliteSortListViewCtrl<TBase, adapterType, N> thisClass;
@@ -262,7 +262,7 @@ public:
 		thisClass& m_list_;
 	};
 	
-	class CHaliteHeaderCtrl : public CWindowImpl<CHaliteHeaderCtrl, CHeaderCtrl>
+	class CHaliteHeaderCtrl : public CWindowImpl<CHaliteHeaderCtrl, WTL::CHeaderCtrl>
 	{
 	public:
 		enum { COL_MENU_NAMES = 123, COL_MAX_NAMES = 256};

@@ -16,7 +16,7 @@
 #include "halTorrent.hpp"
 
 template <class TBase>
-class CHaliteListViewCtrl : public CWindowImpl<TBase, CListViewCtrl>
+class CHaliteListViewCtrl : public CWindowImpl<TBase, WTL::CListViewCtrl>
 {
 public:
 	typedef CHaliteListViewCtrl<TBase> thisClass;
@@ -193,7 +193,7 @@ protected:
 		L& m_list_;
 	};
 	
-	class CHaliteHeaderCtrl : public CWindowImpl<CHaliteHeaderCtrl, CHeaderCtrl>
+	class CHaliteHeaderCtrl : public CWindowImpl<CHaliteHeaderCtrl, WTL::CHeaderCtrl>
 	{
 	public:
 		BEGIN_MSG_MAP(CHaliteHeaderCtrl)

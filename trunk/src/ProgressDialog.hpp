@@ -81,7 +81,7 @@ private:
 	
 	wstring windowText_;
 	bool stop_;
-	CProgressBarCtrl prog_;
+	WTL::CProgressBarCtrl prog_;
 };
 
 #endif // RC_INVOKED

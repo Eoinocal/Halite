@@ -39,11 +39,11 @@ private:
 };
 
 class HaliteWindow :
-	public CFrameWindowImpl<HaliteWindow>,
-	public CUpdateUI<HaliteWindow>,
+	public WTL::CFrameWindowImpl<HaliteWindow>,
+	public WTL::CUpdateUI<HaliteWindow>,
 	public CDropFileTarget<HaliteWindow>,
-	public CMessageFilter,
-	public CIdleHandler,
+	public WTL::CMessageFilter,
+	public WTL::CIdleHandler,
 	public hal::IniBase<HaliteWindow>,
 	private boost::noncopyable
 {
@@ -149,8 +149,8 @@ protected:
     void OnTimer(UINT uTimerID);
 	void OnClose();
 	void OnDestroy();
-	void OnSize(UINT, CSize);
-	void OnMove(CSize);
+	void OnSize(UINT, WTL::CSize);
+	void OnMove(WTL::CSize);
 	void OnShowWindow(BOOL bShow, UINT nStatus);
 	LRESULT OnTrayNotification(UINT, WPARAM wParam, LPARAM lParam);
 	LRESULT OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
@@ -195,9 +195,9 @@ private:
 	boost::signal<void (const hal::TorrentDetails& tD)> ui_update_signal_;
 	boost::signal<void ()> save_state_signal_;	
 	
-	CCommandBarCtrl m_CmdBar;
-	CHorSplitterWindow m_Split;
-    CMultiPaneStatusBarCtrl m_StatusBar;
+	WTL::CCommandBarCtrl m_CmdBar;
+	WTL::CHorSplitterWindow m_Split;
+    WTL::CMultiPaneStatusBarCtrl m_StatusBar;
 	CTrayNotifyIcon trayIcon_;
 
 	HaliteListViewCtrl haliteList;
@@ -211,7 +211,7 @@ private:
 
 	unsigned WM_AreYouMe_;
 
-	CRect rect;
+	WTL::CRect rect;
 	unsigned int splitterPos;
 	bool use_tray;
 	bool advancedUI;

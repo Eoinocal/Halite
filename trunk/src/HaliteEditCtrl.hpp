@@ -14,12 +14,12 @@
 
 template<typename T>
 class CHaliteEditCtrl :
-	public CWindowImpl<CHaliteEditCtrl<T>, CEdit>,
+	public CWindowImpl<CHaliteEditCtrl<T>, WTL::CEdit>,
 	private boost::noncopyable
 {
 protected:
 	typedef CHaliteEditCtrl<T> thisClass;
-	typedef CWindowImpl<thisClass, CEdit> baseClass;
+	typedef CWindowImpl<thisClass, WTL::CEdit> baseClass;
 	
 public:
 	explicit CHaliteEditCtrl(T lwr = 0, bool include = false, bool signal = true) :
@@ -97,7 +97,7 @@ public:
 		return 0;
 	}
 	
-	HBRUSH OnReflectedCtlColorEdit(CDCHandle dc, CEdit edit)
+	HBRUSH OnReflectedCtlColorEdit(WTL::CDCHandle dc, WTL::CEdit edit)
 	{
 		if (signal_ && unapplied_)
 		{
