@@ -70,7 +70,7 @@ namespace ATL
  *  \param ... List of IDs of controls that are transparent. They'll be redrawn in a special way
  */
 #define TRANSPARENT_LIST(theClass, ...) \
-	BOOL HandleTransparentMap(CDCHandle dc = NULL) \
+	BOOL HandleTransparentMap(WTL::CDCHandle dc = NULL) \
 	{ \
 		int tcCtrls[] = {0, __VA_ARGS__, INT_MAX}; \
 		if (dc) { \
@@ -727,11 +727,11 @@ public:
 		}
 
 		if(wParam != NULL) {
-			CDCHandle dc = (HDC)wParam;
+			WTL::CDCHandle dc = (HDC)wParam;
 			dc.SetViewportOrg(-pt.x, -pt.y);
 			pT->DoPaint(dc);
 		} else {
-			CPaintDC dc(pT->m_hWnd);
+			WTL::CPaintDC dc(pT->m_hWnd);
 			dc.SetViewportOrg(-pt.x, -pt.y);
 			pT->DoPaint(dc.m_hDC);
 		}
@@ -903,7 +903,7 @@ public:
 	/// Does the paint work. You can override it, but remember to call this method in the end, otherwise Transparent ctrls won't be painted.
 	/** \param dc The hDC to paint to
 	 */
-	void DoPaint(CDCHandle dc)
+	void DoPaint(WTL::CDCHandle dc)
 	{
 		T* pT = static_cast<T*>(this);
 		ATLVERIFY(pT->HandleTransparentMap(dc));
@@ -2237,7 +2237,7 @@ protected:
 		return TRUE;
 	}
 
-	BOOL DrawTransparentCtrl(CDCHandle dc, int iCtrl)
+	BOOL DrawTransparentCtrl(WTL::CDCHandle dc, int iCtrl)
 	{
 		T* pT = static_cast<T*>(this);
 		HWND hWnd = pT->GetDlgItem(iCtrl);

@@ -163,17 +163,17 @@ public:
 //Create the tray icon
 #ifdef _AFX
   BOOL Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, HICON hIcon, UINT nNotifyMessage, UINT uMenuID = 0);
-  BOOL Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID = 0);
+  BOOL Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, WTL::CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID = 0);
   BOOL Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, HICON* phIcons, int nNumIcons, DWORD dwDelay, UINT nNotifyMessage, UINT uMenuID = 0);
   BOOL Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, HICON hIcon, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);                  
-  BOOL Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);
+  BOOL Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, WTL::CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);
   BOOL Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, HICON* phIcons, int nNumIcons, DWORD dwDelay, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);
 #else
   BOOL Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, HICON hIcon, UINT nNotifyMessage, UINT uMenuID = 0);
-  BOOL Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID = 0);
+  BOOL Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, WTL::CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID = 0);
   BOOL Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, HICON* phIcons, int nNumIcons, DWORD dwDelay, UINT nNotifyMessage, UINT uMenuID = 0);
   BOOL Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, HICON hIcon, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);                  
-  BOOL Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);
+  BOOL Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, WTL::CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);
   BOOL Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, HICON* phIcons, int nNumIcons, DWORD dwDelay, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);
 #endif  
 
@@ -184,7 +184,7 @@ public:
 
 //Sets or gets the icon displayed
   BOOL SetIcon(HICON hIcon);
-  BOOL SetIcon(CBitmap* pBitmap);
+  BOOL SetIcon(WTL::CBitmap* pBitmap);
   BOOL SetIcon(LPCTSTR lpIconName);
   BOOL SetIcon(UINT nIDResource);
   BOOL SetIcon(HICON* phIcons, int nNumIcons, DWORD dwDelay);
@@ -199,7 +199,7 @@ public:
   CWnd* GetNotificationWnd() const;
 #else
   BOOL SetNotificationWnd(CWindow* pNotifyWnd);
-  CWindow* GetNotificationWnd() const;
+  ATL::CWindow* GetNotificationWnd() const;
 #endif
 
 //Modification of the tray icons
@@ -209,12 +209,12 @@ public:
   BOOL Show();
 
 //Dynamic tray icon support
-  HICON BitmapToIcon(CBitmap* pBitmap);
-  static BOOL GetDynamicDCAndBitmap(CDC* pDC, CBitmap* pBitmap);
+  HICON BitmapToIcon(WTL::CBitmap* pBitmap);
+  static BOOL GetDynamicDCAndBitmap(WTL::CDC* pDC, WTL::CBitmap* pBitmap);
 
 //Modification of the menu to use as the context menu
   void SetMenu(HMENU hMenu);
-  CMenu& GetMenu();
+  WTL::CMenu& GetMenu();
   void SetDefaultMenuItem(UINT uItem, BOOL fByPos);
   void GetDefaultMenuItem(UINT& uItem, BOOL& fByPos) { uItem = m_nDefaultMenuItem; fByPos = m_bDefaultMenuItemByPos; };
 
@@ -252,7 +252,7 @@ protected:
   CWindow*         m_pNotificationWnd;
 #endif  
   CTrayIconHooker  m_HookWnd;
-  CMenu            m_Menu;
+  WTL::CMenu       m_Menu;
   UINT             m_nDefaultMenuItem;
   BOOL             m_bDefaultMenuItemByPos;
   static DWORD     sm_dwShellVersion;

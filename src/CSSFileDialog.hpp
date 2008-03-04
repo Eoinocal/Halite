@@ -79,7 +79,7 @@ typedef OPENFILENAMEEXA OPENFILENAMEEX;
 typedef LPOPENFILENAMEEXA LPOPENFILENAMEEX;
 #endif // UNICODE
 
-class CSSFileDialog : public CFileDialogImpl<CSSFileDialog>
+class CSSFileDialog : public WTL::CFileDialogImpl<CSSFileDialog>
 {
 public:
 	CSSFileDialog(BOOL bOpenFileDialog, // TRUE for FileOpen, FALSE for FileSaveAs

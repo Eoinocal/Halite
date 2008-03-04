@@ -18,12 +18,14 @@
 
 #define HALITE_SENDING_CMD 68816889
 
+//	#define _WTL_NO_AUTOMATIC_NAMESPACE
+
 #include <winsock2.h>
 #include <shellapi.h>
 #include <atlbase.h>
 #include <atlapp.h>
 
-extern CAppModule _Module;
+extern WTL::CAppModule _Module;
 #define _ATL_USE_DDX_FLOAT
 
 #include <atlwin.h>
@@ -106,7 +108,7 @@ using boost::filesystem::wpath;
 using boost::noncopyable;
 
 template<class Archive>
-void serialize(Archive& ar, CRect& rect, const unsigned int version)
+void serialize(Archive& ar, WTL::CRect& rect, const unsigned int version)
 {
 	ar & BOOST_SERIALIZATION_NVP(rect.top);
 	ar & BOOST_SERIALIZATION_NVP(rect.bottom);
