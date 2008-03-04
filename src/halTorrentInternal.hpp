@@ -826,6 +826,11 @@ public:
 
 		if (!exists(saveDirectory))
 			create_directory(saveDirectory);
+
+		if (state_ == TorrentDetail::torrent_stopping)
+			state_ = TorrentDetail::torrent_stopped;
+		else if (state_ == TorrentDetail::torrent_pausing)
+			state_ = TorrentDetail::torrent_paused;
 	}
 	
 	void extractNames(lbt::entry& metadata)

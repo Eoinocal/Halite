@@ -17,6 +17,7 @@
 #define IDC_NEWT_FILE_BROWSE			IDD_NEWTORRENT_BEGIN+8
 #define IDC_NEWT_DIR_BROWSE				IDD_NEWTORRENT_BEGIN+9
 #define IDC_NEWT_LISTFILES				IDD_NEWTORRENT_BEGIN+10
+#define HAL_FILES_LISTVIEW_ADV			IDD_NEWTORRENT_BEGIN+11
 //#define IDC_PROG_CANCEL                 IDD_NEWTORRENT_BEGIN + 2
 //#define IDC_PROG_PROGRESS               IDD_NEWTORRENT_BEGIN + 3
 
@@ -26,11 +27,84 @@
 #include "halTorrent.hpp"
 #include "halIni.hpp"
 #include "halEvent.hpp"
+#include "DdxEx.hpp"
+#include "HaliteSortListViewCtrl.hpp"
 
 
+class FilesListViewCtrl :
+	public CHaliteSortListViewCtrl<FilesListViewCtrl>,
+	public hal::IniBase<FilesListViewCtrl>,
+	private boost::noncopyable
+{
+
+	typedef hal::IniBase<FilesListViewCtrl> iniClass;
+	typedef CHaliteSortListViewCtrl<FilesListViewCtrl> listClass;
+
+	friend class listClass;
+	
+public:
+	enum { 
+		LISTVIEW_ID_MENU = 0,
+		LISTVIEW_ID_COLUMNNAMES = HAL_FILES_LISTVIEW_ADV,
+		LISTVIEW_ID_COLUMNWIDTHS = 0
+	};
+	
+	FilesListViewCtrl() :
+		listClass(true,false,false),
+		iniClass("listviews/new_files", "NewFilesListView")
+	{
+		std::vector<wstring> names;	
+		wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
+
+		// "Tracker;Tier"
+		boost::split(names, column_names, boost::is_any_of(L";"));
+		
+		array<int, 3> widths = {50,287,50};
+		array<int, 3> order = {0,1,2};
+		array<bool, 3> visible = {true,true,true};
+		
+		SetDefaults(names, widths, order, visible, true);
+		Load();
+	}
+
+	BEGIN_MSG_MAP_EX(FilesListViewCtrl)
+		MSG_WM_DESTROY(OnDestroy)
+
+/*		COMMAND_ID_HANDLER(ID_TLVM_NEW, OnNew)
+		COMMAND_ID_HANDLER(ID_TLVM_EDIT, OnEdit)
+		COMMAND_ID_HANDLER(ID_TLVM_DELETE, OnDelete)
+		COMMAND_ID_HANDLER(ID_TLVM_PRIMARY, OnPrimary)
+
+		REFLECTED_NOTIFY_CODE_HANDLER(NM_DBLCLK, OnDoubleClick)
+*/
+		CHAIN_MSG_MAP(listClass)
+		DEFAULT_REFLECTION_HANDLER()
+	END_MSG_MAP()
+
+	void uiUpdate(const hal::TorrentDetail_ptr pT);
+//	void enterNewTracker();
+//	void saveSettings();
+
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
+    }
+
+private:
+	void OnAttach();
+	void OnDestroy();
+	void saveSettings();
+
+	boost::signal<void ()> listEdited_;
+};
+
+typedef FilesListViewCtrl::SelectionManager FilesListViewManager;
 
 class FileSheet :
     public CPropertyPageImpl<FileSheet>,
+    public CWinDataExchangeEx<FileSheet>,
 	public CAutoSizeWindow<FileSheet, false>
 {
 protected:
@@ -48,6 +122,7 @@ public:
 	enum { IDD = IDD_NEWTORRENT };
 
     BEGIN_MSG_MAP_EX(thisClass)
+		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_DESTROY(OnDestroy)
 
 		COMMAND_ID_HANDLER_EX(IDC_NEWT_FILE_BROWSE, OnFileBrowse)
@@ -57,6 +132,12 @@ public:
 		CHAIN_MSG_MAP(sheetClass)
 		REFLECT_NOTIFICATIONS()
     END_MSG_MAP()
+	
+    BEGIN_DDX_MAP(thisClass)
+		DDX_EX_STDWSTRING(IDC_NEWTORRENT_CREATOR, creator_);
+		DDX_EX_STDWSTRING(IDC_NEWTORRENT_COMMENT, comment_);
+        DDX_CHECK(IDC_NEWTORRENT_PRIVATE, private_)
+    END_DDX_MAP()
 
 	static CWindowMapStruct* GetWindowMap();
 	
@@ -67,9 +148,19 @@ public:
 	
 	void OnFileBrowse(UINT, int, HWND hWnd);
 	void OnDirBrowse(UINT, int, HWND hWnd);
+	LRESULT onInitDialog(HWND, LPARAM);
 	void OnDestroy() {};
 	
 private:
+	FilesListViewCtrl filesList_;
+	
+	wpath fileRoot_;
+	std::vector<wpath> files_;
+
+	wstring creator_;
+	wstring comment_;
+	bool private_;
+
 };
 
 class TrackerSheet :
@@ -160,8 +251,7 @@ public:
     {
 		AddPage(fileSheet);
 		AddPage(trackerSheet);
-		AddPage(detailsSheet);
-		
+		AddPage(detailsSheet);		
 	}
 
     BEGIN_MSG_MAP_EX(thisClass)

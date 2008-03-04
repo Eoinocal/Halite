@@ -28,7 +28,7 @@ HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	SetDefaults(names, widths, order, visible);
 	Load();
 }
-	
+
 void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 {
 	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER);

@@ -37,7 +37,8 @@ public:
 	enum { IDD = IDD_ADVTRACKER };
 
 	AdvTrackerDialog(HaliteWindow& HalWindow) :
-		dialogBaseClass(HalWindow)
+		dialogBaseClass(HalWindow),
+		m_list("listviews/tracker", "TrackerListView")
 	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)
@@ -71,7 +72,6 @@ public:
     END_DDX_MAP()
 	
 	static CWindowMapStruct* GetWindowMap();
-
 
 	LRESULT onInitDialog(HWND, LPARAM);
 	void onClose();

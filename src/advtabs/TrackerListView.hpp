@@ -38,9 +38,9 @@ public:
 		LISTVIEW_ID_COLUMNWIDTHS = HAL_TRACKER_LISTVIEW_DEFAULTS
 	};
 	
-	TrackerListViewCtrl() :
+	TrackerListViewCtrl(boost::filesystem::path location, std::string name) :
 		listClass(true,false,false),
-		iniClass("listviews/tracker", "TrackerListView")
+		iniClass(location, name)
 	{
 		std::vector<wstring> names;	
 		wstring column_names = hal::app().res_wstr(HAL_TRACKER_LISTVIEW_COLUMNS);
