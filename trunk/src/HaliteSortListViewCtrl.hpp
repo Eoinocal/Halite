@@ -6,8 +6,9 @@
 
 #pragma once
 
-#include <functional>
+#include "stdAfx.hpp"
 
+#include <functional>
 #include <boost/array.hpp>
 #include <boost/signals.hpp>
 #include <boost/algorithm/string/split.hpp>
@@ -15,8 +16,7 @@
 #include <boost/serialization/split_free.hpp>
 #include <boost/ptr_container/ptr_map.hpp>
 
-#include "stdAfx.hpp"
-#include "../res/resource.h"
+#include "Halite.hpp"
 #include "halTorrent.hpp"
 #include "halEvent.hpp"
 #include "WinAPIWaitableTimer.hpp"

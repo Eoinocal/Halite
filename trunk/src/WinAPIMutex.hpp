@@ -11,7 +11,7 @@ class WinAPIMutexLock;
 class WinAPIMutex
 {
 public:
-	WinAPIMutex(wstring mutexName) : owner_(true)
+	WinAPIMutex(std::wstring mutexName) : owner_(true)
 	{
 		mutex_ = ::CreateMutex(0, true, mutexName.c_str());
 		

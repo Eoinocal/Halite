@@ -4,11 +4,12 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include "stdAfx.hpp"
+
 #include <fstream>
 #include <boost/smart_ptr.hpp>
 
 #include "string_conv.hpp"
-//#include "utf8.hpp"
 #include "unicode.hpp"
 #include "logger.hpp"
 

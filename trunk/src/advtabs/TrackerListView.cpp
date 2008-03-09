@@ -4,8 +4,11 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "TrackerListView.hpp"
+#include "stdAfx.hpp"
+
 #include "../halTorrent.hpp"
+
+#include "TrackerListView.hpp"
 #include "TrackerAddDialog.hpp"
 
 void TrackerListViewCtrl::OnAttach()

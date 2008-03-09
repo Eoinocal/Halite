@@ -4,6 +4,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include "stdAfx.hpp"
+
 #define WINVER 0x0500
 #define _WIN32_WINNT 0x0500
 #define _WIN32_IE 0x0500
