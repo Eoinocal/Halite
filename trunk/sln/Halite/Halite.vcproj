@@ -44,7 +44,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/Zm1000"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)src\WTLx&quot;;&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_LOGGING;TORRENT_VERBOSE_LOGGING;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -125,7 +125,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/Zm1000"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)src\WTLx&quot;;&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32 ;_WIN32;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -206,7 +206,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/Zm1000"
 				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)src\WTLx&quot;;&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;NDEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -290,7 +290,7 @@
 				AdditionalOptions="/Zm1000"
 				FavorSizeOrSpeed="2"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)src\WTLx&quot;;&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;NDEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
@@ -373,7 +373,7 @@
 				AdditionalOptions="/Zm1000"
 				FavorSizeOrSpeed="2"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)src\WTLx&quot;;&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;NDEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_LOGGING;TORRENT_VERBOSE_LOGGING;TORRENT_UPNP_LOGGING;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -458,7 +458,7 @@
 				AdditionalOptions="/Zm1000"
 				FavorSizeOrSpeed="2"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)src\WTLx&quot;;&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\openssl\inc&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;NDEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
@@ -556,10 +556,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\NewTorrentDialog.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\NTray.cpp"
 				>
 			</File>
 			<File
@@ -692,6 +688,68 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="WTLx"
+				>
+				<File
+					RelativePath="..\..\src\WTLx\NTray.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Logging|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Logging|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -707,27 +765,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\AtlAutosizeDlg.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\ConfigOptions.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\CSSFileDialog.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\DdxEx.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\DebugDialog.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\DropFileTarget.h"
 				>
 			</File>
 			<File
@@ -803,23 +845,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\NTray.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\ProgressDialog.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\SimpleHtml.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\SplashDialog.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\SSFileDialog.hpp"
 				>
 			</File>
 			<File
@@ -907,6 +937,42 @@
 				</File>
 				<File
 					RelativePath="..\..\src\global\wtl_app.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="WTLx"
+				>
+				<File
+					RelativePath="..\..\src\WTLx\AtlAutosizeDlg.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\WTLx\atldlgx.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\WTLx\CSSFileDialog.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\WTLx\DdxEx.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\WTLx\DropFileTarget.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\WTLx\NTray.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\WTLx\SimpleHtml.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\WTLx\SSFileDialog.hpp"
 					>
 				</File>
 			</Filter>

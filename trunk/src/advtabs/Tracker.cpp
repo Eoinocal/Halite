@@ -24,6 +24,9 @@ LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 	
 	username_ = L"";
 	password_ = L"";
+
+	userEdit_.SubclassWindow(GetDlgItem(IDC_TRACKER_USER));
+	passEdit_.SubclassWindow(GetDlgItem(IDC_TRACKER_PASS));
 		
 	DoDataExchange(false);	
 	return 0;
@@ -150,6 +153,8 @@ void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
 
 void AdvTrackerDialog::onReannounce(UINT, int, HWND)
 {
+	DoDataExchange(true);
+
 	if (hal::bittorrent().torrentDetails().focusedTorrent())
 		hal::bittorrent().reannounceTorrent(hal::to_utf8(hal::bittorrent().torrentDetails().focusedTorrent()->name()));
 }

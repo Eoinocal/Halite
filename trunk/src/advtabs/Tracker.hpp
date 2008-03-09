@@ -1,5 +1,5 @@
 
-//         Copyright Eóin O'Callaghan 2006 - 2007.
+//         Copyright Eóin O'Callaghan 2006 - 2008.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -10,11 +10,12 @@
 
 #pragma once
 
-#include "../stdAfx.hpp"
-#include "../global/string_conv.hpp"
+#include "stdAfx.hpp"
+#include "Halite.hpp"
 
-#include "../DdxEx.hpp"
-#include "../Halite.hpp"
+#include "DdxEx.hpp"
+#include "EditHilight.hpp"
+#include "global/string_conv.hpp"
 
 #include "TrackerListView.hpp"
 #include "../HaliteTabPage.hpp"
@@ -55,7 +56,7 @@ public:
 		COMMAND_ID_HANDLER_EX(IDC_TRACKER_RESET, onReset)
 		COMMAND_ID_HANDLER_EX(IDC_TRACKER_APPLY, onApply)
 
-		COMMAND_RANGE_CODE_HANDLER_EX(IDC_TRACKER_USER, IDC_TRACKER_PASS, EN_KILLFOCUS, OnEditKillFocus)
+	//	COMMAND_RANGE_CODE_HANDLER_EX(IDC_TRACKER_USER, IDC_TRACKER_PASS, EN_KILLFOCUS, OnEditKillFocus)
 
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
@@ -67,8 +68,8 @@ public:
 	END_MSG_MAP()
 
 	BEGIN_DDX_MAP(thisClass)
-		DDX_EX_STDWSTRING(IDC_TRACKER_USER, username_);
-		DDX_EX_STDWSTRING(IDC_TRACKER_PASS, password_);
+		DDX_WTLx_WSTRING(userEdit_, username_)
+		DDX_WTLx_WSTRING(passEdit_, password_)
     END_DDX_MAP()
 	
 	static CWindowMapStruct* GetWindowMap();
@@ -94,6 +95,9 @@ protected:
 
 	wstring username_;
 	wstring password_;
+
+	WTLx::EditHilight userEdit_;
+	WTLx::EditHilight passEdit_;
 };
 
 #endif // RC_INVOKED
