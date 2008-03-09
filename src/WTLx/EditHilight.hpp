@@ -46,8 +46,6 @@ public:
 	
 	LRESULT OnChange(UINT uNotifyCode, int nID, CWindow wndCtl)
 	{	
-		HAL_DEV_MSG(wformat(L"OnChange %1%, %2%") % unapplied_ % signal_);
-
 		if (unapplied_)
 		{
 		}
@@ -66,8 +64,6 @@ public:
 	
 	LRESULT OnKillFocus(UINT uNotifyCode, int nID, CWindow wndCtl)
 	{	
-		HAL_DEV_MSG(wformat(L"OnKillFocus %1%, %2%") % unapplied_ % signal_);
-
 		const int buffer_size = 512;
 		boost::array<wchar_t, buffer_size> buffer;
 		GetWindowText(buffer.elems, buffer_size);
@@ -83,8 +79,6 @@ public:
 
 	HBRUSH OnReflectedCtlColorEdit(WTL::CDCHandle dc, WTL::CEdit edit)
 	{
-		HAL_DEV_MSG(wformat(L"OnReflectedCtlColorEdit %1%, %2%") % unapplied_ % signal_);
-
 		if (unapplied_)
 		{
 			SetTextColor(dc, RGB(0,0,255));
@@ -104,6 +98,8 @@ public:
 		size_t len = GetWindowText(&buffer[0], maxLen);
 
 		unapplied_ = false;		
+		InvalidateRect(0, true);
+
 		return std::wstring(buffer.begin(), buffer.begin()+len);
 	}
 
@@ -111,7 +107,9 @@ public:
 	{	
 		SetWindowText(val.c_str());
 
-		unapplied_ = boost::logic::indeterminate;;
+		unapplied_ = false;
+		InvalidateRect(0, true);
+
 		return val;
 	}
 	
@@ -131,7 +129,6 @@ public:
 
 	operator std::wstring () 
 	{ 
-		//return *this;
 		return *static_cast<EditHilightImpl<EditHilight>* >(this);
 	}
 
