@@ -21,7 +21,6 @@
 #include "HaliteWindow.hpp"
 #include "SplashDialog.hpp"
 
-
 Halite& halite()
 {
 	static Halite h;
