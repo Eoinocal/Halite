@@ -7,7 +7,6 @@
 #pragma once
 
 #include "stdAfx.hpp"
-#include "../res/resource.h"
 #include "DdxEx.hpp"
 
 #include "HaliteTabPage.hpp"
@@ -57,5 +56,5 @@ public:
 	}
 
 protected:
-	wstring giveme;
+	std::wstring giveme;
 };

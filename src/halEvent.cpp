@@ -4,7 +4,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-//#include "stdAfx.hpp"
+#include "stdAfx.hpp"
+#include "Halite.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -25,10 +26,6 @@
 #include <libtorrent/peer_connection.hpp>
 
 #include "halEvent.hpp"
-#include "global/string_conv.hpp"
-#include "Halite.hpp"
-
-#define foreach BOOST_FOREACH
 
 namespace hal
 {

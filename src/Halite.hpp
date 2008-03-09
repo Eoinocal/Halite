@@ -6,15 +6,77 @@
 
 #pragma once
 
-#include "halTorrent.hpp"
-#include "halEvent.hpp"
 
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/serialization/version.hpp>
+using std::string;
+using std::wstring;
+
+using boost::lexical_cast;
+using boost::array;
+using boost::format;
+using boost::wformat;
+using boost::bind;
+using boost::thread;
+using boost::shared_ptr;
+using boost::scoped_ptr;
+using boost::filesystem::path;
+using boost::filesystem::wpath;
+using boost::noncopyable;
+
+template<class Archive>
+void serialize(Archive& ar, WTL::CRect& rect, const unsigned int version)
+{
+	ar & BOOST_SERIALIZATION_NVP(rect.top);
+	ar & BOOST_SERIALIZATION_NVP(rect.bottom);
+	ar & BOOST_SERIALIZATION_NVP(rect.left);
+	ar & BOOST_SERIALIZATION_NVP(rect.right);
+}
+
+namespace hal
+{	
+	namespace fs = boost::filesystem;
+	namespace pt = boost::posix_time;
+	namespace xp = boost::xpressive;
+	namespace sl = boost::serialization;
+
+	using std::pair;
+	using std::make_pair;
+	
+	using boost::tuple;
+}
+
+#define foreach BOOST_FOREACH
+
+#include "global/wtl_app.hpp"
+#include "global/string_conv.hpp"
 
 #include "halIni.hpp"
-#include "../res/resource.h"
+#include "halEvent.hpp"
+#include "halTorrent.hpp"
+
+template<class T>
+class RedrawLock
+{
+public:
+	RedrawLock(T& window) :
+		window_(window)
+	{
+		window_.SetRedraw(false);
+	}
+	
+	~RedrawLock()
+	{
+		unlock();
+	}
+	
+	void unlock()
+	{
+		window_.SetRedraw(true);
+		window_.InvalidateRect(NULL, true);
+	}
+	
+private:
+	T& window_;
+};
 	
 class Halite :
 	public hal::IniBase<Halite>,

@@ -43,38 +43,26 @@ extern WTL::CAppModule _Module;
 #include "AtlAutosizeDlg.h"
 //#include <stlsoft/util/nulldef.h>
 
-#include "global/wtl_app.hpp"
-#include "global/string_conv.hpp"
-
-template<class T>
-class RedrawLock
-{
-public:
-	RedrawLock(T& window) :
-		window_(window)
-	{
-		window_.SetRedraw(false);
-	}
-	
-	~RedrawLock()
-	{
-		unlock();
-	}
-	
-	void unlock()
-	{
-		window_.SetRedraw(true);
-		window_.InvalidateRect(NULL, true);
-	}
-	
-private:
-	T& window_;
-};
+#include "../res/resource.h"
 
 // Include very common C++ and Boost libraries
 
 #include <string>
 #include <vector>
+
+#include <iostream>
+#include <fstream>
+#include <iterator>
+#include <iomanip>
+#include <map>
+#include <algorithm>
+#include <string>
+#include <vector>
+
+#include <boost/regex.hpp>
+#include <boost/lambda/lambda.hpp>
+#include <boost/algorithm/string/find.hpp>
+
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <boost/array.hpp>
@@ -83,50 +71,30 @@ private:
 #include <boost/thread/thread.hpp>
 #include <boost/thread/recursive_mutex.hpp>
 #include <boost/smart_ptr.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/tuple/tuple.hpp>
 
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
+
+#include <boost/xpressive/xpressive.hpp>
+
+#include <boost/archive/text_woarchive.hpp>
+#include <boost/archive/text_wiarchive.hpp>
+#include <boost/archive/binary_woarchive.hpp>
+#include <boost/archive/binary_wiarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/basic_xml_archive.hpp>
 #include <boost/archive/xml_woarchive.hpp>
 #include <boost/archive/xml_wiarchive.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/serialization/version.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/split_free.hpp>
 #include <boost/date_time/posix_time/time_serialize.hpp>
 
-using std::string;
-using std::wstring;
-
-using boost::lexical_cast;
-using boost::array;
-using boost::format;
-using boost::wformat;
-using boost::bind;
-using boost::thread;
-using boost::shared_ptr;
-using boost::scoped_ptr;
-using boost::filesystem::path;
-using boost::filesystem::wpath;
-using boost::noncopyable;
-
-template<class Archive>
-void serialize(Archive& ar, WTL::CRect& rect, const unsigned int version)
-{
-	ar & BOOST_SERIALIZATION_NVP(rect.top);
-	ar & BOOST_SERIALIZATION_NVP(rect.bottom);
-	ar & BOOST_SERIALIZATION_NVP(rect.left);
-	ar & BOOST_SERIALIZATION_NVP(rect.right);
-}
-
-namespace hal
-{
-	
-	namespace fs = boost::filesystem;
-	namespace pt = boost::posix_time;
-
-	using std::pair;
-	using std::make_pair;
-	
-	using boost::tuple;
-	
-}
-
-#define foreach BOOST_FOREACH

@@ -22,6 +22,8 @@ must not be misrepresented as being the original software.
 distribution.
 */
 
+#include "stdAfx.hpp"
+
 #include <ctype.h>
 #include <stddef.h>
 

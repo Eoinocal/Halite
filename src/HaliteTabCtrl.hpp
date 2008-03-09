@@ -91,7 +91,7 @@ public:
 	}
 
 	template <class T>
-	void AddPage(CHalTabPageImpl<T>& tabPage, wstring wndText)
+	void AddPage(CHalTabPageImpl<T>& tabPage, std::wstring wndText)
 	{
 		TCITEM tie = { TCIF_TEXT, 0, 0, const_cast<wchar_t*>(wndText.c_str()), 0, -1, 0 };
 		InsertItem(pages_.size(), &tie);

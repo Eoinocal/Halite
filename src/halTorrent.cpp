@@ -4,72 +4,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-
-#define HALITE_VERSION					0, 3, 0, 386
-#define HALITE_VERSION_STRING			"v 0.3.0.4 dev 386"
-#define	HALITE_FINGERPRINT				"HL", 0, 3, 0, 4
-
-#ifndef HAL_NA
-#define HAL_NA 40013
-#endif
-
-#define HAL_TORRENT_EXT_BEGIN 				80000
-#define LBT_EVENT_TORRENT_FINISHED			HAL_TORRENT_EXT_BEGIN + 1
-#define HAL_PEER_BAN_ALERT					HAL_TORRENT_EXT_BEGIN + 2
-#define HAL_HASH_FAIL_ALERT					HAL_TORRENT_EXT_BEGIN + 3
-#define HAL_URL_SEED_ALERT					HAL_TORRENT_EXT_BEGIN + 5
-#define HAL_TRACKER_WARNING_ALERT			HAL_TORRENT_EXT_BEGIN + 4
-#define HAL_TRACKER_ANNOUNCE_ALERT			HAL_TORRENT_EXT_BEGIN + 6
-#define HAL_TRACKER_ALERT					HAL_TORRENT_EXT_BEGIN + 7
-#define HAL_TRACKER_REPLY_ALERT				HAL_TORRENT_EXT_BEGIN + 8
-#define LBT_EVENT_TORRENT_PAUSED			HAL_TORRENT_EXT_BEGIN + 9
-#define HAL_FAST_RESUME_ALERT				HAL_TORRENT_EXT_BEGIN + 10
-#define HAL_PIECE_FINISHED_ALERT			HAL_TORRENT_EXT_BEGIN + 11
-#define HAL_BLOCK_FINISHED_ALERT			HAL_TORRENT_EXT_BEGIN + 12
-#define HAL_BLOCK_DOWNLOADING_ALERT			HAL_TORRENT_EXT_BEGIN + 13
-#define HAL_LISTEN_SUCCEEDED_ALERT			HAL_TORRENT_EXT_BEGIN + 14
-#define HAL_LISTEN_FAILED_ALERT				HAL_TORRENT_EXT_BEGIN + 15
-#define HAL_IPFILTER_ALERT					HAL_TORRENT_EXT_BEGIN + 16
-#define HAL_INCORRECT_ENCODING_LEVEL		HAL_TORRENT_EXT_BEGIN + 17
-#define HAL_INCORRECT_CONNECT_POLICY    	HAL_TORRENT_EXT_BEGIN + 18
-#define HAL_PEER_ALERT						HAL_TORRENT_EXT_BEGIN + 19
-#define HAL_LISTEN_V6_FAILED_ALERT			HAL_TORRENT_EXT_BEGIN + 20
-
-#ifndef RC_INVOKED
-
-#include <iostream>
-#include <fstream>
-#include <iterator>
-#include <iomanip>
-#include <map>
-#include <algorithm>
-#include <string>
-#include <vector>
-
-#include <boost/foreach.hpp>
-#include <boost/bind.hpp>
-#include <boost/array.hpp>
-#include <boost/regex.hpp>
-#include <boost/lambda/lambda.hpp>
-#include <boost/archive/text_woarchive.hpp>
-#include <boost/archive/text_wiarchive.hpp>
-#include <boost/archive/binary_woarchive.hpp>
-#include <boost/archive/binary_wiarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/basic_xml_archive.hpp>
-#include <boost/archive/xml_woarchive.hpp>
-#include <boost/archive/xml_wiarchive.hpp>
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/serialization/version.hpp>
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/map.hpp>
-#include <boost/serialization/split_free.hpp>
-#include <boost/date_time/posix_time/time_serialize.hpp>
-#include <boost/algorithm/string/find.hpp>
+#include "stdAfx.hpp"
 
 #define TORRENT_MAX_ALERT_TYPES 20
 
@@ -2097,4 +2032,3 @@ float BitTorrent::defTorrentUpload() { return pimpl->defTorrentUpload_; }
 	
 };
 
-#endif // RC_INVOKED

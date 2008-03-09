@@ -4,11 +4,13 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include "stdAfx.hpp"
+
 #define HALITE_GUID L"HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}"
 #define WMU_ARE_YOU_ME_STRING  L"WMU_ARE_YOU_ME_HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}"
 #pragma comment(linker, "\"/manifestdependency:type='Win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
-#include "stdAfx.hpp"
+#include "Halite.hpp"
 
 #include "WinAPIMutex.hpp"
 
@@ -19,7 +21,6 @@
 #include "HaliteWindow.hpp"
 #include "SplashDialog.hpp"
 
-#include "Halite.hpp"
 
 Halite& halite()
 {
@@ -89,7 +90,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 //	HAL_DEV_MSG(L"Hello");
 //	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, L"Hello")));
 
-	::SetProcessAffinityMask(::GetCurrentProcess(), (DWORD_PTR)0x1);
+//	::SetProcessAffinityMask(::GetCurrentProcess(), (DWORD_PTR)0x1);
 	
 	try 
 	{

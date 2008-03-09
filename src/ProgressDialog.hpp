@@ -14,6 +14,8 @@
 #ifndef RC_INVOKED
 
 #include <boost/function.hpp>
+
+#include "Halite.hpp"
 #include "halTorrent.hpp"
 
 class ProgressDialog :

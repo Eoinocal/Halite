@@ -4,9 +4,10 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include "stdAfx.hpp"
+
 #include <algorithm>
 
-#include "../stdAfx.hpp"
 #include "../HaliteWindow.hpp"
 #include "../HaliteListViewCtrl.hpp"
 

@@ -7,10 +7,10 @@
 #pragma once
 
 #include "stdAfx.hpp"
+#include "Halite.hpp"
 
 #include "halConfig.hpp"
 #include "ProgressDialog.hpp"
-#include "Halite.hpp"
 
 namespace hal
 {
