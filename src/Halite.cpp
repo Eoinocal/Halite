@@ -89,7 +89,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 //	HAL_DEV_MSG(L"Hello");
 //	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, L"Hello")));
 
-//	::SetProcessAffinityMask(::GetCurrentProcess(), (DWORD_PTR)0x1);
+	::SetProcessAffinityMask(::GetCurrentProcess(), (DWORD_PTR)0x1);
 	
 	try 
 	{

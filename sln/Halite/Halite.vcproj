@@ -964,6 +964,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\WTLx\EditHilight.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\WTLx\ListViewEdit.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\WTLx\NTray.hpp"
 					>
 				</File>

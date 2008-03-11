@@ -4,7 +4,10 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#define IDC_TRACKER_LABEL 	100001
+#define ID_TRACKER_BEGIN	 41000
+#define IDC_TRACKER_LABEL 	ID_TRACKER_BEGIN + 1
+#define IDC_LOGIN_APPLY 	ID_TRACKER_BEGIN + 2
+#define IDC_REANNOUNCE	 	ID_TRACKER_BEGIN + 3
 
 #ifndef RC_INVOKED
 
@@ -51,7 +54,8 @@ public:
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_CLOSE(onClose)
 
-		COMMAND_ID_HANDLER_EX(BTNREANNOUNCE, onReannounce)
+		COMMAND_ID_HANDLER_EX(IDC_LOGIN_APPLY, onLoginApply)
+		COMMAND_ID_HANDLER_EX(IDC_REANNOUNCE, onReannounce)
 		COMMAND_ID_HANDLER_EX(IDC_TRACKER_LOGINCHECK, onLoginCheck)
 		COMMAND_ID_HANDLER_EX(IDC_TRACKER_RESET, onReset)
 		COMMAND_ID_HANDLER_EX(IDC_TRACKER_APPLY, onApply)
@@ -79,6 +83,7 @@ public:
 
 	void onLoginCheck(UINT, int, HWND hWnd);
 	LRESULT OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl);
+	void onLoginApply(UINT, int, HWND);
 	void onReannounce(UINT, int, HWND);
 
 	void onApply(UINT, int, HWND);

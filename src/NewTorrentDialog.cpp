@@ -123,7 +123,7 @@ LRESULT FileSheet::onInitDialog(HWND, LPARAM)
 
 FileSheet::CWindowMapStruct* FileSheet::GetWindowMap()
 {
-	BEGIN_WINDOW_MAP_INLINE(NewTorrentDialog, 3, 3, 3, 3)
+	BEGIN_WINDOW_MAP_INLINE(FileSheet, 3, 3, 3, 3)
 		WMB_HEAD(WMB_COL(_exp)), 
 		WMB_ROW(_auto, NEWTORRENT_CREATOR_LAYOUT),
 		WMB_ROWNOMIN(_exp, NEWTORRENT_SELECT_LAYOUT),
@@ -142,7 +142,7 @@ FileSheet::CWindowMapStruct* FileSheet::GetWindowMap()
 
 TrackerSheet::CWindowMapStruct* TrackerSheet::GetWindowMap()
 {
-	BEGIN_WINDOW_MAP_INLINE(NewTorrentDialog, 3, 3, 3, 3)
+	BEGIN_WINDOW_MAP_INLINE(TrackerSheet, 3, 3, 3, 3)
 		WMB_HEAD(WMB_COL(_exp)), 
 		WMB_ROWNOMIN(_exp, NEWTORRENT_TRACKERS_LAYOUT),
 		WMB_END() 
@@ -157,7 +157,7 @@ TrackerSheet::CWindowMapStruct* TrackerSheet::GetWindowMap()
 
 DetailsSheet::CWindowMapStruct* DetailsSheet::GetWindowMap()
 {
-	BEGIN_WINDOW_MAP_INLINE(NewTorrentDialog, 3, 3, 3, 3)
+	BEGIN_WINDOW_MAP_INLINE(DetailsSheet, 3, 3, 3, 3)
 		WMB_HEAD(WMB_COL(_exp)), 
 		WMB_ROWNOMIN(_exp, NEWTORRENT_DETAILS_LAYOUT),
 		WMB_ROW(_gap),

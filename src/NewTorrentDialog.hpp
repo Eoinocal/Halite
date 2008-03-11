@@ -28,6 +28,7 @@
 #include "halIni.hpp"
 #include "halEvent.hpp"
 #include "DdxEx.hpp"
+#include "ListViewEdit.hpp"
 #include "HaliteSortListViewCtrl.hpp"
 
 
@@ -176,14 +177,15 @@ public:
 	enum { IDD = IDD_NEWT_TRACKERS };
 
     BEGIN_MSG_MAP_EX(thisClass)
+		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_DESTROY(OnDestroy)
 
-		COMMAND_ID_HANDLER_EX(IDC_NEWT_ADDTRACKER, OnFileBrowse)
+//		COMMAND_ID_HANDLER_EX(IDC_NEWT_ADDTRACKER, OnFileBrowse)
 //		COMMAND_ID_HANDLER_EX(IDC_NEWT_DIR_BROWSE, OnDirBrowse)
 
+		REFLECT_NOTIFICATIONS()
 		CHAIN_MSG_MAP(autosizeClass)
 		CHAIN_MSG_MAP(sheetClass)
-		REFLECT_NOTIFICATIONS()
     END_MSG_MAP()
 
 	static CWindowMapStruct* GetWindowMap();
@@ -193,10 +195,26 @@ public:
 		return this->IsDialogMessage(pMsg);
 	}
 	
-	void OnFileBrowse(UINT, int, HWND hWnd) {}
+	LRESULT onInitDialog(HWND, LPARAM)
+	{	
+		editList_.SubclassWindow(GetDlgItem(IDC_NEWT_LISTTRACKERS));	
+
+		editList_.AddColumn(L"Col 1", 0);
+		editList_.AddColumn(L"Col 2", 1);
+
+		int itemPos = editList_.AddItem(0, 0, L"Yoke 1", 0);
+		editList_.SetItemText(itemPos, 1, L"Thingy 2");
+
+		itemPos = editList_.AddItem(0, 0, L"Stuff 3", 0);
+		editList_.SetItemText(itemPos, 1, L"Empty 4");
+
+		return 0;
+	}
+
 	void OnDestroy() {}
 	
 private:
+	WTLx::CEditListViewCtrl editList_;
 };
 
 class DetailsSheet :
