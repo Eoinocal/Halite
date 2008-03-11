@@ -24,15 +24,12 @@ protected:
 public:
 	DECLARE_WND_SUPERCLASS(NULL, TBase::GetWndClassName())
 
-	explicit EditHilightImpl(bool signal = false) :
-		unapplied_(false),
-		signal_(signal)
+	explicit EditHilightImpl() :
+		unapplied_(false)
 	{}
 
     BEGIN_MSG_MAP_EX(thisClass)
 		MSG_OCM_CTLCOLOREDIT(OnReflectedCtlColorEdit)
-
-		REFLECTED_COMMAND_CODE_HANDLER_EX(EN_KILLFOCUS, OnKillFocus)
 		REFLECTED_COMMAND_CODE_HANDLER_EX(EN_CHANGE, OnChange)
 		
         DEFAULT_REFLECTION_HANDLER()
@@ -56,21 +53,6 @@ public:
 		}
 		else
 		{
-			unapplied_ = false;
-		}
-		
-		return 0;
-	}
-	
-	LRESULT OnKillFocus(UINT uNotifyCode, int nID, CWindow wndCtl)
-	{	
-		const int buffer_size = 512;
-		boost::array<wchar_t, buffer_size> buffer;
-		GetWindowText(buffer.elems, buffer_size);
-				
-		if (signal_)
-		{
-			::SendMessage(GetParent(), WM_USER_WTLx_EDITHILIGHTCHANGED, 0, 0);
 			unapplied_ = false;
 		}
 		
@@ -115,7 +97,6 @@ public:
 	
 private:	
 	boost::logic::tribool unapplied_;
-	bool signal_;
 };
 
 class EditHilight : public EditHilightImpl<EditHilight>
@@ -123,8 +104,8 @@ class EditHilight : public EditHilightImpl<EditHilight>
 public:
 	DECLARE_WND_SUPERCLASS(_T("WTLx_EditHilight"), GetWndClassName())
 
-	EditHilight(bool signal = false) : 
-		EditHilightImpl<EditHilight>(signal)
+	EditHilight() : 
+		EditHilightImpl<EditHilight>()
 	{}
 
 	operator std::wstring () 

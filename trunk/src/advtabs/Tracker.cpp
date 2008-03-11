@@ -109,7 +109,8 @@ AdvTrackerDialog::CWindowMapStruct* AdvTrackerDialog::GetWindowMap()
 		WMB_ROW(_auto,	IDC_TRACKER_LOGINCHECK,	_r,	_r), \
 		WMB_ROW(_auto,	IDC_TRACKER_USER_S, IDC_TRACKER_USER, _r), \
 		WMB_ROW(_auto,	IDC_TRACKER_PASS_S,	IDC_TRACKER_PASS, _r), \
-		WMB_ROW(_auto,	_, BTNREANNOUNCE), \
+		WMB_ROW(_auto,	_, IDC_LOGIN_APPLY), \
+		WMB_ROW(_auto,	_, IDC_REANNOUNCE), \
 	WMB_END()
 
 #define TRACKER_LIST_LAYOUT \
@@ -151,10 +152,13 @@ void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
 	}
 }
 
-void AdvTrackerDialog::onReannounce(UINT, int, HWND)
+void AdvTrackerDialog::onLoginApply(UINT, int, HWND)
 {
 	DoDataExchange(true);
+}
 
+void AdvTrackerDialog::onReannounce(UINT, int, HWND)
+{
 	if (hal::bittorrent().torrentDetails().focusedTorrent())
 		hal::bittorrent().reannounceTorrent(hal::to_utf8(hal::bittorrent().torrentDetails().focusedTorrent()->name()));
 }

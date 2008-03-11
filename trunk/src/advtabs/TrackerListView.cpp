@@ -72,7 +72,16 @@ void TrackerListViewCtrl::enterNewTracker()
 
 LRESULT TrackerListViewCtrl::OnDoubleClick(int i, LPNMHDR pnmh, BOOL&)
 {
-	enterNewTracker();
+//	enterNewTracker();
+
+	
+		LPNMITEMACTIVATE lpnmitem = (LPNMITEMACTIVATE)pnmh;
+		LVHITTESTINFO hit;
+
+		hit.pt = lpnmitem->ptAction;
+		SubItemHitTest(&hit);
+
+		HAL_DEV_MSG(wformat(L"OnDoubleClick %1% %2%") % hit.iItem % hit.iSubItem);
 
 	return 0;
 }
