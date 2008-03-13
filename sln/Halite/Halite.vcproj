@@ -976,6 +976,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\WTLx\RadioPaneDlg.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\WTLx\SimpleHtml.h"
 					>
 				</File>

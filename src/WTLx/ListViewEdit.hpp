@@ -23,8 +23,6 @@ public:
 	END_MSG_MAP()
 
 private:
-
-
 };
 
 typedef CInPlaceEditor<MAX_PATH> CItemEditor;

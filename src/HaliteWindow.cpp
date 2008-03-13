@@ -13,6 +13,8 @@
 #include "HaliteWindow.hpp"
 
 #include "CSSFileDialog.hpp"
+#include "RadioPaneDlg.hpp"
+
 #include "HaliteDialog.hpp"
 #include "AdvHaliteDialog.hpp"
 #include "AddTorrentDialog.hpp"
@@ -461,11 +463,11 @@ LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	NewTorrentDialog newTorrent;	
+	WTLx::CRadioPaneDialog newTorrent;	
     newTorrent.DoModal();
 
-	MessageBox(L"This feature is under development and currently disabled", 
-		L"Feature not availible", 0);
+//	MessageBox(L"This feature is under development and currently disabled", 
+//		L"Feature not availible", 0);
 	return 0;
 	
 	CSSFileDialog dlgOpen(TRUE, NULL, NULL, OFN_HIDEREADONLY, L"All Files|*.*|", m_hWnd);
