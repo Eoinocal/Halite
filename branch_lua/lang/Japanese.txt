@@ -1,0 +1,278 @@
+"English" ---> "日本語"
+"English.rtf" --->  ??? 
+"MS Shell Dlg" --->  ??? 
+"Torrent" ---> "トレント"
+"Tracker" ---> "トラッカー"
+"" --->  ??? 
+"msctls_progress32" --->  ??? 
+"Torrent connection limits:" ---> "トレントあたりの最大ピア接続数"
+"Torrent transfer rates (KB/s):" ---> "速度 (KB/秒)"
+"Total" ---> "サイズ"
+"Up" ---> "上り"
+"Down" ---> "下り"
+"N/A" ---> "無し"
+"Update in:" ---> "更新時間:"
+"Ratio (this session):" ---> "共有比 (このセッションに):"
+"Torrent:" ---> "トレント:"
+"Peers:" ---> "ピア数"
+"Transferred:" --->  ??? 
+"Remaining:" ---> "残り:"
+"Rates:" ---> "速度:"
+"Seeds:" ---> "シード数:"
+"Overhead:" --->  ??? 
+"ETA:" ---> "予想完了時間"
+"Ratio:" ---> "共有比:"
+"BitTorrent" ---> "ビットトレント"
+"Open a (single) port between : " ---> "から"
+"Enable DHT" ---> "DHTを使用"
+"Button" --->  ??? 
+"to" ---> "まで"
+"Select the (TCP) port (or range) on which to listen for incomming connections." ---> "着信接続用(TCP)ポート"
+"Distributed Hash Tables" --->  ??? 
+"Port (UDP) : " ---> "(UDP)ポート:"
+"(DHT will not apply to private torrents)" --->  ??? 
+"General Settings" ---> "設定"
+"Limit the no. of half-open connections" --->  ??? 
+"Port Forwarding" --->  ??? 
+"None (Managed Externally)" --->  ??? 
+"UnPlug and Play" --->  ??? 
+"NAT-PMG" --->  ??? 
+"Test" --->  ??? 
+"Proxies" ---> "プロクシ"
+"Proxy Host/IP : " ---> "プロクシサーバ/IP"
+"Use a proxy." ---> "プロクシを使用"
+"Port : " ---> "ポート :"
+"Username : " ---> "ユーザ名"
+"Password : " ---> "パスワード"
+"Peer" ---> "ピア"
+"Web Seed" ---> "ウェブシード"
+"DHT" ---> "DHT"
+"Proxy Settings" ---> "プロクシの設定"
+"Security" ---> "セキュリティ"
+"IP Filtering" --->  ??? 
+"Enable IP filtering." ---> "IP filteringを使用"
+"Import ipfilter.dat" --->  ??? 
+"Clear IP database" ---> "IP データベースを削除"
+"Protocol Encryption" ---> "プロトコル暗号化"
+"Enable Protocol Encryption." ---> "プロトコル暗号化を使用"
+"Connection Policies" --->  ??? 
+"Incoming" ---> "下り"
+"Outgoing" ---> "上り"
+"Forced" ---> "強制使用"
+"Enabled" ---> "使用する"
+"Disabled" ---> "使用しない"
+"Encoding Level" --->  ??? 
+"Plaintext" --->  ??? 
+"RC4" --->  ??? 
+"Both" ---> "両"
+"Prefer RC4" --->  ??? 
+"Remote Control" --->  ??? 
+"Remote Control Options" --->  ??? 
+"Enable Remote Control" --->  ??? 
+"Port to listen on : " ---> "着信接続用ポート:"
+"*** Disabled ***" ---> "***使用不可***"
+"Check1" --->  ??? 
+"Button1" --->  ??? 
+"Radio1" --->  ??? 
+"Static" --->  ??? 
+"Halite Debug Dialog" --->  ??? 
+"MS Sans Serif" --->  ??? 
+"Halite importing IP ranges..." --->  ??? 
+"Cancel" ---> "取消"
+"Torrents" ---> "トレント"
+"Global Limits" --->  ??? 
+"Total max connections :" --->  ??? 
+"Total upload slots :" --->  ??? 
+"Download Rate (KB/s) :" ---> "下り速度 (KB/秒)"
+"Upload Rate (KB/s) :" ---> "上り速度 (KB/秒)"
+"Torrent Defaults" --->  ??? 
+"These options set global maximums which will always be honoured." --->  ??? 
+"These options specify the default limits applied to new torrents." --->  ??? 
+"Default save folder :" --->  ??? 
+"..." --->  ??? 
+"Prompt for alternate save folder." --->  ??? 
+"Create new torrent" ---> "新規トレントを作成"
+"Save" ---> ""
+"Select a file or directory to construct the torrent." --->  ??? 
+"Enter the tracker URLs for the torrent." --->  ??? 
+"Private" --->  ??? 
+"Add" ---> ""
+"Comment." --->  ??? 
+"Creator" --->  ??? 
+"Halite shutting down..." --->  ??? 
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." --->  ??? 
+"Show this message in future" ---> "このチェックを常に行う"
+"Pause" ---> "一時停止"
+"Reannounce" ---> "Reannounce"
+"Remove" ---> "削除"
+"SysListView32" --->  ??? 
+"Name:" ---> "名前:"
+"Tracker:" ---> "トラッカー:"
+"Status:" ---> "状態:"
+"Time left:" ---> "残り時間"
+"Completed:" ---> "ダウンロード済"
+"About" ---> "Haliteについて"
+"RichEdit20A" --->  ??? 
+"SysTabControl32" --->  ??? 
+"Add Torrent" --->  ??? 
+"Ok" --->  ??? 
+"Use Compact Allocation." --->  ??? 
+"Stopped initially (Allows changing advanced setting)." --->  ??? 
+"Note. Compact Allocation is incompatible with File Selection" --->  ??? 
+"General" --->  ??? 
+"Allow only one instance to run" --->  ??? 
+"Advanced GUI" ---> "高度なGUI"
+"Minimize to tray." ---> "最小化時トレイに格納"
+"Close to tray" --->  ??? 
+"Confirm on close" --->  ??? 
+"Language (requires restart)" ---> "言語 (Haliteの次回起動時に)"
+"List of Trackers." --->  ??? 
+"Send login info to trackers." --->  ??? 
+"Apply" ---> "適用"
+"Reset" --->  ??? 
+"Log to file." --->  ??? 
+"Log debug events." --->  ??? 
+"Add New Tracker" --->  ??? 
+"MS Shell Dlg 2" --->  ??? 
+"OK" --->  ??? 
+"Tracker URL" --->  ??? 
+"Tier" --->  ??? 
+"_POPUP_" --->  ??? 
+"Open &Halite" --->  ??? 
+"&Pause All" --->  ??? 
+"&Resume All" --->  ??? 
+"E&xit" --->  ??? 
+"Resume" --->  ??? 
+"Stop" --->  ??? 
+"Torrent File" --->  ??? 
+"Torrent and Data" ---> ".torrentファイルとダウンロードデータを"
+"Open Download Folder" --->  ??? 
+"New" ---> "新規"
+"Edit" ---> ""
+"Set as Primary" --->  ??? 
+"Delete" ---> "削除"
+"StringFileInfo" --->  ??? 
+"180904b0" --->  ??? 
+"Comments" ---> "コメント"
+"libTorrrent based client." --->  ??? 
+"CompanyName" --->  ??? 
+"BinaryNotions.com" --->  ??? 
+"FileDescription" --->  ??? 
+"Halite BitTorrent Client" --->  ??? 
+"FileVersion" --->  ??? 
+"InternalName" --->  ??? 
+"Halite" --->  ??? 
+"LegalCopyright" --->  ??? 
+"(C) Eoin O'Callaghan 2008" --->  ??? 
+"OriginalFilename" --->  ??? 
+"Halite.exe" --->  ??? 
+"ProductName" --->  ??? 
+"ProductVersion" --->  ??? 
+"VarFileInfo" --->  ??? 
+"Translation" --->  ??? 
+"(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
+"CAPS" --->  ??? 
+"0000 DHT node(s)" --->  ??? 
+"Filtering 0000000 ranges." --->  ??? 
+"The BitTorrent session could not start. Try selecting another port in the settings." --->  ??? 
+"DHT session could not start. Try selecting another port in the settings." --->  ??? 
+"Select a directory to save the files to or cancel to not download torrent at all." --->  ??? 
+"∞" --->  ??? 
+"%1$.2fMB of %2$.2fMB" --->  ??? 
+"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
+"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
+"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"%1%, %2%." --->  ??? 
+"%1$.2fMB down - %2$.2fMB up" --->  ??? 
+"%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
+"%1% DHT node(s)" --->  ??? 
+"DHT disabled" --->  ??? 
+"Filtering %1% range(s)" --->  ??? 
+"IP filter disabled" --->  ??? 
+"Standard exception (%1%) thrown from %2%." --->  ??? 
+"(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
+"Halite not listening!" --->  ??? 
+"Port %1% open" --->  ??? 
+"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
+"Peers" ---> "ピア"
+"Files" ---> "ファイル"
+"Logging" ---> "ログ"
+"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
+"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
+"Auto Sort" --->  ??? 
+"Torrent Root" --->  ??? 
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
+"Interesting" --->  ??? 
+"Choked" --->  ??? 
+"Interested in us" --->  ??? 
+"Has choked us" --->  ??? 
+"Supports extensions" --->  ??? 
+"Local connection" --->  ??? 
+"Handshake" --->  ??? 
+"Connecting" --->  ??? 
+"Queued" --->  ??? 
+"RC4 Encrypted" --->  ??? 
+"Plaintext Encrypted" --->  ??? 
+"Queued for Checking" --->  ??? 
+"Checking Files" --->  ??? 
+"Connecting to Tracker" --->  ??? 
+"Downloading" ---> "ダウンロード中"
+"Finished" ---> "ダウンロード済"
+"Seeding" --->  ??? 
+"Allocating" --->  ??? 
+"Stopped" ---> "停止"
+"Paused" ---> "一時停止中"
+"Stopping" --->  ??? 
+"Pausing" --->  ??? 
+"Downloading Metadata" --->  ??? 
+"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
+"Time;Message;Severity" ---> "日時;メッセージ;厳粛"
+"Tracker;Tier" ---> "トラッカー;段"
+"Peer;Country;Download;Upload;Type;Client" ---> "ピア;国;ダウンロード;アップロード;タイプ;クライアント"
+"Peer;Country;Download;Upload;Type;Client;Status" ---> "ピア;国;ダウンロード;アップロード;タイプ;クライアント;状態"
+"Filename;Path;Size;Progress;Priority" ---> "名前;Path;サイズ;完了度;優先度"
+"Don't download" ---> "ダウンロードしない"
+"Normal" ---> "低"
+"2" --->  ??? 
+"3" --->  ??? 
+"4" --->  ??? 
+"Above Normal" ---> "普通"
+"6" --->  ??? 
+"Maximum" ---> "高"
+"Set Priority" ---> "優先度"
+"Halite.ico" --->  ??? 
+"toolbar.bmp" --->  ??? 
+"None" --->  ??? 
+"Debug" --->  ??? 
+"Info" --->  ??? 
+"Warning" --->  ??? 
+"Critical" --->  ??? 
+"Peer %2%: %1%." --->  ??? 
+"Peer banned %2%. (%1%)" --->  ??? 
+"Hash failed for piece %2% of %1%." --->  ??? 
+"URL Seed %2%, %3%. (%1%)" --->  ??? 
+"Tracker warning: %2%! (%1%)" --->  ??? 
+"Tracker Announce. (%1%)" --->  ??? 
+"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
+"%2%. %3% Peers. (%1%)" --->  ??? 
+"Fast rusume failed: %2%. (%1%)" --->  ??? 
+"Piece %2% finished. (%1%)" --->  ??? 
+"Block %2% of piece %3% finished. (%1%)" --->  ??? 
+"Block %2% of piece %3% downloading. (%1%)" --->  ??? 
+"Successfully %1%." --->  ??? 
+"Failed, %1%" --->  ??? 
+"IP version 6 listen atempt failed. Not serious." --->  ??? 
+"IP Filter blocked %1%, %2%." --->  ??? 
+"Torrent %1% finished." --->  ??? 
+"Torrent %1% paused." --->  ??? 
+"Torrent (%1%) exception caught; %2% from %3%." --->  ??? 
+"Invalid torrent (%1%) from %2%." --->  ??? 
+"Exception caught; %1%, from %2%." --->  ??? 
+"Xml Exception (%1%) with %2%." --->  ??? 
+"Unicode exception: %1%." --->  ??? 
+"Bittorrent Event: %1%." --->  ??? 
+"Peer Event: %1%." --->  ??? 
+"Tracker Event: %1%." --->  ??? 
+"Debug Event: %1%." --->  ??? 
+"Dev Msg: %1%." --->  ??? 

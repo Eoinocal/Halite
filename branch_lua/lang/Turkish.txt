@@ -1,0 +1,280 @@
+"English" ---> "Türkçe"
+"English.rtf" --->  ??? 
+"MS Shell Dlg" ---> "MS Shell Dlg"
+"Torrent" ---> "Torrent"
+"Tracker" ---> "İzleyici"
+"" ---> ""
+"msctls_progress32" ---> "msctls_progress32"
+"Torrent connection limits:" ---> "Torrent bağlantı sınırları:"
+"Torrent transfer rates (KB/s):" ---> "Torrent aktarım hızları (KB/s):"
+"Total" ---> "Toplam"
+"Up" ---> "Gönd."
+"Down" ---> "İnd."
+"N/A" ---> "N/A"
+"Update in:" ---> "Güncelleme:"
+"Ratio (this session):" ---> "Oran (bu oturum):"
+"Torrent:" --->  ??? 
+"Peers:" --->  ??? 
+"Transferred:" --->  ??? 
+"Remaining:" --->  ??? 
+"Rates:" --->  ??? 
+"Seeds:" --->  ??? 
+"Overhead:" --->  ??? 
+"ETA:" --->  ??? 
+"Ratio:" --->  ??? 
+"BitTorrent" ---> "Bittorrent"
+"Open a (single) port between : " ---> "Arasında (tek) port  aç: "
+"Enable DHT" --->  ??? 
+"Button" ---> "Button"
+"to" ---> "-"
+"Select the (TCP) port (or range) on which to listen for incomming connections." --->  ??? 
+"Distributed Hash Tables" --->  ??? 
+"Port (UDP) : " ---> "Port (UDP) : "
+"(DHT will not apply to private torrents)" --->  ??? 
+"General Settings" ---> "Genel Ayarlar"
+"Limit the no. of half-open connections" --->  ??? 
+"Port Forwarding" --->  ??? 
+"None (Managed Externally)" --->  ??? 
+"UnPlug and Play" --->  ??? 
+"NAT-PMG" --->  ??? 
+"Test" --->  ??? 
+"Proxies" --->  ??? 
+"Proxy Host/IP : " ---> "Proxy Host/IP"
+"Use a proxy." ---> "Proxy kullan"
+"Port : " ---> "Port"
+"Username : " ---> "Kullanıcı Adı"
+"Password : " ---> "Şifre"
+"Peer" --->  ??? 
+"Web Seed" --->  ??? 
+"DHT" --->  ??? 
+"Proxy Settings" --->  ??? 
+"Security" --->  ??? 
+"IP Filtering" --->  ??? 
+"Enable IP filtering." ---> "IP süzgeci etkin"
+"Import ipfilter.dat" ---> "ipfilter.dat içeri aktar"
+"Clear IP database" ---> "IP veritabanını temizle"
+"Protocol Encryption" --->  ??? 
+"Enable Protocol Encryption." --->  ??? 
+"Connection Policies" --->  ??? 
+"Incoming" --->  ??? 
+"Outgoing" --->  ??? 
+"Forced" --->  ??? 
+"Enabled" --->  ??? 
+"Disabled" --->  ??? 
+"Encoding Level" --->  ??? 
+"Plaintext" --->  ??? 
+"RC4" --->  ??? 
+"Both" --->  ??? 
+"Prefer RC4" --->  ??? 
+"Remote Control" ---> "Uzak Kontrol"
+"Remote Control Options" ---> "Uzak Kontrol Ayarları"
+"Enable Remote Control" ---> "Uzak Kontrol Etkin"
+"Port to listen on : " ---> "Dinleme Portu"
+"*** Disabled ***" ---> "*** Etkisiz ***"
+"Check1" ---> "Check1"
+"Button1" ---> "Button1"
+"Radio1" ---> "Radio1"
+"Static" ---> "Sabit"
+"Halite Debug Dialog" ---> "Halite Hata Ayıklama Penceresi"
+"MS Sans Serif" ---> "MS Sans Serif"
+"Halite importing IP ranges..." ---> "Halite IP aralığını içeri aktarıyor..."
+"Cancel" ---> "İptal"
+"Torrents" ---> "Torrentler"
+"Global Limits" ---> "Genel Sınırlar"
+"Total max connections :" ---> "Toplam en fazla bağlantı :"
+"Total upload slots :" ---> "Toplam göderme kanalı :"
+"Download Rate (KB/s) :" ---> "İndirme Hızı (KB/s) :"
+"Upload Rate (KB/s) :" ---> "Gönderme Hızı (KB/s) :"
+"Torrent Defaults" ---> "Torrent Varsayılanları"
+"These options set global maximums which will always be honoured." ---> "Bu seçenekler daima uygulanacak olan genel en üst sınırları belirtmektedir."
+"These options specify the default limits applied to new torrents." ---> "Bu seçenekler yeni torrentlere uygulanacak varsayılan sınırları belirtir."
+"Default save folder :" --->  ??? 
+"..." ---> "..."
+"Prompt for alternate save folder." ---> "Alternatif kaydetme klasörü için uyar."
+"Create new torrent" ---> "Yeni torrent oluştur"
+"Save" ---> "Kaydet"
+"Select a file or directory from which to construct the torrent." --->  ??? 
+"File" --->  ??? 
+"Dir." --->  ??? 
+"SysListView32" ---> "SysListView32"
+"Enter the tracker URLs for the torrent." ---> "Torrent için izleyici URL'lerini girin"
+"Private" --->  ??? 
+"Add" ---> "Ekle"
+"Comment" --->  ??? 
+"Creator" --->  ??? 
+"Halite shutting down..." ---> "Halite kapatılıyor..."
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Bu mesaj kaybolduktan ve program kapandıktan sonra Bittorrent oturumunun düzgün bir biçimde kapatılması biraz zaman alacaktır."
+"Show this message in future" ---> "Bu mesajı ilerde de göster"
+"Pause" ---> "Duraklat"
+"Reannounce" ---> "Tekrar Duyur"
+"Remove" ---> "Kaldır"
+"Name:" ---> "İsim"
+"Tracker:" ---> "İzleyici"
+"Status:" ---> "Durum"
+"Time left:" ---> "Kalan süre:"
+"Completed:" ---> "Tamamlanan:"
+"About" ---> "Hakkında"
+"RichEdit20A" --->  ??? 
+"SysTabControl32" ---> "SysTabControl32"
+"Add Torrent" --->  ??? 
+"Ok" --->  ??? 
+"Use Compact Allocation." --->  ??? 
+"Stopped initially (Allows changing advanced setting)." --->  ??? 
+"Note. Compact Allocation is incompatible with File Selection" --->  ??? 
+"General" ---> "Genel"
+"Allow only one instance to run" --->  ??? 
+"Advanced GUI" ---> "Gelişmiş GUI"
+"Minimize to tray." ---> "Simge Durumuna Küçült"
+"Close to tray" --->  ??? 
+"Confirm on close" --->  ??? 
+"Language (requires restart)" ---> "Dil (yeniden başlatma gerektirir)"
+"List of Trackers." ---> "İzleyici Listesi."
+"Send login info to trackers." ---> "İzleyicilere giriş bilgisi gönder."
+"Apply" ---> "Uygula"
+"Reset" ---> "Sıfırla"
+"Log to file." ---> "Günlüğü dosyaya kaydet"
+"Log debug events." ---> "Hata Ayıklama olaylarını kaydet"
+"Add New Tracker" ---> "Yeni İzleyici Ekle"
+"MS Shell Dlg 2" ---> "MS Shell Dlg 2"
+"OK" ---> "Tamam"
+"Tracker URL" ---> "İzleyici URL"
+"Tier" ---> "Sıra"
+"_POPUP_" ---> "_POPUP_"
+"Open &Halite" ---> "&Halite Aç"
+"&Pause All" ---> "Hepsini &Duraklat"
+"&Resume All" ---> "Hepsine D&evam Et"
+"E&xit" ---> "&Çıkış"
+"Resume" ---> "Devam Et"
+"Stop" ---> "Durdur"
+"Torrent File" ---> "Torrent Dosyası"
+"Torrent and Data" ---> "Torrent ve Veri"
+"Open Download Folder" --->  ??? 
+"New" ---> "Yeni"
+"Edit" ---> "Düzenle"
+"Set as Primary" --->  ??? 
+"Delete" ---> "Sil"
+"StringFileInfo" ---> "StringFileInfo"
+"180904b0" ---> "180904b0"
+"Comments" ---> "Yorumlar"
+"libTorrrent based client." ---> "libTorrent tabanlı program."
+"CompanyName" ---> "CompanyName"
+"BinaryNotions.com" ---> "BinaryNotions.com"
+"FileDescription" ---> "FileDescription"
+"Halite BitTorrent Client" --->  ??? 
+"FileVersion" ---> "FileVersion"
+"InternalName" ---> "InternalName"
+"Halite" ---> "Halite"
+"LegalCopyright" ---> "LegalCopyright"
+"(C) Eoin O'Callaghan 2008" --->  ??? 
+"OriginalFilename" ---> "OriginalFilename"
+"Halite.exe" ---> "Halite.exe"
+"ProductName" ---> "ProductName"
+"ProductVersion" ---> "ProductVersion"
+"VarFileInfo" ---> "VarFileInfo"
+"Translation" ---> "Translation"
+"(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(İ-G) 0000.000KB/s - 0000.000KB/s"
+"CAPS" ---> "CAPS"
+"0000 DHT node(s)" ---> "0000 DHT nodu"
+"Filtering 0000000 ranges." ---> "0000000 aralık süzgeçleniyor"
+"The BitTorrent session could not start. Try selecting another port in the settings." ---> "Bittorent oturumu başlatılamadı. Ayarlardan başka bir port seçin."
+"DHT session could not start. Try selecting another port in the settings." ---> "DHT oturumu başlatılamadı. Ayarlardan başka bir port seçin."
+"Select a directory to save the files to or cancel to not download torrent at all." ---> "Dosyaları kaydetmek için bir dizin seçin veya torrenti indirmemek için iptal edin."
+"∞" --->  ??? 
+"%1$.2fMB of %2$.2fMB" --->  ??? 
+"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
+"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "İndirilen %1$.2fMB, Gönderilen %2$.2fMB, Oran %3$.2f."
+"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"%1%, %2%." --->  ??? 
+"%1$.2fMB down - %2$.2fMB up" --->  ??? 
+"%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
+"%1% DHT node(s)" ---> "%1% DHT nodu"
+"DHT disabled" ---> "DHT Etkisiz"
+"Filtering %1% range(s)" ---> "%1% aralığı süzgeçleniyor"
+"IP filter disabled" ---> "IP süzgeci etkisiz"
+"Standard exception (%1%) thrown from %2%." ---> "Standart istisna (%1%) , %2% 'den."
+"(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(İ-G) %1$.2fKB/s - %2$.2fKB/s"
+"Halite not listening!" ---> "Halite portu kullanamıyor!"
+"Port %1% open" ---> "%1% portu açık"
+"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
+"Peers" --->  ??? 
+"Files" --->  ??? 
+"Logging" --->  ??? 
+"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
+"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
+"Auto Sort" --->  ??? 
+"Torrent Root" --->  ??? 
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
+"Interesting" ---> "İlgileniyor"
+"Choked" ---> "Tıkandı"
+"Interested in us" ---> "Bizle ilgilendi"
+"Has choked us" ---> "Bize tıkadı"
+"Supports extensions" ---> "Uzantıları destekler"
+"Local connection" ---> "Yerel bağlantı"
+"Handshake" ---> "El Sıkışma"
+"Connecting" ---> "Bağlanıyor"
+"Queued" ---> "Sırada"
+"RC4 Encrypted" ---> "RC4 Şifrelenmiş"
+"Plaintext Encrypted" ---> "Plaintext Şifrelenmiş"
+"Queued for Checking" ---> "Kontrol için Sırada"
+"Checking Files" ---> "Dosyalar Kontrol Ediliyor"
+"Connecting to Tracker" ---> "İzleyiciye Bağlanılıyor"
+"Downloading" ---> "İndiriliyor"
+"Finished" ---> "Tamamlandı"
+"Seeding" ---> "Gönderiliyor"
+"Allocating" ---> "Yer Hesaplanıyor"
+"Stopped" ---> "Durduruldu"
+"Paused" ---> "Duraklatıldı"
+"Stopping" --->  ??? 
+"Pausing" --->  ??? 
+"Downloading Metadata" ---> "Metadata İndiriliyor"
+"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
+"Time;Message;Severity" ---> "Süre;Mesaj;Öncelik"
+"Tracker;Tier" ---> "İzleyici;Sıra"
+"Peer;Country;Download;Upload;Type;Client" --->  ??? 
+"Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
+"Filename;Path;Size;Progress;Priority" --->  ??? 
+"Don't download" --->  ??? 
+"Normal" --->  ??? 
+"2" --->  ??? 
+"3" --->  ??? 
+"4" --->  ??? 
+"Above Normal" --->  ??? 
+"6" --->  ??? 
+"Maximum" --->  ??? 
+"Set Priority" --->  ??? 
+"Halite.ico" --->  ??? 
+"toolbar.bmp" --->  ??? 
+"None" ---> "Hiçbiri"
+"Debug" ---> "Hata Ayıkla"
+"Info" ---> "Bilgi"
+"Warning" --->  ??? 
+"Critical" ---> "Critical"
+"Peer %2%: %1%." --->  ??? 
+"Peer banned %2%. (%1%)" --->  ??? 
+"Hash failed for piece %2% of %1%." --->  ??? 
+"URL Seed %2%, %3%. (%1%)" --->  ??? 
+"Tracker warning: %2%! (%1%)" --->  ??? 
+"Tracker Announce. (%1%)" --->  ??? 
+"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
+"%2%. %3% Peers. (%1%)" --->  ??? 
+"Fast rusume failed: %2%. (%1%)" --->  ??? 
+"Piece %2% finished. (%1%)" --->  ??? 
+"Block %2% of piece %3% finished. (%1%)" --->  ??? 
+"Block %2% of piece %3% downloading. (%1%)" --->  ??? 
+"Successfully %1%." --->  ??? 
+"Failed, %1%" --->  ??? 
+"IP version 6 listen atempt failed. Not serious." --->  ??? 
+"IP Filter blocked %1%, %2%." --->  ??? 
+"Torrent %1% finished." --->  ??? 
+"Torrent %1% paused." --->  ??? 
+"Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) istisnası yakalandı; %2% 'den %3% 'e."
+"Invalid torrent (%1%) from %2%." ---> "Geçersiz torrent (%1%) 'den %2%'ye."
+"Exception caught; %1%, from %2%." ---> "Yakalanan istisna; %1%, %2%'den."
+"Xml Exception (%1%) with %2%." ---> "Xml İstisnası (%1%) ile %2%."
+"Unicode exception: %1%." ---> "Unicode istisnası: %1%."
+"Bittorrent Event: %1%." ---> "Bittorrent ile İlgili Durum: %1%."
+"Peer Event: %1%." ---> "Eş ile İlgili Durum: %1%."
+"Tracker Event: %1%." ---> "İzleyici ile İlgili Durum: %1%."
+"Debug Event: %1%." ---> "Hata Ayıklama ile İlgili Durum: %1%."
+"Dev Msg: %1%." --->  ??? 

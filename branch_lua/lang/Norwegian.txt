@@ -1,0 +1,280 @@
+"English" ---> "Norwegian"
+"English.rtf" --->  ??? 
+"MS Shell Dlg" --->  ??? 
+"Torrent" --->  ??? 
+"Tracker" --->  ??? 
+"" --->  ??? 
+"msctls_progress32" --->  ??? 
+"Torrent connection limits:" --->  ??? 
+"Torrent transfer rates (KB/s):" ---> "Torrent overførings-rater (KB/s):"
+"Total" ---> "Totalt"
+"Up" ---> "Opp"
+"Down" ---> "Ned"
+"N/A" ---> "I/T"
+"Update in:" ---> "Oppdater om:"
+"Ratio (this session):" ---> "Ratio (denne sesjonen):"
+"Torrent:" --->  ??? 
+"Peers:" --->  ??? 
+"Transferred:" --->  ??? 
+"Remaining:" --->  ??? 
+"Rates:" --->  ??? 
+"Seeds:" --->  ??? 
+"Overhead:" --->  ??? 
+"ETA:" --->  ??? 
+"Ratio:" --->  ??? 
+"BitTorrent" --->  ??? 
+"Open a (single) port between : " ---> "Åpne en (enkel) port mellom : "
+"Enable DHT" --->  ??? 
+"Button" --->  ??? 
+"to" ---> "til"
+"Select the (TCP) port (or range) on which to listen for incomming connections." --->  ??? 
+"Distributed Hash Tables" --->  ??? 
+"Port (UDP) : " --->  ??? 
+"(DHT will not apply to private torrents)" --->  ??? 
+"General Settings" ---> "Generelle instillinger"
+"Limit the no. of half-open connections" --->  ??? 
+"Port Forwarding" --->  ??? 
+"None (Managed Externally)" --->  ??? 
+"UnPlug and Play" --->  ??? 
+"NAT-PMG" --->  ??? 
+"Test" --->  ??? 
+"Proxies" --->  ??? 
+"Proxy Host/IP : " ---> "Proxy Vert/IP : "
+"Use a proxy." ---> "Bruk en proxy."
+"Port : " --->  ??? 
+"Username : " ---> "Brukernavn : "
+"Password : " ---> "Passord : "
+"Peer" --->  ??? 
+"Web Seed" --->  ??? 
+"DHT" --->  ??? 
+"Proxy Settings" --->  ??? 
+"Security" --->  ??? 
+"IP Filtering" --->  ??? 
+"Enable IP filtering." ---> "Aktiver IP filtrering."
+"Import ipfilter.dat" ---> "Importer ipfilter.dat"
+"Clear IP database" ---> "Nullstill IP database"
+"Protocol Encryption" --->  ??? 
+"Enable Protocol Encryption." --->  ??? 
+"Connection Policies" --->  ??? 
+"Incoming" --->  ??? 
+"Outgoing" --->  ??? 
+"Forced" --->  ??? 
+"Enabled" --->  ??? 
+"Disabled" --->  ??? 
+"Encoding Level" --->  ??? 
+"Plaintext" --->  ??? 
+"RC4" --->  ??? 
+"Both" --->  ??? 
+"Prefer RC4" --->  ??? 
+"Remote Control" ---> "Fjernstyring"
+"Remote Control Options" ---> "Egenskaper for fjernstyring"
+"Enable Remote Control" ---> "Aktiver fjernstyring"
+"Port to listen on : " ---> "Lytteport :"
+"*** Disabled ***" ---> "*** Ikke aktivert ***"
+"Check1" --->  ??? 
+"Button1" --->  ??? 
+"Radio1" --->  ??? 
+"Static" --->  ??? 
+"Halite Debug Dialog" --->  ??? 
+"MS Sans Serif" --->  ??? 
+"Halite importing IP ranges..." ---> "Halite importerer IP serier..."
+"Cancel" ---> "Avbryt"
+"Torrents" ---> "Torrenter"
+"Global Limits" ---> "Globale grenser"
+"Total max connections :" ---> "Maksimalt antall tilkoblinger :"
+"Total upload slots :" ---> "Totalt opplastings-slots :"
+"Download Rate (KB/s) :" ---> "Nedlasings-rate (KB/s) :"
+"Upload Rate (KB/s) :" ---> "Opplasings-rate (KB/s) :"
+"Torrent Defaults" --->  ??? 
+"These options set global maximums which will always be honoured." ---> "Disse globale maksimum-settinger vil alltid overholdes."
+"These options specify the default limits applied to new torrents." ---> "Disse settingene angir standard-settinger for nye torrenter."
+"Default save folder :" --->  ??? 
+"..." --->  ??? 
+"Prompt for alternate save folder." ---> "Spør om alternativ lagringsmappe."
+"Create new torrent" ---> "Lag en ny torrent"
+"Save" ---> "Lagre"
+"Select a file or directory from which to construct the torrent." --->  ??? 
+"File" --->  ??? 
+"Dir." --->  ??? 
+"SysListView32" --->  ??? 
+"Enter the tracker URLs for the torrent." ---> "Legg til tracker URL'er for torrenten."
+"Private" --->  ??? 
+"Add" ---> "Legg til"
+"Comment" --->  ??? 
+"Creator" --->  ??? 
+"Halite shutting down..." ---> "Halite lukkes..."
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Det vil ta BitTorrent sesjonen et øyeblikk å stenges korrekt. Denne meldingen vil da forsvinne og programmet vil lukkes."
+"Show this message in future" ---> "Vis denne meldingen i fremtiden"
+"Pause" --->  ??? 
+"Reannounce" ---> "Oppdater Tracker"
+"Remove" ---> "Fjern"
+"Name:" ---> "Navn:"
+"Tracker:" --->  ??? 
+"Status:" --->  ??? 
+"Time left:" ---> "Tid gjenstår:"
+"Completed:" --->  ??? 
+"About" ---> "Om"
+"RichEdit20A" --->  ??? 
+"SysTabControl32" --->  ??? 
+"Add Torrent" --->  ??? 
+"Ok" --->  ??? 
+"Use Compact Allocation." --->  ??? 
+"Stopped initially (Allows changing advanced setting)." --->  ??? 
+"Note. Compact Allocation is incompatible with File Selection" --->  ??? 
+"General" ---> "Generelt"
+"Allow only one instance to run" --->  ??? 
+"Advanced GUI" ---> "Avansert GUI"
+"Minimize to tray." ---> "Minimer til systemfelt"
+"Close to tray" --->  ??? 
+"Confirm on close" --->  ??? 
+"Language (requires restart)" --->  ??? 
+"List of Trackers." ---> "Liste over trackere."
+"Send login info to trackers." ---> "Send login info til trackere"
+"Apply" ---> "Bruk"
+"Reset" ---> "Nullstill"
+"Log to file." ---> "Logg til fil."
+"Log debug events." ---> "Logg debug-hendelser"
+"Add New Tracker" ---> "Legg til ny tracker"
+"MS Shell Dlg 2" --->  ??? 
+"OK" --->  ??? 
+"Tracker URL" --->  ??? 
+"Tier" --->  ??? 
+"_POPUP_" --->  ??? 
+"Open &Halite" ---> "Åpne &Halite"
+"&Pause All" ---> "&Pause Alle"
+"&Resume All" ---> "&Fortsett Alle"
+"E&xit" --->  ??? 
+"Resume" ---> "Fortsett"
+"Stop" ---> "Stopp"
+"Torrent File" ---> "Torrent Fil"
+"Torrent and Data" ---> "Torrent og Data"
+"Open Download Folder" --->  ??? 
+"New" ---> "Ny"
+"Edit" ---> "Endre"
+"Set as Primary" --->  ??? 
+"Delete" ---> "Slett"
+"StringFileInfo" --->  ??? 
+"180904b0" --->  ??? 
+"Comments" ---> "Kommentarer"
+"libTorrrent based client." ---> "libTorrrent basert klient."
+"CompanyName" ---> "Firmanavn"
+"BinaryNotions.com" --->  ??? 
+"FileDescription" ---> "Filbeskrivelse"
+"Halite BitTorrent Client" --->  ??? 
+"FileVersion" ---> "FilVersion"
+"InternalName" ---> "Internt Navn"
+"Halite" --->  ??? 
+"LegalCopyright" --->  ??? 
+"(C) Eoin O'Callaghan 2008" --->  ??? 
+"OriginalFilename" ---> "Originalt Filnavn"
+"Halite.exe" --->  ??? 
+"ProductName" ---> "Produktnavn"
+"ProductVersion" ---> "Produktversjon"
+"VarFileInfo" --->  ??? 
+"Translation" ---> "Oversettelse"
+"(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
+"CAPS" --->  ??? 
+"0000 DHT node(s)" ---> "0000 DHT node(r)"
+"Filtering 0000000 ranges." ---> "Filtrerer 0000000 serier."
+"The BitTorrent session could not start. Try selecting another port in the settings." ---> "BitTorrent sesjonen kunne ikke starte. Prøv en annen port i instillingene."
+"DHT session could not start. Try selecting another port in the settings." ---> "DHT sesjonen kunne ikke starte. Prøv en annen port i instillingene."
+"Select a directory to save the files to or cancel to not download torrent at all." ---> "Velg en mappe for lagring av filene eller avbryt for ikke å laste ned torrenten."
+"∞" --->  ??? 
+"%1$.2fMB of %2$.2fMB" --->  ??? 
+"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
+"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Lastet ned %1$.2fMB, Lastet opp %2$.2fMB, Ratio %3$.2f."
+"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"%1%, %2%." --->  ??? 
+"%1$.2fMB down - %2$.2fMB up" --->  ??? 
+"%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
+"%1% DHT node(s)" ---> "%1% DHT node(r)"
+"DHT disabled" ---> "DHT ikke aktivert"
+"Filtering %1% range(s)" ---> "Filtrerer %1% serie(r)"
+"IP filter disabled" ---> "IP filter ikke aktivert"
+"Standard exception (%1%) thrown from %2%." ---> "Standard unntak (%1%) reist av %2%."
+"(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(N-O) %1$.2fKB/s - %2$.2fKB/s"
+"Halite not listening!" ---> "Halite lytter ikke!"
+"Port %1% open" ---> "Port %1% åpen"
+"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
+"Peers" --->  ??? 
+"Files" --->  ??? 
+"Logging" --->  ??? 
+"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
+"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
+"Auto Sort" --->  ??? 
+"Torrent Root" --->  ??? 
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
+"Interesting" ---> "Interessant"
+"Choked" ---> "Strypt"
+"Interested in us" ---> "Interessert i oss"
+"Has choked us" ---> "Har strypt oss"
+"Supports extensions" ---> "Supporterer utvidelser"
+"Local connection" ---> "Lokal tilkobling"
+"Handshake" --->  ??? 
+"Connecting" ---> "Kobler til"
+"Queued" ---> "Køet"
+"RC4 Encrypted" --->  ??? 
+"Plaintext Encrypted" --->  ??? 
+"Queued for Checking" ---> "Køet for sjekking"
+"Checking Files" ---> "Sjekker filer"
+"Connecting to Tracker" ---> "Kobler til Tracker"
+"Downloading" ---> "Laster ned"
+"Finished" ---> "Ferdig"
+"Seeding" --->  ??? 
+"Allocating" ---> "Allokerer"
+"Stopped" ---> "Stoppet"
+"Paused" ---> "Pauset"
+"Stopping" --->  ??? 
+"Pausing" --->  ??? 
+"Downloading Metadata" ---> "Laster ned metadata"
+"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
+"Time;Message;Severity" ---> "Tid;Melding;Alvorlighetsgrad"
+"Tracker;Tier" --->  ??? 
+"Peer;Country;Download;Upload;Type;Client" --->  ??? 
+"Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
+"Filename;Path;Size;Progress;Priority" --->  ??? 
+"Don't download" --->  ??? 
+"Normal" --->  ??? 
+"2" --->  ??? 
+"3" --->  ??? 
+"4" --->  ??? 
+"Above Normal" --->  ??? 
+"6" --->  ??? 
+"Maximum" --->  ??? 
+"Set Priority" --->  ??? 
+"Halite.ico" --->  ??? 
+"toolbar.bmp" --->  ??? 
+"None" ---> "Ingen"
+"Debug" --->  ??? 
+"Info" --->  ??? 
+"Warning" --->  ??? 
+"Critical" ---> "Kritisk"
+"Peer %2%: %1%." --->  ??? 
+"Peer banned %2%. (%1%)" --->  ??? 
+"Hash failed for piece %2% of %1%." --->  ??? 
+"URL Seed %2%, %3%. (%1%)" --->  ??? 
+"Tracker warning: %2%! (%1%)" --->  ??? 
+"Tracker Announce. (%1%)" --->  ??? 
+"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
+"%2%. %3% Peers. (%1%)" --->  ??? 
+"Fast rusume failed: %2%. (%1%)" --->  ??? 
+"Piece %2% finished. (%1%)" --->  ??? 
+"Block %2% of piece %3% finished. (%1%)" --->  ??? 
+"Block %2% of piece %3% downloading. (%1%)" --->  ??? 
+"Successfully %1%." --->  ??? 
+"Failed, %1%" --->  ??? 
+"IP version 6 listen atempt failed. Not serious." --->  ??? 
+"IP Filter blocked %1%, %2%." --->  ??? 
+"Torrent %1% finished." --->  ??? 
+"Torrent %1% paused." --->  ??? 
+"Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) unntak fanget; %2% fra %3%."
+"Invalid torrent (%1%) from %2%." ---> "Ugyldig torrent (%1%) fra %2%."
+"Exception caught; %1%, from %2%." ---> "Exception fanget; %1%, fra %2%."
+"Xml Exception (%1%) with %2%." ---> "Xml unntak (%1%) med %2%."
+"Unicode exception: %1%." --->  ??? 
+"Bittorrent Event: %1%." ---> "Bittorrent Hendelse: %1%."
+"Peer Event: %1%." ---> "Peer Hendelse: %1%."
+"Tracker Event: %1%." ---> "Tracker Hendelse: %1%."
+"Debug Event: %1%." ---> "Debug Hendelse: %1%."
+"Dev Msg: %1%." --->  ??? 
