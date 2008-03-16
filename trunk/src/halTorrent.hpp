@@ -409,7 +409,8 @@ public:
 	void setTorrentDefaults(int maxConn, int maxUpload, float download, float upload);	
 	void newTorrent(boost::filesystem::wpath filename, boost::filesystem::wpath files);
 	void addTorrent(boost::filesystem::wpath file, boost::filesystem::wpath saveDirectory, 
-		bool startPaused=false, bool compactStorage=false);
+		bool startPaused=false, bool compactStorage=false, 
+		boost::filesystem::wpath moveToDirectory=L"", bool useMoveTo=false);
 	
 	void setTorrentRatio(const std::string&, float ratio);
 	void setTorrentRatio(const std::wstring&, float ratio);
@@ -437,6 +438,8 @@ public:
 	bool isTorrentActive(const std::wstring& filename);
 	void reannounceTorrent(const std::string& filename);
 	void reannounceTorrent(const std::wstring& filename);
+	void recheckTorrent(const std::string& filename);
+	void recheckTorrent(const std::wstring& filename);
 	
 	void pauseAllTorrents();
 	void unpauseAllTorrents();

@@ -147,7 +147,12 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	UIAddToolBar(hWndToolBar);
 	UISetCheck(ID_VIEW_TOOLBAR, 1);
 	UISetCheck(ID_VIEW_STATUS_BAR, 1);
-	UISetCheck(IDR_TRAY_MENU, 1);
+	UISetCheck(IDR_TRAY_MENU, 1);	
+	
+	TBBUTTONINFO tbinfo = { sizeof(TBBUTTONINFO) };
+	tbinfo.dwMask = TBIF_STATE;
+	tbinfo.fsState = TBSTATE_INDETERMINATE;
+	::SendMessage(hWndToolBar, TB_SETBUTTONINFO, ID_FILE_NEW, (LPARAM)&tbinfo);
 	
 	// Register UIEvents and the timer for the monitoring interval
 	SetTimer(ID_UPDATE_TIMER, 500);
@@ -182,7 +187,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 
 		DestroyWindow();
 	}
-	
+
 	return 0;
 }
 
@@ -344,6 +349,8 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	{
 	
 	wstring saveDirectory = wpath(hal::config().defaultSaveFolder).native_file_string();
+	wstring moveToDirectory = wpath(hal::config().defaultMoveToFolder).native_file_string();
+	bool useMoveTo = hal::config().useMoveTo;
 	bool startPaused = false;
 	bool compactStorage = false;
 	
@@ -352,14 +359,15 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	
 	if (hal::config().savePrompt)
 	{
-		AddTorrentDialog addTorrent(saveDirectory, startPaused, compactStorage);	
+		AddTorrentDialog addTorrent(saveDirectory, moveToDirectory, useMoveTo, startPaused, compactStorage);	
 		
 		if (IDOK != addTorrent.DoModal())
 			return;
 	}
 	
 	wpath file(lpszPath, boost::filesystem::native);	
-	hal::bittorrent().addTorrent(file, wpath(saveDirectory), startPaused, compactStorage);
+	hal::bittorrent().addTorrent(file, wpath(saveDirectory), startPaused, compactStorage, 
+		wpath(moveToDirectory), useMoveTo);
 
 	ui().update();
 

@@ -50,6 +50,8 @@ public:
 		enableProxy(false),
 		proxyPort(0),
 		defaultSaveFolder((hal::app().exe_path().branch_path()/L"incoming").string()),
+		defaultMoveToFolder((hal::app().exe_path().branch_path()/L"completed").string()),
+		useMoveTo(false),
 		savePrompt(true),
 		enablePe(false),
 		peEncLevel(0),
@@ -96,6 +98,10 @@ public:
 		}
 		
 		ar & BOOST_SERIALIZATION_NVP(defaultSaveFolder);
+		if (version > 3) {
+			ar & BOOST_SERIALIZATION_NVP(defaultMoveToFolder);
+			ar & BOOST_SERIALIZATION_NVP(useMoveTo);
+		}
 		ar & BOOST_SERIALIZATION_NVP(savePrompt);
 		
 		if (version > 0) {
@@ -158,6 +164,8 @@ private:
 	std::wstring proxyPassword;
 	
 	std::wstring defaultSaveFolder;
+	std::wstring defaultMoveToFolder;
+	bool useMoveTo;
 	bool savePrompt;
 
     bool enablePe;
@@ -178,4 +186,4 @@ Config& config();
 
 } // namespace hal
 
-BOOST_CLASS_VERSION(hal::Config, 3)
+BOOST_CLASS_VERSION(hal::Config, 4)

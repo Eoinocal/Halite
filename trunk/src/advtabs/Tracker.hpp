@@ -4,7 +4,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#define ID_TRACKER_BEGIN	 41000
+#define ID_TRACKER_BEGIN	16000
 #define IDC_TRACKER_LABEL 	ID_TRACKER_BEGIN + 1
 #define IDC_LOGIN_APPLY 	ID_TRACKER_BEGIN + 2
 #define IDC_REANNOUNCE	 	ID_TRACKER_BEGIN + 3

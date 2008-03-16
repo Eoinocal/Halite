@@ -156,6 +156,15 @@ LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 	return 0;
 }
 
+LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
+		bind((void (hal::BitTorrent::*)(const std::wstring&))&hal::BitTorrent::recheckTorrent, 
+			&hal::bittorrent(), _1));	
+
+	return 0;
+}
+
 LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
