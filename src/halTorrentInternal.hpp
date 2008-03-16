@@ -6,15 +6,15 @@
 
 #pragma once
 
-#define HALITE_VERSION					0, 3, 0, 386
-#define HALITE_VERSION_STRING			"v 0.3.0.4 dev 386"
-#define	HALITE_FINGERPRINT				"HL", 0, 3, 0, 4
+#define HALITE_VERSION					0, 3, 0, 399
+#define HALITE_VERSION_STRING			"v 0.3.0.5 dev 399"
+#define	HALITE_FINGERPRINT				"HL", 0, 3, 0, 5
 
 #ifndef HAL_NA
 #define HAL_NA 40013
 #endif
 
-#define HAL_TORRENT_EXT_BEGIN 				80000
+#define HAL_TORRENT_EXT_BEGIN 				41000
 #define LBT_EVENT_TORRENT_FINISHED			HAL_TORRENT_EXT_BEGIN + 1
 #define HAL_PEER_BAN_ALERT					HAL_TORRENT_EXT_BEGIN + 2
 #define HAL_HASH_FAIL_ALERT					HAL_TORRENT_EXT_BEGIN + 3
@@ -36,7 +36,7 @@
 #define HAL_PEER_ALERT						HAL_TORRENT_EXT_BEGIN + 19
 #define HAL_LISTEN_V6_FAILED_ALERT			HAL_TORRENT_EXT_BEGIN + 20
 
-#define HAL_TORRENT_INT_BEGIN 				80500
+#define HAL_TORRENT_INT_BEGIN 				42000
 #define HAL_PEER_INTERESTING            	HAL_TORRENT_INT_BEGIN + 1
 #define HAL_PEER_CHOKED             		HAL_TORRENT_INT_BEGIN + 2
 #define HAL_PEER_REMOTE_INTERESTING			HAL_TORRENT_INT_BEGIN + 3
@@ -74,13 +74,16 @@
 #include <boost/serialization/shared_ptr.hpp>
 
 #include "halIni.hpp"
+#include "halSignaler.hpp"
 
 namespace hal 
 {
 class TorrentInternalOld;
+class TorrentInternal;
 }
 
 BOOST_CLASS_VERSION(hal::TorrentInternalOld, 9)
+BOOST_CLASS_VERSION(hal::TorrentInternal, 1)
 
 namespace hal 
 {
@@ -421,9 +424,10 @@ public:
 		in_session_(false)
 	{}
 	
-	TorrentInternal(wpath_t filename, wpath_t saveDirectory, wpath_t workingDirectory, bool compactStorage) :
+	TorrentInternal(wpath_t filename, wpath_t saveDirectory, bool compactStorage, wpath_t move_to_directory=L"") :
 		TORRENT_INTERNALS_DEFAULTS,
 		save_directory_(saveDirectory.string()),
+		move_to_directory_(move_to_directory.string()),
 		compactStorage_(compactStorage),	
 		state_(TorrentDetail::torrent_stopped),	
 		in_session_(false)
@@ -523,16 +527,21 @@ public:
 		}	
 	}
 	
-	void removeFromSession()
+	void removeFromSession(bool writeData=true)
 	{
+		HAL_DEV_MSG(wformat_t(L"removeFromSession() %1%") % writeData);
+
 		mutex_t::scoped_lock l(mutex_);
 		assert(inSession());
 		
-		resumedata_ = handle_.write_resume_data(); // Update the fast-resume data
-		writeResumeData();
+		if (writeData)
+		{
+			resumedata_ = handle_.write_resume_data(); // Update the fast-resume data
+			writeResumeData();
+		}
 		
 		the_session_->remove_torrent(handle_);
-		in_session_ = false;		
+		in_session_ = false;
 		
 		assert(!inSession());	
 	}
@@ -555,6 +564,7 @@ public:
 	void resume()
 	{
 		mutex_t::scoped_lock l(mutex_);
+
 		if (state_ == TorrentDetail::torrent_stopped)
 		{	
 			addToSession(false);
@@ -573,6 +583,7 @@ public:
 	void pause()
 	{
 		mutex_t::scoped_lock l(mutex_);
+
 		if (state_ == TorrentDetail::torrent_stopped)
 		{	
 			addToSession(true);
@@ -583,6 +594,8 @@ public:
 		{
 			assert(inSession());
 			handle_.pause();
+			signals.torrent_paused.connect_once(bind(&TorrentInternal::completedPauseEvent, this));
+
 			state_ = TorrentDetail::torrent_pausing;	
 		}	
 		
@@ -592,12 +605,15 @@ public:
 	void stop()
 	{
 		mutex_t::scoped_lock l(mutex_);
+
 		if (state_ != TorrentDetail::torrent_stopped)
 		{
 			if (state_ == TorrentDetail::torrent_active)
 			{
 				assert(inSession());
 				handle_.pause();
+				signals.torrent_paused.connect_once(bind(&TorrentInternal::completedPauseEvent, this));
+
 				state_ = TorrentDetail::torrent_stopping;
 			}
 			else if (state_ == TorrentDetail::torrent_paused)
@@ -607,6 +623,49 @@ public:
 				state_ = TorrentDetail::torrent_stopped;				
 			}
 		}
+	}
+
+	void forceRecheck()
+	{
+		mutex_t::scoped_lock l(mutex_);
+		
+		HAL_DEV_MSG(L"forceRecheck()");
+
+		if (state_ != TorrentDetail::torrent_stopped)
+		{
+			assert(inSession());
+
+			if (state_ == TorrentDetail::torrent_active)
+			{
+				handle_.pause();
+				signals.torrent_paused.connect_once(bind(&TorrentInternal::handleRecheck, this));
+
+				state_ = TorrentDetail::torrent_stopping;
+			}
+			else if (state_ == TorrentDetail::torrent_paused)
+			{			
+				handleRecheck();				
+			}
+			else
+			{
+				signals.torrent_paused.connect_once(bind(&TorrentInternal::handleRecheck, this));
+			}
+		}
+		else
+		{
+			handleRecheck();
+		}
+	}
+
+	void handleRecheck()
+	{
+		mutex_t::scoped_lock l(mutex_);
+
+		HAL_DEV_MSG(L"handleRecheck()");
+
+		state_ = TorrentDetail::torrent_stopped;
+		removeFromSession(false);
+		resume();
 	}
 	
 	void writeResumeData()
@@ -632,6 +691,12 @@ public:
 	{
 		if (finishTime_.is_special())
 			finishTime_ = boost::posix_time::second_clock::universal_time();
+
+		if (move_to_directory_ != L"" && move_to_directory_ != save_directory_)
+		{
+			handle_.move_storage(to_utf8(move_to_directory_));
+			save_directory_ = move_to_directory_;
+		}
 	}
 	
 	bool isActive() const { return state_ == TorrentDetail::torrent_active;	}
@@ -711,6 +776,11 @@ public:
         ar & make_nvp("uploads", uploads_);			
 		ar & make_nvp("filename", filename_);		
         ar & make_nvp("saveDirectory", save_directory_);
+		if (version > 0) {
+			ar & make_nvp("moveToDirectory", move_to_directory_);
+		} else {
+			move_to_directory_ = save_directory_;
+		}
 		
 		ar & make_nvp("payloadUploaded_", payloadUploaded_);
 		ar & make_nvp("payloadDownloaded_", payloadDownloaded_);
@@ -885,6 +955,13 @@ public:
 		return infoMemory_;
 	}
 
+	struct 
+	{
+		signaler<> torrent_finished;
+		signaler<> torrent_paused;
+	} 
+	signals;
+
 private:	
 	void applySettings()
 	{		
@@ -1030,6 +1107,7 @@ private:
 	wstring_t filename_;
 	wstring_t name_;
 	wstring_t save_directory_;
+	wstring_t move_to_directory_;
 	wstring_t originalFilename_;
 	lbt::torrent_handle handle_;	
 	

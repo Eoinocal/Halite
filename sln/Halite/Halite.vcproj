@@ -833,6 +833,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\halSignaler.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\halTorrent.hpp"
 				>
 			</File>

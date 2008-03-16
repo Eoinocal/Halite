@@ -6,10 +6,11 @@
 
 #pragma once
 
-#define IDD_PROGRESS_BEGIN				1900
 #define IDD_PROGRESS                    1901
-#define IDC_PROG_CANCEL                 IDD_PROGRESS_BEGIN + 2
-#define IDC_PROG_PROGRESS               IDD_PROGRESS_BEGIN + 3
+
+#define ID_PROGRESS_BEGIN				15000
+#define IDC_PROG_CANCEL                 ID_PROGRESS_BEGIN + 2
+#define IDC_PROG_PROGRESS               ID_PROGRESS_BEGIN + 3
 
 #ifndef RC_INVOKED
 

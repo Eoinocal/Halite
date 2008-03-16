@@ -26,6 +26,7 @@
 
 #include "halTorrent.hpp"
 #include "halEvent.hpp"
+#include "halSignaler.hpp"
 
 #define foreach BOOST_FOREACH
 
@@ -238,59 +239,6 @@ void TorrentDetails::sort(
 	std::stable_sort(torrents_.begin(), torrents_.end(), fn);
 }
 
-struct once
-{
-	template<typename S>
-	once(S& s, boost::function<void ()> f) :
-		f_(f)
-	{
-		c_ = s.connect(*this);
-		HAL_DEV_MSG(L"Once ctor");
-	}
-
-	void operator()() 
-	{
-		f_();
-		
-		HAL_DEV_MSG(L"Once disconnecting");
-
-		c_.disconnect();
-	}
-
-	boost::function<void ()> f_;
-	boost::signals::connection c_;
-};
-
-template<typename S=boost::signal<void()> >
-class signaler
-{
-public:
-
-	void connectRepeat(const typename S::slot_type& slot)
-	{
-		repeat_.connect(slot);
-	}
-
-	void connectOnce(const typename S::slot_type& slot)
-	{
-		once_.connect(slot);
-	}
-
-	void operator()() 
-	{
-		repeat_();
-
-		
-		HAL_DEV_MSG(L"Once disconnecting");
-		once_();
-		once_.disconnect_all_slots();
-	}	
-
-private:
-	S repeat_;
-	S once_;
-};
-
 class BitTorrent_impl
 {
 	friend class BitTorrent;
@@ -332,7 +280,8 @@ public:
 
 	struct 
 	{
-		signaler<> successfulListen;
+		signaler<> successful_listen;
+		signaler<> torrent_finished;
 	} 
 	signals;
 		
@@ -367,7 +316,7 @@ public:
 						% get(a.handle)->name()), 
 					Event::info, a.timestamp())));
 
-			get(a.handle)->completedPauseEvent();
+			get(a.handle)->signals.torrent_paused();
 		}
 		
 		void operator()(lbt::peer_error_alert const& a) const
@@ -521,7 +470,7 @@ public:
 						% hal::from_utf8_safe(a.msg()))
 			)	);	
 
-			bit_impl_.signals.successfulListen();
+			bit_impl_.signals.successful_listen();
 		}
 		
 		void operator()(lbt::peer_blocked_alert const& a) const
@@ -792,7 +741,7 @@ bool BitTorrent::listenOn(std::pair<int, int> const& range)
 			return pimpl->theSession.listen_on(range);	
 		else
 		{
-			pimpl->signals.successfulListen();
+			pimpl->signals.successful_listen();
 			
 			return true;
 		}
@@ -876,7 +825,7 @@ void BitTorrent::setMapping(int mapping)
 			pimpl->theSession.stop_upnp();
 			pimpl->theSession.stop_natpmp();
 
-			pimpl->signals.successfulListen.connectOnce(bind(&lbt::session::start_upnp, &pimpl->theSession));
+			pimpl->signals.successful_listen.connect_once(bind(&lbt::session::start_upnp, &pimpl->theSession));
 		}
 		else
 		{
@@ -884,7 +833,7 @@ void BitTorrent::setMapping(int mapping)
 			pimpl->theSession.stop_upnp();
 			pimpl->theSession.stop_natpmp();
 
-			pimpl->signals.successfulListen.connectOnce(bind(&lbt::session::start_natpmp, &pimpl->theSession));
+			pimpl->signals.successful_listen.connect_once(bind(&lbt::session::start_natpmp, &pimpl->theSession));
 		}
 	}
 	else
@@ -1312,12 +1261,18 @@ std::pair<lbt::entry, lbt::entry> BitTorrent_impl::prepTorrent(wpath_t filename,
 	return std::make_pair(metadata, resumeData);
 }
 
-void BitTorrent::addTorrent(wpath_t file, wpath_t saveDirectory, bool startStopped, bool compactStorage) 
+void BitTorrent::addTorrent(wpath_t file, wpath_t saveDirectory, bool startStopped, bool compactStorage, 
+		boost::filesystem::wpath moveToDirectory, bool useMoveTo) 
 {
 	try 
 	{	
 	
-	TorrentInternal_ptr TIp(new TorrentInternal(file, saveDirectory, pimpl->workingDirectory, compactStorage));
+	TorrentInternal_ptr TIp;
+	
+	if (useMoveTo)
+		TIp.reset(new TorrentInternal(file, saveDirectory, compactStorage, moveToDirectory));		
+	else
+		TIp.reset(new TorrentInternal(file, saveDirectory, compactStorage));
 	
 	std::pair<TorrentManager::torrentByName::iterator, bool> p =
 		pimpl->theTorrents.insert(TIp);
@@ -1814,6 +1769,20 @@ void BitTorrent::removeTorrent(const std::wstring& filename)
 	thread_t t(bind(&BitTorrent_impl::removalThread, &*pimpl, pTI, false));	
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "removeTorrent")
+}
+
+void BitTorrent::recheckTorrent(const std::string& filename)
+{
+	recheckTorrent(hal::to_wstr_shim(filename));
+}
+
+void BitTorrent::recheckTorrent(const std::wstring& filename)
+{
+	try {
+	
+	pimpl->theTorrents.get(filename)->forceRecheck();
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "recheckTorrent")
 }
 
 void BitTorrent::removeTorrentWipeFiles(const std::string& filename)
