@@ -133,16 +133,16 @@ public:
 		try
 		{
 
-		int itemPos = AddItem(0, 0, L"Hello");
+/*		int itemPos = AddItem(0, 0, L"Hello");
 
 		SetItemText(itemPos, 1,	event->msg().c_str());
 
 		SetItemText(itemPos, 2,
 			hal::Event::eventLevelToStr(event->level()).c_str());
-			
-		if (halite().logListLen() <= GetItemCount())
+*/			
+/*		if (halite().logListLen() <= GetItemCount())
 			DeleteItem(halite().logListLen());
-
+*/
 		}
 		catch(...)
 		{}
