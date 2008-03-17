@@ -400,6 +400,13 @@ public:
 	bool compactStorage_;
 };
 
+
+struct signalers
+{
+	signaler<> torrent_finished;
+	signaler<> torrent_paused;
+};
+
 class TorrentInternal : 
 	boost::noncopyable
 {
@@ -500,9 +507,15 @@ public:
 	
 	void addToSession(bool paused = false)
 	{
+		try
+		{
+
 		mutex_t::scoped_lock l(mutex_);	
+		assert(the_session_ != 0);
+
+		HAL_DEV_MSG(wformat_t(L"addToSession() paused=%1%") % paused);
 		
-		if (!in_session_ && the_session_) 
+		if (!inSession()) 
 		{			
 			string_t dir = to_utf8(save_directory_);
 			
@@ -525,40 +538,57 @@ public:
 			applySettings();
 			handle_.force_reannounce();
 		}	
+
+		assert(inSession());
+		HAL_DEV_MSG(L"Added to session");
+
+		}
+		catch(std::exception& e)
+		{
+			hal::event().post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(Event::critical, e, L"addToSession"))); 
+		}
 	}
 	
 	void removeFromSession(bool writeData=true)
 	{
-		HAL_DEV_MSG(wformat_t(L"removeFromSession() %1%") % writeData);
+		try
+		{
 
 		mutex_t::scoped_lock l(mutex_);
 		assert(inSession());
+
+		HAL_DEV_MSG(wformat_t(L"removeFromSession() writeData=%1%") % writeData);
 		
 		if (writeData)
 		{
+			HAL_DEV_MSG(L"getting resume data");
 			resumedata_ = handle_.write_resume_data(); // Update the fast-resume data
+			HAL_DEV_MSG(L"writing resume data");
 			writeResumeData();
 		}
 		
+		HAL_DEV_MSG(L"removing handle from session");
 		the_session_->remove_torrent(handle_);
 		in_session_ = false;
-		
+		state_ = TorrentDetail::torrent_stopped;
+
 		assert(!inSession());	
+		HAL_DEV_MSG(L"Removed from session!");
+
+		}
+		catch(std::exception& e)
+		{
+			hal::event().post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(Event::critical, e, L"removeFromSession"))); 
+		}
 	}
 	
 	bool inSession() const
 	{ 
 		mutex_t::scoped_lock l(mutex_);
-		
-		if (in_session_ && (the_session_ != 0))
-		{		
-			if (handle_.is_valid())
-			{
-				return true;
-			}
-		}
-		
-		return false;
+
+		return (in_session_ && the_session_ != 0 && handle_.is_valid());
 	}
 	
 	void resume()
@@ -587,19 +617,20 @@ public:
 		if (state_ == TorrentDetail::torrent_stopped)
 		{	
 			addToSession(true);
+
 			assert(inSession());
-			state_ = TorrentDetail::torrent_paused;	
+			assert(handle_.is_paused());
 		}
 		else
 		{
 			assert(inSession());
+
 			handle_.pause();
-			signals.torrent_paused.connect_once(bind(&TorrentInternal::completedPauseEvent, this));
+			signals().torrent_paused.disconnect_all_once();
+			signals().torrent_paused.connect_once(bind(&TorrentInternal::completed_pause, this));
 
 			state_ = TorrentDetail::torrent_pausing;	
-		}	
-		
-		assert(handle_.is_paused());
+		}			
 	}
 	
 	void stop()
@@ -611,8 +642,10 @@ public:
 			if (state_ == TorrentDetail::torrent_active)
 			{
 				assert(inSession());
+
 				handle_.pause();
-				signals.torrent_paused.connect_once(bind(&TorrentInternal::completedPauseEvent, this));
+				signals().torrent_paused.disconnect_all_once();
+				signals().torrent_paused.connect_once(bind(&TorrentInternal::completed_stop, this));
 
 				state_ = TorrentDetail::torrent_stopping;
 			}
@@ -627,49 +660,33 @@ public:
 
 	void forceRecheck()
 	{
-		mutex_t::scoped_lock l(mutex_);
-		
+		mutex_t::scoped_lock l(mutex_);		
 		HAL_DEV_MSG(L"forceRecheck()");
 
-		if (state_ != TorrentDetail::torrent_stopped)
+		switch (state_)
 		{
-			assert(inSession());
+		case TorrentDetail::torrent_stopped:
+			clearResumeData();
+			resume();
+			break;
 
-			if (state_ == TorrentDetail::torrent_active)
-			{
-				handle_.pause();
-				signals.torrent_paused.connect_once(bind(&TorrentInternal::handleRecheck, this));
+		case TorrentDetail::torrent_stopping:
+		case TorrentDetail::torrent_pausing:
+			signals().torrent_paused.disconnect_all_once();
 
-				state_ = TorrentDetail::torrent_stopping;
-			}
-			else if (state_ == TorrentDetail::torrent_paused)
-			{			
-				handleRecheck();				
-			}
-			else
-			{
-				signals.torrent_paused.connect_once(bind(&TorrentInternal::handleRecheck, this));
-			}
-		}
-		else
-		{
-			handleRecheck();
-		}
-	}
+		case TorrentDetail::torrent_active:
+			signals().torrent_paused.connect_once(bind(&TorrentInternal::handle_recheck, this));
+			handle_.pause();
+			break;
 
-	void handleRecheck()
-	{
-		mutex_t::scoped_lock l(mutex_);
-
-		HAL_DEV_MSG(L"handleRecheck()");
-
-		state_ = TorrentDetail::torrent_stopped;
-		removeFromSession(false);
-		resume();
+		default:
+			assert(false);
+		};
 	}
 	
 	void writeResumeData()
-	{				
+	{					
+		HAL_DEV_MSG(L"writeResumeData()");
 		wpath_t resumeDir = workingDir_/L"resume";
 		
 		if (!exists(resumeDir))
@@ -677,6 +694,7 @@ public:
 				
 		bool halencode_result = halencode(resumeDir/filename_, resumedata_);
 		assert(halencode_result);
+		HAL_DEV_MSG(L"Written!");
 	}
 	
 	void clearResumeData()
@@ -954,15 +972,16 @@ public:
 		
 		return infoMemory_;
 	}
-
-	struct 
+	
+	signalers& signals()
 	{
-		signaler<> torrent_finished;
-		signaler<> torrent_paused;
-	} 
-	signals;
+		mutex_t::scoped_lock l(mutex_);
+		return signals_;
+	}
 
 private:	
+	signalers signals_;
+
 	void applySettings()
 	{		
 		applyTransferSpeed();
@@ -976,6 +995,7 @@ private:
 	
 	void applyTransferSpeed()
 	{
+		mutex_t::scoped_lock l(mutex_);
 		if (inSession())
 		{
 			int down = (transferLimit_.first > 0) ? static_cast<int>(transferLimit_.first*1024) : -1;
@@ -990,6 +1010,7 @@ private:
 
 	void applyConnectionLimit()
 	{
+		mutex_t::scoped_lock l(mutex_);
 		if (inSession())
 		{
 			handle_.set_max_connections(connections_);
@@ -1001,6 +1022,7 @@ private:
 	
 	void applyRatio()
 	{ 
+		mutex_t::scoped_lock l(mutex_);
 		if (inSession())
 		{
 			handle_.set_ratio(ratio_);
@@ -1011,6 +1033,7 @@ private:
 	
 	void applyTrackers()
 	{
+		mutex_t::scoped_lock l(mutex_);
 		if (inSession())
 		{
 			if (torrent_trackers_.empty())
@@ -1035,6 +1058,7 @@ private:
 	
 	void applyTrackerLogin()
 	{
+		mutex_t::scoped_lock l(mutex_);
 		if (inSession())
 		{
 			if (trackerUsername_ != L"")
@@ -1049,6 +1073,7 @@ private:
 	
 	void applyFilePriorities()
 	{		
+		mutex_t::scoped_lock l(mutex_);
 		if (inSession()) 
 		{
 			if (!filePriorities_.empty())
@@ -1060,6 +1085,7 @@ private:
 	
 	void applyResolveCountries()
 	{
+		mutex_t::scoped_lock l(mutex_);
 		if (inSession())
 		{
 			handle_.resolve_countries(resolve_countries_);
@@ -1068,28 +1094,42 @@ private:
 		}
 	}
 	
-	void completedPauseEvent()
+	void completed_pause()
 	{
 		mutex_t::scoped_lock l(mutex_);
-		
-		event().post(shared_ptr<EventDetail>(
-			new EventInfo(L"completedPauseEvent")));
-		
-		assert(inSession());		
-		
-		if (TorrentDetail::torrent_pausing == state_)
-		{
-			state_ = TorrentDetail::torrent_paused;	
-			assert(handle_.is_paused());
-		}
-		else if (TorrentDetail::torrent_stopping == state_)
-		{
-			removeFromSession();
-			
-			state_ = TorrentDetail::torrent_stopped;
-		}
+		assert(inSession());
+		assert(handle_.is_paused());	
+				
+		state_ = TorrentDetail::torrent_paused;	
+
+		HAL_DEV_MSG(L"completed_pause()");
 	}
-	
+
+	void completed_stop()
+	{
+		mutex_t::scoped_lock l(mutex_);
+		assert(inSession());
+		assert(handle_.is_paused());	
+		
+		state_ = TorrentDetail::torrent_stopped;
+		
+		removeFromSession();			
+		assert(!inSession());
+
+		HAL_DEV_MSG(L"completed_stop()");
+	}
+
+	void handle_recheck()
+	{
+		mutex_t::scoped_lock l(mutex_);
+
+		HAL_DEV_MSG(L"handleRecheck()");
+
+		state_ = TorrentDetail::torrent_stopped;
+		removeFromSession(false);
+		resume();
+	}
+		
 	static lbt::session* the_session_;
 	static wpath_t workingDir_;
 	
@@ -1308,6 +1348,8 @@ private:
 
 void TorrentInternal::setConnectionLimit(int maxConn, int maxUpload)
 {
+	mutex_t::scoped_lock l(mutex_);
+
 	connections_ = maxConn;
 	uploads_ = maxUpload;
 	
@@ -1321,6 +1363,8 @@ std::pair<int, int> TorrentInternal::getConnectionLimit()
 
 void TorrentInternal::setTransferSpeed(float download, float upload)
 {	
+	mutex_t::scoped_lock l(mutex_);
+
 	transferLimit_ = std::make_pair(download, upload);
 	
 	applyTransferSpeed();
@@ -1333,6 +1377,8 @@ std::pair<float, float> TorrentInternal::getTransferSpeed()
 
 TorrentDetail_ptr TorrentInternal::getTorrentDetail_ptr()
 {	
+	mutex_t::scoped_lock l(mutex_);
+
 	try
 	{
 

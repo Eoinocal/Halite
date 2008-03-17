@@ -33,7 +33,7 @@ namespace hal
 void Event::post(boost::shared_ptr<EventDetail> event)
 {
 	if (event->level() != hal::Event::debug || halite().logDebug())
-		event_signal_(event);
+		signal(event);
 }
 	
 std::wstring Event::eventLevelToStr(eventLevel event)
