@@ -69,8 +69,17 @@ public:
 	{
 		return event_signal_.connect(fn);
 	}
+
+	void signal(boost::shared_ptr<EventDetail> e)
+	{
+		mutex_t::scoped_lock l(mutex_);
+
+		event_signal_(e);
+	}
 	
 private:
+	mutable mutex_t mutex_;
+
 	boost::signal<void (boost::shared_ptr<EventDetail>)> event_signal_;
 };
 

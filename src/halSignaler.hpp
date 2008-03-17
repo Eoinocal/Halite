@@ -20,6 +20,8 @@ struct once
 
 	void operator()() 
 	{
+		HAL_DEV_MSG(L"Once");
+
 		f_();
 		
 		HAL_DEV_MSG(L"Once disconnecting");
@@ -38,21 +40,31 @@ public:
 
 	void connect_repeat(const typename S::slot_type& slot)
 	{
+		HAL_DEV_MSG(L"connect_repeat");
 		repeat_.connect(slot);
 	}
 
 	void connect_once(const typename S::slot_type& slot)
 	{
+		HAL_DEV_MSG(L"connect_once");
 		once_.connect(slot);
 	}
 
 	void operator()() 
 	{
+		HAL_DEV_MSG(L"operator()");
 		repeat_();
 
 		once_();
 		once_.disconnect_all_slots();
+		HAL_DEV_MSG(L"Once disconnected");
 	}	
+
+	void disconnect_all_once()
+	{
+		once_.disconnect_all_slots();
+		HAL_DEV_MSG(L"All disconnected");
+	}
 
 private:
 	S repeat_;

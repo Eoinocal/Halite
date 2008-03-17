@@ -106,6 +106,8 @@ public:
 	
 	~LogListViewCtrl()
 	{
+		hal::mutex_t::scoped_lock l(mutex_);
+
 		if (conn_.connected()) conn_.disconnect();
 	}
 
@@ -125,7 +127,13 @@ public:
 
 	void operator()(shared_ptr<hal::EventDetail> event)
 	{
-		int itemPos = AddItem(0, 0, lexical_cast<wstring>(event->timeStamp()).c_str(), 0);
+		hal::mutex_t::scoped_lock l(mutex_);
+		wstring timeStamp = lexical_cast<wstring>(event->timeStamp());
+
+		try
+		{
+
+		int itemPos = AddItem(0, 0, L"Hello");
 
 		SetItemText(itemPos, 1,	event->msg().c_str());
 
@@ -134,6 +142,10 @@ public:
 			
 		if (halite().logListLen() <= GetItemCount())
 			DeleteItem(halite().logListLen());
+
+		}
+		catch(...)
+		{}
 	}
 
 	void saveStatus() {}
@@ -141,7 +153,9 @@ public:
 
 private:
 	void OnAttach()
-	{		
+	{	
+		hal::mutex_t::scoped_lock l(mutex_);
+	
 		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
 		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
 		
@@ -152,10 +166,13 @@ private:
 
 	void OnDestroy()
 	{
+		hal::mutex_t::scoped_lock l(mutex_);
+
 		conn_.disconnect();
 		saveSettings();
 	}
 
+	mutable hal::mutex_t mutex_;
 	boost::signals::connection conn_;
 };
 

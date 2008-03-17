@@ -316,7 +316,7 @@ public:
 						% get(a.handle)->name()), 
 					Event::info, a.timestamp())));
 
-			get(a.handle)->signals.torrent_paused();
+			get(a.handle)->signals().torrent_paused();
 		}
 		
 		void operator()(lbt::peer_error_alert const& a) const

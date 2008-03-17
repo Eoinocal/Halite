@@ -153,7 +153,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	tbinfo.dwMask = TBIF_STATE;
 	tbinfo.fsState = TBSTATE_INDETERMINATE;
 	::SendMessage(hWndToolBar, TB_SETBUTTONINFO, ID_FILE_NEW, (LPARAM)&tbinfo);
-	
+
 	// Register UIEvents and the timer for the monitoring interval
 	SetTimer(ID_UPDATE_TIMER, 500);
 	SetTimer(ID_SAVE_TIMER, 5000);
