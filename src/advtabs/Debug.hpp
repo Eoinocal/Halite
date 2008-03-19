@@ -6,6 +6,8 @@
 
 #pragma once
 
+#define WM_USER_LOGPOST	WM_USER + 101
+
 #include "stdAfx.hpp"
 #include "Halite.hpp"
 #include "DdxEx.hpp"
@@ -80,6 +82,7 @@ public:
 
 	BEGIN_MSG_MAP_EX(LogListViewCtrl)
 		MSG_WM_DESTROY(OnDestroy)
+		MESSAGE_HANDLER_EX(WM_USER_LOGPOST, OnMessageLogPost)
 
 		CHAIN_MSG_MAP(listClass)
 		DEFAULT_REFLECTION_HANDLER()
@@ -128,24 +131,43 @@ public:
 	void operator()(shared_ptr<hal::EventDetail> event)
 	{
 		hal::mutex_t::scoped_lock l(mutex_);
-		wstring timeStamp = lexical_cast<wstring>(event->timeStamp());
 
 		try
 		{
+			events_.push_back(event);
+			PostMessage(WM_USER_LOGPOST, 0, 0);
+		}
+		catch(...)
+		{}
+	}
 
-/*		int itemPos = AddItem(0, 0, L"Hello");
+	LRESULT OnMessageLogPost(UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		hal::mutex_t::scoped_lock l(mutex_);
+
+		try
+		{
+		shared_ptr<hal::EventDetail> event(*events_.begin());
+
+		wstring timeStamp = lexical_cast<wstring>(event->timeStamp());
+
+		int itemPos = AddItem(0, 0, timeStamp.c_str());
 
 		SetItemText(itemPos, 1,	event->msg().c_str());
 
 		SetItemText(itemPos, 2,
 			hal::Event::eventLevelToStr(event->level()).c_str());
-*/			
-/*		if (halite().logListLen() <= GetItemCount())
+			
+		if (halite().logListLen() <= GetItemCount())
 			DeleteItem(halite().logListLen());
-*/
+
 		}
 		catch(...)
 		{}
+
+		events_.pop_front();
+
+		return 0;
 	}
 
 	void saveStatus() {}
@@ -174,6 +196,7 @@ private:
 
 	mutable hal::mutex_t mutex_;
 	boost::signals::connection conn_;
+	std::deque<shared_ptr<hal::EventDetail> > events_;
 };
 
 class AdvDebugDialog :
