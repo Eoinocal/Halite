@@ -14,8 +14,6 @@ namespace WTLx
 
 typedef ATL::CWinTraits<WS_VISIBLE|WS_POPUP|WS_CAPTION|WS_SYSMENU|DS_CENTER, WS_EX_DLGMODALFRAME> RadioPaneTraits;
 
-
-
 class CRadioPaneDialog : 
 	public CIndirectDialogImpl<
 	CRadioPaneDialog
