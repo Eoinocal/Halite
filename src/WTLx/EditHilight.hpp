@@ -74,7 +74,7 @@ public:
 	
 	operator std::wstring () 
 	{ 
-		size_t maxLen = GetWindowTextLength();
+		size_t maxLen = GetWindowTextLength()+1;
 
 		std::vector<wchar_t> buffer(maxLen);
 		size_t len = GetWindowText(&buffer[0], maxLen);
