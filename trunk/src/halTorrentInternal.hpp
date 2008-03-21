@@ -6,8 +6,8 @@
 
 #pragma once
 
-#define HALITE_VERSION					0, 3, 0, 399
-#define HALITE_VERSION_STRING			"v 0.3.0.5 dev 399"
+#define HALITE_VERSION					0, 3, 0, 408
+#define HALITE_VERSION_STRING			"v 0.3.0.5 dev 408"
 #define	HALITE_FINGERPRINT				"HL", 0, 3, 0, 5
 
 #ifndef HAL_NA
@@ -708,10 +708,14 @@ public:
 		if (finishTime_.is_special())
 			finishTime_ = boost::posix_time::second_clock::universal_time();
 
-		if (move_to_directory_ != L"" && move_to_directory_ != save_directory_)
+		// Only move seeding torrents for the mo!
+		if (inSession() && handle_.status().state == lbt::torrent_status::seeding)
 		{
-			handle_.move_storage(to_utf8(move_to_directory_));
-			save_directory_ = move_to_directory_;
+			if (move_to_directory_ != L"" && move_to_directory_ != save_directory_)
+			{
+				handle_.move_storage(to_utf8(move_to_directory_));
+				save_directory_ = move_to_directory_;
+			}
 		}
 	}
 	
