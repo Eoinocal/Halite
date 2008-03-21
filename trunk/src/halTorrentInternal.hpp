@@ -571,7 +571,6 @@ public:
 		HAL_DEV_MSG(L"removing handle from session");
 		the_session_->remove_torrent(handle_);
 		in_session_ = false;
-		state_ = TorrentDetail::torrent_stopped;
 
 		assert(!inSession());	
 		HAL_DEV_MSG(L"Removed from session!");
@@ -619,7 +618,7 @@ public:
 			addToSession(true);
 
 			assert(inSession());
-			assert(handle_.is_paused());
+		//	assert(handle_.is_paused());
 		}
 		else
 		{
@@ -652,7 +651,6 @@ public:
 			else if (state_ == TorrentDetail::torrent_paused)
 			{			
 				removeFromSession();
-
 				state_ = TorrentDetail::torrent_stopped;				
 			}
 		}
@@ -1113,7 +1111,7 @@ private:
 		
 		state_ = TorrentDetail::torrent_stopped;
 		
-		removeFromSession();			
+		removeFromSession();
 		assert(!inSession());
 
 		HAL_DEV_MSG(L"completed_stop()");
@@ -1122,12 +1120,15 @@ private:
 	void handle_recheck()
 	{
 		mutex_t::scoped_lock l(mutex_);
-
-		HAL_DEV_MSG(L"handleRecheck()");
-
 		state_ = TorrentDetail::torrent_stopped;
+
 		removeFromSession(false);
+		assert(!inSession());
+
 		resume();
+		assert(inSession());
+
+		HAL_DEV_MSG(L"handle_recheck()");
 	}
 		
 	static lbt::session* the_session_;
