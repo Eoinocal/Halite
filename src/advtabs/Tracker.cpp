@@ -81,6 +81,9 @@ void AdvTrackerDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 		
 		username_ = details.first;
 		password_ = details.second;
+
+		if (!hal::bittorrent().isTorrentActive(pT->name()))
+			SetDlgItemText(IDC_REANNOUNCE, L"Resume");
 	}
 	else
 	{				
@@ -155,12 +158,26 @@ void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
 void AdvTrackerDialog::onLoginApply(UINT, int, HWND)
 {
 	DoDataExchange(true);
+
+	if (hal::bittorrent().torrentDetails().focusedTorrent())
+		hal::bittorrent().setTorrentLogin(
+			hal::to_utf8(hal::bittorrent().torrentDetails().focusedTorrent()->name()),
+			username_, password_);
 }
 
 void AdvTrackerDialog::onReannounce(UINT, int, HWND)
 {
 	if (hal::bittorrent().torrentDetails().focusedTorrent())
-		hal::bittorrent().reannounceTorrent(hal::to_utf8(hal::bittorrent().torrentDetails().focusedTorrent()->name()));
+	{
+		if (!hal::bittorrent().isTorrentActive(focusedTorrent()->name()))
+		{
+			hal::bittorrent().resumeTorrent(focusedTorrent()->name());
+		}
+		else
+		{
+			hal::bittorrent().reannounceTorrent(focusedTorrent()->name());
+		}
+	}
 }
 
 void AdvTrackerDialog::trackerListEdited()

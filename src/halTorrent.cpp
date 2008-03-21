@@ -1459,6 +1459,7 @@ void BitTorrent::closeAll()
 	{
 		if ((*i).torrent->inSession())
 		{
+		//	HAL_DEV_MSG(wformat_t(L"Internalling pausing writeData=%1%") % writeData);
 			(*i).torrent->handle().pause(); // Internal pause, not registered in Torrents.xml
 		}
 	}

@@ -134,8 +134,10 @@ public:
 
 		try
 		{
-			events_.push_back(event);
-			PostMessage(WM_USER_LOGPOST, 0, 0);
+		events_.push_back(event);
+		
+		PostMessage(WM_USER_LOGPOST, 0, 0);
+		
 		}
 		catch(...)
 		{}
