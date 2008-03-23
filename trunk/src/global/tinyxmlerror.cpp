@@ -22,11 +22,9 @@ must not be misrepresented as being the original software.
 distribution.
 */
 
-#include "stdAfx.hpp"
-
 #include "tinyxml.hpp"
 
-namespace tinyxml
+namespace xml
 {
 
 // The goal of the seperate error_ file_ is to make the first_

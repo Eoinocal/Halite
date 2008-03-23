@@ -24,6 +24,11 @@ public:
 		name_(name)
 	{}
 	
+	IniBase(std::string name, hal::ini_file& ini = hal::ini()) :
+		adapter_(boost::filesystem::path(""), ini),
+		name_(name)
+	{}
+	
 	void Save()
 	{
 		std::wstringstream xml_data;
@@ -36,6 +41,36 @@ public:
 	}
 	
 	void save() { Save(); }
+
+	template<typename P>
+	void save_standalone(const P& location)
+	{
+		fs::wofstream ofs(location);
+		
+		boost::archive::xml_woarchive oxml(ofs);
+		T* pT = static_cast<T*>(this);	
+		oxml << boost::serialization::make_nvp(name_.c_str(), *pT);
+	}
+	
+	template<typename P>
+	void load_standalone(const P& location)
+	{
+		try 
+		{		
+		fs::wifstream ifs(location);
+
+		boost::archive::xml_wiarchive ixml(ifs);
+
+		T* pT = static_cast<T*>(this);	
+		ixml >> boost::serialization::make_nvp(name_.c_str(), *pT);
+		
+		}
+		catch (const std::exception& e)
+		{			
+			hal::event().post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventXmlException(hal::from_utf8(e.what()), L"load_standalone"))); 
+		}
+	}
 	
 	void Load()
 	{

@@ -1266,25 +1266,41 @@ void BitTorrent::addTorrent(wpath_t file, wpath_t saveDirectory, bool startStopp
 {
 	try 
 	{	
-	
 	TorrentInternal_ptr TIp;
-	
-	if (useMoveTo)
-		TIp.reset(new TorrentInternal(file, saveDirectory, compactStorage, moveToDirectory));		
+
+	std::pair<std::string, std::string> names = extract_names(file);
+	wstring_t xml_name = from_utf8(names.first) + L".xml";
+
+	if (fs::exists(file.branch_path()/xml_name))
+	{
+		torrent_standalone tsa;
+		tsa.load_standalone(file.branch_path()/xml_name);
+
+		TIp = tsa.torrent;
+		TIp->prepare(file);
+	}
 	else
-		TIp.reset(new TorrentInternal(file, saveDirectory, compactStorage));
+	{
+		if (useMoveTo)
+			TIp.reset(new TorrentInternal(file, saveDirectory, compactStorage, moveToDirectory));		
+		else
+			TIp.reset(new TorrentInternal(file, saveDirectory, compactStorage));
+
+		TIp->setTransferSpeed(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload());
+		TIp->setConnectionLimit(bittorrent().defTorrentMaxConn(), bittorrent().defTorrentMaxUpload());
+	}
 	
 	std::pair<TorrentManager::torrentByName::iterator, bool> p =
 		pimpl->theTorrents.insert(TIp);
 	
 	if (p.second)
 	{
-		TorrentInternal_ptr me = pimpl->theTorrents.get(TIp->name());
+		TorrentInternal_ptr me = pimpl->theTorrents.get(TIp->name());		
 		
-		me->setTransferSpeed(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload());
-		me->setConnectionLimit(bittorrent().defTorrentMaxConn(), bittorrent().defTorrentMaxUpload());
-		
-		if (!startStopped) me->addToSession();
+		if (!startStopped) 
+			me->addToSession();
+		else
+			me->set_state_stopped();
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(to_utf8(file.string()), "addTorrent")
@@ -1405,7 +1421,7 @@ void BitTorrent::resumeAll()
 			try 
 			{
 				
-			(*i).torrent->prepare(file, (*i).torrent->saveDirectory());	
+			(*i).torrent->prepare(file);	
 
 			switch ((*i).torrent->state())
 			{

@@ -22,14 +22,12 @@ must not be misrepresented as being the original software.
 distribution.
 */
 
-#include "stdAfx.hpp"
-
 #include <ctype.h>
 #include <stddef.h>
 
 #include "tinyxml.hpp"
 
-namespace tinyxml
+namespace xml
 {
 
 //#define DEBUG_PARSER

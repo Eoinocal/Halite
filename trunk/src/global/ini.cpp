@@ -85,16 +85,16 @@ public:
 	
 	bool save(boost::filesystem::path location, std::string data)
 	{
-		tinyxml::node* data_node = get_data_node(location);
+		xml::node* data_node = get_data_node(location);
 		
 		// Should have correct node		
 		
 		return true;
 	}
 
-	bool save(boost::filesystem::path location, tinyxml::node* data)
+	bool save(boost::filesystem::path location, xml::node* data)
 	{
-		tinyxml::node* data_node = get_data_node(location);
+		xml::node* data_node = get_data_node(location);
 		
 		data_node->clear();
 		data_node->link_end_child(data);
@@ -102,11 +102,11 @@ public:
 		return true;
 	}
 	
-	tinyxml::node* load(boost::filesystem::path location)
+	xml::node* load(boost::filesystem::path location)
 	{
-		tinyxml::node* data_node = get_data_node(location);
+		xml::node* data_node = get_data_node(location);
 		
-		tinyxml::node* data = data_node->first_child();
+		xml::node* data = data_node->first_child();
 		
 		if (data)
 			return data->clone();
@@ -117,28 +117,28 @@ public:
 private:
 	void generate_default_file()
 	{
-		xml_.link_end_child(new tinyxml::declaration("1.0", "", ""));
+		xml_.link_end_child(new xml::declaration("1.0", "", ""));
 		
-		xml_.link_end_child(new tinyxml::element("ini"));
+		xml_.link_end_child(new xml::element("ini"));
 	}
 	
-	tinyxml::node* get_data_node(boost::filesystem::path location)
+	xml::node* get_data_node(boost::filesystem::path location)
 	{
-		tinyxml::node* data_node = xml_.first_child("ini");
+		xml::node* data_node = xml_.first_child("ini");
 		
 		if (!data_node)
 		{
-			data_node = new tinyxml::element("ini");
+			data_node = new xml::element("ini");
 			xml_.link_end_child(data_node);
 		}
 		
 		foreach(std::string elem, location)
 		{
-			tinyxml::node* child_node = data_node->first_child(elem);
+			xml::node* child_node = data_node->first_child(elem);
 			
 			if (!child_node)
 			{
-				child_node = new tinyxml::element(elem);
+				child_node = new xml::element(elem);
 				data_node->link_end_child(child_node);
 			}
 			
@@ -150,7 +150,7 @@ private:
 	
 	boost::filesystem::wpath main_file_;
 	boost::filesystem::wpath working_file_;
-	tinyxml::document xml_;
+	xml::document xml_;
 };
 
 ini_file::ini_file(std::wstring filename) :
@@ -175,12 +175,12 @@ bool ini_file::save(boost::filesystem::path location, std::string data)
 	return pimpl->save(location, data);
 }
 
-bool ini_file::save(boost::filesystem::path location, tinyxml::node* data)
+bool ini_file::save(boost::filesystem::path location, xml::node* data)
 {
 	return pimpl->save(location, data);
 }
 
-tinyxml::node* ini_file::load(boost::filesystem::path location)
+xml::node* ini_file::load(boost::filesystem::path location)
 {
 	return pimpl->load(location);
 }

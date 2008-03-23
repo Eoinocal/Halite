@@ -65,6 +65,7 @@
 #ifndef RC_INVOKED
 
 #include <boost/tuple/tuple.hpp>
+#include <boost/enable_shared_from_this.hpp>
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/indexed_by.hpp>
@@ -125,6 +126,27 @@ bool halencode(const wpath_t &file, const lbt::entry &e)
 	
 	lbt::bencode(std::ostream_iterator<char>(ofs), e);
 	return true;
+}
+
+std::pair<std::string, std::string> extract_names(const wpath_t &file)
+{
+	if (fs::exists(file)) 
+	{	
+		lbt::torrent_info info(haldecode(file));
+
+		std::string name = info.name();	
+		std::string filename = name;
+
+		if (!boost::find_last(filename, ".torrent")) 
+				filename += ".torrent";
+		
+		event().post(shared_ptr<EventDetail>(new EventMsg(
+			wformat_t(L"Loaded names: %1%, %2%") % from_utf8(name) % from_utf8(filename))));
+
+		return std::make_pair(name, filename);
+	}
+	else
+		return std::make_pair("", "");
 }
 
 class invalidTorrent : public std::exception
@@ -407,8 +429,41 @@ struct signalers
 	signaler<> torrent_paused;
 };
 
-class TorrentInternal : 
-	boost::noncopyable
+
+class TorrentInternal;
+typedef shared_ptr<TorrentInternal> TorrentInternal_ptr;
+
+struct torrent_standalone :
+	public hal::IniBase<torrent_standalone>
+{
+	typedef torrent_standalone thisClass;
+	typedef hal::IniBase<thisClass> iniClass;
+
+	torrent_standalone() :
+		iniClass("torrent")
+	{}
+
+	torrent_standalone(TorrentInternal_ptr t) :
+		iniClass("torrent"),
+		torrent(t),
+		save_time(pt::second_clock::universal_time())
+	{}
+
+	TorrentInternal_ptr torrent;
+	pt::ptime save_time;
+
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+        ar & make_nvp("torrent", torrent);
+        ar & make_nvp("save_time", save_time);
+    }
+};
+
+class TorrentInternal :
+	public boost::enable_shared_from_this<TorrentInternal>,
+	private boost::noncopyable
 {
 	friend class BitTorrent_impl;	
 public:
@@ -422,13 +477,13 @@ public:
 		totalUploaded_(0), \
 		totalBase_(0), \
 		progress_(0), \
-		startTime_(boost::posix_time::second_clock::universal_time())
+		startTime_(boost::posix_time::second_clock::universal_time()), \
+		in_session_(false)
 		
 	TorrentInternal() :	
 		TORRENT_INTERNALS_DEFAULTS,
 		compactStorage_(true),
-		state_(TorrentDetail::torrent_stopped),	
-		in_session_(false)
+		state_(TorrentDetail::torrent_stopped)
 	{}
 	
 	TorrentInternal(wpath_t filename, wpath_t saveDirectory, bool compactStorage, wpath_t move_to_directory=L"") :
@@ -436,12 +491,10 @@ public:
 		save_directory_(saveDirectory.string()),
 		move_to_directory_(move_to_directory.string()),
 		compactStorage_(compactStorage),	
-		state_(TorrentDetail::torrent_stopped),	
-		in_session_(false)
+		state_(TorrentDetail::torrent_stopped)
 	{
-		assert(the_session_);
-		
-		prepare(filename, save_directory_);
+		assert(the_session_);		
+		prepare(filename);
 	}
 	
 	TorrentInternal(const TorrentInternalOld& t) :
@@ -449,7 +502,6 @@ public:
 		state_(t.state_),
 		connections_(t.connections_),
 		uploads_(t.uploads_),
-		in_session_(false),
 		ratio_(t.ratio_),
 		resolve_countries_(t.resolve_countries_),
 		filename_(t.filename_),
@@ -656,6 +708,11 @@ public:
 		}
 	}
 
+	void set_state_stopped()
+	{
+		state_ = TorrentDetail::torrent_stopped;
+	}
+
 	void forceRecheck()
 	{
 		mutex_t::scoped_lock l(mutex_);		
@@ -693,6 +750,9 @@ public:
 		bool halencode_result = halencode(resumeDir/filename_, resumedata_);
 		assert(halencode_result);
 		HAL_DEV_MSG(L"Written!");
+
+		torrent_standalone tsa(shared_from_this());
+		tsa.save_standalone(resumeDir/(name_+L".xml"));
 	}
 	
 	void clearResumeData()
@@ -920,7 +980,7 @@ public:
 		fileDetails = fileDetailsMemory_;
 	}
 	
-	void prepare(wpath_t filename, wpath_t saveDirectory)
+	void prepare(wpath_t filename)
 	{
 		mutex_t::scoped_lock l(mutex_);
 		
@@ -944,8 +1004,8 @@ public:
 		if (!exists(torrentFile))
 			copy_file(filename.string(), torrentFile);
 
-		if (!exists(saveDirectory))
-			create_directory(saveDirectory);
+		if (!fs::exists(save_directory_))
+			fs::create_directory(save_directory_);
 
 		if (state_ == TorrentDetail::torrent_stopping)
 			state_ = TorrentDetail::torrent_stopped;
@@ -1191,7 +1251,6 @@ private:
 
 typedef std::map<std::string, TorrentInternalOld> TorrentMap;
 typedef std::pair<std::string, TorrentInternalOld> TorrentPair;
-typedef shared_ptr<TorrentInternal> TorrentInternal_ptr;
 
 class TorrentManager : 
 	public hal::IniBase<TorrentManager>

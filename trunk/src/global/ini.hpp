@@ -10,7 +10,7 @@
 #include <boost/smart_ptr.hpp>
 #include <boost/filesystem/path.hpp>
 
-namespace tinyxml
+namespace xml
 {
 class node;
 }
@@ -30,9 +30,9 @@ public:
 	void save_data();
 	
 	bool save(boost::filesystem::path location, std::string data);
-	bool save(boost::filesystem::path location, tinyxml::node* data);
+	bool save(boost::filesystem::path location, xml::node* data);
 	
-	tinyxml::node* load(boost::filesystem::path location);
+	xml::node* load(boost::filesystem::path location);
 	
 	friend ini_file& ini();
 	
