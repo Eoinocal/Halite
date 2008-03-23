@@ -18,11 +18,11 @@ namespace hal
 
 void ini_adapter::load_stream_data(std::ostream& data)
 {
-	tinyxml::node* data_node = ini_.load(location_);
+	xml::node* data_node = ini_.load(location_);
 	
 	if (data_node)
 	{
-	tinyxml::document doc;
+	xml::document doc;
 	doc.parse("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><!DOCTYPE boost_serialization>");
 	
 	doc.link_end_child(data_node);
@@ -33,21 +33,21 @@ void ini_adapter::load_stream_data(std::ostream& data)
 
 void ini_adapter::save_stream_data(std::istream& data)
 {	
-	tinyxml::document doc;	
+	xml::document doc;	
 	data >> doc;
 	
-	tinyxml::node* data_node = doc.root_element();
+	xml::node* data_node = doc.root_element();
 	
 	ini_.save(location_, data_node->clone());
 }
 
 void ini_adapter::load_stream_data(std::wostream& data)
 {
-	tinyxml::node* data_node = ini_.load(location_);
+	xml::node* data_node = ini_.load(location_);
 	
 	if (data_node)
 	{
-		tinyxml::document doc;
+		xml::document doc;
 		doc.parse("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>\
 			<!DOCTYPE boost_serialization>");
 		doc.link_end_child(data_node);
@@ -73,10 +73,10 @@ void ini_adapter::save_stream_data(std::wistream& data)
 	   std::ostreambuf_iterator<char> (sstr)
 	);
 	
-	tinyxml::document doc;	
+	xml::document doc;	
 	sstr >> doc;
 	
-	tinyxml::node* data_node = doc.root_element();
+	xml::node* data_node = doc.root_element();
 	
 	ini_.save(location_, data_node->clone());
 }

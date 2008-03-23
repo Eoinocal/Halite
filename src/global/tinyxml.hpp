@@ -59,7 +59,7 @@ distribution.
 	#define TIXML_STRING		TiXmlString
 #endif
 
-namespace tinyxml
+namespace xml
 {
 
 // Deprecated library function hell. Compilers want to use the
