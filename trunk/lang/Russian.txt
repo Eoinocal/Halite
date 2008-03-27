@@ -90,9 +90,9 @@
 "These options specify the default limits applied to new torrents." ---> "Эти опции указывают лимиты, соблюдаемые поумолчянию."
 "Default save folder :" --->  ??? 
 "..." ---> "..."
-"Prompt for alternate save folder." ---> "Запрашивать альтернативную папку закачки."
-"Create new torrent" ---> "Создать новый торрент"
-"Save" ---> "Сохранить"
+"Move finished torrents to :" --->  ??? 
+"Review settings when adding torrent." --->  ??? 
+"Files" --->  ??? 
 "Select a file or directory from which to construct the torrent." --->  ??? 
 "File" --->  ??? 
 "Dir." --->  ??? 
@@ -102,6 +102,8 @@
 "Add" ---> "Добавить"
 "Comment" --->  ??? 
 "Creator" --->  ??? 
+"Trackers" --->  ??? 
+"Details" --->  ??? 
 "Halite shutting down..." ---> "Халит завершает выключается..."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Чтобы корректно завершить сессию, Битторренту потребуется несколько мгновений и данное сообщение исчезнет, как только программа закроется."
 "Show this message in future" ---> "Показывать это сообщение вдальнейшем?"
@@ -118,8 +120,10 @@
 "SysTabControl32" ---> "SysTabControl32"
 "Add Torrent" --->  ??? 
 "Ok" --->  ??? 
+"Torrent save folder:" --->  ??? 
+"Move the completed torrent to:" --->  ??? 
 "Use Compact Allocation." --->  ??? 
-"Stopped initially (Allows changing advanced setting)." --->  ??? 
+"Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "General" ---> "Общие"
 "Allow only one instance to run" --->  ??? 
@@ -129,9 +133,9 @@
 "Confirm on close" --->  ??? 
 "Language (requires restart)" --->  ??? 
 "List of Trackers." ---> "Список трэкеров."
-"Send login info to trackers." ---> "Послать информацию связи трэкерам"
 "Apply" ---> "Применить"
 "Reset" ---> "Стереть"
+"Send login info to trackers." ---> "Послать информацию связи трэкерам"
 "Log to file." ---> "Вести журнал в файл."
 "Log debug events." ---> "Вести журнал сообщений отладки."
 "Add New Tracker" ---> "Добавить новый трэкер"
@@ -146,6 +150,7 @@
 "E&xit" ---> "В&ыйти"
 "Resume" ---> "Запустить"
 "Stop" ---> "Остановить"
+"Recheck Files" --->  ??? 
 "Torrent File" ---> "Торрент файл"
 "Torrent and Data" ---> "Торрент файл и данные"
 "Open Download Folder" --->  ??? 
@@ -172,6 +177,7 @@
 "ProductVersion" ---> "Версия продукта"
 "VarFileInfo" ---> "VarFileInfo"
 "Translation" ---> "Перевод"
+"Construct a New Torrent" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(З-В) 0000.000KB/s - 0000.000KB/s"
 "CAPS" ---> "CAPS"
 "0000 DHT node(s)" ---> "0000 DHT нодов"
@@ -197,7 +203,6 @@
 "Port %1% open" ---> "Порт %1% открыт"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Peers" --->  ??? 
-"Files" --->  ??? 
 "Logging" --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
@@ -234,6 +239,7 @@
 "Peer;Country;Download;Upload;Type;Client" --->  ??? 
 "Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
 "Filename;Path;Size;Progress;Priority" --->  ??? 
+"Filename;Path;Size" --->  ??? 
 "Don't download" --->  ??? 
 "Normal" --->  ??? 
 "2" --->  ??? 
@@ -278,3 +284,4 @@
 "Tracker Event: %1%." ---> "Событие трэкера: %1%."
 "Debug Event: %1%." ---> "Событие отладки: %1%."
 "Dev Msg: %1%." --->  ??? 
+"Dialog" --->  ??? 

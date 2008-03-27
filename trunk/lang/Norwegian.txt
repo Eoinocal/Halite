@@ -90,9 +90,9 @@
 "These options specify the default limits applied to new torrents." ---> "Disse settingene angir standard-settinger for nye torrenter."
 "Default save folder :" --->  ??? 
 "..." --->  ??? 
-"Prompt for alternate save folder." ---> "Spør om alternativ lagringsmappe."
-"Create new torrent" ---> "Lag en ny torrent"
-"Save" ---> "Lagre"
+"Move finished torrents to :" --->  ??? 
+"Review settings when adding torrent." --->  ??? 
+"Files" --->  ??? 
 "Select a file or directory from which to construct the torrent." --->  ??? 
 "File" --->  ??? 
 "Dir." --->  ??? 
@@ -102,6 +102,8 @@
 "Add" ---> "Legg til"
 "Comment" --->  ??? 
 "Creator" --->  ??? 
+"Trackers" --->  ??? 
+"Details" --->  ??? 
 "Halite shutting down..." ---> "Halite lukkes..."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Det vil ta BitTorrent sesjonen et øyeblikk å stenges korrekt. Denne meldingen vil da forsvinne og programmet vil lukkes."
 "Show this message in future" ---> "Vis denne meldingen i fremtiden"
@@ -118,8 +120,10 @@
 "SysTabControl32" --->  ??? 
 "Add Torrent" --->  ??? 
 "Ok" --->  ??? 
+"Torrent save folder:" --->  ??? 
+"Move the completed torrent to:" --->  ??? 
 "Use Compact Allocation." --->  ??? 
-"Stopped initially (Allows changing advanced setting)." --->  ??? 
+"Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "General" ---> "Generelt"
 "Allow only one instance to run" --->  ??? 
@@ -129,9 +133,9 @@
 "Confirm on close" --->  ??? 
 "Language (requires restart)" --->  ??? 
 "List of Trackers." ---> "Liste over trackere."
-"Send login info to trackers." ---> "Send login info til trackere"
 "Apply" ---> "Bruk"
 "Reset" ---> "Nullstill"
+"Send login info to trackers." ---> "Send login info til trackere"
 "Log to file." ---> "Logg til fil."
 "Log debug events." ---> "Logg debug-hendelser"
 "Add New Tracker" ---> "Legg til ny tracker"
@@ -146,6 +150,7 @@
 "E&xit" --->  ??? 
 "Resume" ---> "Fortsett"
 "Stop" ---> "Stopp"
+"Recheck Files" --->  ??? 
 "Torrent File" ---> "Torrent Fil"
 "Torrent and Data" ---> "Torrent og Data"
 "Open Download Folder" --->  ??? 
@@ -172,6 +177,7 @@
 "ProductVersion" ---> "Produktversjon"
 "VarFileInfo" --->  ??? 
 "Translation" ---> "Oversettelse"
+"Construct a New Torrent" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "CAPS" --->  ??? 
 "0000 DHT node(s)" ---> "0000 DHT node(r)"
@@ -197,7 +203,6 @@
 "Port %1% open" ---> "Port %1% åpen"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Peers" --->  ??? 
-"Files" --->  ??? 
 "Logging" --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
@@ -234,6 +239,7 @@
 "Peer;Country;Download;Upload;Type;Client" --->  ??? 
 "Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
 "Filename;Path;Size;Progress;Priority" --->  ??? 
+"Filename;Path;Size" --->  ??? 
 "Don't download" --->  ??? 
 "Normal" --->  ??? 
 "2" --->  ??? 
@@ -278,3 +284,4 @@
 "Tracker Event: %1%." ---> "Tracker Hendelse: %1%."
 "Debug Event: %1%." ---> "Debug Hendelse: %1%."
 "Dev Msg: %1%." --->  ??? 
+"Dialog" --->  ??? 

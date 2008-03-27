@@ -90,9 +90,9 @@
 "These options specify the default limits applied to new torrents." ---> "Nastavi možnosti za nove torrente."
 "Default save folder :" ---> "Privzeta mapa za shranjevanje :"
 "..." ---> "..."
-"Prompt for alternate save folder." ---> "Vprašaj kam naj shranim."
-"Create new torrent" ---> "Ustvari nov torrent"
-"Save" ---> "Shrani"
+"Move finished torrents to :" --->  ??? 
+"Review settings when adding torrent." --->  ??? 
+"Files" ---> "Datotek"
 "Select a file or directory from which to construct the torrent." --->  ??? 
 "File" --->  ??? 
 "Dir." --->  ??? 
@@ -102,6 +102,8 @@
 "Add" ---> "Dodaj"
 "Comment" --->  ??? 
 "Creator" --->  ??? 
+"Trackers" --->  ??? 
+"Details" --->  ??? 
 "Halite shutting down..." ---> "Halite se izklaplja..."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Prosimo počakajte nekaj sekund, da se program zapre."
 "Show this message in future" ---> "V prihodnosti mi prikaži to sporočilo"
@@ -118,8 +120,10 @@
 "SysTabControl32" ---> "SysTabControl32"
 "Add Torrent" --->  ??? 
 "Ok" --->  ??? 
+"Torrent save folder:" --->  ??? 
+"Move the completed torrent to:" --->  ??? 
 "Use Compact Allocation." --->  ??? 
-"Stopped initially (Allows changing advanced setting)." --->  ??? 
+"Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "General" ---> "Splošno"
 "Allow only one instance to run" --->  ??? 
@@ -129,9 +133,9 @@
 "Confirm on close" --->  ??? 
 "Language (requires restart)" --->  ??? 
 "List of Trackers." ---> "Seznam trackerjev"
-"Send login info to trackers." ---> "Pošlji podatke o prijavi trackerjem."
 "Apply" ---> "Posodobi"
 "Reset" ---> "Razveljavi"
+"Send login info to trackers." ---> "Pošlji podatke o prijavi trackerjem."
 "Log to file." ---> "Shrani log v datoteko."
 "Log debug events." ---> "Shranjuj debug log."
 "Add New Tracker" ---> "Dodaj nov tracker"
@@ -146,6 +150,7 @@
 "E&xit" ---> "Izhod"
 "Resume" ---> "Nadaljuj"
 "Stop" ---> "Prekini"
+"Recheck Files" --->  ??? 
 "Torrent File" ---> "Torrent datoteko"
 "Torrent and Data" ---> "Torrent datoteko in podatke"
 "Open Download Folder" --->  ??? 
@@ -172,6 +177,7 @@
 "ProductVersion" ---> "ProductVersion"
 "VarFileInfo" ---> "VarFileInfo"
 "Translation" ---> "Prevod"
+"Construct a New Torrent" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(D-U) 0000.000KB/s - 0000.000KB/s"
 "CAPS" ---> "CAPS"
 "0000 DHT node(s)" ---> "0000 DHT soležnikov"
@@ -197,7 +203,6 @@
 "Port %1% open" ---> "Port %1% odprt"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Izberite mapo, kjer se bodo shranjevali preosi. Kliknite prekliči, če ste zadovoljni z privzeto nastavitvijo."
 "Peers" ---> "Peerov"
-"Files" ---> "Datotek"
 "Logging" ---> "Shranjevanje"
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Neveljavna nastavitev šifriranja %1%."
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Neveljavna nastavitev povezabe %1%."
@@ -234,6 +239,7 @@
 "Peer;Country;Download;Upload;Type;Client" ---> "Peer;Država;Dol;Gor;Katgorija;BT odjemalec"
 "Peer;Country;Download;Upload;Type;Client;Status" ---> "Peer;Država;Dol;Gor;Katgorija;BT odjemalec;Stanje"
 "Filename;Path;Size;Progress;Priority" ---> "Ime;Pot;Velikost;Napredek;Prioriteta"
+"Filename;Path;Size" --->  ??? 
 "Don't download" ---> "Ne prenesi"
 "Normal" ---> "Navadna"
 "2" --->  ??? 
@@ -278,3 +284,4 @@
 "Tracker Event: %1%." ---> "Tracker dogodek: %1%."
 "Debug Event: %1%." ---> "Debug dogodek: %1%."
 "Dev Msg: %1%." --->  ??? 
+"Dialog" --->  ??? 
