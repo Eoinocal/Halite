@@ -618,6 +618,9 @@ public:
 			resumedata_ = handle_.write_resume_data(); // Update the fast-resume data
 			HAL_DEV_MSG(L"writing resume data");
 			writeResumeData();
+
+			torrent_standalone tsa(shared_from_this());
+			tsa.save_standalone(workingDir_/L"torrents"/(name_+L".xml"));
 		}
 		
 		HAL_DEV_MSG(L"removing handle from session");
@@ -694,9 +697,9 @@ public:
 			{
 				assert(inSession());
 
-				handle_.pause();
 				signals().torrent_paused.disconnect_all_once();
 				signals().torrent_paused.connect_once(bind(&TorrentInternal::completed_stop, this));
+				handle_.pause();
 
 				state_ = TorrentDetail::torrent_stopping;
 			}
@@ -730,8 +733,10 @@ public:
 			signals().torrent_paused.disconnect_all_once();
 
 		case TorrentDetail::torrent_active:
+			signals().torrent_paused.disconnect_all_once();
 			signals().torrent_paused.connect_once(bind(&TorrentInternal::handle_recheck, this));
 			handle_.pause();
+			state_ = TorrentDetail::torrent_pausing;
 			break;
 
 		default:
@@ -750,9 +755,6 @@ public:
 		bool halencode_result = halencode(resumeDir/filename_, resumedata_);
 		assert(halencode_result);
 		HAL_DEV_MSG(L"Written!");
-
-		torrent_standalone tsa(shared_from_this());
-		tsa.save_standalone(resumeDir/(name_+L".xml"));
 	}
 	
 	void clearResumeData()
@@ -761,6 +763,8 @@ public:
 		
 		if (exists(resumeFile))
 			remove(resumeFile);
+
+		resumedata_ = lbt::entry();
 	}
 	
 	void finished()
@@ -1188,6 +1192,8 @@ private:
 
 		removeFromSession(false);
 		assert(!inSession());
+
+		clearResumeData();
 
 		resume();
 		assert(inSession());

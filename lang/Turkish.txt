@@ -90,9 +90,9 @@
 "These options specify the default limits applied to new torrents." ---> "Bu seçenekler yeni torrentlere uygulanacak varsayılan sınırları belirtir."
 "Default save folder :" --->  ??? 
 "..." ---> "..."
-"Prompt for alternate save folder." ---> "Alternatif kaydetme klasörü için uyar."
-"Create new torrent" ---> "Yeni torrent oluştur"
-"Save" ---> "Kaydet"
+"Move finished torrents to :" --->  ??? 
+"Review settings when adding torrent." --->  ??? 
+"Files" --->  ??? 
 "Select a file or directory from which to construct the torrent." --->  ??? 
 "File" --->  ??? 
 "Dir." --->  ??? 
@@ -102,6 +102,8 @@
 "Add" ---> "Ekle"
 "Comment" --->  ??? 
 "Creator" --->  ??? 
+"Trackers" --->  ??? 
+"Details" --->  ??? 
 "Halite shutting down..." ---> "Halite kapatılıyor..."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Bu mesaj kaybolduktan ve program kapandıktan sonra Bittorrent oturumunun düzgün bir biçimde kapatılması biraz zaman alacaktır."
 "Show this message in future" ---> "Bu mesajı ilerde de göster"
@@ -118,8 +120,10 @@
 "SysTabControl32" ---> "SysTabControl32"
 "Add Torrent" --->  ??? 
 "Ok" --->  ??? 
+"Torrent save folder:" --->  ??? 
+"Move the completed torrent to:" --->  ??? 
 "Use Compact Allocation." --->  ??? 
-"Stopped initially (Allows changing advanced setting)." --->  ??? 
+"Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "General" ---> "Genel"
 "Allow only one instance to run" --->  ??? 
@@ -129,9 +133,9 @@
 "Confirm on close" --->  ??? 
 "Language (requires restart)" ---> "Dil (yeniden başlatma gerektirir)"
 "List of Trackers." ---> "İzleyici Listesi."
-"Send login info to trackers." ---> "İzleyicilere giriş bilgisi gönder."
 "Apply" ---> "Uygula"
 "Reset" ---> "Sıfırla"
+"Send login info to trackers." ---> "İzleyicilere giriş bilgisi gönder."
 "Log to file." ---> "Günlüğü dosyaya kaydet"
 "Log debug events." ---> "Hata Ayıklama olaylarını kaydet"
 "Add New Tracker" ---> "Yeni İzleyici Ekle"
@@ -146,6 +150,7 @@
 "E&xit" ---> "&Çıkış"
 "Resume" ---> "Devam Et"
 "Stop" ---> "Durdur"
+"Recheck Files" --->  ??? 
 "Torrent File" ---> "Torrent Dosyası"
 "Torrent and Data" ---> "Torrent ve Veri"
 "Open Download Folder" --->  ??? 
@@ -172,6 +177,7 @@
 "ProductVersion" ---> "ProductVersion"
 "VarFileInfo" ---> "VarFileInfo"
 "Translation" ---> "Translation"
+"Construct a New Torrent" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(İ-G) 0000.000KB/s - 0000.000KB/s"
 "CAPS" ---> "CAPS"
 "0000 DHT node(s)" ---> "0000 DHT nodu"
@@ -197,7 +203,6 @@
 "Port %1% open" ---> "%1% portu açık"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Peers" --->  ??? 
-"Files" --->  ??? 
 "Logging" --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
@@ -234,6 +239,7 @@
 "Peer;Country;Download;Upload;Type;Client" --->  ??? 
 "Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
 "Filename;Path;Size;Progress;Priority" --->  ??? 
+"Filename;Path;Size" --->  ??? 
 "Don't download" --->  ??? 
 "Normal" --->  ??? 
 "2" --->  ??? 
@@ -278,3 +284,4 @@
 "Tracker Event: %1%." ---> "İzleyici ile İlgili Durum: %1%."
 "Debug Event: %1%." ---> "Hata Ayıklama ile İlgili Durum: %1%."
 "Dev Msg: %1%." --->  ??? 
+"Dialog" --->  ??? 

@@ -90,9 +90,9 @@
 "These options specify the default limits applied to new torrents." ---> "Estas opciones especifican los límites por defecto que se aplican a los nuevos torrents."
 "Default save folder :" ---> "Directorio de guardado predeterminado :"
 "..." ---> "..."
-"Prompt for alternate save folder." ---> "Preguntar por directorio de guardado alternativo."
-"Create new torrent" ---> "Crear nuevo torrent"
-"Save" ---> "Guardar"
+"Move finished torrents to :" --->  ??? 
+"Review settings when adding torrent." --->  ??? 
+"Files" ---> "Archivos"
 "Select a file or directory from which to construct the torrent." --->  ??? 
 "File" --->  ??? 
 "Dir." --->  ??? 
@@ -102,6 +102,8 @@
 "Add" ---> "Añadir"
 "Comment" --->  ??? 
 "Creator" --->  ??? 
+"Trackers" --->  ??? 
+"Details" --->  ??? 
 "Halite shutting down..." ---> "Halite se está cerrando..."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "La sesión BitTorrent tardará un tiempo en cerrarse limpiamente. Después este mensaje desaparecerá y el programa se cerrará."
 "Show this message in future" ---> "Mostrar este mensaje en el futuro"
@@ -118,8 +120,10 @@
 "SysTabControl32" --->  ??? 
 "Add Torrent" --->  ??? 
 "Ok" --->  ??? 
+"Torrent save folder:" --->  ??? 
+"Move the completed torrent to:" --->  ??? 
 "Use Compact Allocation." --->  ??? 
-"Stopped initially (Allows changing advanced setting)." --->  ??? 
+"Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "General" ---> "General"
 "Allow only one instance to run" --->  ??? 
@@ -129,9 +133,9 @@
 "Confirm on close" --->  ??? 
 "Language (requires restart)" ---> "Idioma (requiere reiniciar)"
 "List of Trackers." ---> "Lista de Trackers."
-"Send login info to trackers." --->  ??? 
 "Apply" ---> "Aplicar"
 "Reset" ---> "Resetear"
+"Send login info to trackers." --->  ??? 
 "Log to file." --->  ??? 
 "Log debug events." --->  ??? 
 "Add New Tracker" ---> "Añadir nuevo Tracker"
@@ -146,6 +150,7 @@
 "E&xit" ---> "&Salir"
 "Resume" ---> "Reanudar"
 "Stop" ---> "Detener"
+"Recheck Files" --->  ??? 
 "Torrent File" ---> "Archivo Torrent"
 "Torrent and Data" ---> "Torrend y datos"
 "Open Download Folder" --->  ??? 
@@ -172,6 +177,7 @@
 "ProductVersion" --->  ??? 
 "VarFileInfo" --->  ??? 
 "Translation" --->  ??? 
+"Construct a New Torrent" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(D-S) 0000.000KB/s - 0000.000KB/s"
 "CAPS" --->  ??? 
 "0000 DHT node(s)" ---> "0000 nodo(s) DHT"
@@ -197,7 +203,6 @@
 "Port %1% open" ---> "Puerto %1% abierto"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Selecciona un directorio donde guardar las descargas. Pulsa Cancelar para aceptar el directorio por defecto."
 "Peers" ---> "Pares"
-"Files" ---> "Archivos"
 "Logging" --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
@@ -234,6 +239,7 @@
 "Peer;Country;Download;Upload;Type;Client" ---> "Par;País;Descarga;Subida;Tipo;Cliente"
 "Peer;Country;Download;Upload;Type;Client;Status" ---> "Par;País;Descarga;Subida;Tipo;Cliente;Estado"
 "Filename;Path;Size;Progress;Priority" ---> "Nombre de archivo;Ruta;Tamaño;Progreso;Prioridad"
+"Filename;Path;Size" --->  ??? 
 "Don't download" ---> "No descargar"
 "Normal" ---> "Normal"
 "2" --->  ??? 
@@ -278,3 +284,4 @@
 "Tracker Event: %1%." ---> "Evento de tracker: %1%."
 "Debug Event: %1%." ---> "Evento de depuración: %1%."
 "Dev Msg: %1%." --->  ??? 
+"Dialog" --->  ??? 

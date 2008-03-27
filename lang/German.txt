@@ -90,9 +90,9 @@
 "These options specify the default limits applied to new torrents." ---> "Hier setzt Du die Standards für neue Torrents."
 "Default save folder :" ---> "Standardverzeichnis:"
 "..." ---> "..."
-"Prompt for alternate save folder." ---> "Nach alternativen Speicherort fragen"
-"Create new torrent" ---> "Neuen Torrent erstellen"
-"Save" ---> "Speichern"
+"Move finished torrents to :" --->  ??? 
+"Review settings when adding torrent." --->  ??? 
+"Files" ---> "Dateien"
 "Select a file or directory from which to construct the torrent." --->  ??? 
 "File" --->  ??? 
 "Dir." --->  ??? 
@@ -102,6 +102,8 @@
 "Add" ---> "Hinzufügen"
 "Comment" --->  ??? 
 "Creator" --->  ??? 
+"Trackers" --->  ??? 
+"Details" --->  ??? 
 "Halite shutting down..." ---> "Halite wird geschloßen"
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Es wird einige Zeit dauern, bis die BitTorrent Sitzung sauber geschloßen wurde.\nDiese Mitteilung verschwindet und das Programm schließt sich."
 "Show this message in future" ---> "Diese Meldung in Zukunft anzeigen"
@@ -118,8 +120,10 @@
 "SysTabControl32" ---> "SysTabControl32"
 "Add Torrent" ---> "Torrent hinzufügen"
 "Ok" ---> "Ok"
+"Torrent save folder:" --->  ??? 
+"Move the completed torrent to:" --->  ??? 
 "Use Compact Allocation." ---> "kompakte Zuweiseung verwenden"
-"Stopped initially (Allows changing advanced setting)." --->  ??? 
+"Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Info: kompakte Zuweiseung ist mit der Dateiauswahl nicht möglich"
 "General" ---> "Allgemein"
 "Allow only one instance to run" --->  ??? 
@@ -129,9 +133,9 @@
 "Confirm on close" --->  ??? 
 "Language (requires restart)" ---> "Sprache (Neustart erforderlich)"
 "List of Trackers." ---> "Liste der Tracker"
-"Send login info to trackers." ---> "Auf Trackern einloggen"
 "Apply" ---> "Anwenden"
 "Reset" ---> "Zurücksetzen"
+"Send login info to trackers." ---> "Auf Trackern einloggen"
 "Log to file." ---> "Log in Datei speichern."
 "Log debug events." ---> "Debug Ereignisse in den Log schreiben."
 "Add New Tracker" ---> "Tracker hinzufügen"
@@ -146,6 +150,7 @@
 "E&xit" ---> "Be&enden"
 "Resume" ---> "Fortsetzen"
 "Stop" ---> "Stop"
+"Recheck Files" --->  ??? 
 "Torrent File" ---> "Torrent"
 "Torrent and Data" ---> "Torrent und Daten"
 "Open Download Folder" --->  ??? 
@@ -172,6 +177,7 @@
 "ProductVersion" ---> "ProductVersion"
 "VarFileInfo" ---> "VarFileInfo"
 "Translation" ---> "Translation"
+"Construct a New Torrent" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(D-U) 0000.000KB/s - 0000.000KB/s"
 "CAPS" ---> "CAPS"
 "0000 DHT node(s)" ---> "0000 DHT Knoten"
@@ -197,7 +203,6 @@
 "Port %1% open" ---> "Port %1% offen"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Verzeichnis auswählen wo die Downloads gespeichert werden. Abbrechen auswählen, damit das Standard Downloadverzeichnis verwendet wird."
 "Peers" ---> "Peers"
-"Files" ---> "Dateien"
 "Logging" ---> "Protokoll"
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Ein ungültiges Verschlüsselungslevel, %1%, wurde als Verschlüsselungseinstellung verwendet."
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Eine ungültige Verbindungsstrategie, %1%, wurde als Verschlüsselungseinstellung verwendet."
@@ -234,6 +239,7 @@
 "Peer;Country;Download;Upload;Type;Client" ---> "Peer;Land;Download;Upload;Typ;Client"
 "Peer;Country;Download;Upload;Type;Client;Status" ---> "Peer;Land;Download;Upload;Typ;Client;Status"
 "Filename;Path;Size;Progress;Priority" ---> "Dateiname;Pfad;Größe;Fortschritt;Priorität"
+"Filename;Path;Size" --->  ??? 
 "Don't download" ---> "Nicht runterladen"
 "Normal" ---> "Normal"
 "2" --->  ??? 
@@ -278,3 +284,4 @@
 "Tracker Event: %1%." ---> "Tracker Ereignis: %1%."
 "Debug Event: %1%." ---> "Debug Ereignis: %1%."
 "Dev Msg: %1%." --->  ??? 
+"Dialog" --->  ??? 

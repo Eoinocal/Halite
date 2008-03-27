@@ -90,9 +90,9 @@
 "These options specify the default limits applied to new torrents." ---> "Deze optie specificeerd de standaard limiet die voor alle nieuwe torrents gelden."
 "Default save folder :" ---> "Standaard opslag map"
 "..." --->  ??? 
-"Prompt for alternate save folder." ---> "Vraag om alternatieve Download map."
-"Create new torrent" ---> "Maak Torrent"
-"Save" ---> "Opslaan"
+"Move finished torrents to :" --->  ??? 
+"Review settings when adding torrent." --->  ??? 
+"Files" ---> "Bestanden"
 "Select a file or directory from which to construct the torrent." --->  ??? 
 "File" --->  ??? 
 "Dir." --->  ??? 
@@ -102,6 +102,8 @@
 "Add" ---> "Voeg toe"
 "Comment" --->  ??? 
 "Creator" --->  ??? 
+"Trackers" --->  ??? 
+"Details" --->  ??? 
 "Halite shutting down..." ---> "Halite is bezig met afsluiten..."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." --->  ??? 
 "Show this message in future" ---> "Toon dit bericht in de toekomst"
@@ -118,8 +120,10 @@
 "SysTabControl32" --->  ??? 
 "Add Torrent" ---> "Torrent toevoegen"
 "Ok" --->  ??? 
+"Torrent save folder:" --->  ??? 
+"Move the completed torrent to:" --->  ??? 
 "Use Compact Allocation." ---> "Gebruik compacte allocatie."
-"Stopped initially (Allows changing advanced setting)." --->  ??? 
+"Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "nb. Compacte allocatie is niet compatible met Bestands Selectie"
 "General" ---> "Algemeen"
 "Allow only one instance to run" --->  ??? 
@@ -129,9 +133,9 @@
 "Confirm on close" --->  ??? 
 "Language (requires restart)" --->  ??? 
 "List of Trackers." ---> "Lijst van Trackers."
-"Send login info to trackers." ---> "Stuur login gegevens naar Tracker."
 "Apply" ---> "Toepassen"
 "Reset" ---> "Reset"
+"Send login info to trackers." ---> "Stuur login gegevens naar Tracker."
 "Log to file." ---> "Log naar bestand."
 "Log debug events." ---> "Log debug gebeurtenissen"
 "Add New Tracker" ---> "Voeg nieuwe Tracker toe"
@@ -146,6 +150,7 @@
 "E&xit" ---> "&Afsluiten"
 "Resume" ---> "Herstart"
 "Stop" ---> "Stop"
+"Recheck Files" --->  ??? 
 "Torrent File" ---> "Torrent bestand"
 "Torrent and Data" ---> "Torrent en Data"
 "Open Download Folder" --->  ??? 
@@ -172,6 +177,7 @@
 "ProductVersion" ---> "ProductVersie"
 "VarFileInfo" --->  ??? 
 "Translation" ---> "Vertaling"
+"Construct a New Torrent" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "CAPS" --->  ??? 
 "0000 DHT node(s)" ---> "0000 DHT Knopen"
@@ -197,7 +203,6 @@
 "Port %1% open" ---> "Poort %1% open"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Kies een map om de download op te slaan. Kies cancel om de standaard map te gebruiken."
 "Peers" --->  ??? 
-"Files" ---> "Bestanden"
 "Logging" --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Een ongeldig encoderings niveau, %1%, is doorgegaan als encryptie instelling."
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Een ongeldig encoderings regeling, %1%, is doorgegaan als encryptie instelling."
@@ -234,6 +239,7 @@
 "Peer;Country;Download;Upload;Type;Client" ---> "Peer;Land;Download;Upload;Type;Client"
 "Peer;Country;Download;Upload;Type;Client;Status" ---> "Peer;Land;Download;Upload;Type;Client;Status"
 "Filename;Path;Size;Progress;Priority" ---> "Bestandsnaam;Pad;Grootte;Progressie;Prioriteit"
+"Filename;Path;Size" --->  ??? 
 "Don't download" ---> "Niet Downloaden"
 "Normal" ---> "Normaal"
 "2" --->  ??? 
@@ -278,3 +284,4 @@
 "Tracker Event: %1%." ---> "Tracker Gebeurtenis: %1%."
 "Debug Event: %1%." ---> "Debug Gebeurtenis: %1%."
 "Dev Msg: %1%." --->  ??? 
+"Dialog" --->  ??? 
