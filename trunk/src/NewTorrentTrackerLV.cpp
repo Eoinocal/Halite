@@ -6,12 +6,12 @@
 
 #include "stdAfx.hpp"
 
-#include "../halTorrent.hpp"
+#include "halTorrent.hpp"
 
-#include "TrackerListView.hpp"
-#include "TrackerAddDialog.hpp"
+#include "NewTorrentTrackerLV.hpp"
+#include "NewTorrentTrackerAD.hpp"
 
-void TrackerListViewCtrl::OnAttach()
+void NewTorrent_TrackerListViewCtrl::OnAttach()
 {
 	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
 	SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
@@ -21,18 +21,18 @@ void TrackerListViewCtrl::OnAttach()
 	SetColumnSortType(1, LVCOLSORT_LONG);
 }
 
-void TrackerListViewCtrl::OnDestroy()
+void NewTorrent_TrackerListViewCtrl::OnDestroy()
 {
 	saveSettings();
 }
 
-void TrackerListViewCtrl::saveSettings()
+void NewTorrent_TrackerListViewCtrl::saveSettings()
 {		
 	GetListViewDetails();
 	save();
 }
 
-void TrackerListViewCtrl::uiUpdate(const hal::TorrentDetail_ptr pT)
+void NewTorrent_TrackerListViewCtrl::uiUpdate(const hal::TorrentDetail_ptr pT)
 {
 	if (pT)
 	{			
@@ -56,21 +56,19 @@ void TrackerListViewCtrl::uiUpdate(const hal::TorrentDetail_ptr pT)
 	}
 }
 
-void TrackerListViewCtrl::newItem()
+void NewTorrent_TrackerListViewCtrl::newItem()
 {
 	hal::TrackerDetail tracker(L"", 0);	
-	TrackerAddDialog trackDlg(L"Add New Tracker", tracker);
+	NewTorrent_TrackerAddDialog trackDlg(L"Add New Tracker", tracker);
 	
 	if (trackDlg.DoModal() == 1 && !tracker.url.empty()) 
 	{
 		int itemPos = AddItem(0, 0, tracker.url.c_str(), 0);		
 		SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());
-		
-		listEdited_();	
 	}
 }
 
-void TrackerListViewCtrl::editItem(int index)
+void NewTorrent_TrackerListViewCtrl::editItem(int index)
 {
 	array<wchar_t, MAX_PATH> buffer;
 
@@ -80,7 +78,7 @@ void TrackerListViewCtrl::editItem(int index)
 	GetItemText(index, 1, buffer.elems, buffer.size());
 	tracker.tier = lexical_cast<int>(wstring(buffer.elems));
 
-	TrackerAddDialog trackDlg(L"Edit Tracker", tracker);
+	NewTorrent_TrackerAddDialog trackDlg(L"Edit Tracker", tracker);
 	
 	if (trackDlg.DoModal() == 1) 
 	{
@@ -93,35 +91,10 @@ void TrackerListViewCtrl::editItem(int index)
 			SetItemText(index, 0, tracker.url.c_str());	
 			SetItemText(index, 1, lexical_cast<wstring>(tracker.tier).c_str());
 		}		
-		listEdited_();
 	}	
 }
 
-void TrackerListViewCtrl::deleteItem(int index)
+void NewTorrent_TrackerListViewCtrl::deleteItem(int index)
 {
 	DeleteItem(index);
-	listEdited_();
-}
-
-LRESULT TrackerListViewCtrl::OnPrimary(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-{	
-	TryUpdateLock<listClass> lock(*this);
-	if (lock) 
-	{	
-	
-	for (int i=0, e=GetItemCount(); i<e; ++i)
-	{
-		array<wchar_t, MAX_PATH> buffer;		
-		GetItemText(i, 1, buffer.elems, buffer.size());
-		
-		if (wstring(buffer.elems) == L"0")
-			SetItemText(i, 1, L"1");
-	}
-	
-	SetItemText(manager().selectedIndex(), 1, L"0");
-	
-	listEdited_();
-	
-	}	
-	return 0;
 }
