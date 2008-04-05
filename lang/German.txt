@@ -1,4 +1,4 @@
-"English" ---> "Deutsch"
+﻿"English" ---> "Deutsch"
 "English.rtf" ---> "../lang/German.rtf"
 "MS Shell Dlg" --->  ??? 
 "Torrent" ---> "Torrent"
@@ -250,7 +250,7 @@
 "Block %2% of piece %3% finished. (%1%)" ---> "Block %2% des Teils %3% fertiggestellt. (%1%)"
 "Block %2% of piece %3% downloading. (%1%)" ---> "Block %2% des Teils %3% runterladend. (%1%)"
 "Successfully %1%." ---> "%1% erfolgreich."
-"Failed, %1%" --->  ??? 
+"Failed, %1%" ---> "nicht erfolgreich" 
 "IP Filter blocked %1%, %2%." ---> "IP Filter blockiert %1%, %2%."
 "Torrent %1% finished." ---> "Torrent %1% fertiggestellt."
 "Torrent %1% paused." ---> "Torrent %1% pausiert."
