@@ -149,10 +149,10 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	UISetCheck(ID_VIEW_STATUS_BAR, 1);
 	UISetCheck(IDR_TRAY_MENU, 1);	
 	
-	TBBUTTONINFO tbinfo = { sizeof(TBBUTTONINFO) };
-	tbinfo.dwMask = TBIF_STATE;
-	tbinfo.fsState = TBSTATE_INDETERMINATE;
-	::SendMessage(hWndToolBar, TB_SETBUTTONINFO, ID_FILE_NEW, (LPARAM)&tbinfo);
+//	TBBUTTONINFO tbinfo = { sizeof(TBBUTTONINFO) };
+//	tbinfo.dwMask = TBIF_STATE;
+//	tbinfo.fsState = TBSTATE_INDETERMINATE;
+//	::SendMessage(hWndToolBar, TB_SETBUTTONINFO, ID_FILE_NEW, (LPARAM)&tbinfo);
 
 	// Register UIEvents and the timer for the monitoring interval
 	SetTimer(ID_UPDATE_TIMER, 500);
@@ -471,7 +471,7 @@ LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	WTLx::CRadioPaneDialog newTorrent;	
+	NewTorrentDialog newTorrent;	
     newTorrent.DoModal();
 
 //	MessageBox(L"This feature is under development and currently disabled", 

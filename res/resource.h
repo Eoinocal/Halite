@@ -271,6 +271,7 @@
 #define IDC_CHECK_PAUSED				40202
 #define HAL_INF							40203
 #define HAL_HALITE						40204
+#define IDR_NEWT_TRACKERLV_MENU			40300
 
 #ifndef HAL_NA
 #define HAL_NA IDS_NA

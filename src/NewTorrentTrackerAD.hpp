@@ -8,20 +8,20 @@
 
 #include "GenericAddDialog.hpp"
 
-class TrackerAddDialog :
-	public CDialogImpl<TrackerAddDialog>,
-	public WTLx::GenericAddDialog<TrackerAddDialog, IDD_TRACKEDIT>,
-	public CDialogResize<TrackerAddDialog>,
-	public CWinDataExchangeEx<TrackerAddDialog>
+class NewTorrent_TrackerAddDialog :
+	public CDialogImpl<NewTorrent_TrackerAddDialog>,
+	public WTLx::GenericAddDialog<NewTorrent_TrackerAddDialog, IDD_TRACKEDIT>,
+	public CDialogResize<NewTorrent_TrackerAddDialog>,
+	public CWinDataExchangeEx<NewTorrent_TrackerAddDialog>
 {
 public:
-	typedef TrackerAddDialog thisClass;
+	typedef NewTorrent_TrackerAddDialog thisClass;
 	typedef WTLx::GenericAddDialog<thisClass, IDD_TRACKEDIT> genericBaseClass;
 	typedef CDialogResize<thisClass> resizeClass;
 	
 public:
-	TrackerAddDialog(wstring title, hal::TrackerDetail& tracker) :
-		genericBaseClass(title, "genericAddDlgs/AddTracker", "AddTracker"),
+	NewTorrent_TrackerAddDialog(wstring title, hal::TrackerDetail& tracker) :
+		genericBaseClass(title, "genericAddDlgs/NewTorrentAddTracker", "NewTorrentAddTracker"),
 		tracker_(tracker)
 	{}
 

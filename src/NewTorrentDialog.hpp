@@ -19,6 +19,7 @@
 #define IDC_NEWT_LISTFILES				ID_NEWTORRENT_BEGIN+10
 #define HAL_FILES_LISTVIEW_ADV			ID_NEWTORRENT_BEGIN+11
 #define HAL_NEW_PANE_DLG				ID_NEWTORRENT_BEGIN+12
+#define IDC_NEWT_TRACKERTIER			ID_NEWTORRENT_BEGIN+13
 //#define IDC_PROG_CANCEL                 ID_NEWTORRENT_BEGIN + 2
 //#define IDC_PROG_PROGRESS               ID_NEWTORRENT_BEGIN + 3
 
@@ -31,6 +32,7 @@
 #include "DdxEx.hpp"
 #include "ListViewEdit.hpp"
 #include "HaliteSortListViewCtrl.hpp"
+#include "NewTorrentTrackerLV.hpp"
 
 
 class FilesListViewCtrl :
@@ -198,16 +200,7 @@ public:
 	
 	LRESULT onInitDialog(HWND, LPARAM)
 	{	
-		editList_.SubclassWindow(GetDlgItem(IDC_NEWT_LISTTRACKERS));	
-
-		editList_.AddColumn(L"Col 1", 0);
-		editList_.AddColumn(L"Col 2", 1);
-
-		int itemPos = editList_.AddItem(0, 0, L"Yoke 1", 0);
-		editList_.SetItemText(itemPos, 1, L"Thingy 2");
-
-		itemPos = editList_.AddItem(0, 0, L"Stuff 3", 0);
-		editList_.SetItemText(itemPos, 1, L"Empty 4");
+		trackerList_.Attach(GetDlgItem(IDC_NEWT_LISTTRACKERS));	
 
 		return 0;
 	}
@@ -215,7 +208,7 @@ public:
 	void OnDestroy() {}
 	
 private:
-	WTLx::CEditListViewCtrl editList_;
+	NewTorrent_TrackerListViewCtrl trackerList_;
 };
 
 class DetailsSheet :
@@ -303,6 +296,8 @@ public:
 
     void OnShowWindow(BOOL bShow, UINT nStatus)
     {
+        resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
+
 		hal::event().post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(L"NewTorrentDialog::OnShowWindow()")));	
 
@@ -317,8 +312,6 @@ public:
 
             ModifyStyle(0, WS_THICKFRAME, 0);
             Center();
-
-            resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
         }
 
 		resizeActiveSheet();

@@ -559,6 +559,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\NewTorrentTrackerLV.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\stdAfx.cpp"
 				>
 				<FileConfiguration
@@ -993,6 +997,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\NewTorrentTrackerLV.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\ProgressDialog.hpp"
 				>
 			</File>
@@ -1113,6 +1121,14 @@
 				</File>
 				<File
 					RelativePath="..\..\src\WTLx\EditHilight.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\WTLx\GenericAddDialog.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\WTLx\GenericAddListView.hpp"
 					>
 				</File>
 				<File
