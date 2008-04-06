@@ -559,6 +559,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\NewTorrentPeersLV.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\NewTorrentTrackerLV.cpp"
 				>
 			</File>
@@ -994,6 +998,14 @@
 			</File>
 			<File
 				RelativePath="..\..\src\NewTorrentDialog.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\NewTorrentPeersAD.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\NewTorrentPeersLV.hpp"
 				>
 			</File>
 			<File

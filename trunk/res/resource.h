@@ -33,8 +33,9 @@
 #define IDD_ADVPEER                     131
 #define IDD_NEWTORRENT					133
 #define IDD_NEWT_TRACKERS				134
-#define IDD_NEWT_DETAILS				135
+#define IDD_NEWT_PEERS					135
 #define IDR_TRACKERLV_MENU              132
+#define	HAL_GENERIC_ADD_LV_MENU			136
 #define IDC_TRANS_SES                   1004
 #define IDC_TRANS_ETA                   1005
 #define IDC_PEERPROXY                   1000

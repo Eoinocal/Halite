@@ -6,6 +6,13 @@
 
 #pragma once
 
+#define HAL_GENERIC_ALV_BEGIN	 	20000
+#define HAL_GENERIC_ALV_NEW 		HAL_GENERIC_ALV_BEGIN + 1
+#define HAL_GENERIC_ALV_EDIT 		HAL_GENERIC_ALV_BEGIN + 2
+#define HAL_GENERIC_ALV_DELETE		HAL_GENERIC_ALV_BEGIN + 3
+
+#ifndef RC_INVOKED
+
 #include <boost/signals.hpp>
 #include <boost/function.hpp>
 
@@ -14,7 +21,9 @@
 namespace WTLx
 {
 
-template<class ListClass, int listID_NEW, int listID_EDIT, int listID_DELETE>
+template<class ListClass, int listID_NEW=HAL_GENERIC_ALV_NEW, 
+	int listID_EDIT=HAL_GENERIC_ALV_EDIT, int listID_DELETE=HAL_GENERIC_ALV_DELETE
+	>
 class GenericAddListView
 {
 	friend class ListClass;
@@ -72,3 +81,5 @@ public:
 };
 
 } // namespace WTLx
+
+#endif // RC_INVOKED
