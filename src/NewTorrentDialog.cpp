@@ -148,13 +148,19 @@ TrackerSheet::CWindowMapStruct* TrackerSheet::GetWindowMap()
 		WMB_ROW(_auto,	IDC_NEWTORRENT_CREATOR_TEXT,  IDC_NEWTORRENT_CREATOR), \
 	WMB_END()
 
-DetailsSheet::CWindowMapStruct* DetailsSheet::GetWindowMap()
+
+#define NEWTORRENT_PEERS_LAYOUT \
+	WMB_HEAD(WMB_COLNOMIN(_exp), WMB_COL(_auto), WMB_COL(_auto)), \
+		WMB_ROW(_auto,	IDC_NEWTORRENT_PEERS_TEXT, _r, _r), \
+/*		WMB_ROW(_auto,	IDC_NEWT_TRACKER, IDC_NEWT_TRACKERTIER, IDC_NEWT_ADDTRACKER), */\
+		WMB_ROWNOMAX(_exp|50,	IDC_NEWT_LISTPEERS,  _r, _r), \
+	WMB_END()
+
+PeersSheet::CWindowMapStruct* PeersSheet::GetWindowMap()
 {
-	BEGIN_WINDOW_MAP_INLINE(DetailsSheet, 3, 3, 3, 3)
+	BEGIN_WINDOW_MAP_INLINE(PeersSheet, 3, 3, 3, 3)
 		WMB_HEAD(WMB_COL(_exp)), 
-		WMB_ROWNOMIN(_exp, NEWTORRENT_DETAILS_LAYOUT),
-		WMB_ROW(_gap),
-		WMB_ROW(_auto, IDC_NEWTORRENT_PRIVATE),
+		WMB_ROWNOMIN(_exp, NEWTORRENT_PEERS_LAYOUT),
 		WMB_END() 
 	END_WINDOW_MAP_INLINE()	
 }	

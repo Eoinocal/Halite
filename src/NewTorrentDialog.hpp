@@ -20,6 +20,8 @@
 #define HAL_FILES_LISTVIEW_ADV			ID_NEWTORRENT_BEGIN+11
 #define HAL_NEW_PANE_DLG				ID_NEWTORRENT_BEGIN+12
 #define IDC_NEWT_TRACKERTIER			ID_NEWTORRENT_BEGIN+13
+#define IDC_NEWTORRENT_PEERS_TEXT		ID_NEWTORRENT_BEGIN+14
+#define IDC_NEWT_LISTPEERS				ID_NEWTORRENT_BEGIN+15
 //#define IDC_PROG_CANCEL                 ID_NEWTORRENT_BEGIN + 2
 //#define IDC_PROG_PROGRESS               ID_NEWTORRENT_BEGIN + 3
 
@@ -33,6 +35,7 @@
 #include "ListViewEdit.hpp"
 #include "HaliteSortListViewCtrl.hpp"
 #include "NewTorrentTrackerLV.hpp"
+#include "NewTorrentPeersLV.hpp"
 
 
 class FilesListViewCtrl :
@@ -211,19 +214,20 @@ private:
 	NewTorrent_TrackerListViewCtrl trackerList_;
 };
 
-class DetailsSheet :
-    public CPropertyPageImpl<DetailsSheet>,
-	public CAutoSizeWindow<DetailsSheet, false>
+class PeersSheet :
+    public CPropertyPageImpl<PeersSheet>,
+	public CAutoSizeWindow<PeersSheet, false>
 {
 protected:
-	typedef DetailsSheet thisClass;
+	typedef PeersSheet thisClass;
 	typedef CPropertyPageImpl<thisClass> sheetClass;
 	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
 
 public:	
-	enum { IDD = IDD_NEWT_DETAILS };
+	enum { IDD = IDD_NEWT_PEERS };
 
     BEGIN_MSG_MAP_EX(thisClass)
+		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_DESTROY(OnDestroy)
 
 		CHAIN_MSG_MAP(autosizeClass)
@@ -237,11 +241,18 @@ public:
 	{
 		return this->IsDialogMessage(pMsg);
 	}
-	
-	void OnFileBrowse(UINT, int, HWND hWnd) {}
+
+	LRESULT onInitDialog(HWND, LPARAM)
+	{	
+		peersList_.Attach(GetDlgItem(IDC_NEWT_LISTPEERS));	
+
+		return 0;
+	}
+
 	void OnDestroy() {}
 	
 private:
+	NewTorrent_PeersListViewCtrl peersList_;
 };
 
 class NewTorrentDialog :
@@ -353,7 +364,7 @@ private:
 
 	FileSheet fileSheet;
 	TrackerSheet trackerSheet;
-	DetailsSheet detailsSheet;
+	PeersSheet detailsSheet;
 
 };
 
