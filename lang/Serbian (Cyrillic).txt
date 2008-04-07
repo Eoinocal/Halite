@@ -96,7 +96,7 @@
 "Have Halite acts a DHT node." ---> "Желиш ли Халите као ДХТ Чвора употребити?"
 "Add" ---> "Додај"
 "Pause" ---> "Пауза"
-"Reannounce" ---> "Обнови"
+"Reannounce" ---> "Освежи"
 "Remove" ---> "Склони"
 "SysListView32" ---> "SysListView32"
 "Name:" ---> "Име:"
