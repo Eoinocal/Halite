@@ -6,7 +6,7 @@
 "" ---> ""
 "msctls_progress32" --->  ??? 
 "Torrent connection limits:" ---> "Torrent verbindings limiet"
-"Torrent transfer rates (KB/s):" ---> "Overdrachtsnelheden van torrent (KB/s)"
+"Torrent transfer rates (KB/s):" ---> "Torrent snelheden (KB/s)"
 "Total" ---> "Totaal"
 "Up" ---> "Up"
 "Down" ---> "Down"
@@ -27,10 +27,10 @@
 "Enable DHT" ---> "DHT ingeschakelen"
 "Button" --->  ??? 
 "to" ---> "tot"
-"Select the (TCP) port (or range) on which to listen for incomming connections." --->  ??? 
+"Select the (TCP) port (or range) on which to listen for incomming connections." --->  "Selecteer een (TCP) poort (of bereik) waarop moet worden geluisterd voor inkomende verbindingen." 
 "Distributed Hash Tables" --->  ??? 
 "Port (UDP) : " ---> "Poort (UDP) : "
-"(DHT will not apply to private torrents)" ---> "DHT zal niet gebruikt worden voor Private Trackers"
+"(DHT will not apply to private torrents)" ---> "(DHT zal niet gebruikt worden voor Private Trackers)"
 "General Settings" ---> "Algemene Opties"
 "Limit the no. of half-open connections" ---> "Limiteer het aantal half-open connecties"
 "Proxies" --->  ??? 
@@ -53,17 +53,17 @@
 "Connection Policies" --->  "Verbindings Regels" 
 "Incoming" ---> "Inkomend"
 "Outgoing" ---> "Uitgaand"
-"Forced" ---> "Geforceerd"
+"Forced" ---> "Forceren"
 "Enabled" ---> "Inschakelen"
 "Disabled" ---> "Uitschakelen"
-"Encoding Level" ---> "Encoderings niveau"
+"Encoding Level" ---> "Encryptie niveau"
 "Plaintext" ---> "Platte Tekst"
 "RC4" --->  ??? 
 "Both" ---> "Beide"
 "Prefer RC4" ---> "Prefereer RC4"
 "Remote Control" ---> "Beheer op afstand"
 "Remote Control Options" ---> "Beheer op afstand opties"
-"Enable Remote Control" ---> "Schakel Beheer op afstand in"
+"Enable Remote Control" ---> "Beheer op afstand inschakelen"
 "Port to listen on : " ---> "Poort om op the luisteren : "
 "*** Disabled ***" ---> "*** Uitgeschakeld ***"
 "Check1" --->  ??? 
@@ -73,7 +73,7 @@
 "Halite Debug Dialog" ---> "Halite Debug Venster"
 "MS Sans Serif" ---> "MS Sans Serif"
 "Halite importing IP ranges..." ---> "Halite importeert IP bereiken..."
-"Cancel" ---> "Breek af"
+"Cancel" ---> "Annuleren"
 "Torrents" ---> "Torrents"
 "Global Limits" ---> "Globale Limieten"
 "Total max connections :" ---> "Maximaal aantal verbindingen : "
@@ -81,7 +81,7 @@
 "Download Rate (KB/s) :" ---> "Download snelheid (KB/s) :"
 "Upload Rate (KB/s) :" ---> "Upload snelheid (KB/s) :"
 "Torrent Defaults" ---> "Torrent Standaard"
-"These options set global maximums which will always be honoured." ---> "Deze optie zet globale maxima welke altijd zullen worden gehonoreerd."
+"These options set global maximums which will always be honoured." ---> "Deze optie zet globale limieten welke altijd zullen worden gehonoreerd."
 "These options specify the default limits applied to new torrents." ---> "Deze optie specificeerd de standaard limiet die voor alle nieuwe torrents gelden."
 "Default save folder :" ---> "Standaard opslag map"
 "..." --->  ??? 
@@ -117,7 +117,7 @@
 "Allow only one instance to run." ---> "Sta maar één instantie toe."
 "Advanced GUI" ---> "Geavanceerde GUI"
 "Minimize to tray." ---> "Minimaliseer naar systeemvak."
-"Language (requires restart)" --->  ??? 
+"Language (requires restart)" --->  "Taal (herstart vereist)"
 "List of Trackers." ---> "Lijst van Trackers."
 "Send login info to trackers." ---> "Stuur login gegevens naar Tracker."
 "Apply" ---> "Toepassen"
@@ -147,7 +147,7 @@
 "Comments" ---> "Commentaar"
 "libTorrrent based client." ---> "op libTorrrent gebaseerde client."
 "CompanyName" ---> "Bedrijf"
-"BinaryNotions.com" ---> "BinaryNotions.com"
+"BinaryNotions.com" ---> ???
 "FileDescription" ---> "BestandsOmschrijving"
 "Halite BitTorrent Client" --->  ??? 
 "FileVersion" ---> "Versie nummer"
@@ -215,7 +215,7 @@
 "Stopping" ---> "Stopt"
 "Pausing" ---> "Pauzeert"
 "Downloading Metadata" ---> "Metadata downloaden"
-"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" ---> "Naam;Status;Progressie;Download;Upload;Peers;Seeds;ETA;Kopieen;Tracker;Heromroeping;Ratio;Totaal;Voltooid;Overgebleven;Gedownload;Geupload;Actief;Seeden;Start Tijd;Finish Tijd"
+"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" ---> "Naam;Status;Progressie;Download;Upload;Peers;Seeds;ETA;Kopieen;Tracker;Heromroeping;Ratio;Totaal;Voltooid;Overgebleven;Gedownload;Geupload;Actief;Seeden;Start Tijd;Voltooiings Tijd"
 "Time;Message;Severity" ---> "Tijd;Bericht;Ernst"
 "Tracker;Tier" ---> "Tracker;Laag"
 "Peer;Country;Download;Upload;Type;Client" ---> "Peer;Land;Download;Upload;Type;Client"
