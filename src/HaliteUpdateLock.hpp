@@ -6,20 +6,25 @@
 
 #pragma once
 
+namespace hal
+{
+
 template<class T>
-class UpdateLock
+class mutex_update_lock
 {
 public:
-	UpdateLock(T& window) :
-		window_(window)
+	mutex_update_lock(T& window) :
+		window_(window),
+		lock_(window_.mutex_)
 	{
-		++window_.updateLock_;
+		++window_.update_lock_;
+
 //		window_.LockWindowUpdate(true);
 	}
 	
-	~UpdateLock()
+	~mutex_update_lock()
 	{
-		if (!--window_.updateLock_)
+		if (!--window_.update_lock_)
 			unlock();
 	}
 	
@@ -31,27 +36,31 @@ public:
 	
 private:
 	T& window_;
+
+	mutex_t::scoped_lock lock_;
 };
 
 template<class T>
-class TryUpdateLock
+class try_update_lock
 {
 public:
-	TryUpdateLock(T& window) :
+	try_update_lock(T& window) :
 		window_(window),
+		lock_(window_.mutex_),
 		locked_(false)
 	{
-		if (0 == window_.updateLock_)
+		if (0 == window_.update_lock_)
 		{
-			locked_=  true;
-			++window_.updateLock_;
+			locked_ =  true;
+			++window_.update_lock_;
+
 //			window_.LockWindowUpdate(true);
 		}
 	}
 	
-	~TryUpdateLock()
+	~try_update_lock()
 	{
-		if (locked_ && !--window_.updateLock_)
+		if (locked_ && !--window_.update_lock_)
 			unlock();
 	}
 	
@@ -65,5 +74,9 @@ public:
 	
 private:
 	T& window_;
+
+	mutex_t::scoped_lock lock_;
 	bool locked_;
 };
+
+}

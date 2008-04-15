@@ -36,7 +36,7 @@ void TrackerListViewCtrl::uiUpdate(const hal::TorrentDetail_ptr pT)
 {
 	if (pT)
 	{			
-		TryUpdateLock<listClass> lock(*this);
+		hal::try_update_lock<listClass> lock(*this);
 		if (lock) 
 		{			
 			std::vector<hal::TrackerDetail> trackers =
@@ -105,7 +105,7 @@ void TrackerListViewCtrl::deleteItem(int index)
 
 LRESULT TrackerListViewCtrl::OnPrimary(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {	
-	TryUpdateLock<listClass> lock(*this);
+	hal::try_update_lock<listClass> lock(*this);
 	if (lock) 
 	{	
 	

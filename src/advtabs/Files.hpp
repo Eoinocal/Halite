@@ -225,7 +225,7 @@ protected:
 public:	
 	thisClass() :
 		iniClass("treeviews/advFiles", "FileTreeView"),
-		updateLock_(0)
+		update_lock_(0)
 	{}
 	
 	BEGIN_MSG_MAP_EX(thisClass)
@@ -261,9 +261,11 @@ protected:
 	
 	LRESULT OnSelChanged(int, LPNMHDR pnmh, BOOL&);
 	
-	int updateLock_;
-	friend class UpdateLock<thisClass>;	
-	friend class TryUpdateLock<thisClass>;	
+	mutable int update_lock_;
+	mutable hal::mutex_t mutex_;
+
+	friend class hal::mutex_update_lock<thisClass>;	
+	friend class hal::try_update_lock<thisClass>;		
 	
 	mutable boost::signal<void ()> selection_;
 	wpath focused_;

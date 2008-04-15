@@ -75,7 +75,7 @@ void HaliteListViewCtrl::saveSettings()
 
 void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
 {
-	TryUpdateLock<listClass> lock(*this);
+	hal::try_update_lock<listClass> lock(*this);
 	if (lock) 
 	{
 	
