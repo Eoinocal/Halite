@@ -143,7 +143,7 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	std::string torrent = hal::to_utf8(hal::bittorrent().torrentDetails().focusedTorrent()->name());
 	hal::bittorrent().setTorrentFilePriorities(torrent, indices, priority);
 	
-	TryUpdateLock<thisClass> lock(*this);
+	hal::try_update_lock<thisClass> lock(*this);
 	if (lock) signal();
 }
 
@@ -170,7 +170,7 @@ void FileTreeView::determineFocused()
 
 LRESULT FileTreeView::OnSelChanged(int, LPNMHDR pnmh, BOOL&)
 {	
-	TryUpdateLock<thisClass> lock(*this);
+	hal::try_update_lock<thisClass> lock(*this);
 	if (lock)
 	{		
 		determineFocused();
@@ -247,7 +247,7 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 		return;
 	}
 	
-	TryUpdateLock<FileListView::listClass> lock(list_);
+	hal::try_update_lock<FileListView::listClass> lock(list_);
 	if (lock) 
 	{			
 		// Wipe details not present
@@ -310,7 +310,7 @@ void AdvFilesDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 	
 	std::sort(fileLinks_.begin(), fileLinks_.end());
 	
-	{ 	UpdateLock<FileTreeView> lock(tree_);
+	{ 	hal::mutex_update_lock<FileTreeView> lock(tree_);
 	
 		treeManager_.InvalidateAll();
 		

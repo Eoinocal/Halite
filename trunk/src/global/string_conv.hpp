@@ -69,6 +69,45 @@ inline std::wstring from_utf8_safe(const std::string& s)
 	}
 }
 
+template<typename S, int N=-1>
+class win_c_str
+{
+public:	
+	win_c_str()
+	{}
+
+	typedef S string_t;
+	typedef typename S::value_type char_t;
+
+	operator char_t* () { return buffer_.elems; }
+	operator const string_t() { return string_t(buffer_.elems); }
+	size_t size() { return (N >= 0) ? N : 0; }
+
+private:
+	boost::array<char_t, N> buffer_;
+};
+
+template<typename S>
+class win_c_str<S, -1>
+{
+public:	
+	win_c_str(int N) :
+		vector_(N)
+	{}
+
+	typedef S string_t;
+	typedef typename S::value_type char_t;
+
+	operator char_t* () { return &vector_[0]; }
+	operator const string_t() { return string_t(&vector_[0]); }
+	size_t size() { return vector_.size(); }
+
+private:
+	std::vector<char_t> vector_;
+};
+
+
+
 template<typename str_t>
 inline std::wstring to_wstr_shim(str_t& s)
 {

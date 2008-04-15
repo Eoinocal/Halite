@@ -25,6 +25,7 @@
 
 #define LVS_EX_DOUBLEBUFFER     0x00010000
 
+#include "WTLx/SelectionManager.hpp"
 #include "HaliteUpdateLock.hpp"
 
 namespace hal
@@ -51,6 +52,7 @@ public:
 	typedef CHaliteSortListViewCtrl<TBase, adapterType, N> thisClass;
 	typedef CSortListViewCtrlImpl<thisClass> parentClass;
 	
+#if 0
 	class selection_manager : 
 		private boost::noncopyable
 	{	
@@ -261,7 +263,7 @@ public:
 		mutable boost::signal<void (param_type)> selection_;
 		thisClass& m_list_;
 	};
-	
+#endif	
 	class CHaliteHeaderCtrl : public CWindowImpl<CHaliteHeaderCtrl, WTL::CHeaderCtrl>
 	{
 	public:
@@ -326,13 +328,13 @@ public:
 	};
 
 public:
-	typedef selection_manager SelectionManager;
+	typedef WTLx::selection_manager<thisClass, std::wstring> SelectionManager;
 	typedef SelectionManager selection_manage_class;
 	
 	thisClass(bool resMenu=true, bool resNames=true, bool resWidthsAndOrder=true) :
 		manager_(*this),
 		header_(*this),
-		updateLock_(0),
+		update_lock_(0),
 		autoSort_(false),
 		descending_(false),
 		sortCol_(-1)
@@ -590,7 +592,7 @@ public:
 
 	LRESULT OnItemChanged(int, LPNMHDR pnmh, BOOL&)
 	{		
-		TryUpdateLock<thisClass> lock(*this);
+		hal::try_update_lock<thisClass> lock(*this);
 		if (lock) 
 			manager_.sync_list(true, true);
 			//syncTimer_.reset(50, 0, bind(&thisClass::syncTimeout, this));
@@ -665,7 +667,7 @@ public:
 	
 	int CompareItemsCustom(LVCompareParam* pItem1, LVCompareParam* pItem2, int iSortCol)
 	{
-		UpdateLock<thisClass> lock(*this);
+		hal::mutex_update_lock<thisClass> lock(*this);
 		
 		TBase* pT = static_cast<TBase*>(this);
 		
@@ -757,9 +759,11 @@ private:
 	bool descending_;
 	int sortCol_;
 	
-	int updateLock_;
-	friend class UpdateLock<thisClass>;	
-	friend class TryUpdateLock<thisClass>;		
+	mutable int update_lock_;
+	mutable hal::mutex_t mutex_;
+
+	friend class hal::mutex_update_lock<thisClass>;	
+	friend class hal::try_update_lock<thisClass>;		
 	
 	boost::ptr_map<size_t, ColumnAdapter> columnAdapters_;
 	

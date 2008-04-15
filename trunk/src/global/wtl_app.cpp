@@ -133,13 +133,12 @@ void app_module::res_set_dll(std::wstring dll)
 std::wstring app_module::res_wstr(unsigned uID)
 {
 	// The upper size limit ain't nice, but at least it's safe from buffer overflow
-	const int buffer_size = 2048;
-	boost::array<wchar_t, buffer_size> buffer;
+	win_c_str<std::wstring> str(2048);
 	
-	int size = ::LoadString(_Module.GetResourceInstance(), uID, buffer.elems, buffer_size);
+	int size = ::LoadString(_Module.GetResourceInstance(), uID, str, str.size());
 	assert(size != 0);
 	
-	return std::wstring(buffer.elems);
+	return str;
 }
 
 std::pair<void*,size_t> app_module::res_find_lock(unsigned name, unsigned type)
