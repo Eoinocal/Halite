@@ -34,13 +34,13 @@ void NewTorrent_PeersListViewCtrl::saveSettings()
 
 void NewTorrent_PeersListViewCtrl::newItem()
 {
-	hal::TrackerDetail tracker(L"", 0);	
+	hal::UrlDhtPeerDetail tracker(L"", 0);	
 	NewTorrent_PeersAddDialog trackDlg(L"Add New Peer", tracker);
 	
 	if (trackDlg.DoModal() == 1 && !tracker.url.empty()) 
 	{
 		int itemPos = AddItem(0, 0, tracker.url.c_str(), 0);		
-		SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());
+		SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.type).c_str());
 	}
 }
 
@@ -49,10 +49,10 @@ void NewTorrent_PeersListViewCtrl::editItem(int index)
 	array<wchar_t, MAX_PATH> buffer;
 
 	GetItemText(index, 0, buffer.elems, buffer.size());
-	hal::TrackerDetail tracker(wstring(buffer.elems), 0);
+	hal::UrlDhtPeerDetail tracker(wstring(buffer.elems), 0);
 	
 	GetItemText(index, 1, buffer.elems, buffer.size());
-	tracker.tier = lexical_cast<int>(wstring(buffer.elems));
+	tracker.type = lexical_cast<int>(wstring(buffer.elems));
 
 	NewTorrent_PeersAddDialog trackDlg(L"Edit Tracker", tracker);
 	
@@ -65,7 +65,7 @@ void NewTorrent_PeersListViewCtrl::editItem(int index)
 		else
 		{
 			SetItemText(index, 0, tracker.url.c_str());	
-			SetItemText(index, 1, lexical_cast<wstring>(tracker.tier).c_str());
+			SetItemText(index, 1, lexical_cast<wstring>(tracker.type).c_str());
 		}		
 	}	
 }
