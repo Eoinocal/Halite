@@ -368,5 +368,4 @@ private:
 
 };
 
-
 #endif // RC_INVOKED

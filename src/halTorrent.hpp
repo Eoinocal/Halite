@@ -341,6 +341,27 @@ struct TrackerDetail
 	int tier;
 };
 
+struct UrlDhtPeerDetail
+{
+	UrlDhtPeerDetail() {}
+	UrlDhtPeerDetail(std::wstring u, unsigned t) : url(u), type(t) {}
+	
+	bool operator<(const UrlDhtPeerDetail& t) const
+	{
+		return (type < t.type);
+	}
+	
+	enum UrlDhtPeerType
+	{
+		webSeed,
+		dhtPeer
+	};
+	
+	std::wstring url;
+	unsigned type;
+};
+
+
 class EventDetail;
 
 struct SessionDetail
