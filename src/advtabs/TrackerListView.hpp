@@ -25,12 +25,12 @@
 class TrackerListViewCtrl :
 	public CHaliteSortListViewCtrl<TrackerListViewCtrl>,
 	public hal::IniBase<TrackerListViewCtrl>,
-	public WTLx::GenericAddListView<TrackerListViewCtrl, ID_TLVM_NEW, ID_TLVM_EDIT, ID_TLVM_DELETE>,
+	public WTLx::GenericAddListView<TrackerListViewCtrl, false, ID_TLVM_NEW, ID_TLVM_EDIT, ID_TLVM_DELETE>,
 	private boost::noncopyable
 {
 	typedef hal::IniBase<TrackerListViewCtrl> iniClass;
 	typedef CHaliteSortListViewCtrl<TrackerListViewCtrl> listClass;
-	typedef WTLx::GenericAddListView<TrackerListViewCtrl, ID_TLVM_NEW, ID_TLVM_EDIT, ID_TLVM_DELETE> genericAddlistClass;
+	typedef WTLx::GenericAddListView<TrackerListViewCtrl, false, ID_TLVM_NEW, ID_TLVM_EDIT, ID_TLVM_DELETE> genericAddlistClass;
 
 	friend class listClass;
 	

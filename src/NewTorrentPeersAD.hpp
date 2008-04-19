@@ -12,6 +12,9 @@
 #define HAL_NEWT_ADD_PEERS_TYP_TEXT	HAL_NEWT_ADD_PEERS + 3
 #define HAL_NEWT_ADD_PEERS_TYP_CBOX	HAL_NEWT_ADD_PEERS + 4
 
+#define HAL_NEWT_ADD_PEERS_WEB		HAL_NEWT_ADD_PEERS + 3
+#define HAL_NEWT_ADD_PEERS_DHT		HAL_NEWT_ADD_PEERS + 4
+
 #ifndef RC_INVOKED
 
 #include "GenericAddDialog.hpp"
@@ -60,9 +63,8 @@ public:
 
 		peerTypes.Attach(GetDlgItem(HAL_NEWT_ADD_PEERS_TYP_CBOX));
 		
-		peerTypes.AddString(L"123");
-		peerTypes.AddString(L"456");
-		peerTypes.AddString(L"789");
+		peerTypes.AddString(hal::app().res_wstr(HAL_NEWT_ADD_PEERS_WEB).c_str());
+		peerTypes.AddString(hal::app().res_wstr(HAL_NEWT_ADD_PEERS_DHT).c_str());
 
 		SetMsgHandled(false);
 

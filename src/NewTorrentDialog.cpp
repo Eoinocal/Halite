@@ -35,7 +35,7 @@ void FilesListViewCtrl::saveSettings()
 
 void FileSheet::OnFileBrowse(UINT, int, HWND hWnd)
 {	
-	CSSFileDialog dlgOpen(TRUE, NULL, NULL, OFN_HIDEREADONLY, L"Torrents (*.torrent)|*.torrent|", m_hWnd);
+	CSSFileDialog dlgOpen(TRUE, NULL, NULL, OFN_HIDEREADONLY, L"All Files (*.*)|*.*|", m_hWnd);
 
 	if (dlgOpen.DoModal() == IDOK) 
 	{

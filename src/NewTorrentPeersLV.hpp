@@ -27,13 +27,13 @@
 class NewTorrent_PeersListViewCtrl :
 	public CHaliteSortListViewCtrl<NewTorrent_PeersListViewCtrl>,
 	public hal::IniBase<NewTorrent_PeersListViewCtrl>,
-	public WTLx::GenericAddListView<NewTorrent_PeersListViewCtrl>,
+	public WTLx::GenericAddListView<NewTorrent_PeersListViewCtrl, true>,
 	private boost::noncopyable
 {
 	typedef NewTorrent_PeersListViewCtrl thisClass;
 	typedef hal::IniBase<thisClass> iniClass;
 	typedef CHaliteSortListViewCtrl<thisClass> listClass;
-	typedef WTLx::GenericAddListView<thisClass> genericAddlistClass;
+	typedef WTLx::GenericAddListView<thisClass, true> genericAddlistClass;
 
 	friend class listClass;
 	
