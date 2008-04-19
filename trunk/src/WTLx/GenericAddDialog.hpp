@@ -46,7 +46,6 @@ public:
 		COMMAND_ID_HANDLER_EX(IDCANCEL, OnCancel)
     END_MSG_MAP()
 
-
 	LRESULT OnInitDialog(...)
 	{
 		TBase* pT = static_cast<TBase*>(this);

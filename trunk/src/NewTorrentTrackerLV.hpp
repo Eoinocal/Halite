@@ -24,13 +24,13 @@
 class NewTorrent_TrackerListViewCtrl :
 	public CHaliteSortListViewCtrl<NewTorrent_TrackerListViewCtrl>,
 	public hal::IniBase<NewTorrent_TrackerListViewCtrl>,
-	public WTLx::GenericAddListView<NewTorrent_TrackerListViewCtrl, ID_NTTLVM_NEW, ID_NTTLVM_EDIT, ID_NTTLVM_DELETE>,
+	public WTLx::GenericAddListView<NewTorrent_TrackerListViewCtrl, true, ID_NTTLVM_NEW, ID_NTTLVM_EDIT, ID_NTTLVM_DELETE>,
 	private boost::noncopyable
 {
 	typedef NewTorrent_TrackerListViewCtrl thisClass;
 	typedef hal::IniBase<thisClass> iniClass;
 	typedef CHaliteSortListViewCtrl<thisClass> listClass;
-	typedef WTLx::GenericAddListView<thisClass, ID_NTTLVM_NEW, ID_NTTLVM_EDIT, ID_NTTLVM_DELETE> genericAddlistClass;
+	typedef WTLx::GenericAddListView<thisClass, true, ID_NTTLVM_NEW, ID_NTTLVM_EDIT, ID_NTTLVM_DELETE> genericAddlistClass;
 
 	friend class listClass;
 	

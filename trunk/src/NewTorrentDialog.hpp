@@ -280,6 +280,7 @@ public:
     BEGIN_MSG_MAP_EX(thisClass)
         MSG_WM_SHOWWINDOW(OnShowWindow)
 		MSG_WM_SIZE(OnSize)
+		MSG_WM_CLOSE(OnClose)	
 		MSG_WM_DESTROY(OnDestroy)
 
 		CHAIN_MSG_MAP(resizeClass)
@@ -294,7 +295,6 @@ public:
 		DLGRESIZE_CONTROL(0x3021, DLSZ_MOVE_X|DLSZ_MOVE_Y)
 	END_DLGRESIZE_MAP()
 
-	LRESULT OnInitDialog(HWND, LPARAM);
 	void OnDestroy() {}
 
 	void OnSize(UINT, CSize)
@@ -304,9 +304,16 @@ public:
 		GetWindowRect(rect_);
 		resizeActiveSheet();
 	}
+	
+	void OnClose()
+	{
+		GetWindowRect(rect_);
+		Save();
+	}
 
     void OnShowWindow(BOOL bShow, UINT nStatus)
     {
+		Load();
         resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 
 		hal::event().post(shared_ptr<hal::EventDetail>(
@@ -322,7 +329,18 @@ public:
                 pSysMenu.InsertMenu(-1, MF_BYPOSITION|MF_STRING, SC_SIZE, L"&Size");
 
             ModifyStyle(0, WS_THICKFRAME, 0);
-            Center();
+
+			if (rect_.left == rect_.right)
+			{
+				CenterWindow();
+				GetWindowRect(rect_);
+			}
+			else
+			{
+				CenterWindow();
+				//MoveWindow(rect_.left, rect_.top, rect_.right-rect_.left, rect_.bottom-rect_.top, true);	
+				GetWindowRect(rect_);
+			}
         }
 
 		resizeActiveSheet();

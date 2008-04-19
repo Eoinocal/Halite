@@ -47,10 +47,8 @@
 #define LISTPEERS                       1000
 #define IDC_PEERLIST                    1000
 #define IDC_RATIOSTAT                   1001
-#define IDC_TRACKER_EDIT_TIER           1001
 #define IDC_PEER_EDIT_TYPE		        1001
 #define IDC_RATIOESTATIC                1002
-#define IDC_TRACKER_EDIT_URL            1002
 #define IDC_PEER_EDIT_URL	            1002
 #define IDC_TRACKER_RESET               1002
 #define IDC_BC_DHTPORT_S                1003
