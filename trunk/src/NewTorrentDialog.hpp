@@ -270,8 +270,10 @@ public:
         CPropertySheet(title, uStartPage, hWndParent),
 		iniClass("NewTorrentDialog", "Dialog"),
 		m_bCentered(false),
-		rect_(50,50,400,500)
+		rect_(0,0,0,0)
     {
+		Load();
+
 		AddPage(fileSheet);
 		AddPage(trackerSheet);
 		AddPage(detailsSheet);		
@@ -295,13 +297,15 @@ public:
 		DLGRESIZE_CONTROL(0x3021, DLSZ_MOVE_X|DLSZ_MOVE_Y)
 	END_DLGRESIZE_MAP()
 
-	void OnDestroy() {}
+	void OnDestroy() 
+	{
+		GetWindowRect(rect_);
+		Save();
+	}
 
 	void OnSize(UINT, CSize)
 	{
         SetMsgHandled(false);
-
-		GetWindowRect(rect_);
 		resizeActiveSheet();
 	}
 	
@@ -313,7 +317,6 @@ public:
 
     void OnShowWindow(BOOL bShow, UINT nStatus)
     {
-		Load();
         resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 
 		hal::event().post(shared_ptr<hal::EventDetail>(
@@ -321,7 +324,7 @@ public:
 
         SetMsgHandled(false);
 
-        if (bShow == TRUE)
+        if (bShow)
         {
             CMenuHandle pSysMenu = GetSystemMenu(FALSE);
 
@@ -333,13 +336,10 @@ public:
 			if (rect_.left == rect_.right)
 			{
 				CenterWindow();
-				GetWindowRect(rect_);
 			}
 			else
 			{
-				CenterWindow();
-				//MoveWindow(rect_.left, rect_.top, rect_.right-rect_.left, rect_.bottom-rect_.top, true);	
-				GetWindowRect(rect_);
+				MoveWindow(rect_.left, rect_.top, rect_.right-rect_.left, rect_.bottom-rect_.top, true);	
 			}
         }
 
@@ -383,7 +383,6 @@ private:
 	FileSheet fileSheet;
 	TrackerSheet trackerSheet;
 	PeersSheet detailsSheet;
-
 };
 
 #endif // RC_INVOKED
