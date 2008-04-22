@@ -1862,6 +1862,26 @@ void BitTorrent::setTorrentLimit(const std::wstring& filename, int maxConn, int 
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentLimit")
 }
 
+void BitTorrent::torrent::set_ratio(float new_ratio)
+{
+	try {
+	
+	ptr->setRatio(ratio);
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_ratio")
+}
+
+float BitTorrent::torrent::get_ratio() const
+{
+	try {
+	
+	return ptr->getRatio();
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::get_ratio")
+	
+	return 0;
+}
+
 void BitTorrent::setTorrentRatio(const std::string& filename, float ratio)
 {
 	setTorrentRatio(hal::from_utf8_safe(filename), ratio);

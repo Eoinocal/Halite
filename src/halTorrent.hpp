@@ -35,6 +35,8 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/fstream.hpp>
 
+#include <stlsoft/properties/method_properties.hpp>
+
 #include <asio/ip/tcp.hpp>
 #include <asio/ip/udp.hpp>
 
@@ -382,9 +384,26 @@ typedef boost::function<bool (size_t, size_t, size_t)> filterCallback;
 typedef boost::function<bool (size_t)> progressCallback;
 
 class BitTorrent_impl;
+class TorrentInternal;
 
 class BitTorrent
 {
+	class torrent
+	{
+		typedef torrent class_type;
+
+	public:
+		void set_ratio(float new_ratio);
+		float get_ratio() const;
+
+	public:
+		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(float, float, class_type, 
+			get_ratio, set_ratio, ratio);
+
+	private:
+		boost::shared_ptr<TorrentInternal> ptr;
+	};
+
 public:	
 	enum mappings
 	{
