@@ -22,6 +22,10 @@
 #define IDC_NEWT_TRACKERTIER			ID_NEWTORRENT_BEGIN+13
 #define IDC_NEWTORRENT_PEERS_TEXT		ID_NEWTORRENT_BEGIN+14
 #define IDC_NEWT_LISTPEERS				ID_NEWTORRENT_BEGIN+15
+#define HAL_SAVE_TEXT					ID_NEWTORRENT_BEGIN+16
+#define IDC_NEWT_OUT_BROWSE				ID_NEWTORRENT_BEGIN+17
+#define IDC_NEWT_OUTFILE_TEXT			ID_NEWTORRENT_BEGIN+18
+
 //#define IDC_PROG_CANCEL                 ID_NEWTORRENT_BEGIN + 2
 //#define IDC_PROG_PROGRESS               ID_NEWTORRENT_BEGIN + 3
 
@@ -134,6 +138,7 @@ public:
 
 		COMMAND_ID_HANDLER_EX(IDC_NEWT_FILE_BROWSE, OnFileBrowse)
 		COMMAND_ID_HANDLER_EX(IDC_NEWT_DIR_BROWSE, OnDirBrowse)
+		COMMAND_ID_HANDLER_EX(IDC_NEWT_OUT_BROWSE, OnOutBrowse)
 
 		CHAIN_MSG_MAP(autosizeClass)
 		CHAIN_MSG_MAP(sheetClass)
@@ -155,6 +160,8 @@ public:
 	
 	void OnFileBrowse(UINT, int, HWND hWnd);
 	void OnDirBrowse(UINT, int, HWND hWnd);
+	void OnOutBrowse(UINT, int, HWND hWnd);
+
 	LRESULT onInitDialog(HWND, LPARAM);
 	void OnDestroy() {};
 	
@@ -269,7 +276,7 @@ public:
 			UINT uStartPage = 0, HWND hWndParent = NULL) :
         CPropertySheet(title, uStartPage, hWndParent),
 		iniClass("NewTorrentDialog", "Dialog"),
-		m_bCentered(false),
+		inited_(false),
 		rect_(0,0,0,0)
     {
 		Load();
@@ -284,6 +291,8 @@ public:
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_CLOSE(OnClose)	
 		MSG_WM_DESTROY(OnDestroy)
+		
+		COMMAND_ID_HANDLER(0x1, OnOk)
 
 		CHAIN_MSG_MAP(resizeClass)
         CHAIN_MSG_MAP(CPropertySheet)
@@ -297,11 +306,7 @@ public:
 		DLGRESIZE_CONTROL(0x3021, DLSZ_MOVE_X|DLSZ_MOVE_Y)
 	END_DLGRESIZE_MAP()
 
-	void OnDestroy() 
-	{
-		GetWindowRect(rect_);
-		Save();
-	}
+    void OnShowWindow(BOOL bShow, UINT nStatus);
 
 	void OnSize(UINT, CSize)
 	{
@@ -315,45 +320,13 @@ public:
 		Save();
 	}
 
-    void OnShowWindow(BOOL bShow, UINT nStatus)
-    {
-        resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
-
-		hal::event().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(L"NewTorrentDialog::OnShowWindow()")));	
-
-        SetMsgHandled(false);
-
-        if (bShow)
-        {
-            CMenuHandle pSysMenu = GetSystemMenu(FALSE);
-
-        	if (pSysMenu != NULL)
-                pSysMenu.InsertMenu(-1, MF_BYPOSITION|MF_STRING, SC_SIZE, L"&Size");
-
-            ModifyStyle(0, WS_THICKFRAME, 0);
-
-			if (rect_.left == rect_.right)
-			{
-				CenterWindow();
-			}
-			else
-			{
-				MoveWindow(rect_.left, rect_.top, rect_.right-rect_.left, rect_.bottom-rect_.top, true);	
-			}
-        }
-
-		resizeActiveSheet();
-    }
-
-    void Center(void)
-    {
-        if (!m_bCentered)
-        {
-            CenterWindow();
-            m_bCentered = true;
-        }
-    }
+	void OnDestroy() 
+	{
+		GetWindowRect(rect_);
+		Save();
+	}
+	
+	LRESULT OnOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
 	friend class boost::serialization::access;
     template<class Archive>
@@ -363,7 +336,7 @@ public:
 	}
 
 private:
-    bool m_bCentered;
+	bool inited_;
 	CRect rect_;
 
 	void resizeActiveSheet()

@@ -43,6 +43,16 @@ void FileSheet::OnFileBrowse(UINT, int, HWND hWnd)
 	}
 }
 
+void FileSheet::OnOutBrowse(UINT, int, HWND hWnd)
+{	
+	CSSFileDialog dlgOpen(false, NULL, NULL, OFN_HIDEREADONLY, L"Torrents. (*.torrent)|*.torrent|", m_hWnd);
+
+	if (dlgOpen.DoModal() == IDOK) 
+	{
+		SetDlgItemText(IDC_NEWT_FILE, dlgOpen.m_ofn.lpstrFile);
+	}
+}
+
 void recurseDirectory(std::vector<wpath>& files, wpath baseDir, wpath relDir)
 {	
 	wpath currentDir(baseDir / relDir);
@@ -94,8 +104,7 @@ LRESULT FileSheet::onInitDialog(HWND, LPARAM)
 
 #define NEWTORRENT_SELECT_LAYOUT \
 	WMB_HEAD(WMB_COLNOMIN(_exp|150), WMB_COL(_auto), WMB_COL(_auto)), \
-		WMB_ROW(_auto,	IDC_NEWTORRENT_SELECT_TEXT,  _r, _r), \
-		WMB_ROW(_auto,	IDC_NEWT_FILE, IDC_NEWT_FILE_BROWSE, IDC_NEWT_DIR_BROWSE), \
+		WMB_ROW(_auto,	IDC_NEWTORRENT_SELECT_TEXT, IDC_NEWT_FILE_BROWSE, IDC_NEWT_DIR_BROWSE), \
 		WMB_ROWNOMAX(_exp|50,	IDC_NEWT_LISTFILES,  _r, _r), \
 	WMB_END()
 
@@ -114,12 +123,18 @@ LRESULT FileSheet::onInitDialog(HWND, LPARAM)
 		WMB_ROW(_auto,	IDC_NEWTORRENT_CREATOR_TEXT,  IDC_NEWTORRENT_CREATOR), \
 	WMB_END()
 
+#define NEWTORRENT_OUTPUT_LAYOUT \
+	WMB_HEAD(WMB_COL(_auto), WMB_COLNOMIN(_exp), WMB_COL(_auto)), \
+		WMB_ROW(_auto,	IDC_NEWT_OUTFILE_TEXT,  IDC_NEWT_FILE, IDC_NEWT_OUT_BROWSE), \
+	WMB_END()
+
 FileSheet::CWindowMapStruct* FileSheet::GetWindowMap()
 {
 	BEGIN_WINDOW_MAP_INLINE(FileSheet, 3, 3, 3, 3)
 		WMB_HEAD(WMB_COL(_exp)), 
-		WMB_ROW(_auto, NEWTORRENT_CREATOR_LAYOUT),
 		WMB_ROWNOMIN(_exp, NEWTORRENT_SELECT_LAYOUT),
+		WMB_ROW(_auto, NEWTORRENT_OUTPUT_LAYOUT),
+		WMB_ROW(_auto, NEWTORRENT_CREATOR_LAYOUT),
 		WMB_ROW(_auto, NEWTORRENT_COMMENT_LAYOUT),
 		WMB_ROW(_auto, IDC_NEWTORRENT_PRIVATE),
 		WMB_END() 
@@ -164,3 +179,49 @@ PeersSheet::CWindowMapStruct* PeersSheet::GetWindowMap()
 		WMB_END() 
 	END_WINDOW_MAP_INLINE()	
 }	
+
+void NewTorrentDialog::OnShowWindow(BOOL bShow, UINT nStatus)
+{
+    resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
+
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"NewTorrentDialog::OnShowWindow()")));
+
+    if (bShow && !inited_)
+    {
+        CMenuHandle pSysMenu = GetSystemMenu(FALSE);
+
+    	if (pSysMenu != NULL)
+            pSysMenu.InsertMenu(-1, MF_BYPOSITION|MF_STRING, SC_SIZE, L"&Size");
+
+        ModifyStyle(0, WS_THICKFRAME, 0);
+
+		if (rect_.left == rect_.right)
+		{
+			CenterWindow();
+		}
+		else
+		{
+			MoveWindow(rect_.left, rect_.top, 
+				rect_.right-rect_.left, rect_.bottom-rect_.top, true);	
+		}
+
+		::SetWindowText(GetDlgItem(0x1), hal::app().res_wstr(HAL_SAVE_TEXT).c_str());
+		::EnableWindow(GetDlgItem(0x1), false);
+
+		inited_ = true;
+		resizeActiveSheet();
+    }
+	else
+	{
+		SetMsgHandled(false);
+	}
+}
+
+LRESULT NewTorrentDialog::OnOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	hal::event().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"NewTorrentDialog::OnOk()")));
+
+	return 0;
+}

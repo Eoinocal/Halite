@@ -84,7 +84,7 @@ class TorrentInternal;
 }
 
 BOOST_CLASS_VERSION(hal::TorrentInternalOld, 9)
-BOOST_CLASS_VERSION(hal::TorrentInternal, 1)
+BOOST_CLASS_VERSION(hal::TorrentInternal, 2)
 
 namespace hal 
 {
@@ -855,41 +855,78 @@ public:
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-        ar & make_nvp("transferLimit", transferLimit_);
-        ar & make_nvp("connections", connections_);
-        ar & make_nvp("uploads", uploads_);			
-		ar & make_nvp("filename", filename_);		
-        ar & make_nvp("saveDirectory", save_directory_);
-		if (version > 0) {
-			ar & make_nvp("moveToDirectory", move_to_directory_);
-		} else {
-			move_to_directory_ = save_directory_;
-		}
-		
-		ar & make_nvp("payloadUploaded_", payloadUploaded_);
-		ar & make_nvp("payloadDownloaded_", payloadDownloaded_);
-		ar & make_nvp("uploaded_", uploaded_);
-		ar & make_nvp("downloaded_", downloaded_);	
-		ar & make_nvp("ratio", ratio_);	
-		ar & make_nvp("trackerUsername", trackerUsername_);
-		ar & make_nvp("trackerPassword", trackerPassword_);
-		
-		ar & make_nvp("state", state_);
-		ar & make_nvp("trackers", trackers_);
-		
-		ar & make_nvp("resolve_countries", resolve_countries_);
-		
-		ar & make_nvp("file_priorities", filePriorities_);
-		
-		ar & make_nvp("startTime", startTime_);
-		ar & make_nvp("activeDuration", activeDuration_);
-		ar & make_nvp("seedingDuration", seedingDuration_);
-		
-		ar & make_nvp("name", name_);
-		ar & make_nvp("compactStorage", compactStorage_);
-		ar & make_nvp("finishTime", finishTime_);
-		
-		ar & make_nvp("progress", progress_);
+		if (version > 1) {
+			ar & make_nvp("transfer_limits", transferLimit_);
+			ar & make_nvp("connection_limits", connections_);
+			ar & make_nvp("upload_limits", uploads_);	
+
+			ar & make_nvp("name", name_);
+			ar & make_nvp("filename", filename_);	
+
+			ar & make_nvp("ratio", ratio_);	
+			ar & make_nvp("progress", progress_);
+			ar & make_nvp("state", state_);
+			ar & make_nvp("compact_storage", compactStorage_);	
+			ar & make_nvp("resolve_countries", resolve_countries_);	
+
+			ar & make_nvp("tracker_username", trackerUsername_);
+			ar & make_nvp("tracker_password", trackerPassword_);
+			ar & make_nvp("trackers", trackers_);
+
+			ar & make_nvp("save_directory", save_directory_);
+			ar & make_nvp("move_to_directory", move_to_directory_);
+			
+			ar & make_nvp("payload_uploaded", payloadUploaded_);
+			ar & make_nvp("payload_downloaded", payloadDownloaded_);
+			ar & make_nvp("uploaded", uploaded_);
+			ar & make_nvp("downloaded", downloaded_);			
+					
+			ar & make_nvp("file_priorities", filePriorities_);
+			
+			ar & make_nvp("start_time", startTime_);
+			ar & make_nvp("finish_time", finishTime_);
+			ar & make_nvp("active_duration", activeDuration_);
+			ar & make_nvp("seeding_duration", seedingDuration_);
+					
+		} 
+		else 
+		{
+		    ar & make_nvp("transferLimit", transferLimit_);
+			ar & make_nvp("connections", connections_);
+			ar & make_nvp("uploads", uploads_);			
+			ar & make_nvp("filename", filename_);		
+			ar & make_nvp("saveDirectory", save_directory_);
+			if (version > 0) {
+				ar & make_nvp("moveToDirectory", move_to_directory_);
+			} else {
+				move_to_directory_ = save_directory_;
+			}
+			
+			ar & make_nvp("payloadUploaded_", payloadUploaded_);
+			ar & make_nvp("payloadDownloaded_", payloadDownloaded_);
+			ar & make_nvp("uploaded_", uploaded_);
+			ar & make_nvp("downloaded_", downloaded_);	
+			ar & make_nvp("ratio", ratio_);	
+			ar & make_nvp("trackerUsername", trackerUsername_);
+			ar & make_nvp("trackerPassword", trackerPassword_);
+			
+			ar & make_nvp("state", state_);
+			ar & make_nvp("trackers", trackers_);
+			
+			ar & make_nvp("resolve_countries", resolve_countries_);
+			
+			ar & make_nvp("file_priorities", filePriorities_);
+			
+			ar & make_nvp("startTime", startTime_);
+			ar & make_nvp("activeDuration", activeDuration_);
+			ar & make_nvp("seedingDuration", seedingDuration_);
+			
+			ar & make_nvp("name", name_);
+			ar & make_nvp("compactStorage", compactStorage_);
+			ar & make_nvp("finishTime", finishTime_);
+			
+			ar & make_nvp("progress", progress_);
+	}
     }
 
 	void setEntryData(libtorrent::entry metadata, libtorrent::entry resumedata)
