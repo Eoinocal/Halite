@@ -79,9 +79,11 @@ public:
 	typedef S string_t;
 	typedef typename S::value_type char_t;
 
+	size_t size() { return (N >= 0) ? N : 0; }
+	string_t str() { return string_t(&vector_[0]); } 
+	
 	operator char_t* () { return buffer_.elems; }
 	operator const string_t() { return string_t(buffer_.elems); }
-	size_t size() { return (N >= 0) ? N : 0; }
 
 private:
 	boost::array<char_t, N> buffer_;
@@ -98,9 +100,11 @@ public:
 	typedef S string_t;
 	typedef typename S::value_type char_t;
 
+	size_t size() { return vector_.size(); }
+	string_t str() { return string_t(&vector_[0]); } 
+
 	operator char_t* () { return &vector_[0]; }
 	operator const string_t() { return string_t(&vector_[0]); }
-	size_t size() { return vector_.size(); }
 
 private:
 	std::vector<char_t> vector_;

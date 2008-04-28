@@ -50,6 +50,7 @@ void FileSheet::OnOutBrowse(UINT, int, HWND hWnd)
 	if (dlgOpen.DoModal() == IDOK) 
 	{
 		SetDlgItemText(IDC_NEWT_FILE, dlgOpen.m_ofn.lpstrFile);
+		EnableSave_(true);
 	}
 }
 
@@ -64,7 +65,7 @@ void recurseDirectory(std::vector<wpath>& files, wpath baseDir, wpath relDir)
     }
     else
     {
-		HAL_DEV_MSG(currentDir.string());
+//		HAL_DEV_MSG(currentDir.string());
 		files.push_back(relDir);		
     }
 }
@@ -100,6 +101,59 @@ LRESULT FileSheet::onInitDialog(HWND, LPARAM)
 
 	BOOL retval =  DoDataExchange(false);
 	return 0;
+}
+	
+wpath FileSheet::FileFullPath() const
+{
+	return fileRoot_;
+}
+
+hal::file_size_pairs_t FileSheet::FileSizePairs() const
+{
+	hal::file_size_pairs_t filePairs;
+
+	for (int i = 0, e = filesList_.GetItemCount(); i<e; ++i)
+	{
+		hal::win_c_str<std::wstring> name_buf(MAX_PATH);		
+		filesList_.GetItemText(i, 0, name_buf, name_buf.size());
+
+		hal::win_c_str<std::wstring> path_buf(MAX_PATH);		
+		filesList_.GetItemText(i, 1, path_buf, path_buf.size());
+
+//		HAL_DEV_MSG(wformat(L"File: %1%, size: %2%, both: %3%") % fileRoot_.string() % name_buf.str() % (fileRoot_ / path_buf / name_buf).string());
+
+		filePairs.push_back(hal::make_pair(
+			wpath(wpath(path_buf.str()) / name_buf).string(), 
+			hal::fs::file_size(fileRoot_ / path_buf / name_buf)));
+	}
+
+	return filePairs;
+}
+
+wpath FileSheet::OutputFile()
+{
+	DoDataExchange(true);
+
+	return outFile_;
+}
+
+hal::tracker_details_t TrackerSheet::Trackers() const
+{
+	hal::tracker_details_t trackers;
+
+	for (int i = 0, e = trackerList_.GetItemCount(); i<e; ++i)
+	{
+		hal::win_c_str<std::wstring> str_buf(MAX_PATH);		
+		trackerList_.GetItemText(i, 0, str_buf, str_buf.size());
+
+		hal::win_c_str<std::wstring> tier_buf(MAX_PATH);		
+		trackerList_.GetItemText(i, 1, tier_buf, tier_buf.size());
+
+		trackers.push_back(hal::tracker_detail(
+			str_buf, lexical_cast<unsigned>(tier_buf.str())));
+	}
+
+	return trackers;
 }
 
 #define NEWTORRENT_SELECT_LAYOUT \
@@ -218,10 +272,30 @@ void NewTorrentDialog::OnShowWindow(BOOL bShow, UINT nStatus)
 	}
 }
 
-LRESULT NewTorrentDialog::OnOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+LRESULT NewTorrentDialog::OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
+	try
+	{
+
 	hal::event().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"NewTorrentDialog::OnOk()")));
+		new hal::EventMsg(L"NewTorrentDialog::OnSave()")));
+
+	hal::create_torrent_params params;
+
+	params.file_size_pairs = fileSheet_.FileSizePairs();
+	params.root_path = fileSheet_.FileFullPath();
+
+	params.trackers = trackerSheet_.Trackers();
+
+	hal::bittorrent().create_torrent(params, fileSheet_.OutputFile());
+
+	}
+	catch(const std::exception& e)
+	{
+		hal::event().post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(hal::Event::critical, e, 
+				L"NewTorrentDialog::OnSave")));
+	}
 
 	return 0;
 }

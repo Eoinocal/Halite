@@ -79,7 +79,7 @@ void serialize(Archive& ar, libtorrent::ip_range<address_type>& addr, const unsi
 }
 
 template<class Archive>
-void serialize(Archive& ar, hal::TrackerDetail& tracker, const unsigned int version)
+void serialize(Archive& ar, hal::tracker_detail& tracker, const unsigned int version)
 {	
 	ar & BOOST_SERIALIZATION_NVP(tracker.url);
 	ar & BOOST_SERIALIZATION_NVP(tracker.tier);
@@ -722,6 +722,26 @@ void BitTorrent::shutDownSession()
 void BitTorrent::saveTorrentData()
 {
 	pimpl->saveTorrentData();
+}
+
+void BitTorrent::create_torrent(const create_torrent_params& params, fs::wpath out_file)
+{
+
+	HAL_DEV_MSG(wformat_t(L"create_torrent creator: %1%, comment: %2%") % params.creator % params.comment);
+
+	HAL_DEV_MSG(L"Files");
+	for (file_size_pairs_t::const_iterator i = params.file_size_pairs.begin(), e = params.file_size_pairs.end();
+			i != e; ++i)
+	{
+		HAL_DEV_MSG(wformat_t(L"file path: %1%, size: %2%") % (*i).first % (*i).second);
+	}
+
+	HAL_DEV_MSG(L"Trackers");
+	for (tracker_details_t::const_iterator i = params.trackers.begin(), e = params.trackers.end();
+			i != e; ++i)
+	{
+		HAL_DEV_MSG(wformat_t(L"URL: %1%, Tier: %2%") % (*i).url % (*i).tier);
+	}
 }
 
 bool BitTorrent::listenOn(std::pair<int, int> const& range)
@@ -1975,13 +1995,13 @@ void BitTorrent::setTorrentFilePriorities(const std::wstring& filename,
 }
 
 void BitTorrent::setTorrentTrackers(const std::string& filename, 
-	const std::vector<TrackerDetail>& trackers)
+	const std::vector<tracker_detail>& trackers)
 {
 	setTorrentTrackers(from_utf8_safe(filename), trackers);
 }
 
 void BitTorrent::setTorrentTrackers(const std::wstring& filename, 
-	const std::vector<TrackerDetail>& trackers)
+	const std::vector<tracker_detail>& trackers)
 {
 	try {
 	
@@ -2004,12 +2024,12 @@ void BitTorrent::resetTorrentTrackers(const std::wstring& filename)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "resetTorrentTrackers")
 }
 
-std::vector<TrackerDetail> BitTorrent::getTorrentTrackers(const std::string& filename)
+std::vector<tracker_detail> BitTorrent::getTorrentTrackers(const std::string& filename)
 {
 	return getTorrentTrackers(from_utf8_safe(filename));
 }
 
-std::vector<TrackerDetail> BitTorrent::getTorrentTrackers(const std::wstring& filename)
+std::vector<tracker_detail> BitTorrent::getTorrentTrackers(const std::wstring& filename)
 {
 	try {
 	
@@ -2017,7 +2037,7 @@ std::vector<TrackerDetail> BitTorrent::getTorrentTrackers(const std::wstring& fi
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentTrackers")
 	
-	return std::vector<TrackerDetail>();	
+	return std::vector<tracker_detail>();	
 }
 
 void BitTorrent::startEventReceiver()

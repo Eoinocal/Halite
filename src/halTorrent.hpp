@@ -16,18 +16,14 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/bind.hpp>
 
-#include <boost/thread/thread.hpp>
-#include <boost/thread/recursive_mutex.hpp>
 #include <boost/smart_ptr.hpp>
 
 #include <boost/noncopyable.hpp>
 
-#include <boost/tuple/tuple.hpp>
 #include <boost/signal.hpp>
 #include <boost/optional.hpp>
 #include <boost/function.hpp>
 
-#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/smart_ptr.hpp>
 #include <boost/algorithm/string.hpp>
 
@@ -40,13 +36,12 @@
 #include <asio/ip/tcp.hpp>
 #include <asio/ip/udp.hpp>
 
+#include "halTypes.hpp"
+
 namespace libtorrent { struct peer_info; }
 
 namespace hal 
 {
-
-typedef boost::recursive_mutex mutex_t;
-typedef boost::thread thread_t;
 	
 struct torrentBriefDetail 
 {
@@ -143,7 +138,7 @@ class TorrentDetail
 {
 public:
 	TorrentDetail(std::wstring n, std::wstring f, std::wstring sd, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
-			float c=0, float d=0, boost::int64_t tWD=0, boost::int64_t tW=0, boost::int64_t tU=0, boost::int64_t tpU=0, boost::int64_t tD=0, boost::int64_t tpD=0, boost::tuple<size_t, size_t, size_t, size_t> connections = boost::tuple<size_t, size_t, size_t, size_t>(0,0,0,0), float r=0, 
+			float c=0, float d=0, size_type tWD=0, size_type tW=0, size_type tU=0, size_type tpU=0, size_type tD=0, size_type tpD=0, boost::tuple<size_type, size_type, size_type, size_type> connections = boost::tuple<size_type, size_type, size_type, size_type>(0,0,0,0), float r=0, 
 			boost::posix_time::time_duration eta=boost::posix_time::seconds(0), boost::posix_time::time_duration uIn=boost::posix_time::seconds(0),
 			boost::posix_time::time_duration actve=boost::posix_time::seconds(0), boost::posix_time::time_duration seding=boost::posix_time::seconds(0), boost::posix_time::ptime srt=boost::posix_time::second_clock::universal_time(), boost::posix_time::ptime fin=boost::posix_time::second_clock::universal_time()) :
 		filename_(f),
@@ -199,17 +194,17 @@ public:
 	const float& completion() const { return completion_; }
 	const float& distributedCopies() const { return distributed_copies_; }
 	
-	const boost::int64_t& totalUploaded() const { return totalUploaded_; }
-	const boost::int64_t& totalPayloadUploaded() const { return totalPayloadUploaded_; }
-	const boost::int64_t& totalDownloaded() const { return totalDownloaded_; }
-	const boost::int64_t& totalPayloadDownloaded() const { return totalPayloadDownloaded_; }
-	const boost::int64_t& totalWantedDone() const { return totalWantedDone_; }
-	const boost::int64_t& totalWanted() const { return totalWanted_; }
+	size_type totalUploaded() const { return totalUploaded_; }
+	size_type totalPayloadUploaded() const { return totalPayloadUploaded_; }
+	size_type totalDownloaded() const { return totalDownloaded_; }
+	size_type totalPayloadDownloaded() const { return totalPayloadDownloaded_; }
+	size_type totalWantedDone() const { return totalWantedDone_; }
+	size_type totalWanted() const { return totalWanted_; }
 	
-	int peers() const { return peers_; }
-	int peersConnected() const { return connectedPeers_; }
-	int seeds() const { return seeds_; }
-	int seedsConnected() const { return connectedSeeds_; }
+	size_type peers() const { return peers_; }
+	size_type peersConnected() const { return connectedPeers_; }
+	size_type seeds() const { return seeds_; }
+	size_type seedsConnected() const { return connectedSeeds_; }
 	
 	float ratio() { return ratio_; }
 	
@@ -235,17 +230,17 @@ public:
 	float completion_;	
 	float distributed_copies_;
 	
-	boost::int64_t totalWantedDone_;
-	boost::int64_t totalWanted_;
-	boost::int64_t totalUploaded_;
-	boost::int64_t totalPayloadUploaded_;
-	boost::int64_t totalDownloaded_;
-	boost::int64_t totalPayloadDownloaded_;
+	size_type totalWantedDone_;
+	size_type totalWanted_;
+	size_type totalUploaded_;
+	size_type totalPayloadUploaded_;
+	size_type totalDownloaded_;
+	size_type totalPayloadDownloaded_;
 	
-	int peers_;
-	int connectedPeers_;
-	int seeds_;
-	int connectedSeeds_;
+	size_type peers_;
+	size_type connectedPeers_;
+	size_type seeds_;
+	size_type connectedSeeds_;
 	
 	float ratio_;
 	
@@ -329,12 +324,12 @@ private:
 	mutable mutex_t mutex_;
 };
 
-struct TrackerDetail
+struct tracker_detail
 {
-	TrackerDetail() {}
-	TrackerDetail(std::wstring u, int t) : url(u), tier(t) {}
+	tracker_detail() {}
+	tracker_detail(std::wstring u, int t) : url(u), tier(t) {}
 	
-	bool operator<(const TrackerDetail& t) const
+	bool operator<(const tracker_detail& t) const
 	{
 		return (tier < t.tier);
 	}
@@ -342,6 +337,8 @@ struct TrackerDetail
 	std::wstring url;
 	int tier;
 };
+
+typedef std::vector<tracker_detail> tracker_details_t;
 
 struct UrlDhtPeerDetail
 {
@@ -363,6 +360,20 @@ struct UrlDhtPeerDetail
 	unsigned type;
 };
 
+typedef std::vector<pair<fs::wpath, size_type> > file_size_pairs_t;
+
+struct create_torrent_params
+{
+	create_torrent_params() {}
+
+	std::wstring creator;
+	std::wstring comment;
+
+	file_size_pairs_t file_size_pairs;
+	fs::wpath root_path;
+
+	tracker_details_t trackers;
+};
 
 class EventDetail;
 
@@ -414,6 +425,8 @@ public:
 
 	void shutDownSession();
 	void saveTorrentData();
+
+	void create_torrent(const create_torrent_params& params, fs::wpath out_file);
 	
 	bool listenOn(std::pair<int, int> const& portRange);
 	int isListeningOn();
@@ -434,8 +447,7 @@ public:
 	void ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last);
 	void ip_filter_import_dat(boost::filesystem::path file, progressCallback fn, bool octalFix);
 	size_t ip_filter_size();
-	void clearIpFilter();
-	
+	void clearIpFilter();	
 	
 	void setSessionHalfOpenLimit(int halfConn);
 	void setSessionLimits(int maxConn, int maxUpload);
@@ -503,12 +515,12 @@ public:
 	std::pair<float, float> getTorrentSpeed(const std::string& filename);
 	std::pair<float, float> getTorrentSpeed(const std::wstring& filename);
 	
-	void setTorrentTrackers(const std::string& filename, const std::vector<TrackerDetail>& trackers);
-	void setTorrentTrackers(const std::wstring& filename, const std::vector<TrackerDetail>& trackers);
+	void setTorrentTrackers(const std::string& filename, const std::vector<tracker_detail>& trackers);
+	void setTorrentTrackers(const std::wstring& filename, const std::vector<tracker_detail>& trackers);
 	void resetTorrentTrackers(const std::string& filename);
 	void resetTorrentTrackers(const std::wstring& filename);
-	std::vector<TrackerDetail> getTorrentTrackers(const std::string& filename);
-	std::vector<TrackerDetail> getTorrentTrackers(const std::wstring& filename);
+	std::vector<tracker_detail> getTorrentTrackers(const std::string& filename);
+	std::vector<tracker_detail> getTorrentTrackers(const std::wstring& filename);
 	
 	void setTorrentFilePriorities(const std::string& filename, std::vector<int> fileIndices, int priority);
 	void setTorrentFilePriorities(const std::wstring& filename, std::vector<int> fileIndices, int priority);

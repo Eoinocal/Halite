@@ -190,11 +190,11 @@ void AdvTrackerDialog::onReset(UINT, int, HWND)
 		
 	hal::bittorrent().resetTorrentTrackers(torrent_name);
 	
-	std::vector<hal::TrackerDetail> trackers =
+	std::vector<hal::tracker_detail> trackers =
 		hal::bittorrent().getTorrentTrackers(torrent_name);
 	m_list.clearAll();
 	
-	foreach (const hal::TrackerDetail& tracker, trackers)
+	foreach (const hal::tracker_detail& tracker, trackers)
 	{
 		int itemPos = m_list.AddItem(0, 0, tracker.url.c_str(), 0);
 		m_list.SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());
@@ -206,14 +206,14 @@ void AdvTrackerDialog::onReset(UINT, int, HWND)
 void AdvTrackerDialog::onApply(UINT, int, HWND)
 {
 	int total = m_list.GetItemCount();
-	std::vector<hal::TrackerDetail> trackers;
+	std::vector<hal::tracker_detail> trackers;
 	
 	for (int i=0; i<total; ++i)
 	{
 		array<wchar_t, MAX_PATH> buffer;		
 		
 		m_list.GetItemText(i, 0, buffer.elems, buffer.size());
-		trackers.push_back(hal::TrackerDetail(wstring(buffer.elems), 0));
+		trackers.push_back(hal::tracker_detail(wstring(buffer.elems), 0));
 		
 		m_list.GetItemText(i, 1, buffer.elems, buffer.size());
 		trackers.back().tier = lexical_cast<int>(wstring(buffer.elems));

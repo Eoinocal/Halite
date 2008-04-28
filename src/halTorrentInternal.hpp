@@ -408,7 +408,7 @@ public:
 	DurationTracker activeDuration_;
 	DurationTracker seedingDuration_;
 	
-	std::vector<TrackerDetail> trackers_;
+	std::vector<tracker_detail> trackers_;
 	std::vector<lbt::announce_entry> torrent_trackers_;
 	std::vector<lbt::peer_info> peers_;	
 	std::vector<int> filePriorities_;
@@ -815,15 +815,15 @@ public:
 		}
 	}
 	
-	void setTrackers(const std::vector<TrackerDetail>& trackerDetails)
+	void setTrackers(const std::vector<tracker_detail>& tracker_details)
 	{
 		trackers_.clear();
-		trackers_.assign(trackerDetails.begin(), trackerDetails.end());
+		trackers_.assign(tracker_details.begin(), tracker_details.end());
 		
 		applyTrackers();
 	}
 	
-	const std::vector<TrackerDetail>& getTrackers()
+	const std::vector<tracker_detail>& getTrackers()
 	{
 		if (trackers_.empty())
 		{
@@ -832,7 +832,7 @@ public:
 			foreach (const lbt::announce_entry& entry, trackers)
 			{
 				trackers_.push_back(
-					TrackerDetail(hal::from_utf8(entry.url), entry.tier));
+					tracker_detail(hal::from_utf8(entry.url), entry.tier));
 			}
 		}		
 		return trackers_;
@@ -1146,7 +1146,7 @@ private:
 			{
 				std::vector<lbt::announce_entry> trackers;
 				
-				foreach (const TrackerDetail& tracker, trackers_)
+				foreach (const tracker_detail& tracker, trackers_)
 				{
 					trackers.push_back(
 						lbt::announce_entry(hal::to_utf8(tracker.url)));
@@ -1278,7 +1278,7 @@ private:
 	DurationTracker activeDuration_;
 	DurationTracker seedingDuration_;
 	
-	std::vector<TrackerDetail> trackers_;
+	std::vector<tracker_detail> trackers_;
 	std::vector<lbt::announce_entry> torrent_trackers_;
 	std::vector<lbt::peer_info> peers_;	
 	std::vector<int> filePriorities_;

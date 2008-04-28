@@ -39,11 +39,11 @@ void TrackerListViewCtrl::uiUpdate(const hal::TorrentDetail_ptr pT)
 		hal::try_update_lock<listClass> lock(*this);
 		if (lock) 
 		{			
-			std::vector<hal::TrackerDetail> trackers =
+			std::vector<hal::tracker_detail> trackers =
 				hal::bittorrent().getTorrentTrackers(pT->name());
 			clearAll();
 			
-			foreach (const hal::TrackerDetail& tracker, trackers)
+			foreach (const hal::tracker_detail& tracker, trackers)
 			{
 				int itemPos = AddItem(0, 0, tracker.url.c_str(), 0);
 				SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());
@@ -58,7 +58,7 @@ void TrackerListViewCtrl::uiUpdate(const hal::TorrentDetail_ptr pT)
 
 void TrackerListViewCtrl::newItem()
 {
-	hal::TrackerDetail tracker(L"", 0);	
+	hal::tracker_detail tracker(L"", 0);	
 	TrackerAddDialog trackDlg(L"Add New Tracker", tracker);
 	
 	if (trackDlg.DoModal() == 1 && !tracker.url.empty()) 
@@ -75,7 +75,7 @@ void TrackerListViewCtrl::editItem(int index)
 	array<wchar_t, MAX_PATH> buffer;
 
 	GetItemText(index, 0, buffer.elems, buffer.size());
-	hal::TrackerDetail tracker(wstring(buffer.elems), 0);
+	hal::tracker_detail tracker(wstring(buffer.elems), 0);
 	
 	GetItemText(index, 1, buffer.elems, buffer.size());
 	tracker.tier = lexical_cast<int>(wstring(buffer.elems));
