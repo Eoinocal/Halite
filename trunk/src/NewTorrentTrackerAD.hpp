@@ -26,7 +26,7 @@ public:
 	typedef CDialogResize<thisClass> resizeClass;
 	
 public:
-	NewTorrent_TrackerAddDialog(wstring title, hal::TrackerDetail& tracker) :
+	NewTorrent_TrackerAddDialog(wstring title, hal::tracker_detail& tracker) :
 		genericBaseClass(title, "genericAddDlgs/NewTorrentAddTracker", "NewTorrentAddTracker"),
 		tracker_(tracker)
 	{}
@@ -52,5 +52,5 @@ public:
 
 private:
 	wstring title_;
-	hal::TrackerDetail& tracker_;
+	hal::tracker_detail& tracker_;
 };

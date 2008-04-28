@@ -195,10 +195,12 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 	for(std::set<wpath>::const_iterator i=uniquePaths.begin(), e=uniquePaths.end();
 		i != e; ++i)
 	{	
-		HAL_DEV_MSG(wformat(L"Unique Save dir: %1%.") % *i);
+		wstring p = (*i).file_string();
 
-		sei.lpDirectory = (*i).string().c_str();
-		sei.lpFile = (*i).string().c_str();
+		HAL_DEV_MSG(wformat(L"Unique Save dir: %1%.") % p);
+
+		sei.lpDirectory = p.c_str();
+		sei.lpFile = p.c_str();
 		sei.lpVerb = L"open";
 		sei.nShow = true;
 

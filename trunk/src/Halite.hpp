@@ -6,7 +6,6 @@
 
 #pragma once
 
-
 using std::string;
 using std::wstring;
 
@@ -42,6 +41,8 @@ namespace hal
 	using std::make_pair;
 	
 	using boost::tuple;
+
+	typedef boost::int64_t size_type;
 }
 
 #define foreach BOOST_FOREACH

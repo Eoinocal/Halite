@@ -41,6 +41,7 @@
 #include "NewTorrentTrackerLV.hpp"
 #include "NewTorrentPeersLV.hpp"
 
+typedef boost::function<void (bool)> enable_save;
 
 class FilesListViewCtrl :
 	public CHaliteSortListViewCtrl<FilesListViewCtrl>,
@@ -124,7 +125,8 @@ protected:
 	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
 
 public:
-	FileSheet()
+	FileSheet(enable_save enableSave) :
+	  EnableSave_(enableSave)
 	{}
 
 	~FileSheet()
@@ -148,6 +150,7 @@ public:
     BEGIN_DDX_MAP(thisClass)
 		DDX_EX_STDWSTRING(IDC_NEWTORRENT_CREATOR, creator_);
 		DDX_EX_STDWSTRING(IDC_NEWTORRENT_COMMENT, comment_);
+		DDX_EX_STDWSTRING(IDC_NEWT_FILE, outFile_);
         DDX_CHECK(IDC_NEWTORRENT_PRIVATE, private_)
     END_DDX_MAP()
 
@@ -164,17 +167,23 @@ public:
 
 	LRESULT onInitDialog(HWND, LPARAM);
 	void OnDestroy() {};
+
+	wpath FileFullPath() const;
+	hal::file_size_pairs_t FileSizePairs() const;
+
+	wpath OutputFile();
 	
 private:
 	FilesListViewCtrl filesList_;
+	enable_save EnableSave_;
 	
 	wpath fileRoot_;
 	std::vector<wpath> files_;
 
 	wstring creator_;
 	wstring comment_;
+	wstring outFile_;
 	bool private_;
-
 };
 
 class TrackerSheet :
@@ -216,6 +225,8 @@ public:
 	}
 
 	void OnDestroy() {}
+
+	hal::tracker_details_t Trackers() const;
 	
 private:
 	NewTorrent_TrackerListViewCtrl trackerList_;
@@ -277,13 +288,14 @@ public:
         CPropertySheet(title, uStartPage, hWndParent),
 		iniClass("NewTorrentDialog", "Dialog"),
 		inited_(false),
-		rect_(0,0,0,0)
+		rect_(0,0,0,0),
+		fileSheet_(bind(&NewTorrentDialog::EnableSave, this, _1))
     {
 		Load();
 
-		AddPage(fileSheet);
-		AddPage(trackerSheet);
-		AddPage(detailsSheet);		
+		AddPage(fileSheet_);
+		AddPage(trackerSheet_);
+		AddPage(detailsSheet_);		
 	}
 
     BEGIN_MSG_MAP_EX(thisClass)
@@ -292,7 +304,7 @@ public:
 		MSG_WM_CLOSE(OnClose)	
 		MSG_WM_DESTROY(OnDestroy)
 		
-		COMMAND_ID_HANDLER(0x1, OnOk)
+		COMMAND_ID_HANDLER(0x1, OnSave)
 
 		CHAIN_MSG_MAP(resizeClass)
         CHAIN_MSG_MAP(CPropertySheet)
@@ -325,8 +337,13 @@ public:
 		GetWindowRect(rect_);
 		Save();
 	}
+
+	void EnableSave(bool enable)
+	{
+		::EnableWindow(GetDlgItem(0x1), enable);
+	}
 	
-	LRESULT OnOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
 	friend class boost::serialization::access;
     template<class Archive>
@@ -353,9 +370,9 @@ private:
             rect.right-rect.left, rect.bottom-rect.top, true);
 	}
 
-	FileSheet fileSheet;
-	TrackerSheet trackerSheet;
-	PeersSheet detailsSheet;
+	FileSheet fileSheet_;
+	TrackerSheet trackerSheet_;
+	PeersSheet detailsSheet_;
 };
 
 #endif // RC_INVOKED

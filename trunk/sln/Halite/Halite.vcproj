@@ -997,6 +997,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\halTypes.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\NewTorrentDialog.hpp"
 				>
 			</File>
