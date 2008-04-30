@@ -426,7 +426,7 @@ public:
 	void shutDownSession();
 	void saveTorrentData();
 
-	void create_torrent(const create_torrent_params& params, fs::wpath out_file);
+	void create_torrent(const create_torrent_params& params, fs::wpath out_file, progressCallback fn);
 	
 	bool listenOn(std::pair<int, int> const& portRange);
 	int isListeningOn();
