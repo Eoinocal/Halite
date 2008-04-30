@@ -8,6 +8,7 @@
 #include "../res/resource.h"
 
 #include "NewTorrentDialog.hpp"
+#include "ProgressDialog.hpp"
 #include "CSSFileDialog.hpp"
 
 void FilesListViewCtrl::OnAttach()
@@ -66,7 +67,7 @@ void recurseDirectory(std::vector<wpath>& files, wpath baseDir, wpath relDir)
     else
     {
 //		HAL_DEV_MSG(currentDir.string());
-		files.push_back(relDir);		
+		files.push_back(baseDir.leaf()/relDir);		
     }
 }
 
@@ -78,21 +79,32 @@ void FileSheet::OnDirBrowse(UINT, int, HWND hWnd)
 	files_.clear();
 	filesList_.DeleteAllItems();
 
+	try
+	{
+
 	if (IDOK == fldDlg.DoModal())
 	{
-		fileRoot_ = wpath(fldDlg.m_szFolderPath);
+		fileRoot_ = wpath(fldDlg.m_szFolderPath).branch_path();
 
-		recurseDirectory(files_, fileRoot_, L"/");
+		recurseDirectory(files_, wpath(fldDlg.m_szFolderPath), L"");
 
 		foreach(wpath& file, files_)
 		{
 			int itemPos = filesList_.AddItem(0, 0, file.leaf().c_str(), 0);
 
-			filesList_.SetItemText(itemPos, 1, file.branch_path().string().c_str());
+			filesList_.SetItemText(itemPos, 1, file.branch_path().file_string().c_str());
 			filesList_.SetItemText(itemPos, 2, lexical_cast<wstring>(
 				hal::fs::file_size(fileRoot_/file)).c_str());
 		}
 	}
+
+	}
+	catch(const std::exception& e)
+	{
+		hal::event().post(shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(hal::Event::fatal, e, L"FileSheet::OnDirBrowse")));
+	}	
+
 }
 
 LRESULT FileSheet::onInitDialog(HWND, LPARAM)
@@ -287,7 +299,9 @@ LRESULT NewTorrentDialog::OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 	params.trackers = trackerSheet_.Trackers();
 
-	hal::bittorrent().create_torrent(params, fileSheet_.OutputFile());
+	ProgressDialog progDlg(L"Loading IP filters...", bind(
+		&hal::BitTorrent::create_torrent, &hal::bittorrent(), params, fileSheet_.OutputFile(), _1));
+	progDlg.DoModal();
 
 	}
 	catch(const std::exception& e)

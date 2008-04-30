@@ -10,6 +10,8 @@
 
 #include <libtorrent/file.hpp>
 #include <libtorrent/hasher.hpp>
+#include <libtorrent/storage.hpp>
+#include <libtorrent/file_pool.hpp>
 #include <libtorrent/alert_types.hpp>
 #include <libtorrent/entry.hpp>
 #include <libtorrent/bencode.hpp>
@@ -656,6 +658,66 @@ private:
 		timer_.expires_from_now(boost::posix_time::seconds(5));
 		timer_.async_wait(bind(&BitTorrent_impl::alertHandler, this));
 	}
+
+	void create_torrent(const create_torrent_params& params, fs::wpath out_file, progressCallback fn)
+	{		
+	try
+	{
+		boost::intrusive_ptr<lbt::torrent_info> t_info(new lbt::torrent_info);
+
+		int piece_size = 256 * 1024;
+		t_info->set_piece_size(piece_size);
+
+		HAL_DEV_MSG(L"Files");
+		for (file_size_pairs_t::const_iterator i = params.file_size_pairs.begin(), e = params.file_size_pairs.end();
+				i != e; ++i)
+		{
+			HAL_DEV_MSG(wformat_t(L"file path: %1%, size: %2%") % (*i).first % (*i).second);
+			t_info->add_file(to_utf8((*i).first.string()), (*i).second);
+		}
+
+		lbt::file_pool f_pool;
+		
+		scoped_ptr<lbt::storage_interface> store(
+			lbt::default_storage_constructor(t_info, to_utf8(params.root_path.string()),
+				f_pool));
+
+		HAL_DEV_MSG(L"Trackers");
+		for (tracker_details_t::const_iterator i = params.trackers.begin(), e = params.trackers.end();
+				i != e; ++i)
+		{
+			HAL_DEV_MSG(wformat_t(L"URL: %1%, Tier: %2%") % (*i).url % (*i).tier);
+			t_info->add_tracker(to_utf8((*i).url), (*i).tier);
+		}
+
+		// calculate the hash for all pieces
+		int num = t_info->num_pieces();
+		std::vector<char> piece_buf(piece_size);
+
+		for (int i = 0; i < num; ++i)
+		{
+			store->read(&piece_buf[0], i, 0, t_info->piece_size(i));
+
+			lbt::hasher h(&piece_buf[0], t_info->piece_size(i));
+			t_info->set_hash(i, h.final());
+
+			fn((double)i / num);
+
+//			HAL_DEV_MSG(wformat_t(L"URL: %1%, Tier: %2%") % (*i).url % (*i).tier);
+		}
+
+		t_info->set_creator(to_utf8(params.creator).c_str());
+
+		// create the torrent and print it to out
+		lbt::entry e = t_info->create_torrent();
+		halencode(out_file, e);
+	}
+	catch(const std::exception& e)
+	{
+		event().post(shared_ptr<EventDetail>(
+			new EventStdException(Event::fatal, e, L"create_torrent")));
+	}	
+	}
 	
 	std::pair<lbt::entry, lbt::entry> prepTorrent(wpath_t filename, wpath_t saveDirectory);
 	void removalThread(TorrentInternal_ptr pIT, bool wipeFiles);
@@ -724,24 +786,9 @@ void BitTorrent::saveTorrentData()
 	pimpl->saveTorrentData();
 }
 
-void BitTorrent::create_torrent(const create_torrent_params& params, fs::wpath out_file)
+void BitTorrent::create_torrent(const create_torrent_params& params, fs::wpath out_file, progressCallback fn)
 {
-
-	HAL_DEV_MSG(wformat_t(L"create_torrent creator: %1%, comment: %2%") % params.creator % params.comment);
-
-	HAL_DEV_MSG(L"Files");
-	for (file_size_pairs_t::const_iterator i = params.file_size_pairs.begin(), e = params.file_size_pairs.end();
-			i != e; ++i)
-	{
-		HAL_DEV_MSG(wformat_t(L"file path: %1%, size: %2%") % (*i).first % (*i).second);
-	}
-
-	HAL_DEV_MSG(L"Trackers");
-	for (tracker_details_t::const_iterator i = params.trackers.begin(), e = params.trackers.end();
-			i != e; ++i)
-	{
-		HAL_DEV_MSG(wformat_t(L"URL: %1%, Tier: %2%") % (*i).url % (*i).tier);
-	}
+	pimpl->create_torrent(params, out_file, fn);
 }
 
 bool BitTorrent::listenOn(std::pair<int, int> const& range)
