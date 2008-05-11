@@ -164,6 +164,8 @@ public:
 	bool Private();
 	
 private:
+	void UpdateFileList();
+
 	FilesListViewCtrl filesList_;
 	enable_save EnableSave_;
 	

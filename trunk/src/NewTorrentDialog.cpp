@@ -42,7 +42,13 @@ void FileSheet::OnFileBrowse(UINT, int, HWND hWnd)
 
 	if (dlgOpen.DoModal() == IDOK) 
 	{
-	//	ProcessFile(dlgOpen.m_ofn.lpstrFile);
+		files_.clear();
+		wpath file = wpath(dlgOpen.m_ofn.lpstrFile);
+
+		fileRoot_ = file.branch_path();		
+		files_.push_back(file.leaf());
+
+		UpdateFileList();
 	}
 }
 
@@ -77,26 +83,17 @@ void FileSheet::OnDirBrowse(UINT, int, HWND hWnd)
 {	
 	CFolderDialog fldDlg(NULL, L"",	BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE);
 
-	files_.clear();
-	filesList_.DeleteAllItems();
-
 	try
 	{
 
 	if (IDOK == fldDlg.DoModal())
 	{
-		fileRoot_ = wpath(fldDlg.m_szFolderPath).branch_path();
+		files_.clear();
 
+		fileRoot_ = wpath(fldDlg.m_szFolderPath).branch_path();
 		recurseDirectory(files_, wpath(fldDlg.m_szFolderPath), L"");
 
-		foreach(wpath& file, files_)
-		{
-			int itemPos = filesList_.AddItem(0, 0, file.leaf().c_str(), 0);
-
-			filesList_.SetItemText(itemPos, 1, file.branch_path().file_string().c_str());
-			filesList_.SetItemText(itemPos, 2, lexical_cast<wstring>(
-				hal::fs::file_size(fileRoot_/file)).c_str());
-		}
+		UpdateFileList();
 	}
 
 	}
@@ -104,6 +101,20 @@ void FileSheet::OnDirBrowse(UINT, int, HWND hWnd)
 	{
 		hal::event().post(shared_ptr<hal::EventDetail>(
 			new hal::EventStdException(hal::Event::fatal, e, L"FileSheet::OnDirBrowse")));
+	}
+}
+
+void FileSheet::UpdateFileList()
+{
+	filesList_.DeleteAllItems();
+
+	foreach(wpath& file, files_)
+	{
+		int itemPos = filesList_.AddItem(0, 0, file.leaf().c_str(), 0);
+
+		filesList_.SetItemText(itemPos, 1, file.branch_path().file_string().c_str());
+		filesList_.SetItemText(itemPos, 2, lexical_cast<wstring>(
+			hal::fs::file_size(fileRoot_/file)).c_str());
 	}
 }
 
