@@ -1,5 +1,5 @@
 "English" ---> "ЏиϊсoδΣ"
-"English.rtf" ---> "../lang/Template.rtf"
+"English.rtf" --->  "../lang/Template.rtf" 
 "MS Shell Dlg" --->  ??? 
 "Torrent" --->  ??? 
 "Tracker" --->  ??? 
@@ -33,11 +33,6 @@
 "(DHT will not apply to private torrents)" --->  ??? 
 "General Settings" --->  ??? 
 "Limit the no. of half-open connections" --->  ??? 
-"Port Forwarding" --->  ??? 
-"None (Managed Externally)" --->  ??? 
-"UnPlug and Play" --->  ??? 
-"NAT-PMG" --->  ??? 
-"Test" --->  ??? 
 "Proxies" --->  ??? 
 "Proxy Host/IP : " --->  ??? 
 "Use a proxy." --->  ??? 
@@ -91,17 +86,15 @@
 "Default save folder :" --->  ??? 
 "..." --->  ??? 
 "Prompt for alternate save folder." --->  ??? 
+"Halite shutting down..." --->  ??? 
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." --->  ??? 
+"Show this message in future" --->  ??? 
 "Create new torrent" --->  ??? 
 "Save" --->  ??? 
 "Select a file or directory to construct the torrent." --->  ??? 
 "Enter the tracker URLs for the torrent." --->  ??? 
-"Private" --->  ??? 
+"Have Halite acts a DHT node." --->  ??? 
 "Add" --->  ??? 
-"Comment." --->  ??? 
-"Creator" --->  ??? 
-"Halite shutting down..." --->  ??? 
-"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." --->  ??? 
-"Show this message in future" --->  ??? 
 "Pause" --->  ??? 
 "Reannounce" ---> "Reannounce"
 "Remove" --->  ??? 
@@ -112,19 +105,13 @@
 "Time left:" --->  ??? 
 "Completed:" --->  ??? 
 "About" --->  ??? 
+"Program Information" --->  ??? 
 "RichEdit20A" --->  ??? 
 "SysTabControl32" --->  ??? 
-"Add Torrent" --->  ??? 
-"Ok" --->  ??? 
-"Use Compact Allocation." --->  ??? 
-"Stopped initially (Allows changing advanced setting)." --->  ??? 
-"Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "General" --->  ??? 
-"Allow only one instance to run" --->  ??? 
+"Allow only one instance to run." --->  ??? 
 "Advanced GUI" --->  ??? 
 "Minimize to tray." --->  ??? 
-"Close to tray" --->  ??? 
-"Confirm on close" --->  ??? 
 "Language (requires restart)" --->  ??? 
 "List of Trackers." --->  ??? 
 "Send login info to trackers." --->  ??? 
@@ -146,10 +133,8 @@
 "Stop" --->  ??? 
 "Torrent File" --->  ??? 
 "Torrent and Data" --->  ??? 
-"Open Download Folder" --->  ??? 
 "New" --->  ??? 
 "Edit" --->  ??? 
-"Set as Primary" --->  ??? 
 "Delete" --->  ??? 
 "StringFileInfo" --->  ??? 
 "180904b0" --->  ??? 
@@ -163,7 +148,7 @@
 "InternalName" --->  ??? 
 "Halite" --->  ??? 
 "LegalCopyright" --->  ??? 
-"(C) Eoin O'Callaghan 2008" --->  ??? 
+"(C) Eoin O'Callaghan 2007" --->  ??? 
 "OriginalFilename" --->  ??? 
 "Halite.exe" --->  ??? 
 "ProductName" --->  ??? 
@@ -177,7 +162,14 @@
 "The BitTorrent session could not start. Try selecting another port in the settings." --->  ??? 
 "DHT session could not start. Try selecting another port in the settings." --->  ??? 
 "Select a directory to save the files to or cancel to not download torrent at all." --->  ??? 
-"∞" --->  ??? 
+"None" --->  ??? 
+"Debug" --->  ??? 
+"Info" --->  ??? 
+"Critical" --->  ??? 
+"Libtorrent Peer Alert: %1%." --->  ??? 
+"Xml Exception (%1%) with %2%." --->  ??? 
+"Torrent (%1%) exception caught; %2% from %3%." --->  ??? 
+"Invalid torrent (%1%) from %2%." --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
@@ -193,6 +185,13 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "Halite not listening!" --->  ??? 
 "Port %1% open" --->  ??? 
+"Exception caught; %1%, from %2%." --->  ??? 
+"XML exception: %1%." --->  ??? 
+"Unicode exception: %1%." --->  ??? 
+"Bittorrent Event: %1%." --->  ??? 
+"Peer Event: %1%." --->  ??? 
+"Tracker Event: %1%." --->  ??? 
+"Debug Event: %1%." --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Peers" --->  ??? 
 "Files" --->  ??? 
@@ -201,8 +200,6 @@
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "Auto Sort" --->  ??? 
 "Torrent Root" --->  ??? 
-"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
-"The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
 "Interesting" --->  ??? 
 "Choked" --->  ??? 
 "Interested in us" --->  ??? 
@@ -223,10 +220,8 @@
 "Allocating" --->  ??? 
 "Stopped" --->  ??? 
 "Paused" --->  ??? 
-"Stopping" --->  ??? 
-"Pausing" --->  ??? 
 "Downloading Metadata" --->  ??? 
-"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
+"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time" --->  ??? 
 "Time;Message;Severity" --->  ??? 
 "Tracker;Tier" --->  ??? 
 "Peer;Country;Download;Upload;Type;Client" --->  ??? 
@@ -234,45 +229,12 @@
 "Filename;Path;Size;Progress;Priority" --->  ??? 
 "Don't download" --->  ??? 
 "Normal" --->  ??? 
-"2" --->  ??? 
+"Above Normal" --->  ??? 
 "3" --->  ??? 
 "4" --->  ??? 
-"Above Normal" --->  ??? 
+"5" --->  ??? 
 "6" --->  ??? 
 "Maximum" --->  ??? 
 "Set Priority" --->  ??? 
 "Halite.ico" --->  ??? 
 "toolbar.bmp" --->  ??? 
-"None" --->  ??? 
-"Debug" --->  ??? 
-"Info" --->  ??? 
-"Warning" --->  ??? 
-"Critical" --->  ??? 
-"Peer %2%: %1%." --->  ??? 
-"Peer banned %2%. (%1%)" --->  ??? 
-"Hash failed for piece %2% of %1%." --->  ??? 
-"URL Seed %2%, %3%. (%1%)" --->  ??? 
-"Tracker warning: %2%! (%1%)" --->  ??? 
-"Tracker Announce. (%1%)" --->  ??? 
-"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
-"%2%. %3% Peers. (%1%)" --->  ??? 
-"Fast rusume failed: %2%. (%1%)" --->  ??? 
-"Piece %2% finished. (%1%)" --->  ??? 
-"Block %2% of piece %3% finished. (%1%)" --->  ??? 
-"Block %2% of piece %3% downloading. (%1%)" --->  ??? 
-"Successfully %1%." --->  ??? 
-"Failed, %1%" --->  ??? 
-"IP version 6 listen atempt failed. Not serious." --->  ??? 
-"IP Filter blocked %1%, %2%." --->  ??? 
-"Torrent %1% finished." --->  ??? 
-"Torrent %1% paused." --->  ??? 
-"Torrent (%1%) exception caught; %2% from %3%." --->  ??? 
-"Invalid torrent (%1%) from %2%." --->  ??? 
-"Exception caught; %1%, from %2%." --->  ??? 
-"Xml Exception (%1%) with %2%." --->  ??? 
-"Unicode exception: %1%." --->  ??? 
-"Bittorrent Event: %1%." --->  ??? 
-"Peer Event: %1%." --->  ??? 
-"Tracker Event: %1%." --->  ??? 
-"Debug Event: %1%." --->  ??? 
-"Dev Msg: %1%." --->  ??? 
