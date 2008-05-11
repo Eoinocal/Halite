@@ -25,9 +25,7 @@
 #define HAL_SAVE_TEXT					ID_NEWTORRENT_BEGIN+16
 #define IDC_NEWT_OUT_BROWSE				ID_NEWTORRENT_BEGIN+17
 #define IDC_NEWT_OUTFILE_TEXT			ID_NEWTORRENT_BEGIN+18
-
-//#define IDC_PROG_CANCEL                 ID_NEWTORRENT_BEGIN + 2
-//#define IDC_PROG_PROGRESS               ID_NEWTORRENT_BEGIN + 3
+#define HAL_NEWT_SAVING_TORRENT			ID_NEWTORRENT_BEGIN+19
 
 #ifndef RC_INVOKED
 
@@ -82,20 +80,11 @@ public:
 	BEGIN_MSG_MAP_EX(FilesListViewCtrl)
 		MSG_WM_DESTROY(OnDestroy)
 
-/*		COMMAND_ID_HANDLER(ID_TLVM_NEW, OnNew)
-		COMMAND_ID_HANDLER(ID_TLVM_EDIT, OnEdit)
-		COMMAND_ID_HANDLER(ID_TLVM_DELETE, OnDelete)
-		COMMAND_ID_HANDLER(ID_TLVM_PRIMARY, OnPrimary)
-
-		REFLECTED_NOTIFY_CODE_HANDLER(NM_DBLCLK, OnDoubleClick)
-*/
 		CHAIN_MSG_MAP(listClass)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 
 	void uiUpdate(const hal::TorrentDetail_ptr pT);
-//	void enterNewTracker();
-//	void saveSettings();
 
     friend class boost::serialization::access;
     template<class Archive>
@@ -126,10 +115,8 @@ protected:
 
 public:
 	FileSheet(enable_save enableSave) :
-	  EnableSave_(enableSave)
-	{}
-
-	~FileSheet()
+		EnableSave_(enableSave),  
+		private_(false)
 	{}
 	
 	enum { IDD = IDD_NEWTORRENT };
@@ -202,12 +189,9 @@ public:
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_DESTROY(OnDestroy)
 
-//		COMMAND_ID_HANDLER_EX(IDC_NEWT_ADDTRACKER, OnFileBrowse)
-//		COMMAND_ID_HANDLER_EX(IDC_NEWT_DIR_BROWSE, OnDirBrowse)
-
-		REFLECT_NOTIFICATIONS()
 		CHAIN_MSG_MAP(autosizeClass)
 		CHAIN_MSG_MAP(sheetClass)
+		REFLECT_NOTIFICATIONS()
     END_MSG_MAP()
 
 	static CWindowMapStruct* GetWindowMap();
@@ -269,6 +253,9 @@ public:
 
 	void OnDestroy() {}
 	
+	hal::dht_node_details_t DhtNodes() const;	
+	hal::web_seed_details_t WebSeeds() const;
+	
 private:
 	NewTorrent_PeersListViewCtrl peersList_;
 };
@@ -328,8 +315,7 @@ public:
 	
 	void OnClose()
 	{
-		GetWindowRect(rect_);
-		Save();
+		OnDestroy();
 	}
 
 	void OnDestroy() 

@@ -46,7 +46,7 @@ void FileSheet::OnFileBrowse(UINT, int, HWND hWnd)
 
 void FileSheet::OnOutBrowse(UINT, int, HWND hWnd)
 {	
-	CSSFileDialog dlgOpen(false, NULL, NULL, OFN_HIDEREADONLY, L"Torrents. (*.torrent)|*.torrent|", m_hWnd);
+	CSSFileDialog dlgOpen(false, NULL, NULL, OFN_HIDEREADONLY, L"Torrents. (*.torrent)|*.torrent|All Files (*.*)|*.*|", m_hWnd);
 
 	if (dlgOpen.DoModal() == IDOK) 
 	{
@@ -73,8 +73,7 @@ void recurseDirectory(std::vector<wpath>& files, wpath baseDir, wpath relDir)
 
 void FileSheet::OnDirBrowse(UINT, int, HWND hWnd)
 {	
-	CFolderDialog fldDlg(NULL, L"",
-		BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE);
+	CFolderDialog fldDlg(NULL, L"",	BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE);
 
 	files_.clear();
 	filesList_.DeleteAllItems();
@@ -103,8 +102,7 @@ void FileSheet::OnDirBrowse(UINT, int, HWND hWnd)
 	{
 		hal::event().post(shared_ptr<hal::EventDetail>(
 			new hal::EventStdException(hal::Event::fatal, e, L"FileSheet::OnDirBrowse")));
-	}	
-
+	}
 }
 
 LRESULT FileSheet::onInitDialog(HWND, LPARAM)
@@ -124,7 +122,10 @@ hal::file_size_pairs_t FileSheet::FileSizePairs() const
 {
 	hal::file_size_pairs_t filePairs;
 
-	for (int i = 0, e = filesList_.GetItemCount(); i<e; ++i)
+	try
+	{
+
+	for (int i=0, e=filesList_.GetItemCount(); i<e; ++i)
 	{
 		hal::win_c_str<std::wstring> name_buf(MAX_PATH);		
 		filesList_.GetItemText(i, 0, name_buf, name_buf.size());
@@ -132,11 +133,17 @@ hal::file_size_pairs_t FileSheet::FileSizePairs() const
 		hal::win_c_str<std::wstring> path_buf(MAX_PATH);		
 		filesList_.GetItemText(i, 1, path_buf, path_buf.size());
 
-//		HAL_DEV_MSG(wformat(L"File: %1%, size: %2%, both: %3%") % fileRoot_.string() % name_buf.str() % (fileRoot_ / path_buf / name_buf).string());
-
 		filePairs.push_back(hal::make_pair(
 			wpath(wpath(path_buf.str()) / name_buf).string(), 
 			hal::fs::file_size(fileRoot_ / path_buf / name_buf)));
+	}
+
+	}
+	catch(const std::exception& e)
+	{
+		hal::event().post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(hal::Event::critical, e, 
+				L"FileSheet::FileSizePairs")));
 	}
 
 	return filePairs;
@@ -153,19 +160,50 @@ hal::tracker_details_t TrackerSheet::Trackers() const
 {
 	hal::tracker_details_t trackers;
 
-	for (int i = 0, e = trackerList_.GetItemCount(); i<e; ++i)
+	if (trackerList_)
 	{
-		hal::win_c_str<std::wstring> str_buf(MAX_PATH);		
-		trackerList_.GetItemText(i, 0, str_buf, str_buf.size());
+		for (int i = 0, e = trackerList_.GetItemCount(); i<e; ++i)
+		{
+			hal::win_c_str<std::wstring> str_buf(MAX_PATH);		
+			trackerList_.GetItemText(i, 0, str_buf, str_buf.size());
 
-		hal::win_c_str<std::wstring> tier_buf(MAX_PATH);		
-		trackerList_.GetItemText(i, 1, tier_buf, tier_buf.size());
+			hal::win_c_str<std::wstring> tier_buf(MAX_PATH);		
+			trackerList_.GetItemText(i, 1, tier_buf, tier_buf.size());
 
-		trackers.push_back(hal::tracker_detail(
-			str_buf, lexical_cast<unsigned>(tier_buf.str())));
+			trackers.push_back(hal::tracker_detail(
+				str_buf, lexical_cast<unsigned>(tier_buf.str())));
+		}
 	}
 
 	return trackers;
+}
+
+hal::dht_node_details_t PeersSheet::DhtNodes() const
+{
+	hal::dht_node_details_t dht_nodes;
+
+	if (peersList_)
+	{
+		for (int i = 0, e = peersList_.GetItemCount(); i<e; ++i)
+		{
+		}
+	}
+
+	return dht_nodes;
+}
+
+hal::web_seed_details_t PeersSheet::WebSeeds() const
+{
+	hal::web_seed_details_t web_seeds;
+
+	if (peersList_)
+	{
+		for (int i = 0, e = peersList_.GetItemCount(); i<e; ++i)
+		{
+		}
+	}
+
+	return web_seeds;
 }
 
 #define NEWTORRENT_SELECT_LAYOUT \
@@ -210,7 +248,6 @@ FileSheet::CWindowMapStruct* FileSheet::GetWindowMap()
 #define NEWTORRENT_TRACKERS_LAYOUT \
 	WMB_HEAD(WMB_COLNOMIN(_exp), WMB_COL(_auto), WMB_COL(_auto)), \
 		WMB_ROW(_auto,	IDC_NEWTORRENT_TRACKERS_TEXT, _r, _r), \
-/*		WMB_ROW(_auto,	IDC_NEWT_TRACKER, IDC_NEWT_TRACKERTIER, IDC_NEWT_ADDTRACKER), */\
 		WMB_ROWNOMAX(_exp|50,	IDC_NEWT_LISTTRACKERS,  _r, _r), \
 	WMB_END()
 
@@ -223,17 +260,9 @@ TrackerSheet::CWindowMapStruct* TrackerSheet::GetWindowMap()
 	END_WINDOW_MAP_INLINE()	
 }	
 
-#define NEWTORRENT_DETAILS_LAYOUT \
-	WMB_HEAD(WMB_COLNOMIN(_exp|33), WMB_COLNOMIN(_exp)), \
-		WMB_ROW(_auto,	IDC_NEWTORRENT_COMMENT_TEXT,  IDC_NEWTORRENT_COMMENT), \
-		WMB_ROW(_auto,	IDC_NEWTORRENT_CREATOR_TEXT,  IDC_NEWTORRENT_CREATOR), \
-	WMB_END()
-
-
 #define NEWTORRENT_PEERS_LAYOUT \
 	WMB_HEAD(WMB_COLNOMIN(_exp), WMB_COL(_auto), WMB_COL(_auto)), \
 		WMB_ROW(_auto,	IDC_NEWTORRENT_PEERS_TEXT, _r, _r), \
-/*		WMB_ROW(_auto,	IDC_NEWT_TRACKER, IDC_NEWT_TRACKERTIER, IDC_NEWT_ADDTRACKER), */\
 		WMB_ROWNOMAX(_exp|50,	IDC_NEWT_LISTPEERS,  _r, _r), \
 	WMB_END()
 
@@ -299,7 +328,10 @@ LRESULT NewTorrentDialog::OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 	params.trackers = trackerSheet_.Trackers();
 
-	ProgressDialog progDlg(L"Loading IP filters...", bind(
+	params.dht_nodes = detailsSheet_.DhtNodes();
+	params.web_seeds = detailsSheet_.WebSeeds();
+
+	ProgressDialog progDlg(hal::app().res_wstr(HAL_NEWT_SAVING_TORRENT), bind(
 		&hal::BitTorrent::create_torrent, &hal::bittorrent(), params, fileSheet_.OutputFile(), _1));
 	progDlg.DoModal();
 

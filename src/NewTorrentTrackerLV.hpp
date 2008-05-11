@@ -1,13 +1,15 @@
 
-//         Copyright Eóin O'Callaghan 2006 - 2007.
+//         Copyright Eóin O'Callaghan 2006 - 2008.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#define ID_NTTLVM_BEGIN	 	18000
-#define ID_NTTLVM_NEW 		ID_NTTLVM_BEGIN + 1
-#define ID_NTTLVM_EDIT 		ID_NTTLVM_BEGIN + 2
-#define ID_NTTLVM_DELETE	ID_NTTLVM_BEGIN + 3
+#define ID_NTTLVM_BEGIN	 			18000
+#define ID_NTTLVM_NEW 				ID_NTTLVM_BEGIN + 1
+#define ID_NTTLVM_EDIT 				ID_NTTLVM_BEGIN + 2
+#define ID_NTTLVM_DELETE			ID_NTTLVM_BEGIN + 3
+#define HAL_NEWT_EDIT_TRACKER		ID_NTTLVM_BEGIN + 4
+#define HAL_NEWT_ADD_NEW_TRACKER	ID_NTTLVM_BEGIN + 5
 
 #ifndef RC_INVOKED
 
@@ -36,7 +38,7 @@ class NewTorrent_TrackerListViewCtrl :
 	
 public:
 	enum { 
-		LISTVIEW_ID_MENU = IDR_NEWT_TRACKERLV_MENU,
+		LISTVIEW_ID_MENU = HAL_GENERIC_ADD_LV_MENU,
 		LISTVIEW_ID_COLUMNNAMES = HAL_TRACKER_LISTVIEW_COLUMNS,
 		LISTVIEW_ID_COLUMNWIDTHS = HAL_TRACKER_LISTVIEW_DEFAULTS
 	};

@@ -1,5 +1,5 @@
 
-//         Copyright Eóin O'Callaghan 2006 - 2007.
+//         Copyright Eóin O'Callaghan 2006 - 2008.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -59,7 +59,7 @@ void NewTorrent_TrackerListViewCtrl::uiUpdate(const hal::TorrentDetail_ptr pT)
 void NewTorrent_TrackerListViewCtrl::newItem()
 {
 	hal::tracker_detail tracker(L"", 0);	
-	NewTorrent_TrackerAddDialog trackDlg(L"Add New Tracker", tracker);
+	NewTorrent_TrackerAddDialog trackDlg(hal::app().res_wstr(HAL_NEWT_ADD_NEW_TRACKER), tracker);
 	
 	if (trackDlg.DoModal() == 1 && !tracker.url.empty()) 
 	{
@@ -78,7 +78,7 @@ void NewTorrent_TrackerListViewCtrl::editItem(int index)
 	GetItemText(index, 1, buffer.elems, buffer.size());
 	tracker.tier = lexical_cast<int>(wstring(buffer.elems));
 
-	NewTorrent_TrackerAddDialog trackDlg(L"Edit Tracker", tracker);
+	NewTorrent_TrackerAddDialog trackDlg(hal::app().res_wstr(HAL_NEWT_EDIT_TRACKER), tracker);
 	
 	if (trackDlg.DoModal() == 1) 
 	{
