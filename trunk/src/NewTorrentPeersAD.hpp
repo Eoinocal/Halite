@@ -77,7 +77,11 @@ public:
 		if (hal::app().res_wstr(HAL_NEWT_ADD_PEERS_WEB) == peer_.type)
 			peerTypes.SetCurSel(1);
 		else
+		{
 			peerTypes.SetCurSel(0);
+			::EnableWindow(GetDlgItem(HAL_NEWT_ADD_DHT_PORT_TEXT), true);
+			::EnableWindow(GetDlgItem(HAL_NEWT_ADD_DHT_PORT), true);
+		}
 
 		SetMsgHandled(false);
 		return 0;

@@ -242,6 +242,12 @@ void TorrentDetails::sort(
 }
 
 
+web_seed_or_dht_node_detail::web_seed_or_dht_node_detail() : 
+	url(L""), 
+	port(-1), 
+	type(hal::app().res_wstr(HAL_INT_NEWT_ADD_PEERS_WEB)) 
+{}
+
 web_seed_or_dht_node_detail::web_seed_or_dht_node_detail(std::wstring u) : 
 	url(u), 
 	port(-1), 
@@ -703,6 +709,22 @@ private:
 			t_info->add_tracker(to_utf8((*i).url), (*i).tier);
 		}
 
+		HAL_DEV_MSG(L"Web Seeds");
+		for (web_seed_details_t::const_iterator i = params.web_seeds.begin(), e = params.web_seeds.end();
+				i != e; ++i)
+		{
+			HAL_DEV_MSG(wformat_t(L"URL: %1%") % (*i).url);
+			t_info->add_url_seed(to_utf8((*i).url));
+		}
+
+		HAL_DEV_MSG(L"DHT Nodes");
+		for (dht_node_details_t::const_iterator i = params.dht_nodes.begin(), e = params.dht_nodes.end();
+				i != e; ++i)
+		{
+			HAL_DEV_MSG(wformat_t(L"URL: %1%, port: %2%") % (*i).url % (*i).port);
+			t_info->add_node(hal::make_pair(to_utf8((*i).url), (*i).port));
+		}
+
 		// calculate the hash for all pieces
 		int num = t_info->num_pieces();
 		std::vector<char> piece_buf(piece_size);
@@ -714,12 +736,13 @@ private:
 			lbt::hasher h(&piece_buf[0], t_info->piece_size(i));
 			t_info->set_hash(i, h.final());
 
-			fn(100*i / num, hal::app().res_wstr(HAL_TORRENT_CREATINGTORRENT));
-
-			HAL_DEV_MSG(wformat_t(L"%1% , %2%") % i % (100*i / num));
+			fn(100*i / num, hal::app().res_wstr(HAL_TORRENT_CAL_HASHES));
 		}
 
 		t_info->set_creator(to_utf8(params.creator).c_str());
+		t_info->set_comment(to_utf8(params.comment).c_str());
+		
+		t_info->set_priv(params.private_torrent);
 
 		// create the torrent and print it to out
 		lbt::entry e = t_info->create_torrent();
