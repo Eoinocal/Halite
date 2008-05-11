@@ -1,11 +1,10 @@
 
-//         Copyright Eóin O'Callaghan 2006 - 2007.
+//         Copyright Eóin O'Callaghan 2006 - 2008.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include "stdAfx.hpp"
-
 #include "halTorrent.hpp"
 
 #include "NewTorrentPeersLV.hpp"
@@ -34,40 +33,67 @@ void NewTorrent_PeersListViewCtrl::saveSettings()
 
 void NewTorrent_PeersListViewCtrl::newItem()
 {
-	hal::UrlDhtPeerDetail tracker(L"", 0);	
-	NewTorrent_PeersAddDialog trackDlg(L"Add New Peer", tracker);
+	hal::web_seed_or_dht_node_detail peer;	
+	NewTorrent_PeersAddDialog trackDlg(hal::app().res_wstr(HAL_NEWT_ADD_NEW_PEER), peer);
 	
-	if (trackDlg.DoModal() == 1 && !tracker.url.empty()) 
+	if (trackDlg.DoModal() == 1 && !peer.url.empty()) 
 	{
-		int itemPos = AddItem(0, 0, tracker.url.c_str(), 0);		
-		SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.type).c_str());
+		int itemPos = AddItem(0, 0, peer.url.c_str(), 0);		
+		SetItemText(itemPos, 1, lexical_cast<wstring>(peer.port).c_str());
+		SetItemText(itemPos, 2, peer.type.c_str());
 	}
 }
 
 void NewTorrent_PeersListViewCtrl::editItem(int index)
-{
-	array<wchar_t, MAX_PATH> buffer;
+{	
+	try {
 
-	GetItemText(index, 0, buffer.elems, buffer.size());
-	hal::UrlDhtPeerDetail tracker(wstring(buffer.elems), 0);
+	hal::win_c_str<std::wstring> str_url(MAX_PATH);	
+	hal::win_c_str<std::wstring> str_port(MAX_PATH);	
+	hal::win_c_str<std::wstring> str_type(MAX_PATH);	
+
+	GetItemText(index, 0, str_url, str_url.size());
+	GetItemText(index, 1, str_port, str_port.size());
+	GetItemText(index, 2, str_type, str_type.size());
 	
-	GetItemText(index, 1, buffer.elems, buffer.size());
-	tracker.type = lexical_cast<int>(wstring(buffer.elems));
+	hal::web_seed_or_dht_node_detail peer;
 
-	NewTorrent_PeersAddDialog trackDlg(L"Edit Tracker", tracker);
+	if (hal::app().res_wstr(HAL_NEWT_ADD_PEERS_WEB) == str_type.str())
+	{
+		peer.url = str_url.str();
+		peer.port = -1;
+		peer.type = hal::app().res_wstr(HAL_NEWT_ADD_PEERS_WEB);
+	}
+	else
+	{
+		peer.url = str_url.str();
+		peer.port = lexical_cast<unsigned>(str_port.str());
+		peer.type = hal::app().res_wstr(HAL_NEWT_ADD_PEERS_DHT);
+	}
+
+	NewTorrent_PeersAddDialog trackDlg(hal::app().res_wstr(HAL_NEWT_EDIT_PEER), peer);
 	
 	if (trackDlg.DoModal() == 1) 
 	{
-		if (tracker.url.empty())
+		if (peer.url.empty())
 		{
 			DeleteItem(index);
 		}
 		else
 		{
-			SetItemText(index, 0, tracker.url.c_str());	
-			SetItemText(index, 1, lexical_cast<wstring>(tracker.type).c_str());
+			SetItemText(index, 0, peer.url.c_str());	
+			SetItemText(index, 1, lexical_cast<wstring>(peer.port).c_str());
+			SetItemText(index, 2, peer.type.c_str());
 		}		
 	}	
+
+	}
+	catch(const std::exception& e)
+	{
+		hal::event().post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(hal::Event::critical, e, 
+				L"NewTorrent_PeersListViewCtrl::editItem")));
+	}
 }
 
 void NewTorrent_PeersListViewCtrl::deleteItem(int index)

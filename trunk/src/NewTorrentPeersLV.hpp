@@ -54,9 +54,9 @@ public:
 		// "Tracker;Tier"
 		boost::split(names, column_names, boost::is_any_of(L";"));
 		
-		array<int, 2> widths = {287,50};
-		array<int, 2> order = {0,1};
-		array<bool, 2> visible = {true,true};
+		array<int, 3> widths = {287,50,50};
+		array<int, 3> order = {0,1,2};
+		array<bool, 3> visible = {true,true,true};
 		
 		SetDefaults(names, widths, order, visible, true);
 		Load();

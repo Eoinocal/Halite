@@ -340,27 +340,39 @@ struct tracker_detail
 
 typedef std::vector<tracker_detail> tracker_details_t;
 
-struct UrlDhtPeerDetail
+struct web_seed_or_dht_node_detail
 {
-	UrlDhtPeerDetail() {}
-	UrlDhtPeerDetail(std::wstring u, unsigned t) : url(u), type(t) {}
-	
-	bool operator<(const UrlDhtPeerDetail& t) const
-	{
-		return (type < t.type);
-	}
-	
-	enum UrlDhtPeerType
-	{
-		webSeed,
-		dhtPeer
-	};
-	
+	web_seed_or_dht_node_detail() : url(L""), port(-1), type(L"") {}
+	web_seed_or_dht_node_detail(std::wstring u);
+	web_seed_or_dht_node_detail(std::wstring u, int p);
+		
 	std::wstring url;
-	unsigned type;
+	int port;
+	std::wstring type;
 };
 
 typedef std::vector<pair<fs::wpath, size_type> > file_size_pairs_t;
+
+struct dht_node_detail
+{
+	dht_node_detail() {}
+	dht_node_detail(std::wstring u, int p) : url(u), port(p) {}
+	
+	std::wstring url;
+	int port;
+};
+
+typedef std::vector<dht_node_detail> dht_node_details_t;
+
+struct web_seed_detail
+{
+	web_seed_detail() {}
+	web_seed_detail(std::wstring u) : url(u) {}
+	
+	std::wstring url;
+};
+
+typedef std::vector<web_seed_detail> web_seed_details_t;
 
 struct create_torrent_params
 {
@@ -373,6 +385,8 @@ struct create_torrent_params
 	fs::wpath root_path;
 
 	tracker_details_t trackers;
+	dht_node_details_t dht_nodes;
+	web_seed_details_t web_seeds;
 };
 
 class EventDetail;
@@ -392,7 +406,7 @@ struct SessionDetail
 };
 
 typedef boost::function<bool (size_t, size_t, size_t)> filterCallback;
-typedef boost::function<bool (size_t)> progressCallback;
+typedef boost::function<bool (size_t, std::wstring)> progress_callback;
 
 class BitTorrent_impl;
 class TorrentInternal;
@@ -426,7 +440,7 @@ public:
 	void shutDownSession();
 	void saveTorrentData();
 
-	void create_torrent(const create_torrent_params& params, fs::wpath out_file, progressCallback fn);
+	void create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn);
 	
 	bool listenOn(std::pair<int, int> const& portRange);
 	int isListeningOn();
@@ -438,14 +452,14 @@ public:
 	void ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4);
 	void ensurePeOff();
 	
-	void ensureIpFilterOn(progressCallback fn);
+	void ensureIpFilterOn(progress_callback fn);
 	void ensureIpFilterOff();
 
 	void setMapping(int mapping);
 
 	void ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 last);
 	void ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last);
-	void ip_filter_import_dat(boost::filesystem::path file, progressCallback fn, bool octalFix);
+	void ip_filter_import_dat(boost::filesystem::path file, progress_callback fn, bool octalFix);
 	size_t ip_filter_size();
 	void clearIpFilter();	
 	

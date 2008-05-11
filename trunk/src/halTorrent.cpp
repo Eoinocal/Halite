@@ -241,6 +241,19 @@ void TorrentDetails::sort(
 	std::stable_sort(torrents_.begin(), torrents_.end(), fn);
 }
 
+
+web_seed_or_dht_node_detail::web_seed_or_dht_node_detail(std::wstring u) : 
+	url(u), 
+	port(-1), 
+	type(hal::app().res_wstr(HAL_INT_NEWT_ADD_PEERS_WEB)) 
+{}
+
+web_seed_or_dht_node_detail::web_seed_or_dht_node_detail(std::wstring u, int p) : 
+	url(u), 
+	port(p), 
+	type(hal::app().res_wstr(HAL_INT_NEWT_ADD_PEERS_DHT)) 
+{}
+
 class BitTorrent_impl
 {
 	friend class BitTorrent;
@@ -659,7 +672,7 @@ private:
 		timer_.async_wait(bind(&BitTorrent_impl::alertHandler, this));
 	}
 
-	void create_torrent(const create_torrent_params& params, fs::wpath out_file, progressCallback fn)
+	void create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn)
 	{		
 	try
 	{
@@ -701,9 +714,9 @@ private:
 			lbt::hasher h(&piece_buf[0], t_info->piece_size(i));
 			t_info->set_hash(i, h.final());
 
-			fn((double)i / num);
+			fn(100*i / num, hal::app().res_wstr(HAL_TORRENT_CREATINGTORRENT));
 
-//			HAL_DEV_MSG(wformat_t(L"URL: %1%, Tier: %2%") % (*i).url % (*i).tier);
+			HAL_DEV_MSG(wformat_t(L"%1% , %2%") % i % (100*i / num));
 		}
 
 		t_info->set_creator(to_utf8(params.creator).c_str());
@@ -743,7 +756,7 @@ private:
 	size_t ip_filter_count_;
 	
 	void ip_filter_count();
-	void ip_filter_load(progressCallback fn);
+	void ip_filter_load(progress_callback fn);
 	void ip_filter_import(std::vector<lbt::ip_range<asio::ip::address_v4> >& v4,
 		std::vector<lbt::ip_range<asio::ip::address_v6> >& v6);
 	
@@ -786,7 +799,7 @@ void BitTorrent::saveTorrentData()
 	pimpl->saveTorrentData();
 }
 
-void BitTorrent::create_torrent(const create_torrent_params& params, fs::wpath out_file, progressCallback fn)
+void BitTorrent::create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn)
 {
 	pimpl->create_torrent(params, out_file, fn);
 }
@@ -956,7 +969,7 @@ void BitTorrent_impl::ip_filter_count()
 	ip_filter_count_ = vectors.get<0>().size() + vectors.get<1>().size();
 }
 
-void BitTorrent_impl::ip_filter_load(progressCallback fn)
+void BitTorrent_impl::ip_filter_load(progress_callback fn)
 {
 	fs::ifstream ifs(workingDirectory/L"IPFilter.bin", std::ios::binary);
 	if (ifs)
@@ -972,7 +985,7 @@ void BitTorrent_impl::ip_filter_load(progressCallback fn)
 			if (i-previous > total)
 			{
 				previous = i;
-				if (fn) if (fn(size_t(i/total))) break;
+				if (fn) if (fn(size_t(i/total),L"")) break;
 			}
 			
 			read_range_to_filter<asio::ip::address_v4>(ifs, ip_filter_);
@@ -997,7 +1010,7 @@ void  BitTorrent_impl::ip_filter_import(std::vector<lbt::ip_range<asio::ip::addr
 	/* Note here we do not set ip_filter_changed_ */
 }
 
-void BitTorrent::ensureIpFilterOn(progressCallback fn)
+void BitTorrent::ensureIpFilterOn(progress_callback fn)
 {
 	try
 	{
@@ -1158,7 +1171,7 @@ void BitTorrent::clearIpFilter()
 	pimpl->ip_filter_count();
 }
 
-void BitTorrent::ip_filter_import_dat(boost::filesystem::path file, progressCallback fn, bool octalFix)
+void BitTorrent::ip_filter_import_dat(boost::filesystem::path file, progress_callback fn, bool octalFix)
 {
 	try
 	{
@@ -1183,7 +1196,7 @@ void BitTorrent::ip_filter_import_dat(boost::filesystem::path file, progressCall
 				previous = progress;
 				if (fn)
 				{
-					if (fn(size_t(progress/total))) 
+					if (fn(size_t(progress/total), hal::app().res_wstr(HAL_TORRENT_IMPORT_FILTERS))) 
 						break;
 				}
 			}
@@ -2104,4 +2117,3 @@ float BitTorrent::defTorrentDownload() { return pimpl->defTorrentDownload_; }
 float BitTorrent::defTorrentUpload() { return pimpl->defTorrentUpload_; }
 	
 };
-

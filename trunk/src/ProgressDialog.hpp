@@ -6,13 +6,16 @@
 
 #pragma once
 
-#define IDD_PROGRESS                    1901
+#define IDD_PROGRESS                    15000
+#define ID_PROGRESS_BEGIN				15001
 
-#define ID_PROGRESS_BEGIN				15000
+#define IDC_PROG_DESCP                  ID_PROGRESS_BEGIN + 1
 #define IDC_PROG_CANCEL                 ID_PROGRESS_BEGIN + 2
 #define IDC_PROG_PROGRESS               ID_PROGRESS_BEGIN + 3
 
-#ifndef RC_INVOKED
+#ifdef RC_INVOKED
+
+#else // RC_INVOKED
 
 #include <boost/function.hpp>
 
@@ -26,7 +29,7 @@ protected:
 	typedef ProgressDialog thisClass;
 	typedef CDialogImpl<ProgressDialog> baseClass;
 	
-	typedef boost::function<void (hal::progressCallback fn)> threadFunction;
+	typedef boost::function<void (hal::progress_callback fn)> threadFunction;
 
 public:
 	ProgressDialog(wstring windowText, threadFunction fn) :
@@ -56,13 +59,14 @@ public:
 
 	void ProgressThread()
 	{
-		fn_(bind(&ProgressDialog::Callback, this, _1));
+		fn_(bind(&ProgressDialog::Callback, this, _1, _2));
 		
 		EndDialog(0);
 	}
 	
-	bool Callback(size_t progress)
+	bool Callback(size_t progress, wstring description)
 	{
+		SetDlgItemText(IDC_PROG_DESCP, description.c_str());
 		prog_.SetPos(progress);
 		
 		return stop_;
