@@ -83,6 +83,8 @@ public:
 			::EnableWindow(GetDlgItem(HAL_NEWT_ADD_DHT_PORT), true);
 		}
 
+		resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
+
 		SetMsgHandled(false);
 		return 0;
 	}

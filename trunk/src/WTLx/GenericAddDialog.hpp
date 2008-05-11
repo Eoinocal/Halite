@@ -6,6 +6,10 @@
 
 #pragma once
 
+#define HAL_GENERIC_HOLDER		 	20000
+
+#ifndef RC_INVOKED
+
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
@@ -40,18 +44,18 @@ public:
 	enum { IDD = dialogIDD };
 
     BEGIN_MSG_MAP_EX(thisClass)
-        MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_CLOSE(OnClose)	
+
 		COMMAND_ID_HANDLER_EX(IDOK, OnOk)
 		COMMAND_ID_HANDLER_EX(IDCANCEL, OnCancel)
     END_MSG_MAP()
 
-	LRESULT OnInitDialog(...)
+	LRESULT OnInitDialog(HWND, LPARAM)
 	{
 		TBase* pT = static_cast<TBase*>(this);
 
 		pT->SetWindowText(title_.c_str());
-		pT->TBase::resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 
 		if (rect_.left == rect_.right)
 		{
@@ -70,12 +74,12 @@ public:
 		endDialog(0);
 	}
 
-	void OnCancel(...)
+	void OnCancel(UINT uNotifyCode, int nID, CWindow wndCtl)
 	{
 		endDialog(0);
 	}
 
-	void OnOk(...)
+	void OnOk(UINT uNotifyCode, int nID, CWindow wndCtl)
 	{
 		endDialog(1);
 	}
@@ -110,5 +114,120 @@ private:
 	WTL::CRect rect_;
 };
 
+template<class TBase, class dlgClass, int dialogIDD> 
+class GenericAddContainerDialog :
+	public CDialogImpl<GenericAddContainerDialog<TBase, dlgClass, dialogIDD> >,
+	public CDialogResize<GenericAddContainerDialog<TBase, dlgClass, dialogIDD> >,
+	private hal::IniBase<GenericAddContainerDialog<TBase, dlgClass, dialogIDD> >,
+	private boost::noncopyable
+{
+	typedef GenericAddContainerDialog<TBase, dlgClass, dialogIDD> thisClass;
+	typedef CDialogResize<thisClass> resizeClass;
+	typedef hal::IniBase<thisClass> iniClass;
+	
+public:
+	GenericAddContainerDialog(std::wstring title, boost::filesystem::path location, std::string name, dlgClass& dlg) :
+		dlg_(dlg),
+		title_(title),
+		iniClass(location, name),
+		rect_(0,0,0,0)
+	{
+		Load();	
+	}
+
+	~GenericAddContainerDialog()
+	{
+		Save();
+	}
+	
+	enum { IDD = HAL_GENERIC_HOLDER };
+
+    BEGIN_MSG_MAP_EX(thisClass)
+		MSG_WM_INITDIALOG(OnInitDialog)
+		MSG_WM_CLOSE(OnClose)	
+
+		COMMAND_ID_HANDLER_EX(IDOK, OnOk)
+		COMMAND_ID_HANDLER_EX(IDCANCEL, OnCancel)
+
+		CHAIN_MSG_MAP(resizeClass)
+    END_MSG_MAP()
+
+	BEGIN_DLGRESIZE_MAP(thisClass)
+		DLGRESIZE_CONTROL(dialogIDD, DLSZ_SIZE_X|DLSZ_SIZE_Y)
+
+		DLGRESIZE_CONTROL(IDOK, DLSZ_MOVE_X|DLSZ_MOVE_Y)
+		DLGRESIZE_CONTROL(IDCANCEL, DLSZ_MOVE_X|DLSZ_MOVE_Y)
+	END_DLGRESIZE_MAP()
+
+	LRESULT OnInitDialog(HWND, LPARAM)
+	{
+		TBase* pT = static_cast<TBase*>(this);
+		
+		dlg_.Create(*pT);
+		dlg_.ShowWindow(SW_SHOW);
+		dlg_.SetDlgCtrlID(dialogIDD);
+
+		resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
+
+		SetWindowText(title_.c_str());
+
+		if (rect_.left == rect_.right)
+		{
+			pT->CenterWindow();
+			pT->GetWindowRect(rect_);
+		}
+		else
+			pT->MoveWindow(rect_.left, rect_.top, rect_.right-rect_.left, rect_.bottom-rect_.top, false);	
+
+		pT->DoDataExchange(false);				
+		return TRUE;
+	}
+	
+	void OnClose()
+	{
+		endDialog(0);
+	}
+
+	void OnCancel(UINT uNotifyCode, int nID, CWindow wndCtl)
+	{
+		endDialog(0);
+	}
+
+	void OnOk(UINT uNotifyCode, int nID, CWindow wndCtl)
+	{
+		endDialog(1);
+	}
+
+	BOOL PreTranslateMessage(MSG* pMsg)
+	{
+		return pT->IsDialogMessage(pMsg);
+	}
+	
+	void onCancel(UINT, int, HWND hWnd)
+	{}
+
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+	{
+		ar & boost::serialization::make_nvp("rect", rect_);
+	}
+
+private:
+	void endDialog(int i)
+	{
+		TBase* pT = static_cast<TBase*>(this);
+		pT->DoDataExchange(true);
+		pT->GetWindowRect(rect_);
+
+		pT->EndDialog(i);
+	}
+
+	dlgClass& dlg_;
+	std::wstring title_;
+	WTL::CRect rect_;
+};
+
 }
 
+#endif
