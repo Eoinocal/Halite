@@ -965,6 +965,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\HaliteListViewDlg.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\HaliteSortListViewCtrl.hpp"
 				>
 			</File>
