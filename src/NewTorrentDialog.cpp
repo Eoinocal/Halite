@@ -7,9 +7,11 @@
 #include "stdAfx.hpp"
 #include "../res/resource.h"
 
-#include "NewTorrentDialog.hpp"
 #include "ProgressDialog.hpp"
 #include "CSSFileDialog.hpp"
+
+#include "NewTorrentDialog.hpp"
+#include "NewTorrentPeersAD.hpp"
 
 void FilesListViewCtrl::OnAttach()
 {
@@ -152,8 +154,25 @@ hal::file_size_pairs_t FileSheet::FileSizePairs() const
 wpath FileSheet::OutputFile()
 {
 	DoDataExchange(true);
-
 	return outFile_;
+}
+
+wstring FileSheet::Creator() 
+{ 
+	DoDataExchange(true);
+	return creator_; 
+}
+
+wstring FileSheet::Comment() 
+{	
+	DoDataExchange(true);
+	return comment_; 
+
+}
+bool FileSheet::Private() 
+{ 
+	DoDataExchange(true);
+	return private_;
 }
 
 hal::tracker_details_t TrackerSheet::Trackers() const
@@ -162,7 +181,7 @@ hal::tracker_details_t TrackerSheet::Trackers() const
 
 	if (trackerList_)
 	{
-		for (int i = 0, e = trackerList_.GetItemCount(); i<e; ++i)
+		for (int i=0, e=trackerList_.GetItemCount(); i<e; ++i)
 		{
 			hal::win_c_str<std::wstring> str_buf(MAX_PATH);		
 			trackerList_.GetItemText(i, 0, str_buf, str_buf.size());
@@ -184,8 +203,18 @@ hal::dht_node_details_t PeersSheet::DhtNodes() const
 
 	if (peersList_)
 	{
-		for (int i = 0, e = peersList_.GetItemCount(); i<e; ++i)
+		hal::win_c_str<std::wstring> str_url(MAX_PATH);
+		hal::win_c_str<std::wstring> str_port(MAX_PATH);
+		hal::win_c_str<std::wstring> str_type(MAX_PATH);
+
+		for (int i=0, e=peersList_.GetItemCount(); i<e; ++i)
 		{
+			peersList_.GetItemText(i, 0, str_url, str_url.size());	
+			peersList_.GetItemText(i, 1, str_port, str_port.size());
+			peersList_.GetItemText(i, 2, str_type, str_type.size());
+
+			if (hal::app().res_wstr(HAL_NEWT_ADD_PEERS_DHT) == str_type.str())
+				dht_nodes.push_back(hal::dht_node_detail(str_url.str(), lexical_cast<unsigned>(str_port.str())));
 		}
 	}
 
@@ -198,8 +227,16 @@ hal::web_seed_details_t PeersSheet::WebSeeds() const
 
 	if (peersList_)
 	{
-		for (int i = 0, e = peersList_.GetItemCount(); i<e; ++i)
+		hal::win_c_str<std::wstring> str_url(MAX_PATH);
+		hal::win_c_str<std::wstring> str_type(MAX_PATH);
+
+		for (int i=0, e=peersList_.GetItemCount(); i<e; ++i)
 		{
+			peersList_.GetItemText(i, 0, str_url, str_url.size());	
+			peersList_.GetItemText(i, 2, str_type, str_type.size());
+
+			if (hal::app().res_wstr(HAL_NEWT_ADD_PEERS_WEB) == str_type.str())
+				web_seeds.push_back(hal::web_seed_detail(str_url.str()));
 		}
 	}
 
@@ -325,6 +362,10 @@ LRESULT NewTorrentDialog::OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 	params.file_size_pairs = fileSheet_.FileSizePairs();
 	params.root_path = fileSheet_.FileFullPath();
+
+	params.creator = fileSheet_.Creator();
+	params.comment = fileSheet_.Comment();
+	params.private_torrent = fileSheet_.Private();
 
 	params.trackers = trackerSheet_.Trackers();
 

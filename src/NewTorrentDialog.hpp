@@ -159,6 +159,9 @@ public:
 	hal::file_size_pairs_t FileSizePairs() const;
 
 	wpath OutputFile();
+	wstring Creator();
+	wstring Comment();
+	bool Private();
 	
 private:
 	FilesListViewCtrl filesList_;

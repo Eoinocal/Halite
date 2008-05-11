@@ -342,7 +342,7 @@ typedef std::vector<tracker_detail> tracker_details_t;
 
 struct web_seed_or_dht_node_detail
 {
-	web_seed_or_dht_node_detail() : url(L""), port(-1), type(L"") {}
+	web_seed_or_dht_node_detail();
 	web_seed_or_dht_node_detail(std::wstring u);
 	web_seed_or_dht_node_detail(std::wstring u, int p);
 		
@@ -380,6 +380,7 @@ struct create_torrent_params
 
 	std::wstring creator;
 	std::wstring comment;
+	bool private_torrent;
 
 	file_size_pairs_t file_size_pairs;
 	fs::wpath root_path;
