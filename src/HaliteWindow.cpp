@@ -471,30 +471,10 @@ LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	NewTorrentDialog newTorrent;	
+	wstring title = hal::app().res_wstr(HAL_NEWT_DIALOG_TITLE);
+
+	NewTorrentDialog newTorrent(title.c_str());	
     newTorrent.DoModal();
-
-//	MessageBox(L"This feature is under development and currently disabled", 
-//		L"Feature not availible", 0);
-	return 0;
-	
-	CSSFileDialog dlgOpen(TRUE, NULL, NULL, OFN_HIDEREADONLY, L"All Files|*.*|", m_hWnd);
-
-	if (dlgOpen.DoModal() != IDOK) 
-		return 0;
-	
-	wstring files = dlgOpen.m_ofn.lpstrFile;
-	
-	CSSFileDialog dlgSave(FALSE, NULL, NULL, OFN_HIDEREADONLY, L"Torrents (*.torrent)|*.torrent|", m_hWnd);
-	
-	if (dlgSave.DoModal() != IDOK) 
-		return 0;
-	
-	wstring torrent_filename = dlgSave.m_ofn.lpstrFile;
-	
-	hal::bittorrent().newTorrent(wpath(torrent_filename), wpath(files));
-	
-	ui().update();
 	
 	return 0;
 }

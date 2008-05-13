@@ -1,4 +1,5 @@
-"" ---> ""
+"English" ---> "Türkçe"
+"English.rtf" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
@@ -10,14 +11,9 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(İ-G) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(İ-G) 0000.000KB/s - 0000.000KB/s"
 "(DHT will not apply to private torrents)" --->  ??? 
-"*** Disabled ***" ---> "*** Etkisiz ***"
-"..." ---> "..."
-"2" --->  ??? 
-"3" --->  ??? 
-"4" --->  ??? 
-"6" --->  ??? 
 "About" ---> "Hakkında"
 "Above Normal" --->  ??? 
+"Active" --->  ??? 
 "Add New Peer" --->  ??? 
 "Add New Tracker" ---> "Yeni İzleyici Ekle"
 "Add New Web Seed or DHT Node" --->  ??? 
@@ -37,23 +33,27 @@
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Block %2% of piece %3% finished. (%1%)" --->  ??? 
 "Both" --->  ??? 
-"Button1" ---> "Button1"
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" ---> "İptal"
 "Checking Files" ---> "Dosyalar Kontrol Ediliyor"
 "Choked" ---> "Tıkandı"
 "Clear IP database" ---> "IP veritabanını temizle"
+"Client" --->  ??? 
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
 "Comments" ---> "Yorumlar"
 "CompanyName" ---> "CompanyName"
+"Completed" --->  ??? 
 "Completed:" ---> "Tamamlanan:"
 "Confirm on close" --->  ??? 
 "Connecting to Tracker" ---> "İzleyiciye Bağlanılıyor"
 "Connecting" ---> "Bağlanıyor"
 "Connection Policies" --->  ??? 
 "Construct a New Torrent" --->  ??? 
+"Copies" --->  ??? 
+"Country" --->  ??? 
 "Creating Torrent..." --->  ??? 
+"Creating a New Torrent File" --->  ??? 
 "Creator" --->  ??? 
 "Critical" ---> "Critical"
 "DHT Node" --->  ??? 
@@ -72,11 +72,15 @@
 "Don't download" --->  ??? 
 "Down" ---> "İnd."
 "Download Rate (KB/s) :" ---> "İndirme Hızı (KB/s) :"
+"Download" --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "İndirilen %1$.2fMB, Gönderilen %2$.2fMB, Oran %3$.2f."
+"Downloaded" --->  ??? 
 "Downloading Metadata" ---> "Metadata İndiriliyor"
 "Downloading" ---> "İndiriliyor"
 "E&xit" ---> "&Çıkış"
+"ETA" --->  ??? 
 "ETA:" --->  ??? 
+"Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Düzenle"
@@ -86,20 +90,18 @@
 "Enable Remote Control" ---> "Uzak Kontrol Etkin"
 "Enabled" --->  ??? 
 "Encoding Level" --->  ??? 
-"English" ---> "Türkçe"
-"English.rtf" --->  ??? 
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Torrent için izleyici URL'lerini girin"
-"Exception caught; %1%, from %2%." ---> "Yakalanan istisna; %1%, %2%'den."
+"Exception caught: %1%, from %2%." ---> "Yakalanan istisna: %1%, %2%'den."
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
 "FileDescription" ---> "FileDescription"
 "FileVersion" ---> "FileVersion"
-"Filename;Path;Size" --->  ??? 
-"Filename;Path;Size;Progress;Priority" --->  ??? 
+"Filename" --->  ??? 
 "Files" --->  ??? 
 "Filtering %1% range(s)" ---> "%1% aralığı süzgeçleniyor"
+"Finish Time" --->  ??? 
 "Finished" ---> "Tamamlandı"
 "Forced" --->  ??? 
 "General Settings" ---> "Genel Ayarlar"
@@ -110,8 +112,6 @@
 "Halite importing IP ranges..." ---> "Halite IP aralığını içeri aktarıyor..."
 "Halite not listening!" ---> "Halite portu kullanamıyor!"
 "Halite shutting down..." ---> "Halite kapatılıyor..."
-"Halite" ---> "Halite"
-"Halite.exe" ---> "Halite.exe"
 "Handshake" ---> "El Sıkışma"
 "Has choked us" ---> "Bize tıkadı"
 "Hash failed for piece %2% of %1%." --->  ??? 
@@ -130,18 +130,20 @@
 "Language (requires restart)" ---> "Dil (yeniden başlatma gerektirir)"
 "Limit the no. of half-open connections" --->  ??? 
 "List of Trackers." ---> "İzleyici Listesi."
+"Loading IP filters..." --->  ??? 
 "Local connection" ---> "Yerel bağlantı"
 "Log debug events." ---> "Hata Ayıklama olaylarını kaydet"
 "Log to file." ---> "Günlüğü dosyaya kaydet"
 "Logging" --->  ??? 
 "Maximum" --->  ??? 
+"Message" ---> "Mesaj"
 "Minimize to tray." ---> "Simge Durumuna Küçült"
 "Move finished torrents to :" --->  ??? 
 "Move the completed torrent to:" --->  ??? 
 "N/A" ---> "N/A"
 "NAT-PMG" --->  ??? 
+"Name" --->  ??? 
 "Name:" ---> "İsim"
-"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Preannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
 "New" ---> "Yeni"
 "None (Managed Externally)" --->  ??? 
 "None" ---> "Hiçbiri"
@@ -157,6 +159,7 @@
 "Output File" --->  ??? 
 "Overhead:" --->  ??? 
 "Password : " ---> "Şifre"
+"Path" --->  ??? 
 "Pause" ---> "Duraklat"
 "Paused" ---> "Duraklatıldı"
 "Pausing" --->  ??? 
@@ -164,8 +167,6 @@
 "Peer Event: %1%." ---> "Eş ile İlgili Durum: %1%."
 "Peer banned %2%. (%1%)" --->  ??? 
 "Peer" --->  ??? 
-"Peer;Country;Download;Upload;Type;Client" --->  ??? 
-"Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
 "Peers" --->  ??? 
 "Peers:" --->  ??? 
 "Piece %2% finished. (%1%)" --->  ??? 
@@ -179,9 +180,11 @@
 "Port" --->  ??? 
 "Preannounce" --->  ??? 
 "Prefer RC4" --->  ??? 
+"Priority" --->  ??? 
 "Private" --->  ??? 
 "ProductName" ---> "ProductName"
 "ProductVersion" ---> "ProductVersion"
+"Progress" --->  ??? 
 "Protocol Encryption" --->  ??? 
 "Proxies" --->  ??? 
 "Proxy Host/IP : " ---> "Proxy Host/IP"
@@ -192,8 +195,11 @@
 "RC4" --->  ??? 
 "Rates:" --->  ??? 
 "Ratio (this session):" ---> "Oran (bu oturum):"
+"Ratio" --->  ??? 
 "Ratio:" --->  ??? 
+"Reannounce" --->  ??? 
 "Recheck Files" --->  ??? 
+"Remaining" --->  ??? 
 "Remaining:" --->  ??? 
 "Remote Control Options" ---> "Uzak Kontrol Ayarları"
 "Remote Control" ---> "Uzak Kontrol"
@@ -205,6 +211,7 @@
 "Saving Torrent" --->  ??? 
 "Security" --->  ??? 
 "Seeding" ---> "Gönderiliyor"
+"Seeds" --->  ??? 
 "Seeds:" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Dosyaları kaydetmek için bir dizin seçin veya torrenti indirmemek için iptal edin."
@@ -213,8 +220,12 @@
 "Send login info to trackers." ---> "İzleyicilere giriş bilgisi gönder."
 "Set Priority" --->  ??? 
 "Set as Primary" --->  ??? 
+"Severity" ---> "Öncelik"
 "Show this message in future" ---> "Bu mesajı ilerde de göster"
+"Size" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Standart istisna (%1%) , %2% 'den."
+"Start Time" --->  ??? 
+"Status" --->  ??? 
 "Status:" ---> "Durum"
 "Stop" ---> "Durdur"
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
@@ -230,10 +241,10 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Tier" ---> "Sıra"
 "Time left:" ---> "Kalan süre:"
-"Time;Message;Severity" ---> "Süre;Mesaj;Öncelik"
+"Time" ---> "Süre"
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
-"Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) istisnası yakalandı; %2% 'den %3% 'e."
+"Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) istisnası yakalandı: %2% 'den %3% 'e."
 "Torrent Defaults" ---> "Torrent Varsayılanları"
 "Torrent File" ---> "Torrent Dosyası"
 "Torrent Root" --->  ??? 
@@ -245,7 +256,7 @@
 "Torrent:" --->  ??? 
 "Torrents" ---> "Torrentler"
 "Total max connections :" ---> "Toplam en fazla bağlantı :"
-"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." --->  ??? 
 "Total upload slots :" ---> "Toplam göderme kanalı :"
 "Total" ---> "Toplam"
 "Tracker Announce. (%1%)" --->  ??? 
@@ -253,21 +264,22 @@
 "Tracker warning: %2%! (%1%)" --->  ??? 
 "Tracker" ---> "İzleyici"
 "Tracker:" ---> "İzleyici"
-"Tracker;Tier" ---> "İzleyici;Sıra"
 "Trackers" --->  ??? 
 "Transferred:" --->  ??? 
 "Translation" ---> "Translation"
 "Type" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
-"URL;Port;Type" --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." ---> "Unicode istisnası: %1%."
 "Up" ---> "Gönd."
 "Update in:" ---> "Güncelleme:"
 "Upload Rate (KB/s) :" ---> "Gönderme Hızı (KB/s) :"
+"Upload" --->  ??? 
+"Uploaded" --->  ??? 
 "Use Compact Allocation." --->  ??? 
 "Use a proxy." ---> "Proxy kullan"
+"User canceled Torrent file creation" --->  ??? 
 "Username : " ---> "Kullanıcı Adı"
 "Warning" --->  ??? 
 "Web Seed" --->  ??? 

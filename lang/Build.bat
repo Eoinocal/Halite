@@ -1,1 +1,1 @@
-call ruby tools\res_translator.rb ../res/ Halite Dutch German French Italian Norwegian Polish Russian "Serbian (Cyrillic)" Serbian Slovenian Spanish Turkish Swedish Portuguese Japanese
+call ruby tools\res_translator.rb ../res/ Halite Dutch French German Italian Japanese Norwegian NewLang Polish Portuguese Russian Serbian "Serbian (Cyrillic)" Spanish Swedish Turkish

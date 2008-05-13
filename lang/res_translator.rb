@@ -6,6 +6,31 @@ require "rubyscript2exe"
 
 exit if RUBYSCRIPT2EXE.is_compiling?
 
+def compile_dlls(arg)
+
+	puts " - - Wrote new language file"
+	
+	puts "\n - Compiling 32bit resource file\n\n"
+	
+	system "call tools\\rc \"..\\res\\"+arg+".rc\""
+
+	system "call tools\\cvtres /MACHINE:X86 \"..\\res\\"+arg+".res\""
+	system "call tools\\link /NOENTRY /DLL /MACHINE:X86 /OUT:\".\\bin\\x86\\"+arg+".dll\" \"..\\res\\"+arg+".obj\""
+	
+	puts " - Compiling 64bit resource file\n\n"
+
+	system "call tools\\cvtres /MACHINE:AMD64 \"..\\res\\"+arg+".res\""
+	system "call tools\\link /NOENTRY /DLL /MACHINE:AMD64 /OUT:\".\\bin\\x64\\"+arg+".dll\" \"..\\res\\"+arg+".obj\""
+
+	puts " - Cleaning temp files\n\n"
+	
+	system "del \"..\\res\\"+arg+".rc\""
+	system "del \"..\\res\\"+arg+".res\""
+	system "del \"..\\res\\"+arg+".obj\""
+	
+	puts " - Done\n\n"	
+end
+
 resource_dir = ARGV.shift
 resource_name = ARGV.shift
 
@@ -46,19 +71,29 @@ begin
 		resource_file.gsub!(/#.*/, "\n")
 		resource_file.gsub!(Regexp.new('\/\*.*?\*\/', Regexp::MULTILINE), "\n")
 
-		# Collect all string in the resource file
+		# Collect all strings in the resource file
 		resource_file.scan(/\".*?\"/) do |text_string|
-			if (not resource_array.include?(text_string)) and
-					(not ignore_array.include?(text_string))
-				resource_array.push(text_string)
+			if (not ignore_array.include?(text_string))				
+				
+				if text_string.include?(';')
+					# Split semicolon deliminated strings
+					text_string.delete('"').split(';').each {|s| resource_array.push('"'+s+'"') }					
+				else
+					resource_array.push(text_string)
+				end
+				
 			end
 		end
+		
+		resource_array.uniq!
 	end
 
 rescue
 	puts " ! Problem reading base resource file."
 	exit
 end	
+
+#	puts resource_array
 		
 ARGV.each do |arg| 
 
@@ -72,24 +107,56 @@ ARGV.each do |arg|
 	File.open(lang_filename, 'r+') do |language_file|
 	
 		while lang_line = language_file.gets
-			lang_line.scan(/(\".*?\")\s*--->\s*(\".*?\")/) {|original, trans| lang_map[original] = trans}
+			lang_line.scan(/(\".*?\")\s*--->\s*(\".*?\")/) do |original, trans| 
+				
+				if original.include?(';')
+					# Split semicolon deliminated strings
+					
+					o = original.delete('"').split(';')
+					t = trans.delete('"').split(';')
+					 
+					o.each_index {|i| lang_map['"'+o[i]+'"'] = '"'+t[i]+'"' }				
+				else
+					lang_map[original] = trans
+				end
+			end
 		end
 	end
 	
 	puts " - - Scanned"	
 	
-	begin
-		#res_language_file = File.open(resource_filename, "r+")
+#	puts lang_map
 	
+	begin	
 		if res_lang = resource_original_file.clone
 		
 			res_lang.gsub!(/\".*?\"/) do |text_string|
-				if lang_map.has_key?(text_string)
-					lang_map[text_string]
+
+				if text_string.include?(';')
+					# Rebuild semicolon deliminated strings
+				
+					tmp = ''
+					
+					text_string.delete('"').split(';').each do |s| 
+					
+						if lang_map.has_key?('"'+s+'"')
+							tmp = tmp+ lang_map['"'+s+'"'].delete('"') +';'
+						else		
+							tmp = tmp+s+';' 
+						end				
+					end
+					
+					tmp = '"'+tmp.chomp!(';')+'"'
+										
 				else
-					text_string
+					if lang_map.has_key?(text_string)
+						lang_map[text_string]
+					else
+						text_string
+					end
 				end
 			end
+			
 			
 			begin
 				local_file = File.new(resource_dir+arg+'.rc', "w+b")
@@ -109,6 +176,24 @@ ARGV.each do |arg|
 	
 	begin	
 		lang_file = File.new(lang_filename, 'w+')
+		
+		# Special case for 'English' and 'English.rtf' to bring them to the top of list.
+		
+		resource_array.delete('"English"')
+		if lang_map.has_key?('"English"')
+			lang_file.print('"English"' + " ---> " + lang_map['"English"'] + "\n")
+		else
+			lang_file.print('"English"' + " --->  ??? \n")
+		end
+			
+		resource_array.delete('"English.rtf"')
+		if lang_map.has_key?('"English.rtf"')
+			lang_file.print('"English.rtf"' + " ---> " + lang_map['"English.rtf"'] + "\n")
+		else
+			lang_file.print('"English.rtf"' + " --->  ??? \n")
+		end	
+		
+		# Process rest alphabeticially [sic].
 
 		resource_array.sort.each do |value| 	
 			if lang_map.has_key?(value)
@@ -122,23 +207,7 @@ ARGV.each do |arg|
 		next 
 	end	
 	
-	puts " - - Wrote new language file"
-	
-	puts "\n - Compiling resource file\n\n"
-	
-	system "call tools\\rc \"..\\res\\"+arg+".rc\""
-
-	system "call tools\\cvtres /MACHINE:X86 \"..\\res\\"+arg+".res\""
-	system "call tools\\link /NOENTRY /DLL /MACHINE:X86 /OUT:\".\\bin\\x86\\"+arg+".dll\" \"..\\res\\"+arg+".obj\""
-
-	system "call tools\\cvtres /MACHINE:AMD64 \"..\\res\\"+arg+".res\""
-	system "call tools\\link /NOENTRY /DLL /MACHINE:AMD64 /OUT:\".\\bin\\x64\\"+arg+".dll\" \"..\\res\\"+arg+".obj\""
-
-	system "del \"..\\res\\"+arg+".rc\""
-	system "del \"..\\res\\"+arg+".res\""
-	system "del \"..\\res\\"+arg+".obj\""
-	
-	puts " - Done\n\n"	
+	compile_dlls(arg)
 end
 
 puts " - Completed sucessfully"	

@@ -26,6 +26,7 @@
 #define IDC_NEWT_OUT_BROWSE				ID_NEWTORRENT_BEGIN+17
 #define IDC_NEWT_OUTFILE_TEXT			ID_NEWTORRENT_BEGIN+18
 #define HAL_NEWT_SAVING_TORRENT			ID_NEWTORRENT_BEGIN+19
+#define HAL_NEWT_DIALOG_TITLE			ID_NEWTORRENT_BEGIN+20
 
 #ifndef RC_INVOKED
 
@@ -315,16 +316,21 @@ public:
 	void OnSize(UINT, CSize)
 	{
         SetMsgHandled(false);
+
 		resizeActiveSheet();
 	}
 	
 	void OnClose()
 	{
+		SetMsgHandled(false);
+
 		OnDestroy();
 	}
 
 	void OnDestroy() 
 	{
+		SetMsgHandled(false);
+
 		GetWindowRect(rect_);
 		Save();
 	}

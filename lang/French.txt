@@ -1,4 +1,5 @@
-"" --->  ??? 
+"English" ---> "French"
+"English.rtf" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
@@ -10,14 +11,9 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(R-E) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(R-E) 0000.000KB/s - 0000.000KB/s"
 "(DHT will not apply to private torrents)" --->  ??? 
-"*** Disabled ***" ---> "*** Désactivé ***"
-"..." --->  ??? 
-"2" --->  ??? 
-"3" --->  ??? 
-"4" --->  ??? 
-"6" --->  ??? 
 "About" ---> "A propos"
 "Above Normal" --->  ??? 
+"Active" --->  ??? 
 "Add New Peer" --->  ??? 
 "Add New Tracker" ---> "Ajouter un nouveau tracker"
 "Add New Web Seed or DHT Node" --->  ??? 
@@ -37,23 +33,27 @@
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Block %2% of piece %3% finished. (%1%)" --->  ??? 
 "Both" --->  ??? 
-"Button1" --->  ??? 
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" ---> "Annuler"
 "Checking Files" ---> "Vérification"
 "Choked" --->  ??? 
 "Clear IP database" ---> "Vider IPfilter.dat"
+"Client" --->  ??? 
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
 "Comments" --->  ??? 
 "CompanyName" --->  ??? 
+"Completed" --->  ??? 
 "Completed:" ---> "Complété :"
 "Confirm on close" --->  ??? 
 "Connecting to Tracker" ---> "Connexion au tracker"
 "Connecting" ---> "Connexion"
 "Connection Policies" --->  ??? 
 "Construct a New Torrent" --->  ??? 
+"Copies" --->  ??? 
+"Country" --->  ??? 
 "Creating Torrent..." --->  ??? 
+"Creating a New Torrent File" --->  ??? 
 "Creator" --->  ??? 
 "Critical" --->  ??? 
 "DHT Node" --->  ??? 
@@ -72,11 +72,15 @@
 "Don't download" --->  ??? 
 "Down" ---> "R :"
 "Download Rate (KB/s) :" ---> "Réception (KB/s) :"
+"Download" --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Reçus %1$.2fMB, Envoyés %2$.2fMB, Ratio %3$.2f"
+"Downloaded" --->  ??? 
 "Downloading Metadata" --->  ??? 
 "Downloading" ---> "En téléchargement"
 "E&xit" ---> "Q&uitter"
+"ETA" --->  ??? 
 "ETA:" --->  ??? 
+"Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" --->  ??? 
@@ -86,20 +90,18 @@
 "Enable Remote Control" --->  ??? 
 "Enabled" --->  ??? 
 "Encoding Level" --->  ??? 
-"English" ---> "French"
-"English.rtf" --->  ??? 
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Entrer l'URL du tracker pour le torrent."
-"Exception caught; %1%, from %2%." --->  ??? 
+"Exception caught: %1%, from %2%." --->  ??? 
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
 "FileDescription" --->  ??? 
 "FileVersion" --->  ??? 
-"Filename;Path;Size" --->  ??? 
-"Filename;Path;Size;Progress;Priority" --->  ??? 
+"Filename" --->  ??? 
 "Files" --->  ??? 
 "Filtering %1% range(s)" ---> "Filtre %1% IP(s)"
+"Finish Time" --->  ??? 
 "Finished" ---> "Terminé"
 "Forced" --->  ??? 
 "General Settings" ---> "Paramètres généraux"
@@ -110,8 +112,6 @@
 "Halite importing IP ranges..." --->  ??? 
 "Halite not listening!" --->  ??? 
 "Halite shutting down..." ---> "Halite est en cours de fermeture..."
-"Halite" --->  ??? 
-"Halite.exe" --->  ??? 
 "Handshake" --->  ??? 
 "Has choked us" --->  ??? 
 "Hash failed for piece %2% of %1%." --->  ??? 
@@ -130,18 +130,20 @@
 "Language (requires restart)" ---> "Langage (redémarrage nécessaire)"
 "Limit the no. of half-open connections" --->  ??? 
 "List of Trackers." ---> "Liste des trackers"
+"Loading IP filters..." --->  ??? 
 "Local connection" --->  ??? 
 "Log debug events." ---> "Debug"
 "Log to file." ---> "Log"
 "Logging" --->  ??? 
 "Maximum" --->  ??? 
+"Message" ---> "Message"
 "Minimize to tray." ---> "Minimiser en icône"
 "Move finished torrents to :" --->  ??? 
 "Move the completed torrent to:" --->  ??? 
 "N/A" --->  ??? 
 "NAT-PMG" --->  ??? 
+"Name" --->  ??? 
 "Name:" ---> "Nom :"
-"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Preannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
 "New" --->  ??? 
 "None (Managed Externally)" --->  ??? 
 "None" --->  ??? 
@@ -157,6 +159,7 @@
 "Output File" --->  ??? 
 "Overhead:" --->  ??? 
 "Password : " ---> "MDP :"
+"Path" --->  ??? 
 "Pause" --->  ??? 
 "Paused" ---> "En pause"
 "Pausing" --->  ??? 
@@ -164,8 +167,6 @@
 "Peer Event: %1%." --->  ??? 
 "Peer banned %2%. (%1%)" --->  ??? 
 "Peer" --->  ??? 
-"Peer;Country;Download;Upload;Type;Client" --->  ??? 
-"Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
 "Peers" --->  ??? 
 "Peers:" --->  ??? 
 "Piece %2% finished. (%1%)" --->  ??? 
@@ -179,9 +180,11 @@
 "Port" --->  ??? 
 "Preannounce" --->  ??? 
 "Prefer RC4" --->  ??? 
+"Priority" --->  ??? 
 "Private" --->  ??? 
 "ProductName" --->  ??? 
 "ProductVersion" --->  ??? 
+"Progress" --->  ??? 
 "Protocol Encryption" --->  ??? 
 "Proxies" --->  ??? 
 "Proxy Host/IP : " --->  ??? 
@@ -192,8 +195,11 @@
 "RC4" --->  ??? 
 "Rates:" --->  ??? 
 "Ratio (this session):" ---> "Ratio de la session :"
+"Ratio" --->  ??? 
 "Ratio:" --->  ??? 
+"Reannounce" --->  ??? 
 "Recheck Files" --->  ??? 
+"Remaining" --->  ??? 
 "Remaining:" --->  ??? 
 "Remote Control Options" --->  ??? 
 "Remote Control" --->  ??? 
@@ -205,6 +211,7 @@
 "Saving Torrent" --->  ??? 
 "Security" --->  ??? 
 "Seeding" --->  ??? 
+"Seeds" --->  ??? 
 "Seeds:" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Sélectionner un dossier où sauvegarder ou ne pas télécharger de toorent."
@@ -213,8 +220,12 @@
 "Send login info to trackers." ---> "Utiliser des identifiants"
 "Set Priority" --->  ??? 
 "Set as Primary" --->  ??? 
+"Severity" ---> "Niveau"
 "Show this message in future" ---> "Afficher ce message"
+"Size" --->  ??? 
 "Standard exception (%1%) thrown from %2%." --->  ??? 
+"Start Time" --->  ??? 
+"Status" --->  ??? 
 "Status:" ---> "Statut :"
 "Stop" ---> "Stopper"
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
@@ -230,10 +241,10 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Tier" --->  ??? 
 "Time left:" ---> "Durée :"
-"Time;Message;Severity" ---> "Temps;Message;Niveau"
+"Time" ---> "Temps"
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
-"Torrent (%1%) exception caught; %2% from %3%." --->  ??? 
+"Torrent (%1%) exception caught: %2% from %3%." --->  ??? 
 "Torrent Defaults" ---> "Torrent par défaut"
 "Torrent File" ---> "Fichier Torrent"
 "Torrent Root" --->  ??? 
@@ -245,7 +256,7 @@
 "Torrent:" --->  ??? 
 "Torrents" --->  ??? 
 "Total max connections :" ---> "Total des connexions :"
-"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." --->  ??? 
 "Total upload slots :" ---> "Slots d'émission :"
 "Total" --->  ??? 
 "Tracker Announce. (%1%)" --->  ??? 
@@ -253,21 +264,22 @@
 "Tracker warning: %2%! (%1%)" --->  ??? 
 "Tracker" --->  ??? 
 "Tracker:" ---> "Tracker :"
-"Tracker;Tier" --->  ??? 
 "Trackers" --->  ??? 
 "Transferred:" --->  ??? 
 "Translation" --->  ??? 
 "Type" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
-"URL;Port;Type" --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." --->  ??? 
 "Up" ---> "E :"
 "Update in:" ---> "Actu. dans"
 "Upload Rate (KB/s) :" ---> "Emission (KB/s) :"
+"Upload" --->  ??? 
+"Uploaded" --->  ??? 
 "Use Compact Allocation." --->  ??? 
 "Use a proxy." ---> "Util. un proxy"
+"User canceled Torrent file creation" --->  ??? 
 "Username : " ---> "Identifiant :"
 "Warning" --->  ??? 
 "Web Seed" --->  ??? 
