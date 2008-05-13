@@ -356,13 +356,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	
 	if (!boost::filesystem::exists(saveDirectory))
 		boost::filesystem::create_directory(saveDirectory);
-	
-/*	HaliteListViewAdjustDlg addTorrent(L"Hello", saveDirectory, moveToDirectory, useMoveTo);	
-	
-	if (IDOK != addTorrent.DoModal())
-		return;
-	return;
-*/
+
 	if (hal::config().savePrompt)
 	{
 		AddTorrentDialog addTorrent(saveDirectory, moveToDirectory, useMoveTo, startPaused, compactStorage);	

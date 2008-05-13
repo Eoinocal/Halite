@@ -16,13 +16,25 @@ namespace hal
 	namespace fs = boost::filesystem;
 	namespace pt = boost::posix_time;
 	namespace xp = boost::xpressive;
-	namespace sl = boost::serialization;
+	namespace slz = boost::serialization;
+
+	using std::wstring;
+	using std::string;
 
 	using std::pair;
 	using std::make_pair;	
-	using boost::tuple;
 
 	typedef boost::int64_t size_type;
 	typedef boost::recursive_mutex mutex_t;
 	typedef boost::thread thread_t;
+
+	using boost::tuple;
+	using boost::shared_ptr;
+	using boost::bind;
+
+	using boost::wformat;
+	using boost::format;
+
+	using fs::wpath;
+	using fs::path;
 }

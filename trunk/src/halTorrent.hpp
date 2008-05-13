@@ -410,27 +410,71 @@ typedef boost::function<bool (size_t, size_t, size_t)> filterCallback;
 typedef boost::function<bool (size_t, std::wstring)> progress_callback;
 
 class BitTorrent_impl;
-class TorrentInternal;
+class torrent_internal;
 
 class BitTorrent
 {
+public:	
+
 	class torrent
 	{
 		typedef torrent class_type;
 
 	public:
-		void set_ratio(float new_ratio);
+		class exec_around_ptr
+		{
+		public:
+			class proxy 
+			{
+			public:
+				explicit proxy(torrent_internal* t);
+
+				torrent_internal* operator->() 
+				{
+					return t_;
+				}
+
+				~proxy ();
+
+			private:
+				torrent_internal* t_;
+				mutex_t::scoped_lock l_;
+			};
+
+			exec_around_ptr(boost::shared_ptr<torrent_internal> p) : ptr(p) {}
+
+			proxy operator->() const
+			{
+				return proxy(&(*ptr));
+			}
+
+		private:
+			boost::shared_ptr<torrent_internal> ptr;
+		};
+
+		torrent(boost::shared_ptr<torrent_internal> p);
+
 		float get_ratio() const;
+		void set_ratio(float new_ratio);
+
+		wpath get_save_directory() const;
+		void set_save_directory(const wpath&);
+		wpath get_move_to_directory() const;
+		void set_move_to_directory(const wpath&);
 
 	public:
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(float, float, class_type, 
 			get_ratio, set_ratio, ratio);
+		
+		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(wpath, const wpath&, class_type, 
+			get_save_directory, set_save_directory, save_directory);
+		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(wpath, const wpath&, class_type, 
+			get_move_to_directory, set_move_to_directory, move_to_directory);
 
 	private:
-		boost::shared_ptr<TorrentInternal> ptr;
+		exec_around_ptr ptr;
 	};
 
-public:	
 	enum mappings
 	{
 		mappingNone = 0,
@@ -442,6 +486,14 @@ public:
 	void saveTorrentData();
 
 	void create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn);
+
+	template<typename T>
+	torrent get(T t)
+	{
+		return get_wstr(to_wstr_shim(t));
+	}
+
+	torrent get_wstr(const std::wstring& filename);
 	
 	bool listenOn(std::pair<int, int> const& portRange);
 	int isListeningOn();
