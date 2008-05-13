@@ -9,6 +9,8 @@
 
 #include "HaliteListView.hpp"
 #include "HaliteWindow.hpp"
+#include "HaliteListViewDlg.hpp"
+
 #include "halTorrent.hpp"
 
 HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
@@ -26,7 +28,8 @@ HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	
 	array<int, 21> widths = {100,110,60,60,60,42,45,61,45,45,45,45,45,45,45,45,45,45,45,45,45};
 	array<int, 21> order = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
-	array<bool, 21> visible = {true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true};
+	array<bool, 21> visible = {true,true,true,true,true,true,true,true,true,true,true,\
+		true,true,true,true,true,true,true,true,true,true};
 	
 	SetDefaults(names, widths, order, visible);
 	Load();
@@ -209,6 +212,31 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 		else
 			HAL_DEV_MSG(L"Success");
 	}	
+
+	return 0;
+}
+
+LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	HAL_DEV_MSG(L"OnEditFolders");
+
+	hal::BitTorrent::torrent t = hal::bittorrent().get(manager_.selected());
+
+	wstring saveDirectory = static_cast<wpath>(t.save_directory).native_file_string();
+	wstring moveToDirectory = static_cast<wpath>(t.move_to_directory).native_file_string();
+	bool useMoveTo = (L"" != moveToDirectory);
+
+	HaliteListViewAdjustDlg addTorrent(L"Hello", saveDirectory, moveToDirectory, useMoveTo);	
+	
+	if (IDOK == addTorrent.DoModal())
+	{
+		t.save_directory = saveDirectory;
+
+		if (useMoveTo)
+			t.move_to_directory = moveToDirectory;
+		else
+			t.move_to_directory = L"";
+	}
 
 	return 0;
 }

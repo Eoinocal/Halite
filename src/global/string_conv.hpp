@@ -110,70 +110,68 @@ private:
 	std::vector<char_t> vector_;
 };
 
-
-
 template<typename str_t>
-inline std::wstring to_wstr_shim(str_t& s)
+inline const std::wstring to_wstr_shim(str_t& s)
 {
 	return s;
 }
 
 template<>
-inline std::wstring to_wstr_shim<const wchar_t *const>(const wchar_t *const& s)
+inline const std::wstring to_wstr_shim<const wchar_t *const>(const wchar_t *const& s)
 {
 	return std::wstring(s);
 }
 
 template<>
-inline std::wstring to_wstr_shim<const wchar_t *>(const wchar_t *& s)
+inline const std::wstring to_wstr_shim<const wchar_t *>(const wchar_t *& s)
 {
 	return std::wstring(s);
 }
 
 template<>
-inline std::wstring to_wstr_shim<const char *>(const char *& s)
+inline const std::wstring to_wstr_shim<const char *>(const char *& s)
 {
 	return from_utf8_safe(s);
 }
 
 template<>
-inline std::wstring to_wstr_shim<const char *const>(const char *const& s)
+inline const std::wstring to_wstr_shim<const char *const>(const char *const& s)
 {
 	return from_utf8_safe(s);
 }
 
 template<>
-inline std::wstring to_wstr_shim<const std::string>(const std::string& s)
+inline const std::wstring to_wstr_shim<const std::string>(const std::string& s)
 {
 	return from_utf8_safe(s);
 }
 
 template<>
-inline std::wstring to_wstr_shim<std::string>(std::string& s)
+inline const std::wstring to_wstr_shim<std::string>(std::string& s)
 {
 	return from_utf8_safe(s);
 }
 
 template<>
-inline std::wstring to_wstr_shim<const boost::wformat>(const boost::wformat& f)
+inline const std::wstring to_wstr_shim<const boost::wformat>(const boost::wformat& f)
 {
 	return f.str();
 }
 
 template<>
-inline std::wstring to_wstr_shim<boost::wformat>(boost::wformat& f)
+inline const std::wstring to_wstr_shim<boost::wformat>(boost::wformat& f)
 {
 	return f.str();
 }
 
 template<>
-inline std::wstring to_wstr_shim<const boost::format>(const boost::format& f)
+inline const std::wstring to_wstr_shim<const boost::format>(const boost::format& f)
 {
 	return from_utf8_safe(f.str());
 }
 
 template<>
-inline std::wstring to_wstr_shim<boost::format>(boost::format& f)
+inline const std::wstring to_wstr_shim<boost::format>(boost::format& f)
 {
 	return from_utf8_safe(f.str());
 }
