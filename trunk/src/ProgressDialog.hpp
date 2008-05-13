@@ -13,9 +13,7 @@
 #define IDC_PROG_CANCEL                 ID_PROGRESS_BEGIN + 2
 #define IDC_PROG_PROGRESS               ID_PROGRESS_BEGIN + 3
 
-#ifdef RC_INVOKED
-
-#else // RC_INVOKED
+#ifndef RC_INVOKED
 
 #include <boost/function.hpp>
 
@@ -29,7 +27,7 @@ protected:
 	typedef ProgressDialog thisClass;
 	typedef CDialogImpl<ProgressDialog> baseClass;
 	
-	typedef boost::function<void (hal::progress_callback fn)> threadFunction;
+	typedef boost::function<bool (hal::progress_callback fn)> threadFunction;
 
 public:
 	ProgressDialog(wstring windowText, threadFunction fn) :
@@ -41,11 +39,12 @@ public:
 	enum { IDD = IDD_PROGRESS };
 
     BEGIN_MSG_MAP_EX(ProgressDialog)
-        MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+		MSG_WM_INITDIALOG(onInitDialog)
+
 		COMMAND_ID_HANDLER_EX(IDC_PROG_CANCEL, onCancel)
     END_MSG_MAP()
 	
-	LRESULT OnInitDialog(...)
+	LRESULT onInitDialog(HWND, LPARAM)
 	{
 		CenterWindow();
 		SetWindowText(windowText_.c_str());
@@ -59,9 +58,9 @@ public:
 
 	void ProgressThread()
 	{
-		fn_(bind(&ProgressDialog::Callback, this, _1, _2));
+		int err_code = (fn_(bind(&ProgressDialog::Callback, this, _1, _2)) ? 1 : 0);
 		
-		EndDialog(0);
+		EndDialog(err_code);
 	}
 	
 	bool Callback(size_t progress, wstring description)

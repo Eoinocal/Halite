@@ -6,9 +6,9 @@
 
 #pragma once
 
-#define HALITE_VERSION					0, 3, 0, 408
-#define HALITE_VERSION_STRING			"v 0.3.0.5 dev 408"
-#define	HALITE_FINGERPRINT				"HL", 0, 3, 0, 5
+#define HALITE_VERSION					0, 3, 0, 437
+#define HALITE_VERSION_STRING			"v 0.3.0.6 dev 437"
+#define	HALITE_FINGERPRINT				"HL", 0, 3, 0, 6
 
 #ifndef HAL_NA
 #define HAL_NA 40013
@@ -35,6 +35,7 @@
 #define HAL_INCORRECT_CONNECT_POLICY    	HAL_TORRENT_EXT_BEGIN + 18
 #define HAL_PEER_ALERT						HAL_TORRENT_EXT_BEGIN + 19
 #define HAL_LISTEN_V6_FAILED_ALERT			HAL_TORRENT_EXT_BEGIN + 20
+#define HAL_TORRENT_LOAD_FILTERS				HAL_TORRENT_EXT_BEGIN + 21
 
 #define HAL_TORRENT_INT_BEGIN 				42000
 #define HAL_PEER_INTERESTING            	HAL_TORRENT_INT_BEGIN + 1
@@ -61,12 +62,12 @@
 #define HAL_TORRENT_STOPPING				HAL_TORRENT_INT_BEGIN + 22
 #define HAL_TORRENT_PAUSING					HAL_TORRENT_INT_BEGIN + 23
 #define HAL_TORRENT_METADATA            	HAL_TORRENT_INT_BEGIN + 24
-#define HAL_TORRENT_CREATINGTORRENT			HAL_TORRENT_INT_BEGIN + 25
-#define HAL_TORRENT_CAL_HASHES            	HAL_TORRENT_INT_BEGIN + 26
+#define HAL_NEWT_CREATING_TORRENT			HAL_TORRENT_INT_BEGIN + 25
+#define HAL_NEWT_HASHING_PIECES            	HAL_TORRENT_INT_BEGIN + 26
 #define HAL_TORRENT_IMPORT_FILTERS         	HAL_TORRENT_INT_BEGIN + 27
-
 #define HAL_INT_NEWT_ADD_PEERS_WEB         	HAL_TORRENT_INT_BEGIN + 28
 #define HAL_INT_NEWT_ADD_PEERS_DHT         	HAL_TORRENT_INT_BEGIN + 29
+#define HAL_NEWT_CREATION_CANCELED         	HAL_TORRENT_INT_BEGIN + 30
 
 
 #ifndef RC_INVOKED
@@ -468,8 +469,8 @@ class torrent_internal :
 	public boost::enable_shared_from_this<torrent_internal>,
 	private boost::noncopyable
 {
-	friend class BitTorrent_impl;	
-	friend class BitTorrent::torrent::exec_around_ptr::proxy;
+	friend class bit_impl;	
+	friend class bit::torrent::exec_around_ptr::proxy;
 
 public:
 	#define TORRENT_INTERNALS_DEFAULTS \

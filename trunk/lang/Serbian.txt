@@ -1,4 +1,5 @@
-"" ---> ""
+"English" ---> "Srpski (Latinica)"
+"English.rtf" ---> "../lang/Serbian.rtf"
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s ulazni - %2$.2fKB/s izlazni"
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB ulazni - %2$.2fMB izlazni"
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB od %2$.2fMB"
@@ -10,14 +11,9 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(U-I) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(D-U) 0000.000KB/s - 0000.000KB/s"
 "(DHT will not apply to private torrents)" ---> "(DHT neće se paliti za privatne torente)"
-"*** Disabled ***" ---> "*** Deaktiviran ***"
-"..." ---> "..."
-"2" --->  ??? 
-"3" ---> "3"
-"4" ---> "4"
-"6" ---> "6"
 "About" ---> "O nama"
 "Above Normal" ---> "Preko Normalnog"
+"Active" --->  ??? 
 "Add New Peer" --->  ??? 
 "Add New Tracker" ---> "Unesi Trekera"
 "Add New Web Seed or DHT Node" --->  ??? 
@@ -37,23 +33,27 @@
 "Block %2% of piece %3% downloading. (%1%)" ---> "Sekcija %2% od dela %3% se trenutno preuzima. (%1%)"
 "Block %2% of piece %3% finished. (%1%)" ---> "Sekcija %2% od dela %3% završena. (%1%)"
 "Both" ---> "Obadve"
-"Button1" ---> "Dugme1"
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" ---> "Prekini"
 "Checking Files" ---> "Provera fajlova"
 "Choked" ---> "Usporenjeno"
 "Clear IP database" ---> "Izbriši IP-datoteku"
+"Client" ---> "Klijent"
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
 "Comments" ---> "Komentari"
 "CompanyName" ---> "Ime kompanije"
+"Completed" --->  ??? 
 "Completed:" ---> "Završeno:"
 "Confirm on close" --->  ??? 
 "Connecting to Tracker" ---> "Povezava s trekerom"
 "Connecting" ---> "Poveži"
 "Connection Policies" ---> "Način poveza"
 "Construct a New Torrent" --->  ??? 
+"Copies" --->  ??? 
+"Country" ---> "Država"
 "Creating Torrent..." --->  ??? 
+"Creating a New Torrent File" --->  ??? 
 "Creator" --->  ??? 
 "Critical" ---> "Kritično"
 "DHT Node" --->  ??? 
@@ -72,11 +72,15 @@
 "Don't download" ---> "Nepreuzimaj"
 "Down" ---> "Ulazna"
 "Download Rate (KB/s) :" ---> "Brzina ulaznog protoka (KB/s):"
+"Download" ---> "Preuzimaš"
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Preuzeo %1$.2fMB, podelio %2$.2fMB, odnos %3$.2f."
+"Downloaded" --->  ??? 
 "Downloading Metadata" ---> "Puni "
 "Downloading" ---> "Preuzima se"
 "E&xit" ---> "Pr&ekinuti"
+"ETA" --->  ??? 
 "ETA:" ---> "ETA:"
+"Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Preobrađivati"
@@ -86,20 +90,18 @@
 "Enable Remote Control" ---> "Aktiviraj daljinski"
 "Enabled" ---> "Aktiviran"
 "Encoding Level" ---> "Stepen šifracije"
-"English" ---> "Srpski (Latinica)"
-"English.rtf" ---> "../lang/Serbian.rtf"
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Unesi URL od trekera"
-"Exception caught; %1%, from %2%." ---> "Pojavio se izuzetak; %1%, od %2%."
+"Exception caught: %1%, from %2%." ---> "Pojavio se izuzetak: %1%, od %2%."
 "Failed, %1%" ---> "Neuspešno, %1%"
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
 "FileDescription" ---> "Naziv fajla"
 "FileVersion" ---> "Verzija"
-"Filename;Path;Size" --->  ??? 
-"Filename;Path;Size;Progress;Priority" ---> "Ime fajla;Put;Veličina;Napredak;Važnosti"
+"Filename" ---> "Ime fajla"
 "Files" ---> "Fajlovi"
 "Filtering %1% range(s)" ---> "%1% IP-sekcije filtrirane"
+"Finish Time" --->  ??? 
 "Finished" ---> "Završeno"
 "Forced" ---> "Nateran"
 "General Settings" ---> "Opšte"
@@ -110,8 +112,6 @@
 "Halite importing IP ranges..." ---> "Halite importira delove IP-a"
 "Halite not listening!" ---> "Halite nije povezan s mrežom"
 "Halite shutting down..." ---> "Halite se trenutno zatvara"
-"Halite" ---> "Halite"
-"Halite.exe" ---> "Halite.exe"
 "Handshake" ---> "Rukovanje"
 "Has choked us" ---> "Usporio je nas"
 "Hash failed for piece %2% of %1%." ---> " "
@@ -130,18 +130,20 @@
 "Language (requires restart)" ---> "JEZIK (posle promene, pokreni Halite nanovo)"
 "Limit the no. of half-open connections" ---> "Ograniči broj pola otvorenih mrežnih poveza"
 "List of Trackers." ---> "Lista svih trekera"
+"Loading IP filters..." --->  ??? 
 "Local connection" ---> "Lokalni povez"
 "Log debug events." ---> "Piši debug rezultate u "
 "Log to file." ---> "Arhiviraj "
 "Logging" ---> "Protokol"
 "Maximum" ---> "Maksimalno"
+"Message" ---> "Poruka"
 "Minimize to tray." ---> "Minimiraj u "
 "Move finished torrents to :" --->  ??? 
 "Move the completed torrent to:" --->  ??? 
 "N/A" ---> "N/A"
 "NAT-PMG" --->  ??? 
+"Name" --->  ??? 
 "Name:" ---> "Ime:"
-"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Preannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
 "New" ---> "Novi"
 "None (Managed Externally)" --->  ??? 
 "None" ---> "Nikakvi"
@@ -157,15 +159,14 @@
 "Output File" --->  ??? 
 "Overhead:" ---> "Neupotrebljivo:"
 "Password : " ---> "Lozinka:"
+"Path" ---> "Put"
 "Pause" ---> "Pauza"
 "Paused" ---> "Pauziran"
 "Pausing" ---> "Pauziraj"
 "Peer %2%: %1%." ---> "Peer %2%: %1%."
 "Peer Event: %1%." ---> "Peer događaj: %1%."
 "Peer banned %2%. (%1%)" ---> "Peer %2% Baniran. (%1%)"
-"Peer" ---> "Peer"
-"Peer;Country;Download;Upload;Type;Client" ---> "Peer-ovi;Država;Preuzimaš;Odpremljaš;Tip;Klijent"
-"Peer;Country;Download;Upload;Type;Client;Status" ---> "Peer-ovi;Država;Preuzimaš;Odpremljaš;Tip;Klijent;Akcija"
+"Peer" ---> "Peer-ovi"
 "Peers" ---> "Peer-ovi"
 "Peers:" ---> "Peer-ovi:"
 "Piece %2% finished. (%1%)" ---> "Deo %2% završen. (%1%)"
@@ -179,9 +180,11 @@
 "Port" --->  ??? 
 "Preannounce" --->  ??? 
 "Prefer RC4" ---> "Privilegiraj RC4"
+"Priority" ---> "Važnosti"
 "Private" --->  ??? 
 "ProductName" ---> "Ime produkta"
 "ProductVersion" ---> "Verzija produkta"
+"Progress" ---> "Napredak"
 "Protocol Encryption" ---> "Šifracija protokola"
 "Proxies" ---> "Proksi-server"
 "Proxy Host/IP : " ---> "Ime "
@@ -192,8 +195,11 @@
 "RC4" ---> "RC4"
 "Rates:" ---> "Delovi:"
 "Ratio (this session):" ---> "Odnos (ova sednica):"
+"Ratio" --->  ??? 
 "Ratio:" ---> "Odnos:"
+"Reannounce" --->  ??? 
 "Recheck Files" --->  ??? 
+"Remaining" --->  ??? 
 "Remaining:" ---> "Još ostalo:"
 "Remote Control Options" ---> "Uređaj za daljinsko koristčenje"
 "Remote Control" ---> "Daljinska upotreba"
@@ -205,6 +211,7 @@
 "Saving Torrent" --->  ??? 
 "Security" ---> "Sigurnosti"
 "Seeding" ---> "Nudiš"
+"Seeds" --->  ??? 
 "Seeds:" ---> "Seed-eri:"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Izaberi mapu u kojoj želiš da ti budu preuzeti fajlovi. Izaberi \"
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Izaberi mapu u kojoj želiš imati skinute torente ili da prekineš da ti se torent nepreuzima do kraja."
@@ -213,8 +220,12 @@
 "Send login info to trackers." ---> "Prijavi se na trekeru"
 "Set Priority" ---> "Važnosti obilježiti"
 "Set as Primary" ---> "Dodeli mesto priviligacije"
+"Severity" ---> "Važnosti"
 "Show this message in future" ---> "Nepokazuj mi ovu poruku"
+"Size" ---> "Veličina"
 "Standard exception (%1%) thrown from %2%." ---> "Standardni izuzetak (%1%) desio se kod (%2%)"
+"Start Time" --->  ??? 
+"Status" ---> "Akcija"
 "Status:" ---> "Akcija:"
 "Stop" ---> "Stopiraj"
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
@@ -230,10 +241,10 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "U ovoj sednica preuzeo si: %1$.2fMB, podelio: %2$.2fMB, Ratio: %3$.2f."
 "Tier" ---> "Mesto"
 "Time left:" ---> "Još traje:"
-"Time;Message;Severity" ---> "Vreme;Poruka;Važnosti"
+"Time" ---> "Vreme"
 "Torrent %1% finished." ---> "Torent %1% završen."
 "Torrent %1% paused." ---> "Torent %1% pauzira."
-"Torrent (%1%) exception caught; %2% from %3%." ---> "Torent (%1%) Greška; (%2%) od (%3%)."
+"Torrent (%1%) exception caught: %2% from %3%." ---> "Torent (%1%) Greška: (%2%) od (%3%)."
 "Torrent Defaults" ---> "Standartno podešavanje"
 "Torrent File" ---> "Torent"
 "Torrent Root" ---> "Put torenta"
@@ -245,7 +256,7 @@
 "Torrent:" ---> "Torent:"
 "Torrents" ---> "Torenti"
 "Total max connections :" ---> "Maksimalni broj poveza:"
-"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." ---> "Ukupni protok (inkluzivno protokolni podatki); %1$.2fMB ulazni i %2$.2fMB izlazni."
+"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." ---> "Ukupni protok (inkluzivno protokolni podatki): %1$.2fMB ulazni i %2$.2fMB izlazni."
 "Total upload slots :" ---> "Maksimalni broj slotova za izlazne konekcije:"
 "Total" ---> "Ukupno"
 "Tracker Announce. (%1%)" ---> "Izjava trekera. (%1%)"
@@ -253,21 +264,22 @@
 "Tracker warning: %2%! (%1%)" ---> "Upozrenje trekera: %2%! (%1%)"
 "Tracker" ---> "Treker"
 "Tracker:" ---> "Treker:"
-"Tracker;Tier" ---> "Treker;Mesto"
 "Trackers" --->  ??? 
 "Transferred:" ---> "Prenešeno:"
 "Translation" ---> "Prevod"
-"Type" --->  ??? 
+"Type" ---> "Tip"
 "URL Seed %2%, %3%. (%1%)" ---> "URL Seed %2%, %3%. (%1%)"
 "URL" --->  ??? 
-"URL;Port;Type" --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." ---> "Unicode izuzetak: %1%."
 "Up" ---> "Izlazna"
 "Update in:" ---> "Obnova za:"
 "Upload Rate (KB/s) :" ---> "Brzina izlaznog protoka (KB/s):"
+"Upload" ---> "Odpremljaš"
+"Uploaded" --->  ??? 
 "Use Compact Allocation." ---> "Upotrebi kompaktno dodavanje"
 "Use a proxy." ---> "Upotrebi Proksi-servera"
+"User canceled Torrent file creation" --->  ??? 
 "Username : " ---> "Korisnik:"
 "Warning" ---> "Upozorenje"
 "Web Seed" ---> "Web Seed"

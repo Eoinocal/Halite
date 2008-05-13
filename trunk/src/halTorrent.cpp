@@ -148,11 +148,9 @@ namespace hal
 namespace hal 
 {
 
-
-
-BitTorrent& bittorrent()
+bit& bittorrent()
 {
-	static BitTorrent t;
+	static bit t;
 	return t;
 }
 
@@ -271,13 +269,13 @@ web_seed_or_dht_node_detail::web_seed_or_dht_node_detail(std::wstring u, int p) 
 	type(hal::app().res_wstr(HAL_INT_NEWT_ADD_PEERS_DHT)) 
 {}
 
-class BitTorrent_impl
+class bit_impl
 {
-	friend class BitTorrent;
+	friend class bit;
 	
 public:
 	
-	~BitTorrent_impl()
+	~bit_impl()
 	{
 		keepChecking_ = false;
 		
@@ -327,7 +325,7 @@ public:
 		class AlertHandler
 		{
 		public:
-		AlertHandler(BitTorrent_impl& bit_impl) :
+		AlertHandler(bit_impl& bit_impl) :
 			bit_impl_(bit_impl)
 		{}
 		
@@ -523,7 +521,7 @@ public:
 		}
 		
 		private:
-			BitTorrent_impl& bit_impl_;
+			bit_impl& bit_impl_;
 			
 			torrent_internal_ptr get(lbt::torrent_handle h) const 
 			{ 
@@ -574,7 +572,7 @@ public:
 		}
 		
 		timer_.expires_from_now(boost::posix_time::seconds(5));
-		timer_.async_wait(bind(&BitTorrent_impl::alertHandler, this));
+		timer_.async_wait(bind(&bit_impl::alertHandler, this));
 		}
 	}
 	
@@ -606,7 +604,7 @@ public:
 	const wpath workingDir() { return workingDirectory; };
 
 private:
-	BitTorrent_impl() :
+	bit_impl() :
 		theSession(lbt::fingerprint(HALITE_FINGERPRINT)),
 		timer_(io_),
 		keepChecking_(false),
@@ -686,10 +684,10 @@ private:
 		}
 		
 		timer_.expires_from_now(boost::posix_time::seconds(5));
-		timer_.async_wait(bind(&BitTorrent_impl::alertHandler, this));
+		timer_.async_wait(bind(&bit_impl::alertHandler, this));
 	}
 
-	void create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn)
+	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn)
 	{		
 	try
 	{
@@ -747,7 +745,15 @@ private:
 			lbt::hasher h(&piece_buf[0], t_info->piece_size(i));
 			t_info->set_hash(i, h.final());
 
-			fn(100*i / num, hal::app().res_wstr(HAL_TORRENT_CAL_HASHES));
+			if (fn(100*i / num, hal::app().res_wstr(HAL_NEWT_HASHING_PIECES)))
+			{
+				// User canceled torrent creation.
+
+				hal::event().post(shared_ptr<hal::EventDetail>(
+					new hal::EventMsg(hal::app().res_wstr(HAL_NEWT_CREATION_CANCELED), hal::Event::info)));
+
+				return true;
+			}
 		}
 
 		t_info->set_creator(to_utf8(params.creator).c_str());
@@ -764,6 +770,8 @@ private:
 			event().post(shared_ptr<EventDetail>(
 				new EventStdException(Event::fatal, e, L"create_torrent")));
 		}	
+
+		return false;
 	}
 	
 	std::pair<lbt::entry, lbt::entry> prepTorrent(wpath filename, wpath saveDirectory);
@@ -800,10 +808,10 @@ private:
 	
 };
 
-wpath BitTorrent_impl::workingDirectory = hal::app().working_directory();
+wpath bit_impl::workingDirectory = hal::app().working_directory();
 
-BitTorrent::BitTorrent() :
-	pimpl(new BitTorrent_impl())
+bit::bit() :
+	pimpl(new bit_impl())
 {}
 
 #define HAL_GENERIC_TORRENT_EXCEPTION_CATCH(TORRENT, FUNCTION) \
@@ -823,27 +831,27 @@ catch (const std::exception& e) \
 		new EventTorrentException(Event::critical, Event::torrentException, std::string(e.what()), TORRENT, std::string(FUNCTION)))); \
 }
 
-void BitTorrent::shutDownSession()
+void bit::shutDownSession()
 {
 	pimpl.reset();
 }
 
-void BitTorrent::saveTorrentData()
+void bit::saveTorrentData()
 {
 	pimpl->saveTorrentData();
 }
 
-void BitTorrent::create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn)
+bool bit::create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn)
 {
-	pimpl->create_torrent(params, out_file, fn);
+	return pimpl->create_torrent(params, out_file, fn);
 }
 
-BitTorrent::torrent BitTorrent::get_wstr(const std::wstring& filename)
+bit::torrent bit::get_wstr(const std::wstring& filename)
 {
-	return BitTorrent::torrent(pimpl->theTorrents.get(filename));
+	return bit::torrent(pimpl->theTorrents.get(filename));
 }
 
-bool BitTorrent::listenOn(std::pair<int, int> const& range)
+bool bit::listenOn(std::pair<int, int> const& range)
 {
 	try
 	{
@@ -870,7 +878,7 @@ bool BitTorrent::listenOn(std::pair<int, int> const& range)
 	catch (const std::exception& e)
 	{
 		event().post(shared_ptr<EventDetail>(
-			new EventStdException(Event::fatal, e, L"From BitTorrent::listenOn.")));
+			new EventStdException(Event::fatal, e, L"From bit::listenOn.")));
 
 		return false;
 	}
@@ -880,7 +888,7 @@ bool BitTorrent::listenOn(std::pair<int, int> const& range)
 	}
 }
 
-int BitTorrent::isListeningOn() 
+int bit::isListeningOn() 
 {
 	if (!pimpl->theSession.is_listening())
 		return -1;	
@@ -888,13 +896,13 @@ int BitTorrent::isListeningOn()
 		return pimpl->theSession.listen_port();
 }
 
-void BitTorrent::stopListening()
+void bit::stopListening()
 {
 	ensureDhtOff();
 	pimpl->theSession.listen_on(std::make_pair(0, 0));
 }
 
-bool BitTorrent::ensureDhtOn()
+bool bit::ensureDhtOn()
 {
 	if (!pimpl->dht_on_)
 	{		
@@ -909,7 +917,7 @@ bool BitTorrent::ensureDhtOn()
 		return pimpl->dht_on_;
 }
 
-void BitTorrent::ensureDhtOff()
+void bit::ensureDhtOff()
 {
 	if (pimpl->dht_on_)
 	{
@@ -918,7 +926,7 @@ void BitTorrent::ensureDhtOff()
 	}
 }
 
-void BitTorrent::setDhtSettings(int max_peers_reply, int search_branching, 
+void bit::setDhtSettings(int max_peers_reply, int search_branching, 
 	int service_port, int max_fail_count)
 {
 	lbt::dht_settings settings;
@@ -934,7 +942,7 @@ void BitTorrent::setDhtSettings(int max_peers_reply, int search_branching,
 	}
 }
 
-void BitTorrent::setMapping(int mapping)
+void bit::setMapping(int mapping)
 {
 	if (mapping != mappingNone)
 	{
@@ -963,7 +971,7 @@ void BitTorrent::setMapping(int mapping)
 	}
 }
 
-void BitTorrent::setTimeouts(int peers, int tracker)
+void bit::setTimeouts(int peers, int tracker)
 {
 	lbt::session_settings settings = pimpl->theSession.settings();
 	settings.peer_connect_timeout = peers;
@@ -975,7 +983,7 @@ void BitTorrent::setTimeouts(int peers, int tracker)
 		wformat(L"Set Timeouts, peer %1%, tracker %2%") % peers % tracker)));
 }
 
-void BitTorrent::setSessionLimits(int maxConn, int maxUpload)
+void bit::setSessionLimits(int maxConn, int maxUpload)
 {		
 	pimpl->theSession.set_max_uploads(maxUpload);
 	pimpl->theSession.set_max_connections(maxConn);
@@ -985,7 +993,7 @@ void BitTorrent::setSessionLimits(int maxConn, int maxUpload)
 			% maxConn % maxUpload)));
 }
 
-void BitTorrent::setSessionSpeed(float download, float upload)
+void bit::setSessionSpeed(float download, float upload)
 {
 	int down = (download > 0) ? static_cast<int>(download*1024) : -1;
 	pimpl->theSession.set_download_rate_limit(down);
@@ -997,7 +1005,7 @@ void BitTorrent::setSessionSpeed(float download, float upload)
 			% pimpl->theSession.download_rate_limit() % pimpl->theSession.upload_rate_limit())));
 }
 
-void BitTorrent_impl::ip_filter_count()
+void bit_impl::ip_filter_count()
 {
 	lbt::ip_filter::filter_tuple_t vectors = ip_filter_.export_filter();
 	
@@ -1008,7 +1016,7 @@ void BitTorrent_impl::ip_filter_count()
 	ip_filter_count_ = vectors.get<0>().size() + vectors.get<1>().size();
 }
 
-void BitTorrent_impl::ip_filter_load(progress_callback fn)
+void bit_impl::ip_filter_load(progress_callback fn)
 {
 	fs::ifstream ifs(workingDirectory/L"IPFilter.bin", std::ios::binary);
 	if (ifs)
@@ -1024,7 +1032,8 @@ void BitTorrent_impl::ip_filter_load(progress_callback fn)
 			if (i-previous > total)
 			{
 				previous = i;
-				if (fn) if (fn(size_t(i/total),L"")) break;
+
+				if (fn) if (fn(size_t(i/total), hal::app().res_wstr(HAL_TORRENT_LOAD_FILTERS))) break;
 			}
 			
 			read_range_to_filter<asio::ip::address_v4>(ifs, ip_filter_);
@@ -1032,7 +1041,7 @@ void BitTorrent_impl::ip_filter_load(progress_callback fn)
 	}	
 }
 
-void  BitTorrent_impl::ip_filter_import(std::vector<lbt::ip_range<asio::ip::address_v4> >& v4,
+void  bit_impl::ip_filter_import(std::vector<lbt::ip_range<asio::ip::address_v4> >& v4,
 	std::vector<lbt::ip_range<asio::ip::address_v6> >& v6)
 {
 	for(std::vector<lbt::ip_range<asio::ip::address_v4> >::iterator i=v4.begin();
@@ -1049,7 +1058,7 @@ void  BitTorrent_impl::ip_filter_import(std::vector<lbt::ip_range<asio::ip::addr
 	/* Note here we do not set ip_filter_changed_ */
 }
 
-void BitTorrent::ensureIpFilterOn(progress_callback fn)
+bool bit::ensureIpFilterOn(progress_callback fn)
 {
 	try
 	{
@@ -1077,9 +1086,11 @@ void BitTorrent::ensureIpFilterOn(progress_callback fn)
 	}
 
 	event().post(shared_ptr<EventDetail>(new EventMsg(L"IP filters on.")));	
+
+	return false;
 }
 
-void BitTorrent::ensureIpFilterOff()
+void bit::ensureIpFilterOff()
 {
 	pimpl->theSession.set_ip_filter(lbt::ip_filter());
 	pimpl->ip_filter_on_ = false;
@@ -1088,7 +1099,7 @@ void BitTorrent::ensureIpFilterOff()
 }
 
 #ifndef TORRENT_DISABLE_ENCRYPTION	
-void BitTorrent::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4)
+void bit::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4)
 {
 	lbt::pe_settings pe;
 	
@@ -1168,7 +1179,7 @@ void BitTorrent::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy
 	event().post(shared_ptr<EventDetail>(new EventMsg(L"Protocol encryption on.")));
 }
 
-void BitTorrent::ensurePeOff()
+void bit::ensurePeOff()
 {
 	lbt::pe_settings pe;
 	pe.out_enc_policy = lbt::pe_settings::disabled;
@@ -1183,26 +1194,26 @@ void BitTorrent::ensurePeOff()
 }
 #endif
 
-void BitTorrent::ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 last)
+void bit::ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 last)
 {
 	pimpl->ip_filter_.add_rule(first, last, lbt::ip_filter::blocked);
 	pimpl->ip_filter_count();
 	pimpl->ip_filter_changed_ = true;
 }
 
-void BitTorrent::ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last)
+void bit::ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last)
 {
 	pimpl->ip_filter_.add_rule(first, last, lbt::ip_filter::blocked);
 	pimpl->ip_filter_count();
 	pimpl->ip_filter_changed_ = true;
 }
 
-size_t BitTorrent::ip_filter_size()
+size_t bit::ip_filter_size()
 {
 	return pimpl->ip_filter_count_;
 }
 
-void BitTorrent::clearIpFilter()
+void bit::clearIpFilter()
 {
 	pimpl->ip_filter_ = lbt::ip_filter();
 	pimpl->theSession.set_ip_filter(lbt::ip_filter());	
@@ -1210,7 +1221,7 @@ void BitTorrent::clearIpFilter()
 	pimpl->ip_filter_count();
 }
 
-void BitTorrent::ip_filter_import_dat(boost::filesystem::path file, progress_callback fn, bool octalFix)
+bool bit::ip_filter_import_dat(boost::filesystem::path file, progress_callback fn, bool octalFix)
 {
 	try
 	{
@@ -1287,9 +1298,11 @@ void BitTorrent::ip_filter_import_dat(boost::filesystem::path file, progress_cal
 		event().post(shared_ptr<EventDetail>(
 			new EventStdException(Event::critical, e, L"ip_filter_import_dat")));
 	}
+
+	return false;
 }
 
-const SessionDetail BitTorrent::getSessionDetails()
+const SessionDetail bit::getSessionDetails()
 {
 	SessionDetail details;
 	
@@ -1309,7 +1322,7 @@ const SessionDetail BitTorrent::getSessionDetails()
 	return details;
 }
 
-void BitTorrent::setSessionHalfOpenLimit(int halfConn)
+void bit::setSessionHalfOpenLimit(int halfConn)
 {
 	pimpl->theSession.set_max_half_open_connections(halfConn);
 
@@ -1317,7 +1330,7 @@ void BitTorrent::setSessionHalfOpenLimit(int halfConn)
 		wformat(L"Set half-open connections limit to %1%.") % pimpl->theSession.max_half_open_connections())));
 }
 
-void BitTorrent::setTorrentDefaults(int maxConn, int maxUpload, float download, float upload)
+void bit::setTorrentDefaults(int maxConn, int maxUpload, float download, float upload)
 {
 	pimpl->defTorrentMaxConn_ = maxConn;
 	pimpl->defTorrentMaxUpload_ = maxUpload;
@@ -1332,7 +1345,7 @@ void BitTorrent::setTorrentDefaults(int maxConn, int maxUpload, float download, 
 		wformat(L"Set torrent default rates at %1$.2fkb/s down and %2$.2fkb/s upload.") % download % upload)));
 }
 
-std::pair<lbt::entry, lbt::entry> BitTorrent_impl::prepTorrent(wpath filename, wpath saveDirectory)
+std::pair<lbt::entry, lbt::entry> bit_impl::prepTorrent(wpath filename, wpath saveDirectory)
 {
 	lbt::entry metadata = haldecode(filename);
 	lbt::torrent_info info(metadata);
@@ -1380,7 +1393,7 @@ std::pair<lbt::entry, lbt::entry> BitTorrent_impl::prepTorrent(wpath filename, w
 	return std::make_pair(metadata, resumeData);
 }
 
-void BitTorrent::addTorrent(wpath file, wpath saveDirectory, bool startStopped, bool compactStorage, 
+void bit::addTorrent(wpath file, wpath saveDirectory, bool startStopped, bool compactStorage, 
 		boost::filesystem::wpath moveToDirectory, bool useMoveTo) 
 {
 	try 
@@ -1444,7 +1457,7 @@ void add_files(lbt::torrent_info& t, fs::path const& p, fs::path const& l)
 */
 }
 
-void BitTorrent::newTorrent(wpath filename, wpath files)
+void bit::newTorrent(wpath filename, wpath files)
 {
 /*	try
 	{
@@ -1489,12 +1502,12 @@ void BitTorrent::newTorrent(wpath filename, wpath files)
 */
 }
 
-const TorrentDetails& BitTorrent::torrentDetails()
+const TorrentDetails& bit::torrentDetails()
 {
 	return torrentDetails_;
 }
 
-const TorrentDetails& BitTorrent::updateTorrentDetails(const wstring& focused, const std::set<wstring>& selected)
+const TorrentDetails& bit::updateTorrentDetails(const wstring& focused, const std::set<wstring>& selected)
 {
 	try {
 	
@@ -1525,7 +1538,7 @@ const TorrentDetails& BitTorrent::updateTorrentDetails(const wstring& focused, c
 	return torrentDetails_;
 }
 
-void BitTorrent::resumeAll()
+void bit::resumeAll()
 {
 	try {
 		
@@ -1583,7 +1596,7 @@ void BitTorrent::resumeAll()
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "resumeAll")
 }
 
-void BitTorrent::closeAll()
+void bit::closeAll()
 {
 	try {
 	
@@ -1689,12 +1702,12 @@ PeerDetail::PeerDetail(lbt::peer_info& peerInfo) :
 	}	
 }
 
-void BitTorrent::getAllPeerDetails(const std::string& filename, PeerDetails& peerContainer)
+void bit::getAllPeerDetails(const std::string& filename, PeerDetails& peerContainer)
 {
 	getAllPeerDetails(from_utf8_safe(filename), peerContainer);
 }
 
-void BitTorrent::getAllPeerDetails(const std::wstring& filename, PeerDetails& peerContainer)
+void bit::getAllPeerDetails(const std::wstring& filename, PeerDetails& peerContainer)
 {
 	try {
 	
@@ -1703,12 +1716,12 @@ void BitTorrent::getAllPeerDetails(const std::wstring& filename, PeerDetails& pe
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getAllPeerDetails")
 }
 
-void BitTorrent::getAllFileDetails(const std::string& filename, FileDetails& fileDetails)
+void bit::getAllFileDetails(const std::string& filename, FileDetails& fileDetails)
 {
 	getAllFileDetails(from_utf8_safe(filename), fileDetails);
 }
 
-void BitTorrent::getAllFileDetails(const std::wstring& filename, FileDetails& fileDetails)
+void bit::getAllFileDetails(const std::wstring& filename, FileDetails& fileDetails)
 {
 	try {
 	
@@ -1717,12 +1730,12 @@ void BitTorrent::getAllFileDetails(const std::wstring& filename, FileDetails& fi
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getAllFileDetails")
 }
 
-bool BitTorrent::isTorrent(const std::string& filename)
+bool bit::isTorrent(const std::string& filename)
 {	
 	return isTorrent(hal::to_wstr_shim(filename));
 }
 
-bool BitTorrent::isTorrent(const std::wstring& filename)
+bool bit::isTorrent(const std::wstring& filename)
 {	
 	try {
 	
@@ -1733,12 +1746,12 @@ bool BitTorrent::isTorrent(const std::wstring& filename)
 	return false;
 }
 
-void BitTorrent::pauseTorrent(const std::string& filename)
+void bit::pauseTorrent(const std::string& filename)
 {
 	pauseTorrent(hal::to_wstr_shim(filename));
 }
 
-void BitTorrent::pauseTorrent(const std::wstring& filename)
+void bit::pauseTorrent(const std::wstring& filename)
 {
 	try {
 	
@@ -1747,12 +1760,12 @@ void BitTorrent::pauseTorrent(const std::wstring& filename)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "pauseTorrent")
 }
 
-void BitTorrent::resumeTorrent(const std::string& filename)
+void bit::resumeTorrent(const std::string& filename)
 {
 	resumeTorrent(hal::to_wstr_shim(filename));
 }
 
-void BitTorrent::resumeTorrent(const std::wstring& filename)
+void bit::resumeTorrent(const std::wstring& filename)
 {
 	try {
 	
@@ -1761,12 +1774,12 @@ void BitTorrent::resumeTorrent(const std::wstring& filename)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "resumeTorrent")
 }
 
-void BitTorrent::stopTorrent(const std::string& filename)
+void bit::stopTorrent(const std::string& filename)
 {
 	stopTorrent(hal::to_wstr_shim(filename));
 }
 
-void BitTorrent::stopTorrent(const std::wstring& filename)
+void bit::stopTorrent(const std::wstring& filename)
 {
 	try {
 	
@@ -1775,12 +1788,12 @@ void BitTorrent::stopTorrent(const std::wstring& filename)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "stopTorrent")
 }
 
-bool BitTorrent::isTorrentActive(const std::string& filename)
+bool bit::isTorrentActive(const std::string& filename)
 {
 	return isTorrentActive(hal::to_wstr_shim(filename));
 }
 
-bool BitTorrent::isTorrentActive(const std::wstring& filename)
+bool bit::isTorrentActive(const std::wstring& filename)
 {
 	try {
 	
@@ -1791,12 +1804,12 @@ bool BitTorrent::isTorrentActive(const std::wstring& filename)
 	return false; // ??? is this correct
 }
 
-void BitTorrent::reannounceTorrent(const std::string& filename)
+void bit::reannounceTorrent(const std::string& filename)
 {
 	reannounceTorrent(hal::to_wstr_shim(filename));
 }
 
-void BitTorrent::reannounceTorrent(const std::wstring& filename)
+void bit::reannounceTorrent(const std::wstring& filename)
 {
 	try {
 	
@@ -1805,12 +1818,12 @@ void BitTorrent::reannounceTorrent(const std::wstring& filename)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "reannounceTorrent")
 }
 
-void BitTorrent::setTorrentLogin(const std::string& filename, std::wstring username, std::wstring password)
+void bit::setTorrentLogin(const std::string& filename, std::wstring username, std::wstring password)
 {
 	setTorrentLogin(hal::to_wstr_shim(filename), username, password);
 }
 
-void BitTorrent::setTorrentLogin(const std::wstring& filename, std::wstring username, std::wstring password)
+void bit::setTorrentLogin(const std::wstring& filename, std::wstring username, std::wstring password)
 {
 	try {
 	
@@ -1819,12 +1832,12 @@ void BitTorrent::setTorrentLogin(const std::wstring& filename, std::wstring user
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentLogin")
 }
 
-std::pair<std::wstring, std::wstring> BitTorrent::getTorrentLogin(const std::string& filename)
+std::pair<std::wstring, std::wstring> bit::getTorrentLogin(const std::string& filename)
 {
 	return getTorrentLogin(hal::to_wstr_shim(filename));
 }
 
-std::pair<std::wstring, std::wstring> BitTorrent::getTorrentLogin(const std::wstring& filename)
+std::pair<std::wstring, std::wstring> bit::getTorrentLogin(const std::wstring& filename)
 {
 	try {
 	
@@ -1835,7 +1848,7 @@ std::pair<std::wstring, std::wstring> BitTorrent::getTorrentLogin(const std::wst
 	return std::make_pair(L"", L"");
 }
 
-void BitTorrent_impl::removalThread(torrent_internal_ptr pIT, bool wipeFiles)
+void bit_impl::removalThread(torrent_internal_ptr pIT, bool wipeFiles)
 {
 	try {
 
@@ -1889,12 +1902,12 @@ void BitTorrent_impl::removalThread(torrent_internal_ptr pIT, bool wipeFiles)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "removalThread")
 }
 
-void BitTorrent::removeTorrent(const std::string& filename)
+void bit::removeTorrent(const std::string& filename)
 {
 	removeTorrent(hal::to_wstr_shim(filename));
 }
 
-void BitTorrent::removeTorrent(const std::wstring& filename)
+void bit::removeTorrent(const std::wstring& filename)
 {
 	try {
 	
@@ -1902,17 +1915,17 @@ void BitTorrent::removeTorrent(const std::wstring& filename)
 	lbt::torrent_handle handle = pTI->handle();
 	pimpl->theTorrents.erase(filename);
 	
-	thread_t t(bind(&BitTorrent_impl::removalThread, &*pimpl, pTI, false));	
+	thread_t t(bind(&bit_impl::removalThread, &*pimpl, pTI, false));	
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "removeTorrent")
 }
 
-void BitTorrent::recheckTorrent(const std::string& filename)
+void bit::recheckTorrent(const std::string& filename)
 {
 	recheckTorrent(hal::to_wstr_shim(filename));
 }
 
-void BitTorrent::recheckTorrent(const std::wstring& filename)
+void bit::recheckTorrent(const std::wstring& filename)
 {
 	try {
 	
@@ -1921,12 +1934,12 @@ void BitTorrent::recheckTorrent(const std::wstring& filename)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "recheckTorrent")
 }
 
-void BitTorrent::removeTorrentWipeFiles(const std::string& filename)
+void bit::removeTorrentWipeFiles(const std::string& filename)
 {
 	removeTorrentWipeFiles(hal::to_wstr_shim(filename));
 }
 
-void BitTorrent::removeTorrentWipeFiles(const std::wstring& filename)
+void bit::removeTorrentWipeFiles(const std::wstring& filename)
 {
 	try {
 	
@@ -1934,12 +1947,12 @@ void BitTorrent::removeTorrentWipeFiles(const std::wstring& filename)
 	lbt::torrent_handle handle = pTI->handle();
 	pimpl->theTorrents.erase(filename);
 	
-	thread_t t(bind(&BitTorrent_impl::removalThread, &*pimpl, pTI, true));	
+	thread_t t(bind(&bit_impl::removalThread, &*pimpl, pTI, true));	
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "removeTorrentWipeFiles")
 }
 
-void BitTorrent::pauseAllTorrents()
+void bit::pauseAllTorrents()
 {	
 	try {
 	
@@ -1953,7 +1966,7 @@ void BitTorrent::pauseAllTorrents()
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "pauseAllTorrents")
 }
 
-void BitTorrent::unpauseAllTorrents()
+void bit::unpauseAllTorrents()
 {	
 	try {
 	
@@ -1967,12 +1980,12 @@ void BitTorrent::unpauseAllTorrents()
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "unpauseAllTorrents")
 }
 
-void BitTorrent::setTorrentLimit(const std::string& filename, int maxConn, int maxUpload)
+void bit::setTorrentLimit(const std::string& filename, int maxConn, int maxUpload)
 {
 	setTorrentLimit(hal::from_utf8_safe(filename), maxConn, maxUpload);
 }
 
-void BitTorrent::setTorrentLimit(const std::wstring& filename, int maxConn, int maxUpload)
+void bit::setTorrentLimit(const std::wstring& filename, int maxConn, int maxUpload)
 {
 	try {
 	
@@ -1982,23 +1995,23 @@ void BitTorrent::setTorrentLimit(const std::wstring& filename, int maxConn, int 
 }
 
 
-BitTorrent::torrent::torrent(boost::shared_ptr<torrent_internal> p) :
+bit::torrent::torrent(boost::shared_ptr<torrent_internal> p) :
 	ptr(p)
 {}
 
-BitTorrent::torrent::exec_around_ptr::proxy::proxy(torrent_internal* t) : 
+bit::torrent::exec_around_ptr::proxy::proxy(torrent_internal* t) : 
 	t_(t),
 	l_(t->mutex_)
 {
 	HAL_DEV_MSG(L"Ctor proxy");
 }
 
-BitTorrent::torrent::exec_around_ptr::proxy::~proxy() 
+bit::torrent::exec_around_ptr::proxy::~proxy() 
 {
 	HAL_DEV_MSG(L"Dtor proxy");
 }
 
-float BitTorrent::torrent::get_ratio() const
+float bit::torrent::get_ratio() const
 {
 	try {
 	
@@ -2009,7 +2022,7 @@ float BitTorrent::torrent::get_ratio() const
 	return 0;
 }
 
-void BitTorrent::torrent::set_ratio(float r)
+void bit::torrent::set_ratio(float r)
 {
 	try {
 
@@ -2018,7 +2031,7 @@ void BitTorrent::torrent::set_ratio(float r)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_ratio")
 }
 
-wpath BitTorrent::torrent::get_save_directory() const
+wpath bit::torrent::get_save_directory() const
 {
 	try {
 	
@@ -2029,7 +2042,7 @@ wpath BitTorrent::torrent::get_save_directory() const
 	return L"";
 }
 
-void BitTorrent::torrent::set_save_directory(const wpath& s)
+void bit::torrent::set_save_directory(const wpath& s)
 {
 	try {
 	
@@ -2038,7 +2051,7 @@ void BitTorrent::torrent::set_save_directory(const wpath& s)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_save_directory")
 }
 
-wpath BitTorrent::torrent::get_move_to_directory() const
+wpath bit::torrent::get_move_to_directory() const
 {
 	try {
 	
@@ -2049,7 +2062,7 @@ wpath BitTorrent::torrent::get_move_to_directory() const
 	return L"";
 }
 
-void BitTorrent::torrent::set_move_to_directory(const wpath& m)
+void bit::torrent::set_move_to_directory(const wpath& m)
 {
 	try {
 	
@@ -2058,12 +2071,12 @@ void BitTorrent::torrent::set_move_to_directory(const wpath& m)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_move_to_directory")
 }
 
-void BitTorrent::setTorrentRatio(const std::string& filename, float ratio)
+void bit::setTorrentRatio(const std::string& filename, float ratio)
 {
 	setTorrentRatio(hal::from_utf8_safe(filename), ratio);
 }
 
-void BitTorrent::setTorrentRatio(const std::wstring& filename, float ratio)
+void bit::setTorrentRatio(const std::wstring& filename, float ratio)
 {
 	try {
 	
@@ -2072,12 +2085,12 @@ void BitTorrent::setTorrentRatio(const std::wstring& filename, float ratio)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentRatio")
 }
 
-float BitTorrent::getTorrentRatio(const std::string& filename)
+float bit::getTorrentRatio(const std::string& filename)
 {
 	return getTorrentRatio(hal::from_utf8_safe(filename));
 }
 
-float BitTorrent::getTorrentRatio(const std::wstring& filename)
+float bit::getTorrentRatio(const std::wstring& filename)
 {
 	try {
 	
@@ -2088,12 +2101,12 @@ float BitTorrent::getTorrentRatio(const std::wstring& filename)
 	return 0;
 }
 
-void BitTorrent::setTorrentSpeed(const std::string& filename, float download, float upload)
+void bit::setTorrentSpeed(const std::string& filename, float download, float upload)
 {
 	setTorrentSpeed(hal::from_utf8_safe(filename), download, upload);
 }
 
-void BitTorrent::setTorrentSpeed(const std::wstring& filename, float download, float upload)
+void bit::setTorrentSpeed(const std::wstring& filename, float download, float upload)
 {
 	try {
 	
@@ -2102,12 +2115,12 @@ void BitTorrent::setTorrentSpeed(const std::wstring& filename, float download, f
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentSpeed")
 }
 
-std::pair<int, int> BitTorrent::getTorrentLimit(const std::string& filename)
+std::pair<int, int> bit::getTorrentLimit(const std::string& filename)
 {
 	return getTorrentLimit(from_utf8_safe(filename));
 }
 
-std::pair<int, int> BitTorrent::getTorrentLimit(const std::wstring& filename)
+std::pair<int, int> bit::getTorrentLimit(const std::wstring& filename)
 {
 	try {
 	
@@ -2118,12 +2131,12 @@ std::pair<int, int> BitTorrent::getTorrentLimit(const std::wstring& filename)
 	return std::pair<int, int>(0, 0);
 }
 
-std::pair<float, float> BitTorrent::getTorrentSpeed(const std::string& filename)
+std::pair<float, float> bit::getTorrentSpeed(const std::string& filename)
 {
 	return getTorrentSpeed(from_utf8_safe(filename));
 }
 
-std::pair<float, float> BitTorrent::getTorrentSpeed(const std::wstring& filename)
+std::pair<float, float> bit::getTorrentSpeed(const std::wstring& filename)
 {
 	try {
 	
@@ -2134,13 +2147,13 @@ std::pair<float, float> BitTorrent::getTorrentSpeed(const std::wstring& filename
 	return std::pair<float, float>(0, 0);
 }
 
-void BitTorrent::setTorrentFilePriorities(const std::string& filename, 
+void bit::setTorrentFilePriorities(const std::string& filename, 
 	std::vector<int> fileIndices, int priority)
 {
 	setTorrentFilePriorities(from_utf8_safe(filename), fileIndices, priority);
 }
 
-void BitTorrent::setTorrentFilePriorities(const std::wstring& filename, 
+void bit::setTorrentFilePriorities(const std::wstring& filename, 
 	std::vector<int> fileIndices, int priority)
 {
 	try {
@@ -2150,13 +2163,13 @@ void BitTorrent::setTorrentFilePriorities(const std::wstring& filename,
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentFilePriorities")
 }
 
-void BitTorrent::setTorrentTrackers(const std::string& filename, 
+void bit::setTorrentTrackers(const std::string& filename, 
 	const std::vector<tracker_detail>& trackers)
 {
 	setTorrentTrackers(from_utf8_safe(filename), trackers);
 }
 
-void BitTorrent::setTorrentTrackers(const std::wstring& filename, 
+void bit::setTorrentTrackers(const std::wstring& filename, 
 	const std::vector<tracker_detail>& trackers)
 {
 	try {
@@ -2166,12 +2179,12 @@ void BitTorrent::setTorrentTrackers(const std::wstring& filename,
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentTrackers")
 }
 
-void BitTorrent::resetTorrentTrackers(const std::string& filename)
+void bit::resetTorrentTrackers(const std::string& filename)
 {
 	resetTorrentTrackers(from_utf8_safe(filename));
 }
 
-void BitTorrent::resetTorrentTrackers(const std::wstring& filename)
+void bit::resetTorrentTrackers(const std::wstring& filename)
 {
 	try {
 	
@@ -2180,12 +2193,12 @@ void BitTorrent::resetTorrentTrackers(const std::wstring& filename)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "resetTorrentTrackers")
 }
 
-std::vector<tracker_detail> BitTorrent::getTorrentTrackers(const std::string& filename)
+std::vector<tracker_detail> bit::getTorrentTrackers(const std::string& filename)
 {
 	return getTorrentTrackers(from_utf8_safe(filename));
 }
 
-std::vector<tracker_detail> BitTorrent::getTorrentTrackers(const std::wstring& filename)
+std::vector<tracker_detail> bit::getTorrentTrackers(const std::wstring& filename)
 {
 	try {
 	
@@ -2196,20 +2209,20 @@ std::vector<tracker_detail> BitTorrent::getTorrentTrackers(const std::wstring& f
 	return std::vector<tracker_detail>();	
 }
 
-void BitTorrent::startEventReceiver()
+void bit::startEventReceiver()
 {
 	pimpl->keepChecking_ = true;
 	thread_t(bind(&asio::io_service::run, &pimpl->io_));
 }
 
-void BitTorrent::stopEventReceiver()
+void bit::stopEventReceiver()
 {
 	pimpl->keepChecking_ = false;
 }
 
-int BitTorrent::defTorrentMaxConn() { return pimpl->defTorrentMaxConn_; }
-int BitTorrent::defTorrentMaxUpload() { return pimpl->defTorrentMaxUpload_; }
-float BitTorrent::defTorrentDownload() { return pimpl->defTorrentDownload_; }
-float BitTorrent::defTorrentUpload() { return pimpl->defTorrentUpload_; }
+int bit::defTorrentMaxConn() { return pimpl->defTorrentMaxConn_; }
+int bit::defTorrentMaxUpload() { return pimpl->defTorrentMaxUpload_; }
+float bit::defTorrentDownload() { return pimpl->defTorrentDownload_; }
+float bit::defTorrentUpload() { return pimpl->defTorrentUpload_; }
 	
 };

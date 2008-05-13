@@ -301,7 +301,7 @@ public:
 			return TorrentDetail_ptr();
 	}
 	
-	friend class BitTorrent;
+	friend class bit;
 
 private:
 	void clearAll(const mutex_t::scoped_lock&)
@@ -409,10 +409,10 @@ struct SessionDetail
 typedef boost::function<bool (size_t, size_t, size_t)> filterCallback;
 typedef boost::function<bool (size_t, std::wstring)> progress_callback;
 
-class BitTorrent_impl;
+class bit_impl;
 class torrent_internal;
 
-class BitTorrent
+class bit
 {
 public:	
 
@@ -485,7 +485,7 @@ public:
 	void shutDownSession();
 	void saveTorrentData();
 
-	void create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn);
+	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn);
 
 	template<typename T>
 	torrent get(T t)
@@ -505,14 +505,14 @@ public:
 	void ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4);
 	void ensurePeOff();
 	
-	void ensureIpFilterOn(progress_callback fn);
+	bool ensureIpFilterOn(progress_callback fn);
 	void ensureIpFilterOff();
 
 	void setMapping(int mapping);
 
 	void ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 last);
 	void ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last);
-	void ip_filter_import_dat(boost::filesystem::path file, progress_callback fn, bool octalFix);
+	bool ip_filter_import_dat(boost::filesystem::path file, progress_callback fn, bool octalFix);
 	size_t ip_filter_size();
 	void clearIpFilter();	
 	
@@ -595,7 +595,7 @@ public:
 	void startEventReceiver();
 	void stopEventReceiver();
 	
-	friend BitTorrent& bittorrent();
+	friend bit& bittorrent();
 	
 	int defTorrentMaxConn();
 	int defTorrentMaxUpload();
@@ -606,12 +606,12 @@ public:
 	const TorrentDetails& updateTorrentDetails(const std::wstring& focused, const std::set<std::wstring>& selected);
 	
 private:
-	BitTorrent();
-	boost::scoped_ptr<BitTorrent_impl> pimpl;
+	bit();
+	boost::scoped_ptr<bit_impl> pimpl;
 	
 	TorrentDetails torrentDetails_;
 };
 
-BitTorrent& bittorrent();
+bit& bittorrent();
 
 };

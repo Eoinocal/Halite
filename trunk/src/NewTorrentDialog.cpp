@@ -122,6 +122,8 @@ LRESULT FileSheet::onInitDialog(HWND, LPARAM)
 {	
 	filesList_.Attach(GetDlgItem(IDC_NEWT_LISTFILES));	
 
+	creator_ = L"Halite " + hal::app().res_wstr(HAL_VERSION_STRING);
+
 	BOOL retval =  DoDataExchange(false);
 	return 0;
 }
@@ -384,8 +386,13 @@ LRESULT NewTorrentDialog::OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	params.web_seeds = detailsSheet_.WebSeeds();
 
 	ProgressDialog progDlg(hal::app().res_wstr(HAL_NEWT_SAVING_TORRENT), bind(
-		&hal::BitTorrent::create_torrent, &hal::bittorrent(), params, fileSheet_.OutputFile(), _1));
-	progDlg.DoModal();
+		&hal::bit::create_torrent, &hal::bittorrent(), params, fileSheet_.OutputFile(), _1));
+
+	int err_code = progDlg.DoModal();
+
+	HAL_DEV_MSG(wformat(L"progDlg err_code: %1%") % err_code);
+
+	if (err_code == 0) SendMessage(WM_CLOSE);
 
 	}
 	catch(const std::exception& e)

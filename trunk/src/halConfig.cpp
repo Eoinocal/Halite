@@ -56,7 +56,7 @@ bool Config::settingsThread()
 	if (enableIPFilter)
 	{
 		ProgressDialog progDlg(L"Loading IP filters...", bind(
-			&BitTorrent::ensureIpFilterOn, &bittorrent(), _1));
+			&bit::ensureIpFilterOn, &bittorrent(), _1));
 		progDlg.DoModal();
 	}
 	else

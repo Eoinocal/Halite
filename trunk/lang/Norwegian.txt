@@ -1,4 +1,5 @@
-"" --->  ??? 
+"English" ---> "Norwegian"
+"English.rtf" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
@@ -10,14 +11,9 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(N-O) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "(DHT will not apply to private torrents)" --->  ??? 
-"*** Disabled ***" ---> "*** Ikke aktivert ***"
-"..." --->  ??? 
-"2" --->  ??? 
-"3" --->  ??? 
-"4" --->  ??? 
-"6" --->  ??? 
 "About" ---> "Om"
 "Above Normal" --->  ??? 
+"Active" --->  ??? 
 "Add New Peer" --->  ??? 
 "Add New Tracker" ---> "Legg til ny tracker"
 "Add New Web Seed or DHT Node" --->  ??? 
@@ -37,23 +33,27 @@
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Block %2% of piece %3% finished. (%1%)" --->  ??? 
 "Both" --->  ??? 
-"Button1" --->  ??? 
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" ---> "Avbryt"
 "Checking Files" ---> "Sjekker filer"
 "Choked" ---> "Strypt"
 "Clear IP database" ---> "Nullstill IP database"
+"Client" --->  ??? 
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
 "Comments" ---> "Kommentarer"
 "CompanyName" ---> "Firmanavn"
+"Completed" --->  ??? 
 "Completed:" --->  ??? 
 "Confirm on close" --->  ??? 
 "Connecting to Tracker" ---> "Kobler til Tracker"
 "Connecting" ---> "Kobler til"
 "Connection Policies" --->  ??? 
 "Construct a New Torrent" --->  ??? 
+"Copies" --->  ??? 
+"Country" --->  ??? 
 "Creating Torrent..." --->  ??? 
+"Creating a New Torrent File" --->  ??? 
 "Creator" --->  ??? 
 "Critical" ---> "Kritisk"
 "DHT Node" --->  ??? 
@@ -72,11 +72,15 @@
 "Don't download" --->  ??? 
 "Down" ---> "Ned"
 "Download Rate (KB/s) :" ---> "Nedlasings-rate (KB/s) :"
+"Download" --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Lastet ned %1$.2fMB, Lastet opp %2$.2fMB, Ratio %3$.2f."
+"Downloaded" --->  ??? 
 "Downloading Metadata" ---> "Laster ned metadata"
 "Downloading" ---> "Laster ned"
 "E&xit" --->  ??? 
+"ETA" --->  ??? 
 "ETA:" --->  ??? 
+"Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Endre"
@@ -86,20 +90,18 @@
 "Enable Remote Control" ---> "Aktiver fjernstyring"
 "Enabled" --->  ??? 
 "Encoding Level" --->  ??? 
-"English" ---> "Norwegian"
-"English.rtf" --->  ??? 
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Legg til tracker URL'er for torrenten."
-"Exception caught; %1%, from %2%." ---> "Exception fanget; %1%, fra %2%."
+"Exception caught: %1%, from %2%." ---> "Exception fanget: %1%, fra %2%."
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
 "FileDescription" ---> "Filbeskrivelse"
 "FileVersion" ---> "FilVersion"
-"Filename;Path;Size" --->  ??? 
-"Filename;Path;Size;Progress;Priority" --->  ??? 
+"Filename" --->  ??? 
 "Files" --->  ??? 
 "Filtering %1% range(s)" ---> "Filtrerer %1% serie(r)"
+"Finish Time" --->  ??? 
 "Finished" ---> "Ferdig"
 "Forced" --->  ??? 
 "General Settings" ---> "Generelle instillinger"
@@ -110,8 +112,6 @@
 "Halite importing IP ranges..." ---> "Halite importerer IP serier..."
 "Halite not listening!" ---> "Halite lytter ikke!"
 "Halite shutting down..." ---> "Halite lukkes..."
-"Halite" --->  ??? 
-"Halite.exe" --->  ??? 
 "Handshake" --->  ??? 
 "Has choked us" ---> "Har strypt oss"
 "Hash failed for piece %2% of %1%." --->  ??? 
@@ -130,18 +130,20 @@
 "Language (requires restart)" --->  ??? 
 "Limit the no. of half-open connections" --->  ??? 
 "List of Trackers." ---> "Liste over trackere."
+"Loading IP filters..." --->  ??? 
 "Local connection" ---> "Lokal tilkobling"
 "Log debug events." ---> "Logg debug-hendelser"
 "Log to file." ---> "Logg til fil."
 "Logging" --->  ??? 
 "Maximum" --->  ??? 
+"Message" ---> "Melding"
 "Minimize to tray." ---> "Minimer til systemfelt"
 "Move finished torrents to :" --->  ??? 
 "Move the completed torrent to:" --->  ??? 
 "N/A" ---> "I/T"
 "NAT-PMG" --->  ??? 
+"Name" --->  ??? 
 "Name:" ---> "Navn:"
-"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Preannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
 "New" ---> "Ny"
 "None (Managed Externally)" --->  ??? 
 "None" ---> "Ingen"
@@ -157,6 +159,7 @@
 "Output File" --->  ??? 
 "Overhead:" --->  ??? 
 "Password : " ---> "Passord : "
+"Path" --->  ??? 
 "Pause" --->  ??? 
 "Paused" ---> "Pauset"
 "Pausing" --->  ??? 
@@ -164,8 +167,6 @@
 "Peer Event: %1%." ---> "Peer Hendelse: %1%."
 "Peer banned %2%. (%1%)" --->  ??? 
 "Peer" --->  ??? 
-"Peer;Country;Download;Upload;Type;Client" --->  ??? 
-"Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
 "Peers" --->  ??? 
 "Peers:" --->  ??? 
 "Piece %2% finished. (%1%)" --->  ??? 
@@ -179,9 +180,11 @@
 "Port" --->  ??? 
 "Preannounce" --->  ??? 
 "Prefer RC4" --->  ??? 
+"Priority" --->  ??? 
 "Private" --->  ??? 
 "ProductName" ---> "Produktnavn"
 "ProductVersion" ---> "Produktversjon"
+"Progress" --->  ??? 
 "Protocol Encryption" --->  ??? 
 "Proxies" --->  ??? 
 "Proxy Host/IP : " ---> "Proxy Vert/IP : "
@@ -192,8 +195,11 @@
 "RC4" --->  ??? 
 "Rates:" --->  ??? 
 "Ratio (this session):" ---> "Ratio (denne sesjonen):"
+"Ratio" --->  ??? 
 "Ratio:" --->  ??? 
+"Reannounce" --->  ??? 
 "Recheck Files" --->  ??? 
+"Remaining" --->  ??? 
 "Remaining:" --->  ??? 
 "Remote Control Options" ---> "Egenskaper for fjernstyring"
 "Remote Control" ---> "Fjernstyring"
@@ -205,6 +211,7 @@
 "Saving Torrent" --->  ??? 
 "Security" --->  ??? 
 "Seeding" --->  ??? 
+"Seeds" --->  ??? 
 "Seeds:" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Velg en mappe for lagring av filene eller avbryt for ikke å laste ned torrenten."
@@ -213,8 +220,12 @@
 "Send login info to trackers." ---> "Send login info til trackere"
 "Set Priority" --->  ??? 
 "Set as Primary" --->  ??? 
+"Severity" ---> "Alvorlighetsgrad"
 "Show this message in future" ---> "Vis denne meldingen i fremtiden"
+"Size" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Standard unntak (%1%) reist av %2%."
+"Start Time" --->  ??? 
+"Status" --->  ??? 
 "Status:" --->  ??? 
 "Stop" ---> "Stopp"
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
@@ -230,10 +241,10 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Tier" --->  ??? 
 "Time left:" ---> "Tid gjenstår:"
-"Time;Message;Severity" ---> "Tid;Melding;Alvorlighetsgrad"
+"Time" ---> "Tid"
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
-"Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) unntak fanget; %2% fra %3%."
+"Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) unntak fanget: %2% fra %3%."
 "Torrent Defaults" --->  ??? 
 "Torrent File" ---> "Torrent Fil"
 "Torrent Root" --->  ??? 
@@ -245,7 +256,7 @@
 "Torrent:" --->  ??? 
 "Torrents" ---> "Torrenter"
 "Total max connections :" ---> "Maksimalt antall tilkoblinger :"
-"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." --->  ??? 
 "Total upload slots :" ---> "Totalt opplastings-slots :"
 "Total" ---> "Totalt"
 "Tracker Announce. (%1%)" --->  ??? 
@@ -253,21 +264,22 @@
 "Tracker warning: %2%! (%1%)" --->  ??? 
 "Tracker" --->  ??? 
 "Tracker:" --->  ??? 
-"Tracker;Tier" --->  ??? 
 "Trackers" --->  ??? 
 "Transferred:" --->  ??? 
 "Translation" ---> "Oversettelse"
 "Type" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
-"URL;Port;Type" --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." --->  ??? 
 "Up" ---> "Opp"
 "Update in:" ---> "Oppdater om:"
 "Upload Rate (KB/s) :" ---> "Opplasings-rate (KB/s) :"
+"Upload" --->  ??? 
+"Uploaded" --->  ??? 
 "Use Compact Allocation." --->  ??? 
 "Use a proxy." ---> "Bruk en proxy."
+"User canceled Torrent file creation" --->  ??? 
 "Username : " ---> "Brukernavn : "
 "Warning" --->  ??? 
 "Web Seed" --->  ??? 

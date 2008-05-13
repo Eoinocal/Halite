@@ -1,4 +1,5 @@
-"" ---> ""
+"English" ---> "Русский"
+"English.rtf" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
@@ -10,14 +11,9 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(З-В) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(З-В) 0000.000KB/s - 0000.000KB/s"
 "(DHT will not apply to private torrents)" --->  ??? 
-"*** Disabled ***" ---> "*** Отключено ***"
-"..." ---> "..."
-"2" --->  ??? 
-"3" --->  ??? 
-"4" --->  ??? 
-"6" --->  ??? 
 "About" ---> "Информация"
 "Above Normal" --->  ??? 
+"Active" --->  ??? 
 "Add New Peer" --->  ??? 
 "Add New Tracker" ---> "Добавить новый трэкер"
 "Add New Web Seed or DHT Node" --->  ??? 
@@ -37,23 +33,27 @@
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Block %2% of piece %3% finished. (%1%)" --->  ??? 
 "Both" --->  ??? 
-"Button1" ---> "Кнопка1"
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" ---> "Отменить"
 "Checking Files" ---> "Проверка файлов"
 "Choked" ---> "Заглушен"
 "Clear IP database" ---> "Очистить базу данных IP"
+"Client" --->  ??? 
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
 "Comments" ---> "Комментарии"
 "CompanyName" ---> "Название компании"
+"Completed" --->  ??? 
 "Completed:" ---> "Завершено:"
 "Confirm on close" --->  ??? 
 "Connecting to Tracker" ---> "Соединение с сервером"
 "Connecting" ---> "Соединение"
 "Connection Policies" --->  ??? 
 "Construct a New Torrent" --->  ??? 
+"Copies" --->  ??? 
+"Country" --->  ??? 
 "Creating Torrent..." --->  ??? 
+"Creating a New Torrent File" --->  ??? 
 "Creator" --->  ??? 
 "Critical" ---> "Критическая"
 "DHT Node" --->  ??? 
@@ -72,11 +72,15 @@
 "Don't download" --->  ??? 
 "Down" ---> "Вниз"
 "Download Rate (KB/s) :" ---> "Скорость закачки (KB/s) :"
+"Download" --->  ??? 
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> " Закачано %1$.2fMB, Выкачано %2$.2fMB, Соотношение %3$.2f."
+"Downloaded" --->  ??? 
 "Downloading Metadata" ---> "Загружаем метаинформацию"
 "Downloading" ---> "Загрузка"
 "E&xit" ---> "В&ыйти"
+"ETA" --->  ??? 
 "ETA:" --->  ??? 
+"Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Редактировать"
@@ -86,20 +90,18 @@
 "Enable Remote Control" ---> "Включить удалённый контроль"
 "Enabled" --->  ??? 
 "Encoding Level" --->  ??? 
-"English" ---> "Русский"
-"English.rtf" --->  ??? 
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Ввести адрес трэкера для торрента."
-"Exception caught; %1%, from %2%." ---> "Исключение поймано; %1%, от %2%."
+"Exception caught: %1%, from %2%." ---> "Исключение поймано: %1%, от %2%."
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
 "FileDescription" ---> "Описание файла"
 "FileVersion" ---> "Версия Файла"
-"Filename;Path;Size" --->  ??? 
-"Filename;Path;Size;Progress;Priority" --->  ??? 
+"Filename" --->  ??? 
 "Files" --->  ??? 
 "Filtering %1% range(s)" ---> "Фильтрация %1% массивов"
+"Finish Time" --->  ??? 
 "Finished" ---> "Завершено"
 "Forced" --->  ??? 
 "General Settings" ---> "Общие установки"
@@ -110,8 +112,6 @@
 "Halite importing IP ranges..." ---> "Халит импортирует IP адреса"
 "Halite not listening!" ---> "Халит не ожидает"
 "Halite shutting down..." ---> "Халит завершает выключается..."
-"Halite" ---> "Халит"
-"Halite.exe" ---> "Halite.exe"
 "Handshake" ---> "Рукопожатие"
 "Has choked us" ---> "Заглушил нас"
 "Hash failed for piece %2% of %1%." --->  ??? 
@@ -130,18 +130,20 @@
 "Language (requires restart)" --->  ??? 
 "Limit the no. of half-open connections" --->  ??? 
 "List of Trackers." ---> "Список трэкеров."
+"Loading IP filters..." --->  ??? 
 "Local connection" ---> "Локальное соединение"
 "Log debug events." ---> "Вести журнал сообщений отладки."
 "Log to file." ---> "Вести журнал в файл."
 "Logging" --->  ??? 
 "Maximum" --->  ??? 
+"Message" ---> "Сообщение"
 "Minimize to tray." ---> "Свернуть в трей"
 "Move finished torrents to :" --->  ??? 
 "Move the completed torrent to:" --->  ??? 
 "N/A" ---> "Нет доступа"
 "NAT-PMG" --->  ??? 
+"Name" --->  ??? 
 "Name:" ---> "Имя:"
-"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Preannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
 "New" ---> "Новый"
 "None (Managed Externally)" --->  ??? 
 "None" ---> "Никакой"
@@ -157,6 +159,7 @@
 "Output File" --->  ??? 
 "Overhead:" --->  ??? 
 "Password : " ---> "Пароль : "
+"Path" --->  ??? 
 "Pause" ---> "Пауза"
 "Paused" ---> "В паузе"
 "Pausing" --->  ??? 
@@ -164,8 +167,6 @@
 "Peer Event: %1%." ---> "Событие пира: %1%."
 "Peer banned %2%. (%1%)" --->  ??? 
 "Peer" --->  ??? 
-"Peer;Country;Download;Upload;Type;Client" --->  ??? 
-"Peer;Country;Download;Upload;Type;Client;Status" --->  ??? 
 "Peers" --->  ??? 
 "Peers:" --->  ??? 
 "Piece %2% finished. (%1%)" --->  ??? 
@@ -179,9 +180,11 @@
 "Port" --->  ??? 
 "Preannounce" --->  ??? 
 "Prefer RC4" --->  ??? 
+"Priority" --->  ??? 
 "Private" --->  ??? 
 "ProductName" ---> "Название продукта"
 "ProductVersion" ---> "Версия продукта"
+"Progress" --->  ??? 
 "Protocol Encryption" --->  ??? 
 "Proxies" --->  ??? 
 "Proxy Host/IP : " ---> "Прокси Хост/IP"
@@ -192,8 +195,11 @@
 "RC4" --->  ??? 
 "Rates:" --->  ??? 
 "Ratio (this session):" ---> "Соотношение (в эту сессию):"
+"Ratio" --->  ??? 
 "Ratio:" --->  ??? 
+"Reannounce" --->  ??? 
 "Recheck Files" --->  ??? 
+"Remaining" --->  ??? 
 "Remaining:" --->  ??? 
 "Remote Control Options" ---> "Опции удалённого контроля"
 "Remote Control" ---> "Удалённый контроль"
@@ -205,6 +211,7 @@
 "Saving Torrent" --->  ??? 
 "Security" --->  ??? 
 "Seeding" ---> "Seeding"
+"Seeds" --->  ??? 
 "Seeds:" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Выберите папку для сохранения файлов или отмените, чобы вообще не загружать торрент."
@@ -213,8 +220,12 @@
 "Send login info to trackers." ---> "Послать информацию связи трэкерам"
 "Set Priority" --->  ??? 
 "Set as Primary" --->  ??? 
+"Severity" ---> "Важность"
 "Show this message in future" ---> "Показывать это сообщение вдальнейшем?"
+"Size" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Стандартное исключение (%1%) подброшено от %2%."
+"Start Time" --->  ??? 
+"Status" --->  ??? 
 "Status:" ---> "Статус:"
 "Stop" ---> "Остановить"
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
@@ -228,12 +239,12 @@
 "These options set global maximums which will always be honoured." ---> "Эти опции устанавливают глобальные максимумы, которые всегда будут соблюдаться."
 "These options specify the default limits applied to new torrents." ---> "Эти опции указывают лимиты, соблюдаемые поумолчянию."
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
-"Tier" ---> "Уровень"
+"Tier" ---> "Связь"
 "Time left:" ---> "Осталось времени:"
-"Time;Message;Severity" ---> "Время;Сообщение;Важность"
+"Time" ---> "Время"
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
-"Torrent (%1%) exception caught; %2% from %3%." ---> "Получено Торрент исключение (%1%); %2% от %3%."
+"Torrent (%1%) exception caught: %2% from %3%." ---> "Получено Торрент исключение (%1%): %2% от %3%."
 "Torrent Defaults" ---> "Установки торрента по умолчанию"
 "Torrent File" ---> "Торрент файл"
 "Torrent Root" --->  ??? 
@@ -245,7 +256,7 @@
 "Torrent:" --->  ??? 
 "Torrents" ---> "Торренты"
 "Total max connections :" ---> "Всего максимальных соединений :"
-"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." --->  ??? 
 "Total upload slots :" ---> "Всего исходящих слотов :"
 "Total" ---> "Всего"
 "Tracker Announce. (%1%)" --->  ??? 
@@ -253,21 +264,22 @@
 "Tracker warning: %2%! (%1%)" --->  ??? 
 "Tracker" ---> "Трэкер"
 "Tracker:" ---> "Трэкер"
-"Tracker;Tier" ---> "Трэкер;Связь"
 "Trackers" --->  ??? 
 "Transferred:" --->  ??? 
 "Translation" ---> "Перевод"
 "Type" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
-"URL;Port;Type" --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." ---> "Исключение юникода: %1%."
 "Up" ---> "Вверх"
 "Update in:" ---> "Обновление через:"
 "Upload Rate (KB/s) :" ---> "Скорость выкачки (KB/s) :"
+"Upload" --->  ??? 
+"Uploaded" --->  ??? 
 "Use Compact Allocation." --->  ??? 
 "Use a proxy." ---> "Использовать прокси."
+"User canceled Torrent file creation" --->  ??? 
 "Username : " ---> "Имя пользователя : "
 "Warning" --->  ??? 
 "Web Seed" --->  ??? 
