@@ -1,4 +1,5 @@
-"" --->  ??? 
+"English" ---> "Svenska"
+"English.rtf" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s ned - %2$.2fKB/s upp"
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB ned - %2$.2fMB upp"
 "%1$.2fMB of %2$.2fMB" --->  ??? 
@@ -10,14 +11,9 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "(DHT will not apply to private torrents)" --->  ??? 
-"*** Disabled ***" ---> "*** Deaktiverad ***"
-"..." --->  ??? 
-"2" --->  ??? 
-"3" --->  ??? 
-"4" --->  ??? 
-"6" --->  ??? 
 "About" ---> "Om"
 "Above Normal" ---> "Över medel"
+"Active" --->  ??? 
 "Add New Peer" --->  ??? 
 "Add New Tracker" ---> "Lägg till ny tracker"
 "Add New Web Seed or DHT Node" --->  ??? 
@@ -37,23 +33,27 @@
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Block %2% of piece %3% finished. (%1%)" --->  ??? 
 "Both" ---> "Båda"
-"Button1" --->  ??? 
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" ---> "Avbryt"
 "Checking Files" ---> "Granskar filer"
 "Choked" ---> "Strypt"
 "Clear IP database" ---> "Rensa IP-databas"
+"Client" ---> "Klient"
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
 "Comments" ---> "Kommentarer"
 "CompanyName" --->  ??? 
+"Completed" --->  ??? 
 "Completed:" ---> "Färdigt:"
 "Confirm on close" --->  ??? 
 "Connecting to Tracker" ---> "Ansluter till tracker"
 "Connecting" ---> "Ansluter"
 "Connection Policies" ---> "Anslutningsvillkor"
 "Construct a New Torrent" --->  ??? 
+"Copies" --->  ??? 
+"Country" ---> "Land"
 "Creating Torrent..." --->  ??? 
+"Creating a New Torrent File" --->  ??? 
 "Creator" --->  ??? 
 "Critical" ---> "Viktig"
 "DHT Node" --->  ??? 
@@ -72,11 +72,15 @@
 "Don't download" ---> "Ladda inte ned"
 "Down" ---> "Ned"
 "Download Rate (KB/s) :" ---> "Nedladdningshastighet (KB/s"
+"Download" ---> "Nedladdning"
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Laddade ned  %1$.2fMB, laddade upp %2$.2fMB, Ratio: %3$.2f."
+"Downloaded" --->  ??? 
 "Downloading Metadata" ---> "Laddar ned metadata"
 "Downloading" ---> "Laddar ned"
 "E&xit" ---> "&Avsluta"
+"ETA" --->  ??? 
 "ETA:" ---> "Tid kvar:"
+"Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Ändra"
@@ -86,20 +90,18 @@
 "Enable Remote Control" ---> "Aktivera fjärrstyrning"
 "Enabled" ---> "Aktiverade"
 "Encoding Level" ---> "Nivå av kodning"
-"English" ---> "Svenska"
-"English.rtf" --->  ??? 
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Skriv in URL för torrent."
-"Exception caught; %1%, from %2%." --->  ??? 
+"Exception caught: %1%, from %2%." --->  ??? 
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
 "FileDescription" --->  ??? 
 "FileVersion" --->  ??? 
-"Filename;Path;Size" --->  ??? 
-"Filename;Path;Size;Progress;Priority" ---> "Filnamn;Sökväg;Storlek;Förlopp;Prioritet"
+"Filename" ---> "Filnamn"
 "Files" ---> "Filer"
 "Filtering %1% range(s)" ---> "Filtrerar %1% område(n)"
+"Finish Time" --->  ??? 
 "Finished" ---> "Färdig"
 "Forced" ---> "Tvingade"
 "General Settings" ---> "allmänna inställningar"
@@ -110,8 +112,6 @@
 "Halite importing IP ranges..." ---> "Halite importerar IP-områden..."
 "Halite not listening!" ---> "Halite lyssnar ej!"
 "Halite shutting down..." ---> "Halite avslutas..."
-"Halite" --->  ??? 
-"Halite.exe" --->  ??? 
 "Handshake" ---> "Handslag"
 "Has choked us" ---> "Har Strypt oss"
 "Hash failed for piece %2% of %1%." --->  ??? 
@@ -130,18 +130,20 @@
 "Language (requires restart)" ---> "Språk (kräver omstart)"
 "Limit the no. of half-open connections" ---> "Begränsa antalet halv-öppna anslutningar"
 "List of Trackers." ---> "Lista på trackers."
+"Loading IP filters..." --->  ??? 
 "Local connection" ---> "Lokal anslutning"
 "Log debug events." --->  ??? 
 "Log to file." ---> "Loggning till fil."
 "Logging" ---> "Loggning"
 "Maximum" ---> "Max"
+"Message" ---> "Meddelande"
 "Minimize to tray." ---> "Minimera till meddelandefältet."
 "Move finished torrents to :" --->  ??? 
 "Move the completed torrent to:" --->  ??? 
 "N/A" ---> "Ej applicerbart"
 "NAT-PMG" --->  ??? 
+"Name" --->  ??? 
 "Name:" ---> "Namn:"
-"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Preannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
 "New" ---> "Ny"
 "None (Managed Externally)" --->  ??? 
 "None" --->  ??? 
@@ -157,15 +159,14 @@
 "Output File" --->  ??? 
 "Overhead:" ---> "Obrukbart:"
 "Password : " ---> "Lösenord :"
+"Path" ---> "Sökväg"
 "Pause" ---> "Pausa"
 "Paused" ---> "Pausad"
 "Pausing" --->  ??? 
 "Peer %2%: %1%." --->  ??? 
 "Peer Event: %1%." --->  ??? 
 "Peer banned %2%. (%1%)" --->  ??? 
-"Peer" ---> "Klient"
-"Peer;Country;Download;Upload;Type;Client" ---> "Användare;Land;Nedladdning;Uppladdning;Typ;Klient"
-"Peer;Country;Download;Upload;Type;Client;Status" ---> "Användare;Land;Nedladdning;Uppladdning;Typ;Klient;Status"
+"Peer" ---> "Användare"
 "Peers" ---> "Användare"
 "Peers:" ---> "Klienter:"
 "Piece %2% finished. (%1%)" --->  ??? 
@@ -179,9 +180,11 @@
 "Port" --->  ??? 
 "Preannounce" --->  ??? 
 "Prefer RC4" ---> "Föredra RC4"
+"Priority" ---> "Prioritet"
 "Private" --->  ??? 
 "ProductName" --->  ??? 
 "ProductVersion" --->  ??? 
+"Progress" ---> "Förlopp"
 "Protocol Encryption" ---> "Protokollkryptering"
 "Proxies" ---> "Proxys"
 "Proxy Host/IP : " --->  ??? 
@@ -192,8 +195,11 @@
 "RC4" --->  ??? 
 "Rates:" --->  ??? 
 "Ratio (this session):" ---> "Ratio (denna session):"
+"Ratio" --->  ??? 
 "Ratio:" --->  ??? 
+"Reannounce" --->  ??? 
 "Recheck Files" --->  ??? 
+"Remaining" --->  ??? 
 "Remaining:" ---> "Återstående:"
 "Remote Control Options" ---> "Inställningar för fjärrstyrning"
 "Remote Control" ---> "Fjärrstyrning"
@@ -205,6 +211,7 @@
 "Saving Torrent" --->  ??? 
 "Security" ---> "Säkerhet"
 "Seeding" ---> "Skickar"
+"Seeds" --->  ??? 
 "Seeds:" ---> "Källor:"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Välj en plats att spara i. Välj avbryt för att spara till förvald plats."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Välj en plats att spara filerna på eller avbryt för att inte ladda ned denna torrent."
@@ -213,8 +220,12 @@
 "Send login info to trackers." ---> "Skicka inloggningsuppgifter till trackers."
 "Set Priority" ---> "Ange prioritet"
 "Set as Primary" --->  ??? 
+"Severity" ---> "Nivå"
 "Show this message in future" ---> "Visa alltid detta meddelande."
+"Size" ---> "Storlek"
 "Standard exception (%1%) thrown from %2%." --->  ??? 
+"Start Time" --->  ??? 
+"Status" ---> "Status"
 "Status:" --->  ??? 
 "Stop" ---> "Stoppa"
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
@@ -230,10 +241,10 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Denna session laddade ned  %1$.2fMB och laddade upp %2$.2fMB, Ratio: %3$.2f."
 "Tier" ---> "Rang"
 "Time left:" ---> "Tid kvar:"
-"Time;Message;Severity" ---> "Tid;Meddelande;Nivå"
+"Time" ---> "Tid"
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
-"Torrent (%1%) exception caught; %2% from %3%." --->  ??? 
+"Torrent (%1%) exception caught: %2% from %3%." --->  ??? 
 "Torrent Defaults" --->  ??? 
 "Torrent File" ---> "Torrent-fil"
 "Torrent Root" --->  ??? 
@@ -245,7 +256,7 @@
 "Torrent:" --->  ??? 
 "Torrents" --->  ??? 
 "Total max connections :" ---> "Max antal anslutningar"
-"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." ---> "Total överföring inklusive protokolltrafik; %1$.2fMB ned och %2$.2fMB upp."
+"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." ---> "Total överföring inklusive protokolltrafik: %1$.2fMB ned och %2$.2fMB upp."
 "Total upload slots :" ---> "Max antal uppladdningsslottar"
 "Total" ---> "Totalt"
 "Tracker Announce. (%1%)" --->  ??? 
@@ -253,21 +264,22 @@
 "Tracker warning: %2%! (%1%)" --->  ??? 
 "Tracker" --->  ??? 
 "Tracker:" --->  ??? 
-"Tracker;Tier" --->  ??? 
 "Trackers" --->  ??? 
 "Transferred:" ---> "Överfört:"
 "Translation" --->  ??? 
-"Type" --->  ??? 
+"Type" ---> "Typ"
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
-"URL;Port;Type" --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." --->  ??? 
 "Up" ---> "Upp"
 "Update in:" ---> "Uppdatera om:"
 "Upload Rate (KB/s) :" ---> "Uppladningshastighet (KB/s)"
+"Upload" ---> "Uppladdning"
+"Uploaded" --->  ??? 
 "Use Compact Allocation." --->  ??? 
 "Use a proxy." ---> "Använd en proxy."
+"User canceled Torrent file creation" --->  ??? 
 "Username : " ---> "Användarnamn :"
 "Warning" --->  ??? 
 "Web Seed" ---> "Webb källa"

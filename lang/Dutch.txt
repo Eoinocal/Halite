@@ -1,4 +1,5 @@
-"" ---> ""
+"English" ---> "Nederlands"
+"English.rtf" ---> "../lang/Dutch.rtf"
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB van %2$.2fMB"
@@ -10,14 +11,9 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "(DHT will not apply to private torrents)" ---> "(DHT zal niet gebruikt worden voor Private Trackers)"
-"*** Disabled ***" ---> "*** Uitgeschakeld ***"
-"..." --->  ??? 
-"2" --->  ??? 
-"3" --->  ??? 
-"4" --->  ??? 
-"6" --->  ??? 
 "About" ---> "Over"
 "Above Normal" ---> "Boven Normaal"
+"Active" --->  ??? 
 "Add New Peer" --->  ??? 
 "Add New Tracker" ---> "Voeg nieuwe Tracker toe"
 "Add New Web Seed or DHT Node" --->  ??? 
@@ -37,23 +33,27 @@
 "Block %2% of piece %3% downloading. (%1%)" ---> "Blok %2% van deel %3% aan het downloaden. (%1%)"
 "Block %2% of piece %3% finished. (%1%)" ---> "Blok %2% van deel %3% voltooid. (%1%)"
 "Both" ---> "Beide"
-"Button1" --->  ??? 
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" ---> "Annuleren"
 "Checking Files" ---> "Bestanden controleren"
 "Choked" ---> "Verstopt"
 "Clear IP database" ---> "Leeg IP Database"
+"Client" ---> "Client"
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
 "Comments" ---> "Commentaar"
 "CompanyName" ---> "Bedrijf"
+"Completed" --->  ??? 
 "Completed:" ---> "Voltooid:"
 "Confirm on close" --->  ??? 
 "Connecting to Tracker" ---> "Verbinden met Tracker"
 "Connecting" ---> "Maakt verbinding"
 "Connection Policies" ---> "Verbindings Regels"
 "Construct a New Torrent" --->  ??? 
+"Copies" --->  ??? 
+"Country" ---> "Land"
 "Creating Torrent..." --->  ??? 
+"Creating a New Torrent File" --->  ??? 
 "Creator" --->  ??? 
 "Critical" ---> "Kritiek"
 "DHT Node" --->  ??? 
@@ -72,11 +72,15 @@
 "Don't download" ---> "Niet Downloaden"
 "Down" ---> "Down"
 "Download Rate (KB/s) :" ---> "Download snelheid (KB/s) :"
+"Download" ---> "Download"
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Gedownload %1$.2fMB, Geupload %2$.2fMB, Ratio %3$.2f."
+"Downloaded" --->  ??? 
 "Downloading Metadata" ---> "Metadata downloaden"
 "Downloading" ---> "Bezig met Downloaden"
 "E&xit" ---> "&Afsluiten"
+"ETA" --->  ??? 
 "ETA:" --->  ??? 
+"Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Bewerken"
@@ -86,20 +90,18 @@
 "Enable Remote Control" ---> "Beheer op afstand inschakelen"
 "Enabled" ---> "Inschakelen"
 "Encoding Level" ---> "Encryptie niveau"
-"English" ---> "Nederlands"
-"English.rtf" ---> "../lang/Dutch.rtf"
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Vul de tracker URLs in voor de torrent."
-"Exception caught; %1%, from %2%." ---> "Exceptie gevangen; %1%, van %2%."
+"Exception caught: %1%, from %2%." --->  ??? 
 "Failed, %1%" ---> "Mislukt, %1%"
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
 "FileDescription" ---> "BestandsOmschrijving"
 "FileVersion" ---> "Versie nummer"
-"Filename;Path;Size" --->  ??? 
-"Filename;Path;Size;Progress;Priority" ---> "Bestandsnaam;Pad;Grootte;Progressie;Prioriteit"
+"Filename" ---> "Bestandsnaam"
 "Files" ---> "Bestanden"
 "Filtering %1% range(s)" ---> "%1% bereiken gefilterd"
+"Finish Time" --->  ??? 
 "Finished" ---> "Klaar"
 "Forced" ---> "Forceren"
 "General Settings" ---> "Algemene Opties"
@@ -110,8 +112,6 @@
 "Halite importing IP ranges..." ---> "Halite importeert IP bereiken..."
 "Halite not listening!" ---> "Halite luistert niet!"
 "Halite shutting down..." ---> "Halite is bezig met afsluiten..."
-"Halite" ---> "Halite"
-"Halite.exe" ---> "Halite.exe"
 "Handshake" ---> "Handdruk"
 "Has choked us" ---> "Choked ons"
 "Hash failed for piece %2% of %1%." ---> "Hash gefaald voor deel %2% van %1%"
@@ -130,18 +130,20 @@
 "Language (requires restart)" ---> "Taal (herstart vereist)"
 "Limit the no. of half-open connections" ---> "Limiteer het aantal half-open connecties"
 "List of Trackers." ---> "Lijst van Trackers."
+"Loading IP filters..." --->  ??? 
 "Local connection" ---> "Lokale verbinding"
 "Log debug events." ---> "Log debug gebeurtenissen"
 "Log to file." ---> "Log naar bestand."
 "Logging" --->  ??? 
 "Maximum" --->  ??? 
+"Message" ---> "Bericht"
 "Minimize to tray." ---> "Minimaliseer naar systeemvak."
 "Move finished torrents to :" --->  ??? 
 "Move the completed torrent to:" --->  ??? 
 "N/A" ---> "N/A"
 "NAT-PMG" --->  ??? 
+"Name" --->  ??? 
 "Name:" ---> "Naam:"
-"Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Preannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time" --->  ??? 
 "New" ---> "Nieuw"
 "None (Managed Externally)" --->  ??? 
 "None" ---> "Geen"
@@ -157,15 +159,14 @@
 "Output File" --->  ??? 
 "Overhead:" --->  ??? 
 "Password : " ---> "Wachtwoord     : "
+"Path" ---> "Pad"
 "Pause" ---> "Pauzeer"
 "Paused" ---> "Gepauzeerd"
 "Pausing" ---> "Pauzeert"
 "Peer %2%: %1%." --->  ??? 
 "Peer Event: %1%." ---> "Peer Gebeurtenis: %1%."
 "Peer banned %2%. (%1%)" ---> "Peer verbannen %2%. (%1%)"
-"Peer" --->  ??? 
-"Peer;Country;Download;Upload;Type;Client" ---> "Peer;Land;Download;Upload;Type;Client"
-"Peer;Country;Download;Upload;Type;Client;Status" ---> "Peer;Land;Download;Upload;Type;Client;Status"
+"Peer" ---> "Peer"
 "Peers" --->  ??? 
 "Peers:" --->  ??? 
 "Piece %2% finished. (%1%)" ---> "Deel %2% voltooid. (%1%)"
@@ -179,9 +180,11 @@
 "Port" --->  ??? 
 "Preannounce" --->  ??? 
 "Prefer RC4" ---> "Prefereer RC4"
+"Priority" ---> "Prioriteit"
 "Private" --->  ??? 
 "ProductName" ---> "ProductNaam"
 "ProductVersion" ---> "ProductVersie"
+"Progress" ---> "Progressie"
 "Protocol Encryption" ---> "Protocol Encryptie"
 "Proxies" --->  ??? 
 "Proxy Host/IP : " --->  ??? 
@@ -192,8 +195,11 @@
 "RC4" --->  ??? 
 "Rates:" ---> "Verhoudingen"
 "Ratio (this session):" ---> "Ratio (deze sessie):"
+"Ratio" --->  ??? 
 "Ratio:" --->  ??? 
+"Reannounce" --->  ??? 
 "Recheck Files" --->  ??? 
+"Remaining" --->  ??? 
 "Remaining:" ---> "Overgebleven"
 "Remote Control Options" ---> "Beheer op afstand opties"
 "Remote Control" ---> "Beheer op afstand"
@@ -205,6 +211,7 @@
 "Saving Torrent" --->  ??? 
 "Security" ---> "Beveiliging"
 "Seeding" ---> "Bezig met Seeden"
+"Seeds" --->  ??? 
 "Seeds:" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Kies een map om de download op te slaan. Kies cancel om de standaard map te gebruiken."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Selecteer een folder om de bestanden op te slaan of Afbreken om de torrent niet te downloaden."
@@ -213,8 +220,12 @@
 "Send login info to trackers." ---> "Stuur login gegevens naar Tracker."
 "Set Priority" ---> "Verander Prioriteit"
 "Set as Primary" ---> "Zet als Primair"
+"Severity" ---> "Ernst"
 "Show this message in future" ---> "Toon dit bericht in de toekomst"
+"Size" ---> "Grootte"
 "Standard exception (%1%) thrown from %2%." ---> "Standard exceptie (%1%) geworpen van %2%."
+"Start Time" --->  ??? 
+"Status" ---> "Status"
 "Status:" ---> "Status:"
 "Stop" ---> "Stop"
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
@@ -230,10 +241,10 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Deze sessie gedownload %1$.2fMB, geupload %2$.2fMB, Verhouding %3$.2f."
 "Tier" ---> "Laag"
 "Time left:" ---> "Overgebleven tijd:"
-"Time;Message;Severity" ---> "Tijd;Bericht;Ernst"
+"Time" ---> "Tijd"
 "Torrent %1% finished." ---> "Torrent %1% voltooid."
 "Torrent %1% paused." ---> "Torrent %1% gepauzeerd."
-"Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) exceptie afgevangen; %2% van %3%."
+"Torrent (%1%) exception caught: %2% from %3%." --->  ??? 
 "Torrent Defaults" ---> "Torrent Standaard"
 "Torrent File" ---> "Torrent bestand"
 "Torrent Root" ---> "Torrent Wortel"
@@ -245,29 +256,30 @@
 "Torrent:" --->  ??? 
 "Torrents" ---> "Torrents"
 "Total max connections :" ---> "Maximaal aantal verbindingen : "
-"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." ---> "Totale overdracht inclusief protocol overhead; %1$.2fMB down en %2$.2fMB up."
+"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." --->  ??? 
 "Total upload slots :" ---> "Totaal aantal upload slots :"
 "Total" ---> "Totaal"
 "Tracker Announce. (%1%)" --->  ??? 
 "Tracker Event: %1%." ---> "Tracker Gebeurtenis: %1%."
 "Tracker warning: %2%! (%1%)" ---> "Tracker waarschuwing: %2%! (%1%)"
-"Tracker" --->  ??? 
+"Tracker" ---> "Tracker"
 "Tracker:" ---> "Tracker:"
-"Tracker;Tier" ---> "Tracker;Laag"
 "Trackers" --->  ??? 
 "Transferred:" --->  ??? 
 "Translation" ---> "Vertaling"
-"Type" --->  ??? 
+"Type" ---> "Type"
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
-"URL;Port;Type" --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." ---> "Unicode exceptie: %1%."
 "Up" ---> "Up"
 "Update in:" ---> "Update over:"
 "Upload Rate (KB/s) :" ---> "Upload snelheid (KB/s) :"
+"Upload" ---> "Upload"
+"Uploaded" --->  ??? 
 "Use Compact Allocation." ---> "Gebruik compacte allocatie."
 "Use a proxy." ---> "Gebruik een proxy."
+"User canceled Torrent file creation" --->  ??? 
 "Username : " ---> "Gebruikersnaam : "
 "Warning" ---> "Waarschuwing"
 "Web Seed" --->  ??? 

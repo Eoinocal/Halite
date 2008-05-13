@@ -90,7 +90,7 @@
 "English.rtf" ---> "Slovenian.rtf"
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Vpiši sledilnikov (announce) URL."
-"Exception caught; %1%, from %2%." ---> "Izjema ujeta; %1%, od %2%."
+"Exception caught: %1%, from %2%." ---> "Izjema ujeta: %1%, od %2%."
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
@@ -233,7 +233,7 @@
 "Time;Message;Severity" ---> "Čas;Sporočilo;Kritičnost"
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
-"Torrent (%1%) exception caught; %2% from %3%." ---> "Torrent (%1%) zaznana izjema; %2% od %3%."
+"Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) zaznana izjema: %2% od %3%."
 "Torrent Defaults" ---> "Privzete nastavitve torrenta:"
 "Torrent File" ---> "Torrent datoteko"
 "Torrent Root" ---> "Izvor torrenta"
@@ -245,7 +245,7 @@
 "Torrent:" ---> "Torrent:"
 "Torrents" ---> "Torrentov"
 "Total max connections :" ---> "Max. povezav:"
-"Total transfer including protocol overhead; %1$.2fMB down and %2$.2fMB up." ---> "Skupen prenos (vključno s presežki); %1$.2fMB dol in %2$.2fMB gor."
+"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." ---> "Skupen prenos (vključno s presežki): %1$.2fMB dol in %2$.2fMB gor."
 "Total upload slots :" ---> "Max. odhodnih povezav"
 "Total" ---> "Skupno"
 "Tracker Announce. (%1%)" --->  ??? 
