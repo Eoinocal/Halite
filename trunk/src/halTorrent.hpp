@@ -408,6 +408,7 @@ struct SessionDetail
 
 typedef boost::function<bool (size_t, size_t, size_t)> filterCallback;
 typedef boost::function<bool (size_t, std::wstring)> progress_callback;
+typedef boost::function<void (int)> report_num_active;
 
 class bit_impl;
 class torrent_internal;
@@ -542,7 +543,7 @@ public:
 	void getAllFileDetails(const std::wstring& filename, FileDetails& fileDetails);
 	
 	void resumeAll();
-	void closeAll();
+	void closeAll(report_num_active fn);
 	
 	bool isTorrent(const std::string& filename);
 	bool isTorrent(const std::wstring& filename);	
