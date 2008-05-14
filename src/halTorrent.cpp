@@ -1596,7 +1596,7 @@ void bit::resumeAll()
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "resumeAll")
 }
 
-void bit::closeAll()
+void bit::closeAll(report_num_active fn)
 {
 	try {
 	
@@ -1613,15 +1613,19 @@ void bit::closeAll()
 	}
 	
 	// Ok this polling loop here is a bit curde, but a blocking wait is actually appropiate.
-	for (bool nonePaused = true; !nonePaused; )
+	for (int num_active = -1; num_active != 0; )
 	{
+		num_active = 0;
+
 		for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); 
 				i != e; ++i)
 		{
 			// NB. this checks for an internal paused state.
-			nonePaused &= ((*i).torrent->inSession() ? (*i).torrent->handle().is_paused() : true);
+			if ((*i).torrent->inSession() && !(*i).torrent->handle().is_paused())
+				++num_active;
 		}
 		
+		fn(num_active);
 		Sleep(200);
 	}
 	

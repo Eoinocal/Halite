@@ -83,6 +83,8 @@ static BOOL CALLBACK hwndSearcher(HWND hWnd, LPARAM lParam)
 	return true;
 }
 
+void num_active(int) {}
+
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 
@@ -177,7 +179,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		}
 		else
 		{
-			hal::bittorrent().closeAll();
+			hal::bittorrent().closeAll(bind(&num_active, _1));
 			hal::bittorrent().shutDownSession();		
 		}
 				
