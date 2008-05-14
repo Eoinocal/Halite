@@ -14,7 +14,7 @@
 "(DHT will not apply to private torrents)" ---> "(DHT wird nicht für private Torrents verwendet)"
 "About" ---> "Über"
 "Above Normal" ---> "Über Normal"
-"Active" --->  ??? 
+"Active" ---> "Aktiv"
 "Add New Peer" --->  ??? 
 "Add New Tracker" ---> "Tracker hinzufügen"
 "Add New Web Seed or DHT Node" --->  ??? 
@@ -42,16 +42,14 @@
 "Client" ---> "Client"
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
-"Comments" ---> "Comments"
-"CompanyName" ---> "CompanyName"
-"Completed" --->  ??? 
+"Completed" ---> "Komplett"
 "Completed:" ---> "Fertig:"
 "Confirm on close" --->  ??? 
 "Connecting to Tracker" ---> "Verbinde zum Tracker"
 "Connecting" ---> "Verbinde"
 "Connection Policies" ---> "Verbindungsstrategien"
 "Construct a New Torrent" --->  ??? 
-"Copies" --->  ??? 
+"Copies" ---> "Kopien"
 "Country" ---> "Land"
 "Creating Torrent..." --->  ??? 
 "Creating a New Torrent File" --->  ??? 
@@ -66,7 +64,6 @@
 "Default save folder :" ---> "Standardverzeichnis:"
 "Delete" ---> "Löschen"
 "Dev Msg: %1%." --->  ??? 
-"Dialog" --->  ??? 
 "Dir." --->  ??? 
 "Disabled" ---> "Deaktiviert"
 "Distributed Hash Tables" ---> "DHT (verteilte Hashtabelle)"
@@ -75,14 +72,15 @@
 "Download Rate (KB/s) :" ---> "Download Rate (KB/s):"
 "Download" ---> "Download"
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Geladen %1$.2fMB, Gesendet %2$.2fMB, Ratio %3$.2f."
-"Downloaded" --->  ??? 
+"Downloaded" ---> "Downloaded"
 "Downloading Metadata" ---> "Lade Metadaten"
 "Downloading" ---> "Ladend"
 "E&xit" ---> "Be&enden"
-"ETA" --->  ??? 
+"ETA" ---> "ETA"
 "ETA:" ---> "ETA:"
 "Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Bearbeiten"
 "Enable DHT" ---> "DHT aktivieren"
@@ -93,16 +91,14 @@
 "Encoding Level" ---> "Verschlüsselungsgrad"
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Tracker-URL eingeben:"
-"Exception caught: %1%, from %2%." ---> "Ausnahme aufgetreten: %1%, von %2%."
+"Exception caught: %1%, from %2%." --->  ??? 
 "Failed, %1%" ---> "nicht erfolgreich"
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
-"FileDescription" ---> "FileDescription"
-"FileVersion" ---> "FileVersion"
 "Filename" ---> "Dateiname"
 "Files" ---> "Dateien"
 "Filtering %1% range(s)" ---> "%1% IP-Bereiche gefiltert"
-"Finish Time" --->  ??? 
+"Finish Time" ---> "Endzeit"
 "Finished" ---> "Fertig"
 "Force Close" --->  ??? 
 "Forced" ---> "Erzwungen"
@@ -144,7 +140,7 @@
 "Move the completed torrent to:" --->  ??? 
 "N/A" ---> "N/A"
 "NAT-PMG" --->  ??? 
-"Name" --->  ??? 
+"Name" ---> "Name"
 "Name:" ---> "Name:"
 "New" ---> "Neu"
 "None (Managed Externally)" --->  ??? 
@@ -156,7 +152,6 @@
 "Open &Halite" ---> "&Halite öffnen"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "Öffne einen (einzelnen) Port zwischen: "
-"OriginalFilename" ---> "OriginalFilename"
 "Outgoing" ---> "Ausgehend"
 "Output File" --->  ??? 
 "Overhead:" ---> "Unbrauchbar:"
@@ -180,12 +175,9 @@
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Port:"
 "Port" --->  ??? 
-"Preannounce" --->  ??? 
 "Prefer RC4" ---> "RC4 bevorzugen"
 "Priority" ---> "Priorität"
 "Private" --->  ??? 
-"ProductName" ---> "ProductName"
-"ProductVersion" ---> "ProductVersion"
 "Progress" ---> "Fortschritt"
 "Protocol Encryption" ---> "Protokoll Verschlüsselung"
 "Proxies" ---> "Proxies"
@@ -197,11 +189,11 @@
 "RC4" ---> "RC4"
 "Rates:" ---> "Teile:"
 "Ratio (this session):" ---> "Ratio (diese Sitzung):"
-"Ratio" --->  ??? 
+"Ratio" ---> "Ratio"
 "Ratio:" ---> "Ratio:"
-"Reannounce" --->  ??? 
+"Reannounce" ---> "Neuankündigung"
 "Recheck Files" --->  ??? 
-"Remaining" --->  ??? 
+"Remaining" ---> "Verbleibend"
 "Remaining:" ---> "Verbleibend:"
 "Remote Control Options" ---> "Fernsteuerungseinstellungen"
 "Remote Control" ---> "Fernsteuerung"
@@ -213,7 +205,7 @@
 "Saving Torrent" --->  ??? 
 "Security" ---> "Sicherheit"
 "Seeding" ---> "Seedend"
-"Seeds" --->  ??? 
+"Seeds" ---> "Seeds"
 "Seeds:" ---> "Seeds:"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Verzeichnis auswählen wo die Downloads gespeichert werden. Abbrechen auswählen, damit das Standard Downloadverzeichnis verwendet wird."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Verzeichnis zum speichern der Dateien auswählen oder um abzubrechen um das Torrent nicht komplett zu laden."
@@ -227,7 +219,7 @@
 "Shutting down session" --->  ??? 
 "Size" ---> "Größe"
 "Standard exception (%1%) thrown from %2%." ---> "Standard Ausnahme (%1%) aufgetreten bei (%2%)"
-"Start Time" --->  ??? 
+"Start Time" ---> "Startzeit"
 "Status" ---> "Status"
 "Status:" ---> "Status:"
 "Stop" ---> "Stop"
@@ -248,7 +240,7 @@
 "Time" ---> "Zeit"
 "Torrent %1% finished." ---> "Torrent %1% fertiggestellt."
 "Torrent %1% paused." ---> "Torrent %1% pausiert."
-"Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) Fehler: (%2%) von (%3%)."
+"Torrent (%1%) exception caught: %2% from %3%." --->  ??? 
 "Torrent Defaults" ---> "Torrent Standards"
 "Torrent File" ---> "Torrent"
 "Torrent Root" ---> "Torrent Root"
@@ -260,9 +252,9 @@
 "Torrent:" ---> "Torrent:"
 "Torrents" ---> "Torrents"
 "Total max connections :" ---> "max. Anzahl Verbindungen:"
-"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." ---> "Gesmatübertragung inklusive Protkollmehraufwand: %1$.2fMB runter und %2$.2fMB hoch."
+"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." --->  ??? 
 "Total upload slots :" ---> "max. Anzahl Upload Slots:"
-"Total" ---> "Gesamt"
+"Total" ---> "Total"
 "Tracker Announce. (%1%)" ---> "Tracker Ankündigung. (%1%)"
 "Tracker Event: %1%." ---> "Tracker Ereignis: %1%."
 "Tracker warning: %2%! (%1%)" ---> "Tracker Warnung: %2%! (%1%)"
@@ -270,7 +262,6 @@
 "Tracker:" ---> "Tracker:"
 "Trackers" --->  ??? 
 "Transferred:" ---> "Übertragen:"
-"Translation" ---> "Translation"
 "Type" ---> "Typ"
 "URL Seed %2%, %3%. (%1%)" ---> "URL Seed %2%, %3%. (%1%)"
 "URL" --->  ??? 
@@ -280,7 +271,7 @@
 "Update in:" ---> "Update in:"
 "Upload Rate (KB/s) :" ---> "Upload Rate (KB/s):"
 "Upload" ---> "Upload"
-"Uploaded" --->  ??? 
+"Uploaded" ---> "Uploaded"
 "Use Compact Allocation." ---> "kompakte Zuweiseung verwenden"
 "Use a proxy." ---> "Proxy verwenden"
 "User canceled Torrent file creation" --->  ??? 
