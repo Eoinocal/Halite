@@ -224,13 +224,16 @@ LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndC
 
 	wstring saveDirectory = static_cast<wpath>(t.save_directory).native_file_string();
 	wstring moveToDirectory = static_cast<wpath>(t.move_to_directory).native_file_string();
-	bool useMoveTo = (L"" != moveToDirectory);
 
-	HaliteListViewAdjustDlg addTorrent(L"Hello", saveDirectory, moveToDirectory, useMoveTo);	
+	bool useMoveTo = (L"" != moveToDirectory);
+	bool disableSaveDir = !t.in_session;
+
+	HaliteListViewAdjustDlg addTorrent(hal::app().res_wstr(HAL_ADDT_TITLE), saveDirectory, moveToDirectory, 
+		useMoveTo, disableSaveDir);	
 	
 	if (IDOK == addTorrent.DoModal())
 	{
-		t.save_directory = saveDirectory;
+		if (!disableSaveDir) t.save_directory = saveDirectory;
 
 		if (useMoveTo)
 			t.move_to_directory = moveToDirectory;

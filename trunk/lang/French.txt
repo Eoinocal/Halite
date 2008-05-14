@@ -4,6 +4,7 @@
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "%1% DHT node(s)" --->  ??? 
+"%1% active torrent(s)" --->  ??? 
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Tout suspendre"
@@ -103,6 +104,7 @@
 "Filtering %1% range(s)" ---> "Filtre %1% IP(s)"
 "Finish Time" --->  ??? 
 "Finished" ---> "Terminé"
+"Force Close" --->  ??? 
 "Forced" --->  ??? 
 "General Settings" ---> "Paramètres généraux"
 "General" ---> "Général"
@@ -222,6 +224,7 @@
 "Set as Primary" --->  ??? 
 "Severity" ---> "Niveau"
 "Show this message in future" ---> "Afficher ce message"
+"Shutting down session" --->  ??? 
 "Size" --->  ??? 
 "Standard exception (%1%) thrown from %2%." --->  ??? 
 "Start Time" --->  ??? 
@@ -230,6 +233,7 @@
 "Stop" ---> "Stopper"
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Stopped" ---> "Stoppé"
+"Stopping Torrents" --->  ??? 
 "Stopping" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Supports extensions" --->  ??? 

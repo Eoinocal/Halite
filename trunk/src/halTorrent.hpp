@@ -463,6 +463,9 @@ public:
 		wpath get_move_to_directory() const;
 		void set_move_to_directory(const wpath&);
 
+		bool get_is_active() const;
+		bool get_in_session() const;
+
 	public:
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(float, float, class_type, 
 			get_ratio, set_ratio, ratio);
@@ -471,6 +474,11 @@ public:
 			get_save_directory, set_save_directory, save_directory);
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(wpath, const wpath&, class_type, 
 			get_move_to_directory, set_move_to_directory, move_to_directory);
+
+		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(bool, class_type, 
+			get_is_active, is_active);
+		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(bool, class_type, 
+			get_in_session, in_session);
 
 	private:
 		exec_around_ptr ptr;

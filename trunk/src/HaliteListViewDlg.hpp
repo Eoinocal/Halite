@@ -15,6 +15,7 @@
 #define IDC_ADDT_MOVETO_CHECK			HAL_ADJUST_DLG_BEGIN + 3
 #define IDC_ADDT_DEFFLD_TEXT			HAL_ADJUST_DLG_BEGIN + 4
 #define IDC_ADDT_NOTE_TEXT				HAL_ADJUST_DLG_BEGIN + 5
+#define HAL_ADDT_TITLE					HAL_ADJUST_DLG_BEGIN + 6
 
 #ifndef RC_INVOKED
 
@@ -30,10 +31,11 @@ public:
 	typedef CAutoSizeWindow<thisClass, true> autosizeClass;
 	
 public:
-	HaliteSaveAndMoveToDlg(wstring& d, wstring& m, bool& u) :
-		saveDirectory_(d),
+	HaliteSaveAndMoveToDlg(wstring& s, wstring& m, bool& u, bool d = false) :
+		saveDirectory_(s),
 		moveToDirectory_(m),
-		useMove_(u)
+		useMove_(u),
+		disableSaveDir_(d)
 	{}
 
 	enum { IDD = HAL_ADJUST_DLG };
@@ -69,7 +71,14 @@ public:
 
 	LRESULT onInitDialog(HWND, LPARAM)
 	{
-		BOOL retval =  DoDataExchange(false);
+		BOOL retval = DoDataExchange(false);
+
+		if (disableSaveDir_)
+		{
+			::EnableWindow(GetDlgItem(IDC_BC_SAVEFOLDER), false);
+			::EnableWindow(GetDlgItem(IDC_BC_SAVEBROWSE), false);
+		}
+
 		OnMoveTo(0, 0, GetDlgItem(IDC_ADDT_MOVETO_CHECK));
 
 		SetMsgHandled(false);
@@ -128,6 +137,7 @@ private:
 	wstring& saveDirectory_;
 	wstring& moveToDirectory_;
 	bool& useMove_;
+	bool disableSaveDir_;
 };
 
 class HaliteListViewAdjustDlg :
@@ -138,9 +148,9 @@ public:
 	typedef WTLx::GenericAddContainerDialog<thisClass, HaliteSaveAndMoveToDlg, HAL_ADJUST_DLG> genericBaseClass;
 	
 public:
-	HaliteListViewAdjustDlg(wstring title, wstring& d, wstring& m, bool& u) :
+	HaliteListViewAdjustDlg(wstring title, wstring& s, wstring& m, bool& u, bool d=false) :
 		genericBaseClass(title, "genericAddDlgs/HaliteListViewAdjustDlg", "HaliteListViewAdjustDlg", dlg_),
-		dlg_(d, m, u)
+		dlg_(s, m, u, d)
 	{}
 
 	BOOL DoDataExchange(bool direction)

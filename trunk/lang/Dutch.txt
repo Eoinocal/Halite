@@ -4,6 +4,7 @@
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB van %2$.2fMB"
 "%1% DHT node(s)" ---> "%1% DHT knopen"
+"%1% active torrent(s)" --->  ??? 
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Pauzeer alles"
@@ -103,6 +104,7 @@
 "Filtering %1% range(s)" ---> "%1% bereiken gefilterd"
 "Finish Time" --->  ??? 
 "Finished" ---> "Klaar"
+"Force Close" --->  ??? 
 "Forced" ---> "Forceren"
 "General Settings" ---> "Algemene Opties"
 "General" ---> "Algemeen"
@@ -222,6 +224,7 @@
 "Set as Primary" ---> "Zet als Primair"
 "Severity" ---> "Ernst"
 "Show this message in future" ---> "Toon dit bericht in de toekomst"
+"Shutting down session" --->  ??? 
 "Size" ---> "Grootte"
 "Standard exception (%1%) thrown from %2%." ---> "Standard exceptie (%1%) geworpen van %2%."
 "Start Time" --->  ??? 
@@ -230,6 +233,7 @@
 "Stop" ---> "Stop"
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Stopped" ---> "Gestopt"
+"Stopping Torrents" --->  ??? 
 "Stopping" ---> "Stopt"
 "Successfully %1%." ---> "Succesvol %1%."
 "Supports extensions" ---> "Ondersteund extensies"

@@ -11,6 +11,7 @@
 #define HAL_CSPLASH_NUM_ACT				HAL_SPLASHDIALOG_BEGIN+2
 #define HAL_CSPLASH_ACT_MSG				HAL_SPLASHDIALOG_BEGIN+3
 #define HAL_CSPLASH_SHUTDOWN_MSG		HAL_SPLASHDIALOG_BEGIN+4
+#define HAL_SPLASH_FORCE_CLOSE			HAL_SPLASHDIALOG_BEGIN+5
 
 //#define IDC_NEWTORRENT_CREATOR_TEXT		HAL_SPLASHDIALOG_BEGIN+3
 //#define IDC_NEWTORRENT_CREATOR			HAL_SPLASHDIALOG_BEGIN+4
@@ -48,7 +49,8 @@ public:
 	}
 
     BEGIN_MSG_MAP_EX(CMainDlg)
-        MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+        MSG_WM_INITDIALOG(onInitDialog)
+		COMMAND_ID_HANDLER_EX(HAL_SPLASH_FORCE_CLOSE, OnForceClose)
 
 		CHAIN_MSG_MAP(resizeClass)
     END_MSG_MAP()
@@ -61,6 +63,7 @@ public:
 		DLGRESIZE_CONTROL(HAL_CSPLASH_MSG, DLSZ_SIZE_X|DLSZ_SIZE_Y)
 		DLGRESIZE_CONTROL(HAL_CSPLASH_NUM_ACT, DLSZ_MOVE_Y|DLSZ_SIZE_X)
 		DLGRESIZE_CONTROL(IDC_SPLASH_MSG, DLSZ_MOVE_Y|DLSZ_SIZE_X)
+		DLGRESIZE_CONTROL(HAL_SPLASH_FORCE_CLOSE, DLSZ_MOVE_Y|DLSZ_MOVE_X)
 	END_DLGRESIZE_MAP()
 
 	friend class boost::serialization::access;
@@ -70,7 +73,7 @@ public:
 		ar & BOOST_SERIALIZATION_NVP(rect_);
 	}
 	
-	LRESULT SplashDialog::OnInitDialog(...)
+	LRESULT onInitDialog(HWND, LPARAM)
 	{
 		resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 
@@ -84,7 +87,14 @@ public:
 		
 		thread_ptr.reset(new thread(bind(&SplashDialog::SplashThread, this)));
 		
-		return TRUE;
+		return 0;
+	}
+
+	void OnForceClose(UINT, int, HWND hWnd)
+	{
+		GetWindowRect(rect_);
+		Save();
+		EndDialog(0);
 	}
 
 	void ReportNumActive(int num)

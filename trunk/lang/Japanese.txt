@@ -4,6 +4,7 @@
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "%1% DHT node(s)" --->  ??? 
+"%1% active torrent(s)" --->  ??? 
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" --->  ??? 
@@ -103,6 +104,7 @@
 "Filtering %1% range(s)" --->  ??? 
 "Finish Time" --->  ??? 
 "Finished" ---> "ダウンロード済"
+"Force Close" --->  ??? 
 "Forced" ---> "強制使用"
 "General Settings" ---> "設定"
 "General" --->  ??? 
@@ -222,6 +224,7 @@
 "Set as Primary" --->  ??? 
 "Severity" ---> "厳粛"
 "Show this message in future" ---> "このチェックを常に行う"
+"Shutting down session" --->  ??? 
 "Size" ---> "サイズ"
 "Standard exception (%1%) thrown from %2%." --->  ??? 
 "Start Time" --->  ??? 
@@ -230,6 +233,7 @@
 "Stop" --->  ??? 
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Stopped" ---> "停止"
+"Stopping Torrents" --->  ??? 
 "Stopping" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Supports extensions" --->  ??? 
