@@ -4,6 +4,7 @@
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB baixado - %2$.2fMB upado"
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB de %2$.2fMB"
 "%1% DHT node(s)" ---> "%1% DHT nó(s)"
+"%1% active torrent(s)" --->  ??? 
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Pausar Todos"
@@ -41,8 +42,6 @@
 "Client" ---> "Cliente"
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
-"Comments" ---> "Comentários"
-"CompanyName" --->  ??? 
 "Completed" --->  ??? 
 "Completed:" ---> "Completado:"
 "Confirm on close" --->  ??? 
@@ -65,7 +64,6 @@
 "Default save folder :" ---> "Sempre salvar na pasta :"
 "Delete" ---> "Deletar"
 "Dev Msg: %1%." --->  ??? 
-"Dialog" --->  ??? 
 "Dir." --->  ??? 
 "Disabled" ---> "Disabilitado"
 "Distributed Hash Tables" --->  ??? 
@@ -82,6 +80,7 @@
 "ETA:" ---> "TED"
 "Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Editar"
 "Enable DHT" ---> "Habilitar DHT"
@@ -96,13 +95,12 @@
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
-"FileDescription" --->  ??? 
-"FileVersion" --->  ??? 
 "Filename" ---> "Nome do arquivo"
 "Files" ---> "Arquivos"
 "Filtering %1% range(s)" ---> "Filtrando %1% intervalo(s)"
 "Finish Time" --->  ??? 
 "Finished" ---> "Concluído"
+"Force Close" --->  ??? 
 "Forced" ---> "Forçado"
 "General Settings" ---> "Preferências Gerais"
 "General" ---> "Geral"
@@ -154,7 +152,6 @@
 "Open &Halite" ---> "Abrir &Halite"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "Abrir uma (única) porta entre :"
-"OriginalFilename" --->  ??? 
 "Outgoing" ---> "Saindo"
 "Output File" --->  ??? 
 "Overhead:" ---> "Gasto:"
@@ -178,12 +175,9 @@
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Escutra na porta : "
 "Port" --->  ??? 
-"Preannounce" --->  ??? 
 "Prefer RC4" ---> "Preferir RC4"
 "Priority" ---> "Prioridade"
 "Private" --->  ??? 
-"ProductName" --->  ??? 
-"ProductVersion" --->  ??? 
 "Progress" ---> "Progresso"
 "Protocol Encryption" ---> "Encriptação de Protocolo"
 "Proxies" ---> "Proxies"
@@ -222,6 +216,7 @@
 "Set as Primary" --->  ??? 
 "Severity" ---> "Gravidade"
 "Show this message in future" ---> "Mostrar essa mensagem no futuro"
+"Shutting down session" --->  ??? 
 "Size" ---> "Tamanho"
 "Standard exception (%1%) thrown from %2%." --->  ??? 
 "Start Time" --->  ??? 
@@ -230,6 +225,7 @@
 "Stop" ---> "Parar"
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Stopped" ---> "Parado"
+"Stopping Torrents" --->  ??? 
 "Stopping" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Supports extensions" ---> "Suporta extensões"
@@ -266,7 +262,6 @@
 "Tracker:" ---> "Rastreador:"
 "Trackers" --->  ??? 
 "Transferred:" ---> "Transferido:"
-"Translation" --->  ??? 
 "Type" ---> "Tipo"
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 

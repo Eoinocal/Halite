@@ -42,8 +42,6 @@
 "Client" ---> "Client"
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
-"Comments" ---> "Commentaar"
-"CompanyName" ---> "Bedrijf"
 "Completed" --->  ??? 
 "Completed:" ---> "Voltooid:"
 "Confirm on close" --->  ??? 
@@ -66,7 +64,6 @@
 "Default save folder :" ---> "Standaard opslag map"
 "Delete" ---> "Verwijderen"
 "Dev Msg: %1%." --->  ??? 
-"Dialog" --->  ??? 
 "Dir." --->  ??? 
 "Disabled" ---> "Uitschakelen"
 "Distributed Hash Tables" --->  ??? 
@@ -83,6 +80,7 @@
 "ETA:" --->  ??? 
 "Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Bewerken"
 "Enable DHT" ---> "DHT ingeschakelen"
@@ -97,8 +95,6 @@
 "Failed, %1%" ---> "Mislukt, %1%"
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
-"FileDescription" ---> "BestandsOmschrijving"
-"FileVersion" ---> "Versie nummer"
 "Filename" ---> "Bestandsnaam"
 "Files" ---> "Bestanden"
 "Filtering %1% range(s)" ---> "%1% bereiken gefilterd"
@@ -156,7 +152,6 @@
 "Open &Halite" ---> "Open &Halite"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "Open een (enkele) poort tussen : "
-"OriginalFilename" ---> "OrigineleBestandsnaam"
 "Outgoing" ---> "Uitgaand"
 "Output File" --->  ??? 
 "Overhead:" --->  ??? 
@@ -180,12 +175,9 @@
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Poort om op the luisteren : "
 "Port" --->  ??? 
-"Preannounce" --->  ??? 
 "Prefer RC4" ---> "Prefereer RC4"
 "Priority" ---> "Prioriteit"
 "Private" --->  ??? 
-"ProductName" ---> "ProductNaam"
-"ProductVersion" ---> "ProductVersie"
 "Progress" ---> "Progressie"
 "Protocol Encryption" ---> "Protocol Encryptie"
 "Proxies" --->  ??? 
@@ -270,7 +262,6 @@
 "Tracker:" ---> "Tracker:"
 "Trackers" --->  ??? 
 "Transferred:" --->  ??? 
-"Translation" ---> "Vertaling"
 "Type" ---> "Type"
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 

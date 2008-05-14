@@ -42,8 +42,6 @@
 "Client" ---> "Klijent"
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
-"Comments" ---> "Komentari"
-"CompanyName" ---> "Ime kompanije"
 "Completed" --->  ??? 
 "Completed:" ---> "Završeno:"
 "Confirm on close" --->  ??? 
@@ -66,7 +64,6 @@
 "Default save folder :" ---> "Standartna mapa:"
 "Delete" ---> "Izbriši"
 "Dev Msg: %1%." --->  ??? 
-"Dialog" --->  ??? 
 "Dir." --->  ??? 
 "Disabled" ---> "Isključen"
 "Distributed Hash Tables" ---> "DHT (podela Haš-tabele)"
@@ -83,6 +80,7 @@
 "ETA:" ---> "ETA:"
 "Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Preobrađivati"
 "Enable DHT" ---> "Aktiviraj DHT"
@@ -97,8 +95,6 @@
 "Failed, %1%" ---> "Neuspešno, %1%"
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
-"FileDescription" ---> "Naziv fajla"
-"FileVersion" ---> "Verzija"
 "Filename" ---> "Ime fajla"
 "Files" ---> "Fajlovi"
 "Filtering %1% range(s)" ---> "%1% IP-sekcije filtrirane"
@@ -156,7 +152,6 @@
 "Open &Halite" ---> "&Otvori halite"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "Otvori jedan port između...:"
-"OriginalFilename" ---> "Orginalno ime fajla"
 "Outgoing" ---> "Izlazno"
 "Output File" --->  ??? 
 "Overhead:" ---> "Neupotrebljivo:"
@@ -180,12 +175,9 @@
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Port:"
 "Port" --->  ??? 
-"Preannounce" --->  ??? 
 "Prefer RC4" ---> "Privilegiraj RC4"
 "Priority" ---> "Važnosti"
 "Private" --->  ??? 
-"ProductName" ---> "Ime produkta"
-"ProductVersion" ---> "Verzija produkta"
 "Progress" ---> "Napredak"
 "Protocol Encryption" ---> "Šifracija protokola"
 "Proxies" ---> "Proksi-server"
@@ -270,7 +262,6 @@
 "Tracker:" ---> "Treker:"
 "Trackers" --->  ??? 
 "Transferred:" ---> "Prenešeno:"
-"Translation" ---> "Prevod"
 "Type" ---> "Tip"
 "URL Seed %2%, %3%. (%1%)" ---> "URL Seed %2%, %3%. (%1%)"
 "URL" --->  ??? 

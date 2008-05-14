@@ -42,8 +42,6 @@
 "Client" --->  ??? 
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
-"Comments" ---> "Yorumlar"
-"CompanyName" ---> "CompanyName"
 "Completed" --->  ??? 
 "Completed:" ---> "Tamamlanan:"
 "Confirm on close" --->  ??? 
@@ -66,7 +64,6 @@
 "Default save folder :" --->  ??? 
 "Delete" ---> "Sil"
 "Dev Msg: %1%." --->  ??? 
-"Dialog" --->  ??? 
 "Dir." --->  ??? 
 "Disabled" --->  ??? 
 "Distributed Hash Tables" --->  ??? 
@@ -83,6 +80,7 @@
 "ETA:" --->  ??? 
 "Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Düzenle"
 "Enable DHT" --->  ??? 
@@ -97,8 +95,6 @@
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
-"FileDescription" ---> "FileDescription"
-"FileVersion" ---> "FileVersion"
 "Filename" --->  ??? 
 "Files" --->  ??? 
 "Filtering %1% range(s)" ---> "%1% aralığı süzgeçleniyor"
@@ -156,7 +152,6 @@
 "Open &Halite" ---> "&Halite Aç"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "Arasında (tek) port  aç: "
-"OriginalFilename" ---> "OriginalFilename"
 "Outgoing" --->  ??? 
 "Output File" --->  ??? 
 "Overhead:" --->  ??? 
@@ -180,12 +175,9 @@
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Dinleme Portu"
 "Port" --->  ??? 
-"Preannounce" --->  ??? 
 "Prefer RC4" --->  ??? 
 "Priority" --->  ??? 
 "Private" --->  ??? 
-"ProductName" ---> "ProductName"
-"ProductVersion" ---> "ProductVersion"
 "Progress" --->  ??? 
 "Protocol Encryption" --->  ??? 
 "Proxies" --->  ??? 
@@ -270,7 +262,6 @@
 "Tracker:" ---> "İzleyici"
 "Trackers" --->  ??? 
 "Transferred:" --->  ??? 
-"Translation" ---> "Translation"
 "Type" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 

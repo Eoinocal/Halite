@@ -42,8 +42,6 @@
 "Client" ---> "Cliente"
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
-"Comments" ---> "Comentarios"
-"CompanyName" --->  ??? 
 "Completed" --->  ??? 
 "Completed:" ---> "Completado:"
 "Confirm on close" --->  ??? 
@@ -66,7 +64,6 @@
 "Default save folder :" ---> "Directorio de guardado predeterminado :"
 "Delete" ---> "Borrar"
 "Dev Msg: %1%." --->  ??? 
-"Dialog" --->  ??? 
 "Dir." --->  ??? 
 "Disabled" ---> "Desactivado"
 "Distributed Hash Tables" --->  ??? 
@@ -83,6 +80,7 @@
 "ETA:" ---> "Tiempo restante:"
 "Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Editar"
 "Enable DHT" ---> "Activar DHT"
@@ -97,8 +95,6 @@
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
-"FileDescription" --->  ??? 
-"FileVersion" --->  ??? 
 "Filename" ---> "Nombre de archivo"
 "Files" ---> "Archivos"
 "Filtering %1% range(s)" ---> "Filtrando %1% rango(s)"
@@ -156,7 +152,6 @@
 "Open &Halite" ---> "Abrir &Halite"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "Abrir un (único) puerto entre :"
-"OriginalFilename" --->  ??? 
 "Outgoing" ---> "Salientes"
 "Output File" --->  ??? 
 "Overhead:" --->  ??? 
@@ -180,12 +175,9 @@
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Puerto a escuchar en : "
 "Port" --->  ??? 
-"Preannounce" --->  ??? 
 "Prefer RC4" ---> "Preferir RC4"
 "Priority" ---> "Prioridad"
 "Private" --->  ??? 
-"ProductName" --->  ??? 
-"ProductVersion" --->  ??? 
 "Progress" ---> "Progreso"
 "Protocol Encryption" ---> "Codificación de protocolo"
 "Proxies" ---> "Proxies"
@@ -270,7 +262,6 @@
 "Tracker:" ---> "Tracker:"
 "Trackers" --->  ??? 
 "Transferred:" ---> "Transferido:"
-"Translation" --->  ??? 
 "Type" ---> "Tipo"
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 

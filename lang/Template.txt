@@ -4,6 +4,7 @@
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "%1% DHT node(s)" --->  ??? 
+"%1% active torrent(s)" --->  ??? 
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" --->  ??? 
@@ -41,8 +42,6 @@
 "Client" --->  ??? 
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
-"Comments" --->  ??? 
-"CompanyName" --->  ??? 
 "Completed" --->  ??? 
 "Completed:" --->  ??? 
 "Confirm on close" --->  ??? 
@@ -65,7 +64,6 @@
 "Default save folder :" --->  ??? 
 "Delete" --->  ??? 
 "Dev Msg: %1%." --->  ??? 
-"Dialog" --->  ??? 
 "Dir." --->  ??? 
 "Disabled" --->  ??? 
 "Distributed Hash Tables" --->  ??? 
@@ -82,6 +80,7 @@
 "ETA:" --->  ??? 
 "Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" --->  ??? 
 "Enable DHT" --->  ??? 
@@ -96,13 +95,12 @@
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
-"FileDescription" --->  ??? 
-"FileVersion" --->  ??? 
 "Filename" --->  ??? 
 "Files" --->  ??? 
 "Filtering %1% range(s)" --->  ??? 
 "Finish Time" --->  ??? 
 "Finished" --->  ??? 
+"Force Close" --->  ??? 
 "Forced" --->  ??? 
 "General Settings" --->  ??? 
 "General" --->  ??? 
@@ -154,7 +152,6 @@
 "Open &Halite" --->  ??? 
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " --->  ??? 
-"OriginalFilename" --->  ??? 
 "Outgoing" --->  ??? 
 "Output File" --->  ??? 
 "Overhead:" --->  ??? 
@@ -178,12 +175,9 @@
 "Port Forwarding" --->  ??? 
 "Port to listen on : " --->  ??? 
 "Port" --->  ??? 
-"Preannounce" --->  ??? 
 "Prefer RC4" --->  ??? 
 "Priority" --->  ??? 
 "Private" --->  ??? 
-"ProductName" --->  ??? 
-"ProductVersion" --->  ??? 
 "Progress" --->  ??? 
 "Protocol Encryption" --->  ??? 
 "Proxies" --->  ??? 
@@ -222,6 +216,7 @@
 "Set as Primary" --->  ??? 
 "Severity" --->  ??? 
 "Show this message in future" --->  ??? 
+"Shutting down session" --->  ??? 
 "Size" --->  ??? 
 "Standard exception (%1%) thrown from %2%." --->  ??? 
 "Start Time" --->  ??? 
@@ -230,6 +225,7 @@
 "Stop" --->  ??? 
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Stopped" --->  ??? 
+"Stopping Torrents" --->  ??? 
 "Stopping" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Supports extensions" --->  ??? 
@@ -266,7 +262,6 @@
 "Tracker:" --->  ??? 
 "Trackers" --->  ??? 
 "Transferred:" --->  ??? 
-"Translation" --->  ??? 
 "Type" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 

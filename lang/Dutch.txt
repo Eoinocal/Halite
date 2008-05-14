@@ -4,6 +4,7 @@
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB van %2$.2fMB"
 "%1% DHT node(s)" ---> "%1% DHT knopen"
+"%1% active torrent(s)" --->  ??? 
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Pauzeer alles"
@@ -41,8 +42,6 @@
 "Client" ---> "Client"
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
-"Comments" ---> "Commentaar"
-"CompanyName" ---> "Bedrijf"
 "Completed" --->  ??? 
 "Completed:" ---> "Voltooid:"
 "Confirm on close" --->  ??? 
@@ -65,7 +64,6 @@
 "Default save folder :" ---> "Standaard opslag map"
 "Delete" ---> "Verwijderen"
 "Dev Msg: %1%." --->  ??? 
-"Dialog" --->  ??? 
 "Dir." --->  ??? 
 "Disabled" ---> "Uitschakelen"
 "Distributed Hash Tables" --->  ??? 
@@ -82,6 +80,7 @@
 "ETA:" --->  ??? 
 "Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Bewerken"
 "Enable DHT" ---> "DHT ingeschakelen"
@@ -96,13 +95,12 @@
 "Failed, %1%" ---> "Mislukt, %1%"
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
-"FileDescription" ---> "BestandsOmschrijving"
-"FileVersion" ---> "Versie nummer"
 "Filename" ---> "Bestandsnaam"
 "Files" ---> "Bestanden"
 "Filtering %1% range(s)" ---> "%1% bereiken gefilterd"
 "Finish Time" --->  ??? 
 "Finished" ---> "Klaar"
+"Force Close" --->  ??? 
 "Forced" ---> "Forceren"
 "General Settings" ---> "Algemene Opties"
 "General" ---> "Algemeen"
@@ -154,7 +152,6 @@
 "Open &Halite" ---> "Open &Halite"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "Open een (enkele) poort tussen : "
-"OriginalFilename" ---> "OrigineleBestandsnaam"
 "Outgoing" ---> "Uitgaand"
 "Output File" --->  ??? 
 "Overhead:" --->  ??? 
@@ -178,12 +175,9 @@
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Poort om op the luisteren : "
 "Port" --->  ??? 
-"Preannounce" --->  ??? 
 "Prefer RC4" ---> "Prefereer RC4"
 "Priority" ---> "Prioriteit"
 "Private" --->  ??? 
-"ProductName" ---> "ProductNaam"
-"ProductVersion" ---> "ProductVersie"
 "Progress" ---> "Progressie"
 "Protocol Encryption" ---> "Protocol Encryptie"
 "Proxies" --->  ??? 
@@ -222,6 +216,7 @@
 "Set as Primary" ---> "Zet als Primair"
 "Severity" ---> "Ernst"
 "Show this message in future" ---> "Toon dit bericht in de toekomst"
+"Shutting down session" --->  ??? 
 "Size" ---> "Grootte"
 "Standard exception (%1%) thrown from %2%." ---> "Standard exceptie (%1%) geworpen van %2%."
 "Start Time" --->  ??? 
@@ -230,6 +225,7 @@
 "Stop" ---> "Stop"
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Stopped" ---> "Gestopt"
+"Stopping Torrents" --->  ??? 
 "Stopping" ---> "Stopt"
 "Successfully %1%." ---> "Succesvol %1%."
 "Supports extensions" ---> "Ondersteund extensies"
@@ -266,7 +262,6 @@
 "Tracker:" ---> "Tracker:"
 "Trackers" --->  ??? 
 "Transferred:" --->  ??? 
-"Translation" ---> "Vertaling"
 "Type" ---> "Type"
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 

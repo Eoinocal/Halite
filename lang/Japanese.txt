@@ -4,6 +4,7 @@
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "%1% DHT node(s)" --->  ??? 
+"%1% active torrent(s)" --->  ??? 
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" --->  ??? 
@@ -41,8 +42,6 @@
 "Client" ---> "クライアント"
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
-"Comments" ---> "コメント"
-"CompanyName" --->  ??? 
 "Completed" --->  ??? 
 "Completed:" ---> "ダウンロード済"
 "Confirm on close" --->  ??? 
@@ -65,7 +64,6 @@
 "Default save folder :" --->  ??? 
 "Delete" ---> "削除"
 "Dev Msg: %1%." --->  ??? 
-"Dialog" --->  ??? 
 "Dir." --->  ??? 
 "Disabled" ---> "使用しない"
 "Distributed Hash Tables" --->  ??? 
@@ -82,6 +80,7 @@
 "ETA:" ---> "予想完了時間"
 "Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> ""
 "Enable DHT" ---> "DHTを使用"
@@ -96,13 +95,12 @@
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
-"FileDescription" --->  ??? 
-"FileVersion" --->  ??? 
 "Filename" ---> "名前"
 "Files" ---> "ファイル"
 "Filtering %1% range(s)" --->  ??? 
 "Finish Time" --->  ??? 
 "Finished" ---> "ダウンロード済"
+"Force Close" --->  ??? 
 "Forced" ---> "強制使用"
 "General Settings" ---> "設定"
 "General" --->  ??? 
@@ -154,7 +152,6 @@
 "Open &Halite" --->  ??? 
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "から"
-"OriginalFilename" --->  ??? 
 "Outgoing" ---> "上り"
 "Output File" --->  ??? 
 "Overhead:" --->  ??? 
@@ -178,12 +175,9 @@
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "着信接続用ポート:"
 "Port" --->  ??? 
-"Preannounce" --->  ??? 
 "Prefer RC4" --->  ??? 
 "Priority" ---> "優先度"
 "Private" --->  ??? 
-"ProductName" --->  ??? 
-"ProductVersion" --->  ??? 
 "Progress" ---> "完了度"
 "Protocol Encryption" ---> "プロトコル暗号化"
 "Proxies" ---> "プロクシ"
@@ -222,6 +216,7 @@
 "Set as Primary" --->  ??? 
 "Severity" ---> "厳粛"
 "Show this message in future" ---> "このチェックを常に行う"
+"Shutting down session" --->  ??? 
 "Size" ---> "サイズ"
 "Standard exception (%1%) thrown from %2%." --->  ??? 
 "Start Time" --->  ??? 
@@ -230,6 +225,7 @@
 "Stop" --->  ??? 
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Stopped" ---> "停止"
+"Stopping Torrents" --->  ??? 
 "Stopping" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Supports extensions" --->  ??? 
@@ -266,7 +262,6 @@
 "Tracker:" ---> "トラッカー:"
 "Trackers" --->  ??? 
 "Transferred:" --->  ??? 
-"Translation" --->  ??? 
 "Type" ---> "タイプ"
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 

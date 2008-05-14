@@ -42,8 +42,6 @@
 "Client" ---> "Клијент"
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
-"Comments" ---> "Коментари"
-"CompanyName" ---> "Име компаније"
 "Completed" --->  ??? 
 "Completed:" ---> "Завршено:"
 "Confirm on close" --->  ??? 
@@ -66,7 +64,6 @@
 "Default save folder :" ---> "Стандартна мапа:"
 "Delete" ---> "Избриши"
 "Dev Msg: %1%." --->  ??? 
-"Dialog" --->  ??? 
 "Dir." --->  ??? 
 "Disabled" ---> "Искључен"
 "Distributed Hash Tables" ---> "ДХТ (подела хаш-табеле)"
@@ -83,6 +80,7 @@
 "ETA:" ---> "ЕТА:"
 "Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Преобрађивати"
 "Enable DHT" ---> "Активирај ДХТ"
@@ -97,8 +95,6 @@
 "Failed, %1%" ---> "неуспешно, %1%"
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
-"FileDescription" ---> "Назив фајла"
-"FileVersion" ---> "Верзија"
 "Filename" ---> "Име фајла"
 "Files" ---> "Фајлови"
 "Filtering %1% range(s)" ---> "%1% ИП-секције филтриране"
@@ -156,7 +152,6 @@
 "Open &Halite" ---> "&Отвори Халите"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "Отвори један порт између...:"
-"OriginalFilename" ---> "Оргинално име фајла"
 "Outgoing" ---> "Излазно"
 "Output File" --->  ??? 
 "Overhead:" ---> "Неупоребљиво:"
@@ -180,12 +175,9 @@
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Порт:"
 "Port" --->  ??? 
-"Preannounce" --->  ??? 
 "Prefer RC4" ---> "Привилегирј RC4"
 "Priority" ---> "Важности"
 "Private" --->  ??? 
-"ProductName" ---> "Име продукта"
-"ProductVersion" ---> "Верзија продукта"
 "Progress" ---> "Напредак"
 "Protocol Encryption" ---> "Шифрација протокола"
 "Proxies" ---> "Прокси-сервер"
@@ -270,7 +262,6 @@
 "Tracker:" ---> "Трекер:"
 "Trackers" --->  ??? 
 "Transferred:" ---> "Пренешено:"
-"Translation" ---> "Превод"
 "Type" ---> "Тип"
 "URL Seed %2%, %3%. (%1%)" ---> "УРл Сеед %2%, %3%. (%1%)"
 "URL" --->  ??? 

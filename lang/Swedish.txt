@@ -4,6 +4,7 @@
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB ned - %2$.2fMB upp"
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "%1% DHT node(s)" ---> "%1% DHT nod(er)"
+"%1% active torrent(s)" --->  ??? 
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Pausa alla"
@@ -41,8 +42,6 @@
 "Client" ---> "Klient"
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
-"Comments" ---> "Kommentarer"
-"CompanyName" --->  ??? 
 "Completed" --->  ??? 
 "Completed:" ---> "Färdigt:"
 "Confirm on close" --->  ??? 
@@ -65,7 +64,6 @@
 "Default save folder :" ---> "Förvald mapp att spara i :"
 "Delete" ---> "Ta bort"
 "Dev Msg: %1%." --->  ??? 
-"Dialog" --->  ??? 
 "Dir." --->  ??? 
 "Disabled" ---> "Deaktiverade"
 "Distributed Hash Tables" ---> "DHT (publika söknycklar)"
@@ -82,6 +80,7 @@
 "ETA:" ---> "Tid kvar:"
 "Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Ändra"
 "Enable DHT" ---> "Aktivera DHT"
@@ -96,13 +95,12 @@
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
-"FileDescription" --->  ??? 
-"FileVersion" --->  ??? 
 "Filename" ---> "Filnamn"
 "Files" ---> "Filer"
 "Filtering %1% range(s)" ---> "Filtrerar %1% område(n)"
 "Finish Time" --->  ??? 
 "Finished" ---> "Färdig"
+"Force Close" --->  ??? 
 "Forced" ---> "Tvingade"
 "General Settings" ---> "allmänna inställningar"
 "General" ---> "Allmänt"
@@ -154,7 +152,6 @@
 "Open &Halite" ---> "Öppna &Halite"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "öppna port mellan: "
-"OriginalFilename" --->  ??? 
 "Outgoing" ---> "Utgående"
 "Output File" --->  ??? 
 "Overhead:" ---> "Obrukbart:"
@@ -178,12 +175,9 @@
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Port att lyssna på: "
 "Port" --->  ??? 
-"Preannounce" --->  ??? 
 "Prefer RC4" ---> "Föredra RC4"
 "Priority" ---> "Prioritet"
 "Private" --->  ??? 
-"ProductName" --->  ??? 
-"ProductVersion" --->  ??? 
 "Progress" ---> "Förlopp"
 "Protocol Encryption" ---> "Protokollkryptering"
 "Proxies" ---> "Proxys"
@@ -222,6 +216,7 @@
 "Set as Primary" --->  ??? 
 "Severity" ---> "Nivå"
 "Show this message in future" ---> "Visa alltid detta meddelande."
+"Shutting down session" --->  ??? 
 "Size" ---> "Storlek"
 "Standard exception (%1%) thrown from %2%." --->  ??? 
 "Start Time" --->  ??? 
@@ -230,6 +225,7 @@
 "Stop" ---> "Stoppa"
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Stopped" ---> "Stoppad"
+"Stopping Torrents" --->  ??? 
 "Stopping" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Supports extensions" ---> "Stöder tillägg"
@@ -266,7 +262,6 @@
 "Tracker:" --->  ??? 
 "Trackers" --->  ??? 
 "Transferred:" ---> "Överfört:"
-"Translation" --->  ??? 
 "Type" ---> "Typ"
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 

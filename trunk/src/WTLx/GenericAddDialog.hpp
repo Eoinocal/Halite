@@ -176,7 +176,7 @@ public:
 		{
 			pT->CenterWindow();
 			pT->GetWindowRect(rect_);
-			pT->MoveWindow(rect_.left, rect_.top, rect_.right-rect_.left, rect_.bottom-rect_.top, false);
+			pT->MoveWindow(rect_.left, rect_.top, rect_.right-rect_.left, rect_.bottom-rect_.top+28, false);
 		}
 		else
 			pT->MoveWindow(rect_.left, rect_.top, rect_.right-rect_.left, rect_.bottom-rect_.top, false);	

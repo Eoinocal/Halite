@@ -4,6 +4,7 @@
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "%1% DHT node(s)" ---> "%1% DHT nodu"
+"%1% active torrent(s)" --->  ??? 
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "Hepsini &Duraklat"
@@ -41,8 +42,6 @@
 "Client" --->  ??? 
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
-"Comments" ---> "Yorumlar"
-"CompanyName" ---> "CompanyName"
 "Completed" --->  ??? 
 "Completed:" ---> "Tamamlanan:"
 "Confirm on close" --->  ??? 
@@ -65,7 +64,6 @@
 "Default save folder :" --->  ??? 
 "Delete" ---> "Sil"
 "Dev Msg: %1%." --->  ??? 
-"Dialog" --->  ??? 
 "Dir." --->  ??? 
 "Disabled" --->  ??? 
 "Distributed Hash Tables" --->  ??? 
@@ -82,6 +80,7 @@
 "ETA:" --->  ??? 
 "Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Düzenle"
 "Enable DHT" --->  ??? 
@@ -96,13 +95,12 @@
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
-"FileDescription" ---> "FileDescription"
-"FileVersion" ---> "FileVersion"
 "Filename" --->  ??? 
 "Files" --->  ??? 
 "Filtering %1% range(s)" ---> "%1% aralığı süzgeçleniyor"
 "Finish Time" --->  ??? 
 "Finished" ---> "Tamamlandı"
+"Force Close" --->  ??? 
 "Forced" --->  ??? 
 "General Settings" ---> "Genel Ayarlar"
 "General" ---> "Genel"
@@ -154,7 +152,6 @@
 "Open &Halite" ---> "&Halite Aç"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "Arasında (tek) port  aç: "
-"OriginalFilename" ---> "OriginalFilename"
 "Outgoing" --->  ??? 
 "Output File" --->  ??? 
 "Overhead:" --->  ??? 
@@ -178,12 +175,9 @@
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Dinleme Portu"
 "Port" --->  ??? 
-"Preannounce" --->  ??? 
 "Prefer RC4" --->  ??? 
 "Priority" --->  ??? 
 "Private" --->  ??? 
-"ProductName" ---> "ProductName"
-"ProductVersion" ---> "ProductVersion"
 "Progress" --->  ??? 
 "Protocol Encryption" --->  ??? 
 "Proxies" --->  ??? 
@@ -222,6 +216,7 @@
 "Set as Primary" --->  ??? 
 "Severity" ---> "Öncelik"
 "Show this message in future" ---> "Bu mesajı ilerde de göster"
+"Shutting down session" --->  ??? 
 "Size" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Standart istisna (%1%) , %2% 'den."
 "Start Time" --->  ??? 
@@ -230,6 +225,7 @@
 "Stop" ---> "Durdur"
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Stopped" ---> "Durduruldu"
+"Stopping Torrents" --->  ??? 
 "Stopping" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Supports extensions" ---> "Uzantıları destekler"
@@ -266,7 +262,6 @@
 "Tracker:" ---> "İzleyici"
 "Trackers" --->  ??? 
 "Transferred:" --->  ??? 
-"Translation" ---> "Translation"
 "Type" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
