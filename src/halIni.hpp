@@ -53,7 +53,7 @@ public:
 	}
 	
 	template<typename P>
-	void load_standalone(const P& location)
+	bool load_standalone(const P& location)
 	{
 		try 
 		{		
@@ -63,12 +63,16 @@ public:
 
 		T* pT = static_cast<T*>(this);	
 		ixml >> boost::serialization::make_nvp(name_.c_str(), *pT);
+
+		return true;
 		
 		}
 		catch (const std::exception& e)
 		{			
 			hal::event().post(boost::shared_ptr<hal::EventDetail>(
 				new hal::EventXmlException(hal::from_utf8(e.what()), L"load_standalone"))); 
+
+			return false;
 		}
 	}
 	

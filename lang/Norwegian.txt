@@ -4,6 +4,7 @@
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "%1% DHT node(s)" ---> "%1% DHT node(r)"
+"%1% active torrent(s)" --->  ??? 
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Pause Alle"
@@ -103,6 +104,7 @@
 "Filtering %1% range(s)" ---> "Filtrerer %1% serie(r)"
 "Finish Time" --->  ??? 
 "Finished" ---> "Ferdig"
+"Force Close" --->  ??? 
 "Forced" --->  ??? 
 "General Settings" ---> "Generelle instillinger"
 "General" ---> "Generelt"
@@ -222,6 +224,7 @@
 "Set as Primary" --->  ??? 
 "Severity" ---> "Alvorlighetsgrad"
 "Show this message in future" ---> "Vis denne meldingen i fremtiden"
+"Shutting down session" --->  ??? 
 "Size" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Standard unntak (%1%) reist av %2%."
 "Start Time" --->  ??? 
@@ -230,6 +233,7 @@
 "Stop" ---> "Stopp"
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Stopped" ---> "Stoppet"
+"Stopping Torrents" --->  ??? 
 "Stopping" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Supports extensions" ---> "Supporterer utvidelser"

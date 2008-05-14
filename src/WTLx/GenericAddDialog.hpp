@@ -164,10 +164,11 @@ public:
 		TBase* pT = static_cast<TBase*>(this);
 		
 		dlg_.Create(*pT);
-		dlg_.ShowWindow(SW_SHOW);
 		dlg_.SetDlgCtrlID(dialogIDD);
 
 		resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
+
+		dlg_.ShowWindow(SW_SHOW);
 
 		SetWindowText(title_.c_str());
 
@@ -175,6 +176,7 @@ public:
 		{
 			pT->CenterWindow();
 			pT->GetWindowRect(rect_);
+			pT->MoveWindow(rect_.left, rect_.top, rect_.right-rect_.left, rect_.bottom-rect_.top, false);
 		}
 		else
 			pT->MoveWindow(rect_.left, rect_.top, rect_.right-rect_.left, rect_.bottom-rect_.top, false);	

@@ -573,7 +573,7 @@ public:
 
 		HAL_DEV_MSG(wformat(L"addToSession() paused=%1%") % paused);
 		
-		if (!inSession()) 
+		if (!in_session()) 
 		{			
 			path dir = path_to_utf8(save_directory_);
 			
@@ -597,7 +597,7 @@ public:
 			handle_.force_reannounce();
 		}	
 
-		assert(inSession());
+		assert(in_session());
 		HAL_DEV_MSG(L"Added to session");
 
 		}
@@ -614,7 +614,7 @@ public:
 		{
 
 		mutex_t::scoped_lock l(mutex_);
-		assert(inSession());
+		assert(in_session());
 
 		HAL_DEV_MSG(wformat(L"removeFromSession() writeData=%1%") % writeData);
 		
@@ -633,7 +633,7 @@ public:
 		the_session_->remove_torrent(handle_);
 		in_session_ = false;
 
-		assert(!inSession());	
+		assert(!in_session());	
 		HAL_DEV_MSG(L"Removed from session!");
 
 		}
@@ -644,7 +644,7 @@ public:
 		}
 	}
 	
-	bool inSession() const
+	bool in_session() const
 	{ 
 		mutex_t::scoped_lock l(mutex_);
 
@@ -658,11 +658,11 @@ public:
 		if (state_ == TorrentDetail::torrent_stopped)
 		{	
 			addToSession(false);
-			assert(inSession());			
+			assert(in_session());			
 		}
 		else
 		{
-			assert(inSession());
+			assert(in_session());
 			handle_.resume();
 		}	
 		
@@ -678,12 +678,12 @@ public:
 		{	
 			addToSession(true);
 
-			assert(inSession());
+			assert(in_session());
 		//	assert(handle_.is_paused());
 		}
 		else
 		{
-			assert(inSession());
+			assert(in_session());
 
 			handle_.pause();
 			signals().torrent_paused.disconnect_all_once();
@@ -701,7 +701,7 @@ public:
 		{
 			if (state_ == TorrentDetail::torrent_active)
 			{
-				assert(inSession());
+				assert(in_session());
 
 				signals().torrent_paused.disconnect_all_once();
 				signals().torrent_paused.connect_once(bind(&torrent_internal::completed_stop, this));
@@ -778,12 +778,16 @@ public:
 		return save_directory_;
 	}
 
-	void set_save_directory(wpath s)
+	void set_save_directory(wpath s, bool force=false)
 	{
-		if (inSession() && !is_finished() &&
+		if (in_session() && !is_finished() &&
 				s != path_from_utf8(handle_.save_path()))
 		{
 			handle_.move_storage(path_to_utf8(s));
+			save_directory_ = s;
+		}
+		else if (!in_session() && force)
+		{
 			save_directory_ = s;
 		}
 	}
@@ -811,7 +815,7 @@ public:
 
 	bool is_finished()
 	{
-		if (inSession())
+		if (in_session())
 		{
 			lbt::torrent_status::state_t s = handle_.status().state;
 
@@ -837,7 +841,7 @@ public:
 		}
 	}
 	
-	bool isActive() const { return state_ == TorrentDetail::torrent_active;	}
+	bool is_active() const { return state_ == TorrentDetail::torrent_active; }
 	
 	unsigned state() const { return state_; }
 	
@@ -862,7 +866,7 @@ public:
 
 	void resetTrackers()
 	{
-		if (inSession())
+		if (in_session())
 		{
 			handle_.replace_trackers(torrent_trackers_);		
 			trackers_.clear();
@@ -949,15 +953,12 @@ public:
 			ar & slz::make_nvp("connections", connections_);
 			ar & slz::make_nvp("uploads", uploads_);			
 			ar & slz::make_nvp("filename", filename_);	
-			if (version == 0) {
-				wstring s;
-				ar & slz::make_nvp("saveDirectory", save_directory_);
-				save_directory_ = s;
-			} else {				
-				ar & slz::make_nvp("saveDirectory", save_directory_);
-			}
 
-			if (version > 0) {
+			wstring s;
+			ar & slz::make_nvp("saveDirectory", save_directory_);
+			save_directory_ = s;
+
+			if (version == 1) {
 				wstring m;
 				ar & slz::make_nvp("moveToDirectory", m);
 				move_to_directory_ = m;
@@ -1002,7 +1003,7 @@ public:
 	
 	boost::tuple<size_t, size_t, size_t, size_t> updatePeers()
 	{
-		if (inSession())
+		if (in_session())
 			handle_.get_peer_info(peers_);
 		
 		size_t totalPeers = 0;
@@ -1035,7 +1036,7 @@ public:
 	
 	void getPeerDetails(PeerDetails& peerDetails) const
 	{
-		if (inSession())
+		if (in_session())
 		{
 			foreach (lbt::peer_info peer, peers_) 
 			{
@@ -1069,7 +1070,7 @@ public:
 			}	
 		}		
 		
-		if (inSession())
+		if (in_session())
 		{			
 			std::vector<float> fileProgress;			
 			handle_.file_progress(fileProgress);
@@ -1162,7 +1163,7 @@ private:
 	void applyTransferSpeed()
 	{
 		mutex_t::scoped_lock l(mutex_);
-		if (inSession())
+		if (in_session())
 		{
 			int down = (transferLimit_.first > 0) ? static_cast<int>(transferLimit_.first*1024) : -1;
 			handle_.set_download_limit(down);
@@ -1177,7 +1178,7 @@ private:
 	void applyConnectionLimit()
 	{
 		mutex_t::scoped_lock l(mutex_);
-		if (inSession())
+		if (in_session())
 		{
 			handle_.set_max_connections(connections_);
 			handle_.set_max_uploads(uploads_);
@@ -1189,7 +1190,7 @@ private:
 	void apply_ratio()
 	{ 
 		mutex_t::scoped_lock l(mutex_);
-		if (inSession())
+		if (in_session())
 		{
 			handle_.set_ratio(ratio_);
 
@@ -1200,7 +1201,7 @@ private:
 	void applyTrackers()
 	{
 		mutex_t::scoped_lock l(mutex_);
-		if (inSession())
+		if (in_session())
 		{
 			if (torrent_trackers_.empty())
 				torrent_trackers_ = handle_.trackers();
@@ -1225,7 +1226,7 @@ private:
 	void applyTrackerLogin()
 	{
 		mutex_t::scoped_lock l(mutex_);
-		if (inSession())
+		if (in_session())
 		{
 			if (trackerUsername_ != L"")
 			{
@@ -1240,7 +1241,7 @@ private:
 	void applyFilePriorities()
 	{		
 		mutex_t::scoped_lock l(mutex_);
-		if (inSession()) 
+		if (in_session()) 
 		{
 			if (!filePriorities_.empty())
 				handle_.prioritize_files(filePriorities_);
@@ -1252,7 +1253,7 @@ private:
 	void applyResolveCountries()
 	{
 		mutex_t::scoped_lock l(mutex_);
-		if (inSession())
+		if (in_session())
 		{
 			handle_.resolve_countries(resolve_countries_);
 			
@@ -1263,7 +1264,7 @@ private:
 	void completed_pause()
 	{
 		mutex_t::scoped_lock l(mutex_);
-		assert(inSession());
+		assert(in_session());
 		assert(handle_.is_paused());	
 				
 		state_ = TorrentDetail::torrent_paused;	
@@ -1274,13 +1275,13 @@ private:
 	void completed_stop()
 	{
 		mutex_t::scoped_lock l(mutex_);
-		assert(inSession());
+		assert(in_session());
 		assert(handle_.is_paused());	
 		
 		state_ = TorrentDetail::torrent_stopped;
 		
 		removeFromSession();
-		assert(!inSession());
+		assert(!in_session());
 
 		HAL_DEV_MSG(L"completed_stop()");
 	}
@@ -1291,12 +1292,12 @@ private:
 		state_ = TorrentDetail::torrent_stopped;
 
 		removeFromSession(false);
-		assert(!inSession());
+		assert(!in_session());
 
 		clearResumeData();
 
 		resume();
-		assert(inSession());
+		assert(in_session());
 
 		HAL_DEV_MSG(L"handle_recheck()");
 	}
@@ -1552,7 +1553,7 @@ TorrentDetail_ptr torrent_internal::getTorrentDetail_ptr()
 	try
 	{
 
-	if (inSession())
+	if (in_session())
 	{
 		statusMemory_ = handle_.status();
 		progress_ = statusMemory_.progress;
@@ -1632,7 +1633,7 @@ TorrentDetail_ptr torrent_internal::getTorrentDetail_ptr()
 	downloaded_.update(statusMemory_.total_download);
 	payloadDownloaded_.update(statusMemory_.total_payload_download);
 	
-	if (isActive())
+	if (is_active())
 	{
 		activeDuration_.update();
 		

@@ -1406,12 +1406,20 @@ void bit::addTorrent(wpath file, wpath saveDirectory, bool startStopped, bool co
 	if (fs::exists(file.branch_path()/xml_name))
 	{
 		torrent_standalone tsa;
-		tsa.load_standalone(file.branch_path()/xml_name);
+		
+		if (tsa.load_standalone(file.branch_path()/xml_name))
+		{
+			TIp = tsa.torrent;
+			
+			TIp->set_save_directory(saveDirectory, true);			
+			if (useMoveTo)
+				TIp->set_move_to_directory(moveToDirectory);
 
-		TIp = tsa.torrent;
-		TIp->prepare(file);
+			TIp->prepare(file);
+		}
 	}
-	else
+
+	if (!TIp)
 	{
 		if (useMoveTo)
 			TIp.reset(new torrent_internal(file, saveDirectory, compactStorage, moveToDirectory));		
@@ -1605,7 +1613,7 @@ void bit::closeAll(report_num_active fn)
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); 
 		i != e; ++i)
 	{
-		if ((*i).torrent->inSession())
+		if ((*i).torrent->in_session())
 		{
 		//	HAL_DEV_MSG(wformat(L"Internalling pausing writeData=%1%") % writeData);
 			(*i).torrent->handle().pause(); // Internal pause, not registered in Torrents.xml
@@ -1621,7 +1629,7 @@ void bit::closeAll(report_num_active fn)
 				i != e; ++i)
 		{
 			// NB. this checks for an internal paused state.
-			if ((*i).torrent->inSession() && !(*i).torrent->handle().is_paused())
+			if ((*i).torrent->in_session() && !(*i).torrent->handle().is_paused())
 				++num_active;
 		}
 		
@@ -1634,7 +1642,7 @@ void bit::closeAll(report_num_active fn)
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); 
 		i != e; ++i)
 	{
-		if ((*i).torrent->inSession())
+		if ((*i).torrent->in_session())
 		{
 			(*i).torrent->removeFromSession();
 			(*i).torrent->writeResumeData();
@@ -1801,7 +1809,7 @@ bool bit::isTorrentActive(const std::wstring& filename)
 {
 	try {
 	
-	return pimpl->theTorrents.get(filename)->isActive();
+	return pimpl->theTorrents.get(filename)->is_active();
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "isTorrentActive")
 	
@@ -1862,7 +1870,7 @@ void bit_impl::removalThread(torrent_internal_ptr pIT, bool wipeFiles)
 	}
 	else
 	{
-		if (pIT->inSession())
+		if (pIT->in_session())
 		{
 			theSession.remove_torrent(pIT->handle(), lbt::session::delete_files);
 		}
@@ -1963,7 +1971,7 @@ void bit::pauseAllTorrents()
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end();
 		i != e; ++i)
 	{		
-		if ((*i).torrent->inSession())
+		if ((*i).torrent->in_session())
 			(*i).torrent->pause();
 	}
 	
@@ -1977,7 +1985,7 @@ void bit::unpauseAllTorrents()
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end();
 		i != e; ++i)
 	{
-		if ((*i).torrent->inSession() && (*i).torrent->state() == TorrentDetail::torrent_paused)
+		if ((*i).torrent->in_session() && (*i).torrent->state() == TorrentDetail::torrent_paused)
 			(*i).torrent->resume();
 	}
 	
@@ -2073,6 +2081,28 @@ void bit::torrent::set_move_to_directory(const wpath& m)
 	ptr->set_move_to_directory(m);
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_move_to_directory")
+}
+
+bool bit::torrent::get_is_active() const
+{
+	try {
+	
+	return ptr->is_active();
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::get_is_active")
+	
+	return L"";
+}
+
+bool bit::torrent::get_in_session() const
+{
+	try {
+	
+	return ptr->in_session();
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::get_in_session")
+	
+	return L"";
 }
 
 void bit::setTorrentRatio(const std::string& filename, float ratio)

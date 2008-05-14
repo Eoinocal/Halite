@@ -4,6 +4,7 @@
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB улазни - %2$.2fMB излазни"
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB од %2$.2fMB"
 "%1% DHT node(s)" ---> "%1% ДХТ Чворова"
+"%1% active torrent(s)" --->  ??? 
 "%1%, %2%." ---> "%1%, %2%."
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Пеер-ови. (%1%)"
 "&Pause All" ---> "Све &Паузирати"
@@ -103,6 +104,7 @@
 "Filtering %1% range(s)" ---> "%1% ИП-секције филтриране"
 "Finish Time" --->  ??? 
 "Finished" ---> "Завршено"
+"Force Close" --->  ??? 
 "Forced" ---> "Натеран"
 "General Settings" ---> "Опште"
 "General" ---> "Опште"
@@ -222,6 +224,7 @@
 "Set as Primary" ---> "Додели место привилигације"
 "Severity" ---> "Важности"
 "Show this message in future" ---> "Непозуј ми ову поруку"
+"Shutting down session" --->  ??? 
 "Size" ---> "Величина"
 "Standard exception (%1%) thrown from %2%." ---> "Стандартни изузетак (%1%) десио се код (%2%)"
 "Start Time" --->  ??? 
@@ -230,6 +233,7 @@
 "Stop" ---> "Стопирај"
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Stopped" ---> "Заустављен"
+"Stopping Torrents" --->  ??? 
 "Stopping" ---> "Заустави"
 "Successfully %1%." ---> "%1% успешно."
 "Supports extensions" ---> "Подржава екстензију"
