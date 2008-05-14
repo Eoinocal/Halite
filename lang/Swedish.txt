@@ -42,8 +42,6 @@
 "Client" ---> "Klient"
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
-"Comments" ---> "Kommentarer"
-"CompanyName" --->  ??? 
 "Completed" --->  ??? 
 "Completed:" ---> "Färdigt:"
 "Confirm on close" --->  ??? 
@@ -66,7 +64,6 @@
 "Default save folder :" ---> "Förvald mapp att spara i :"
 "Delete" ---> "Ta bort"
 "Dev Msg: %1%." --->  ??? 
-"Dialog" --->  ??? 
 "Dir." --->  ??? 
 "Disabled" ---> "Deaktiverade"
 "Distributed Hash Tables" ---> "DHT (publika söknycklar)"
@@ -83,6 +80,7 @@
 "ETA:" ---> "Tid kvar:"
 "Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Ändra"
 "Enable DHT" ---> "Aktivera DHT"
@@ -97,8 +95,6 @@
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
-"FileDescription" --->  ??? 
-"FileVersion" --->  ??? 
 "Filename" ---> "Filnamn"
 "Files" ---> "Filer"
 "Filtering %1% range(s)" ---> "Filtrerar %1% område(n)"
@@ -156,7 +152,6 @@
 "Open &Halite" ---> "Öppna &Halite"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "öppna port mellan: "
-"OriginalFilename" --->  ??? 
 "Outgoing" ---> "Utgående"
 "Output File" --->  ??? 
 "Overhead:" ---> "Obrukbart:"
@@ -180,12 +175,9 @@
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Port att lyssna på: "
 "Port" --->  ??? 
-"Preannounce" --->  ??? 
 "Prefer RC4" ---> "Föredra RC4"
 "Priority" ---> "Prioritet"
 "Private" --->  ??? 
-"ProductName" --->  ??? 
-"ProductVersion" --->  ??? 
 "Progress" ---> "Förlopp"
 "Protocol Encryption" ---> "Protokollkryptering"
 "Proxies" ---> "Proxys"
@@ -270,7 +262,6 @@
 "Tracker:" --->  ??? 
 "Trackers" --->  ??? 
 "Transferred:" ---> "Överfört:"
-"Translation" --->  ??? 
 "Type" ---> "Typ"
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 

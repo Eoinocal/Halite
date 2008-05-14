@@ -42,8 +42,6 @@
 "Client" --->  ??? 
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
-"Comments" ---> "Kommentarer"
-"CompanyName" ---> "Firmanavn"
 "Completed" --->  ??? 
 "Completed:" --->  ??? 
 "Confirm on close" --->  ??? 
@@ -66,7 +64,6 @@
 "Default save folder :" --->  ??? 
 "Delete" ---> "Slett"
 "Dev Msg: %1%." --->  ??? 
-"Dialog" --->  ??? 
 "Dir." --->  ??? 
 "Disabled" --->  ??? 
 "Distributed Hash Tables" --->  ??? 
@@ -83,6 +80,7 @@
 "ETA:" --->  ??? 
 "Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Endre"
 "Enable DHT" --->  ??? 
@@ -97,8 +95,6 @@
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
-"FileDescription" ---> "Filbeskrivelse"
-"FileVersion" ---> "FilVersion"
 "Filename" --->  ??? 
 "Files" --->  ??? 
 "Filtering %1% range(s)" ---> "Filtrerer %1% serie(r)"
@@ -156,7 +152,6 @@
 "Open &Halite" ---> "Åpne &Halite"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "Åpne en (enkel) port mellom : "
-"OriginalFilename" ---> "Originalt Filnavn"
 "Outgoing" --->  ??? 
 "Output File" --->  ??? 
 "Overhead:" --->  ??? 
@@ -180,12 +175,9 @@
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Lytteport :"
 "Port" --->  ??? 
-"Preannounce" --->  ??? 
 "Prefer RC4" --->  ??? 
 "Priority" --->  ??? 
 "Private" --->  ??? 
-"ProductName" ---> "Produktnavn"
-"ProductVersion" ---> "Produktversjon"
 "Progress" --->  ??? 
 "Protocol Encryption" --->  ??? 
 "Proxies" --->  ??? 
@@ -270,7 +262,6 @@
 "Tracker:" --->  ??? 
 "Trackers" --->  ??? 
 "Transferred:" --->  ??? 
-"Translation" ---> "Oversettelse"
 "Type" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 

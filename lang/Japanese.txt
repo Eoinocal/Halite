@@ -42,8 +42,6 @@
 "Client" ---> "クライアント"
 "Close to tray" --->  ??? 
 "Comment" --->  ??? 
-"Comments" ---> "コメント"
-"CompanyName" --->  ??? 
 "Completed" --->  ??? 
 "Completed:" ---> "ダウンロード済"
 "Confirm on close" --->  ??? 
@@ -66,7 +64,6 @@
 "Default save folder :" --->  ??? 
 "Delete" ---> "削除"
 "Dev Msg: %1%." --->  ??? 
-"Dialog" --->  ??? 
 "Dir." --->  ??? 
 "Disabled" ---> "使用しない"
 "Distributed Hash Tables" --->  ??? 
@@ -83,6 +80,7 @@
 "ETA:" ---> "予想完了時間"
 "Edit Download Folders" --->  ??? 
 "Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> ""
 "Enable DHT" ---> "DHTを使用"
@@ -97,8 +95,6 @@
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
-"FileDescription" --->  ??? 
-"FileVersion" --->  ??? 
 "Filename" ---> "名前"
 "Files" ---> "ファイル"
 "Filtering %1% range(s)" --->  ??? 
@@ -156,7 +152,6 @@
 "Open &Halite" --->  ??? 
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "から"
-"OriginalFilename" --->  ??? 
 "Outgoing" ---> "上り"
 "Output File" --->  ??? 
 "Overhead:" --->  ??? 
@@ -180,12 +175,9 @@
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "着信接続用ポート:"
 "Port" --->  ??? 
-"Preannounce" --->  ??? 
 "Prefer RC4" --->  ??? 
 "Priority" ---> "優先度"
 "Private" --->  ??? 
-"ProductName" --->  ??? 
-"ProductVersion" --->  ??? 
 "Progress" ---> "完了度"
 "Protocol Encryption" ---> "プロトコル暗号化"
 "Proxies" ---> "プロクシ"
@@ -270,7 +262,6 @@
 "Tracker:" ---> "トラッカー:"
 "Trackers" --->  ??? 
 "Transferred:" --->  ??? 
-"Translation" --->  ??? 
 "Type" ---> "タイプ"
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
