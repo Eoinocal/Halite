@@ -45,9 +45,14 @@ public:
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg)
 	{
-		assert(pages_[GetCurSel()].msgFilter);
+		if (::IsWindow(m_hWnd))
+		{
+			assert(pages_[GetCurSel()].msgFilter);
 		
-		return pages_[GetCurSel()].msgFilter->PreTranslateMessage(pMsg);
+			return pages_[GetCurSel()].msgFilter->PreTranslateMessage(pMsg);
+		}
+
+		return false;
 	}
 
 	void Attach(HWND hWndNew)
