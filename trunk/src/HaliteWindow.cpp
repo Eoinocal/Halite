@@ -19,6 +19,7 @@
 #include "AdvHaliteDialog.hpp"
 #include "AddTorrentDialog.hpp"
 #include "NewTorrentDialog.hpp"
+#include "SplashDialog.hpp"
 
 #include "ConfigOptions.hpp"
 #include "halConfig.hpp"
@@ -397,11 +398,33 @@ void HaliteWindow::OnClose()
 }
  
 void HaliteWindow::OnDestroy()
-{
+{	
+	KillTimer(ID_UPDATE_TIMER);
+	KillTimer(ID_SAVE_TIMER);
+
+	Sleep(0);
+
 	splitterPos = m_Split.GetSplitterPos();
 
 	hal::config().save();
 	save();
+
+		hal::bittorrent().stopEventReceiver();
+		
+//		if (halite().showMessage)
+		{
+			SplashDialog splDlg;
+			splDlg.DoModal();
+		}
+/*		else
+		{
+			hal::bittorrent().closeAll(bind(&num_active, _1));
+			hal::bittorrent().shutDownSession();		
+		}
+*/				
+		halite().save();
+		hal::ini().save_data();
+
 	PostQuitMessage(0);
 }
 

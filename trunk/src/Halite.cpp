@@ -170,21 +170,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		
 		_Module.RemoveMessageLoop();
 		
-		hal::bittorrent().stopEventReceiver();
-		
-		if (halite().showMessage)
-		{
-			SplashDialog splDlg;
-			splDlg.DoModal();
-		}
-		else
-		{
-			hal::bittorrent().closeAll(bind(&num_active, _1));
-			hal::bittorrent().shutDownSession();		
-		}
-				
-		halite().save();
-		hal::ini().save_data();
 	}
 	}
 

@@ -1084,6 +1084,10 @@
 				Name="global"
 				>
 				<File
+					RelativePath="..\..\src\WTLx\GenericAddListView.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\global\ini.hpp"
 					>
 				</File>
@@ -1145,10 +1149,6 @@
 				</File>
 				<File
 					RelativePath="..\..\src\WTLx\GenericAddDialog.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\WTLx\GenericAddListView.hpp"
 					>
 				</File>
 				<File

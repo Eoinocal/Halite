@@ -955,10 +955,10 @@ public:
 			ar & slz::make_nvp("filename", filename_);	
 
 			wstring s;
-			ar & slz::make_nvp("saveDirectory", save_directory_);
+			ar & slz::make_nvp("saveDirectory", s);
 			save_directory_ = s;
 
-			if (version == 1) {
+			if (version == 2) {
 				wstring m;
 				ar & slz::make_nvp("moveToDirectory", m);
 				move_to_directory_ = m;
