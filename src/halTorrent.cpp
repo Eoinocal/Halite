@@ -154,7 +154,7 @@ bit& bittorrent()
 	return t;
 }
 
-bool operator!=(const lbt::dht_settings& lhs, const lbt::dht_settings& rhs)
+bool operator!=(const libt::dht_settings& lhs, const libt::dht_settings& rhs)
 {
 	return lhs.max_peers_reply != rhs.max_peers_reply ||
 		   lhs.search_branching != rhs.search_branching ||
@@ -163,7 +163,7 @@ bool operator!=(const lbt::dht_settings& lhs, const lbt::dht_settings& rhs)
 }
 
 template<typename Addr>
-void write_range(fs::ofstream& ofs, const lbt::ip_range<Addr>& range)
+void write_range(fs::ofstream& ofs, const libt::ip_range<Addr>& range)
 { 
 	const typename Addr::bytes_type first = range.first.to_bytes();
 	const typename Addr::bytes_type last = range.last.to_bytes();
@@ -172,11 +172,11 @@ void write_range(fs::ofstream& ofs, const lbt::ip_range<Addr>& range)
 }
 
 template<typename Addr>
-void write_vec_range(fs::ofstream& ofs, const std::vector<lbt::ip_range<Addr> >& vec)
+void write_vec_range(fs::ofstream& ofs, const std::vector<libt::ip_range<Addr> >& vec)
 { 
 	ofs << vec.size();
 	
-	for (typename std::vector<lbt::ip_range<Addr> >::const_iterator i=vec.begin(); 
+	for (typename std::vector<libt::ip_range<Addr> >::const_iterator i=vec.begin(); 
 		i != vec.end(); ++i)
 	{
 		write_range(ofs, *i);
@@ -184,7 +184,7 @@ void write_vec_range(fs::ofstream& ofs, const std::vector<lbt::ip_range<Addr> >&
 }
 
 template<typename Addr>
-void read_range_to_filter(fs::ifstream& ifs, lbt::ip_filter& ip_filter)
+void read_range_to_filter(fs::ifstream& ifs, libt::ip_filter& ip_filter)
 { 
 	typename Addr::bytes_type first;
 	typename Addr::bytes_type last;
@@ -192,24 +192,24 @@ void read_range_to_filter(fs::ifstream& ifs, lbt::ip_filter& ip_filter)
 	ifs.read((char*)last.elems, last.size());	
 	
 	ip_filter.add_rule(Addr(first), Addr(last),
-		lbt::ip_filter::blocked);
+		libt::ip_filter::blocked);
 }
 
-static Event::eventLevel lbtAlertToHalEvent(lbt::alert::severity_t severity)
+static Event::eventLevel lbtAlertToHalEvent(libt::alert::severity_t severity)
 {
 	switch (severity)
 	{
-	case lbt::alert::debug:
+	case libt::alert::debug:
 		return Event::debug;
 	
-	case lbt::alert::info:
+	case libt::alert::info:
 		return Event::info;
 	
-	case lbt::alert::warning:
+	case libt::alert::warning:
 		return Event::warning;
 	
-	case lbt::alert::critical:
-	case lbt::alert::fatal:
+	case libt::alert::critical:
+	case libt::alert::fatal:
 		return Event::critical;
 	
 	default:
@@ -289,10 +289,10 @@ public:
 			fs::ofstream ofs(workingDirectory/L"IPFilter.bin", std::ios::binary);
 //			boost::archive::binary_oarchive oba(ofs);
 			
-			lbt::ip_filter::filter_tuple_t vectors = ip_filter_.export_filter();	
+			libt::ip_filter::filter_tuple_t vectors = ip_filter_.export_filter();	
 			
-			std::vector<lbt::ip_range<asio::ip::address_v4> > v4(vectors.get<0>());
-			std::vector<lbt::ip_range<asio::ip::address_v6> > v6(vectors.get<1>());
+			std::vector<libt::ip_range<asio::ip::address_v4> > v4(vectors.get<0>());
+			std::vector<libt::ip_range<asio::ip::address_v6> > v6(vectors.get<1>());
 			
 			v4.erase(std::remove(v4.begin(), v4.end(), 0), v4.end());
 			v6.erase(std::remove(v6.begin(), v6.end(), 0), v6.end());
@@ -320,7 +320,7 @@ public:
 		if (keepChecking_)
 		{
 		
-		std::auto_ptr<lbt::alert> p_alert = theSession.pop_alert();
+		std::auto_ptr<libt::alert> p_alert = theSession.pop_alert();
 		
 		class AlertHandler
 		{
@@ -329,7 +329,7 @@ public:
 			bit_impl_(bit_impl)
 		{}
 		
-		void operator()(lbt::torrent_finished_alert const& a) const
+		void operator()(libt::torrent_finished_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventMsg((wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
@@ -339,7 +339,7 @@ public:
 			get(a.handle)->finished();	
 		}
 		
-		void operator()(lbt::torrent_paused_alert const& a) const
+		void operator()(libt::torrent_paused_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventMsg((wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 
@@ -349,7 +349,7 @@ public:
 			get(a.handle)->signals().torrent_paused();
 		}
 		
-		void operator()(lbt::peer_error_alert const& a) const
+		void operator()(libt::peer_error_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
@@ -359,7 +359,7 @@ public:
 			)	);				
 		}
 			
-		void operator()(lbt::peer_ban_alert const& a) const
+		void operator()(libt::peer_ban_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
@@ -369,7 +369,7 @@ public:
 			)	);				
 		}
 			
-		void operator()(lbt::hash_failed_alert const& a) const
+		void operator()(libt::hash_failed_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
@@ -379,7 +379,7 @@ public:
 			)	);				
 		}
 			
-		void operator()(lbt::url_seed_alert const& a) const
+		void operator()(libt::url_seed_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
@@ -390,7 +390,7 @@ public:
 			)	);				
 		}
 		
-		void operator()(lbt::tracker_warning_alert const& a) const
+		void operator()(libt::tracker_warning_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
@@ -400,7 +400,7 @@ public:
 			)	);				
 		}
 		
-		void operator()(lbt::tracker_announce_alert const& a) const
+		void operator()(libt::tracker_announce_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventMsg((wformat(hal::app().res_wstr(HAL_TRACKER_ANNOUNCE_ALERT)) 
@@ -408,7 +408,7 @@ public:
 					Event::info, a.timestamp())));
 		}
 		
-		void operator()(lbt::tracker_alert const& a) const
+		void operator()(libt::tracker_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
@@ -420,7 +420,7 @@ public:
 			)	);				
 		}
 		
-		void operator()(lbt::tracker_reply_alert const& a) const
+		void operator()(libt::tracker_reply_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
@@ -431,7 +431,7 @@ public:
 			)	);				
 		}
 		
-		void operator()(lbt::fastresume_rejected_alert const& a) const
+		void operator()(libt::fastresume_rejected_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
@@ -441,7 +441,7 @@ public:
 			)	);				
 		}
 		
-		void operator()(lbt::piece_finished_alert const& a) const
+		void operator()(libt::piece_finished_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(Event::debug, a.timestamp(),
@@ -451,7 +451,7 @@ public:
 			)	);				
 		}
 		
-		void operator()(lbt::block_finished_alert const& a) const
+		void operator()(libt::block_finished_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(Event::debug, a.timestamp(),
@@ -462,7 +462,7 @@ public:
 			)	);				
 		}
 		
-		void operator()(lbt::block_downloading_alert const& a) const
+		void operator()(libt::block_downloading_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(Event::debug, a.timestamp(),
@@ -473,7 +473,7 @@ public:
 			)	);				
 		}
 		
-		void operator()(lbt::listen_failed_alert const& a) const
+		void operator()(libt::listen_failed_alert const& a) const
 		{
 			if (a.endpoint.address().is_v6())
 			{	
@@ -492,7 +492,7 @@ public:
 			}
 		}
 		
-		void operator()(lbt::listen_succeeded_alert const& a) const
+		void operator()(libt::listen_succeeded_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(Event::info, a.timestamp(),
@@ -503,7 +503,7 @@ public:
 			bit_impl_.signals.successful_listen();
 		}
 		
-		void operator()(lbt::peer_blocked_alert const& a) const
+		void operator()(libt::peer_blocked_alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 				new EventGeneral(Event::debug, a.timestamp(),
@@ -513,7 +513,7 @@ public:
 			)	);				
 		}
 		
-		void operator()(lbt::alert const& a) const
+		void operator()(libt::alert const& a) const
 		{
 			event().post(shared_ptr<EventDetail>(
 					new EventLibtorrent(lbtAlertToHalEvent(a.severity()), 
@@ -523,7 +523,7 @@ public:
 		private:
 			bit_impl& bit_impl_;
 			
-			torrent_internal_ptr get(lbt::torrent_handle h) const 
+			torrent_internal_ptr get(libt::torrent_handle h) const 
 			{ 
 				return bit_impl_.theTorrents.get(from_utf8_safe(h.get_torrent_info().name())); 
 			}
@@ -535,29 +535,29 @@ public:
 			try
 			{
 			
-			lbt::handle_alert<
-				lbt::torrent_finished_alert,
-				lbt::torrent_paused_alert,
-				lbt::peer_error_alert,
-				lbt::peer_ban_alert,
-				lbt::hash_failed_alert,
-				lbt::url_seed_alert,
-				lbt::tracker_alert,
-				lbt::tracker_warning_alert,
-				lbt::tracker_announce_alert,
-				lbt::tracker_reply_alert,
-				lbt::fastresume_rejected_alert,
-				lbt::piece_finished_alert,
-				lbt::block_finished_alert,
-				lbt::block_downloading_alert,
-				lbt::listen_failed_alert,
-				lbt::listen_succeeded_alert,
-				lbt::peer_blocked_alert,
-				lbt::alert
+			libt::handle_alert<
+				libt::torrent_finished_alert,
+				libt::torrent_paused_alert,
+				libt::peer_error_alert,
+				libt::peer_ban_alert,
+				libt::hash_failed_alert,
+				libt::url_seed_alert,
+				libt::tracker_alert,
+				libt::tracker_warning_alert,
+				libt::tracker_announce_alert,
+				libt::tracker_reply_alert,
+				libt::fastresume_rejected_alert,
+				libt::piece_finished_alert,
+				libt::block_finished_alert,
+				libt::block_downloading_alert,
+				libt::listen_failed_alert,
+				libt::listen_succeeded_alert,
+				libt::peer_blocked_alert,
+				libt::alert
 			>::handle_alert(p_alert, handler);			
 			
 			}
-			catch(lbt::unhandled_alert&)
+			catch(libt::unhandled_alert&)
 			{
 				handler(*p_alert);
 			}
@@ -605,7 +605,7 @@ public:
 
 private:
 	bit_impl() :
-		theSession(lbt::fingerprint(HALITE_FINGERPRINT)),
+		theSession(libt::fingerprint(HALITE_FINGERPRINT)),
 		timer_(io_),
 		keepChecking_(false),
 		bittorrentIni(L"BitTorrent.xml"),
@@ -623,9 +623,9 @@ private:
 		torrent_internal::the_session_ = &theSession;
 		torrent_internal::workingDir_ = workingDir();
 		
-		theSession.set_severity_level(lbt::alert::debug);		
-		theSession.add_extension(&lbt::create_metadata_plugin);
-		theSession.add_extension(&lbt::create_ut_pex_plugin);
+		theSession.set_severity_level(libt::alert::debug);		
+		theSession.add_extension(&libt::create_metadata_plugin);
+		theSession.add_extension(&libt::create_ut_pex_plugin);
 		theSession.set_max_half_open_connections(10);
 		
 		hal::event().post(shared_ptr<hal::EventDetail>(
@@ -648,7 +648,7 @@ private:
 		
 			TorrentMap torrents;
 			boost::archive::xml_wiarchive ia(ifs);	
-			ia >> slz::make_nvp("torrents", torrents);
+			ia >> boost::serialization::make_nvp("torrents", torrents);
 			
 			theTorrents = torrents;
 			}
@@ -678,7 +678,7 @@ private:
 			}
 		}
 		
-		{	lbt::session_settings settings = theSession.settings();
+		{	libt::session_settings settings = theSession.settings();
 			settings.user_agent = string("Halite ") + HALITE_VERSION_STRING;
 			theSession.set_settings(settings);
 		}
@@ -691,7 +691,7 @@ private:
 	{		
 	try
 	{
-		boost::intrusive_ptr<lbt::torrent_info> t_info(new lbt::torrent_info);
+		boost::intrusive_ptr<libt::torrent_info> t_info(new libt::torrent_info);
 
 		int piece_size = 256 * 1024;
 		t_info->set_piece_size(piece_size);
@@ -704,10 +704,10 @@ private:
 			t_info->add_file(to_utf8((*i).first.string()), (*i).second);
 		}
 
-		lbt::file_pool f_pool;
+		libt::file_pool f_pool;
 		
-		scoped_ptr<lbt::storage_interface> store(
-			lbt::default_storage_constructor(t_info, to_utf8(params.root_path.string()),
+		scoped_ptr<libt::storage_interface> store(
+			libt::default_storage_constructor(t_info, to_utf8(params.root_path.string()),
 				f_pool));
 
 		HAL_DEV_MSG(L"Trackers");
@@ -742,7 +742,7 @@ private:
 		{
 			store->read(&piece_buf[0], i, 0, t_info->piece_size(i));
 
-			lbt::hasher h(&piece_buf[0], t_info->piece_size(i));
+			libt::hasher h(&piece_buf[0], t_info->piece_size(i));
 			t_info->set_hash(i, h.final());
 
 			if (fn(100*i / num, hal::app().res_wstr(HAL_NEWT_HASHING_PIECES)))
@@ -762,7 +762,7 @@ private:
 		t_info->set_priv(params.private_torrent);
 
 		// create the torrent and print it to out
-		lbt::entry e = t_info->create_torrent();
+		libt::entry e = t_info->create_torrent();
 		halencode(out_file, e);
 		}
 		catch(const std::exception& e)
@@ -774,10 +774,10 @@ private:
 		return false;
 	}
 	
-	std::pair<lbt::entry, lbt::entry> prepTorrent(wpath filename, wpath saveDirectory);
+	std::pair<libt::entry, libt::entry> prepTorrent(wpath filename, wpath saveDirectory);
 	void removalThread(torrent_internal_ptr pIT, bool wipeFiles);
 	
-	lbt::session theSession;
+	libt::session theSession;
 	asio::io_service io_;
 	asio::deadline_timer timer_;
 	bool keepChecking_;
@@ -794,17 +794,17 @@ private:
 	bool ip_filter_on_;
 	bool ip_filter_loaded_;
 	bool ip_filter_changed_;
-	lbt::ip_filter ip_filter_;
+	libt::ip_filter ip_filter_;
 	size_t ip_filter_count_;
 	
 	void ip_filter_count();
 	void ip_filter_load(progress_callback fn);
-	void ip_filter_import(std::vector<lbt::ip_range<asio::ip::address_v4> >& v4,
-		std::vector<lbt::ip_range<asio::ip::address_v6> >& v6);
+	void ip_filter_import(std::vector<libt::ip_range<asio::ip::address_v4> >& v4,
+		std::vector<libt::ip_range<asio::ip::address_v6> >& v6);
 	
 	bool dht_on_;
-	lbt::dht_settings dht_settings_;
-	lbt::entry dht_state_;
+	libt::dht_settings dht_settings_;
+	libt::entry dht_state_;
 	
 };
 
@@ -815,7 +815,7 @@ bit::bit() :
 {}
 
 #define HAL_GENERIC_TORRENT_EXCEPTION_CATCH(TORRENT, FUNCTION) \
-catch (const lbt::invalid_handle&) \
+catch (const libt::invalid_handle&) \
 {\
 	event().post(shared_ptr<EventDetail>( \
 		new EventInvalidTorrent(Event::critical, Event::invalidTorrent, TORRENT, std::string(FUNCTION)))); \
@@ -929,7 +929,7 @@ void bit::ensureDhtOff()
 void bit::setDhtSettings(int max_peers_reply, int search_branching, 
 	int service_port, int max_fail_count)
 {
-	lbt::dht_settings settings;
+	libt::dht_settings settings;
 	settings.max_peers_reply = max_peers_reply;
 	settings.search_branching = search_branching;
 	settings.service_port = service_port;
@@ -952,7 +952,7 @@ void bit::setMapping(int mapping)
 			pimpl->theSession.stop_upnp();
 			pimpl->theSession.stop_natpmp();
 
-			pimpl->signals.successful_listen.connect_once(bind(&lbt::session::start_upnp, &pimpl->theSession));
+			pimpl->signals.successful_listen.connect_once(bind(&libt::session::start_upnp, &pimpl->theSession));
 		}
 		else
 		{
@@ -960,7 +960,7 @@ void bit::setMapping(int mapping)
 			pimpl->theSession.stop_upnp();
 			pimpl->theSession.stop_natpmp();
 
-			pimpl->signals.successful_listen.connect_once(bind(&lbt::session::start_natpmp, &pimpl->theSession));
+			pimpl->signals.successful_listen.connect_once(bind(&libt::session::start_natpmp, &pimpl->theSession));
 		}
 	}
 	else
@@ -973,7 +973,7 @@ void bit::setMapping(int mapping)
 
 void bit::setTimeouts(int peers, int tracker)
 {
-	lbt::session_settings settings = pimpl->theSession.settings();
+	libt::session_settings settings = pimpl->theSession.settings();
 	settings.peer_connect_timeout = peers;
 	settings.tracker_completion_timeout = tracker;
 
@@ -1007,7 +1007,7 @@ void bit::setSessionSpeed(float download, float upload)
 
 void bit_impl::ip_filter_count()
 {
-	lbt::ip_filter::filter_tuple_t vectors = ip_filter_.export_filter();
+	libt::ip_filter::filter_tuple_t vectors = ip_filter_.export_filter();
 	
 	vectors.get<0>().erase(std::remove(vectors.get<0>().begin(), vectors.get<0>().end(), 0),
 		vectors.get<0>().end());
@@ -1041,18 +1041,18 @@ void bit_impl::ip_filter_load(progress_callback fn)
 	}	
 }
 
-void  bit_impl::ip_filter_import(std::vector<lbt::ip_range<asio::ip::address_v4> >& v4,
-	std::vector<lbt::ip_range<asio::ip::address_v6> >& v6)
+void  bit_impl::ip_filter_import(std::vector<libt::ip_range<asio::ip::address_v4> >& v4,
+	std::vector<libt::ip_range<asio::ip::address_v6> >& v6)
 {
-	for(std::vector<lbt::ip_range<asio::ip::address_v4> >::iterator i=v4.begin();
+	for(std::vector<libt::ip_range<asio::ip::address_v4> >::iterator i=v4.begin();
 		i != v4.end(); ++i)
 	{
-		ip_filter_.add_rule(i->first, i->last, lbt::ip_filter::blocked);
+		ip_filter_.add_rule(i->first, i->last, libt::ip_filter::blocked);
 	}
-/*	for(std::vector<lbt::ip_range<asio::ip::address_v6> >::iterator i=v6.begin();
+/*	for(std::vector<libt::ip_range<asio::ip::address_v6> >::iterator i=v6.begin();
 		i != v6.end(); ++i)
 	{
-		ip_filter_.add_rule(i->first, i->last, lbt::ip_filter::blocked);
+		ip_filter_.add_rule(i->first, i->last, libt::ip_filter::blocked);
 	}
 */	
 	/* Note here we do not set ip_filter_changed_ */
@@ -1092,7 +1092,7 @@ bool bit::ensureIpFilterOn(progress_callback fn)
 
 void bit::ensureIpFilterOff()
 {
-	pimpl->theSession.set_ip_filter(lbt::ip_filter());
+	pimpl->theSession.set_ip_filter(libt::ip_filter());
 	pimpl->ip_filter_on_ = false;
 	
 	event().post(shared_ptr<EventDetail>(new EventMsg(L"IP filters off.")));	
@@ -1101,21 +1101,21 @@ void bit::ensureIpFilterOff()
 #ifndef TORRENT_DISABLE_ENCRYPTION	
 void bit::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4)
 {
-	lbt::pe_settings pe;
+	libt::pe_settings pe;
 	
 	switch (enc_level)
 	{
 		case 0:
-			pe.allowed_enc_level = lbt::pe_settings::plaintext;
+			pe.allowed_enc_level = libt::pe_settings::plaintext;
 			break;
 		case 1:
-			pe.allowed_enc_level = lbt::pe_settings::rc4;
+			pe.allowed_enc_level = libt::pe_settings::rc4;
 			break;
 		case 2:
-			pe.allowed_enc_level = lbt::pe_settings::both;
+			pe.allowed_enc_level = libt::pe_settings::both;
 			break;
 		default:
-			pe.allowed_enc_level = lbt::pe_settings::both;
+			pe.allowed_enc_level = libt::pe_settings::both;
 			
 			hal::event().post(shared_ptr<hal::EventDetail>(
 				new hal::EventGeneral(hal::Event::warning, hal::Event::unclassified, 
@@ -1125,16 +1125,16 @@ void bit::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool 
 	switch (in_enc_policy)
 	{
 		case 0:
-			pe.in_enc_policy = lbt::pe_settings::forced;
+			pe.in_enc_policy = libt::pe_settings::forced;
 			break;
 		case 1:
-			pe.in_enc_policy = lbt::pe_settings::enabled;
+			pe.in_enc_policy = libt::pe_settings::enabled;
 			break;
 		case 2:
-			pe.in_enc_policy = lbt::pe_settings::disabled;
+			pe.in_enc_policy = libt::pe_settings::disabled;
 			break;
 		default:
-			pe.in_enc_policy = lbt::pe_settings::enabled;
+			pe.in_enc_policy = libt::pe_settings::enabled;
 			
 			hal::event().post(shared_ptr<hal::EventDetail>(
 				new hal::EventGeneral(hal::Event::warning, hal::Event::unclassified, 
@@ -1144,16 +1144,16 @@ void bit::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool 
 	switch (out_enc_policy)
 	{
 		case 0:
-			pe.out_enc_policy = lbt::pe_settings::forced;
+			pe.out_enc_policy = libt::pe_settings::forced;
 			break;
 		case 1:
-			pe.out_enc_policy = lbt::pe_settings::enabled;
+			pe.out_enc_policy = libt::pe_settings::enabled;
 			break;
 		case 2:
-			pe.out_enc_policy = lbt::pe_settings::disabled;
+			pe.out_enc_policy = libt::pe_settings::disabled;
 			break;
 		default:
-			pe.out_enc_policy = lbt::pe_settings::enabled;
+			pe.out_enc_policy = libt::pe_settings::enabled;
 			
 			hal::event().post(shared_ptr<hal::EventDetail>(
 				new hal::EventGeneral(hal::Event::warning, hal::Event::unclassified, 
@@ -1181,11 +1181,11 @@ void bit::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool 
 
 void bit::ensurePeOff()
 {
-	lbt::pe_settings pe;
-	pe.out_enc_policy = lbt::pe_settings::disabled;
-	pe.in_enc_policy = lbt::pe_settings::disabled;
+	libt::pe_settings pe;
+	pe.out_enc_policy = libt::pe_settings::disabled;
+	pe.in_enc_policy = libt::pe_settings::disabled;
 	
-	pe.allowed_enc_level = lbt::pe_settings::both;
+	pe.allowed_enc_level = libt::pe_settings::both;
 	pe.prefer_rc4 = true;
 	
 	pimpl->theSession.set_pe_settings(pe);
@@ -1196,14 +1196,14 @@ void bit::ensurePeOff()
 
 void bit::ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 last)
 {
-	pimpl->ip_filter_.add_rule(first, last, lbt::ip_filter::blocked);
+	pimpl->ip_filter_.add_rule(first, last, libt::ip_filter::blocked);
 	pimpl->ip_filter_count();
 	pimpl->ip_filter_changed_ = true;
 }
 
 void bit::ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last)
 {
-	pimpl->ip_filter_.add_rule(first, last, lbt::ip_filter::blocked);
+	pimpl->ip_filter_.add_rule(first, last, libt::ip_filter::blocked);
 	pimpl->ip_filter_count();
 	pimpl->ip_filter_changed_ = true;
 }
@@ -1215,8 +1215,8 @@ size_t bit::ip_filter_size()
 
 void bit::clearIpFilter()
 {
-	pimpl->ip_filter_ = lbt::ip_filter();
-	pimpl->theSession.set_ip_filter(lbt::ip_filter());	
+	pimpl->ip_filter_ = libt::ip_filter();
+	pimpl->theSession.set_ip_filter(libt::ip_filter());	
 	pimpl->ip_filter_changed_ = true;
 	pimpl->ip_filter_count();
 }
@@ -1277,7 +1277,7 @@ bool bit::ip_filter_import_dat(boost::filesystem::path file, progress_callback f
 				try
 				{			
 				pimpl->ip_filter_.add_rule(asio::ip::address_v4::from_string(first),
-					asio::ip::address_v4::from_string(last), lbt::ip_filter::blocked);	
+					asio::ip::address_v4::from_string(last), libt::ip_filter::blocked);	
 				}
 				catch(...)
 				{
@@ -1308,7 +1308,7 @@ const SessionDetail bit::getSessionDetails()
 	
 	details.port = pimpl->theSession.is_listening() ? pimpl->theSession.listen_port() : -1;
 	
-	lbt::session_status status = pimpl->theSession.status();
+	libt::session_status status = pimpl->theSession.status();
 	
 	details.speed = std::pair<double, double>(status.download_rate, status.upload_rate);
 	
@@ -1345,10 +1345,10 @@ void bit::setTorrentDefaults(int maxConn, int maxUpload, float download, float u
 		wformat(L"Set torrent default rates at %1$.2fkb/s down and %2$.2fkb/s upload.") % download % upload)));
 }
 
-std::pair<lbt::entry, lbt::entry> bit_impl::prepTorrent(wpath filename, wpath saveDirectory)
+std::pair<libt::entry, libt::entry> bit_impl::prepTorrent(wpath filename, wpath saveDirectory)
 {
-	lbt::entry metadata = haldecode(filename);
-	lbt::torrent_info info(metadata);
+	libt::entry metadata = haldecode(filename);
+	libt::torrent_info info(metadata);
  	
 	wstring torrentName = hal::from_utf8_safe(info.name());
 	if (!boost::find_last(torrentName, L".torrent")) 
@@ -1364,7 +1364,7 @@ std::pair<lbt::entry, lbt::entry> bit_impl::prepTorrent(wpath filename, wpath sa
 		fs::rename(oldResumeFile, resumeFile);
 	//  ^^^ Handle old naming style!	
 	
-	lbt::entry resumeData;	
+	libt::entry resumeData;	
 	
 	if (fs::exists(resumeFile)) 
 	{
@@ -1438,7 +1438,7 @@ void bit::addTorrent(wpath file, wpath saveDirectory, bool startStopped, bool co
 		torrent_internal_ptr me = pimpl->theTorrents.get(TIp->name());		
 		
 		if (!startStopped) 
-			me->addToSession();
+			me->add_to_session();
 		else
 			me->set_state_stopped();
 	}
@@ -1446,7 +1446,7 @@ void bit::addTorrent(wpath file, wpath saveDirectory, bool startStopped, bool co
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(to_utf8(file.string()), "addTorrent")
 }
 
-void add_files(lbt::torrent_info& t, fs::path const& p, fs::path const& l)
+void add_files(libt::torrent_info& t, fs::path const& p, fs::path const& l)
 {
 /*	fs::path f(p / l);
 	if (fs::is_directory(f))
@@ -1457,8 +1457,8 @@ void add_files(lbt::torrent_info& t, fs::path const& p, fs::path const& l)
 	else
 	{
 	//	std::cerr << "adding \"" << l.string() << "\"\n";
-		lbt::file fi(f, lbt::file::in);
-		fi.seek(0, lbt::file::end);
+		libt::file fi(f, libt::file::in);
+		fi.seek(0, libt::file::end);
 		libtorrent::size_type size = fi.tell();
 		t.add_file(l, size);
 	}
@@ -1481,7 +1481,7 @@ void bit::newTorrent(wpath filename, wpath files)
 	add_files(t, full_path.branch_path(), full_path.leaf());
 	t.set_piece_size(piece_size);
 
-	lbt::storage st(t, full_path.branch_path());
+	libt::storage st(t, full_path.branch_path());
 	t.add_tracker("http://www.nitcom.com.au/announce.php");
 	t.set_priv(false);
 	t.add_node(make_pair("192.168.11.12", 6881));
@@ -1500,8 +1500,8 @@ void bit::newTorrent(wpath filename, wpath files)
 	t.set_creator(creator_str);
 
 	// create the torrent and print it to out
-	lbt::entry e = t.create_torrent();
-	lbt::bencode(std::ostream_iterator<char>(out), e);
+	libt::entry e = t.create_torrent();
+	libt::bencode(std::ostream_iterator<char>(out), e);
 	}
 	catch (std::exception& e)
 	{
@@ -1568,10 +1568,10 @@ void bit::resumeAll()
 				case TorrentDetail::torrent_stopped:
 					break;
 				case TorrentDetail::torrent_paused:
-					(*i).torrent->addToSession(true);
+					(*i).torrent->add_to_session(true);
 					break;
 				case TorrentDetail::torrent_active:
-					(*i).torrent->addToSession(false);
+					(*i).torrent->add_to_session(false);
 					break;
 				default:
 					assert(false);
@@ -1580,7 +1580,7 @@ void bit::resumeAll()
 			++i;
 			
 			}
-			catch(const lbt::duplicate_torrent&)
+			catch(const libt::duplicate_torrent&)
 			{
 				hal::event().post(shared_ptr<hal::EventDetail>(
 					new hal::EventDebug(hal::Event::debug, L"Encountered duplicate torrent")));
@@ -1644,8 +1644,8 @@ void bit::closeAll(report_num_active fn)
 	{
 		if ((*i).torrent->in_session())
 		{
-			(*i).torrent->removeFromSession();
-			(*i).torrent->writeResumeData();
+			(*i).torrent->remove_from_session();
+			(*i).torrent->write_resume_data();
 		}
 	}
 	
@@ -1654,7 +1654,7 @@ void bit::closeAll(report_num_active fn)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")
 }
 
-PeerDetail::PeerDetail(lbt::peer_info& peerInfo) :
+PeerDetail::PeerDetail(libt::peer_info& peerInfo) :
 	ipAddress(hal::from_utf8_safe(peerInfo.ip.address().to_string())),
 	country(L""),
 	speed(std::make_pair(peerInfo.payload_down_speed, peerInfo.payload_up_speed)),
@@ -1667,40 +1667,40 @@ PeerDetail::PeerDetail(lbt::peer_info& peerInfo) :
 		country = (wformat(L"(%1%)") % hal::from_utf8_safe(string(peerInfo.country, 2))).str().c_str();
 #endif	
 
-	if (peerInfo.flags & lbt::peer_info::handshake)
+	if (peerInfo.flags & libt::peer_info::handshake)
 	{
 		status_vec.push_back(app().res_wstr(HAL_PEER_HANDSHAKE));
 	}		
-	else if (peerInfo.flags & lbt::peer_info::connecting)
+	else if (peerInfo.flags & libt::peer_info::connecting)
 	{
 		status_vec.push_back(app().res_wstr(HAL_PEER_CONNECTING));
 	}
 	else
 	{
 	#ifndef TORRENT_DISABLE_ENCRYPTION		
-		if (peerInfo.flags & lbt::peer_info::rc4_encrypted)
+		if (peerInfo.flags & libt::peer_info::rc4_encrypted)
 			status_vec.push_back(app().res_wstr(HAL_PEER_RC4_ENCRYPTED));		
-		if (peerInfo.flags & lbt::peer_info::plaintext_encrypted)
+		if (peerInfo.flags & libt::peer_info::plaintext_encrypted)
 			status_vec.push_back(app().res_wstr(HAL_PEER_PLAINTEXT_ENCRYPTED));
 	#endif
 		
-		if (peerInfo.flags & lbt::peer_info::interesting)
+		if (peerInfo.flags & libt::peer_info::interesting)
 			status_vec.push_back(app().res_wstr(HAL_PEER_INTERESTING));	
-		if (peerInfo.flags & lbt::peer_info::choked)
+		if (peerInfo.flags & libt::peer_info::choked)
 			status_vec.push_back(app().res_wstr(HAL_PEER_CHOKED));	
-		if (peerInfo.flags & lbt::peer_info::remote_interested)
+		if (peerInfo.flags & libt::peer_info::remote_interested)
 			status_vec.push_back(app().res_wstr(HAL_PEER_REMOTE_INTERESTING));	
-		if (peerInfo.flags & lbt::peer_info::remote_choked)
+		if (peerInfo.flags & libt::peer_info::remote_choked)
 			status_vec.push_back(app().res_wstr(HAL_PEER_REMOTE_CHOKED));	
-		if (peerInfo.flags & lbt::peer_info::supports_extensions)
+		if (peerInfo.flags & libt::peer_info::supports_extensions)
 			status_vec.push_back(app().res_wstr(HAL_PEER_SUPPORT_EXTENSIONS));	
-	//	if (peerInfo.flags & lbt::peer_info::local_connection)						// Not sure whats up here?
+	//	if (peerInfo.flags & libt::peer_info::local_connection)						// Not sure whats up here?
 	//		status_vec.push_back(app().res_wstr(HAL_PEER_LOCAL_CONNECTION));			
-		if (peerInfo.flags & lbt::peer_info::queued)
+		if (peerInfo.flags & libt::peer_info::queued)
 			status_vec.push_back(app().res_wstr(HAL_PEER_QUEUED));
 	}
 	
-	seed = (peerInfo.flags & lbt::peer_info::seed) ? true : false;
+	seed = (peerInfo.flags & libt::peer_info::seed) ? true : false;
 	
 	if (!status_vec.empty()) status = status_vec[0];
 	
@@ -1872,17 +1872,17 @@ void bit_impl::removalThread(torrent_internal_ptr pIT, bool wipeFiles)
 	{
 		if (pIT->in_session())
 		{
-			theSession.remove_torrent(pIT->handle(), lbt::session::delete_files);
+			theSession.remove_torrent(pIT->handle(), libt::session::delete_files);
 		}
 		else
 		{
-			lbt::torrent_info m_info = pIT->infoMemory();
+			libt::torrent_info m_info = pIT->infoMemory();
 			
 			// delete the files from disk
 			std::string error;
 			std::set<std::string> directories;
 			
-			for (lbt::torrent_info::file_iterator i = m_info.begin_files(true)
+			for (libt::torrent_info::file_iterator i = m_info.begin_files(true)
 				, end(m_info.end_files(true)); i != end; ++i)
 			{
 				std::string p = (hal::path_to_utf8(pIT->saveDirectory()) / i->path).string();
@@ -1924,7 +1924,7 @@ void bit::removeTorrent(const std::wstring& filename)
 	try {
 	
 	torrent_internal_ptr pTI = pimpl->theTorrents.get(filename);
-	lbt::torrent_handle handle = pTI->handle();
+	libt::torrent_handle handle = pTI->handle();
 	pimpl->theTorrents.erase(filename);
 	
 	thread_t t(bind(&bit_impl::removalThread, &*pimpl, pTI, false));	
@@ -1941,7 +1941,7 @@ void bit::recheckTorrent(const std::wstring& filename)
 {
 	try {
 	
-	pimpl->theTorrents.get(filename)->forceRecheck();
+	pimpl->theTorrents.get(filename)->force_recheck();
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "recheckTorrent")
 }
@@ -1956,7 +1956,7 @@ void bit::removeTorrentWipeFiles(const std::wstring& filename)
 	try {
 	
 	torrent_internal_ptr pTI = pimpl->theTorrents.get(filename);
-	lbt::torrent_handle handle = pTI->handle();
+	libt::torrent_handle handle = pTI->handle();
 	pimpl->theTorrents.erase(filename);
 	
 	thread_t t(bind(&bit_impl::removalThread, &*pimpl, pTI, true));	

@@ -61,7 +61,6 @@ public:
 	};
 	
 	FilesListViewCtrl() :
-		listClass(true,false,false),
 		iniClass("listviews/new_files", "NewFilesListView")
 	{
 		std::vector<wstring> names;	

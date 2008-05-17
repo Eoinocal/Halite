@@ -45,7 +45,6 @@ public:
 	};
 	
 	NewTorrent_PeersListViewCtrl() :
-		listClass(true,false,false),
 		iniClass("listviews/NewTorrentPeers", "NewPeersListView")
 	{
 		std::vector<wstring> names;	

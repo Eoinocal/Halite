@@ -16,8 +16,7 @@
 #define TVS_EX_DOUBLEBUFFER 0x0004
 
 FileListView::FileListView() :
-	iniClass("listviews/advFiles", "FileListView"),
-	listClass(true,false,false)
+	iniClass("listviews/advFiles", "FileListView")
 {					
 	std::vector<wstring> names;	
 	wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
