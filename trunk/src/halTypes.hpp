@@ -16,7 +16,6 @@ namespace hal
 	namespace fs = boost::filesystem;
 	namespace pt = boost::posix_time;
 	namespace xp = boost::xpressive;
-	namespace slz = boost::serialization;
 
 	using std::wstring;
 	using std::string;

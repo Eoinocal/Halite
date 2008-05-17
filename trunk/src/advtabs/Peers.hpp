@@ -69,8 +69,7 @@ public:
 	END_MSG_MAP()
 
 	thisClass() :
-		iniClass("listviews/advPeers", "PeerListView"),
-		listClass(true,false,false)
+		iniClass("listviews/advPeers", "PeerListView")
 	{					
 		std::vector<wstring> names;	
 		wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);

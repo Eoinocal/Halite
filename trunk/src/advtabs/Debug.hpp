@@ -89,7 +89,6 @@ public:
 	END_MSG_MAP()
 
 	LogListViewCtrl() :
-		listClass(false, false, false),
 		iniClass("listviews/eventLog", "LogListView")
 	{
 		std::vector<wstring> names;	

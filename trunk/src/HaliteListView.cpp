@@ -5,6 +5,10 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include "stdAfx.hpp"
+
+#include <boost/iterator/filter_iterator.hpp>
+#include <winstl/controls/listview_sequence.hpp>
+
 #include "Halite.hpp"
 
 #include "HaliteListView.hpp"
@@ -15,20 +19,18 @@
 
 HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	halWindow_(HalWindow),
-	iniClass("listviews/halite", "HaliteListView"),
-	listClass(true, false, false)
+	iniClass("listviews/halite", "HaliteListView")
 {		
 	HalWindow.connectUiUpdate(bind(&HaliteListViewCtrl::uiUpdate, this, _1));
 	
 	std::vector<wstring> names;	
 	wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
 	
-	// "Name;Status;Progress;Download;Upload;Peers;Seeds;ETA;Copies;Tracker;Reannounce;Ratio;Total;Completed;Remaining;Downloaded;Uploaded;Active;Seeding;Start Time;Finish Time"
 	boost::split(names, column_names, boost::is_any_of(L";"));
 	
-	array<int, 21> widths = {100,110,60,60,60,42,45,61,45,45,45,45,45,45,45,45,45,45,45,45,45};
-	array<int, 21> order = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
-	array<bool, 21> visible = {true,true,true,true,true,true,true,true,true,true,true,\
+	array<int, NumberOfColumns_s> widths = {100,110,60,60,60,42,45,61,45,45,45,45,45,45,45,45,45,45,45,45,45};
+	array<int, NumberOfColumns_s> order = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+	array<bool, NumberOfColumns_s> visible = {true,true,true,true,true,true,true,true,true,true,true,\
 		true,true,true,true,true,true,true,true,true,true};
 	
 	SetDefaults(names, widths, order, visible);
@@ -92,7 +94,7 @@ void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
 		if (itemPos < 0)
 			itemPos = AddItem(0, 0, td->name().c_str(), 0);
 
-		for (size_t i=1; i<HaliteListViewCtrl::NumberOfColumns_s; ++i)
+		for (size_t i=1; i<NumberOfColumns_s; ++i)
 		{
 			SetItemText(itemPos, i, getColumnAdapter(i)->print(td).c_str());
 		}
@@ -116,28 +118,43 @@ HaliteListViewCtrl::tD HaliteListViewCtrl::CustomItemConversion(LVCompareParam* 
 
 LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::resumeTorrent, 
-			&hal::bittorrent(), _1));
+	typedef winstl::listview_sequence::sequence_value_type lv_val;
+	winstl::listview_sequence lv_seq(*this);
+
+	std::for_each(make_filter_iterator(&is_selected, lv_seq.begin(), lv_seq.end()),
+				  make_filter_iterator(&is_selected, lv_seq.end(), lv_seq.end()),
+				  bind((void (hal::bit::*)(const std::wstring&))&hal::bit::resumeTorrent, 
+				      &hal::bittorrent(), 
+					  bind(&hal::to_wstr_shim<const lv_val>, _1)));
 	
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {	
-	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::pauseTorrent,
-			&hal::bittorrent(), _1));
+	typedef winstl::listview_sequence::sequence_value_type lv_val;
+	winstl::listview_sequence lv_seq(*this);
+
+	std::for_each(make_filter_iterator(&is_selected, lv_seq.begin(), lv_seq.end()),
+				  make_filter_iterator(&is_selected, lv_seq.end(), lv_seq.end()),
+				  bind((void (hal::bit::*)(const std::wstring&))&hal::bit::pauseTorrent, 
+				      &hal::bittorrent(), 
+					  bind(&hal::to_wstr_shim<const lv_val>, _1)));
 	
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::stopTorrent, 
-			&hal::bittorrent(), _1));
-	
+	typedef winstl::listview_sequence::sequence_value_type lv_val;
+	winstl::listview_sequence lv_seq(*this);
+
+	std::for_each(make_filter_iterator(&is_selected, lv_seq.begin(), lv_seq.end()),
+				  make_filter_iterator(&is_selected, lv_seq.end(), lv_seq.end()),
+				  bind((void (hal::bit::*)(const std::wstring&))&hal::bit::stopTorrent, 
+				      &hal::bittorrent(), 
+					  bind(&hal::to_wstr_shim<const lv_val>, _1)));
+
 	return 0;
 }
 
@@ -187,7 +204,7 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 	for(std::set<wstring>::const_iterator i=manager().allSelected().begin(), e=manager().allSelected().end();
 		i != e; ++i)
 	{
-		wstring saveDir = hal::bittorrent().torrentDetails().get(*i)->saveDirectory();		
+		wpath saveDir = hal::bittorrent().get(*i).save_directory;		
 		HAL_DEV_MSG(wformat(L"Name %1%, Save dir: %2%.") % *i % saveDir);
 
 		uniquePaths.insert(saveDir);

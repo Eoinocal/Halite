@@ -42,7 +42,6 @@ public:
 	};
 	
 	TrackerListViewCtrl(boost::filesystem::path location, std::string name) :
-		listClass(true,false,false),
 		iniClass(location, name)
 	{
 		std::vector<wstring> names;	

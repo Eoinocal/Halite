@@ -44,7 +44,6 @@ public:
 	};
 	
 	NewTorrent_TrackerListViewCtrl() :
-		listClass(true,false,false),
 		iniClass("listviews/NewTorrent", "NewTorrentListView")
 	{
 		std::vector<wstring> names;	
