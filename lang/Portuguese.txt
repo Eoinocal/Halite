@@ -91,7 +91,7 @@
 "Encoding Level" ---> "Nível de codificação"
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Digite os endereços (URL) dos rastreadores para o torrent."
-"Exception caught: %1%, from %2%." ---> "Exceção detectada: %1%, do %2%."
+"Exception caught: %1%, from %2%." --->  ??? 
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
@@ -191,7 +191,7 @@
 "Ratio (this session):" ---> "Razão (nessa seção):"
 "Ratio" --->  ??? 
 "Ratio:" ---> "Razão:"
-"Reannounce" --->  ??? 
+"Reannounce" ---> "Reanunciar"
 "Recheck Files" --->  ??? 
 "Remaining" --->  ??? 
 "Remaining:" ---> "Faltando:"
@@ -201,7 +201,7 @@
 "Reset" ---> "Resetar"
 "Resume" ---> "Continuar"
 "Review settings when adding torrent." --->  ??? 
-"Save" ---> "Salvar"
+"Save" --->  ??? 
 "Saving Torrent" --->  ??? 
 "Security" ---> "Segurança"
 "Seeding" ---> "Semeando"
@@ -240,7 +240,7 @@
 "Time" ---> "Hora"
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
-"Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) exceção detectada: %2% do %3%."
+"Torrent (%1%) exception caught: %2% from %3%." --->  ??? 
 "Torrent Defaults" ---> "Padrão para os Torrents"
 "Torrent File" ---> "Arquivo .torrent"
 "Torrent Root" ---> "Raiz do Torrent"
@@ -252,7 +252,7 @@
 "Torrent:" ---> "Torrent:"
 "Torrents" --->  ??? 
 "Total max connections :" ---> "Total de conexões máximas :"
-"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." ---> "Transferência total incluindo gasto: %1$.2fMB baixado e %2$.2fMB upado."
+"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." --->  ??? 
 "Total upload slots :" ---> "Total de slots para upload :"
 "Total" ---> "Total"
 "Tracker Announce. (%1%)" --->  ??? 

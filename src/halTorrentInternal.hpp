@@ -1647,7 +1647,10 @@ TorrentDetail_ptr torrent_internal::getTorrentDetail_ptr()
 			seedingDuration_.update();
 	}	
 	
-	boost::tuple<size_t, size_t, size_t, size_t> connections = updatePeers();		
+	boost::tuple<size_t, size_t, size_t, size_t> connections = updatePeers();	
+
+	wstring wanted = lexical_cast<wstring>(statusMemory_.total_wanted);
+	HAL_DEV_MSG(wformat(L"**** wanted: %1%") % wanted);	
 
 	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, saveDirectory().string(), state, hal::from_utf8(statusMemory_.current_tracker), 
 		std::pair<float, float>(statusMemory_.download_payload_rate, statusMemory_.upload_payload_rate),

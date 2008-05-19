@@ -21,7 +21,6 @@ FileListView::FileListView() :
 	std::vector<wstring> names;	
 	wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
 
-	// "Filename;Path;Size;Progress;Priority"
 	boost::split(names, column_names, boost::is_any_of(L";"));
 	
 	array<int, 5> widths = {100,70,70,70,70};
