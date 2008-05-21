@@ -32,6 +32,8 @@
 #include <boost/filesystem/fstream.hpp>
 
 #include <stlsoft/properties/method_properties.hpp>
+#include <stlsoft/util/operator_bool_adaptor.hpp>
+
 
 #include <asio/ip/tcp.hpp>
 #include <asio/ip/udp.hpp>
@@ -409,6 +411,7 @@ struct SessionDetail
 typedef boost::function<bool (size_t, size_t, size_t)> filterCallback;
 typedef boost::function<bool (size_t, std::wstring)> progress_callback;
 typedef boost::function<void (int)> report_num_active;
+typedef std::pair<wstring, wstring> wstring_pair;
 
 class bit_impl;
 class torrent_internal;
@@ -417,7 +420,14 @@ class bit
 {
 public:	
 
-	class torrent
+	class null_torrent : public std::exception
+	{
+	public:
+		null_torrent() {}		
+		virtual ~null_torrent() throw () {}
+	};
+
+	class torrent : public stlsoft::operator_bool_adaptor<torrent>
 	{
 		typedef torrent class_type;
 
@@ -442,17 +452,24 @@ public:
 				mutex_t::scoped_lock l_;
 			};
 
+			exec_around_ptr() {}
 			exec_around_ptr(boost::shared_ptr<torrent_internal> p) : ptr(p) {}
 
 			proxy operator->() const
 			{
+				if (!ptr)
+					throw null_torrent();
+
 				return proxy(&(*ptr));
 			}
+
+			operator bool() const { return ptr; }
 
 		private:
 			boost::shared_ptr<torrent_internal> ptr;
 		};
 
+		torrent();
 		torrent(boost::shared_ptr<torrent_internal> p);
 
 		float get_ratio() const;
@@ -462,6 +479,9 @@ public:
 		void set_save_directory(const wpath&);
 		wpath get_move_to_directory() const;
 		void set_move_to_directory(const wpath&);
+
+		std::pair<wstring, wstring> get_tracker_login() const;
+		void set_tracker_login(const std::pair<wstring, wstring>&);
 
 		bool get_is_active() const;
 		bool get_in_session() const;
@@ -475,10 +495,15 @@ public:
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(wpath, const wpath&, class_type, 
 			get_move_to_directory, set_move_to_directory, move_to_directory);
 
+		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(wstring_pair, const wstring_pair&, 
+			class_type, get_tracker_login, set_tracker_login, tracker_login);
+
 		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(bool, class_type, 
 			get_is_active, is_active);
 		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(bool, class_type, 
 			get_in_session, in_session);
+
+		bool is_open() const;
 
 	private:
 		exec_around_ptr ptr;
@@ -501,6 +526,15 @@ public:
 	{
 		return get_wstr(to_wstr_shim(t));
 	}
+	
+	template<>
+	torrent get(const hal::TorrentDetail_ptr t)
+	{
+		if (t) 
+			return get_wstr(t->name());
+		else
+			return torrent();
+	}	
 
 	torrent get_wstr(const std::wstring& filename);
 	
@@ -576,11 +610,6 @@ public:
 	void removeTorrent(const std::wstring&  filename);
 	void removeTorrentWipeFiles(const std::string& filename);
 	void removeTorrentWipeFiles(const std::wstring&  filename);
-	
-	void setTorrentLogin(const std::string& filename, std::wstring username, std::wstring password);
-	void setTorrentLogin(const std::wstring& filename, std::wstring username, std::wstring password);
-	std::pair<std::wstring, std::wstring> getTorrentLogin(const std::string& filename);
-	std::pair<std::wstring, std::wstring> getTorrentLogin(const std::wstring&  filename);
 	
 	void setTorrentLimit(const std::string& filename, int maxConn, int maxUpload);
 	void setTorrentLimit(const std::wstring& filename, int maxConn, int maxUpload);

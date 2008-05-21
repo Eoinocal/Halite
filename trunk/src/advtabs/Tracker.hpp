@@ -89,7 +89,7 @@ public:
 	void onApply(UINT, int, HWND);
 	void onReset(UINT, int, HWND);
 
-	void setLoginUiState(const string& torrent_name);	
+	void setLoginUiState();	
 	void uiUpdate(const hal::TorrentDetails& tD);
 	void focusChanged(const hal::TorrentDetail_ptr pT);
 	void trackerListEdited();
