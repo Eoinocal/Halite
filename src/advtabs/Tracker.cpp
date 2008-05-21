@@ -32,7 +32,7 @@ LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 	return 0;
 }
 
-void AdvTrackerDialog::setLoginUiState(const string& torrent_name)
+void AdvTrackerDialog::setLoginUiState()
 {
 	if (username_ == L"")
 	{
@@ -58,13 +58,11 @@ void AdvTrackerDialog::onClose()
 LRESULT AdvTrackerDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {
 	DoDataExchange(true);
-	
-	string torrent_name;	
-	if (hal::bittorrent().torrentDetails().focusedTorrent())
-		torrent_name = hal::to_utf8(hal::bittorrent().torrentDetails().focusedTorrent()->name());
-	
-	setLoginUiState(torrent_name);
-	hal::bittorrent().setTorrentLogin(torrent_name, username_, password_);
+		
+	setLoginUiState();
+
+	if (hal::bit::torrent t = hal::bittorrent().get(focusedTorrent()))
+		t.tracker_login = make_pair(username_, password_);
 	
 	return 0;
 }
@@ -75,9 +73,8 @@ void AdvTrackerDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 	{		
 		::EnableWindow(GetDlgItem(IDC_TRACKER_LOGINCHECK), true);
 		::EnableWindow(GetDlgItem(IDC_TRACKERLIST), true);
-		
-		std::pair<wstring, wstring> details = 
-			hal::bittorrent().getTorrentLogin(pT->name());
+
+		std::pair<wstring, wstring> details = hal::bittorrent().get(pT).tracker_login;
 		
 		username_ = details.first;
 		password_ = details.second;
@@ -94,7 +91,7 @@ void AdvTrackerDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 	m_list.uiUpdate(pT);
 			
 	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), false);	
-	setLoginUiState(current_torrent_name_);
+	setLoginUiState();
 
 	DoDataExchange(false);
 }
@@ -143,10 +140,8 @@ void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
 		username_ = L"";	
 		password_ = L"";
 		
-		if (hal::bittorrent().torrentDetails().focusedTorrent())
-			hal::bittorrent().setTorrentLogin(
-				hal::to_utf8(hal::bittorrent().torrentDetails().focusedTorrent()->name()),
-				username_, password_);
+		if (hal::bit::torrent t = hal::bittorrent().get(focusedTorrent()))
+			t.tracker_login = make_pair(username_, password_);
 		
 		DoDataExchange(false);		
 	}
@@ -158,8 +153,8 @@ void AdvTrackerDialog::onLoginApply(UINT, int, HWND)
 
 	HAL_DEV_MSG(wformat(L"Apply Tracker Login User: %1%, Pass: %2%") % username_ % password_ );
 
-	if (hal::bittorrent().torrentDetails().focusedTorrent())
-		hal::bittorrent().setTorrentLogin(focusedTorrent()->name(), username_, password_);
+	if (hal::bit::torrent t = hal::bittorrent().get(focusedTorrent()))
+		t.tracker_login = make_pair(username_, password_);
 }
 
 void AdvTrackerDialog::onReannounce(UINT, int, HWND)

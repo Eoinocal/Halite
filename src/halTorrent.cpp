@@ -1829,7 +1829,7 @@ void bit::reannounceTorrent(const std::wstring& filename)
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "reannounceTorrent")
 }
-
+/*
 void bit::setTorrentLogin(const std::string& filename, std::wstring username, std::wstring password)
 {
 	setTorrentLogin(hal::to_wstr_shim(filename), username, password);
@@ -1859,7 +1859,7 @@ std::pair<std::wstring, std::wstring> bit::getTorrentLogin(const std::wstring& f
 	
 	return std::make_pair(L"", L"");
 }
-
+*/
 void bit_impl::removalThread(torrent_internal_ptr pIT, bool wipeFiles)
 {
 	try {
@@ -2006,10 +2006,17 @@ void bit::setTorrentLimit(const std::wstring& filename, int maxConn, int maxUplo
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentLimit")
 }
 
+bit::torrent::torrent()
+{}
 
 bit::torrent::torrent(boost::shared_ptr<torrent_internal> p) :
 	ptr(p)
 {}
+
+bool bit::torrent::is_open() const
+{
+	return ptr;
+}
 
 bit::torrent::exec_around_ptr::proxy::proxy(torrent_internal* t) : 
 	t_(t),
@@ -2081,6 +2088,26 @@ void bit::torrent::set_move_to_directory(const wpath& m)
 	ptr->set_move_to_directory(m);
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_move_to_directory")
+}
+
+std::pair<wstring, wstring> bit::torrent::get_tracker_login() const
+{
+	try {
+	
+	return ptr->getTrackerLogin();
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "get_tracker_login")
+	
+	return std::make_pair(L"!!! exception thrown !!!", L"!!! exception thrown !!!");
+}
+
+void bit::torrent::set_tracker_login(const std::pair<wstring, wstring>& p)
+{
+	try {
+	
+	ptr->setTrackerLogin(p.first, p.second);
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_tracker_login")
 }
 
 bool bit::torrent::get_is_active() const

@@ -237,25 +237,26 @@ LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndC
 {
 	HAL_DEV_MSG(L"OnEditFolders");
 
-	hal::bit::torrent t = hal::bittorrent().get(manager_.selected());
-
-	wstring saveDirectory = static_cast<wpath>(t.save_directory).native_file_string();
-	wstring moveToDirectory = static_cast<wpath>(t.move_to_directory).native_file_string();
-
-	bool useMoveTo = (L"" != moveToDirectory);
-	bool disableSaveDir = !t.in_session;
-
-	HaliteListViewAdjustDlg addTorrent(hal::app().res_wstr(HAL_ADDT_TITLE), saveDirectory, moveToDirectory, 
-		useMoveTo, disableSaveDir);	
-	
-	if (IDOK == addTorrent.DoModal())
+	if (hal::bit::torrent t = hal::bittorrent().get(manager_.selected()))
 	{
-		if (!disableSaveDir) t.save_directory = saveDirectory;
+		wstring saveDirectory = static_cast<wpath>(t.save_directory).native_file_string();
+		wstring moveToDirectory = static_cast<wpath>(t.move_to_directory).native_file_string();
 
-		if (useMoveTo)
-			t.move_to_directory = moveToDirectory;
-		else
-			t.move_to_directory = L"";
+		bool useMoveTo = (L"" != moveToDirectory);
+		bool disableSaveDir = !t.in_session;
+
+		HaliteListViewAdjustDlg addTorrent(hal::app().res_wstr(HAL_ADDT_TITLE), saveDirectory, moveToDirectory, 
+			useMoveTo, disableSaveDir);	
+		
+		if (IDOK == addTorrent.DoModal())
+		{
+			if (!disableSaveDir) t.save_directory = saveDirectory;
+
+			if (useMoveTo)
+				t.move_to_directory = moveToDirectory;
+			else
+				t.move_to_directory = L"";
+		}
 	}
 
 	return 0;
