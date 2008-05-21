@@ -1992,20 +1992,6 @@ void bit::unpauseAllTorrents()
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "unpauseAllTorrents")
 }
 
-void bit::setTorrentLimit(const std::string& filename, int maxConn, int maxUpload)
-{
-	setTorrentLimit(hal::from_utf8_safe(filename), maxConn, maxUpload);
-}
-
-void bit::setTorrentLimit(const std::wstring& filename, int maxConn, int maxUpload)
-{
-	try {
-	
-	pimpl->theTorrents.get(filename)->setConnectionLimit(maxConn, maxUpload);
-	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentLimit")
-}
-
 bit::torrent::torrent()
 {}
 
@@ -2048,6 +2034,46 @@ void bit::torrent::set_ratio(float r)
 	ptr->set_ratio(r);
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_ratio")
+}
+
+std::pair<int, int> bit::torrent::get_connection_limits() const
+{
+	try {
+	
+	return ptr->getConnectionLimit();
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "get_connection_limits")
+	
+	return std::make_pair(-1, -1);
+}
+
+void bit::torrent::set_connection_limits(const std::pair<int, int>& l)
+{
+	try {
+	
+	ptr->setConnectionLimit(l.first, l.second);
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_connection_limits")
+}
+
+std::pair<float, float> bit::torrent::get_rate_limits() const
+{
+	try {
+	
+	return ptr->getTransferSpeed();
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::get_rate_limits")
+	
+	return std::pair<float, float>(-1.0, -1.0);
+}
+
+void bit::torrent::set_rate_limits(const std::pair<float, float>& l)
+{
+	try {
+	
+	ptr->setTransferSpeed(l.first, l.second);
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_rate_limits")
 }
 
 wpath bit::torrent::get_save_directory() const
@@ -2131,7 +2157,7 @@ bool bit::torrent::get_in_session() const
 	
 	return L"";
 }
-
+/*
 void bit::setTorrentRatio(const std::string& filename, float ratio)
 {
 	setTorrentRatio(hal::from_utf8_safe(filename), ratio);
@@ -2160,6 +2186,20 @@ float bit::getTorrentRatio(const std::wstring& filename)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentRatio")
 	
 	return 0;
+}
+
+void bit::setTorrentLimit(const std::string& filename, int maxConn, int maxUpload)
+{
+	setTorrentLimit(hal::from_utf8_safe(filename), maxConn, maxUpload);
+}
+
+void bit::setTorrentLimit(const std::wstring& filename, int maxConn, int maxUpload)
+{
+	try {
+	
+	pimpl->theTorrents.get(filename)->setConnectionLimit(maxConn, maxUpload);
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentLimit")
 }
 
 void bit::setTorrentSpeed(const std::string& filename, float download, float upload)
@@ -2206,7 +2246,7 @@ std::pair<float, float> bit::getTorrentSpeed(const std::wstring& filename)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentSpeed")
 	
 	return std::pair<float, float>(0, 0);
-}
+}*/
 
 void bit::setTorrentFilePriorities(const std::string& filename, 
 	std::vector<int> fileIndices, int priority)

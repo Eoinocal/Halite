@@ -412,6 +412,8 @@ typedef boost::function<bool (size_t, size_t, size_t)> filterCallback;
 typedef boost::function<bool (size_t, std::wstring)> progress_callback;
 typedef boost::function<void (int)> report_num_active;
 typedef std::pair<wstring, wstring> wstring_pair;
+typedef std::pair<float, float> float_pair;
+typedef std::pair<int, int> int_pair;
 
 class bit_impl;
 class torrent_internal;
@@ -474,6 +476,11 @@ public:
 
 		float get_ratio() const;
 		void set_ratio(float new_ratio);
+		
+		std::pair<int, int> get_connection_limits() const;
+		void set_connection_limits(const std::pair<int, int>&);
+		std::pair<float, float> get_rate_limits() const;
+		void set_rate_limits(const std::pair<float, float>&);
 
 		wpath get_save_directory() const;
 		void set_save_directory(const wpath&);
@@ -489,6 +496,11 @@ public:
 	public:
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(float, float, class_type, 
 			get_ratio, set_ratio, ratio);
+
+		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(int_pair, const int_pair&, class_type, 
+			get_connection_limits, set_connection_limits, connection_limits);
+		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(float_pair, const float_pair&, class_type, 
+			get_rate_limits, set_rate_limits, rate_limits);
 		
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(wpath, const wpath&, class_type, 
 			get_save_directory, set_save_directory, save_directory);
@@ -574,10 +586,10 @@ public:
 		bool startPaused=false, bool compactStorage=false, 
 		boost::filesystem::wpath moveToDirectory=L"", bool useMoveTo=false);
 	
-	void setTorrentRatio(const std::string&, float ratio);
+/*	void setTorrentRatio(const std::string&, float ratio);
 	void setTorrentRatio(const std::wstring&, float ratio);
 	float getTorrentRatio(const std::string&);
-	float getTorrentRatio(const std::wstring&);
+	float getTorrentRatio(const std::wstring&);*/
 	
 	void getAllPeerDetails(const std::string& filename, PeerDetails& peerContainer);
 	void getAllPeerDetails(const std::wstring& filename, PeerDetails& peerContainer);
@@ -611,7 +623,7 @@ public:
 	void removeTorrentWipeFiles(const std::string& filename);
 	void removeTorrentWipeFiles(const std::wstring&  filename);
 	
-	void setTorrentLimit(const std::string& filename, int maxConn, int maxUpload);
+/*	void setTorrentLimit(const std::string& filename, int maxConn, int maxUpload);
 	void setTorrentLimit(const std::wstring& filename, int maxConn, int maxUpload);
 	void setTorrentSpeed(const std::string& filename, float download, float upload);
 	void setTorrentSpeed(const std::wstring& filename, float download, float upload);
@@ -619,7 +631,7 @@ public:
 	std::pair<int, int> getTorrentLimit(const std::wstring& filename);
 	std::pair<float, float> getTorrentSpeed(const std::string& filename);
 	std::pair<float, float> getTorrentSpeed(const std::wstring& filename);
-	
+*/	
 	void setTorrentTrackers(const std::string& filename, const std::vector<tracker_detail>& trackers);
 	void setTorrentTrackers(const std::wstring& filename, const std::vector<tracker_detail>& trackers);
 	void resetTorrentTrackers(const std::string& filename);
