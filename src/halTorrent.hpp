@@ -586,11 +586,6 @@ public:
 		bool startPaused=false, bool compactStorage=false, 
 		boost::filesystem::wpath moveToDirectory=L"", bool useMoveTo=false);
 	
-/*	void setTorrentRatio(const std::string&, float ratio);
-	void setTorrentRatio(const std::wstring&, float ratio);
-	float getTorrentRatio(const std::string&);
-	float getTorrentRatio(const std::wstring&);*/
-	
 	void getAllPeerDetails(const std::string& filename, PeerDetails& peerContainer);
 	void getAllPeerDetails(const std::wstring& filename, PeerDetails& peerContainer);
 	void getAllFileDetails(const std::string& filename, FileDetails& fileDetails);
@@ -623,15 +618,6 @@ public:
 	void removeTorrentWipeFiles(const std::string& filename);
 	void removeTorrentWipeFiles(const std::wstring&  filename);
 	
-/*	void setTorrentLimit(const std::string& filename, int maxConn, int maxUpload);
-	void setTorrentLimit(const std::wstring& filename, int maxConn, int maxUpload);
-	void setTorrentSpeed(const std::string& filename, float download, float upload);
-	void setTorrentSpeed(const std::wstring& filename, float download, float upload);
-	std::pair<int, int> getTorrentLimit(const std::string& filename);
-	std::pair<int, int> getTorrentLimit(const std::wstring& filename);
-	std::pair<float, float> getTorrentSpeed(const std::string& filename);
-	std::pair<float, float> getTorrentSpeed(const std::wstring& filename);
-*/	
 	void setTorrentTrackers(const std::string& filename, const std::vector<tracker_detail>& trackers);
 	void setTorrentTrackers(const std::wstring& filename, const std::vector<tracker_detail>& trackers);
 	void resetTorrentTrackers(const std::string& filename);
