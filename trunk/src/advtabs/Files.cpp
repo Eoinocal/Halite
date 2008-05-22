@@ -61,10 +61,10 @@ void FileListView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 			indices.push_back(GetItemData(i));
 	}
 	
-	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;
-	
-	std::string torrent = hal::to_utf8(hal::bittorrent().torrentDetails().focusedTorrent()->name());
-	hal::bittorrent().setTorrentFilePriorities(torrent, indices, priority);
+	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;	
+
+	if (hal::bit::torrent t = hal::bittorrent().get(hal::bittorrent().torrentDetails().focusedTorrent()))
+		t.file_priorities = std::pair<std::vector<int>, int>(indices, priority);
 }
 
 HWND FileTreeView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowName, DWORD dwStyle, DWORD dwExStyle,
@@ -138,8 +138,8 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	
 	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;
 	
-	std::string torrent = hal::to_utf8(hal::bittorrent().torrentDetails().focusedTorrent()->name());
-	hal::bittorrent().setTorrentFilePriorities(torrent, indices, priority);
+	if (hal::bit::torrent t = hal::bittorrent().get(hal::bittorrent().torrentDetails().focusedTorrent()))
+		t.file_priorities = std::pair<std::vector<int>, int>(indices, priority);
 	
 	hal::try_update_lock<thisClass> lock(*this);
 	if (lock) signal();

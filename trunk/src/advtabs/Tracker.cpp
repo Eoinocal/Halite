@@ -179,22 +179,19 @@ void AdvTrackerDialog::trackerListEdited()
 
 void AdvTrackerDialog::onReset(UINT, int, HWND)
 {
-	string torrent_name;	
-	if (hal::bittorrent().torrentDetails().focusedTorrent())
-		torrent_name = hal::to_utf8(hal::bittorrent().torrentDetails().focusedTorrent()->name());
-		
-	hal::bittorrent().resetTorrentTrackers(torrent_name);
-	
-	std::vector<hal::tracker_detail> trackers =
-		hal::bittorrent().getTorrentTrackers(torrent_name);
-	m_list.clearAll();
-	
-	foreach (const hal::tracker_detail& tracker, trackers)
+	if (hal::bit::torrent t = hal::bittorrent().get(focusedTorrent()))
 	{
-		int itemPos = m_list.AddItem(0, 0, tracker.url.c_str(), 0);
-		m_list.SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());
+		t.reset_trackers();
+		
+		std::vector<hal::tracker_detail> trackers =t.trackers;
+		m_list.clearAll();
+		
+		foreach (const hal::tracker_detail& tracker, trackers)
+		{
+			int itemPos = m_list.AddItem(0, 0, tracker.url.c_str(), 0);
+			m_list.SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());
+		}
 	}
-
 	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), false);
 }
 
@@ -216,8 +213,8 @@ void AdvTrackerDialog::onApply(UINT, int, HWND)
 	
 	std::sort(trackers.begin(), trackers.end());
 		
-	if (hal::bittorrent().torrentDetails().focusedTorrent())
-		hal::bittorrent().setTorrentTrackers(hal::to_utf8(hal::bittorrent().torrentDetails().focusedTorrent()->name()), trackers);
+	if (hal::bit::torrent t = hal::bittorrent().get(focusedTorrent()))
+		t.trackers = trackers;
 	
 	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), false);
 }

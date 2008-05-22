@@ -35,8 +35,13 @@
 #include <stlsoft/util/operator_bool_adaptor.hpp>
 
 
+//#if BOOST_VERSION < 103500
 #include <asio/ip/tcp.hpp>
 #include <asio/ip/udp.hpp>
+//#else
+//#include <boost/asio/ip/tcp.hpp>
+//#include <boost/asio/ip/udp.hpp>
+//#endif
 
 #include "halTypes.hpp"
 
@@ -414,6 +419,7 @@ typedef boost::function<void (int)> report_num_active;
 typedef std::pair<wstring, wstring> wstring_pair;
 typedef std::pair<float, float> float_pair;
 typedef std::pair<int, int> int_pair;
+typedef std::pair<std::vector<int>, int> vec_int_pair;
 
 class bit_impl;
 class torrent_internal;
@@ -490,8 +496,13 @@ public:
 		std::pair<wstring, wstring> get_tracker_login() const;
 		void set_tracker_login(const std::pair<wstring, wstring>&);
 
+		std::vector<tracker_detail> get_trackers() const;
+		void set_trackers(const std::vector<tracker_detail>&);
+
 		bool get_is_active() const;
 		bool get_in_session() const;
+
+		void set_file_priorities(const vec_int_pair&);
 
 	public:
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(float, float, class_type, 
@@ -515,7 +526,16 @@ public:
 		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(bool, class_type, 
 			get_in_session, in_session);
 
+		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(std::vector<tracker_detail>, const std::vector<tracker_detail>&, 
+			class_type, get_trackers, set_trackers, trackers);
+
+		STLSOFT_METHOD_PROPERTY_SET_EXTERNAL(const vec_int_pair&, class_type, 
+			set_file_priorities, file_priorities);
+
+		void reset_trackers();
+
 		bool is_open() const;
+
 
 	private:
 		exec_around_ptr ptr;
@@ -617,7 +637,7 @@ public:
 	void removeTorrent(const std::wstring&  filename);
 	void removeTorrentWipeFiles(const std::string& filename);
 	void removeTorrentWipeFiles(const std::wstring&  filename);
-	
+/*	
 	void setTorrentTrackers(const std::string& filename, const std::vector<tracker_detail>& trackers);
 	void setTorrentTrackers(const std::wstring& filename, const std::vector<tracker_detail>& trackers);
 	void resetTorrentTrackers(const std::string& filename);
@@ -627,7 +647,7 @@ public:
 	
 	void setTorrentFilePriorities(const std::string& filename, std::vector<int> fileIndices, int priority);
 	void setTorrentFilePriorities(const std::wstring& filename, std::vector<int> fileIndices, int priority);
-
+*/
 	void startEventReceiver();
 	void stopEventReceiver();
 	
