@@ -34,13 +34,12 @@ void NewTorrent_TrackerListViewCtrl::saveSettings()
 
 void NewTorrent_TrackerListViewCtrl::uiUpdate(const hal::TorrentDetail_ptr pT)
 {
-	if (pT)
+	if (hal::bit::torrent t = hal::bittorrent().get(pT))
 	{			
 		hal::try_update_lock<listClass> lock(*this);
 		if (lock) 
 		{			
-			std::vector<hal::tracker_detail> trackers =
-				hal::bittorrent().getTorrentTrackers(pT->name());
+			std::vector<hal::tracker_detail> trackers =	t.trackers;
 			clearAll();
 			
 			foreach (const hal::tracker_detail& tracker, trackers)

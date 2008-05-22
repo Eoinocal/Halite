@@ -2042,7 +2042,7 @@ std::pair<int, int> bit::torrent::get_connection_limits() const
 	
 	return ptr->getConnectionLimit();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "get_connection_limits")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::get_connection_limits")
 	
 	return std::make_pair(-1, -1);
 }
@@ -2158,6 +2158,41 @@ bool bit::torrent::get_in_session() const
 	return L"";
 }
 
+std::vector<tracker_detail> bit::torrent::get_trackers() const
+{
+	try {
+	
+	return ptr->getTrackers();
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::get_trackers")
+	
+	return std::vector<tracker_detail>();
+}
+
+void bit::torrent::set_trackers(const std::vector<tracker_detail>& trackers)
+{
+	try {
+	
+	ptr->setTrackers(trackers);
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_trackers")
+}
+
+void bit::torrent::reset_trackers()
+{
+	try {
+	
+	ptr->resetTrackers();
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_trackers")
+}
+
+void bit::torrent::set_file_priorities(const std::pair<std::vector<int>, int>& p)
+{
+	ptr->setFilePriorities(p.first, p.second);
+}
+
+/*
 void bit::setTorrentFilePriorities(const std::string& filename, 
 	std::vector<int> fileIndices, int priority)
 {
@@ -2218,7 +2253,7 @@ std::vector<tracker_detail> bit::getTorrentTrackers(const std::wstring& filename
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentTrackers")
 	
 	return std::vector<tracker_detail>();	
-}
+}*/
 
 void bit::startEventReceiver()
 {
