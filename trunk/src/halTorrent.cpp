@@ -2192,69 +2192,6 @@ void bit::torrent::set_file_priorities(const std::pair<std::vector<int>, int>& p
 	ptr->setFilePriorities(p.first, p.second);
 }
 
-/*
-void bit::setTorrentFilePriorities(const std::string& filename, 
-	std::vector<int> fileIndices, int priority)
-{
-	setTorrentFilePriorities(from_utf8_safe(filename), fileIndices, priority);
-}
-
-void bit::setTorrentFilePriorities(const std::wstring& filename, 
-	std::vector<int> fileIndices, int priority)
-{
-	try {
-	
-	pimpl->theTorrents.get(filename)->setFilePriorities(fileIndices, priority);
-	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentFilePriorities")
-}
-
-void bit::setTorrentTrackers(const std::string& filename, 
-	const std::vector<tracker_detail>& trackers)
-{
-	setTorrentTrackers(from_utf8_safe(filename), trackers);
-}
-
-void bit::setTorrentTrackers(const std::wstring& filename, 
-	const std::vector<tracker_detail>& trackers)
-{
-	try {
-	
-	pimpl->theTorrents.get(filename)->setTrackers(trackers);
-	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentTrackers")
-}
-
-void bit::resetTorrentTrackers(const std::string& filename)
-{
-	resetTorrentTrackers(from_utf8_safe(filename));
-}
-
-void bit::resetTorrentTrackers(const std::wstring& filename)
-{
-	try {
-	
-	pimpl->theTorrents.get(filename)->resetTrackers();
-	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "resetTorrentTrackers")
-}
-
-std::vector<tracker_detail> bit::getTorrentTrackers(const std::string& filename)
-{
-	return getTorrentTrackers(from_utf8_safe(filename));
-}
-
-std::vector<tracker_detail> bit::getTorrentTrackers(const std::wstring& filename)
-{
-	try {
-	
-	return pimpl->theTorrents.get(filename)->getTrackers();
-	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentTrackers")
-	
-	return std::vector<tracker_detail>();	
-}*/
-
 void bit::startEventReceiver()
 {
 	pimpl->keepChecking_ = true;
