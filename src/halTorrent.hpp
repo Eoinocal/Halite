@@ -637,17 +637,7 @@ public:
 	void removeTorrent(const std::wstring&  filename);
 	void removeTorrentWipeFiles(const std::string& filename);
 	void removeTorrentWipeFiles(const std::wstring&  filename);
-/*	
-	void setTorrentTrackers(const std::string& filename, const std::vector<tracker_detail>& trackers);
-	void setTorrentTrackers(const std::wstring& filename, const std::vector<tracker_detail>& trackers);
-	void resetTorrentTrackers(const std::string& filename);
-	void resetTorrentTrackers(const std::wstring& filename);
-	std::vector<tracker_detail> getTorrentTrackers(const std::string& filename);
-	std::vector<tracker_detail> getTorrentTrackers(const std::wstring& filename);
-	
-	void setTorrentFilePriorities(const std::string& filename, std::vector<int> fileIndices, int priority);
-	void setTorrentFilePriorities(const std::wstring& filename, std::vector<int> fileIndices, int priority);
-*/
+
 	void startEventReceiver();
 	void stopEventReceiver();
 	
