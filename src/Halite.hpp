@@ -92,7 +92,7 @@ public:
 #else
 		logDebug_(false),
 #endif
-		showMessage(true),
+		showMessage_(true),
 		logToFile_(true),
 		logListLen_(128),
 		dll_(L"")
@@ -112,7 +112,8 @@ public:
 	{	
         ar & BOOST_SERIALIZATION_NVP(oneInst);
 		ar & BOOST_SERIALIZATION_NVP(logDebug_);
-        ar & BOOST_SERIALIZATION_NVP(showMessage);
+		ar & boost::serialization::make_nvp("showMessage", showMessage_);
+		
 		ar & BOOST_SERIALIZATION_NVP(logToFile_);
 		if (version > 1)
 			ar & BOOST_SERIALIZATION_NVP(logListLen_);
@@ -124,6 +125,7 @@ public:
 	bool logDebug() { return logDebug_; }
 	const std::wstring& dll() { return dll_; }
 	const int logListLen() { return logListLen_; }
+	bool showMessage() { return showMessage_; }
 	
 	friend class GeneralOptions;
 	friend class SplashDialog;
@@ -134,11 +136,11 @@ private:
 	std::wstring dll_;
 	bool oneInst;
 	bool logDebug_;
-	bool showMessage;
+	bool showMessage_;
 	bool logToFile_;
 	size_t logListLen_;
 };
 
 Halite& halite();
 
-BOOST_CLASS_VERSION(Halite, 2)
+BOOST_CLASS_VERSION(Halite, 3)

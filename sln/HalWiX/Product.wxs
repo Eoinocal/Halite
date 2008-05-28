@@ -41,8 +41,6 @@
     </Feature>
 
     <Icon Id="HaliteIcon" SourceFile='..\..\Release\Halite.exe' />
-    <UIRef Id="WixUI_Mondo" />
-    <UIRef Id="WixUI_ErrorProgressText" />
 
 </Product>
 </Wix>

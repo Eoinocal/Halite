@@ -305,9 +305,10 @@ private:
 class EventInfo : public EventDetail
 {
 public:
-	EventInfo(std::wstring msg) :
+	template<typename T>
+	EventInfo(T msg) :
 		EventDetail(Event::info, boost::posix_time::second_clock::universal_time(), Event::infoCode),
-		msg_(msg)
+		msg_(to_wstr_shim(msg))
 	{}
 	
 	virtual std::wstring msg() { return msg_; }

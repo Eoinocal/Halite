@@ -56,7 +56,7 @@ public:
     END_MSG_MAP()
 	
 	BEGIN_DDX_MAP(CMainDlg)
-        DDX_CHECK(IDC_SPLASH_MSG, halite().showMessage)
+        DDX_CHECK(IDC_SPLASH_MSG, halite().showMessage_)
     END_DDX_MAP()
 
     BEGIN_DLGRESIZE_MAP(thisClass)
@@ -104,7 +104,7 @@ public:
 
 	void SplashThread()
 	{
-		hal::bittorrent().closeAll(bind(&SplashDialog::ReportNumActive, this, _1));
+		hal::bittorrent().closeAll(boost::optional<boost::function<void (int)> >(bind(&SplashDialog::ReportNumActive, this, _1)));
 		
 		SetDlgItemText(HAL_CSPLASH_NUM_ACT, hal::app().res_wstr(HAL_CSPLASH_SHUTDOWN_MSG).c_str());
 

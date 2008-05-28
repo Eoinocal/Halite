@@ -1604,7 +1604,7 @@ void bit::resumeAll()
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "resumeAll")
 }
 
-void bit::closeAll(report_num_active fn)
+void bit::closeAll(boost::optional<report_num_active> fn)
 {
 	try {
 	
@@ -1633,7 +1633,9 @@ void bit::closeAll(report_num_active fn)
 				++num_active;
 		}
 		
-		fn(num_active);
+		event().post(shared_ptr<EventDetail>(new EventInfo(wformat(L"%1% still active") % num_active)));
+
+		if (fn)	(*fn)(num_active);
 		Sleep(200);
 	}
 	
@@ -1643,10 +1645,7 @@ void bit::closeAll(report_num_active fn)
 		i != e; ++i)
 	{
 		if ((*i).torrent->in_session())
-		{
-			(*i).torrent->remove_from_session();
-			(*i).torrent->write_resume_data();
-		}
+			(*i).torrent->remove_from_session(true);
 	}
 	
 	event().post(shared_ptr<EventDetail>(new EventInfo(L"Fast-resume data written.")));

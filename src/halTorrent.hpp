@@ -612,7 +612,7 @@ public:
 	void getAllFileDetails(const std::wstring& filename, FileDetails& fileDetails);
 	
 	void resumeAll();
-	void closeAll(report_num_active fn);
+	void closeAll(boost::optional<report_num_active> fn);
 	
 	bool isTorrent(const std::string& filename);
 	bool isTorrent(const std::wstring& filename);	

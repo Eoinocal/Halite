@@ -187,11 +187,15 @@ LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 
 LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::removeTorrentWipeFiles, 
-			&hal::bittorrent(), _1));
-	
-	clearSelected();
+	if(MessageBox(hal::app().res_wstr(HAL_LISTVIEW_CONFIRMDELETE).c_str(), 
+				hal::app().res_wstr(HAL_HALITE).c_str(), MB_YESNO) == IDYES)
+	{
+		std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
+			bind((void (hal::bit::*)(const std::wstring&))&hal::bit::removeTorrentWipeFiles, 
+				&hal::bittorrent(), _1));
+		
+		clearSelected();
+	}
 	return 0;
 }
 
