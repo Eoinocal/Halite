@@ -191,6 +191,8 @@ protected:
 	friend class GeneralOptions;
 
 private:
+	void ShutdownThread();
+
 	// These two gotta be first!!!
 	boost::signal<void (const hal::TorrentDetails& tD)> ui_update_signal_;
 	boost::signal<void ()> save_state_signal_;	

@@ -396,6 +396,12 @@ void HaliteWindow::OnClose()
 		}
 	}
 }
+
+void HaliteWindow::ShutdownThread()
+{
+	hal::bittorrent().closeAll(0);
+	hal::bittorrent().shutDownSession();
+}
  
 void HaliteWindow::OnDestroy()
 {	
@@ -408,24 +414,23 @@ void HaliteWindow::OnDestroy()
 
 	hal::config().save();
 	save();
+	halite().save();
+	hal::ini().save_data();
 
-		hal::bittorrent().stopEventReceiver();
-		
-//		if (halite().showMessage)
-		{
-			SplashDialog splDlg;
-			splDlg.DoModal();
-		}
-/*		else
-		{
-			hal::bittorrent().closeAll(bind(&num_active, _1));
-			hal::bittorrent().shutDownSession();		
-		}
-*/				
-		halite().save();
-		hal::ini().save_data();
+	hal::bittorrent().stopEventReceiver();
+	
+	if (halite().showMessage())
+	{
+		SplashDialog splDlg;
+		splDlg.DoModal();
+	}
+	else
+	{
+		thread shutdown(bind(& HaliteWindow::ShutdownThread, this));
+		shutdown.join();
+	}		
 
-	PostQuitMessage(0);
+	PostQuitMessage(0);	
 }
 
 void HaliteWindow::OnSize(UINT type, CSize)

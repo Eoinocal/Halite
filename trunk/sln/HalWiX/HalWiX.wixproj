@@ -21,17 +21,7 @@
                 RelativeIntermediateDirectory="obj\Release"
             />
         </Configurations>
-        <WixlibReferences>
-            <WixlibReference
-                RelativePath="..\..\..\..\..\..\..\Program%20Files%20(x86)\Windows%20Installer%20XML\bin\sca.wixlib"
-            />
-            <WixlibReference
-                RelativePath="..\..\..\..\..\..\..\Program%20Files%20(x86)\Windows%20Installer%20XML\bin\wixca.wixlib"
-            />
-            <WixlibReference
-                RelativePath="..\..\..\..\..\..\..\Program%20Files%20(x86)\Windows%20Installer%20XML\bin\WixUI.wixlib"
-            />
-        </WixlibReferences>
+        <WixlibReferences />
         <Files>
             <File
                 RelativePath="Product.wxs"
