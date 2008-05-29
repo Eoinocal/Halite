@@ -37,6 +37,7 @@
 #define IDR_TRACKERLV_MENU              132
 #define	HAL_GENERIC_ADD_LV_MENU			136
 #define	IDD_PEEREDIT					137
+#define IDD_NEWT_FILES					138
 #define IDC_TRANS_SES                   1004
 #define IDC_TRANS_ETA                   1005
 #define IDC_PEERPROXY                   1000

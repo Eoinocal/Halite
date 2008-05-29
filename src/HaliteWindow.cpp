@@ -384,7 +384,8 @@ void HaliteWindow::OnClose()
 {
 	if (closeToTray && trayIcon_.IsHidden())
 	{		
-		ShowWindow(SW_MINIMIZE);
+		ShowWindow(SW_HIDE);
+		trayIcon_.Show();
 	}
 	else
 	{
@@ -421,15 +422,20 @@ void HaliteWindow::OnDestroy()
 	
 	if (halite().showMessage())
 	{
+		HAL_DEV_MSG(L"Showing SplashDialog");
+
 		SplashDialog splDlg;
 		splDlg.DoModal();
 	}
 	else
-	{
+	{		
+		HAL_DEV_MSG(L"No SplashDialog");
+
 		thread shutdown(bind(& HaliteWindow::ShutdownThread, this));
 		shutdown.join();
 	}		
-
+		
+	HAL_DEV_MSG(L"Posting Quit Message");
 	PostQuitMessage(0);	
 }
 

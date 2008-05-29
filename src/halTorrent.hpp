@@ -480,6 +480,8 @@ public:
 		torrent();
 		torrent(boost::shared_ptr<torrent_internal> p);
 
+		const std::wstring get_name() const;
+
 		float get_ratio() const;
 		void set_ratio(float new_ratio);
 		
@@ -505,6 +507,9 @@ public:
 		void set_file_priorities(const vec_int_pair&);
 
 	public:
+		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(const std::wstring, class_type, 
+			get_name, name);
+
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(float, float, class_type, 
 			get_ratio, set_ratio, ratio);
 

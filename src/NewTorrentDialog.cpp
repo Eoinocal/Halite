@@ -295,6 +295,15 @@ FileSheet::CWindowMapStruct* FileSheet::GetWindowMap()
 	END_WINDOW_MAP_INLINE()	
 }	
 
+FilesSheet::CWindowMapStruct* FilesSheet::GetWindowMap()
+{
+	BEGIN_WINDOW_MAP_INLINE(FilesSheet, 3, 3, 3, 3)
+		WMB_HEAD(WMB_COL(_exp)), 
+		WMB_ROWNOMIN(_exp, NEWTORRENT_SELECT_LAYOUT),
+		WMB_END() 
+	END_WINDOW_MAP_INLINE()	
+}	
+
 #define NEWTORRENT_TRACKERS_LAYOUT \
 	WMB_HEAD(WMB_COLNOMIN(_exp), WMB_COL(_auto), WMB_COL(_auto)), \
 		WMB_ROW(_auto,	IDC_NEWTORRENT_TRACKERS_TEXT, _r, _r), \
