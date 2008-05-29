@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+		<Product Id="3c203d40-c34d-485d-a516-75b5d1b595f2" Name="Halite" Language="1033" Version="0.3.2.0" 
+             Manufacturer="BinaryNotions.com" UpgradeCode="8cac0e8f-e307-450f-8aa4-af2bd341c69b">
+
+      <Package InstallerVersion="200" Compressed="yes" Platforms="x64"/>      
+      <Media Id="1" Cabinet="HalWiX.cab" EmbedCab="yes" />
+      
+      <Directory Id="TARGETDIR" Name="SourceDir">
+        <Directory Id="AppDataFolder" />
+        <Directory Id="DesktopFolder" />
+        
+        <Directory Id="ProgramMenuFolder">
+          <Directory Id="HaliteProgramMenuFolder" Name="Halite">
+            <Component Id='HaliteExeStartMenuFolder' Guid='{D6B80025-50FC-4760-89B2-72340616AD19}'>
+              
+              <RegistryKey Root="HKCU" Key="Software\Halite\Uninstall">
+                <RegistryValue Value="HaliteProgramMenuFolder"
+                               Type="string"
+                               KeyPath="yes" />
+              </RegistryKey>   
+              
+              <RemoveFolder Id="RemoveShorcutFolder" On="uninstall" />
+            </Component>
+
+          </Directory>
+        </Directory>
+
+        <Directory Id="ProgramFilesFolder">
+          <Directory Id="HALITE_PRODUCTDIR" Name="Halite">
+
+            <Component Id='ReadMeText' Guid='0E8E2FD3-7658-4429-BBD1-BBDF76E99D71'>
+              <File Id='Readme' Name='readme.txt' DiskId='1' Source='..\..\Readme.txt' />
+            </Component>
+         
+            <Component Id='HaliteExe' Guid='{601CEE5B-5AE0-462f-BB19-A6FDBD520E40}'>
+              <File Id='HaliteFile' Name='Halite.exe' DiskId='1' Source='..\..\release\Halite.exe'>
+                <Shortcut Id="desktopHaliteFile" Directory="DesktopFolder" Name="Halite"
+                    WorkingDirectory='INSTALLDIR' Advertise="yes" Icon="HaliteIcon.exe" IconIndex="0" />
+                <Shortcut Id="startmenuHaliteFile" Directory="HaliteProgramMenuFolder" Name="Halite"
+                    WorkingDirectory='INSTALLDIR' Advertise="yes" Icon="HaliteIcon.exe" IconIndex="0" />
+              </File>
+            </Component>
+            
+          </Directory>
+        </Directory>
+
+        <Directory Id="ProgramFiles64Folder">
+          <Directory Id="HALITE_PRODUCTDIR64" Name="Halite">
+            
+            <Component Id='ReadMeText64' Win64="yes" Guid='{5DEB2C02-9FD5-46bb-A6F2-2D97CBE09BD6}'>
+              <File Id='Readme64' Name='readme.txt' DiskId='1' Source='..\..\Readme.txt' />
+            </Component>
+            
+            <Component Id='HaliteExe64' Win64="yes" Guid='{835DF415-07C2-4ac4-90B3-B78CB02594E9}'>
+              <File Id='HaliteFile64' Name='Halite.exe' DiskId='1' Source='..\..\x64\release\Halite.exe'>
+                <Shortcut Id="desktopHaliteFile64" Directory="DesktopFolder" Name="Halite"
+                    WorkingDirectory='INSTALLDIR' Advertise="yes" Icon="HaliteIcon.exe" IconIndex="0" />
+                <Shortcut Id="startmenuHaliteFile64" Directory="HaliteProgramMenuFolder" Name="Halite"
+                    WorkingDirectory='INSTALLDIR' Advertise="yes" Icon="HaliteIcon.exe" IconIndex="0" />
+              </File>
+            </Component>
+            
+          </Directory>
+        </Directory>
+      </Directory>
+      
+      <Feature Id="x86Components" Title="Halite (Core 32bit)" Level="1"
+               ConfigurableDirectory="HALITE_PRODUCTDIR">
+        <ComponentRef Id="HaliteExe" />
+        <ComponentRef Id="HaliteExeStartMenuFolder" />
+        <ComponentRef Id="ReadMeText" />
+        <Condition Level="0">VersionNT64</Condition>
+      </Feature>
+
+      <Feature Id="x64Components" Title="Halite (Core 64bit)" Level="1"
+               ConfigurableDirectory="HALITE_PRODUCTDIR64">
+        <ComponentRef Id="HaliteExe64" />
+        <ComponentRef Id="HaliteExeStartMenuFolder" />
+        <ComponentRef Id="ReadMeText64" />
+        <Condition Level="0">NOT VersionNT64</Condition>
+      </Feature>
+
+      <Icon Id="HaliteIcon.exe" SourceFile="..\..\release\Halite.exe" />
+
+      <UIRef Id="WixUI_FeatureTree" />
+    </Product>
+</Wix>

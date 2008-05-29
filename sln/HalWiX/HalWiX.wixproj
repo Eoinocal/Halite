@@ -1,0 +1,95 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProductVersion>3.0</ProductVersion>
+    <ProjectGuid>{b9c9cb3a-22f4-466b-9aea-79c621dcd40a}</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>HalWiX</OutputName>
+    <OutputType>Package</OutputType>
+    <WixToolPath>$(ProgramFiles)\Windows Installer XML v3\bin\</WixToolPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\</IntermediateOutputPath>
+    <DefineConstants>Debug</DefineConstants>
+    <AllowIdenticalRows>False</AllowIdenticalRows>
+    <CabinetCachePath>
+    </CabinetCachePath>
+    <CabinetCreationThreadCount>-1</CabinetCreationThreadCount>
+    <Cultures>en-US</Cultures>
+    <LeaveTemporaryFiles>False</LeaveTemporaryFiles>
+    <LinkerPedantic>False</LinkerPedantic>
+    <ReuseCabinetCache>False</ReuseCabinetCache>
+    <SetMsiAssemblyNameFileVersion>False</SetMsiAssemblyNameFileVersion>
+    <SuppressAclReset>False</SuppressAclReset>
+    <SuppressAssemblies>False</SuppressAssemblies>
+    <SuppressDefaultAdminSequenceActions>False</SuppressDefaultAdminSequenceActions>
+    <SuppressDefaultAdvSequenceActions>False</SuppressDefaultAdvSequenceActions>
+    <SuppressDefaultUISequenceActions>False</SuppressDefaultUISequenceActions>
+    <SuppressDroppingUnrealTables>False</SuppressDroppingUnrealTables>
+    <SuppressFileHashAndInfo>False</SuppressFileHashAndInfo>
+    <SuppressFiles>False</SuppressFiles>
+    <SuppressIces>
+    </SuppressIces>
+    <LinkerSuppressIntermediateFileVersionMatching>False</LinkerSuppressIntermediateFileVersionMatching>
+    <SuppressLayout>False</SuppressLayout>
+    <SuppressMsiAssemblyTableProcessing>False</SuppressMsiAssemblyTableProcessing>
+    <LinkerSuppressSchemaValidation>False</LinkerSuppressSchemaValidation>
+    <LinkerSuppressSpecificWarnings>
+    </LinkerSuppressSpecificWarnings>
+    <SuppressValidation>False</SuppressValidation>
+    <LinkerTreatWarningsAsErrors>False</LinkerTreatWarningsAsErrors>
+    <LinkerVerboseOutput>False</LinkerVerboseOutput>
+    <WixVariables>
+    </WixVariables>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <IntermediateOutputPath>obj\Release\</IntermediateOutputPath>
+    <AllowIdenticalRows>False</AllowIdenticalRows>
+    <CabinetCachePath>
+    </CabinetCachePath>
+    <CabinetCreationThreadCount>-1</CabinetCreationThreadCount>
+    <Cultures>en-US</Cultures>
+    <LeaveTemporaryFiles>False</LeaveTemporaryFiles>
+    <LinkerPedantic>False</LinkerPedantic>
+    <ReuseCabinetCache>False</ReuseCabinetCache>
+    <SetMsiAssemblyNameFileVersion>False</SetMsiAssemblyNameFileVersion>
+    <SuppressAclReset>False</SuppressAclReset>
+    <SuppressAssemblies>False</SuppressAssemblies>
+    <SuppressDefaultAdminSequenceActions>False</SuppressDefaultAdminSequenceActions>
+    <SuppressDefaultAdvSequenceActions>False</SuppressDefaultAdvSequenceActions>
+    <SuppressDefaultUISequenceActions>False</SuppressDefaultUISequenceActions>
+    <SuppressDroppingUnrealTables>False</SuppressDroppingUnrealTables>
+    <SuppressFileHashAndInfo>False</SuppressFileHashAndInfo>
+    <SuppressFiles>False</SuppressFiles>
+    <SuppressIces>
+    </SuppressIces>
+    <LinkerSuppressIntermediateFileVersionMatching>False</LinkerSuppressIntermediateFileVersionMatching>
+    <SuppressLayout>False</SuppressLayout>
+    <SuppressMsiAssemblyTableProcessing>False</SuppressMsiAssemblyTableProcessing>
+    <LinkerSuppressSchemaValidation>False</LinkerSuppressSchemaValidation>
+    <LinkerSuppressSpecificWarnings>
+    </LinkerSuppressSpecificWarnings>
+    <SuppressValidation>False</SuppressValidation>
+    <LinkerTreatWarningsAsErrors>False</LinkerTreatWarningsAsErrors>
+    <LinkerVerboseOutput>False</LinkerVerboseOutput>
+    <WixVariables>
+    </WixVariables>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="HalWiX.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="C:\Program Files\Windows Installer XML v3\bin\WixUIExtension.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WiX\v3.0\Wix.targets" />
+  <!--
+	To modify your build process, add your task inside one of the targets below and uncomment it.
+	Other similar extension points exist, see Wix.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+</Project>
