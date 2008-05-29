@@ -16,11 +16,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenSSL", "sln\OpenSSL\Open
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "asio", "sln\asio\asio.vcproj", "{00A33D18-879A-4143-BCAD-45993CCB5A8C}"
 EndProject
-Project("{A49CE20D-CE64-4A08-9F24-92A6443D6699}") = "HalWiX", "sln\HalWiX\HalWiX.wixproj", "{8D768897-96D3-48DB-A7AB-9242E4D27DB4}"
-	ProjectSection(ProjectDependencies) = postProject
-		{ED987C84-FFF9-4656-8F27-2A65FC0847FD} = {ED987C84-FFF9-4656-8F27-2A65FC0847FD}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -76,18 +71,6 @@ Global
 		{00A33D18-879A-4143-BCAD-45993CCB5A8C}.Release|Win32.ActiveCfg = Release|Win32
 		{00A33D18-879A-4143-BCAD-45993CCB5A8C}.Release|Win32.Build.0 = Release|Win32
 		{00A33D18-879A-4143-BCAD-45993CCB5A8C}.Release|x64.ActiveCfg = Release|Win32
-		{8D768897-96D3-48DB-A7AB-9242E4D27DB4}.Debug|Win32.ActiveCfg = Debug
-		{8D768897-96D3-48DB-A7AB-9242E4D27DB4}.Debug|Win32.Build.0 = Debug
-		{8D768897-96D3-48DB-A7AB-9242E4D27DB4}.Debug|x64.ActiveCfg = Debug
-		{8D768897-96D3-48DB-A7AB-9242E4D27DB4}.Debug|x64.Build.0 = Debug
-		{8D768897-96D3-48DB-A7AB-9242E4D27DB4}.Release Logging|Win32.ActiveCfg = Release
-		{8D768897-96D3-48DB-A7AB-9242E4D27DB4}.Release Logging|Win32.Build.0 = Release
-		{8D768897-96D3-48DB-A7AB-9242E4D27DB4}.Release Logging|x64.ActiveCfg = Release
-		{8D768897-96D3-48DB-A7AB-9242E4D27DB4}.Release Logging|x64.Build.0 = Release
-		{8D768897-96D3-48DB-A7AB-9242E4D27DB4}.Release|Win32.ActiveCfg = Release
-		{8D768897-96D3-48DB-A7AB-9242E4D27DB4}.Release|Win32.Build.0 = Release
-		{8D768897-96D3-48DB-A7AB-9242E4D27DB4}.Release|x64.ActiveCfg = Release
-		{8D768897-96D3-48DB-A7AB-9242E4D27DB4}.Release|x64.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
