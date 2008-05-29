@@ -36,22 +36,6 @@ void FilesListViewCtrl::saveSettings()
 	save();
 }
 
-void FileSheet::OnFileBrowse(UINT, int, HWND hWnd)
-{	
-	CSSFileDialog dlgOpen(TRUE, NULL, NULL, OFN_HIDEREADONLY, L"All Files (*.*)|*.*|", m_hWnd);
-
-	if (dlgOpen.DoModal() == IDOK) 
-	{
-		files_.clear();
-		wpath file = wpath(dlgOpen.m_ofn.lpstrFile);
-
-		fileRoot_ = file.branch_path();		
-		files_.push_back(file.leaf());
-
-		UpdateFileList();
-	}
-}
-
 void FileSheet::OnOutBrowse(UINT, int, HWND hWnd)
 {	
 	CSSFileDialog dlgOpen(false, NULL, NULL, OFN_HIDEREADONLY, L"Torrents. (*.torrent)|*.torrent|All Files (*.*)|*.*|", m_hWnd);
@@ -74,12 +58,67 @@ void recurseDirectory(std::vector<wpath>& files, wpath baseDir, wpath relDir)
     }
     else
     {
-//		HAL_DEV_MSG(currentDir.string());
 		files.push_back(baseDir.leaf()/relDir);		
     }
 }
 
-void FileSheet::OnDirBrowse(UINT, int, HWND hWnd)
+LRESULT FileSheet::onInitDialog(HWND, LPARAM)
+{	
+	creator_ = L"Halite " + hal::app().res_wstr(HAL_VERSION_STRING);
+
+	pieceSize_ = 256;
+
+	BOOL retval =  DoDataExchange(false);
+	return 0;
+}
+
+wstring FileSheet::Creator() 
+{ 
+	DoDataExchange(true);
+	return creator_; 
+}
+
+wstring FileSheet::Comment() 
+{	
+	DoDataExchange(true);
+	return comment_; 
+}
+
+int FileSheet::PieceSize()
+{ 
+	DoDataExchange(true);
+	return pieceSize_; 
+}
+
+bool FileSheet::Private() 
+{ 
+	DoDataExchange(true);
+	return private_;
+}
+
+void FilesSheet::OnFileBrowse(UINT, int, HWND hWnd)
+{	
+	CSSFileDialog dlgOpen(TRUE, NULL, NULL, OFN_HIDEREADONLY, L"All Files (*.*)|*.*|", m_hWnd);
+
+	if (dlgOpen.DoModal() == IDOK) 
+	{
+		files_.clear();
+		wpath file = wpath(dlgOpen.m_ofn.lpstrFile);
+
+		fileRoot_ = file.branch_path();		
+		files_.push_back(file.leaf());
+
+		UpdateFileList();
+	}
+}
+
+wpath FileSheet::OutputFile()
+{
+	DoDataExchange(true);
+	return outFile_;
+}
+
+void FilesSheet::OnDirBrowse(UINT, int, HWND hWnd)
 {	
 	CFolderDialog fldDlg(NULL, L"",	BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE);
 
@@ -104,7 +143,7 @@ void FileSheet::OnDirBrowse(UINT, int, HWND hWnd)
 	}
 }
 
-void FileSheet::UpdateFileList()
+void FilesSheet::UpdateFileList()
 {
 	filesList_.DeleteAllItems();
 
@@ -118,22 +157,12 @@ void FileSheet::UpdateFileList()
 	}
 }
 
-LRESULT FileSheet::onInitDialog(HWND, LPARAM)
-{	
-	filesList_.Attach(GetDlgItem(IDC_NEWT_LISTFILES));	
-
-	creator_ = L"Halite " + hal::app().res_wstr(HAL_VERSION_STRING);
-
-	BOOL retval =  DoDataExchange(false);
-	return 0;
-}
-	
-wpath FileSheet::FileFullPath() const
+wpath FilesSheet::FileFullPath() const
 {
 	return fileRoot_;
 }
 
-hal::file_size_pairs_t FileSheet::FileSizePairs() const
+hal::file_size_pairs_t FilesSheet::FileSizePairs() const
 {
 	hal::file_size_pairs_t filePairs;
 
@@ -162,30 +191,6 @@ hal::file_size_pairs_t FileSheet::FileSizePairs() const
 	}
 
 	return filePairs;
-}
-
-wpath FileSheet::OutputFile()
-{
-	DoDataExchange(true);
-	return outFile_;
-}
-
-wstring FileSheet::Creator() 
-{ 
-	DoDataExchange(true);
-	return creator_; 
-}
-
-wstring FileSheet::Comment() 
-{	
-	DoDataExchange(true);
-	return comment_; 
-
-}
-bool FileSheet::Private() 
-{ 
-	DoDataExchange(true);
-	return private_;
 }
 
 hal::tracker_details_t TrackerSheet::Trackers() const
@@ -268,13 +273,19 @@ hal::web_seed_details_t PeersSheet::WebSeeds() const
 	WMB_END()
 
 #define NEWTORRENT_COMMENT_LAYOUT \
-	WMB_HEAD(WMB_COL(_auto), WMB_COLNOMIN(_exp)), \
-		WMB_ROW(_auto,	IDC_NEWTORRENT_COMMENT_TEXT,  IDC_NEWTORRENT_COMMENT), \
+	WMB_HEAD(WMB_COLNOMIN(_exp)), \
+		WMB_ROW(_auto,	IDC_NEWTORRENT_COMMENT_TEXT), \
+		WMB_ROW(_exp,	IDC_NEWTORRENT_COMMENT), \
 	WMB_END()
 
 #define NEWTORRENT_CREATOR_LAYOUT \
 	WMB_HEAD(WMB_COL(_auto), WMB_COLNOMIN(_exp)), \
 		WMB_ROW(_auto,	IDC_NEWTORRENT_CREATOR_TEXT,  IDC_NEWTORRENT_CREATOR), \
+	WMB_END()
+
+#define NEWTORRENT_PIECESIZE_LAYOUT \
+	WMB_HEAD(WMB_COL(_auto), WMB_COLNOMIN(_exp)), \
+	WMB_ROW(_auto,	HAL_NEWT_PIECESIZE_TEXT,  HAL_NEWT_PIECESIZE), \
 	WMB_END()
 
 #define NEWTORRENT_OUTPUT_LAYOUT \
@@ -286,20 +297,27 @@ FileSheet::CWindowMapStruct* FileSheet::GetWindowMap()
 {
 	BEGIN_WINDOW_MAP_INLINE(FileSheet, 3, 3, 3, 3)
 		WMB_HEAD(WMB_COL(_exp)), 
-		WMB_ROWNOMIN(_exp, NEWTORRENT_SELECT_LAYOUT),
-		WMB_ROW(_auto, NEWTORRENT_OUTPUT_LAYOUT),
 		WMB_ROW(_auto, NEWTORRENT_CREATOR_LAYOUT),
-		WMB_ROW(_auto, NEWTORRENT_COMMENT_LAYOUT),
+		WMB_ROW(_exp, NEWTORRENT_COMMENT_LAYOUT),
+		WMB_ROW(_auto, NEWTORRENT_PIECESIZE_LAYOUT),
+		WMB_ROW(_auto, NEWTORRENT_OUTPUT_LAYOUT),
 		WMB_ROW(_auto, IDC_NEWTORRENT_PRIVATE),
 		WMB_END() 
 	END_WINDOW_MAP_INLINE()	
 }	
+
+#define NEWTORRENT_FILENAME_LAYOUT \
+	WMB_HEAD(WMB_COL(_exp)), \
+		WMB_ROW(_auto,	HAL_NEWT_FILE_NAME), \
+		WMB_ROW(_auto,	HAL_NEWT_FILE_NAME_EDIT), \
+	WMB_END()
 
 FilesSheet::CWindowMapStruct* FilesSheet::GetWindowMap()
 {
 	BEGIN_WINDOW_MAP_INLINE(FilesSheet, 3, 3, 3, 3)
 		WMB_HEAD(WMB_COL(_exp)), 
 		WMB_ROWNOMIN(_exp, NEWTORRENT_SELECT_LAYOUT),
+		WMB_ROW(_auto, NEWTORRENT_FILENAME_LAYOUT, _r, _r, _r),
 		WMB_END() 
 	END_WINDOW_MAP_INLINE()	
 }	
@@ -382,14 +400,15 @@ LRESULT NewTorrentDialog::OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 	hal::create_torrent_params params;
 
-	params.file_size_pairs = fileSheet_.FileSizePairs();
-	params.root_path = fileSheet_.FileFullPath();
-
 	params.creator = fileSheet_.Creator();
 	params.comment = fileSheet_.Comment();
+	params.piece_size = fileSheet_.PieceSize()*1024;
 	params.private_torrent = fileSheet_.Private();
 
 	params.trackers = trackerSheet_.Trackers();
+
+	params.file_size_pairs = filesSheet_.FileSizePairs();
+	params.root_path = filesSheet_.FileFullPath();
 
 	params.dht_nodes = detailsSheet_.DhtNodes();
 	params.web_seeds = detailsSheet_.WebSeeds();

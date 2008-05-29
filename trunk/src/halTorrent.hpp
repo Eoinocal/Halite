@@ -387,6 +387,7 @@ struct create_torrent_params
 
 	std::wstring creator;
 	std::wstring comment;
+	int piece_size;
 	bool private_torrent;
 
 	file_size_pairs_t file_size_pairs;

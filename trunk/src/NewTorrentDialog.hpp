@@ -27,6 +27,11 @@
 #define IDC_NEWT_OUTFILE_TEXT			ID_NEWTORRENT_BEGIN+18
 #define HAL_NEWT_SAVING_TORRENT			ID_NEWTORRENT_BEGIN+19
 #define HAL_NEWT_DIALOG_TITLE			ID_NEWTORRENT_BEGIN+20
+#define HAL_NEWT_FILE_NAME				ID_NEWTORRENT_BEGIN+21
+#define HAL_NEWT_FILE_NAME_EDIT			ID_NEWTORRENT_BEGIN+22
+#define HAL_NEWT_PIECESIZE_TEXT			ID_NEWTORRENT_BEGIN+23
+#define HAL_NEWT_PIECESIZE				ID_NEWTORRENT_BEGIN+24
+
 
 #ifndef RC_INVOKED
 
@@ -125,8 +130,6 @@ public:
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_DESTROY(OnDestroy)
 
-		COMMAND_ID_HANDLER_EX(IDC_NEWT_FILE_BROWSE, OnFileBrowse)
-		COMMAND_ID_HANDLER_EX(IDC_NEWT_DIR_BROWSE, OnDirBrowse)
 		COMMAND_ID_HANDLER_EX(IDC_NEWT_OUT_BROWSE, OnOutBrowse)
 
 		CHAIN_MSG_MAP(autosizeClass)
@@ -138,6 +141,7 @@ public:
 		DDX_EX_STDWSTRING(IDC_NEWTORRENT_CREATOR, creator_);
 		DDX_EX_STDWSTRING(IDC_NEWTORRENT_COMMENT, comment_);
 		DDX_EX_STDWSTRING(IDC_NEWT_FILE, outFile_);
+		DDX_INT(HAL_NEWT_PIECESIZE, pieceSize_);
         DDX_CHECK(IDC_NEWTORRENT_PRIVATE, private_)
     END_DDX_MAP()
 
@@ -148,32 +152,23 @@ public:
 		return this->IsDialogMessage(pMsg);
 	}
 	
-	void OnFileBrowse(UINT, int, HWND hWnd);
-	void OnDirBrowse(UINT, int, HWND hWnd);
 	void OnOutBrowse(UINT, int, HWND hWnd);
 
 	LRESULT onInitDialog(HWND, LPARAM);
 	void OnDestroy() {};
 
-	wpath FileFullPath() const;
-	hal::file_size_pairs_t FileSizePairs() const;
-
 	wpath OutputFile();
 	wstring Creator();
+	int PieceSize();
 	wstring Comment();
 	bool Private();
 	
 private:
-	void UpdateFileList();
-
-	FilesListViewCtrl filesList_;
 	enable_save EnableSave_;
-	
-	wpath fileRoot_;
-	std::vector<wpath> files_;
 
 	wstring creator_;
 	wstring comment_;
+	int pieceSize_;
 	wstring outFile_;
 	bool private_;
 };
@@ -188,37 +183,49 @@ protected:
 	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
 
 public:	
-	enum { IDD = IDD_NEWT_TRACKERS };
+	enum { IDD = IDD_NEWT_FILES };
 
     BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_DESTROY(OnDestroy)
 
+		COMMAND_ID_HANDLER_EX(IDC_NEWT_FILE_BROWSE, OnFileBrowse)
+		COMMAND_ID_HANDLER_EX(IDC_NEWT_DIR_BROWSE, OnDirBrowse)
+
 		CHAIN_MSG_MAP(autosizeClass)
 		CHAIN_MSG_MAP(sheetClass)
 		REFLECT_NOTIFICATIONS()
     END_MSG_MAP()
-
-	static CWindowMapStruct* GetWindowMap();
-	
-	BOOL PreTranslateMessage(MSG* pMsg)
-	{
-		return this->IsDialogMessage(pMsg);
-	}
 	
 	LRESULT onInitDialog(HWND, LPARAM)
 	{	
-		trackerList_.Attach(GetDlgItem(IDC_NEWT_LISTTRACKERS));	
+		filesList_.Attach(GetDlgItem(IDC_NEWT_LISTFILES));	
 
 		return 0;
 	}
 
 	void OnDestroy() {}
 
-	hal::tracker_details_t Trackers() const;
+	static CWindowMapStruct* GetWindowMap();
+
+	void OnFileBrowse(UINT, int, HWND hWnd);
+	void OnDirBrowse(UINT, int, HWND hWnd);
+
+	wpath FileFullPath() const;
+	hal::file_size_pairs_t FileSizePairs() const;
 	
+	BOOL PreTranslateMessage(MSG* pMsg)
+	{
+		return this->IsDialogMessage(pMsg);
+	}
+
 private:
-	NewTorrent_TrackerListViewCtrl trackerList_;
+	void UpdateFileList();
+
+	FilesListViewCtrl filesList_;
+	
+	wpath fileRoot_;
+	std::vector<wpath> files_;
 };
 
 class TrackerSheet :
@@ -329,6 +336,7 @@ public:
 		Load();
 
 		AddPage(fileSheet_);
+		AddPage(filesSheet_);
 		AddPage(trackerSheet_);
 		AddPage(detailsSheet_);		
 	}
@@ -410,6 +418,7 @@ private:
 	}
 
 	FileSheet fileSheet_;
+	FilesSheet filesSheet_;
 	TrackerSheet trackerSheet_;
 	PeersSheet detailsSheet_;
 };

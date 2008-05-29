@@ -693,7 +693,8 @@ private:
 	{
 		boost::intrusive_ptr<libt::torrent_info> t_info(new libt::torrent_info);
 
-		int piece_size = 256 * 1024;
+		int piece_size = params.piece_size;
+		HAL_DEV_MSG(wformat(L"piece size: %1%") % piece_size);
 		t_info->set_piece_size(piece_size);
 
 		HAL_DEV_MSG(L"Files");
