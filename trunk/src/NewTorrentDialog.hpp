@@ -178,6 +178,49 @@ private:
 	bool private_;
 };
 
+class FilesSheet :
+    public CPropertyPageImpl<FilesSheet>,
+	public CAutoSizeWindow<FilesSheet, false>
+{
+protected:
+	typedef FilesSheet thisClass;
+	typedef CPropertyPageImpl<thisClass> sheetClass;
+	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
+
+public:	
+	enum { IDD = IDD_NEWT_TRACKERS };
+
+    BEGIN_MSG_MAP_EX(thisClass)
+		MSG_WM_INITDIALOG(onInitDialog)
+		MSG_WM_DESTROY(OnDestroy)
+
+		CHAIN_MSG_MAP(autosizeClass)
+		CHAIN_MSG_MAP(sheetClass)
+		REFLECT_NOTIFICATIONS()
+    END_MSG_MAP()
+
+	static CWindowMapStruct* GetWindowMap();
+	
+	BOOL PreTranslateMessage(MSG* pMsg)
+	{
+		return this->IsDialogMessage(pMsg);
+	}
+	
+	LRESULT onInitDialog(HWND, LPARAM)
+	{	
+		trackerList_.Attach(GetDlgItem(IDC_NEWT_LISTTRACKERS));	
+
+		return 0;
+	}
+
+	void OnDestroy() {}
+
+	hal::tracker_details_t Trackers() const;
+	
+private:
+	NewTorrent_TrackerListViewCtrl trackerList_;
+};
+
 class TrackerSheet :
     public CPropertyPageImpl<TrackerSheet>,
 	public CAutoSizeWindow<TrackerSheet, false>

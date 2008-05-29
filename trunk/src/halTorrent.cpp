@@ -706,7 +706,7 @@ private:
 
 		libt::file_pool f_pool;
 		
-		scoped_ptr<libt::storage_interface> store(
+		boost::scoped_ptr<libt::storage_interface> store(
 			libt::default_storage_constructor(t_info, to_utf8(params.root_path.string()),
 				f_pool));
 
@@ -813,6 +813,23 @@ wpath bit_impl::workingDirectory = hal::app().working_directory();
 bit::bit() :
 	pimpl(new bit_impl())
 {}
+
+#define HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH(FUNCTION) \
+catch (const libt::invalid_handle&) \
+{\
+	event().post(shared_ptr<EventDetail>( \
+		new EventInvalidTorrent(Event::critical, Event::invalidTorrent, name, std::string(FUNCTION)))); \
+}\
+catch (const invalidTorrent& t) \
+{\
+	event().post(shared_ptr<EventDetail>( \
+		new EventInvalidTorrent(Event::info, Event::invalidTorrent, t.who(), std::string(FUNCTION)))); \
+}\
+catch (const std::exception& e) \
+{\
+	event().post(shared_ptr<EventDetail>( \
+		new EventTorrentException(Event::critical, Event::torrentException, std::string(e.what()), name, std::string(FUNCTION)))); \
+}
 
 #define HAL_GENERIC_TORRENT_EXCEPTION_CATCH(TORRENT, FUNCTION) \
 catch (const libt::invalid_handle&) \
@@ -2015,13 +2032,24 @@ bit::torrent::exec_around_ptr::proxy::~proxy()
 	HAL_DEV_MSG(L"Dtor proxy");
 }
 
+const std::wstring bit::torrent::get_name() const
+{
+	try {
+	
+	return ptr->name();
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Torrent Unknown", "torrent::get_name()")
+	
+	return 0;
+}
+
 float bit::torrent::get_ratio() const
 {
 	try {
 	
 	return ptr->get_ratio();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::get_ratio")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_ratio")
 	
 	return 0;
 }
@@ -2032,7 +2060,7 @@ void bit::torrent::set_ratio(float r)
 
 	ptr->set_ratio(r);
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_ratio")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_ratio")
 }
 
 std::pair<int, int> bit::torrent::get_connection_limits() const
@@ -2041,7 +2069,7 @@ std::pair<int, int> bit::torrent::get_connection_limits() const
 	
 	return ptr->getConnectionLimit();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::get_connection_limits")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_connection_limits")
 	
 	return std::make_pair(-1, -1);
 }
@@ -2052,7 +2080,7 @@ void bit::torrent::set_connection_limits(const std::pair<int, int>& l)
 	
 	ptr->setConnectionLimit(l.first, l.second);
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_connection_limits")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_connection_limits")
 }
 
 std::pair<float, float> bit::torrent::get_rate_limits() const
@@ -2061,7 +2089,7 @@ std::pair<float, float> bit::torrent::get_rate_limits() const
 	
 	return ptr->getTransferSpeed();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::get_rate_limits")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_rate_limits")
 	
 	return std::pair<float, float>(-1.0, -1.0);
 }
@@ -2072,7 +2100,7 @@ void bit::torrent::set_rate_limits(const std::pair<float, float>& l)
 	
 	ptr->setTransferSpeed(l.first, l.second);
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_rate_limits")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_rate_limits")
 }
 
 wpath bit::torrent::get_save_directory() const
@@ -2081,7 +2109,7 @@ wpath bit::torrent::get_save_directory() const
 	
 	return ptr->get_save_directory();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::get_save_directory")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_save_directory")
 	
 	return L"";
 }
@@ -2092,7 +2120,7 @@ void bit::torrent::set_save_directory(const wpath& s)
 	
 	ptr->set_save_directory(s);
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_save_directory")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_save_directory")
 }
 
 wpath bit::torrent::get_move_to_directory() const
@@ -2101,7 +2129,7 @@ wpath bit::torrent::get_move_to_directory() const
 	
 	return ptr->get_move_to_directory();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::get_save_directory")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_save_directory")
 	
 	return L"";
 }
@@ -2112,7 +2140,7 @@ void bit::torrent::set_move_to_directory(const wpath& m)
 	
 	ptr->set_move_to_directory(m);
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_move_to_directory")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_move_to_directory")
 }
 
 std::pair<wstring, wstring> bit::torrent::get_tracker_login() const
@@ -2121,7 +2149,7 @@ std::pair<wstring, wstring> bit::torrent::get_tracker_login() const
 	
 	return ptr->getTrackerLogin();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "get_tracker_login")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("get_tracker_login")
 	
 	return std::make_pair(L"!!! exception thrown !!!", L"!!! exception thrown !!!");
 }
@@ -2132,7 +2160,7 @@ void bit::torrent::set_tracker_login(const std::pair<wstring, wstring>& p)
 	
 	ptr->setTrackerLogin(p.first, p.second);
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_tracker_login")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_tracker_login")
 }
 
 bool bit::torrent::get_is_active() const
@@ -2141,7 +2169,7 @@ bool bit::torrent::get_is_active() const
 	
 	return ptr->is_active();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::get_is_active")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_is_active")
 	
 	return L"";
 }
@@ -2152,7 +2180,7 @@ bool bit::torrent::get_in_session() const
 	
 	return ptr->in_session();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::get_in_session")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_in_session")
 	
 	return L"";
 }
@@ -2163,7 +2191,7 @@ std::vector<tracker_detail> bit::torrent::get_trackers() const
 	
 	return ptr->getTrackers();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::get_trackers")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_trackers")
 	
 	return std::vector<tracker_detail>();
 }
@@ -2174,7 +2202,7 @@ void bit::torrent::set_trackers(const std::vector<tracker_detail>& trackers)
 	
 	ptr->setTrackers(trackers);
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_trackers")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_trackers")
 }
 
 void bit::torrent::reset_trackers()
@@ -2183,12 +2211,16 @@ void bit::torrent::reset_trackers()
 	
 	ptr->resetTrackers();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Me", "torrent::set_trackers")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_trackers")
 }
 
 void bit::torrent::set_file_priorities(const std::pair<std::vector<int>, int>& p)
 {
+	try { 
+
 	ptr->setFilePriorities(p.first, p.second);
+	
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_trackers")
 }
 
 void bit::startEventReceiver()
