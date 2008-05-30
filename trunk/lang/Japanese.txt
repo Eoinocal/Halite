@@ -12,7 +12,7 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "(DHT will not apply to private torrents)" --->  ??? 
-"About" --->  ??? 
+"About" ---> "Haliteについて"
 "Above Normal" ---> "普通"
 "Active" --->  ??? 
 "Add New Peer" --->  ??? 
@@ -28,6 +28,7 @@
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
 "Apply" ---> "適用"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"Are you sure you wish to delete all downloaded data?" --->  ??? 
 "Auto Sort" --->  ??? 
 "BitTorrent" ---> "ビットトレント"
 "Bittorrent Event: %1%." --->  ??? 
@@ -63,6 +64,7 @@
 "Debug" --->  ??? 
 "Default save folder :" --->  ??? 
 "Delete" ---> "削除"
+"Details" --->  ??? 
 "Dev Msg: %1%." --->  ??? 
 "Dir." --->  ??? 
 "Disabled" ---> "使用しない"
@@ -104,6 +106,7 @@
 "Forced" ---> "強制使用"
 "General Settings" ---> "設定"
 "General" --->  ??? 
+"Generated Torrent Name (Cannot change)" --->  ??? 
 "Global Limits" --->  ??? 
 "Halite BitTorrent Client" --->  ??? 
 "Halite Debug Dialog" --->  ??? 
@@ -167,6 +170,7 @@
 "Peers" ---> "ピア"
 "Peers:" ---> "ピア数"
 "Piece %2% finished. (%1%)" --->  ??? 
+"Piece Size (KBs)" --->  ??? 
 "Plaintext Encrypted" --->  ??? 
 "Plaintext" --->  ??? 
 "Port %1% open" --->  ??? 
@@ -191,7 +195,7 @@
 "Ratio (this session):" ---> "共有比 (このセッションに):"
 "Ratio" --->  ??? 
 "Ratio:" ---> "共有比:"
-"Reannounce" ---> "Reannounce"
+"Reannounce" --->  ??? 
 "Recheck Files" --->  ??? 
 "Remaining" --->  ??? 
 "Remaining:" ---> "残り:"
@@ -201,7 +205,7 @@
 "Reset" --->  ??? 
 "Resume" --->  ??? 
 "Review settings when adding torrent." --->  ??? 
-"Save" --->  ??? 
+"Save" ---> ""
 "Saving Torrent" --->  ??? 
 "Security" ---> "セキュリティ"
 "Seeding" --->  ??? 

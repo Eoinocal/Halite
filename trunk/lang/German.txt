@@ -28,6 +28,7 @@
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Ein ungültiges Verschlüsselungslevel, %1%, wurde als Verschlüsselungseinstellung verwendet."
 "Apply" ---> "Anwenden"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"Are you sure you wish to delete all downloaded data?" --->  ??? 
 "Auto Sort" ---> "auto. Sortierung"
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." ---> "Bittorrent Ereignis: %1%."
@@ -63,6 +64,7 @@
 "Debug" ---> "Debug"
 "Default save folder :" ---> "Standardverzeichnis:"
 "Delete" ---> "Löschen"
+"Details" --->  ??? 
 "Dev Msg: %1%." --->  ??? 
 "Dir." --->  ??? 
 "Disabled" ---> "Deaktiviert"
@@ -104,6 +106,7 @@
 "Forced" ---> "Erzwungen"
 "General Settings" ---> "Allgemeines"
 "General" ---> "Allgemein"
+"Generated Torrent Name (Cannot change)" --->  ??? 
 "Global Limits" ---> "Globale Limitierungen"
 "Halite BitTorrent Client" --->  ??? 
 "Halite Debug Dialog" ---> "Halite Debug Dialog"
@@ -167,6 +170,7 @@
 "Peers" ---> "Peers"
 "Peers:" ---> "Peers:"
 "Piece %2% finished. (%1%)" ---> "Teil %2% fertiggestellt. (%1%)"
+"Piece Size (KBs)" --->  ??? 
 "Plaintext Encrypted" ---> "Klartext verschlüsselt"
 "Plaintext" ---> "Klartext"
 "Port %1% open" ---> "Port %1% offen"

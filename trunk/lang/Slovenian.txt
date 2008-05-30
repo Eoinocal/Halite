@@ -28,6 +28,7 @@
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Neveljavna nastavitev šifriranja %1%."
 "Apply" ---> "Posodobi"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"Are you sure you wish to delete all downloaded data?" --->  ??? 
 "Auto Sort" ---> "Avtomatsko razvrsti"
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." ---> "Bittorrent dogodek: %1%."
@@ -63,6 +64,7 @@
 "Debug" ---> "Debug"
 "Default save folder :" ---> "Privzeta mapa za shranjevanje :"
 "Delete" ---> "Izbriši"
+"Details" --->  ??? 
 "Dev Msg: %1%." --->  ??? 
 "Dir." --->  ??? 
 "Disabled" ---> "Onemogočena"
@@ -104,6 +106,7 @@
 "Forced" ---> "Prisiljeno"
 "General Settings" ---> "Splošne nastavitve"
 "General" ---> "Splošno"
+"Generated Torrent Name (Cannot change)" --->  ??? 
 "Global Limits" ---> "Omejitev:"
 "Halite BitTorrent Client" --->  ??? 
 "Halite Debug Dialog" ---> "Halite Debug"
@@ -167,6 +170,7 @@
 "Peers" ---> "Peerov"
 "Peers:" ---> "Sejalci+Pijavke:"
 "Piece %2% finished. (%1%)" --->  ??? 
+"Piece Size (KBs)" --->  ??? 
 "Plaintext Encrypted" ---> "Plaintext šifrirano"
 "Plaintext" ---> "Plaintext"
 "Port %1% open" ---> "Port %1% odprt"

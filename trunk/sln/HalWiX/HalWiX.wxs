@@ -3,7 +3,7 @@
 		<Product Id="3c203d40-c34d-485d-a516-75b5d1b595f2" Name="Halite" Language="1033" Version="0.3.2.0" 
              Manufacturer="BinaryNotions.com" UpgradeCode="8cac0e8f-e307-450f-8aa4-af2bd341c69b">
 
-      <Package InstallerVersion="200" Compressed="yes" Platforms="x64"/>      
+      <Package InstallerVersion="200" Compressed="yes" Platforms="Intel64,Intel"/>
       <Media Id="1" Cabinet="HalWiX.cab" EmbedCab="yes" />
       
       <Directory Id="TARGETDIR" Name="SourceDir">
@@ -41,6 +41,10 @@
                     WorkingDirectory='INSTALLDIR' Advertise="yes" Icon="HaliteIcon.exe" IconIndex="0" />
               </File>
             </Component>
+
+            <Component Id='LangDutch' Guid='{EA0BF907-8BF8-41b2-9014-34DAC36D207F}'>
+              <File Id='LangDutchFile' Name='Dutch.dll' DiskId='1' Source='..\..\lang\bin\x86\Dutch.dll' />
+            </Component>
             
           </Directory>
         </Directory>
@@ -60,7 +64,7 @@
                     WorkingDirectory='INSTALLDIR' Advertise="yes" Icon="HaliteIcon.exe" IconIndex="0" />
               </File>
             </Component>
-            
+
           </Directory>
         </Directory>
       </Directory>
@@ -71,6 +75,13 @@
         <ComponentRef Id="HaliteExeStartMenuFolder" />
         <ComponentRef Id="ReadMeText" />
         <Condition Level="0">VersionNT64</Condition>
+      </Feature>
+
+      <Feature Id="Languages" Title="Languages" Level="1">
+        <Feature Id="FeatLangDutch" Title="Dutch" Level="1">
+          <ComponentRef Id="LangDutch" />
+        </Feature>
+        <Condition Level="0">VersionNT64</Condition> 
       </Feature>
 
       <Feature Id="x64Components" Title="Halite (Core 64bit)" Level="1"

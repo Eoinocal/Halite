@@ -28,6 +28,7 @@
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Um nível de codificação inválido, %1%, foi passado como opção de encriptação."
 "Apply" ---> "Aplicar"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"Are you sure you wish to delete all downloaded data?" --->  ??? 
 "Auto Sort" ---> "Auto-Organizar"
 "BitTorrent" --->  ??? 
 "Bittorrent Event: %1%." ---> "Evento Bittorrent: %1%."
@@ -63,6 +64,7 @@
 "Debug" --->  ??? 
 "Default save folder :" ---> "Sempre salvar na pasta :"
 "Delete" ---> "Deletar"
+"Details" --->  ??? 
 "Dev Msg: %1%." --->  ??? 
 "Dir." --->  ??? 
 "Disabled" ---> "Disabilitado"
@@ -91,7 +93,7 @@
 "Encoding Level" ---> "Nível de codificação"
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Digite os endereços (URL) dos rastreadores para o torrent."
-"Exception caught: %1%, from %2%." --->  ??? 
+"Exception caught: %1%, from %2%." ---> "Exceção detectada: %1%, do %2%."
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
@@ -104,6 +106,7 @@
 "Forced" ---> "Forçado"
 "General Settings" ---> "Preferências Gerais"
 "General" ---> "Geral"
+"Generated Torrent Name (Cannot change)" --->  ??? 
 "Global Limits" ---> "Limites Globais"
 "Halite BitTorrent Client" --->  ??? 
 "Halite Debug Dialog" ---> "Diálogo do Debug do Halite"
@@ -167,6 +170,7 @@
 "Peers" --->  ??? 
 "Peers:" --->  ??? 
 "Piece %2% finished. (%1%)" --->  ??? 
+"Piece Size (KBs)" --->  ??? 
 "Plaintext Encrypted" ---> "criptografia texto simples"
 "Plaintext" ---> "texto simples"
 "Port %1% open" ---> "Porta %1% aberta"
@@ -191,7 +195,7 @@
 "Ratio (this session):" ---> "Razão (nessa seção):"
 "Ratio" --->  ??? 
 "Ratio:" ---> "Razão:"
-"Reannounce" ---> "Reanunciar"
+"Reannounce" --->  ??? 
 "Recheck Files" --->  ??? 
 "Remaining" --->  ??? 
 "Remaining:" ---> "Faltando:"
@@ -201,7 +205,7 @@
 "Reset" ---> "Resetar"
 "Resume" ---> "Continuar"
 "Review settings when adding torrent." --->  ??? 
-"Save" --->  ??? 
+"Save" ---> "Salvar"
 "Saving Torrent" --->  ??? 
 "Security" ---> "Segurança"
 "Seeding" ---> "Semeando"
@@ -240,7 +244,7 @@
 "Time" ---> "Hora"
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
-"Torrent (%1%) exception caught: %2% from %3%." --->  ??? 
+"Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) exceção detectada: %2% do %3%."
 "Torrent Defaults" ---> "Padrão para os Torrents"
 "Torrent File" ---> "Arquivo .torrent"
 "Torrent Root" ---> "Raiz do Torrent"
@@ -252,7 +256,7 @@
 "Torrent:" ---> "Torrent:"
 "Torrents" --->  ??? 
 "Total max connections :" ---> "Total de conexões máximas :"
-"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." ---> "Transferência total incluindo gasto: %1$.2fMB baixado e %2$.2fMB upado."
 "Total upload slots :" ---> "Total de slots para upload :"
 "Total" ---> "Total"
 "Tracker Announce. (%1%)" --->  ??? 
