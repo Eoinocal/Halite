@@ -1,9 +1,9 @@
 Halite: A Free Open-Source BitTorrent client
 
-Version: 0.3.0.5 dev 408 released 26th March 2008
+Version: 0.3.0.7 dev 465 released 30th May 2008
 
-WWW: http://www.binarynotions.com/halite.php Forum:
-http://www.binarynotions.com/forum.php
+WWW:   http://www.binarynotions.com/halite-bittorrent-client 
+Forum: http://www.binarynotions.com/forum.php
 
 Developer: Eóin O'Callaghan
 
@@ -30,6 +30,7 @@ That said, it supports:
   + Login support where tracker requires it.
   + Ability to edit trackers specified in the torrent.
   + Transfer rate and connection limits both global and per-torrent.
+  + Torrent file creation.
 
 Requirements: Windows 2000, XP, Server 2003 and Vista (Note currently
 Vista users need to install the application to a directory where they
@@ -48,17 +49,15 @@ associated torrent file from the 'torrents' subdirectory.
 
 Changes:
 
+ - from v 0.3.0.5 to 0.3.0.7: 
+   1) Adds ability to create torrent files.
+   2) A lot of small improvements and bug fixes.
+
  - from v 0.3.0.2 to 0.3.0.5: 
    1) Right-click context menu option to 'Open download folder'.
    2) Right-click context menu option to force a file recheck.
    3) Option to move seeding torrent to another folder.
    4) Fixed a bug with tracker logins.
-
- - from v 0.3 to 0.3.0.2: 
-   Mainly a bugfix release.
-   1) Fixed a bug with Tray Icon rmeaining after window was restored.
-   2) Torrent Connection and Transfer setting mapped to incorrect editbox.
-   3) Subtle bug where some settings didn't register straight away.
 
  - from v 0.3 to 0.3.0.2: 
    Mainly a bugfix release.

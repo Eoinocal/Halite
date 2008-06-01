@@ -4,7 +4,7 @@
     <ProductVersion>3.0</ProductVersion>
     <ProjectGuid>{b9c9cb3a-22f4-466b-9aea-79c621dcd40a}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>HalWiX</OutputName>
+    <OutputName>Halite</OutputName>
     <OutputType>Package</OutputType>
     <WixToolPath>$(ProgramFiles)\Windows Installer XML v3\bin\</WixToolPath>
   </PropertyGroup>
@@ -39,9 +39,18 @@
     </LinkerSuppressSpecificWarnings>
     <SuppressValidation>False</SuppressValidation>
     <LinkerTreatWarningsAsErrors>False</LinkerTreatWarningsAsErrors>
-    <LinkerVerboseOutput>False</LinkerVerboseOutput>
+    <LinkerVerboseOutput>True</LinkerVerboseOutput>
     <WixVariables>
     </WixVariables>
+    <IncludeSearchPaths>
+    </IncludeSearchPaths>
+    <Pedantic>False</Pedantic>
+    <ShowSourceTrace>False</ShowSourceTrace>
+    <SuppressSchemaValidation>False</SuppressSchemaValidation>
+    <SuppressSpecificWarnings>
+    </SuppressSpecificWarnings>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <VerboseOutput>True</VerboseOutput>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -76,12 +85,73 @@
     <LinkerVerboseOutput>False</LinkerVerboseOutput>
     <WixVariables>
     </WixVariables>
+    <DefineConstants>Platform=Intel;ProgramFilesFolder=ProgramFilesFolder;Win64Ans=no;ReleaseFolder=</DefineConstants>
+    <IncludeSearchPaths>
+    </IncludeSearchPaths>
+    <Pedantic>False</Pedantic>
+    <ShowSourceTrace>False</ShowSourceTrace>
+    <SuppressSchemaValidation>False</SuppressSchemaValidation>
+    <SuppressSpecificWarnings>
+    </SuppressSpecificWarnings>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <VerboseOutput>False</VerboseOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release64' ">
+    <IntermediateOutputPath>obj\Release64\</IntermediateOutputPath>
+    <AllowIdenticalRows>False</AllowIdenticalRows>
+    <CabinetCachePath>
+    </CabinetCachePath>
+    <CabinetCreationThreadCount>-1</CabinetCreationThreadCount>
+    <Cultures>en-US</Cultures>
+    <LeaveTemporaryFiles>False</LeaveTemporaryFiles>
+    <LinkerPedantic>False</LinkerPedantic>
+    <ReuseCabinetCache>False</ReuseCabinetCache>
+    <SetMsiAssemblyNameFileVersion>False</SetMsiAssemblyNameFileVersion>
+    <SuppressAclReset>False</SuppressAclReset>
+    <SuppressAssemblies>False</SuppressAssemblies>
+    <SuppressDefaultAdminSequenceActions>False</SuppressDefaultAdminSequenceActions>
+    <SuppressDefaultAdvSequenceActions>False</SuppressDefaultAdvSequenceActions>
+    <SuppressDefaultUISequenceActions>False</SuppressDefaultUISequenceActions>
+    <SuppressDroppingUnrealTables>False</SuppressDroppingUnrealTables>
+    <SuppressFileHashAndInfo>False</SuppressFileHashAndInfo>
+    <SuppressFiles>False</SuppressFiles>
+    <SuppressIces>
+    </SuppressIces>
+    <LinkerSuppressIntermediateFileVersionMatching>False</LinkerSuppressIntermediateFileVersionMatching>
+    <SuppressLayout>False</SuppressLayout>
+    <SuppressMsiAssemblyTableProcessing>False</SuppressMsiAssemblyTableProcessing>
+    <LinkerSuppressSchemaValidation>False</LinkerSuppressSchemaValidation>
+    <LinkerSuppressSpecificWarnings>
+    </LinkerSuppressSpecificWarnings>
+    <SuppressValidation>False</SuppressValidation>
+    <LinkerTreatWarningsAsErrors>False</LinkerTreatWarningsAsErrors>
+    <LinkerVerboseOutput>False</LinkerVerboseOutput>
+    <WixVariables>
+    </WixVariables>
+    <DefineConstants>Platform=x64;ProgramFilesFolder=ProgramFiles64Folder;Win64Ans=yes;ReleaseFolder=x64\</DefineConstants>
+    <IncludeSearchPaths>
+    </IncludeSearchPaths>
+    <Pedantic>False</Pedantic>
+    <ShowSourceTrace>False</ShowSourceTrace>
+    <SuppressSchemaValidation>False</SuppressSchemaValidation>
+    <SuppressSpecificWarnings>
+    </SuppressSpecificWarnings>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <VerboseOutput>False</VerboseOutput>
+    <OutputPath>bin\Release64\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="HalWiX.wxs" />
+    <WixExtension Include="D:\Program Files (x86)\Windows Installer XML v3\bin\WixUIExtension.dll" />
   </ItemGroup>
   <ItemGroup>
-    <WixExtension Include="C:\Program Files\Windows Installer XML v3\bin\WixUIExtension.dll" />
+    <ProjectReference Include="..\Halite\Halite.vcproj">
+      <Name>Halite</Name>
+      <Project>{ed987c84-fff9-4656-8f27-2a65fc0847fd}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="HalWiX.wxs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WiX\v3.0\Wix.targets" />
   <!--

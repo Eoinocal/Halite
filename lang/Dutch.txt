@@ -12,19 +12,19 @@
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "(DHT will not apply to private torrents)" ---> "(DHT zal niet gebruikt worden voor Private Trackers)"
-"About" ---> "Over"
+"About" ---> "Over Halite"
 "Above Normal" ---> "Boven Normaal"
 "Active" ---> "Actief"
-"Add New Peer" ---> "Voeg nieuwe peer toe"
+"Add New Peer" ---> "Voeg nieuwe Peer toe"
 "Add New Tracker" ---> "Voeg nieuwe Tracker toe"
-"Add New Web Seed or DHT Node" ---> "Voeg nieuwe webseed of DHT knoop toe"
+"Add New Web Seed or DHT Node" ---> "Voeg nieuwe Webseed of DHT knoop toe"
 "Add Torrent" ---> "Torrent toevoegen"
 "Add" ---> "Voeg toe"
 "Advanced GUI" ---> "Geavanceerde GUI"
 "Alert %2%, Status code: %4%, Times %3%. (%1%)" ---> "Alert %2%, Status code: %4%, Aantal keer %3%. (%1%)"
 "Allocating" ---> "Bezig met Alloceren"
-"Allow only one instance to run" --->  ??? 
-"An invalid connection policy, %1%, was passed as an encryption setting." ---> "Een ongeldig encoderings regeling, %1%, is doorgegaan als encryptie instelling."
+"Allow only one instance to run" ---> "Sta maar één draaiende instantie toe"
+"An invalid connection policy, %1%, was passed as an encryption setting." ---> "Een ongeldig verbindings regeling, %1%, is doorgegaan als encryptie instelling."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Een ongeldig encoderings niveau, %1%, is doorgegaan als encryptie instelling."
 "Apply" ---> "Toepassen"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Weet je zeker dat je Halite wilt sluiten? Dit zal alle actieve taken stoppen"
@@ -38,9 +38,9 @@
 "Calculating Piece Hashes..." ---> "Pakket hashes berekenen..."
 "Cancel" ---> "Annuleren"
 "Checking Files" ---> "Bestanden controleren"
-"Choked" ---> "Verstopt"
+"Choked" --->  ??? 
 "Clear IP database" ---> "Leeg IP Database"
-"Client" ---> "Client"
+"Client" --->  ??? 
 "Close to tray" ---> "Sluit naar systeemvak"
 "Comment" ---> "Commentaar"
 "Completed" ---> "Voltooid"
@@ -62,20 +62,20 @@
 "DHT" --->  ??? 
 "Debug Event: %1%." ---> "Debug Gebeurtenis: %1%."
 "Debug" --->  ??? 
-"Default save folder :" ---> "Standaard opslag map"
+"Default save folder :" ---> "Standaard Download Map"
 "Delete" ---> "Verwijderen"
 "Details" --->  ??? 
 "Dev Msg: %1%." --->  ??? 
-"Dir." ---> "Map."
+"Dir." ---> "Map..."
 "Disabled" ---> "Uitschakelen"
 "Distributed Hash Tables" --->  ??? 
 "Don't download" ---> "Niet Downloaden"
 "Down" ---> "Down"
-"Download Rate (KB/s) :" ---> "Download snelheid (KB/s) :"
+"Download Rate (KB/s) :" ---> "Download Snelheid (KB/s) :"
 "Download" ---> "Download"
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Gedownload %1$.2fMB, Geupload %2$.2fMB, Ratio %3$.2f."
 "Downloaded" ---> "Gedownload"
-"Downloading Metadata" ---> "Metadata downloaden"
+"Downloading Metadata" ---> "Metadata Downloaden"
 "Downloading" ---> "Bezig met Downloaden"
 "E&xit" ---> "&Afsluiten"
 "ETA" --->  ??? 
@@ -96,12 +96,12 @@
 "Exception caught: %1%, from %2%." ---> "Exceptie gevangen: %1%, van %2%."
 "Failed, %1%" ---> "Mislukt, %1%"
 "Fast resume failed: %2%. (%1%)" ---> "Snelle hervatting mislukt: %2%. (%1%)"
-"File" ---> "Bestand"
-"Filename" ---> "Bestandsnaam"
+"File" ---> "Bestand..."
+"Filename" ---> "Bestand"
 "Files" ---> "Bestanden"
 "Filtering %1% range(s)" ---> "%1% bereiken gefilterd"
 "Finish Time" ---> "Voltooiings tijd"
-"Finished" ---> "Klaar"
+"Finished" ---> "Voltooid"
 "Force Close" ---> "Forceer sluiten"
 "Forced" ---> "Forceren"
 "General Settings" ---> "Algemene Opties"
@@ -113,7 +113,7 @@
 "Halite importing IP ranges..." ---> "Halite importeert IP bereiken..."
 "Halite not listening!" ---> "Halite luistert niet!"
 "Halite shutting down..." ---> "Halite is bezig met afsluiten..."
-"Handshake" ---> "Handdruk"
+"Handshake" --->  ??? 
 "Has choked us" ---> "Choked ons"
 "Hash failed for piece %2% of %1%." ---> "Hash gefaald voor deel %2% van %1%"
 "IP Filter blocked %1%, %2%." ---> "IP Filter blokkeerde %1%, %2%."
@@ -213,23 +213,23 @@
 "Seeds:" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Kies een map om de download op te slaan. Kies cancel om de standaard map te gebruiken."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Selecteer een folder om de bestanden op te slaan of Afbreken om de torrent niet te downloaden."
-"Select a file or directory from which to construct the torrent." --->  ??? 
-"Select the (TCP) port (or range) on which to listen for incoming connections." --->  ??? 
+"Select a file or directory from which to construct the torrent." ---> "Selecteer een bestand of map waar en torrent van moet worden gemaakt."
+"Select the (TCP) port (or range) on which to listen for incoming connections." ---> "Kies een (TCP) poort waarop moet worden geluisted voor binnenkomende verbindingen."
 "Send login info to trackers." ---> "Stuur login gegevens naar Tracker."
 "Set Priority" ---> "Verander Prioriteit"
 "Set as Primary" ---> "Zet als Primair"
 "Severity" ---> "Ernst"
 "Show this message in future" ---> "Toon dit bericht in de toekomst"
-"Shutting down session" --->  ??? 
-"Size" ---> "Grootte"
+"Shutting down session" ---> "Sessie wordt afgesloten"
+"Size" ---> "Grootte in Bytes"
 "Standard exception (%1%) thrown from %2%." ---> "Standard exceptie (%1%) geworpen van %2%."
-"Start Time" --->  ??? 
+"Start Time" ---> "Start Tijd"
 "Status" ---> "Status"
 "Status:" ---> "Status:"
 "Stop" ---> "Stop"
-"Stopped initially (Allows changing advanced setting)" --->  ??? 
+"Stopped initially (Allows changing advanced setting)" ---> "Initieel gestopt (Staat wijzigen geavanceerde instellingen toe)"
 "Stopped" ---> "Gestopt"
-"Stopping Torrents" --->  ??? 
+"Stopping Torrents" ---> "Torrents worden gestopt"
 "Stopping" ---> "Stopt"
 "Successfully %1%." ---> "Succesvol %1%."
 "Supports extensions" ---> "Ondersteund extensies"
@@ -246,16 +246,16 @@
 "Torrent %1% paused." ---> "Torrent %1% gepauzeerd."
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) exceptie gevangen: %2% van %3%."
 "Torrent Defaults" ---> "Torrent Standaard"
-"Torrent File" ---> "Torrent bestand"
-"Torrent Root" ---> "Torrent Wortel"
+"Torrent File" ---> "Torrent Bestand"
+"Torrent Root" ---> "Torrent Hoofdmap"
 "Torrent and Data" ---> "Torrent en Data"
 "Torrent connection limits:" ---> "Torrent verbindings limiet"
 "Torrent save folder:" ---> "Torrent opslag map"
 "Torrent transfer rates (KB/s):" ---> "Torrent snelheden (KB/s)"
 "Torrent" --->  ??? 
 "Torrent:" --->  ??? 
-"Torrents" ---> "Torrents"
-"Total max connections :" ---> "Maximaal aantal verbindingen : "
+"Torrents" --->  ??? 
+"Total max connections :" ---> "Maximaal aantal verbindingen :"
 "Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." ---> "Totale overdracht inclusief overhead: %1$.2fMB down en %2$.2fMB up."
 "Total upload slots :" ---> "Totaal aantal upload slots :"
 "Total" ---> "Totaal"

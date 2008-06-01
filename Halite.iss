@@ -1,7 +1,7 @@
 ; -- Halite.iss --
 
 #define MyAppName "Halite"
-#define MyAppVerName "Halite 0.3.0.5"
+#define MyAppVerName "Halite 0.3.0.7"
 #define MyAppPublisher "BinaryNotions.com"
 #define MyAppURL "http://www.binarynotions.com/halite.php"
 #define MyAppExeName "Halite.exe"
@@ -18,7 +18,7 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=LICENSE_1_0.txt
-OutputBaseFilename=Halite.0_3_0_5_dev408.setup
+OutputBaseFilename=Halite.0_3_0_7_dev465.setup
 Compression=lzma
 SolidCompression=true
 UninstallDisplayIcon={app}\{#MyAppName}
@@ -37,18 +37,22 @@ Name: associate_torrent; Description: {cm:AssocFileExtension,Halite,.torrent}; G
 [Files]
 Source: Release\Halite.exe; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
 
-Source: lang\bin\x86\Dutch.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
-Source: lang\bin\x86\French.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
-Source: lang\bin\x86\German.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
-Source: lang\bin\x86\Italian.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
-Source: lang\bin\x86\Norwegian.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
-Source: lang\bin\x86\Polish.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
-Source: lang\bin\x86\Russian.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
-Source: lang\bin\x86\Slovenian.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
-Source: lang\bin\x86\Spanish.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
-Source: lang\bin\x86\Turkish.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
-Source: lang\bin\x86\Japanese.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
-Source: lang\bin\x86\Portuguese.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\Dutch.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\French.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\German.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\Italian.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\Japanese.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\Norwegian.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\Polish.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\Portuguese.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\Russian.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\Serbian.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\Serbian (Cyrillic).dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\Slovenian.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\Spanish.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\Swedish.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\Turkish.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
+Source: lang\bin\Japanese.dll; DestDir: {app}; Check: not Is64BitInstallMode; Flags: ignoreversion 32bit
 
 Source: x64\Release\Halite.exe; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
 
@@ -56,14 +60,18 @@ Source: lang\bin\x64\Dutch.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags
 Source: lang\bin\x64\French.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
 Source: lang\bin\x64\German.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
 Source: lang\bin\x64\Italian.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+Source: lang\bin\x64\Japanese.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
 Source: lang\bin\x64\Norwegian.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
 Source: lang\bin\x64\Polish.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+Source: lang\bin\x64\Portuguese.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
 Source: lang\bin\x64\Russian.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+Source: lang\bin\x64\Serbian.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+Source: lang\bin\x64\Serbian (Cyrillic).dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
 Source: lang\bin\x64\Slovenian.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
 Source: lang\bin\x64\Spanish.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
+Source: lang\bin\x64\Swedish.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
 Source: lang\bin\x64\Turkish.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
 Source: lang\bin\x64\Japanese.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
-Source: lang\bin\x64\Portuguese.dll; DestDir: {app}; Check: Is64BitInstallMode; Flags: ignoreversion 64bit
 
 Source: Readme.txt; DestDir: {app}; Flags: ignoreversion isreadme
 
