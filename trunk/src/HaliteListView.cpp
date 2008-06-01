@@ -118,43 +118,28 @@ HaliteListViewCtrl::tD HaliteListViewCtrl::CustomItemConversion(LVCompareParam* 
 
 LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	typedef winstl::listview_sequence::sequence_value_type lv_val;
-	winstl::listview_sequence lv_seq(*this);
-
-/*	std::for_each(make_filter_iterator(&is_selected, lv_seq.begin(), lv_seq.end()),
-				  make_filter_iterator(&is_selected, lv_seq.end(), lv_seq.end()),
-				  bind((void (hal::bit::*)(const std::wstring&))&hal::bit::resumeTorrent, 
-				      &hal::bittorrent(), 
-					  bind(&hal::to_wstr_shim<const lv_val>, _1)));
-*/	
+	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
+		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::resumeTorrent, 
+			&hal::bittorrent(), _1));
+	
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {	
-	typedef winstl::listview_sequence::sequence_value_type lv_val;
-	winstl::listview_sequence lv_seq(*this);
-
-/*	std::for_each(make_filter_iterator(&is_selected, lv_seq.begin(), lv_seq.end()),
-				  make_filter_iterator(&is_selected, lv_seq.end(), lv_seq.end()),
-				  bind((void (hal::bit::*)(const std::wstring&))&hal::bit::pauseTorrent, 
-				      &hal::bittorrent(), 
-					  bind(&hal::to_wstr_shim<const lv_val>, _1)));
-*/	
+	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
+		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::pauseTorrent, 
+			&hal::bittorrent(), _1));
+	
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	typedef winstl::listview_sequence::sequence_value_type lv_val;
-	winstl::listview_sequence lv_seq(*this);
+	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
+		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::stopTorrent, 
+			&hal::bittorrent(), _1));
 
-/*	std::for_each(make_filter_iterator(&is_selected, lv_seq.begin(), lv_seq.end()),
-				  make_filter_iterator(&is_selected, lv_seq.end(), lv_seq.end()),
-				  bind((void (hal::bit::*)(const std::wstring&))&hal::bit::stopTorrent, 
-				      &hal::bittorrent(), 
-					  bind(&hal::to_wstr_shim<const lv_val>, _1)));
-*/
 	return 0;
 }
 
@@ -168,20 +153,20 @@ LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWn
 
 LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-/*	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
+	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
 		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::removeTorrent, 
 			&hal::bittorrent(), _1));
-*/
+
 	clearSelected();	
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-/*	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
+	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
 		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::recheckTorrent, 
 			&hal::bittorrent(), _1));	
-*/
+
 	return 0;
 }
 
@@ -190,11 +175,11 @@ LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND h
 	if(MessageBox(hal::app().res_wstr(HAL_LISTVIEW_CONFIRMDELETE).c_str(), 
 				hal::app().res_wstr(HAL_HALITE).c_str(), MB_YESNO) == IDYES)
 	{
-/*		std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
+		std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
 			bind((void (hal::bit::*)(const std::wstring&))&hal::bit::removeTorrentWipeFiles, 
 				&hal::bittorrent(), _1));
 		
-*/		clearSelected();
+		clearSelected();
 	}
 	return 0;
 }
