@@ -13,6 +13,51 @@
 #include "NewTorrentDialog.hpp"
 #include "NewTorrentPeersAD.hpp"
 
+void DetailsSheet::OnOutBrowse(UINT, int, HWND hWnd)
+{	
+	CSSFileDialog dlgOpen(false, NULL, NULL, OFN_HIDEREADONLY, L"Torrents. (*.torrent)|*.torrent|All Files (*.*)|*.*|", m_hWnd);
+
+	if (dlgOpen.DoModal() == IDOK) 
+	{
+		SetDlgItemText(IDC_NEWT_FILE, dlgOpen.m_ofn.lpstrFile);
+		EnableSave_(true);
+	}
+}
+
+LRESULT DetailsSheet::onInitDialog(HWND, LPARAM)
+{	
+	creator_ = L"Halite " + hal::app().res_wstr(HAL_VERSION_STRING);
+
+	pieceSize_ = 256;
+
+	BOOL retval =  DoDataExchange(false);
+	return 0;
+}
+
+wstring DetailsSheet::Creator() 
+{ 
+	DoDataExchange(true);
+	return creator_; 
+}
+
+wstring DetailsSheet::Comment() 
+{	
+	DoDataExchange(true);
+	return comment_; 
+}
+
+int DetailsSheet::PieceSize()
+{ 
+	DoDataExchange(true);
+	return pieceSize_; 
+}
+
+bool DetailsSheet::Private() 
+{ 
+	DoDataExchange(true);
+	return private_;
+}
+
 void FilesListViewCtrl::OnAttach()
 {
 	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
@@ -36,17 +81,6 @@ void FilesListViewCtrl::saveSettings()
 	save();
 }
 
-void FileSheet::OnOutBrowse(UINT, int, HWND hWnd)
-{	
-	CSSFileDialog dlgOpen(false, NULL, NULL, OFN_HIDEREADONLY, L"Torrents. (*.torrent)|*.torrent|All Files (*.*)|*.*|", m_hWnd);
-
-	if (dlgOpen.DoModal() == IDOK) 
-	{
-		SetDlgItemText(IDC_NEWT_FILE, dlgOpen.m_ofn.lpstrFile);
-		EnableSave_(true);
-	}
-}
-
 void recurseDirectory(std::vector<wpath>& files, wpath baseDir, wpath relDir)
 {	
 	wpath currentDir(baseDir / relDir);
@@ -62,40 +96,6 @@ void recurseDirectory(std::vector<wpath>& files, wpath baseDir, wpath relDir)
     }
 }
 
-LRESULT FileSheet::onInitDialog(HWND, LPARAM)
-{	
-	creator_ = L"Halite " + hal::app().res_wstr(HAL_VERSION_STRING);
-
-	pieceSize_ = 256;
-
-	BOOL retval =  DoDataExchange(false);
-	return 0;
-}
-
-wstring FileSheet::Creator() 
-{ 
-	DoDataExchange(true);
-	return creator_; 
-}
-
-wstring FileSheet::Comment() 
-{	
-	DoDataExchange(true);
-	return comment_; 
-}
-
-int FileSheet::PieceSize()
-{ 
-	DoDataExchange(true);
-	return pieceSize_; 
-}
-
-bool FileSheet::Private() 
-{ 
-	DoDataExchange(true);
-	return private_;
-}
-
 void FilesSheet::OnFileBrowse(UINT, int, HWND hWnd)
 {	
 	CSSFileDialog dlgOpen(TRUE, NULL, NULL, OFN_HIDEREADONLY, L"All Files (*.*)|*.*|", m_hWnd);
@@ -109,10 +109,12 @@ void FilesSheet::OnFileBrowse(UINT, int, HWND hWnd)
 		files_.push_back(file.leaf());
 
 		UpdateFileList();
+		SetDlgItemText(HAL_NEWT_FILE_NAME_EDIT, file.leaf().c_str());
 	}
+
 }
 
-wpath FileSheet::OutputFile()
+wpath DetailsSheet::OutputFile()
 {
 	DoDataExchange(true);
 	return outFile_;
@@ -132,14 +134,15 @@ void FilesSheet::OnDirBrowse(UINT, int, HWND hWnd)
 		fileRoot_ = wpath(fldDlg.m_szFolderPath).branch_path();
 		recurseDirectory(files_, wpath(fldDlg.m_szFolderPath), L"");
 
-		UpdateFileList();
+		UpdateFileList();		
+		SetDlgItemText(HAL_NEWT_FILE_NAME_EDIT, fileRoot_.leaf().c_str());
 	}
 
 	}
 	catch(const std::exception& e)
 	{
 		hal::event().post(shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(hal::Event::fatal, e, L"FileSheet::OnDirBrowse")));
+			new hal::EventStdException(hal::Event::fatal, e, L"DetailsSheet::OnDirBrowse")));
 	}
 }
 
@@ -187,7 +190,7 @@ hal::file_size_pairs_t FilesSheet::FileSizePairs() const
 	{
 		hal::event().post(boost::shared_ptr<hal::EventDetail>(
 			new hal::EventStdException(hal::Event::critical, e, 
-				L"FileSheet::FileSizePairs")));
+				L"DetailsSheet::FileSizePairs")));
 	}
 
 	return filePairs;
@@ -293,9 +296,9 @@ hal::web_seed_details_t PeersSheet::WebSeeds() const
 		WMB_ROW(_auto,	IDC_NEWT_OUTFILE_TEXT,  IDC_NEWT_FILE, IDC_NEWT_OUT_BROWSE), \
 	WMB_END()
 
-FileSheet::CWindowMapStruct* FileSheet::GetWindowMap()
+DetailsSheet::CWindowMapStruct* DetailsSheet::GetWindowMap()
 {
-	BEGIN_WINDOW_MAP_INLINE(FileSheet, 3, 3, 3, 3)
+	BEGIN_WINDOW_MAP_INLINE(DetailsSheet, 3, 3, 3, 3)
 		WMB_HEAD(WMB_COL(_exp)), 
 		WMB_ROW(_auto, NEWTORRENT_CREATOR_LAYOUT),
 		WMB_ROW(_exp, NEWTORRENT_COMMENT_LAYOUT),
