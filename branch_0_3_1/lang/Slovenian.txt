@@ -1,0 +1,289 @@
+"English" ---> "Slovenian"
+"English.rtf" ---> "Slovenian.rtf"
+"%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s dol - %2$.2fKB/s gor"
+"%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB dol - %2$.2fMB gor"
+"%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB od %2$.2fMB"
+"%1% DHT node(s)" ---> "%1% DHT povezav"
+"%1% active torrent(s)" --->  ??? 
+"%1%, %2%." ---> "%1%, %2%."
+"%2%. %3% Peers. (%1%)" --->  ??? 
+"&Pause All" ---> "Premor vseh"
+"&Resume All" ---> "Nadaljuj vse"
+"(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(D-G) %1$.2fKB/s - %2$.2fKB/s"
+"(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(D-U) 0000.000KB/s - 0000.000KB/s"
+"(DHT will not apply to private torrents)" ---> "(DHT se uporablja samo pri t.i. "
+"About" ---> "O programu"
+"Above Normal" ---> "Nad običajno"
+"Active" --->  ??? 
+"Add New Peer" --->  ??? 
+"Add New Tracker" ---> "Dodaj nov tracker"
+"Add New Web Seed or DHT Node" --->  ??? 
+"Add Torrent" --->  ??? 
+"Add" ---> "Dodaj"
+"Advanced GUI" ---> "Dodatno o vmesniku"
+"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
+"Allocating" ---> "Določam"
+"Allow only one instance to run" --->  ??? 
+"An invalid connection policy, %1%, was passed as an encryption setting." ---> "Neveljavna nastavitev povezabe %1%."
+"An invalid encoding level, %1%, was passed as an encryption setting." ---> "Neveljavna nastavitev šifriranja %1%."
+"Apply" ---> "Posodobi"
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"Are you sure you wish to delete all downloaded data?" --->  ??? 
+"Auto Sort" ---> "Avtomatsko razvrsti"
+"BitTorrent" ---> "BitTorrent"
+"Bittorrent Event: %1%." ---> "Bittorrent dogodek: %1%."
+"Block %2% of piece %3% downloading. (%1%)" --->  ??? 
+"Block %2% of piece %3% finished. (%1%)" --->  ??? 
+"Both" ---> "Oboje"
+"Calculating Piece Hashes..." --->  ??? 
+"Cancel" ---> "Prekliči"
+"Checking Files" ---> "Preverjam datoteke"
+"Choked" ---> "Zadušeno"
+"Clear IP database" ---> "Počisti bazo IP naslovov"
+"Client" ---> "BT odjemalec"
+"Close to tray" --->  ??? 
+"Comment" --->  ??? 
+"Completed" --->  ??? 
+"Completed:" ---> "Končano:"
+"Confirm on close" --->  ??? 
+"Connecting to Tracker" ---> "Povezujem na sledilnik"
+"Connecting" ---> "Povezujem"
+"Connection Policies" ---> "Nadzor povezave"
+"Construct a New Torrent" --->  ??? 
+"Copies" --->  ??? 
+"Country" ---> "Država"
+"Creating Torrent..." --->  ??? 
+"Creating a New Torrent File" --->  ??? 
+"Creator" --->  ??? 
+"Critical" ---> "Kritično"
+"DHT Node" --->  ??? 
+"DHT disabled" ---> "DHT onemogočen"
+"DHT session could not start. Try selecting another port in the settings." ---> "Napaka DHT vtičnika, prosimo spremenite port."
+"DHT" ---> "DHT"
+"Debug Event: %1%." ---> "Debug dogodek: %1%."
+"Debug" ---> "Debug"
+"Default save folder :" ---> "Privzeta mapa za shranjevanje :"
+"Delete" ---> "Izbriši"
+"Details" --->  ??? 
+"Dev Msg: %1%." --->  ??? 
+"Dir." --->  ??? 
+"Disabled" ---> "Onemogočena"
+"Distributed Hash Tables" ---> "DHT"
+"Don't download" ---> "Ne prenesi"
+"Down" ---> "Dol"
+"Download Rate (KB/s) :" ---> "Prenos dol(KB/s) :"
+"Download" ---> "Dol"
+"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Prenešeno %1$.2fMB, Oddano %2$.2fMB, Delilno razmerje %3$.2f."
+"Downloaded" --->  ??? 
+"Downloading Metadata" ---> "Prenašam metadata"
+"Downloading" ---> "Prenašam"
+"E&xit" ---> "Izhod"
+"ETA" --->  ??? 
+"ETA:" ---> "ETA:"
+"Edit Download Folders" --->  ??? 
+"Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
+"Edit Tracker" --->  ??? 
+"Edit" ---> "Uredi"
+"Enable DHT" ---> "Omogoči DHT"
+"Enable IP filtering." ---> "Uporabi filtriranje IP naslovov"
+"Enable Protocol Encryption." ---> "Uporabi šifriranje protokola"
+"Enable Remote Control" ---> "Vključi oddaljeni nadzor"
+"Enabled" ---> "Omogočena"
+"Encoding Level" ---> "Stopnja zaščite"
+"Enter any Web Seed URLs and DHT Nodes." --->  ??? 
+"Enter the tracker URLs for the torrent." ---> "Vpiši sledilnikov (announce) URL."
+"Exception caught: %1%, from %2%." ---> "Izjema ujeta: %1%, od %2%."
+"Failed, %1%" --->  ??? 
+"Fast resume failed: %2%. (%1%)" --->  ??? 
+"File" --->  ??? 
+"Filename" ---> "Ime"
+"Files" ---> "Datotek"
+"Filtering %1% range(s)" ---> "Filtriram %1% naslovov"
+"Finish Time" --->  ??? 
+"Finished" ---> "Končan"
+"Force Close" --->  ??? 
+"Forced" ---> "Prisiljeno"
+"General Settings" ---> "Splošne nastavitve"
+"General" ---> "Splošno"
+"Generated Torrent Name (Cannot change)" --->  ??? 
+"Global Limits" ---> "Omejitev:"
+"Halite BitTorrent Client" --->  ??? 
+"Halite Debug Dialog" ---> "Halite Debug"
+"Halite importing IP ranges..." ---> "Uvažam IP naslove..."
+"Halite not listening!" ---> "Halite ne more prisluškovati!"
+"Halite shutting down..." ---> "Halite se izklaplja..."
+"Handshake" ---> "Pozdravljam"
+"Has choked us" ---> "Nas je zadušil"
+"Hash failed for piece %2% of %1%." --->  ??? 
+"IP Filter blocked %1%, %2%." --->  ??? 
+"IP Filtering" ---> "Filtriranje IP naslovov"
+"IP filter disabled" ---> "IP filter onemogočen"
+"IP version 6 listen attempt failed. Not serious." --->  ??? 
+"Import ipfilter.dat" ---> "Uvozi ipfilter.dat"
+"Importing IP Filters..." --->  ??? 
+"Incoming" ---> "Dohodna povezava"
+"Info" ---> "Info"
+"Interested in us" ---> "Zainteresiran"
+"Interesting" ---> "Zanimanje"
+"Invalid torrent (%1%) from %2%." ---> "Neveljaven torrent (%1%) od %2%."
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Prosimo počakajte nekaj sekund, da se program zapre."
+"Language (requires restart)" --->  ??? 
+"Limit the no. of half-open connections" ---> "Omejitev števila pol-odprtih povezav"
+"List of Trackers." ---> "Seznam trackerjev"
+"Loading IP filters..." --->  ??? 
+"Local connection" ---> "Lokalne povezave"
+"Log debug events." ---> "Shranjuj debug log."
+"Log to file." ---> "Shrani log v datoteko."
+"Logging" ---> "Shranjevanje"
+"Maximum" ---> "Najvčja"
+"Message" ---> "Sporočilo"
+"Minimize to tray." ---> "Pomanjšaj v orodno vrstico"
+"Move finished torrents to :" --->  ??? 
+"Move the completed torrent to:" --->  ??? 
+"N/A" ---> "N/A"
+"NAT-PMG" --->  ??? 
+"Name" --->  ??? 
+"Name:" ---> "Ime:"
+"New" ---> "Novo"
+"None (Managed Externally)" --->  ??? 
+"None" ---> "Nobeno"
+"Normal" ---> "Navadna"
+"Note. Compact Allocation is incompatible with File Selection" --->  ??? 
+"OK" ---> "V redu"
+"Ok" --->  ??? 
+"Open &Halite" ---> "Odpri"
+"Open Download Folder" --->  ??? 
+"Open a (single) port between : " ---> "Odpri posamičen port v rangu:"
+"Outgoing" ---> "Odhodna povezava"
+"Output File" --->  ??? 
+"Overhead:" ---> "Presežek:"
+"Password : " ---> "Geslo : "
+"Path" ---> "Pot"
+"Pause" ---> "Premor"
+"Paused" ---> "Na pavzi"
+"Pausing" --->  ??? 
+"Peer %2%: %1%." --->  ??? 
+"Peer Event: %1%." ---> "Peer dogodek: %1%."
+"Peer banned %2%. (%1%)" --->  ??? 
+"Peer" ---> "Peer"
+"Peers" ---> "Peerov"
+"Peers:" ---> "Sejalci+Pijavke:"
+"Piece %2% finished. (%1%)" --->  ??? 
+"Piece Size (KBs)" --->  ??? 
+"Plaintext Encrypted" ---> "Plaintext šifrirano"
+"Plaintext" ---> "Plaintext"
+"Port %1% open" ---> "Port %1% odprt"
+"Port (UDP) : " ---> "Port (UDP) : "
+"Port : " ---> "Port : "
+"Port Forwarding" --->  ??? 
+"Port to listen on : " ---> "Port:"
+"Port" --->  ??? 
+"Prefer RC4" ---> "Uporabljaj raje RC4"
+"Priority" ---> "Prioriteta"
+"Private" --->  ??? 
+"Progress" ---> "Napredek"
+"Protocol Encryption" ---> "Šifriranje protokola"
+"Proxies" ---> "Proxji"
+"Proxy Host/IP : " ---> "Proxy IP : "
+"Proxy Settings" ---> "Nastavitve proxyja"
+"Queued for Checking" ---> "V vrsti za pregled"
+"Queued" ---> "V vrsti"
+"RC4 Encrypted" ---> "RC4 šifrirano"
+"RC4" ---> "RC4"
+"Rates:" ---> "Hitrosti:"
+"Ratio (this session):" ---> "Delino razmerje seje:"
+"Ratio" --->  ??? 
+"Ratio:" ---> "Delilno razmerje:"
+"Reannounce" --->  ??? 
+"Recheck Files" --->  ??? 
+"Remaining" --->  ??? 
+"Remaining:" ---> "Do konca:"
+"Remote Control Options" ---> "Nastavitve oddaljenega nadzora"
+"Remote Control" ---> "Oddaljeni nadzor"
+"Remove" ---> "Odstrani"
+"Reset" ---> "Razveljavi"
+"Resume" ---> "Nadaljuj"
+"Review settings when adding torrent." --->  ??? 
+"Save" ---> "Shrani"
+"Saving Torrent" --->  ??? 
+"Security" ---> "Varnost"
+"Seeding" ---> "Sejem"
+"Seeds" --->  ??? 
+"Seeds:" ---> "Sejalcev:"
+"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Izberite mapo, kjer se bodo shranjevali preosi. Kliknite prekliči, če ste zadovoljni z privzeto nastavitvijo."
+"Select a directory to save the files to or cancel to not download torrent at all." ---> "Izberite mapo za shrambo datotek."
+"Select a file or directory from which to construct the torrent." --->  ??? 
+"Select the (TCP) port (or range) on which to listen for incoming connections." --->  ??? 
+"Send login info to trackers." ---> "Pošlji podatke o prijavi trackerjem."
+"Set Priority" ---> "Nastavi prioriteto"
+"Set as Primary" --->  ??? 
+"Severity" ---> "Kritičnost"
+"Show this message in future" ---> "V prihodnosti mi prikaži to sporočilo"
+"Shutting down session" --->  ??? 
+"Size" ---> "Velikost"
+"Standard exception (%1%) thrown from %2%." ---> "Standardna izjema (%1%) prejeta od %2%."
+"Start Time" --->  ??? 
+"Status" ---> "Stanje"
+"Status:" ---> "Status:"
+"Stop" ---> "Prekini"
+"Stopped initially (Allows changing advanced setting)" --->  ??? 
+"Stopped" ---> "Prekinjen"
+"Stopping Torrents" --->  ??? 
+"Stopping" --->  ??? 
+"Successfully %1%." --->  ??? 
+"Supports extensions" ---> "Podpira vtičnike"
+"Test" --->  ??? 
+"The BitTorrent session could not start. Try selecting another port in the settings." ---> "Prišlo je do napake, prosimo spremenite port."
+"The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
+"These options set global maximums which will always be honoured." ---> "Nastavi globalne spremenljivke."
+"These options specify the default limits applied to new torrents." ---> "Nastavi možnosti za nove torrente."
+"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "V tej seji ste prenesli  %1$.2fMB podatkov in oddali %2$.2fMB podatkov. Delilno razmerje seje: %3$.2f."
+"Tier" ---> "Pomol"
+"Time left:" ---> "Čas do konca:"
+"Time" ---> "Čas"
+"Torrent %1% finished." --->  ??? 
+"Torrent %1% paused." --->  ??? 
+"Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) zaznana izjema: %2% od %3%."
+"Torrent Defaults" ---> "Privzete nastavitve torrenta:"
+"Torrent File" ---> "Torrent datoteko"
+"Torrent Root" ---> "Izvor torrenta"
+"Torrent and Data" ---> "Torrent datoteko in podatke"
+"Torrent connection limits:" ---> "Omejitev povezave na torrentu"
+"Torrent save folder:" --->  ??? 
+"Torrent transfer rates (KB/s):" ---> "Hitrosti prenosa (KB/s):"
+"Torrent" ---> "Torrent"
+"Torrent:" ---> "Torrent:"
+"Torrents" ---> "Torrentov"
+"Total max connections :" ---> "Max. povezav:"
+"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." ---> "Skupen prenos (vključno s presežki): %1$.2fMB dol in %2$.2fMB gor."
+"Total upload slots :" ---> "Max. odhodnih povezav"
+"Total" ---> "Skupno"
+"Tracker Announce. (%1%)" --->  ??? 
+"Tracker Event: %1%." ---> "Tracker dogodek: %1%."
+"Tracker warning: %2%! (%1%)" --->  ??? 
+"Tracker" ---> "Tracker"
+"Tracker:" ---> "Tracker"
+"Trackers" --->  ??? 
+"Transferred:" ---> "Prenešeno:"
+"Type" ---> "Katgorija"
+"URL Seed %2%, %3%. (%1%)" --->  ??? 
+"URL" --->  ??? 
+"UnPlug and Play" --->  ??? 
+"Unicode exception: %1%." ---> "Unicode izjema: %1%."
+"Up" ---> "Gor"
+"Update in:" ---> "Posodobitev čez:"
+"Upload Rate (KB/s) :" ---> "Prenos gor (KB/s) :"
+"Upload" ---> "Gor"
+"Uploaded" --->  ??? 
+"Use Compact Allocation." --->  ??? 
+"Use a proxy." ---> "Uporabi proxy."
+"User canceled Torrent file creation" --->  ??? 
+"Username : " ---> "Uporabnik : "
+"Warning" --->  ??? 
+"Web Seed" ---> "Spletni sejalec"
+"Web Seeds and DHT Nodes" --->  ??? 
+"Xml Exception (%1%) with %2%." ---> "Xml izjema (%1%) pri %2%."
+"libTorrrent based client." ---> "libTorrrent based client."
+"to" ---> "v"
+"∞" --->  ??? 
