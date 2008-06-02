@@ -607,7 +607,6 @@ public:
 	const SessionDetail getSessionDetails();
 
 	void setTorrentDefaults(int maxConn, int maxUpload, float download, float upload);	
-	void newTorrent(boost::filesystem::wpath filename, boost::filesystem::wpath files);
 	void addTorrent(boost::filesystem::wpath file, boost::filesystem::wpath saveDirectory, 
 		bool startPaused=false, bool compactStorage=false, 
 		boost::filesystem::wpath moveToDirectory=L"", bool useMoveTo=false);

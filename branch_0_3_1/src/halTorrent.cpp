@@ -277,9 +277,9 @@ public:
 	
 	~bit_impl()
 	{
-		keepChecking_ = false;
+		stopAlertHandler();
 		
-		saveTorrentData();
+		//saveTorrentData();
 		
 		try
 		{
@@ -314,9 +314,18 @@ public:
 		signaler<> torrent_finished;
 	} 
 	signals;
+
+	void stopAlertHandler()
+	{
+		mutex_t::scoped_lock l(mutex_);
+
+		keepChecking_ = false;
+	}
 		
 	void alertHandler()
 	{
+		mutex_t::scoped_lock l(mutex_);
+
 		if (keepChecking_)
 		{
 		
@@ -577,7 +586,9 @@ public:
 	}
 	
 	void saveTorrentData()
-	{	try
+	{	
+		mutex_t::scoped_lock l(mutex_);
+		try
 		{
 		
 		theTorrents.save();
@@ -778,7 +789,9 @@ private:
 	std::pair<libt::entry, libt::entry> prepTorrent(wpath filename, wpath saveDirectory);
 	void removalThread(torrent_internal_ptr pIT, bool wipeFiles);
 	
-	libt::session theSession;
+	libt::session theSession;	
+	mutable mutex_t mutex_;
+
 	asio::io_service io_;
 	asio::deadline_timer timer_;
 	bool keepChecking_;
@@ -1464,70 +1477,6 @@ void bit::addTorrent(wpath file, wpath saveDirectory, bool startStopped, bool co
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(to_utf8(file.string()), "addTorrent")
 }
 
-void add_files(libt::torrent_info& t, fs::path const& p, fs::path const& l)
-{
-/*	fs::path f(p / l);
-	if (fs::is_directory(f))
-	{
-		for (fs::directory_iterator i(f), end; i != end; ++i)
-			add_files(t, p, l / i->leaf());
-	}
-	else
-	{
-	//	std::cerr << "adding \"" << l.string() << "\"\n";
-		libt::file fi(f, libt::file::in);
-		fi.seek(0, libt::file::end);
-		libtorrent::size_type size = fi.tell();
-		t.add_file(l, size);
-	}
-*/
-}
-
-void bit::newTorrent(wpath filename, wpath files)
-{
-/*	try
-	{
-	
-	libtorrent::torrent_info t;
-	path full_path = pimpl->workingDirectory/"incoming"/files.leaf();
-	
-	ofstream out(filename, std::ios_base::binary);
-	
-	int piece_size = 256 * 1024;
-	char const* creator_str = "Halite v0.3 (libtorrent v0.11)";
-
-	add_files(t, full_path.branch_path(), full_path.leaf());
-	t.set_piece_size(piece_size);
-
-	libt::storage st(t, full_path.branch_path());
-	t.add_tracker("http://www.nitcom.com.au/announce.php");
-	t.set_priv(false);
-	t.add_node(make_pair("192.168.11.12", 6881));
-
-	// calculate the hash for all pieces
-	int num = t.num_pieces();
-	std::vector<char> buf(piece_size);
-	for (int i = 0; i < num; ++i)
-	{
-			st.read(&buf[0], i, 0, t.piece_size(i));
-			libtorrent::hasher h(&buf[0], t.piece_size(i));
-			t.set_hash(i, h.final());
-		//	std::cerr << (i+1) << "/" << num << "\r";
-	}
-
-	t.set_creator(creator_str);
-
-	// create the torrent and print it to out
-	libt::entry e = t.create_torrent();
-	libt::bencode(std::ostream_iterator<char>(out), e);
-	}
-	catch (std::exception& e)
-	{
-		::MessageBoxA(0, e.what(), "Create Torrent exception.", 0);
-	}
-*/
-}
-
 const TorrentDetails& bit::torrentDetails()
 {
 	return torrentDetails_;
@@ -1624,18 +1573,18 @@ void bit::resumeAll()
 
 void bit::closeAll(boost::optional<report_num_active> fn)
 {
-	try {
-	
+	try 
+	{	
+	event().post(shared_ptr<EventDetail>(new EventInfo(L"Saving torrent data...")));
+
+	pimpl->saveTorrentData();
+
 	event().post(shared_ptr<EventDetail>(new EventInfo(L"Stopping all torrents...")));
 	
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); 
 		i != e; ++i)
 	{
-		if ((*i).torrent->in_session())
-		{
-		//	HAL_DEV_MSG(wformat(L"Internalling pausing writeData=%1%") % writeData);
-			(*i).torrent->handle().pause(); // Internal pause, not registered in Torrents.xml
-		}
+		(*i).torrent->stop();
 	}
 	
 	// Ok this polling loop here is a bit curde, but a blocking wait is actually appropiate.
@@ -1646,8 +1595,7 @@ void bit::closeAll(boost::optional<report_num_active> fn)
 		for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); 
 				i != e; ++i)
 		{
-			// NB. this checks for an internal paused state.
-			if ((*i).torrent->in_session() && !(*i).torrent->handle().is_paused())
+			if ((*i).torrent->state() != TorrentDetail::torrent_stopped)
 				++num_active;
 		}
 		
@@ -1657,15 +1605,7 @@ void bit::closeAll(boost::optional<report_num_active> fn)
 		Sleep(200);
 	}
 	
-	event().post(shared_ptr<EventDetail>(new EventInfo(L"All torrents stopped.")));
-		
-	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); 
-		i != e; ++i)
-	{
-		if ((*i).torrent->in_session())
-			(*i).torrent->remove_from_session(true);
-	}
-	
+	event().post(shared_ptr<EventDetail>(new EventInfo(L"All torrents stopped.")));		
 	event().post(shared_ptr<EventDetail>(new EventInfo(L"Fast-resume data written.")));
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")
@@ -1846,37 +1786,7 @@ void bit::reannounceTorrent(const std::wstring& filename)
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "reannounceTorrent")
 }
-/*
-void bit::setTorrentLogin(const std::string& filename, std::wstring username, std::wstring password)
-{
-	setTorrentLogin(hal::to_wstr_shim(filename), username, password);
-}
 
-void bit::setTorrentLogin(const std::wstring& filename, std::wstring username, std::wstring password)
-{
-	try {
-	
-	pimpl->theTorrents.get(filename)->setTrackerLogin(username, password);
-	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "setTorrentLogin")
-}
-
-std::pair<std::wstring, std::wstring> bit::getTorrentLogin(const std::string& filename)
-{
-	return getTorrentLogin(hal::to_wstr_shim(filename));
-}
-
-std::pair<std::wstring, std::wstring> bit::getTorrentLogin(const std::wstring& filename)
-{
-	try {
-	
-	return pimpl->theTorrents.get(filename)->getTrackerLogin();
-	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getTorrentLogin")
-	
-	return std::make_pair(L"", L"");
-}
-*/
 void bit_impl::removalThread(torrent_internal_ptr pIT, bool wipeFiles)
 {
 	try {
@@ -2232,7 +2142,9 @@ void bit::startEventReceiver()
 
 void bit::stopEventReceiver()
 {
-	pimpl->keepChecking_ = false;
+	event().post(shared_ptr<EventDetail>(new EventMsg(L"Stopping event Handler.")));
+
+	pimpl->stopAlertHandler();
 }
 
 int bit::defTorrentMaxConn() { return pimpl->defTorrentMaxConn_; }

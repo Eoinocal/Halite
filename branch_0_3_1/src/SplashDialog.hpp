@@ -92,6 +92,9 @@ public:
 
 	void OnForceClose(UINT, int, HWND hWnd)
 	{
+		thread_ptr.reset();
+		Sleep(200);
+
 		GetWindowRect(rect_);
 		Save();
 		EndDialog(0);

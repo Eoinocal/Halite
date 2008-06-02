@@ -401,6 +401,10 @@ void HaliteWindow::OnClose()
 void HaliteWindow::ShutdownThread()
 {
 	hal::bittorrent().closeAll(0);
+
+	hal::bittorrent().stopEventReceiver();
+	Sleep(200);
+
 	hal::bittorrent().shutDownSession();
 }
  
@@ -417,8 +421,6 @@ void HaliteWindow::OnDestroy()
 	save();
 	halite().save();
 	hal::ini().save_data();
-
-	hal::bittorrent().stopEventReceiver();
 	
 	if (halite().showMessage())
 	{
@@ -433,7 +435,12 @@ void HaliteWindow::OnDestroy()
 
 		thread shutdown(bind(& HaliteWindow::ShutdownThread, this));
 		shutdown.join();
-	}		
+	}
+
+	hal::config().save();
+	save();
+	halite().save();
+	hal::ini().save_data();
 		
 	HAL_DEV_MSG(L"Posting Quit Message");
 	PostQuitMessage(0);	
