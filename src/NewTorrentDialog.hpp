@@ -108,18 +108,18 @@ private:
 
 typedef FilesListViewCtrl::SelectionManager FilesListViewManager;
 
-class FileSheet :
-    public CPropertyPageImpl<FileSheet>,
-    public CWinDataExchangeEx<FileSheet>,
-	public CAutoSizeWindow<FileSheet, false>
+class DetailsSheet :
+    public CPropertyPageImpl<DetailsSheet>,
+    public CWinDataExchangeEx<DetailsSheet>,
+	public CAutoSizeWindow<DetailsSheet, false>
 {
 protected:
-	typedef FileSheet thisClass;
+	typedef DetailsSheet thisClass;
 	typedef CPropertyPageImpl<thisClass> sheetClass;
 	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
 
 public:
-	FileSheet(enable_save enableSave) :
+	DetailsSheet(enable_save enableSave) :
 		EnableSave_(enableSave),  
 		private_(false)
 	{}
@@ -417,7 +417,7 @@ private:
             rect.right-rect.left, rect.bottom-rect.top, true);
 	}
 
-	FileSheet fileSheet_;
+	DetailsSheet fileSheet_;
 	FilesSheet filesSheet_;
 	TrackerSheet trackerSheet_;
 	PeersSheet detailsSheet_;

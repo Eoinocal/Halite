@@ -8,10 +8,10 @@
     <OutputType>Package</OutputType>
     <WixToolPath>$(ProgramFiles)\Windows Installer XML v3\bin\</WixToolPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug x86' ">
     <OutputPath>bin\Debug\</OutputPath>
     <IntermediateOutputPath>obj\Debug\</IntermediateOutputPath>
-    <DefineConstants>Debug</DefineConstants>
+    <DefineConstants>Debug;Platform=Intel;ProgramFilesFolder=ProgramFilesFolder;Win64Ans=no;ReleaseFolder=</DefineConstants>
     <AllowIdenticalRows>False</AllowIdenticalRows>
     <CabinetCachePath>
     </CabinetCachePath>
@@ -52,7 +52,7 @@
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <VerboseOutput>True</VerboseOutput>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release x86' ">
     <OutputPath>bin\Release\</OutputPath>
     <IntermediateOutputPath>obj\Release\</IntermediateOutputPath>
     <AllowIdenticalRows>False</AllowIdenticalRows>
@@ -96,7 +96,7 @@
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <VerboseOutput>False</VerboseOutput>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release64' ">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release x64' ">
     <IntermediateOutputPath>obj\Release64\</IntermediateOutputPath>
     <AllowIdenticalRows>False</AllowIdenticalRows>
     <CabinetCachePath>
