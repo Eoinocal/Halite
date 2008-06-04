@@ -25,10 +25,48 @@
 #include <libtorrent/torrent_handle.hpp>
 #include <libtorrent/peer_connection.hpp>
 
+#define HAL_EVENT_IMPL_UNIT
 #include "halEvent.hpp"
 
 namespace hal
 {
+
+static boost::shared_ptr<event_impl> s_event_impl;
+
+struct event_impl
+{
+	mutable mutex_t mutex_;
+	boost::signal<void (boost::shared_ptr<EventDetail>)> event_signal_;
+};
+
+event_logger::event_logger()
+{
+	if (!s_event_impl)
+		s_event_impl.reset(new event_impl());
+}
+
+event_logger::~event_logger()
+{}
+
+boost::signals::connection event_logger::attach(boost::function<void (boost::shared_ptr<EventDetail>)> fn)
+{
+	mutex_t::scoped_lock l(pimpl_->mutex_);
+	return pimpl_->event_signal_.connect(fn);
+}
+
+void event_logger::dettach(const boost::signals::connection& c)
+{
+	mutex_t::scoped_lock l(pimpl_->mutex_);
+	pimpl_->event_signal_.disconnect(c);
+}
+
+void event_logger::log(boost::shared_ptr<EventDetail> e)
+{
+	mutex_t::scoped_lock l(pimpl_->mutex_);
+	pimpl_->event_signal_(e);
+}
+
+
 
 void Event::post(boost::shared_ptr<EventDetail> event)
 {

@@ -250,7 +250,6 @@ void TorrentDetails::sort(
 	std::stable_sort(torrents_.begin(), torrents_.end(), fn);
 }
 
-
 web_seed_or_dht_node_detail::web_seed_or_dht_node_detail() : 
 	url(L""), 
 	port(-1), 

@@ -50,7 +50,7 @@ public:
 	
 	void connect() 
 	{ 
-		conn_ = hal::event().attach(bind(&halite_log_file::operator(), this, _1)); 
+		conn_ = hal::event_log.attach(bind(&halite_log_file::operator(), this, _1)); 
 		assert(conn_.connected());
 	}
 	
@@ -91,7 +91,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 //	HAL_DEV_MSG(L"Hello");
 //	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, L"Hello")));
 
-	::SetProcessAffinityMask(::GetCurrentProcess(), (DWORD_PTR)0x1);
+//	::SetProcessAffinityMask(::GetCurrentProcess(), (DWORD_PTR)0x1);
 	
 	try 
 	{

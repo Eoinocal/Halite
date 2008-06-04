@@ -42,6 +42,30 @@
 namespace hal 
 {
 
+struct event_impl;
+
+class event_logger : private boost::noncopyable
+{	
+public:
+	event_logger();
+	~event_logger();
+
+	bool is_active() { return pimpl_; }
+
+	boost::signals::connection attach(boost::function<void (boost::shared_ptr<EventDetail>)> fn);
+	void dettach(const boost::signals::connection& c);
+
+	void log(boost::shared_ptr<EventDetail> e);
+
+private:
+	std::vector<boost::signals::scoped_connection> connections_;
+	boost::shared_ptr<event_impl> pimpl_;
+};
+
+#ifndef HAL_EVENT_IMPL_UNIT
+static event_logger event_log;
+#endif
+
 class Event
 {
 public:
