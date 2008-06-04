@@ -33,8 +33,8 @@
 
 #ifdef TORRENT_LOGGING
 #	define HAL_DEV_MSG(msg) \
-	hal::event().post(boost::shared_ptr<hal::EventDetail>( \
-			new hal::EventMsg(msg, hal::Event::dev))) 
+	hal::event_log.post(boost::shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(msg, hal::event_logger::dev))) 
 #else
 #	define HAL_DEV_MSG(msg)
 #endif
@@ -42,9 +42,11 @@
 namespace hal 
 {
 
-class Event
-{
-public:
+struct event_impl;
+
+class event_logger : private boost::noncopyable
+{	
+public:	
 	enum eventLevel { dev, debug, info, warning, critical, fatal, none };
 	
 	enum codes {
@@ -62,33 +64,31 @@ public:
 		infoCode
 	};
 	
-	static std::wstring eventLevelToStr(eventLevel);	
-	void post(boost::shared_ptr<EventDetail> event);
-	
-	boost::signals::connection attach(boost::function<void (boost::shared_ptr<EventDetail>)> fn)
-	{
-		return event_signal_.connect(fn);
-	}
+	event_logger();
+	~event_logger();
 
-	void signal(boost::shared_ptr<EventDetail> e)
-	{
-		mutex_t::scoped_lock l(mutex_);
+	bool is_active() { return pimpl_; }
 
-		event_signal_(e);
-	}
+	boost::signals::connection attach(boost::function<void (boost::shared_ptr<EventDetail>)> fn);
+	void dettach(const boost::signals::connection& c);
+
+	void post(boost::shared_ptr<EventDetail> e);
 	
+	static std::wstring eventLevelToStr(eventLevel);
+
 private:
-	mutable mutex_t mutex_;
-
-	boost::signal<void (boost::shared_ptr<EventDetail>)> event_signal_;
+	std::vector<boost::signals::scoped_connection> connections_;
+	boost::shared_ptr<event_impl> pimpl_;
 };
 
-Event& event();
+#ifndef HAL_EVENT_IMPL_UNIT
+static event_logger event_log;
+#endif
 
 class EventDetail
 {
 public:
-	EventDetail(Event::eventLevel l, boost::posix_time::ptime t, Event::codes c) :
+	EventDetail(event_logger::eventLevel l, boost::posix_time::ptime t, event_logger::codes c) :
 		level_(l),
 		timeStamp_(t),
 		code_(c)
@@ -101,20 +101,20 @@ public:
 		return (boost::wformat(L"Code %1%") % code()).str();
 	}
 
-	Event::eventLevel level() { return level_; }
+	event_logger::eventLevel level() { return level_; }
 	boost::posix_time::ptime timeStamp() { return timeStamp_; }
-	Event::codes code() { return code_; }
+	event_logger::codes code() { return code_; }
 	
 private:	
-	Event::eventLevel level_;
+	event_logger::eventLevel level_;
 	boost::posix_time::ptime timeStamp_;
-	Event::codes code_;
+	event_logger::codes code_;
 };
 
 class EventLibtorrent : public EventDetail
 {
 public:
-	EventLibtorrent(Event::eventLevel l, boost::posix_time::ptime t, Event::codes c, std::wstring m) :
+	EventLibtorrent(event_logger::eventLevel l, boost::posix_time::ptime t, event_logger::codes c, std::wstring m) :
 		EventDetail(l, t, c),
 		msg_(m)
 	{}
@@ -131,31 +131,31 @@ private:
 class EventGeneral : public EventDetail
 {
 public:
-	EventGeneral(Event::eventLevel l, Event::codes c, std::wstring m) :
+	EventGeneral(event_logger::eventLevel l, event_logger::codes c, std::wstring m) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), c),
 		msg_(m)
 	{}
 	
-	EventGeneral(Event::eventLevel l, boost::posix_time::ptime t, std::wstring m) :
-		EventDetail(l, t, Event::noEvent),
+	EventGeneral(event_logger::eventLevel l, boost::posix_time::ptime t, std::wstring m) :
+		EventDetail(l, t, event_logger::noEvent),
 		msg_(m)
 	{}
 	
 	template<typename str_t>
-	EventGeneral(Event::eventLevel l, str_t m) :
-		EventDetail(l, boost::posix_time::second_clock::universal_time(), Event::noEvent),
+	EventGeneral(event_logger::eventLevel l, str_t m) :
+		EventDetail(l, boost::posix_time::second_clock::universal_time(), event_logger::noEvent),
 		msg_(hal::to_wstr_shim(m))
 	{}
 	
 	template<typename str_t>	
-	EventGeneral(Event::eventLevel l, boost::posix_time::ptime t, str_t m) :
-		EventDetail(l, t, Event::noEvent),
+	EventGeneral(event_logger::eventLevel l, boost::posix_time::ptime t, str_t m) :
+		EventDetail(l, t, event_logger::noEvent),
 		msg_(hal::to_wstr_shim(m))
 	{}
 	
 	virtual std::wstring msg()
 	{
-		if (Event::noEvent != code())
+		if (event_logger::noEvent != code())
 			return (boost::wformat(hal::app().res_wstr(code())) % msg_).str();
 		else
 			return msg_;
@@ -169,15 +169,15 @@ class EventMsg : public EventDetail
 {
 public:
 	template<typename str_t>
-	EventMsg(str_t m, Event::eventLevel l=Event::debug, 
-		boost::posix_time::ptime t=boost::posix_time::second_clock::universal_time(), Event::codes c=Event::noEvent) :
+	EventMsg(str_t m, event_logger::eventLevel l=event_logger::debug, 
+		boost::posix_time::ptime t=boost::posix_time::second_clock::universal_time(), event_logger::codes c=event_logger::noEvent) :
 		EventDetail(l, t, c),
 		msg_(hal::to_wstr_shim(m))
 	{}
 	
 	virtual std::wstring msg()
 	{
-		if (Event::noEvent != code())
+		if (event_logger::noEvent != code())
 			return (boost::wformat(hal::app().res_wstr(code())) % msg_).str();
 		else
 			return msg_;
@@ -190,8 +190,8 @@ private:
 class EventPeerAlert : public EventDetail
 {
 public:
-	EventPeerAlert(Event::eventLevel l, boost::posix_time::ptime t, std::wstring m) :
-		EventDetail(l, t, Event::peer),
+	EventPeerAlert(event_logger::eventLevel l, boost::posix_time::ptime t, std::wstring m) :
+		EventDetail(l, t, event_logger::peer),
 		msg_(m)
 	{}
 	
@@ -208,7 +208,7 @@ class EventXmlException : public EventDetail
 {
 public:
 	EventXmlException(std::wstring e, std::wstring m) :
-		EventDetail(Event::warning, boost::posix_time::second_clock::universal_time(), Event::xmlException),
+		EventDetail(event_logger::warning, boost::posix_time::second_clock::universal_time(), event_logger::xmlException),
 		exp_(e),
 		msg_(m)
 	{}
@@ -227,7 +227,7 @@ class EventInvalidTorrent : public EventDetail
 {
 public:
 	template<typename t_str, typename f_str>
-	EventInvalidTorrent(Event::eventLevel l, Event::codes code, t_str t, f_str f) :
+	EventInvalidTorrent(event_logger::eventLevel l, event_logger::codes code, t_str t, f_str f) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), code),
 		torrent_(hal::to_wstr_shim(t)),
 		function_(hal::to_wstr_shim(f))
@@ -248,7 +248,7 @@ class EventTorrentException : public EventDetail
 {
 public:
 	template<typename e_str, typename t_str, typename f_str>
-	EventTorrentException(Event::eventLevel l, Event::codes code, e_str e, t_str t, f_str f) :
+	EventTorrentException(event_logger::eventLevel l, event_logger::codes code, e_str e, t_str t, f_str f) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), code),
 		torrent_(hal::to_wstr_shim(t)),
 		function_(hal::to_wstr_shim(f)),
@@ -269,8 +269,8 @@ private:
 class EventStdException : public EventDetail
 {
 public:
-	EventStdException(Event::eventLevel l, const std::exception& e, std::wstring from) :
-		EventDetail(l, boost::posix_time::second_clock::universal_time(), Event::generalException),
+	EventStdException(event_logger::eventLevel l, const std::exception& e, std::wstring from) :
+		EventDetail(l, boost::posix_time::second_clock::universal_time(), event_logger::generalException),
 		exception_(hal::from_utf8(e.what())),
 		from_(from)
 	{}
@@ -288,8 +288,8 @@ private:
 class EventDebug : public EventDetail
 {
 public:
-	EventDebug(Event::eventLevel l, std::wstring msg) :
-		EventDetail(l, boost::posix_time::second_clock::universal_time(), Event::debugEvent),
+	EventDebug(event_logger::eventLevel l, std::wstring msg) :
+		EventDetail(l, boost::posix_time::second_clock::universal_time(), event_logger::debugEvent),
 		msg_(msg)
 	{}
 	
@@ -307,7 +307,7 @@ class EventInfo : public EventDetail
 public:
 	template<typename T>
 	EventInfo(T msg) :
-		EventDetail(Event::info, boost::posix_time::second_clock::universal_time(), Event::infoCode),
+		EventDetail(event_logger::info, boost::posix_time::second_clock::universal_time(), event_logger::infoCode),
 		msg_(to_wstr_shim(msg))
 	{}
 	

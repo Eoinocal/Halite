@@ -23,11 +23,11 @@ bool Config::settingsChanged()
 
 bool Config::settingsThread()
 {	
-	event().post(shared_ptr<EventDetail>(new EventMsg(L"Applying BitTorrent session settings.")));	
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Applying BitTorrent session settings.")));	
 
 	bittorrent().setMapping(mappingType);	
 
-	event().post(shared_ptr<EventDetail>(new EventMsg(
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(
 			wformat(L"Trying port in range %1% - %2%.") % portFrom % portTo)));
 	try
 	{
@@ -35,21 +35,21 @@ bool Config::settingsThread()
 		std::make_pair(portFrom, portTo));
 	if (!success)
 	{
-		hal::event().post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventDebug(Event::critical, L"settingsThread, Init")));
+		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventDebug(event_logger::critical, L"settingsThread, Init")));
 		
 		return false;
 	}
 	}
 	catch(const std::exception& e)
 	{
-		hal::event().post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(Event::critical, e, L"settingsThread, Init"))); 
+		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(event_logger::critical, e, L"settingsThread, Init"))); 
 		
 		return false;
 	}
 
-	event().post(shared_ptr<EventDetail>(new EventMsg(wformat(L"Opened listen port; %1%.") % bittorrent().isListeningOn())));
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(wformat(L"Opened listen port; %1%.") % bittorrent().isListeningOn())));
 	
 	try
 	{
@@ -64,8 +64,8 @@ bool Config::settingsThread()
 	}
 	catch(const std::exception& e)
 	{
-		hal::event().post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(Event::critical, e, L"settingsThread, Load IP Filter"))); 
+		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(event_logger::critical, e, L"settingsThread, Load IP Filter"))); 
 	}	
 
 	try
@@ -79,8 +79,8 @@ bool Config::settingsThread()
 	}
 	catch(const std::exception& e)
 	{
-		hal::event().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(Event::critical, e, L"settingsThread, Protocol Encryption"))); 
+		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(event_logger::critical, e, L"settingsThread, Protocol Encryption"))); 
 	}
 	
 	bittorrent().setSessionHalfOpenLimit(halfConnLimit);
@@ -108,13 +108,15 @@ bool Config::settingsThread()
 		{
 			bittorrent().ensureDhtOff();
 			
-			hal::event().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventDebug(Event::critical, L"settingsThread, DHT Error"))); 
+			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventDebug(event_logger::critical, L"settingsThread, DHT Error"))); 
 		}
 	}
 	else
 		bittorrent().ensureDhtOff();
 		
+	// Settings seem to have applied ok!
+	save();	
 	return true;
 }
 

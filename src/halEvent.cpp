@@ -25,18 +25,51 @@
 #include <libtorrent/torrent_handle.hpp>
 #include <libtorrent/peer_connection.hpp>
 
+#define HAL_EVENT_IMPL_UNIT
 #include "halEvent.hpp"
 
 namespace hal
 {
 
-void Event::post(boost::shared_ptr<EventDetail> event)
+static boost::shared_ptr<event_impl> s_event_impl;
+
+struct event_impl
 {
-	if (event->level() != hal::Event::debug || halite().logDebug())
-		signal(event);
+	mutable mutex_t mutex_;
+	boost::signal<void (boost::shared_ptr<EventDetail>)> event_signal_;
+};
+
+event_logger::event_logger()
+{
+	if (!s_event_impl)
+		s_event_impl.reset(new event_impl());
+
+	pimpl_ = s_event_impl;
+}
+
+event_logger::~event_logger()
+{}
+
+boost::signals::connection event_logger::attach(boost::function<void (boost::shared_ptr<EventDetail>)> fn)
+{
+	mutex_t::scoped_lock l(pimpl_->mutex_);
+	return pimpl_->event_signal_.connect(fn);
+}
+
+void event_logger::dettach(const boost::signals::connection& c)
+{
+	mutex_t::scoped_lock l(pimpl_->mutex_);
+	pimpl_->event_signal_.disconnect(c);
+}
+
+void event_logger::post(boost::shared_ptr<EventDetail> e)
+{
+	mutex_t::scoped_lock l(pimpl_->mutex_);
+	if (e->level() != hal::event_logger::debug || halite().logDebug())
+		pimpl_->event_signal_(e);
 }
 	
-std::wstring Event::eventLevelToStr(eventLevel event)
+std::wstring event_logger::eventLevelToStr(eventLevel event)
 {
 	switch (event)
 	{
@@ -53,12 +86,6 @@ std::wstring Event::eventLevelToStr(eventLevel event)
 	default:
 		return hal::app().res_wstr(HAL_EVENTNONE);
 	}
-}
-
-Event& event()
-{
-	static Event e;
-	return e;
 }
 
 } // namespace hal

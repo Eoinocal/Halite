@@ -144,7 +144,7 @@ std::pair<std::string, std::string> extract_names(const wpath &file)
 		if (!boost::find_last(filename, ".torrent")) 
 				filename += ".torrent";
 		
-		event().post(shared_ptr<EventDetail>(new EventMsg(
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(
 			wformat(L"Loaded names: %1%, %2%") % from_utf8(name) % from_utf8(filename))));
 
 		return std::make_pair(name, filename);
@@ -348,7 +348,7 @@ public:
 		if (!boost::find_last(filename_, L".torrent")) 
 				filename_ += L".torrent";
 		
-		event().post(shared_ptr<EventDetail>(new EventMsg(
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(
 			wformat(L"Loaded names: %1%, %2%") % name_ % filename_)));
 	}
 	
@@ -375,8 +375,8 @@ public:
 		}
 		catch(std::exception &e) 
 		{		
-			hal::event().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(Event::critical, e, L"updatePreVersion7Files"))); 
+			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(event_logger::critical, e, L"updatePreVersion7Files"))); 
 		}
 	}
 	
@@ -605,8 +605,8 @@ public:
 		}
 		catch(std::exception& e)
 		{
-			hal::event().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(Event::critical, e, L"addToSession"))); 
+			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(event_logger::critical, e, L"addToSession"))); 
 		}
 	}
 	
@@ -641,8 +641,8 @@ public:
 		}
 		catch(std::exception& e)
 		{
-			hal::event().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(Event::critical, e, L"removeFromSession"))); 
+			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(event_logger::critical, e, L"removeFromSession"))); 
 		}
 	}
 	
@@ -1101,7 +1101,7 @@ public:
 		const wpath resumeFile = workingDir_/L"resume"/filename_;
 		const wpath torrentFile = workingDir_/L"torrents"/filename_;
 		
-		event().post(shared_ptr<EventDetail>(new EventMsg(
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(
 			wformat(L"File: %1%, %2%.") % resumeFile % torrentFile)));
 		
 		if (exists(resumeFile)) 
@@ -1133,7 +1133,7 @@ public:
 		if (!boost::find_last(filename_, L".torrent")) 
 				filename_ += L".torrent";
 		
-		event().post(shared_ptr<EventDetail>(new EventMsg(
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(
 			wformat(L"Loaded names: %1%, %2%") % name_ % filename_)));
 	}
 	
@@ -1441,7 +1441,7 @@ public:
 		{	
 			torrent_internal_ptr TIp(new torrent_internal((*i).second));
 			
-			event().post(shared_ptr<EventDetail>(new EventMsg(
+			event_log.post(shared_ptr<EventDetail>(new EventMsg(
 				wformat(L"Converting %1%.") % TIp->name())));
 			
 			torrents_.insert(TorrentHolder(TIp));
@@ -1657,13 +1657,13 @@ TorrentDetail_ptr torrent_internal::getTorrentDetail_ptr()
 	}
 	catch (const libt::invalid_handle&)
 	{
-		event().post(shared_ptr<EventDetail>(
-			new EventInvalidTorrent(Event::critical, Event::invalidTorrent, to_utf8(name_), "getTorrentDetail_ptr")));
+		event_log.post(shared_ptr<EventDetail>(
+			new EventInvalidTorrent(event_logger::critical, event_logger::invalidTorrent, to_utf8(name_), "getTorrentDetail_ptr")));
 	}
 	catch (const std::exception& e)
 	{
-		event().post(shared_ptr<EventDetail>(
-			new EventTorrentException(Event::critical, Event::torrentException, e.what(), to_utf8(name_), "getTorrentDetail_ptr")));
+		event_log.post(shared_ptr<EventDetail>(
+			new EventTorrentException(event_logger::critical, event_logger::torrentException, e.what(), to_utf8(name_), "getTorrentDetail_ptr")));
 	}
 	
 	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, saveDirectory().string(), app().res_wstr(HAL_TORRENT_STOPPED), app().res_wstr(HAL_NA)));

@@ -195,25 +195,25 @@ void read_range_to_filter(fs::ifstream& ifs, libt::ip_filter& ip_filter)
 		libt::ip_filter::blocked);
 }
 
-static Event::eventLevel lbtAlertToHalEvent(libt::alert::severity_t severity)
+static event_logger::eventLevel lbtAlertToHalEvent(libt::alert::severity_t severity)
 {
 	switch (severity)
 	{
 	case libt::alert::debug:
-		return Event::debug;
+		return event_logger::debug;
 	
 	case libt::alert::info:
-		return Event::info;
+		return event_logger::info;
 	
 	case libt::alert::warning:
-		return Event::warning;
+		return event_logger::warning;
 	
 	case libt::alert::critical:
 	case libt::alert::fatal:
-		return Event::critical;
+		return event_logger::critical;
 	
 	default:
-		return Event::none;
+		return event_logger::none;
 	}
 }
 
@@ -249,7 +249,6 @@ void TorrentDetails::sort(
 {
 	std::stable_sort(torrents_.begin(), torrents_.end(), fn);
 }
-
 
 web_seed_or_dht_node_detail::web_seed_or_dht_node_detail() : 
 	url(L""), 
@@ -303,8 +302,8 @@ public:
 		}
 		catch(std::exception& e)
 		{
-			hal::event().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(Event::critical, e, L"~BitTorrent_impl"))); 
+			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(event_logger::critical, e, L"~BitTorrent_impl"))); 
 		}
 	}
 
@@ -340,27 +339,27 @@ public:
 		
 		void operator()(libt::torrent_finished_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
+			event_log.post(shared_ptr<EventDetail>(
 				new EventMsg((wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
 						% get(a.handle)->name()), 
-					Event::info, a.timestamp())));
+					event_logger::info, a.timestamp())));
 			
 			get(a.handle)->finished();	
 		}
 		
 		void operator()(libt::torrent_paused_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
+			event_log.post(shared_ptr<EventDetail>(
 				new EventMsg((wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 
 						% get(a.handle)->name()), 
-					Event::info, a.timestamp())));
+					event_logger::info, a.timestamp())));
 
 			get(a.handle)->signals().torrent_paused();
 		}
 		
 		void operator()(libt::peer_error_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
+			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_PEER_ALERT))
 						% hal::from_utf8_safe(a.msg())
@@ -370,7 +369,7 @@ public:
 			
 		void operator()(libt::peer_ban_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
+			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_PEER_BAN_ALERT))
 						% get(a.handle)->name()
@@ -380,7 +379,7 @@ public:
 			
 		void operator()(libt::hash_failed_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
+			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_HASH_FAIL_ALERT))
 						% get(a.handle)->name()
@@ -390,7 +389,7 @@ public:
 			
 		void operator()(libt::url_seed_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
+			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_URL_SEED_ALERT))
 						% get(a.handle)->name()
@@ -401,7 +400,7 @@ public:
 		
 		void operator()(libt::tracker_warning_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
+			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_TRACKER_WARNING_ALERT))
 						% get(a.handle)->name()
@@ -411,15 +410,15 @@ public:
 		
 		void operator()(libt::tracker_announce_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
+			event_log.post(shared_ptr<EventDetail>(
 				new EventMsg((wformat(hal::app().res_wstr(HAL_TRACKER_ANNOUNCE_ALERT)) 
 						% get(a.handle)->name()), 
-					Event::info, a.timestamp())));
+					event_logger::info, a.timestamp())));
 		}
 		
 		void operator()(libt::tracker_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
+			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_TRACKER_ALERT))
 						% get(a.handle)->name()
@@ -431,7 +430,7 @@ public:
 		
 		void operator()(libt::tracker_reply_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
+			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_TRACKER_REPLY_ALERT))
 						% get(a.handle)->name()
@@ -442,7 +441,7 @@ public:
 		
 		void operator()(libt::fastresume_rejected_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
+			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_FAST_RESUME_ALERT))
 						% get(a.handle)->name()
@@ -452,8 +451,8 @@ public:
 		
 		void operator()(libt::piece_finished_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
-				new EventGeneral(Event::debug, a.timestamp(),
+			event_log.post(shared_ptr<EventDetail>(
+				new EventGeneral(event_logger::debug, a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_PIECE_FINISHED_ALERT))
 						% get(a.handle)->name()
 						% a.piece_index)
@@ -462,8 +461,8 @@ public:
 		
 		void operator()(libt::block_finished_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
-				new EventGeneral(Event::debug, a.timestamp(),
+			event_log.post(shared_ptr<EventDetail>(
+				new EventGeneral(event_logger::debug, a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_BLOCK_FINISHED_ALERT))
 						% get(a.handle)->name()
 						% a.block_index
@@ -473,8 +472,8 @@ public:
 		
 		void operator()(libt::block_downloading_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
-				new EventGeneral(Event::debug, a.timestamp(),
+			event_log.post(shared_ptr<EventDetail>(
+				new EventGeneral(event_logger::debug, a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_BLOCK_DOWNLOADING_ALERT))
 						% get(a.handle)->name()
 						% a.block_index
@@ -486,15 +485,15 @@ public:
 		{
 			if (a.endpoint.address().is_v6())
 			{	
-				event().post(shared_ptr<EventDetail>(
-					new EventGeneral(Event::info, a.timestamp(),
+				event_log.post(shared_ptr<EventDetail>(
+					new EventGeneral(event_logger::info, a.timestamp(),
 						hal::app().res_wstr(HAL_LISTEN_V6_FAILED_ALERT))
 				)	);		
 			}
 			else
 			{
-				event().post(shared_ptr<EventDetail>(
-					new EventGeneral(Event::info, a.timestamp(),
+				event_log.post(shared_ptr<EventDetail>(
+					new EventGeneral(event_logger::info, a.timestamp(),
 						wformat(hal::app().res_wstr(HAL_LISTEN_FAILED_ALERT))
 							% hal::from_utf8_safe(a.msg()))
 				)	);
@@ -503,8 +502,8 @@ public:
 		
 		void operator()(libt::listen_succeeded_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
-				new EventGeneral(Event::info, a.timestamp(),
+			event_log.post(shared_ptr<EventDetail>(
+				new EventGeneral(event_logger::info, a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_LISTEN_SUCCEEDED_ALERT))
 						% hal::from_utf8_safe(a.msg()))
 			)	);	
@@ -514,8 +513,8 @@ public:
 		
 		void operator()(libt::peer_blocked_alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
-				new EventGeneral(Event::debug, a.timestamp(),
+			event_log.post(shared_ptr<EventDetail>(
+				new EventGeneral(event_logger::debug, a.timestamp(),
 					wformat(hal::app().res_wstr(HAL_IPFILTER_ALERT))
 						% hal::from_utf8_safe(a.ip.to_string())
 						% hal::from_utf8_safe(a.msg()))
@@ -524,9 +523,9 @@ public:
 		
 		void operator()(libt::alert const& a) const
 		{
-			event().post(shared_ptr<EventDetail>(
+			event_log.post(shared_ptr<EventDetail>(
 					new EventLibtorrent(lbtAlertToHalEvent(a.severity()), 
-						a.timestamp(), Event::unclassified, hal::from_utf8_safe(a.msg()))));		
+						a.timestamp(), event_logger::unclassified, hal::from_utf8_safe(a.msg()))));		
 		}
 		
 		private:
@@ -573,14 +572,14 @@ public:
 			catch(std::exception& e)
 			{
 				// These are logged as debug because they are rarely important to act on!
-				event().post(shared_ptr<EventDetail>(\
-					new EventStdException(Event::debug, e, L"alertHandler")));
+				event_log.post(shared_ptr<EventDetail>(\
+					new EventStdException(event_logger::debug, e, L"alertHandler")));
 			}
 			
 			p_alert = theSession.pop_alert();
 		}
 		
-		timer_.expires_from_now(boost::posix_time::seconds(5));
+		timer_.expires_from_now(boost::posix_time::seconds(2));
 		timer_.async_wait(bind(&bit_impl::alertHandler, this));
 		}
 	}
@@ -602,8 +601,8 @@ public:
 		}		
 		catch(std::exception& e)
 		{
-			event().post(shared_ptr<EventDetail>(\
-				new EventStdException(Event::critical, e, L"saveTorrentData")));
+			event_log.post(shared_ptr<EventDetail>(\
+				new EventStdException(event_logger::critical, e, L"saveTorrentData")));
 		}
 	}
 	
@@ -639,14 +638,14 @@ private:
 		theSession.add_extension(&libt::create_ut_pex_plugin);
 		theSession.set_max_half_open_connections(10);
 		
-		hal::event().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(L"Loading BitTorrent.xml.", hal::Event::info)));		
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(L"Loading BitTorrent.xml.", hal::event_logger::info)));		
 		bittorrentIni.load_data();
-		hal::event().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(L"Loading torrent parameters.", hal::Event::info)));	
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(L"Loading torrent parameters.", hal::event_logger::info)));	
 		theTorrents.load();
-		hal::event().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(L"Loading done!", hal::Event::info)));
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(L"Loading done!", hal::event_logger::info)));
 		
 		try
 		{						
@@ -655,7 +654,7 @@ private:
 			{
 			fs::wifstream ifs(workingDirectory/L"Torrents.xml");
 		
-			event().post(shared_ptr<EventDetail>(new EventMsg(L"Loading old Torrents.xml")));
+			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Loading old Torrents.xml")));
 		
 			TorrentMap torrents;
 			boost::archive::xml_wiarchive ia(ifs);	
@@ -664,7 +663,7 @@ private:
 			theTorrents = torrents;
 			}
 			
-			event().post(shared_ptr<EventDetail>(new EventMsg(
+			event_log.post(shared_ptr<EventDetail>(new EventMsg(
 				wformat(L"Total %1%.") % theTorrents.size())));				
 			
 			fs::rename(workingDirectory/L"Torrents.xml", workingDirectory/L"Torrents.xml.safe.to.delete");
@@ -672,8 +671,8 @@ private:
 		}
 		catch(const std::exception& e)
 		{
-			event().post(shared_ptr<EventDetail>(
-				new EventStdException(Event::fatal, e, L"Loading Old Torrents.xml")));
+			event_log.post(shared_ptr<EventDetail>(
+				new EventStdException(event_logger::fatal, e, L"Loading Old Torrents.xml")));
 		}		
 				
 		if (exists(workingDirectory/L"DHTState.bin"))
@@ -684,8 +683,8 @@ private:
 			}		
 			catch(const std::exception& e)
 			{
-				event().post(shared_ptr<EventDetail>(
-					new EventStdException(Event::critical, e, L"Loading DHTState.bin")));
+				event_log.post(shared_ptr<EventDetail>(
+					new EventStdException(event_logger::critical, e, L"Loading DHTState.bin")));
 			}
 		}
 		
@@ -761,8 +760,8 @@ private:
 			{
 				// User canceled torrent creation.
 
-				hal::event().post(shared_ptr<hal::EventDetail>(
-					new hal::EventMsg(hal::app().res_wstr(HAL_NEWT_CREATION_CANCELED), hal::Event::info)));
+				hal::event_log.post(shared_ptr<hal::EventDetail>(
+					new hal::EventMsg(hal::app().res_wstr(HAL_NEWT_CREATION_CANCELED), hal::event_logger::info)));
 
 				return true;
 			}
@@ -779,8 +778,8 @@ private:
 		}
 		catch(const std::exception& e)
 		{
-			event().post(shared_ptr<EventDetail>(
-				new EventStdException(Event::fatal, e, L"create_torrent")));
+			event_log.post(shared_ptr<EventDetail>(
+				new EventStdException(event_logger::fatal, e, L"create_torrent")));
 		}	
 
 		return false;
@@ -831,35 +830,35 @@ bit::bit() :
 #define HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH(FUNCTION) \
 catch (const libt::invalid_handle&) \
 {\
-	event().post(shared_ptr<EventDetail>( \
-		new EventInvalidTorrent(Event::critical, Event::invalidTorrent, name, std::string(FUNCTION)))); \
+	event_log.post(shared_ptr<EventDetail>( \
+		new EventInvalidTorrent(event_logger::critical, event_logger::invalidTorrent, name, std::string(FUNCTION)))); \
 }\
 catch (const invalidTorrent& t) \
 {\
-	event().post(shared_ptr<EventDetail>( \
-		new EventInvalidTorrent(Event::info, Event::invalidTorrent, t.who(), std::string(FUNCTION)))); \
+	event_log.post(shared_ptr<EventDetail>( \
+		new EventInvalidTorrent(event_logger::info, event_logger::invalidTorrent, t.who(), std::string(FUNCTION)))); \
 }\
 catch (const std::exception& e) \
 {\
-	event().post(shared_ptr<EventDetail>( \
-		new EventTorrentException(Event::critical, Event::torrentException, std::string(e.what()), name, std::string(FUNCTION)))); \
+	event_log.post(shared_ptr<EventDetail>( \
+		new EventTorrentException(event_logger::critical, event_logger::torrentException, std::string(e.what()), name, std::string(FUNCTION)))); \
 }
 
 #define HAL_GENERIC_TORRENT_EXCEPTION_CATCH(TORRENT, FUNCTION) \
 catch (const libt::invalid_handle&) \
 {\
-	event().post(shared_ptr<EventDetail>( \
-		new EventInvalidTorrent(Event::critical, Event::invalidTorrent, TORRENT, std::string(FUNCTION)))); \
+	event_log.post(shared_ptr<EventDetail>( \
+		new EventInvalidTorrent(event_logger::critical, event_logger::invalidTorrent, TORRENT, std::string(FUNCTION)))); \
 }\
 catch (const invalidTorrent& t) \
 {\
-	event().post(shared_ptr<EventDetail>( \
-		new EventInvalidTorrent(Event::info, Event::invalidTorrent, t.who(), std::string(FUNCTION)))); \
+	event_log.post(shared_ptr<EventDetail>( \
+		new EventInvalidTorrent(event_logger::info, event_logger::invalidTorrent, t.who(), std::string(FUNCTION)))); \
 }\
 catch (const std::exception& e) \
 {\
-	event().post(shared_ptr<EventDetail>( \
-		new EventTorrentException(Event::critical, Event::torrentException, std::string(e.what()), TORRENT, std::string(FUNCTION)))); \
+	event_log.post(shared_ptr<EventDetail>( \
+		new EventTorrentException(event_logger::critical, event_logger::torrentException, std::string(e.what()), TORRENT, std::string(FUNCTION)))); \
 }
 
 void bit::shutDownSession()
@@ -908,8 +907,8 @@ bool bit::listenOn(std::pair<int, int> const& range)
 	}
 	catch (const std::exception& e)
 	{
-		event().post(shared_ptr<EventDetail>(
-			new EventStdException(Event::fatal, e, L"From bit::listenOn.")));
+		event_log.post(shared_ptr<EventDetail>(
+			new EventStdException(event_logger::fatal, e, L"From bit::listenOn.")));
 
 		return false;
 	}
@@ -979,7 +978,7 @@ void bit::setMapping(int mapping)
 	{
 		if (mapping == mappingUPnP)
 		{
-			event().post(shared_ptr<EventDetail>(new EventMsg(L"Starting UPnP mapping.")));
+			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Starting UPnP mapping.")));
 			pimpl->theSession.stop_upnp();
 			pimpl->theSession.stop_natpmp();
 
@@ -987,7 +986,7 @@ void bit::setMapping(int mapping)
 		}
 		else
 		{
-			event().post(shared_ptr<EventDetail>(new EventMsg(L"Starting NAT-PMP mapping.")));
+			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Starting NAT-PMP mapping.")));
 			pimpl->theSession.stop_upnp();
 			pimpl->theSession.stop_natpmp();
 
@@ -996,7 +995,7 @@ void bit::setMapping(int mapping)
 	}
 	else
 	{
-		event().post(shared_ptr<EventDetail>(new EventMsg(L"No mapping.")));
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"No mapping.")));
 		pimpl->theSession.stop_upnp();
 		pimpl->theSession.stop_natpmp();
 	}
@@ -1010,7 +1009,7 @@ void bit::setTimeouts(int peers, int tracker)
 
 	pimpl->theSession.set_settings(settings);
 
-	event().post(shared_ptr<EventDetail>(new EventMsg(
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(
 		wformat(L"Set Timeouts, peer %1%, tracker %2%") % peers % tracker)));
 }
 
@@ -1019,7 +1018,7 @@ void bit::setSessionLimits(int maxConn, int maxUpload)
 	pimpl->theSession.set_max_uploads(maxUpload);
 	pimpl->theSession.set_max_connections(maxConn);
 	
-	event().post(shared_ptr<EventDetail>(new EventMsg(
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(
 		wformat(L"Set connections totals %1% and uploads %2%.") 
 			% maxConn % maxUpload)));
 }
@@ -1031,7 +1030,7 @@ void bit::setSessionSpeed(float download, float upload)
 	int up = (upload > 0) ? static_cast<int>(upload*1024) : -1;
 	pimpl->theSession.set_upload_rate_limit(up);
 	
-	event().post(shared_ptr<EventDetail>(new EventMsg(
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(
 		wformat(L"Set session rates at download %1% and upload %2%.") 
 			% pimpl->theSession.download_rate_limit() % pimpl->theSession.upload_rate_limit())));
 }
@@ -1110,13 +1109,13 @@ bool bit::ensureIpFilterOn(progress_callback fn)
 	}
 	catch(const std::exception& e)
 	{		
-		hal::event().post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(Event::critical, e, L"ensureIpFilterOn"))); 
+		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(event_logger::critical, e, L"ensureIpFilterOn"))); 
 
 		ensureIpFilterOff();
 	}
 
-	event().post(shared_ptr<EventDetail>(new EventMsg(L"IP filters on.")));	
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"IP filters on.")));	
 
 	return false;
 }
@@ -1126,7 +1125,7 @@ void bit::ensureIpFilterOff()
 	pimpl->theSession.set_ip_filter(libt::ip_filter());
 	pimpl->ip_filter_on_ = false;
 	
-	event().post(shared_ptr<EventDetail>(new EventMsg(L"IP filters off.")));	
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"IP filters off.")));	
 }
 
 #ifndef TORRENT_DISABLE_ENCRYPTION	
@@ -1148,8 +1147,8 @@ void bit::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool 
 		default:
 			pe.allowed_enc_level = libt::pe_settings::both;
 			
-			hal::event().post(shared_ptr<hal::EventDetail>(
-				new hal::EventGeneral(hal::Event::warning, hal::Event::unclassified, 
+			hal::event_log.post(shared_ptr<hal::EventDetail>(
+				new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
 					(wformat(hal::app().res_wstr(HAL_INCORRECT_ENCODING_LEVEL)) % enc_level).str())));
 	}
 
@@ -1167,8 +1166,8 @@ void bit::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool 
 		default:
 			pe.in_enc_policy = libt::pe_settings::enabled;
 			
-			hal::event().post(shared_ptr<hal::EventDetail>(
-				new hal::EventGeneral(hal::Event::warning, hal::Event::unclassified, 
+			hal::event_log.post(shared_ptr<hal::EventDetail>(
+				new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
 					(wformat(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
 	}
 
@@ -1186,8 +1185,8 @@ void bit::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool 
 		default:
 			pe.out_enc_policy = libt::pe_settings::enabled;
 			
-			hal::event().post(shared_ptr<hal::EventDetail>(
-				new hal::EventGeneral(hal::Event::warning, hal::Event::unclassified, 
+			hal::event_log.post(shared_ptr<hal::EventDetail>(
+				new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
 					(wformat(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
 	}
 	
@@ -1201,13 +1200,13 @@ void bit::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool 
 	}
 	catch(const std::exception& e)
 	{
-		hal::event().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(Event::critical, e, L"ensurePeOn"))); 
+		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(event_logger::critical, e, L"ensurePeOn"))); 
 				
 		ensurePeOff();		
 	}
 	
-	event().post(shared_ptr<EventDetail>(new EventMsg(L"Protocol encryption on.")));
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Protocol encryption on.")));
 }
 
 void bit::ensurePeOff()
@@ -1221,7 +1220,7 @@ void bit::ensurePeOff()
 	
 	pimpl->theSession.set_pe_settings(pe);
 
-	event().post(shared_ptr<EventDetail>(new EventMsg(L"Protocol encryption off.")));
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Protocol encryption off.")));
 }
 #endif
 
@@ -1312,8 +1311,8 @@ bool bit::ip_filter_import_dat(boost::filesystem::path file, progress_callback f
 				}
 				catch(...)
 				{
-					hal::event().post(shared_ptr<hal::EventDetail>(
-						new hal::EventDebug(hal::Event::info, 
+					hal::event_log.post(shared_ptr<hal::EventDetail>(
+						new hal::EventDebug(hal::event_logger::info, 
 							from_utf8((format("Invalid IP range: %1%-%2%.") % first % last).str()))));
 				}
 			}
@@ -1326,8 +1325,8 @@ bool bit::ip_filter_import_dat(boost::filesystem::path file, progress_callback f
 	}
 	catch(const std::exception& e)
 	{
-		event().post(shared_ptr<EventDetail>(
-			new EventStdException(Event::critical, e, L"ip_filter_import_dat")));
+		event_log.post(shared_ptr<EventDetail>(
+			new EventStdException(event_logger::critical, e, L"ip_filter_import_dat")));
 	}
 
 	return false;
@@ -1357,7 +1356,7 @@ void bit::setSessionHalfOpenLimit(int halfConn)
 {
 	pimpl->theSession.set_max_half_open_connections(halfConn);
 
-	event().post(shared_ptr<EventDetail>(new EventMsg(
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(
 		wformat(L"Set half-open connections limit to %1%.") % pimpl->theSession.max_half_open_connections())));
 }
 
@@ -1366,13 +1365,13 @@ void bit::setTorrentDefaults(int maxConn, int maxUpload, float download, float u
 	pimpl->defTorrentMaxConn_ = maxConn;
 	pimpl->defTorrentMaxUpload_ = maxUpload;
 
-	event().post(shared_ptr<EventDetail>(new EventMsg(
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(
 		wformat(L"Set torrent connections total %1% and uploads %2%.") % maxConn % maxUpload)));
 
 	pimpl->defTorrentDownload_ = download;
 	pimpl->defTorrentUpload_ = upload;
 
-	event().post(shared_ptr<EventDetail>(new EventMsg(
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(
 		wformat(L"Set torrent default rates at %1$.2fkb/s down and %2$.2fkb/s upload.") % download % upload)));
 }
 
@@ -1405,8 +1404,8 @@ std::pair<libt::entry, libt::entry> bit_impl::prepTorrent(wpath filename, wpath 
 		}
 		catch(std::exception &e) 
 		{		
-			hal::event().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(Event::critical, e, L"prepTorrent, Resume"))); 
+			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(event_logger::critical, e, L"prepTorrent, Resume"))); 
 	
 			fs::remove(resumeFile);
 		}
@@ -1517,7 +1516,7 @@ void bit::resumeAll()
 {
 	try {
 		
-	event().post(shared_ptr<EventDetail>(new EventMsg(L"Resuming torrent.")));
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Resuming torrent.")));
 	
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); i != e;)
 	{
@@ -1549,15 +1548,15 @@ void bit::resumeAll()
 			}
 			catch(const libt::duplicate_torrent&)
 			{
-				hal::event().post(shared_ptr<hal::EventDetail>(
-					new hal::EventDebug(hal::Event::debug, L"Encountered duplicate torrent")));
+				hal::event_log.post(shared_ptr<hal::EventDetail>(
+					new hal::EventDebug(hal::event_logger::debug, L"Encountered duplicate torrent")));
 				
 				++i; // Harmless, don't worry about it.
 			}
 			catch(const std::exception& e) 
 			{
-				hal::event().post(shared_ptr<hal::EventDetail>(
-					new hal::EventStdException(hal::Event::warning, e, L"resumeAll")));
+				hal::event_log.post(shared_ptr<hal::EventDetail>(
+					new hal::EventStdException(hal::event_logger::warning, e, L"resumeAll")));
 				
 				pimpl->theTorrents.erase(i++);
 			}			
@@ -1575,11 +1574,11 @@ void bit::closeAll(boost::optional<report_num_active> fn)
 {
 	try 
 	{	
-	event().post(shared_ptr<EventDetail>(new EventInfo(L"Saving torrent data...")));
+	event_log.post(shared_ptr<EventDetail>(new EventInfo(L"Saving torrent data...")));
 
 	pimpl->saveTorrentData();
 
-	event().post(shared_ptr<EventDetail>(new EventInfo(L"Stopping all torrents...")));
+	event_log.post(shared_ptr<EventDetail>(new EventInfo(L"Stopping all torrents...")));
 	
 	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); 
 		i != e; ++i)
@@ -1599,14 +1598,14 @@ void bit::closeAll(boost::optional<report_num_active> fn)
 				++num_active;
 		}
 		
-		event().post(shared_ptr<EventDetail>(new EventInfo(wformat(L"%1% still active") % num_active)));
+		event_log.post(shared_ptr<EventDetail>(new EventInfo(wformat(L"%1% still active") % num_active)));
 
 		if (fn)	(*fn)(num_active);
 		Sleep(200);
 	}
 	
-	event().post(shared_ptr<EventDetail>(new EventInfo(L"All torrents stopped.")));		
-	event().post(shared_ptr<EventDetail>(new EventInfo(L"Fast-resume data written.")));
+	event_log.post(shared_ptr<EventDetail>(new EventInfo(L"All torrents stopped.")));		
+	event_log.post(shared_ptr<EventDetail>(new EventInfo(L"Fast-resume data written.")));
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")
 }
@@ -2142,7 +2141,7 @@ void bit::startEventReceiver()
 
 void bit::stopEventReceiver()
 {
-	event().post(shared_ptr<EventDetail>(new EventMsg(L"Stopping event Handler.")));
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Stopping event Handler.")));
 
 	pimpl->stopAlertHandler();
 }
