@@ -43,6 +43,8 @@ event_logger::event_logger()
 {
 	if (!s_event_impl)
 		s_event_impl.reset(new event_impl());
+
+	pimpl_ = s_event_impl;
 }
 
 event_logger::~event_logger()
@@ -60,21 +62,14 @@ void event_logger::dettach(const boost::signals::connection& c)
 	pimpl_->event_signal_.disconnect(c);
 }
 
-void event_logger::log(boost::shared_ptr<EventDetail> e)
+void event_logger::post(boost::shared_ptr<EventDetail> e)
 {
 	mutex_t::scoped_lock l(pimpl_->mutex_);
-	pimpl_->event_signal_(e);
-}
-
-
-
-void Event::post(boost::shared_ptr<EventDetail> event)
-{
-	if (event->level() != hal::Event::debug || halite().logDebug())
-		signal(event);
+	if (e->level() != hal::event_logger::debug || halite().logDebug())
+		pimpl_->event_signal_(e);
 }
 	
-std::wstring Event::eventLevelToStr(eventLevel event)
+std::wstring event_logger::eventLevelToStr(eventLevel event)
 {
 	switch (event)
 	{
@@ -91,12 +86,6 @@ std::wstring Event::eventLevelToStr(eventLevel event)
 	default:
 		return hal::app().res_wstr(HAL_EVENTNONE);
 	}
-}
-
-Event& event()
-{
-	static Event e;
-	return e;
 }
 
 } // namespace hal

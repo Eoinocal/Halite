@@ -41,7 +41,7 @@ public:
 			if (!wofs.is_open()) wofs.open(hal::app().working_directory()/L"HaliteLog.txt");
 			
 			wofs << (wformat(L"%1% %2%, %3%\r\n") 
-				% event->timeStamp() % hal::Event::eventLevelToStr(event->level()) 
+				% event->timeStamp() % hal::event_logger::eventLevelToStr(event->level()) 
 				% event->msg()).str();
 			
 			wofs.flush();
@@ -89,7 +89,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 {
 
 //	HAL_DEV_MSG(L"Hello");
-//	hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, L"Hello")));
+//	hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, L"Hello")));
 
 //	::SetProcessAffinityMask(::GetCurrentProcess(), (DWORD_PTR)0x1);
 	
@@ -140,14 +140,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	}
 	else
 	{
-		hal::event().post(shared_ptr<hal::EventDetail>(
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(wformat(L"Exe Path: %1%.") % hal::app().exe_path())));		
 		
-		hal::event().post(shared_ptr<hal::EventDetail>(
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(wformat(L"Initial Path: %1%.") % hal::app().initial_path())));		
 		
-		hal::event().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg((wformat(L"Working Directory: %1%.") % hal::app().working_directory()), hal::Event::info)));		
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg((wformat(L"Working Directory: %1%.") % hal::app().working_directory()), hal::event_logger::info)));		
 		
 		CMessageLoop theLoop;
 		_Module.AddMessageLoop(&theLoop);

@@ -141,8 +141,8 @@ void FilesSheet::OnDirBrowse(UINT, int, HWND hWnd)
 	}
 	catch(const std::exception& e)
 	{
-		hal::event().post(shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(hal::Event::fatal, e, L"DetailsSheet::OnDirBrowse")));
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(hal::event_logger::fatal, e, L"DetailsSheet::OnDirBrowse")));
 	}
 }
 
@@ -188,8 +188,8 @@ hal::file_size_pairs_t FilesSheet::FileSizePairs() const
 	}
 	catch(const std::exception& e)
 	{
-		hal::event().post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(hal::Event::critical, e, 
+		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(hal::event_logger::critical, e, 
 				L"DetailsSheet::FileSizePairs")));
 	}
 
@@ -359,7 +359,7 @@ void NewTorrentDialog::OnShowWindow(BOOL bShow, UINT nStatus)
 {
     resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 
-	hal::event().post(shared_ptr<hal::EventDetail>(
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"NewTorrentDialog::OnShowWindow()")));
 
     if (bShow && !inited_)
@@ -398,7 +398,7 @@ LRESULT NewTorrentDialog::OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	try
 	{
 
-	hal::event().post(shared_ptr<hal::EventDetail>(
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"NewTorrentDialog::OnSave()")));
 
 	hal::create_torrent_params params;
@@ -428,8 +428,8 @@ LRESULT NewTorrentDialog::OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	}
 	catch(const std::exception& e)
 	{
-		hal::event().post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(hal::Event::critical, e, 
+		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(hal::event_logger::critical, e, 
 				L"NewTorrentDialog::OnSave")));
 	}
 

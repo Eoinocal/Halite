@@ -70,16 +70,16 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	MoveWindow(rect.left, rect.top,	rect.right-rect.left, rect.bottom-rect.top, false);	
 
 
-	hal::event().post(shared_ptr<hal::EventDetail>(
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading Halite config...")));
 	hal::config().load();
 	
-	hal::event().post(shared_ptr<hal::EventDetail>(
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Applying setting...")));
 	if (!hal::config().settingsChanged())
 	{
-		hal::event().post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventDebug(hal::Event::critical, hal::app().res_wstr(HAL_WINDOW_SOCKETS_FAILED))));
+		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventDebug(hal::event_logger::critical, hal::app().res_wstr(HAL_WINDOW_SOCKETS_FAILED))));
 			
 		MessageBox(hal::app().res_wstr(HAL_WINDOW_SOCKETS_FAILED).c_str(), 0, 0);
 		
@@ -87,7 +87,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 		return 0;
 	}
 	
-	hal::event().post(shared_ptr<hal::EventDetail>(
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Starting GUI...")));
 	
 	RECT rc; GetClientRect(&rc);
@@ -114,7 +114,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	
 	m_hWndClient = m_Split.m_hWnd;
 
-	hal::event().post(shared_ptr<hal::EventDetail>(
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Creating main listview...")));	
 	// Create ListView and Dialog
 	haliteList.Create(m_Split.m_hWnd, rc, NULL, 
@@ -122,14 +122,14 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	haliteList.manager().attach(bind(&HaliteWindow::issueUiUpdate, this));
 
 
-	hal::event().post(shared_ptr<hal::EventDetail>(
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Creating classic dialog...")));		
 	mp_dlg.reset(new HaliteDialog(*this)),
 	mp_dlg->Create(m_Split.m_hWnd);
 //	mp_dlg->ShowWindow(true);
 	
 
-	hal::event().post(shared_ptr<hal::EventDetail>(
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Creating advanced dialog...")));
 	mp_advDlg.reset(new AdvHaliteDialog(*this));
 	mp_advDlg->Create(m_Split.m_hWnd);
@@ -137,7 +137,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	
 //	m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
 	
-	hal::event().post(shared_ptr<hal::EventDetail>(
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Creating tray icon...")));	
 	// Create the tray icon.
 	trayIcon_.Create(this, IDR_TRAY_MENU, L"Halite", 
@@ -160,7 +160,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	SetTimer(ID_SAVE_TIMER, 5000);
 	connectUiUpdate(bind(&HaliteWindow::updateWindow, this));
 	
-	hal::event().post(shared_ptr<hal::EventDetail>(
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Registering drop target...")));	
 	RegisterDropTarget();
 	
@@ -173,18 +173,18 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 //	haliteList.manager().setSelected(0);
 	setCorrectDialog();
 	
-	hal::event().post(shared_ptr<hal::EventDetail>(
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Starting event reciever...")));
 	hal::bittorrent().startEventReceiver();
-	hal::event().post(shared_ptr<hal::EventDetail>(
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Initial setup complete!")));
 	issueUiUpdate();
 	
 	}
 	catch(const std::exception& e)
 	{
-		hal::event().post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(hal::Event::critical, e, L"HaliteWindow::OnCreate"))); 
+		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(hal::event_logger::critical, e, L"HaliteWindow::OnCreate"))); 
 
 		DestroyWindow();
 	}
@@ -271,8 +271,8 @@ void HaliteWindow::updateWindow()
 	}
 	catch (std::exception& e)
 	{
-		hal::event().post(shared_ptr<hal::EventDetail>(\
-			new hal::EventStdException(hal::Event::info, e, L"updateWindow")));
+		hal::event_log.post(shared_ptr<hal::EventDetail>(\
+			new hal::EventStdException(hal::event_logger::info, e, L"updateWindow")));
 	}
 }
 
@@ -293,8 +293,8 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 		}
 		catch (std::exception& e)
 		{
-			hal::event().post(shared_ptr<hal::EventDetail>(\
-				new hal::EventStdException(hal::Event::info, e, L"saveTimer")));
+			hal::event_log.post(shared_ptr<hal::EventDetail>(\
+				new hal::EventStdException(hal::event_logger::info, e, L"saveTimer")));
 		}
 	}
 	else 
@@ -316,14 +316,14 @@ void HaliteWindow::issueUiUpdate()
 	}
 	catch (std::exception& e)
 	{
-		hal::event().post(shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(hal::Event::info, e, L"updateTimer")));
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(hal::event_logger::info, e, L"updateTimer")));
 	}
 }
 
 LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
 {
-	hal::event().post(shared_ptr<hal::EventDetail>(
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"I recieved data.")));
 		
 	switch (pCSD->dwData)
@@ -332,8 +332,8 @@ LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
 		{	
 			wstring filename(static_cast<wchar_t*>(pCSD->lpData), pCSD->cbData/sizeof(wchar_t));
 			
-			hal::event().post(shared_ptr<hal::EventDetail>(
-				new hal::EventMsg((wformat(L"Recieved data: %1%.") % filename), hal::Event::info)));
+			hal::event_log.post(shared_ptr<hal::EventDetail>(
+				new hal::EventMsg((wformat(L"Recieved data: %1%.") % filename), hal::event_logger::info)));
 		
 			ProcessFile(filename.c_str());
 			break;
@@ -375,8 +375,8 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	}
 	catch(const boost::filesystem::filesystem_error&)
 	{
-		hal::event().post(shared_ptr<hal::EventDetail>(
-			new hal::EventDebug(hal::Event::warning, L"filesystem error")));
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
+			new hal::EventDebug(hal::event_logger::warning, L"filesystem error")));
 	}
 }
 
@@ -580,7 +580,7 @@ LRESULT HaliteWindow::OnPaint(HDC dc)
 
 LRESULT HaliteWindow::OnAreYouMe(UINT, WPARAM, LPARAM, BOOL&) 
 {
-	hal::event().post(shared_ptr<hal::EventDetail>(
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"I tried to contact me.")));		
 
 	return WM_AreYouMe_; 

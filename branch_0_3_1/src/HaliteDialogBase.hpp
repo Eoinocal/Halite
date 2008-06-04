@@ -74,7 +74,7 @@ public:
 		{
 			pT->focusChanged(focusedTorrent_ = focused);
 			
-			hal::event().post(shared_ptr<hal::EventDetail>(
+			hal::event_log.post(shared_ptr<hal::EventDetail>(
 				new hal::EventMsg(L"Adv dialog focusChanged")));
 		}
 		else
