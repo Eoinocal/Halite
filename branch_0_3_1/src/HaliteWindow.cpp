@@ -286,8 +286,8 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 	{
 		try
 		{
-		
-		halite().saveIniData();
+
+		hal::ini().save_data();
 		hal::bittorrent().saveTorrentData();	
 	
 		}
@@ -403,7 +403,7 @@ void HaliteWindow::ShutdownThread()
 	hal::bittorrent().closeAll(0);
 
 	hal::bittorrent().stopEventReceiver();
-	Sleep(200);
+	Sleep(3000);
 
 	hal::bittorrent().shutDownSession();
 }
@@ -417,9 +417,7 @@ void HaliteWindow::OnDestroy()
 
 	splitterPos = m_Split.GetSplitterPos();
 
-	hal::config().save();
 	save();
-	halite().save();
 	hal::ini().save_data();
 	
 	if (halite().showMessage())
@@ -437,7 +435,7 @@ void HaliteWindow::OnDestroy()
 		shutdown.join();
 	}
 
-	hal::config().save();
+	// Resave for sake of your health.
 	save();
 	halite().save();
 	hal::ini().save_data();

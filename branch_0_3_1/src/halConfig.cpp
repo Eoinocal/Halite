@@ -115,6 +115,8 @@ bool Config::settingsThread()
 	else
 		bittorrent().ensureDhtOff();
 		
+	// Settings seem to have applied ok!
+	save();	
 	return true;
 }
 

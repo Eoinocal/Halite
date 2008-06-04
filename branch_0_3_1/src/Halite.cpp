@@ -169,7 +169,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			nRet = theLoop.Run();				
 		
 		_Module.RemoveMessageLoop();
-		
+
+		halite().save();
+		hal::ini().save_data();		
 	}
 	}
 

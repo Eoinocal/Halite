@@ -579,7 +579,7 @@ public:
 			p_alert = theSession.pop_alert();
 		}
 		
-		timer_.expires_from_now(boost::posix_time::seconds(5));
+		timer_.expires_from_now(boost::posix_time::seconds(2));
 		timer_.async_wait(bind(&bit_impl::alertHandler, this));
 		}
 	}
