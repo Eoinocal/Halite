@@ -157,7 +157,7 @@ public:
 		SetItemText(itemPos, 1,	event->msg().c_str());
 
 		SetItemText(itemPos, 2,
-			hal::Event::eventLevelToStr(event->level()).c_str());
+			hal::event_logger::eventLevelToStr(event->level()).c_str());
 			
 		if (halite().logListLen() <= GetItemCount())
 			DeleteItem(halite().logListLen());
@@ -184,7 +184,7 @@ private:
 		
 		ApplyDetails();
 		
-		conn_ = hal::event().attach(bind(&LogListViewCtrl::operator(), this, _1));
+		conn_ = hal::event_log.attach(bind(&LogListViewCtrl::operator(), this, _1));
 	}
 
 	void OnDestroy()

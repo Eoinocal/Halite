@@ -99,12 +99,6 @@ public:
 	{
 		load();
 	}
-
-	void saveIniData()
-	{
-		save();		
-		hal::ini().save_data();
-	}
 	
 	friend class boost::serialization::access;
 	template<class Archive>

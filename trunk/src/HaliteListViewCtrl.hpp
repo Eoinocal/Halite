@@ -35,7 +35,7 @@ protected:
 		
 		void sync_list(bool list_to_manager, bool signal_change=true)
 		{
-//			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"%1%, %2% %3%") % hal::from_utf8(selected_) % list_to_manager % signal_change).str().c_str())));
+//			hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, (wformat(L"%1%, %2% %3%") % hal::from_utf8(selected_) % list_to_manager % signal_change).str().c_str())));
 			if (list_to_manager)
 			{	
 				all_selected_.clear();
@@ -99,7 +99,7 @@ protected:
 			
 			int itemPos = m_list_.FindItem(&findInfo, -1);	
 			
-//			hal::event().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::Event::info, (wformat(L"%1%, %2%") % torrent_name % itemPos).str().c_str())));
+//			hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, (wformat(L"%1%, %2%") % torrent_name % itemPos).str().c_str())));
 			
 			if (itemPos == -1)
 				return itemPos;
