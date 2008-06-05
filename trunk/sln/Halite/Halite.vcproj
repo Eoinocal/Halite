@@ -989,6 +989,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\halSession.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\halSignaler.hpp"
 				>
 			</File>

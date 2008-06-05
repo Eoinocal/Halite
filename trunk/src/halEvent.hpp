@@ -77,7 +77,6 @@ public:
 	static std::wstring eventLevelToStr(eventLevel);
 
 private:
-	std::vector<boost::signals::scoped_connection> connections_;
 	boost::shared_ptr<event_impl> pimpl_;
 };
 
