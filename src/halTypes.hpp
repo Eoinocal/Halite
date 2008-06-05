@@ -37,3 +37,5 @@ namespace hal
 	using fs::wpath;
 	using fs::path;
 }
+
+#define foreach BOOST_FOREACH

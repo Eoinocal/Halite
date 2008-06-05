@@ -69,8 +69,21 @@
 #define HAL_INT_NEWT_ADD_PEERS_DHT         	HAL_TORRENT_INT_BEGIN + 29
 #define HAL_NEWT_CREATION_CANCELED         	HAL_TORRENT_INT_BEGIN + 30
 
-
 #ifndef RC_INVOKED
+
+#include <libtorrent/file.hpp>
+#include <libtorrent/hasher.hpp>
+#include <libtorrent/storage.hpp>
+#include <libtorrent/file_pool.hpp>
+#include <libtorrent/alert_types.hpp>
+#include <libtorrent/entry.hpp>
+#include <libtorrent/bencode.hpp>
+#include <libtorrent/session.hpp>
+#include <libtorrent/ip_filter.hpp>
+#include <libtorrent/torrent_handle.hpp>
+#include <libtorrent/peer_connection.hpp>
+#include <libtorrent/extensions/metadata_transfer.hpp>
+#include <libtorrent/extensions/ut_pex.hpp>
 
 #include <boost/tuple/tuple.hpp>
 #include <boost/enable_shared_from_this.hpp>
