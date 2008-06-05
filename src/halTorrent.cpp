@@ -6,8 +6,6 @@
 
 #include "stdAfx.hpp"
 
-#define TORRENT_MAX_ALERT_TYPES 20
-
 #include <libtorrent/file.hpp>
 #include <libtorrent/hasher.hpp>
 #include <libtorrent/storage.hpp>
@@ -33,111 +31,7 @@
 
 #include "halTorrentInternal.hpp"
 #include "halSession.hpp"
-
-namespace boost {
-namespace serialization {
-
-#define IP_SAVE  3
-
-template<class Archive, class address_type>
-void save(Archive& ar, const address_type& ip, const unsigned int version)
-{	
-#if IP_SAVE == 1
-	typename address_type::bytes_type bytes = ip.to_bytes();	
-	for (typename address_type::bytes_type::iterator i=bytes.begin(); i != bytes.end(); ++i)
-		ar & BOOST_SERIALIZATION_NVP(*i);
-#elif IP_SAVE == 2
-	string dotted = ip.to_string(); 
-	ar & BOOST_SERIALIZATION_NVP(dotted);
-#elif IP_SAVE == 3
-	unsigned long addr = ip.to_ulong();	
-	ar & BOOST_SERIALIZATION_NVP(addr);
-#endif
-}
-
-template<class Archive, class address_type>
-void load(Archive& ar, address_type& ip, const unsigned int version)
-{	
-#if IP_SAVE == 1
-	typename address_type::bytes_type bytes;	
-	for (typename address_type::bytes_type::iterator i=bytes.begin(); i != bytes.end(); ++i)
-		ar & BOOST_SERIALIZATION_NVP(*i);	
-	ip = address_type(bytes);
-#elif IP_SAVE == 2	
-	string dotted;
-	ar & BOOST_SERIALIZATION_NVP(dotted);	
-	ip = address_type::from_string(dotted);
-#elif IP_SAVE == 3
-	unsigned long addr;
-	ar & BOOST_SERIALIZATION_NVP(addr);	
-	ip = address_type(addr);
-#endif
-}
-
-template<class Archive, class String, class Traits>
-void save(Archive& ar, const boost::filesystem::basic_path<String, Traits>& p, const unsigned int version)
-{	
-	String str = p.string();
-	ar & BOOST_SERIALIZATION_NVP(str);
-}
-
-template<class Archive, class String, class Traits>
-void load(Archive& ar, boost::filesystem::basic_path<String, Traits>& p, const unsigned int version)
-{	
-	String str;
-	ar & BOOST_SERIALIZATION_NVP(str);
-
-	p = str;
-}
-
-template<class Archive, class String, class Traits>
-inline void serialize(
-        Archive & ar,
-        boost::filesystem::basic_path<String, Traits>& p,
-        const unsigned int file_version
-){
-        split_free(ar, p, file_version);            
-}
-
-template<class Archive, class address_type>
-void serialize(Archive& ar, libtorrent::ip_range<address_type>& addr, const unsigned int version)
-{	
-	ar & BOOST_SERIALIZATION_NVP(addr.first);
-	ar & BOOST_SERIALIZATION_NVP(addr.last);
-	addr.flags = libtorrent::ip_filter::blocked;
-}
-
-template<class Archive>
-void serialize(Archive& ar, hal::tracker_detail& tracker, const unsigned int version)
-{	
-	ar & BOOST_SERIALIZATION_NVP(tracker.url);
-	ar & BOOST_SERIALIZATION_NVP(tracker.tier);
-}
-
-} // namespace serialization
-} // namespace boost
-
-BOOST_SERIALIZATION_SPLIT_FREE(asio::ip::address_v4)
-BOOST_SERIALIZATION_SPLIT_FREE(asio::ip::address_v6)
-
-namespace libtorrent
-{
-template<class Addr>
-bool operator==(const libtorrent::ip_range<Addr>& lhs, const int flags)
-{
-	return (lhs.flags == flags);
-}
-
-std::ostream& operator<<(std::ostream& os, libtorrent::ip_range<asio::ip::address_v4>& ip)
-{
-	os << ip.first.to_ulong();
-	os << ip.last.to_ulong();
-	
-	return os;
-}
-
-} // namespace libtorrent
-
+//#include "halSessionAlert.hpp"
 
 namespace hal 
 {
@@ -266,344 +160,75 @@ bit::torrent bit::get_wstr(const std::wstring& filename)
 
 bool bit::listenOn(std::pair<int, int> const& range)
 {
-	try
-	{
-	
-	if (!pimpl->theSession.is_listening())
-	{
-		return pimpl->theSession.listen_on(range);
-	}
-	else
-	{
-		int port = pimpl->theSession.listen_port();
-		
-		if (port < range.first || port > range.second)
-			return pimpl->theSession.listen_on(range);	
-		else
-		{
-			pimpl->signals.successful_listen();
-			
-			return true;
-		}
-	}
-	
-	}
-	catch (const std::exception& e)
-	{
-		event_log.post(shared_ptr<EventDetail>(
-			new EventStdException(event_logger::fatal, e, L"From bit::listenOn.")));
-
-		return false;
-	}
-	catch(...)
-	{
-		return false;
-	}
+	return pimpl->listenOn(range);
 }
 
 int bit::isListeningOn() 
 {
-	if (!pimpl->theSession.is_listening())
-		return -1;	
-	else
-		return pimpl->theSession.listen_port();
+	return pimpl->isListeningOn();
 }
 
 void bit::stopListening()
 {
-	ensureDhtOff();
-	pimpl->theSession.listen_on(std::make_pair(0, 0));
+	pimpl->stopListening();
 }
 
 bool bit::ensureDhtOn()
 {
-	if (!pimpl->dht_on_)
-	{		
-		try
-		{
-		pimpl->theSession.start_dht(pimpl->dht_state_);
-		pimpl->dht_on_ = true;
-		}
-		catch(...)
-		{}
-	}
-		return pimpl->dht_on_;
+	return pimpl->ensureDhtOn();
 }
 
 void bit::ensureDhtOff()
 {
-	if (pimpl->dht_on_)
-	{
-		pimpl->theSession.stop_dht();		
-		pimpl->dht_on_ = false;
-	}
+	pimpl->ensureDhtOff();
 }
 
 void bit::setDhtSettings(int max_peers_reply, int search_branching, 
 	int service_port, int max_fail_count)
 {
-	libt::dht_settings settings;
-	settings.max_peers_reply = max_peers_reply;
-	settings.search_branching = search_branching;
-	settings.service_port = service_port;
-	settings.max_fail_count = max_fail_count;
-	
-	if (pimpl->dht_settings_ != settings)
-	{
-		pimpl->dht_settings_ = settings;
-		pimpl->theSession.set_dht_settings(pimpl->dht_settings_);
-	}
+	pimpl->setDhtSettings(max_peers_reply, search_branching, service_port, max_fail_count);
 }
 
 void bit::setMapping(int mapping)
 {
-	if (mapping != mappingNone)
-	{
-		if (mapping == mappingUPnP)
-		{
-			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Starting UPnP mapping.")));
-			pimpl->theSession.stop_upnp();
-			pimpl->theSession.stop_natpmp();
-
-			pimpl->signals.successful_listen.connect_once(bind(&libt::session::start_upnp, &pimpl->theSession));
-		}
-		else
-		{
-			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Starting NAT-PMP mapping.")));
-			pimpl->theSession.stop_upnp();
-			pimpl->theSession.stop_natpmp();
-
-			pimpl->signals.successful_listen.connect_once(bind(&libt::session::start_natpmp, &pimpl->theSession));
-		}
-	}
-	else
-	{
-		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"No mapping.")));
-		pimpl->theSession.stop_upnp();
-		pimpl->theSession.stop_natpmp();
-	}
+	pimpl->setMapping(mapping);
 }
 
 void bit::setTimeouts(int peers, int tracker)
 {
-	libt::session_settings settings = pimpl->theSession.settings();
-	settings.peer_connect_timeout = peers;
-	settings.tracker_completion_timeout = tracker;
-
-	pimpl->theSession.set_settings(settings);
-
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-		wformat(L"Set Timeouts, peer %1%, tracker %2%") % peers % tracker)));
+	pimpl->setTimeouts(peers, tracker);
 }
 
 void bit::setSessionLimits(int maxConn, int maxUpload)
 {		
-	pimpl->theSession.set_max_uploads(maxUpload);
-	pimpl->theSession.set_max_connections(maxConn);
-	
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-		wformat(L"Set connections totals %1% and uploads %2%.") 
-			% maxConn % maxUpload)));
+	pimpl->setSessionLimits(maxConn, maxUpload);
 }
 
 void bit::setSessionSpeed(float download, float upload)
 {
-	int down = (download > 0) ? static_cast<int>(download*1024) : -1;
-	pimpl->theSession.set_download_rate_limit(down);
-	int up = (upload > 0) ? static_cast<int>(upload*1024) : -1;
-	pimpl->theSession.set_upload_rate_limit(up);
-	
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-		wformat(L"Set session rates at download %1% and upload %2%.") 
-			% pimpl->theSession.download_rate_limit() % pimpl->theSession.upload_rate_limit())));
-}
-
-void bit_impl::ip_filter_count()
-{
-	libt::ip_filter::filter_tuple_t vectors = ip_filter_.export_filter();
-	
-	vectors.get<0>().erase(std::remove(vectors.get<0>().begin(), vectors.get<0>().end(), 0),
-		vectors.get<0>().end());
-	vectors.get<1>().erase(std::remove(vectors.get<1>().begin(), vectors.get<1>().end(), 0),
-		vectors.get<1>().end());
-	ip_filter_count_ = vectors.get<0>().size() + vectors.get<1>().size();
-}
-
-void bit_impl::ip_filter_load(progress_callback fn)
-{
-	fs::ifstream ifs(workingDirectory/L"IPFilter.bin", std::ios::binary);
-	if (ifs)
-	{
-		size_t v4_size;
-		ifs >> v4_size;
-		
-		size_t total = v4_size/100;
-		size_t previous = 0;
-		
-		for(unsigned i=0; i<v4_size; ++i)
-		{
-			if (i-previous > total)
-			{
-				previous = i;
-
-				if (fn) if (fn(size_t(i/total), hal::app().res_wstr(HAL_TORRENT_LOAD_FILTERS))) break;
-			}
-			
-			read_range_to_filter<asio::ip::address_v4>(ifs, ip_filter_);
-		}
-	}	
-}
-
-void  bit_impl::ip_filter_import(std::vector<libt::ip_range<asio::ip::address_v4> >& v4,
-	std::vector<libt::ip_range<asio::ip::address_v6> >& v6)
-{
-	for(std::vector<libt::ip_range<asio::ip::address_v4> >::iterator i=v4.begin();
-		i != v4.end(); ++i)
-	{
-		ip_filter_.add_rule(i->first, i->last, libt::ip_filter::blocked);
-	}
-/*	for(std::vector<libt::ip_range<asio::ip::address_v6> >::iterator i=v6.begin();
-		i != v6.end(); ++i)
-	{
-		ip_filter_.add_rule(i->first, i->last, libt::ip_filter::blocked);
-	}
-*/	
-	/* Note here we do not set ip_filter_changed_ */
+	pimpl->setSessionSpeed(download, upload);
 }
 
 bool bit::ensureIpFilterOn(progress_callback fn)
 {
-	try
-	{
-	
-	if (!pimpl->ip_filter_loaded_)
-	{
-		pimpl->ip_filter_load(fn);
-		pimpl->ip_filter_loaded_ = true;
-	}
-	
-	if (!pimpl->ip_filter_on_)
-	{
-		pimpl->theSession.set_ip_filter(pimpl->ip_filter_);
-		pimpl->ip_filter_on_ = true;
-		pimpl->ip_filter_count();
-	}
-	
-	}
-	catch(const std::exception& e)
-	{		
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(event_logger::critical, e, L"ensureIpFilterOn"))); 
-
-		ensureIpFilterOff();
-	}
-
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"IP filters on.")));	
-
-	return false;
+	return pimpl->ensureIpFilterOn(fn);
 }
 
 void bit::ensureIpFilterOff()
 {
-	pimpl->theSession.set_ip_filter(libt::ip_filter());
-	pimpl->ip_filter_on_ = false;
-	
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"IP filters off.")));	
+	pimpl->ensureIpFilterOff();
 }
 
 #ifndef TORRENT_DISABLE_ENCRYPTION	
+
 void bit::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4)
 {
-	libt::pe_settings pe;
-	
-	switch (enc_level)
-	{
-		case 0:
-			pe.allowed_enc_level = libt::pe_settings::plaintext;
-			break;
-		case 1:
-			pe.allowed_enc_level = libt::pe_settings::rc4;
-			break;
-		case 2:
-			pe.allowed_enc_level = libt::pe_settings::both;
-			break;
-		default:
-			pe.allowed_enc_level = libt::pe_settings::both;
-			
-			hal::event_log.post(shared_ptr<hal::EventDetail>(
-				new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
-					(wformat(hal::app().res_wstr(HAL_INCORRECT_ENCODING_LEVEL)) % enc_level).str())));
-	}
-
-	switch (in_enc_policy)
-	{
-		case 0:
-			pe.in_enc_policy = libt::pe_settings::forced;
-			break;
-		case 1:
-			pe.in_enc_policy = libt::pe_settings::enabled;
-			break;
-		case 2:
-			pe.in_enc_policy = libt::pe_settings::disabled;
-			break;
-		default:
-			pe.in_enc_policy = libt::pe_settings::enabled;
-			
-			hal::event_log.post(shared_ptr<hal::EventDetail>(
-				new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
-					(wformat(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
-	}
-
-	switch (out_enc_policy)
-	{
-		case 0:
-			pe.out_enc_policy = libt::pe_settings::forced;
-			break;
-		case 1:
-			pe.out_enc_policy = libt::pe_settings::enabled;
-			break;
-		case 2:
-			pe.out_enc_policy = libt::pe_settings::disabled;
-			break;
-		default:
-			pe.out_enc_policy = libt::pe_settings::enabled;
-			
-			hal::event_log.post(shared_ptr<hal::EventDetail>(
-				new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
-					(wformat(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
-	}
-	
-	pe.prefer_rc4 = prefer_rc4;
-	
-	try
-	{
-	
-	pimpl->theSession.set_pe_settings(pe);
-	
-	}
-	catch(const std::exception& e)
-	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(event_logger::critical, e, L"ensurePeOn"))); 
-				
-		ensurePeOff();		
-	}
-	
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Protocol encryption on.")));
+	pimpl->ensurePeOn(enc_level, in_enc_policy, out_enc_policy, prefer_rc4);
 }
 
 void bit::ensurePeOff()
 {
-	libt::pe_settings pe;
-	pe.out_enc_policy = libt::pe_settings::disabled;
-	pe.in_enc_policy = libt::pe_settings::disabled;
-	
-	pe.allowed_enc_level = libt::pe_settings::both;
-	pe.prefer_rc4 = true;
-	
-	pimpl->theSession.set_pe_settings(pe);
-
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Protocol encryption off.")));
+	pimpl->ensurePeOff();
 }
 #endif
 
@@ -616,112 +241,31 @@ void bit::ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 la
 
 void bit::ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last)
 {
-	pimpl->ip_filter_.add_rule(first, last, libt::ip_filter::blocked);
-	pimpl->ip_filter_count();
-	pimpl->ip_filter_changed_ = true;
+	pimpl->ip_v6_filter_block(first, last);
 }
 
 size_t bit::ip_filter_size()
 {
-	return pimpl->ip_filter_count_;
+	return pimpl->ip_filter_size();
 }
 
 void bit::clearIpFilter()
 {
-	pimpl->ip_filter_ = libt::ip_filter();
-	pimpl->theSession.set_ip_filter(libt::ip_filter());	
-	pimpl->ip_filter_changed_ = true;
-	pimpl->ip_filter_count();
+	pimpl->clearIpFilter();
 }
 
 bool bit::ip_filter_import_dat(boost::filesystem::path file, progress_callback fn, bool octalFix)
 {
-	try
-	{
-
-	fs::ifstream ifs(file);	
-	if (ifs)
-	{
-		boost::uintmax_t total = fs::file_size(file)/100;
-		boost::uintmax_t progress = 0;
-		boost::uintmax_t previous = 0;
-		
-		boost::regex reg("\\s*(\\d+\\.\\d+\\.\\d+\\.\\d+)\\s*-\\s*(\\d+\\.\\d+\\.\\d+\\.\\d+)\\s*.*");
-		boost::regex ip_reg("0*(\\d*)\\.0*(\\d*)\\.0*(\\d*)\\.0*(\\d*)");
-		boost::smatch m;
-		
-		string ip_address_line;		
-		while (!std::getline(ifs, ip_address_line).eof())
-		{		
-			progress += (ip_address_line.length() + 2);
-			if (progress-previous > total)
-			{
-				previous = progress;
-				if (fn)
-				{
-					if (fn(size_t(progress/total), hal::app().res_wstr(HAL_TORRENT_IMPORT_FILTERS))) 
-						break;
-				}
-			}
-			
-			if (boost::regex_match(ip_address_line, m, reg))
-			{
-				string first = m[1];
-				string last = m[2];
-				
-				if (octalFix)
-				{
-					if (boost::regex_match(first, m, ip_reg))
-					{
-						first = ((m.length(1) != 0) ? m[1] : string("0")) + "." +
-								((m.length(2) != 0) ? m[2] : string("0")) + "." +
-								((m.length(3) != 0) ? m[3] : string("0")) + "." +
-								((m.length(4) != 0) ? m[4] : string("0"));
-					}					
-					if (boost::regex_match(last, m, ip_reg))
-					{
-						last = ((m.length(1) != 0) ? m[1] : string("0")) + "." +
-							   ((m.length(2) != 0) ? m[2] : string("0")) + "." +
-							   ((m.length(3) != 0) ? m[3] : string("0")) + "." +
-							   ((m.length(4) != 0) ? m[4] : string("0"));
-					}
-				}
-				
-				try
-				{			
-				pimpl->ip_filter_.add_rule(asio::ip::address_v4::from_string(first),
-					asio::ip::address_v4::from_string(last), libt::ip_filter::blocked);	
-				}
-				catch(...)
-				{
-					hal::event_log.post(shared_ptr<hal::EventDetail>(
-						new hal::EventDebug(hal::event_logger::info, 
-							from_utf8((format("Invalid IP range: %1%-%2%.") % first % last).str()))));
-				}
-			}
-		}
-	}
-	
-	pimpl->ip_filter_changed_ = true;
-	pimpl->ip_filter_count();
-	
-	}
-	catch(const std::exception& e)
-	{
-		event_log.post(shared_ptr<EventDetail>(
-			new EventStdException(event_logger::critical, e, L"ip_filter_import_dat")));
-	}
-
-	return false;
+	return pimpl->ip_filter_import_dat(file, fn, octalFix);
 }
 
 const SessionDetail bit::getSessionDetails()
 {
 	SessionDetail details;
 	
-	details.port = pimpl->theSession.is_listening() ? pimpl->theSession.listen_port() : -1;
+	details.port = pimpl->session_.is_listening() ? pimpl->session_.listen_port() : -1;
 	
-	libt::session_status status = pimpl->theSession.status();
+	libt::session_status status = pimpl->session_.status();
 	
 	details.speed = std::pair<double, double>(status.download_rate, status.upload_rate);
 	
@@ -737,10 +281,10 @@ const SessionDetail bit::getSessionDetails()
 
 void bit::setSessionHalfOpenLimit(int halfConn)
 {
-	pimpl->theSession.set_max_half_open_connections(halfConn);
+	pimpl->session_.set_max_half_open_connections(halfConn);
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-		wformat(L"Set half-open connections limit to %1%.") % pimpl->theSession.max_half_open_connections())));
+		wformat(L"Set half-open connections limit to %1%.") % pimpl->session_.max_half_open_connections())));
 }
 
 void bit::setTorrentDefaults(int maxConn, int maxUpload, float download, float upload)
@@ -1175,13 +719,13 @@ void bit_impl::removalThread(torrent_internal_ptr pIT, bool wipeFiles)
 
 	if (!wipeFiles)
 	{
-		theSession.remove_torrent(pIT->handle());
+		session_.remove_torrent(pIT->handle());
 	}
 	else
 	{
 		if (pIT->in_session())
 		{
-			theSession.remove_torrent(pIT->handle(), libt::session::delete_files);
+			session_.remove_torrent(pIT->handle(), libt::session::delete_files);
 		}
 		else
 		{
