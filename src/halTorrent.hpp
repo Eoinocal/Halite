@@ -555,7 +555,7 @@ public:
 	};
 
 	void shutDownSession();
-	void saveTorrentData();
+	void save_torrent_data();
 
 	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn);
 
@@ -573,41 +573,39 @@ public:
 		else
 			return torrent();
 	}	
+	
+	bool listen_on(std::pair<int, int> const& portRange);
+	int is_listening_on();
+	void stop_listening();
+	
+	bool ensure_dht_on();
+	void ensure_dht_off();
+	
+	void ensure_pe_on(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4);
+	void ensure_pe_off();
+	
+	bool ensure_ip_filter_on(progress_callback fn);
+	void ensure_ip_filter_off();
 
-	torrent get_wstr(const std::wstring& filename);
-	
-	bool listenOn(std::pair<int, int> const& portRange);
-	int isListeningOn();
-	void stopListening();
-	
-	bool ensureDhtOn();
-	void ensureDhtOff();
-	
-	void ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4);
-	void ensurePeOff();
-	
-	bool ensureIpFilterOn(progress_callback fn);
-	void ensureIpFilterOff();
-
-	void setMapping(int mapping);
+	void set_mapping(int mapping);
 
 	void ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 last);
 	void ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last);
 	bool ip_filter_import_dat(boost::filesystem::path file, progress_callback fn, bool octalFix);
 	size_t ip_filter_size();
-	void clearIpFilter();	
+	void clear_ip_filter();	
 	
 	void setSessionHalfOpenLimit(int halfConn);
-	void setSessionLimits(int maxConn, int maxUpload);
-	void setSessionSpeed(float download, float upload);
-	void setDhtSettings(int max_peers_reply, int search_branching, 
+	void set_session_limits(int maxConn, int maxUpload);
+	void set_session_speed(float download, float upload);
+	void set_dht_settings(int max_peers_reply, int search_branching, 
 		int service_port, int max_fail_count);
-	void setTimeouts(int peers, int tracker);
+	void set_timeouts(int peers, int tracker);
 	
 	const SessionDetail getSessionDetails();
 
 	void setTorrentDefaults(int maxConn, int maxUpload, float download, float upload);	
-	void addTorrent(boost::filesystem::wpath file, boost::filesystem::wpath saveDirectory, 
+	void add_torrent(boost::filesystem::wpath file, boost::filesystem::wpath saveDirectory, 
 		bool startPaused=false, bool compactStorage=false, 
 		boost::filesystem::wpath moveToDirectory=L"", bool useMoveTo=false);
 	
@@ -616,8 +614,8 @@ public:
 	void getAllFileDetails(const std::string& filename, FileDetails& fileDetails);
 	void getAllFileDetails(const std::wstring& filename, FileDetails& fileDetails);
 	
-	void resumeAll();
-	void closeAll(boost::optional<report_num_active> fn);
+	void resume_all();
+	void close_all(boost::optional<report_num_active> fn);
 	
 	bool isTorrent(const std::string& filename);
 	bool isTorrent(const std::wstring& filename);	
@@ -637,11 +635,18 @@ public:
 	
 	void pauseAllTorrents();
 	void unpauseAllTorrents();
-	
-	void removeTorrent(const std::string& filename);
-	void removeTorrent(const std::wstring&  filename);
-	void removeTorrentWipeFiles(const std::string& filename);
-	void removeTorrentWipeFiles(const std::wstring&  filename);
+
+	template<typename S>
+	void remove_torrent(S filename)
+	{ 
+		remove_torrent_wstr(to_wstr_shim(filename)); 
+	}	
+
+	template<typename S>
+	void remove_torrent_wipe_files(S filename)
+	{ 
+		remove_torrent_wipe_files_wstr(to_wstr_shim(filename)); 
+	}	
 
 	void startEventReceiver();
 	void stopEventReceiver();
@@ -659,6 +664,11 @@ public:
 private:
 	bit();
 	boost::scoped_ptr<bit_impl> pimpl;
+
+	torrent get_wstr(const std::wstring& filename);
+	
+	void remove_torrent_wstr(const std::wstring& filename);
+	void remove_torrent_wipe_files_wstr(const std::wstring&  filename);
 	
 	TorrentDetails torrentDetails_;
 };

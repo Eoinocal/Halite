@@ -236,9 +236,9 @@ public:
 	
 	~bit_impl()
 	{
-		stopAlertHandler();
+		stop_alert_handler();
 		
-		//saveTorrentData();
+		//save_torrent_data();
 		
 		try
 		{
@@ -267,7 +267,7 @@ public:
 		}
 	}
 
-	bool listenOn(std::pair<int, int> const& range)
+	bool listen_on(std::pair<int, int> const& range)
 	{
 		try
 		{
@@ -304,7 +304,7 @@ public:
 		}
 	}
 
-	int isListeningOn() 
+	int is_listening_on() 
 	{
 		if (!session_.is_listening())
 			return -1;	
@@ -312,13 +312,13 @@ public:
 			return session_.listen_port();
 	}
 
-	void stopListening()
+	void stop_listening()
 	{
-		ensureDhtOff();
+		ensure_dht_off();
 		session_.listen_on(std::make_pair(0, 0));
 	}
 
-	bool ensureDhtOn()
+	bool ensure_dht_on()
 	{
 		if (!dht_on_)
 		{		
@@ -333,7 +333,7 @@ public:
 			return dht_on_;
 	}
 
-	void ensureDhtOff()
+	void ensure_dht_off()
 	{
 		if (dht_on_)
 		{
@@ -342,7 +342,7 @@ public:
 		}
 	}
 
-	void setDhtSettings(int max_peers_reply, int search_branching, 
+	void set_dht_settings(int max_peers_reply, int search_branching, 
 		int service_port, int max_fail_count)
 	{
 		libt::dht_settings settings;
@@ -358,7 +358,7 @@ public:
 		}
 	}
 
-	void setMapping(int mapping)
+	void set_mapping(int mapping)
 	{
 		if (mapping != bit::mappingNone)
 		{
@@ -387,7 +387,7 @@ public:
 		}
 	}
 
-	void setTimeouts(int peers, int tracker)
+	void set_timeouts(int peers, int tracker)
 	{
 		libt::session_settings settings = session_.settings();
 		settings.peer_connect_timeout = peers;
@@ -399,7 +399,7 @@ public:
 			wformat(L"Set Timeouts, peer %1%, tracker %2%") % peers % tracker)));
 	}
 
-	void setSessionLimits(int maxConn, int maxUpload)
+	void set_session_limits(int maxConn, int maxUpload)
 	{		
 		session_.set_max_uploads(maxUpload);
 		session_.set_max_connections(maxConn);
@@ -409,7 +409,7 @@ public:
 				% maxConn % maxUpload)));
 	}
 
-	void setSessionSpeed(float download, float upload)
+	void set_session_speed(float download, float upload)
 	{
 		int down = (download > 0) ? static_cast<int>(download*1024) : -1;
 		session_.set_download_rate_limit(down);
@@ -421,7 +421,7 @@ public:
 				% session_.download_rate_limit() % session_.upload_rate_limit())));
 	}
 
-	bool ensureIpFilterOn(progress_callback fn)
+	bool ensure_ip_filter_on(progress_callback fn)
 	{
 		try
 		{
@@ -445,7 +445,7 @@ public:
 			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
 				new hal::EventStdException(event_logger::critical, e, L"ensureIpFilterOn"))); 
 
-			ensureIpFilterOff();
+			ensure_ip_filter_off();
 		}
 
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"IP filters on.")));	
@@ -453,7 +453,7 @@ public:
 		return false;
 	}
 
-	void ensureIpFilterOff()
+	void ensure_ip_filter_off()
 	{
 		session_.set_ip_filter(libt::ip_filter());
 		ip_filter_on_ = false;
@@ -462,7 +462,7 @@ public:
 	}
 
 	#ifndef TORRENT_DISABLE_ENCRYPTION	
-	void ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4)
+	void ensure_pe_on(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4)
 	{
 		libt::pe_settings pe;
 		
@@ -536,13 +536,13 @@ public:
 			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
 					new hal::EventStdException(event_logger::critical, e, L"ensurePeOn"))); 
 					
-			ensurePeOff();		
+			ensure_pe_off();		
 		}
 		
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Protocol encryption on.")));
 	}
 
-	void ensurePeOff()
+	void ensure_pe_off()
 	{
 		libt::pe_settings pe;
 		pe.out_enc_policy = libt::pe_settings::disabled;
@@ -576,7 +576,7 @@ public:
 		return ip_filter_count_;
 	}
 
-	void clearIpFilter()
+	void clear_ip_filter()
 	{
 		ip_filter_ = libt::ip_filter();
 		session_.set_ip_filter(libt::ip_filter());	
@@ -593,10 +593,10 @@ public:
 	} 
 	signals;
 
-	void stopAlertHandler();
-	void alertHandler();
+	void stop_alert_handler();
+	void alert_handler();
 
-	void addTorrent(wpath file, wpath saveDirectory, bool startStopped, bool compactStorage, 
+	void add_torrent(wpath file, wpath saveDirectory, bool startStopped, bool compactStorage, 
 			boost::filesystem::wpath moveToDirectory, bool useMoveTo) 
 	{
 		try 
@@ -634,11 +634,11 @@ public:
 		}
 		
 		std::pair<TorrentManager::torrentByName::iterator, bool> p =
-			theTorrents.insert(TIp);
+			the_torrents_.insert(TIp);
 		
 		if (p.second)
 		{
-			torrent_internal_ptr me = theTorrents.get(TIp->name());		
+			torrent_internal_ptr me = the_torrents_.get(TIp->name());		
 			
 			if (!startStopped) 
 				me->add_to_session();
@@ -655,7 +655,7 @@ public:
 		}
 	}
 
-	std::pair<libt::entry, libt::entry> prepTorrent(wpath filename, wpath saveDirectory)
+	std::pair<libt::entry, libt::entry> prep_torrent(wpath filename, wpath saveDirectory)
 	{
 		libt::entry metadata = haldecode(filename);
 		libt::torrent_info info(metadata);
@@ -703,13 +703,93 @@ public:
 		return std::make_pair(metadata, resumeData);
 	}
 
-	void resumeAll()
+	void removal_thread(torrent_internal_ptr pIT, bool wipeFiles)
+	{
+		try {
+
+		if (!wipeFiles)
+		{
+			session_.remove_torrent(pIT->handle());
+		}
+		else
+		{
+			if (pIT->in_session())
+			{
+				session_.remove_torrent(pIT->handle(), libt::session::delete_files);
+			}
+			else
+			{
+				libt::torrent_info m_info = pIT->infoMemory();
+				
+				// delete the files from disk
+				std::string error;
+				std::set<std::string> directories;
+				
+				for (libt::torrent_info::file_iterator i = m_info.begin_files(true)
+					, end(m_info.end_files(true)); i != end; ++i)
+				{
+					std::string p = (hal::path_to_utf8(pIT->saveDirectory()) / i->path).string();
+					fs::path bp = i->path.branch_path();
+					
+					std::pair<std::set<std::string>::iterator, bool> ret;
+					ret.second = true;
+					while (ret.second && !bp.empty())
+					{
+						std::pair<std::set<std::string>::iterator, bool> ret = 
+							directories.insert((hal::path_to_utf8(pIT->saveDirectory()) / bp).string());
+						bp = bp.branch_path();
+					}
+					if (!fs::remove(hal::from_utf8(p).c_str()) && errno != ENOENT)
+						error = std::strerror(errno);
+				}
+
+				// remove the directories. Reverse order to delete subdirectories first
+
+				for (std::set<std::string>::reverse_iterator i = directories.rbegin()
+					, end(directories.rend()); i != end; ++i)
+				{
+					if (!fs::remove(hal::from_utf8(*i).c_str()) && errno != ENOENT)
+						error = std::strerror(errno);
+				}
+			}
+		}
+
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "removalThread")
+	}
+
+	void remove_torrent(const wstring& filename)
+	{
+		try {
+		
+		torrent_internal_ptr pTI = the_torrents_.get(filename);
+		libt::torrent_handle handle = pTI->handle();
+		the_torrents_.erase(filename);
+		
+		thread_t t(bind(&bit_impl::removal_thread, this, pTI, false));	
+		
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "remove_torrent")
+	}
+
+	void remove_torrent_wipe_files(const std::wstring& filename)
+	{
+		try {
+		
+		torrent_internal_ptr pTI = the_torrents_.get(filename);
+		libt::torrent_handle handle = pTI->handle();
+		the_torrents_.erase(filename);
+		
+		thread_t t(bind(&bit_impl::removal_thread, this, pTI, true));	
+		
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "remove_torrent_wipe_files")
+	}
+
+	void resume_all()
 	{
 		try {
 			
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Resuming torrent.")));
 		
-		for (TorrentManager::torrentByName::iterator i=theTorrents.begin(), e=theTorrents.end(); i != e;)
+		for (TorrentManager::torrentByName::iterator i=the_torrents_.begin(), e=the_torrents_.end(); i != e;)
 		{
 			wpath file = wpath(workingDirectory)/L"torrents"/(*i).torrent->filename();
 			
@@ -749,29 +829,29 @@ public:
 					hal::event_log.post(shared_ptr<hal::EventDetail>(
 						new hal::EventStdException(hal::event_logger::warning, e, L"resumeAll")));
 					
-					theTorrents.erase(i++);
+					the_torrents_.erase(i++);
 				}			
 			}
 			else
 			{
-				theTorrents.erase(i++);
+				the_torrents_.erase(i++);
 			}
 		}
 		
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")
 	}
 
-	void closeAll(boost::optional<report_num_active> fn)
+	void close_all(boost::optional<report_num_active> fn)
 	{
 		try 
 		{	
 		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"Saving torrent data...")));
 
-		saveTorrentData();
+		save_torrent_data();
 
 		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"Stopping all torrents...")));
 		
-		for (TorrentManager::torrentByName::iterator i=theTorrents.begin(), e=theTorrents.end(); 
+		for (TorrentManager::torrentByName::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
 			i != e; ++i)
 		{
 			(*i).torrent->stop();
@@ -782,7 +862,7 @@ public:
 		{
 			num_active = 0;
 
-			for (TorrentManager::torrentByName::iterator i=theTorrents.begin(), e=theTorrents.end(); 
+			for (TorrentManager::torrentByName::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
 					i != e; ++i)
 			{
 				if ((*i).torrent->state() != TorrentDetail::torrent_stopped)
@@ -801,13 +881,13 @@ public:
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")
 	}
 	
-	void saveTorrentData()
+	void save_torrent_data()
 	{	
 		mutex_t::scoped_lock l(mutex_);
 		try
 		{
 		
-		theTorrents.save();
+		the_torrents_.save();
 		bittorrentIni.save_data();
 			
 		if (dht_on_) 
@@ -836,7 +916,7 @@ private:
 		timer_(io_),
 		keepChecking_(false),
 		bittorrentIni(L"BitTorrent.xml"),
-		theTorrents(bittorrentIni),
+		the_torrents_(bittorrentIni),
 		defTorrentMaxConn_(-1),
 		defTorrentMaxUpload_(-1),
 		defTorrentDownload_(-1),
@@ -860,7 +940,7 @@ private:
 		bittorrentIni.load_data();
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(L"Loading torrent parameters.", hal::event_logger::info)));	
-		theTorrents.load();
+		the_torrents_.load();
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(L"Loading done!", hal::event_logger::info)));
 		
@@ -877,11 +957,11 @@ private:
 			boost::archive::xml_wiarchive ia(ifs);	
 			ia >> boost::serialization::make_nvp("torrents", torrents);
 			
-			theTorrents = torrents;
+			the_torrents_ = torrents;
 			}
 			
 			event_log.post(shared_ptr<EventDetail>(new EventMsg(
-				wformat(L"Total %1%.") % theTorrents.size())));				
+				wformat(L"Total %1%.") % the_torrents_.size())));				
 			
 			fs::rename(workingDirectory/L"Torrents.xml", workingDirectory/L"Torrents.xml.safe.to.delete");
 		}			
@@ -911,7 +991,7 @@ private:
 		}
 		
 		timer_.expires_from_now(boost::posix_time::seconds(5));
-		timer_.async_wait(bind(&bit_impl::alertHandler, this));
+		timer_.async_wait(bind(&bit_impl::alert_handler, this));
 	}
 
 	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn)
@@ -1002,9 +1082,6 @@ private:
 		return false;
 	}
 	
-//	std::pair<libt::entry, libt::entry> prepTorrent(wpath filename, wpath saveDirectory);
-	void removalThread(torrent_internal_ptr pIT, bool wipeFiles);
-	
 	libt::session session_;	
 	mutable mutex_t mutex_;
 
@@ -1014,7 +1091,7 @@ private:
 	
 	static wpath workingDirectory;
 	ini_file bittorrentIni;
-	TorrentManager theTorrents;	
+	TorrentManager the_torrents_;	
 	
 	int defTorrentMaxConn_;
 	int defTorrentMaxUpload_;

@@ -161,14 +161,14 @@ bool bit_impl::ip_filter_import_dat(boost::filesystem::path file, progress_callb
 	return false;
 }
 
-void bit_impl::stopAlertHandler()
+void bit_impl::stop_alert_handler()
 {
 	mutex_t::scoped_lock l(mutex_);
 
 	keepChecking_ = false;
 }
 	
-void bit_impl::alertHandler()
+void bit_impl::alert_handler()
 {
 	mutex_t::scoped_lock l(mutex_);
 
@@ -380,7 +380,7 @@ void bit_impl::alertHandler()
 		
 		torrent_internal_ptr get(libt::torrent_handle h) const 
 		{ 
-			return bit_impl_.theTorrents.get(from_utf8_safe(h.get_torrent_info().name())); 
+			return bit_impl_.the_torrents_.get(from_utf8_safe(h.get_torrent_info().name())); 
 		}
 	
 	} handler(*this);
@@ -427,7 +427,7 @@ void bit_impl::alertHandler()
 	}
 	
 	timer_.expires_from_now(boost::posix_time::seconds(2));
-	timer_.async_wait(bind(&bit_impl::alertHandler, this));
+	timer_.async_wait(bind(&bit_impl::alert_handler, this));
 	}
 }
 

@@ -145,7 +145,7 @@ LRESULT HaliteListViewCtrl::OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
 
 LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	hal::bittorrent().removeTorrent(hal::to_utf8(manager_.selected()));
+	hal::bittorrent().remove_torrent(hal::to_utf8(manager_.selected()));
 
 	clearFocused();	
 	return 0;
@@ -154,7 +154,7 @@ LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWn
 LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::removeTorrent, 
+		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::remove_torrent, 
 			&hal::bittorrent(), _1));
 
 	clearSelected();	
@@ -176,7 +176,7 @@ LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND h
 				hal::app().res_wstr(HAL_HALITE).c_str(), MB_YESNO) == IDYES)
 	{
 		std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-			bind((void (hal::bit::*)(const std::wstring&))&hal::bit::removeTorrentWipeFiles, 
+			bind((void (hal::bit::*)(const std::wstring&))&hal::bit::remove_torrent_wipe_files, 
 				&hal::bittorrent(), _1));
 		
 		clearSelected();
