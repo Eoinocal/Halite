@@ -126,9 +126,9 @@ void bit::shutDownSession()
 	pimpl.reset();
 }
 
-void bit::saveTorrentData()
+void bit::save_torrent_data()
 {
-	pimpl->saveTorrentData();
+	pimpl->save_torrent_data();
 }
 
 bool bit::create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn)
@@ -138,80 +138,80 @@ bool bit::create_torrent(const create_torrent_params& params, fs::wpath out_file
 
 bit::torrent bit::get_wstr(const std::wstring& filename)
 {
-	return bit::torrent(pimpl->theTorrents.get(filename));
+	return bit::torrent(pimpl->the_torrents_.get(filename));
 }
 
-bool bit::listenOn(std::pair<int, int> const& range)
+bool bit::listen_on(std::pair<int, int> const& range)
 {
-	return pimpl->listenOn(range);
+	return pimpl->listen_on(range);
 }
 
-int bit::isListeningOn() 
+int bit::is_listening_on() 
 {
-	return pimpl->isListeningOn();
+	return pimpl->is_listening_on();
 }
 
-void bit::stopListening()
+void bit::stop_listening()
 {
-	pimpl->stopListening();
+	pimpl->stop_listening();
 }
 
-bool bit::ensureDhtOn()
+bool bit::ensure_dht_on()
 {
-	return pimpl->ensureDhtOn();
+	return pimpl->ensure_dht_on();
 }
 
-void bit::ensureDhtOff()
+void bit::ensure_dht_off()
 {
-	pimpl->ensureDhtOff();
+	pimpl->ensure_dht_off();
 }
 
-void bit::setDhtSettings(int max_peers_reply, int search_branching, 
+void bit::set_dht_settings(int max_peers_reply, int search_branching, 
 	int service_port, int max_fail_count)
 {
-	pimpl->setDhtSettings(max_peers_reply, search_branching, service_port, max_fail_count);
+	pimpl->set_dht_settings(max_peers_reply, search_branching, service_port, max_fail_count);
 }
 
-void bit::setMapping(int mapping)
+void bit::set_mapping(int mapping)
 {
-	pimpl->setMapping(mapping);
+	pimpl->set_mapping(mapping);
 }
 
-void bit::setTimeouts(int peers, int tracker)
+void bit::set_timeouts(int peers, int tracker)
 {
-	pimpl->setTimeouts(peers, tracker);
+	pimpl->set_timeouts(peers, tracker);
 }
 
-void bit::setSessionLimits(int maxConn, int maxUpload)
+void bit::set_session_limits(int maxConn, int maxUpload)
 {		
-	pimpl->setSessionLimits(maxConn, maxUpload);
+	pimpl->set_session_limits(maxConn, maxUpload);
 }
 
-void bit::setSessionSpeed(float download, float upload)
+void bit::set_session_speed(float download, float upload)
 {
-	pimpl->setSessionSpeed(download, upload);
+	pimpl->set_session_speed(download, upload);
 }
 
-bool bit::ensureIpFilterOn(progress_callback fn)
+bool bit::ensure_ip_filter_on(progress_callback fn)
 {
-	return pimpl->ensureIpFilterOn(fn);
+	return pimpl->ensure_ip_filter_on(fn);
 }
 
-void bit::ensureIpFilterOff()
+void bit::ensure_ip_filter_off()
 {
-	pimpl->ensureIpFilterOff();
+	pimpl->ensure_ip_filter_off();
 }
 
 #ifndef TORRENT_DISABLE_ENCRYPTION	
 
-void bit::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4)
+void bit::ensure_pe_on(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4)
 {
-	pimpl->ensurePeOn(enc_level, in_enc_policy, out_enc_policy, prefer_rc4);
+	pimpl->ensure_pe_on(enc_level, in_enc_policy, out_enc_policy, prefer_rc4);
 }
 
-void bit::ensurePeOff()
+void bit::ensure_pe_off()
 {
-	pimpl->ensurePeOff();
+	pimpl->ensure_pe_off();
 }
 #endif
 
@@ -232,9 +232,9 @@ size_t bit::ip_filter_size()
 	return pimpl->ip_filter_size();
 }
 
-void bit::clearIpFilter()
+void bit::clear_ip_filter()
 {
-	pimpl->clearIpFilter();
+	pimpl->clear_ip_filter();
 }
 
 bool bit::ip_filter_import_dat(boost::filesystem::path file, progress_callback fn, bool octalFix)
@@ -285,10 +285,10 @@ void bit::setTorrentDefaults(int maxConn, int maxUpload, float download, float u
 		wformat(L"Set torrent default rates at %1$.2fkb/s down and %2$.2fkb/s upload.") % download % upload)));
 }
 
-void bit::addTorrent(wpath file, wpath saveDirectory, bool startStopped, bool compactStorage, 
+void bit::add_torrent(wpath file, wpath saveDirectory, bool startStopped, bool compactStorage, 
 		boost::filesystem::wpath moveToDirectory, bool useMoveTo) 
 {
-	pimpl->addTorrent(file, saveDirectory, startStopped, compactStorage, moveToDirectory, useMoveTo);
+	pimpl->add_torrent(file, saveDirectory, startStopped, compactStorage, moveToDirectory, useMoveTo);
 }
 
 const TorrentDetails& bit::torrentDetails()
@@ -303,9 +303,9 @@ const TorrentDetails& bit::updateTorrentDetails(const wstring& focused, const st
 	mutex_t::scoped_lock l(torrentDetails_.mutex_);	
 	
 	torrentDetails_.clearAll(l);	
-	torrentDetails_.torrents_.reserve(pimpl->theTorrents.size());
+	torrentDetails_.torrents_.reserve(pimpl->the_torrents_.size());
 	
-	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end(); i != e; ++i)
+	for (TorrentManager::torrentByName::iterator i=pimpl->the_torrents_.begin(), e=pimpl->the_torrents_.end(); i != e; ++i)
 	{
 		wstring utf8Name = (*i).torrent->name();
 		TorrentDetail_ptr pT = (*i).torrent->getTorrentDetail_ptr();
@@ -327,14 +327,14 @@ const TorrentDetails& bit::updateTorrentDetails(const wstring& focused, const st
 	return torrentDetails_;
 }
 
-void bit::resumeAll()
+void bit::resume_all()
 {
-	pimpl->resumeAll();
+	pimpl->resume_all();
 }
 
-void bit::closeAll(boost::optional<report_num_active> fn)
+void bit::close_all(boost::optional<report_num_active> fn)
 {
-	pimpl->closeAll(fn);
+	pimpl->close_all(fn);
 }
 
 PeerDetail::PeerDetail(libt::peer_info& peerInfo) :
@@ -406,7 +406,7 @@ void bit::getAllPeerDetails(const std::wstring& filename, PeerDetails& peerConta
 {
 	try {
 	
-	pimpl->theTorrents.get(filename)->getPeerDetails(peerContainer);
+	pimpl->the_torrents_.get(filename)->getPeerDetails(peerContainer);
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getAllPeerDetails")
 }
@@ -420,7 +420,7 @@ void bit::getAllFileDetails(const std::wstring& filename, FileDetails& fileDetai
 {
 	try {
 	
-	pimpl->theTorrents.get(filename)->getFileDetails(fileDetails);
+	pimpl->the_torrents_.get(filename)->getFileDetails(fileDetails);
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getAllFileDetails")
 }
@@ -434,7 +434,7 @@ bool bit::isTorrent(const std::wstring& filename)
 {	
 	try {
 	
-	return pimpl->theTorrents.exists(filename);
+	return pimpl->the_torrents_.exists(filename);
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "isTorrent")
 	
@@ -450,7 +450,7 @@ void bit::pauseTorrent(const std::wstring& filename)
 {
 	try {
 	
-	pimpl->theTorrents.get(filename)->pause();
+	pimpl->the_torrents_.get(filename)->pause();
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "pauseTorrent")
 }
@@ -464,7 +464,7 @@ void bit::resumeTorrent(const std::wstring& filename)
 {
 	try {
 	
-	pimpl->theTorrents.get(filename)->resume();
+	pimpl->the_torrents_.get(filename)->resume();
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "resumeTorrent")
 }
@@ -478,7 +478,7 @@ void bit::stopTorrent(const std::wstring& filename)
 {
 	try {
 	
-	pimpl->theTorrents.get(filename)->stop();
+	pimpl->the_torrents_.get(filename)->stop();
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "stopTorrent")
 }
@@ -492,7 +492,7 @@ bool bit::isTorrentActive(const std::wstring& filename)
 {
 	try {
 	
-	return pimpl->theTorrents.get(filename)->is_active();
+	return pimpl->the_torrents_.get(filename)->is_active();
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "isTorrentActive")
 	
@@ -508,82 +508,11 @@ void bit::reannounceTorrent(const std::wstring& filename)
 {
 	try {
 	
-	pimpl->theTorrents.get(filename)->handle().force_reannounce();
+	pimpl->the_torrents_.get(filename)->handle().force_reannounce();
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "reannounceTorrent")
 }
 
-void bit_impl::removalThread(torrent_internal_ptr pIT, bool wipeFiles)
-{
-	try {
-
-	if (!wipeFiles)
-	{
-		session_.remove_torrent(pIT->handle());
-	}
-	else
-	{
-		if (pIT->in_session())
-		{
-			session_.remove_torrent(pIT->handle(), libt::session::delete_files);
-		}
-		else
-		{
-			libt::torrent_info m_info = pIT->infoMemory();
-			
-			// delete the files from disk
-			std::string error;
-			std::set<std::string> directories;
-			
-			for (libt::torrent_info::file_iterator i = m_info.begin_files(true)
-				, end(m_info.end_files(true)); i != end; ++i)
-			{
-				std::string p = (hal::path_to_utf8(pIT->saveDirectory()) / i->path).string();
-				fs::path bp = i->path.branch_path();
-				
-				std::pair<std::set<std::string>::iterator, bool> ret;
-				ret.second = true;
-				while (ret.second && !bp.empty())
-				{
-					std::pair<std::set<std::string>::iterator, bool> ret = 
-						directories.insert((hal::path_to_utf8(pIT->saveDirectory()) / bp).string());
-					bp = bp.branch_path();
-				}
-				if (!fs::remove(hal::from_utf8(p).c_str()) && errno != ENOENT)
-					error = std::strerror(errno);
-			}
-
-			// remove the directories. Reverse order to delete subdirectories first
-
-			for (std::set<std::string>::reverse_iterator i = directories.rbegin()
-				, end(directories.rend()); i != end; ++i)
-			{
-				if (!fs::remove(hal::from_utf8(*i).c_str()) && errno != ENOENT)
-					error = std::strerror(errno);
-			}
-		}
-	}
-
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "removalThread")
-}
-
-void bit::removeTorrent(const std::string& filename)
-{
-	removeTorrent(hal::to_wstr_shim(filename));
-}
-
-void bit::removeTorrent(const std::wstring& filename)
-{
-	try {
-	
-	torrent_internal_ptr pTI = pimpl->theTorrents.get(filename);
-	libt::torrent_handle handle = pTI->handle();
-	pimpl->theTorrents.erase(filename);
-	
-	thread_t t(bind(&bit_impl::removalThread, &*pimpl, pTI, false));	
-	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "removeTorrent")
-}
 
 void bit::recheckTorrent(const std::string& filename)
 {
@@ -594,34 +523,26 @@ void bit::recheckTorrent(const std::wstring& filename)
 {
 	try {
 	
-	pimpl->theTorrents.get(filename)->force_recheck();
+	pimpl->the_torrents_.get(filename)->force_recheck();
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "recheckTorrent")
 }
 
-void bit::removeTorrentWipeFiles(const std::string& filename)
+void bit::remove_torrent_wstr(const std::wstring& filename)
 {
-	removeTorrentWipeFiles(hal::to_wstr_shim(filename));
+	pimpl->remove_torrent(filename);
 }
 
-void bit::removeTorrentWipeFiles(const std::wstring& filename)
+void bit::remove_torrent_wipe_files_wstr(const std::wstring& filename)
 {
-	try {
-	
-	torrent_internal_ptr pTI = pimpl->theTorrents.get(filename);
-	libt::torrent_handle handle = pTI->handle();
-	pimpl->theTorrents.erase(filename);
-	
-	thread_t t(bind(&bit_impl::removalThread, &*pimpl, pTI, true));	
-	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "removeTorrentWipeFiles")
+	pimpl->remove_torrent_wipe_files(hal::to_wstr_shim(filename));
 }
 
 void bit::pauseAllTorrents()
 {	
 	try {
 	
-	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end();
+	for (TorrentManager::torrentByName::iterator i=pimpl->the_torrents_.begin(), e=pimpl->the_torrents_.end();
 		i != e; ++i)
 	{		
 		if ((*i).torrent->in_session())
@@ -635,7 +556,7 @@ void bit::unpauseAllTorrents()
 {	
 	try {
 	
-	for (TorrentManager::torrentByName::iterator i=pimpl->theTorrents.begin(), e=pimpl->theTorrents.end();
+	for (TorrentManager::torrentByName::iterator i=pimpl->the_torrents_.begin(), e=pimpl->the_torrents_.end();
 		i != e; ++i)
 	{
 		if ((*i).torrent->in_session() && (*i).torrent->state() == TorrentDetail::torrent_paused)
@@ -870,7 +791,7 @@ void bit::stopEventReceiver()
 {
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Stopping event Handler.")));
 
-	pimpl->stopAlertHandler();
+	pimpl->stop_alert_handler();
 }
 
 int bit::defTorrentMaxConn() { return pimpl->defTorrentMaxConn_; }

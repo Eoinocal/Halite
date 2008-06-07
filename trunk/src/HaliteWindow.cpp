@@ -288,7 +288,7 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 		{
 
 		hal::ini().save_data();
-		hal::bittorrent().saveTorrentData();	
+		hal::bittorrent().save_torrent_data();	
 	
 		}
 		catch (std::exception& e)
@@ -367,7 +367,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	}
 	
 	wpath file(lpszPath, boost::filesystem::native);	
-	hal::bittorrent().addTorrent(file, wpath(saveDirectory), startPaused, compactStorage, 
+	hal::bittorrent().add_torrent(file, wpath(saveDirectory), startPaused, compactStorage, 
 		wpath(moveToDirectory), useMoveTo);
 
 	ui().update();
@@ -400,7 +400,7 @@ void HaliteWindow::OnClose()
 
 void HaliteWindow::ShutdownThread()
 {
-	hal::bittorrent().closeAll(0);
+	hal::bittorrent().close_all(0);
 
 	hal::bittorrent().stopEventReceiver();
 	Sleep(3000);
