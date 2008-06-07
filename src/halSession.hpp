@@ -211,6 +211,23 @@ static event_logger::eventLevel lbtAlertToHalEvent(libt::alert::severity_t sever
 	}
 }
 
+#define HAL_GENERIC_TORRENT_EXCEPTION_CATCH(TORRENT, FUNCTION) \
+catch (const libt::invalid_handle&) \
+{\
+	event_log.post(shared_ptr<EventDetail>( \
+		new EventInvalidTorrent(event_logger::critical, event_logger::invalidTorrent, TORRENT, std::string(FUNCTION)))); \
+}\
+catch (const invalidTorrent& t) \
+{\
+	event_log.post(shared_ptr<EventDetail>( \
+		new EventInvalidTorrent(event_logger::info, event_logger::invalidTorrent, t.who(), std::string(FUNCTION)))); \
+}\
+catch (const std::exception& e) \
+{\
+	event_log.post(shared_ptr<EventDetail>( \
+		new EventTorrentException(event_logger::critical, event_logger::torrentException, std::string(e.what()), TORRENT, std::string(FUNCTION)))); \
+}
+
 class bit_impl
 {
 	friend class bit;
@@ -578,6 +595,211 @@ public:
 
 	void stopAlertHandler();
 	void alertHandler();
+
+	void addTorrent(wpath file, wpath saveDirectory, bool startStopped, bool compactStorage, 
+			boost::filesystem::wpath moveToDirectory, bool useMoveTo) 
+	{
+		try 
+		{	
+		torrent_internal_ptr TIp;
+
+		std::pair<std::string, std::string> names = extract_names(file);
+		wstring xml_name = from_utf8(names.first) + L".xml";
+
+		if (fs::exists(file.branch_path()/xml_name))
+		{
+			torrent_standalone tsa;
+			
+			if (tsa.load_standalone(file.branch_path()/xml_name))
+			{
+				TIp = tsa.torrent;
+				
+				TIp->set_save_directory(saveDirectory, true);			
+				if (useMoveTo)
+					TIp->set_move_to_directory(moveToDirectory);
+
+				TIp->prepare(file);
+			}
+		}
+
+		if (!TIp)
+		{
+			if (useMoveTo)
+				TIp.reset(new torrent_internal(file, saveDirectory, compactStorage, moveToDirectory));		
+			else
+				TIp.reset(new torrent_internal(file, saveDirectory, compactStorage));
+
+			TIp->setTransferSpeed(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload());
+			TIp->setConnectionLimit(bittorrent().defTorrentMaxConn(), bittorrent().defTorrentMaxUpload());
+		}
+		
+		std::pair<TorrentManager::torrentByName::iterator, bool> p =
+			theTorrents.insert(TIp);
+		
+		if (p.second)
+		{
+			torrent_internal_ptr me = theTorrents.get(TIp->name());		
+			
+			if (!startStopped) 
+				me->add_to_session();
+			else
+				me->set_state_stopped();
+		}
+		
+		}
+		catch (const std::exception& e)
+		{
+			event_log.post(shared_ptr<EventDetail>(
+				new EventTorrentException(event_logger::critical, event_logger::torrentException, 
+					std::string(e.what()), to_utf8(file.string()), std::string("addTorrent"))));
+		}
+	}
+
+	std::pair<libt::entry, libt::entry> prepTorrent(wpath filename, wpath saveDirectory)
+	{
+		libt::entry metadata = haldecode(filename);
+		libt::torrent_info info(metadata);
+	 	
+		wstring torrentName = hal::from_utf8_safe(info.name());
+		if (!boost::find_last(torrentName, L".torrent")) 
+			torrentName += L".torrent";
+		
+		wpath torrentFilename = torrentName;
+		const wpath resumeFile = workingDirectory/L"resume"/torrentFilename.leaf();
+		
+		//  vvv Handle old naming style!
+		const wpath oldResumeFile = workingDirectory/L"resume"/filename.leaf();
+		
+		if (filename.leaf() != torrentFilename.leaf() && exists(oldResumeFile))
+			fs::rename(oldResumeFile, resumeFile);
+		//  ^^^ Handle old naming style!	
+		
+		libt::entry resumeData;	
+		
+		if (fs::exists(resumeFile)) 
+		{
+			try 
+			{
+				resumeData = haldecode(resumeFile);
+			}
+			catch(std::exception &e) 
+			{		
+				hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+					new hal::EventStdException(event_logger::critical, e, L"prepTorrent, Resume"))); 
+		
+				fs::remove(resumeFile);
+			}
+		}
+
+		if (!fs::exists(workingDirectory/L"torrents"))
+			fs::create_directory(workingDirectory/L"torrents");
+
+		if (!fs::exists(workingDirectory/L"torrents"/torrentFilename.leaf()))
+			fs::copy_file(filename.string(), workingDirectory/L"torrents"/torrentFilename.leaf());
+
+		if (!fs::exists(saveDirectory))
+			fs::create_directory(saveDirectory);
+		
+		return std::make_pair(metadata, resumeData);
+	}
+
+	void resumeAll()
+	{
+		try {
+			
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Resuming torrent.")));
+		
+		for (TorrentManager::torrentByName::iterator i=theTorrents.begin(), e=theTorrents.end(); i != e;)
+		{
+			wpath file = wpath(workingDirectory)/L"torrents"/(*i).torrent->filename();
+			
+			if (exists(file))
+			{		
+				try 
+				{
+					
+				(*i).torrent->prepare(file);	
+
+				switch ((*i).torrent->state())
+				{
+					case TorrentDetail::torrent_stopped:
+						break;
+					case TorrentDetail::torrent_paused:
+						(*i).torrent->add_to_session(true);
+						break;
+					case TorrentDetail::torrent_active:
+						(*i).torrent->add_to_session(false);
+						break;
+					default:
+						assert(false);
+				};
+				
+				++i;
+				
+				}
+				catch(const libt::duplicate_torrent&)
+				{
+					hal::event_log.post(shared_ptr<hal::EventDetail>(
+						new hal::EventDebug(hal::event_logger::debug, L"Encountered duplicate torrent")));
+					
+					++i; // Harmless, don't worry about it.
+				}
+				catch(const std::exception& e) 
+				{
+					hal::event_log.post(shared_ptr<hal::EventDetail>(
+						new hal::EventStdException(hal::event_logger::warning, e, L"resumeAll")));
+					
+					theTorrents.erase(i++);
+				}			
+			}
+			else
+			{
+				theTorrents.erase(i++);
+			}
+		}
+		
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")
+	}
+
+	void closeAll(boost::optional<report_num_active> fn)
+	{
+		try 
+		{	
+		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"Saving torrent data...")));
+
+		saveTorrentData();
+
+		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"Stopping all torrents...")));
+		
+		for (TorrentManager::torrentByName::iterator i=theTorrents.begin(), e=theTorrents.end(); 
+			i != e; ++i)
+		{
+			(*i).torrent->stop();
+		}
+		
+		// Ok this polling loop here is a bit curde, but a blocking wait is actually appropiate.
+		for (int num_active = -1; num_active != 0; )
+		{
+			num_active = 0;
+
+			for (TorrentManager::torrentByName::iterator i=theTorrents.begin(), e=theTorrents.end(); 
+					i != e; ++i)
+			{
+				if ((*i).torrent->state() != TorrentDetail::torrent_stopped)
+					++num_active;
+			}
+			
+			event_log.post(shared_ptr<EventDetail>(new EventInfo(wformat(L"%1% still active") % num_active)));
+
+			if (fn)	(*fn)(num_active);
+			Sleep(200);
+		}
+		
+		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"All torrents stopped.")));		
+		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"Fast-resume data written.")));
+		
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")
+	}
 	
 	void saveTorrentData()
 	{	
@@ -780,7 +1002,7 @@ private:
 		return false;
 	}
 	
-	std::pair<libt::entry, libt::entry> prepTorrent(wpath filename, wpath saveDirectory);
+//	std::pair<libt::entry, libt::entry> prepTorrent(wpath filename, wpath saveDirectory);
 	void removalThread(torrent_internal_ptr pIT, bool wipeFiles);
 	
 	libt::session session_;	
