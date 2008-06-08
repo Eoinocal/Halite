@@ -721,7 +721,7 @@ public:
 			{
 				libt::torrent_info m_info = pIT->infoMemory();
 				
-				// delete the files from disk
+/*				// delete the files from disk
 				std::string error;
 				std::set<std::string> directories;
 				
@@ -751,6 +751,7 @@ public:
 					if (!fs::remove(hal::from_utf8(*i).c_str()) && errno != ENOENT)
 						error = std::strerror(errno);
 				}
+				*/
 			}
 		}
 
@@ -996,23 +997,25 @@ private:
 
 	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn)
 	{		
+/*	
 	try
 	{
-		boost::intrusive_ptr<libt::torrent_info> t_info(new libt::torrent_info);
+		libt::file_storage fs;
+		libt::file_pool f_pool;
 
-		int piece_size = params.piece_size;
-		HAL_DEV_MSG(wformat(L"piece size: %1%") % piece_size);
-		t_info->set_piece_size(piece_size);
 
 		HAL_DEV_MSG(L"Files");
 		for (file_size_pairs_t::const_iterator i = params.file_size_pairs.begin(), e = params.file_size_pairs.end();
 				i != e; ++i)
 		{
 			HAL_DEV_MSG(wformat(L"file path: %1%, size: %2%") % (*i).first % (*i).second);
-			t_info->add_file(to_utf8((*i).first.string()), (*i).second);
+			f_pool->add_file(to_utf8((*i).first.string()), (*i).second);
 		}
 
-		libt::file_pool f_pool;
+		int piece_size = params.piece_size;
+		HAL_DEV_MSG(wformat(L"piece size: %1%") % piece_size);
+		
+		libt::create_torrent t(fs, piece_size);
 		
 		boost::scoped_ptr<libt::storage_interface> store(
 			libt::default_storage_constructor(t_info, to_utf8(params.root_path.string()),
@@ -1078,7 +1081,7 @@ private:
 			event_log.post(shared_ptr<EventDetail>(
 				new EventStdException(event_logger::fatal, e, L"create_torrent")));
 		}	
-
+*/
 		return false;
 	}
 	

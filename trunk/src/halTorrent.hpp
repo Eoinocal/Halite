@@ -36,11 +36,11 @@
 
 
 //#if BOOST_VERSION < 103500
-#include <asio/ip/tcp.hpp>
-#include <asio/ip/udp.hpp>
+//#include <asio/ip/tcp.hpp>
+//#include <asio/ip/udp.hpp>
 //#else
-//#include <boost/asio/ip/tcp.hpp>
-//#include <boost/asio/ip/udp.hpp>
+#include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/ip/udp.hpp>
 //#endif
 
 #include "halTypes.hpp"
@@ -589,8 +589,8 @@ public:
 
 	void set_mapping(int mapping);
 
-	void ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 last);
-	void ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last);
+	void ip_v4_filter_block(boost::asio::ip::address_v4 first, boost::asio::ip::address_v4 last);
+	void ip_v6_filter_block(boost::asio::ip::address_v6 first, boost::asio::ip::address_v6 last);
 	bool ip_filter_import_dat(boost::filesystem::path file, progress_callback fn, bool octalFix);
 	size_t ip_filter_size();
 	void clear_ip_filter();	

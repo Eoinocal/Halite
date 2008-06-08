@@ -24,7 +24,7 @@ namespace hal
 	using std::make_pair;	
 
 	typedef boost::int64_t size_type;
-	typedef boost::recursive_mutex mutex_t;
+	typedef boost::mutex mutex_t;
 	typedef boost::thread thread_t;
 
 	using boost::tuple;
