@@ -437,7 +437,6 @@ public:
 	
 	float progress_;
 	
-	libt::torrent_info infoMemory_;
 	libt::torrent_status statusMemory_;
 	FileDetails fileDetailsMemory_;
 	
@@ -552,7 +551,6 @@ public:
 		peers_(t.peers_),
 		filePriorities_(t.filePriorities_),
 		progress_(t.progress_),
-		infoMemory_(t.infoMemory_),
 		statusMemory_(t.statusMemory_),
 		fileDetailsMemory_(t.fileDetailsMemory_),
 		compactStorage_(t.compactStorage_)
@@ -1041,9 +1039,9 @@ public:
 	
 	const std::vector<tracker_detail>& getTrackers()
 	{
-		if (trackers_.empty())
+		if (trackers_.empty() && infoMemory_)
 		{
-			std::vector<libt::announce_entry> trackers = infoMemory_.trackers();
+			std::vector<libt::announce_entry> trackers = infoMemory_->trackers();
 			
 			foreach (const libt::announce_entry& entry, trackers)
 			{
@@ -1295,9 +1293,9 @@ public:
 	
 	libt::torrent_info& infoMemory()
 	{
-		if (!infoMemory_.is_valid()) infoMemory_ = libt::torrent_info(metadata_);
+		if (!infoMemory_) infoMemory_ = libt::torrent_info(metadata_);
 		
-		return infoMemory_;
+		return *infoMemory_;
 	}
 	
 	signalers& signals()
@@ -1509,7 +1507,7 @@ private:
 	
 	float progress_;
 	
-	libt::torrent_info infoMemory_;
+	boost::optional<libt::torrent_info> infoMemory_;
 	libt::torrent_status statusMemory_;
 	FileDetails fileDetailsMemory_;
 	

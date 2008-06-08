@@ -263,7 +263,7 @@ void bit_impl::alert_handler()
 				event_logger::info, a.timestamp())));
 	}
 	
-	void operator()(libt::tracker_alert const& a) const
+	void operator()(libt::tracker_error_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
@@ -397,7 +397,7 @@ void bit_impl::alert_handler()
 			libt::peer_ban_alert,
 			libt::hash_failed_alert,
 			libt::url_seed_alert,
-			libt::tracker_alert,
+			libt::tracker_error_alert,
 			libt::tracker_warning_alert,
 			libt::tracker_announce_alert,
 			libt::tracker_reply_alert,
