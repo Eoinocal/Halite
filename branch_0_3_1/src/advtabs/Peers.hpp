@@ -82,13 +82,13 @@ public:
 		array<bool, 7> visible = {true,true,true,true,true,true,true};
 		
 		SetDefaults(names, widths, order, visible, true);
-		Load();
+		load_from_ini();
 	}
 	
 	void saveSettings()
 	{
 		GetListViewDetails();
-		save();
+		save_to_ini();
 	}
 	
 	bool SubclassWindow(HWND hwnd)

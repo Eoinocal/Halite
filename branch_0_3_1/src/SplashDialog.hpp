@@ -45,7 +45,7 @@ public:
 		iniClass("SplashDialog", "dialog"),	
 		rect_(0,0,0,0)
 	{
-		Load();
+		load_from_ini();
 	}
 
     BEGIN_MSG_MAP_EX(CMainDlg)
@@ -96,7 +96,8 @@ public:
 		Sleep(200);
 
 		GetWindowRect(rect_);
-		Save();
+		save_to_ini();
+
 		EndDialog(0);
 	}
 
@@ -119,7 +120,8 @@ public:
 		DoDataExchange(true);
 
 		GetWindowRect(rect_);
-		Save();
+		save_to_ini();
+
 		EndDialog(0);
 	}
 	

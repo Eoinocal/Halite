@@ -33,12 +33,12 @@ public:
 		iniClass(location, name),
 		rect_(0,0,0,0)
 	{
-		Load();	
+		load_from_ini();	
 	}
 
 	~GenericAddDialog()
 	{
-		Save();
+		save_to_ini();
 	}
 	
 	enum { IDD = dialogIDD };
@@ -132,12 +132,12 @@ public:
 		iniClass(location, name),
 		rect_(0,0,0,0)
 	{
-		Load();	
+		load_from_ini();	
 	}
 
 	~GenericAddContainerDialog()
 	{
-		Save();
+		save_to_ini();
 	}
 	
 	enum { IDD = HAL_GENERIC_HOLDER };

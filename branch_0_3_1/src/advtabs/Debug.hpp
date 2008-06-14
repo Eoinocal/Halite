@@ -101,9 +101,8 @@ public:
 		array<int, 3> order = {0,1,2};
 		array<bool, 3> visible = {true,true,true};
 		
-		SetDefaults(names, widths, order, visible, true);
-		
-		load();
+		SetDefaults(names, widths, order, visible, true);		
+		load_from_ini();
 	}
 	
 	~LogListViewCtrl()
@@ -116,7 +115,7 @@ public:
 	void saveSettings()
 	{
 		GetListViewDetails();
-		save();
+		save_to_ini();
 	}
 
     friend class boost::serialization::access;

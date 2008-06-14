@@ -167,7 +167,7 @@ public:
 	void saveSettings()
 	{
 		GetListViewDetails();
-		Save();
+		save_to_ini();
 	}
 	
 	HWND Create(HWND hWndParent, ATL::_U_RECT rect = NULL, LPCTSTR szWindowName = NULL,
@@ -399,7 +399,7 @@ public:
 		iniClass("AdvFilesDlg", "settings"),
 		splitterPos(150)
 	{
-		Load();
+		load_from_ini();
 	}
 	
 	~AdvFilesDialog() 

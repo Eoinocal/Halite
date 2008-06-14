@@ -590,7 +590,7 @@ public:
 		try
 		{
 		
-		theTorrents.save();
+		theTorrents.save_to_ini();
 		bittorrentIni.save_data();
 			
 		if (dht_on_) 
@@ -641,9 +641,11 @@ private:
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(L"Loading BitTorrent.xml.", hal::event_logger::info)));		
 		bittorrentIni.load_data();
+
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(L"Loading torrent parameters.", hal::event_logger::info)));	
-		theTorrents.load();
+		theTorrents.load_from_ini();
+
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(L"Loading done!", hal::event_logger::info)));
 		
@@ -1433,7 +1435,8 @@ void bit::addTorrent(wpath file, wpath saveDirectory, bool startStopped, bool co
 	std::pair<std::string, std::string> names = extract_names(file);
 	wstring xml_name = from_utf8(names.first) + L".xml";
 
-	if (fs::exists(file.branch_path()/xml_name))
+	// Commented out purposely!
+	if (false && fs::exists(file.branch_path()/xml_name))
 	{
 		torrent_standalone tsa;
 		

@@ -79,7 +79,7 @@ public:
 		array<bool, 3> visible = {true,true,true};
 		
 		SetDefaults(names, widths, order, visible, true);
-		Load();
+		load_from_ini();
 	}
 
 	BEGIN_MSG_MAP_EX(FilesListViewCtrl)
@@ -333,7 +333,7 @@ public:
 		rect_(0,0,0,0),
 		fileSheet_(bind(&NewTorrentDialog::EnableSave, this, _1))
     {
-		Load();
+		load_from_ini();
 
 		AddPage(fileSheet_);
 		AddPage(filesSheet_);
@@ -382,7 +382,7 @@ public:
 		SetMsgHandled(false);
 
 		GetWindowRect(rect_);
-		Save();
+		save_to_ini();
 	}
 
 	void EnableSave(bool enable)

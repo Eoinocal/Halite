@@ -58,7 +58,7 @@ public:
 		array<bool, 3> visible = {true,true,true};
 		
 		SetDefaults(names, widths, order, visible, true);
-		Load();
+		load_from_ini();
 	}
 
 	BEGIN_MSG_MAP_EX(thisClass)

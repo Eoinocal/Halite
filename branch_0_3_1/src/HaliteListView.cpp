@@ -34,7 +34,7 @@ HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 		true,true,true,true,true,true,true,true,true,true};
 	
 	SetDefaults(names, widths, order, visible);
-	Load();
+	SafeLoadFromIni();
 }
 
 void HaliteListViewCtrl::OnShowWindow(UINT, INT)
@@ -75,7 +75,7 @@ void HaliteListViewCtrl::OnDestroy()
 void HaliteListViewCtrl::saveSettings()
 {
 	GetListViewDetails();
-	Save();
+	save_to_ini();
 }
 
 void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
