@@ -1,11 +1,11 @@
-Halite: A Free Open-Source BitTorrent client
+ï»¿Halite: A Free Open-Source BitTorrent client
 
-Version: 0.3.0.7 dev 465 released 30th May 2008
+Version: 0.3.1 stable released 15th June 2008
 
 WWW:   http://www.binarynotions.com/halite-bittorrent-client 
 Forum: http://www.binarynotions.com/forum.php
 
-Developer: Eóin O'Callaghan
+Developer: EÃ³in O'Callaghan
 
 Halite (named after the mineral) is a BitTorrent client based on Arvid
 Norberg's excellent libtorrent library from Rasterbar Software. The
@@ -23,10 +23,12 @@ That said, it supports:
   + Trackerless torrents (using the Mainline kademlia DHT protocol).
   + IP filtering with eMule style ipfilter.dat import.
   + Protocol Encryption support.
-  + Translations of the UI into a number of languages through the help 
-    of volunteers. (if you wish to help with a translation then please do)
-  + Minimize to tray with transfer rate summary.
-  + Full Unicode support through UTF-8 and native Windows wide-char strings.
+  + Translations of the UI into a number of languages through the 
+    help of volunteers. (if you wish to help with a translation then 
+    please do)
+  + Minimise to tray with transfer rate summary.
+  + Full Unicode support through UTF-8 and native Windows wide-char 
+    strings.
   + Login support where tracker requires it.
   + Ability to edit trackers specified in the torrent.
   + Transfer rate and connection limits both global and per-torrent.
@@ -49,6 +51,9 @@ associated torrent file from the 'torrents' subdirectory.
 
 Changes:
 
+ - from v 0.3.0.7 to 0.3.1: 
+   1) Bug fixes.
+
  - from v 0.3.0.5 to 0.3.0.7: 
    1) Adds ability to create torrent files.
    2) A lot of small improvements and bug fixes.
@@ -61,8 +66,9 @@ Changes:
 
  - from v 0.3 to 0.3.0.2: 
    Mainly a bugfix release.
-   1) Fixed a bug with Tray Icon rmeaining after window was restored.
-   2) Torrent Connection and Transfer setting mapped to incorrect editbox.
+   1) Fixed a bug with Tray Icon remaining after window was restored.
+   2) Torrent Connection and Transfer setting mapped to incorrect 
+      editbox.
    3) Subtle bug where some settings didn't register straight away.
 
  - from v 0.2.9 to 0.3: 
@@ -136,7 +142,7 @@ leaving someone out. If I have done so let me know.
 
   + nudone (Nick Pearson)- The excellent artist who designed the icon
     for Halite. 
-	wtfcody.com / nudsville.com
+    wtfcody.com / nudsville.com
 
   + Austin- Very kindly made the Iss install script for Halite.
 
@@ -145,10 +151,15 @@ leaving someone out. If I have done so let me know.
     They have given the project direction and purpose.
 
   + And of course all the translators:
-    - devGod – Nederlandse vertaling.
-    - MaikelChan - maikelchan88@gmail.com - Traducción en Español de España.
-    - Prome – prome.lwaku.info – Avtor slovenskega prevoda.
-    - Tw@in 28 (Giulio Pascali) – twain_28@hotmail.com - Traduttore Italiano.
-    - u!^DEV  - germanpg.hacker.to - deutsche Übersetzung.
-    - webdr - www.langturk.com - Türkçe çeviri.
-
+    - devGod â€“ Nederlandse vertaling.
+    - MaikelChan - maikelchan88@gmail.com - TraducciÃ³n en EspaÃ±ol de 
+      EspaÃ±a.
+    - Otome - otome08@gmail.com - Translation to Portuguese and 
+      Japanese.
+    - Prome â€“ prome.lwaku.info â€“ Avtor slovenskega prevoda.
+    - Tw@in 28 (Giulio Pascali) â€“ twain_28@hotmail.com - Traduttore 
+      Italiano.
+    - u!^DEV  - germanpg.hacker.to - deutsche Ãœbersetzung.
+    - webdr - www.langturk.com - TÃ¼rkÃ§e Ã§eviri.
+    - ÄŒagalj - www.vucjak.com - Preveo sve na srpski (latinicu i 
+      Ä‡irilicu).
