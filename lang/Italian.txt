@@ -4,7 +4,7 @@
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB su %2$.2fMB"
 "%1% DHT node(s)" --->  ??? 
-"%1% active torrent(s)" --->  ??? 
+"%1% active torrent(s)" --->  "%1% torrent attivi" 
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Pausa Tutti"
