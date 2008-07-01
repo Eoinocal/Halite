@@ -29,7 +29,7 @@ public:
 		name_(name)
 	{}
 	
-	void Save()
+	void save_to_ini()
 	{
 		std::wstringstream xml_data;
 		
@@ -39,8 +39,6 @@ public:
 		
 		adapter_.save_stream_data(xml_data);
 	}
-	
-	void save() { Save(); }
 
 	template<typename P>
 	void save_standalone(const P& location)
@@ -76,7 +74,7 @@ public:
 		}
 	}
 	
-	void Load()
+	bool load_from_ini()
 	{
 		std::wstringstream xml_data;		
 		adapter_.load_stream_data(xml_data);
@@ -94,10 +92,12 @@ public:
 		{			
 			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
 				new hal::EventXmlException(hal::from_utf8(e.what()), hal::from_utf8(name_)))); 
+
+			return false;
 		}
+
+		return true;
 	}
-	
-	void load() { Load(); }
 	
 private:
 	hal::ini_adapter adapter_;

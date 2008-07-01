@@ -28,7 +28,7 @@ FileListView::FileListView() :
 	array<bool, 5> visible = {true,true,true,true,true};
 	
 	SetDefaults(names, widths, order, visible, true);
-	Load();
+	load_from_ini();
 }
 
 HWND FileListView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowName,
@@ -340,5 +340,5 @@ void AdvFilesDialog::onClose()
 
 void AdvFilesDialog::OnDestroy()
 {	 	
-	Save(); 
+	save_to_ini(); 
 }

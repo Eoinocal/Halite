@@ -28,7 +28,7 @@ void NewTorrent_PeersListViewCtrl::OnDestroy()
 void NewTorrent_PeersListViewCtrl::saveSettings()
 {		
 	GetListViewDetails();
-	save();
+	save_to_ini();
 }
 
 void NewTorrent_PeersListViewCtrl::newItem()

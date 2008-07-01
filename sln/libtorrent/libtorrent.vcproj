@@ -439,6 +439,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\create_torrent.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\disk_buffer_holder.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\disk_io_thread.cpp"
 				>
 			</File>
@@ -459,11 +467,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\file_storage.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\file_win.cpp"
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\GeoIP.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\gzip.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\http_connection.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\http_parser.cpp"
 				>
 			</File>
 			<File
@@ -487,6 +511,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\lazy_bdecode.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\logger.cpp"
 				>
 			</File>
@@ -495,11 +523,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\magnet_uri.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\mapped_storage.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\memdebug.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\metadata_transfer.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\lib\libtorrent\src\natpmp.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\parse_url.cpp"
 				>
 			</File>
 			<File
@@ -528,6 +572,10 @@
 			</File>
 			<File
 				RelativePath="..\..\lib\libtorrent\src\sha1.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\smart_ban.cpp"
 				>
 			</File>
 			<File
@@ -563,11 +611,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\udp_socket.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\udp_tracker_connection.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\lib\libtorrent\src\upnp.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\ut_metadata.cpp"
 				>
 			</File>
 			<File
@@ -676,6 +732,54 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\..\lib\libtorrent\include\libtorrent\bitfield.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\include\libtorrent\create_torrent.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\include\libtorrent\disk_buffer_holder.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\include\libtorrent\file_storage.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\include\libtorrent\GeoIP.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\include\libtorrent\gzip.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\include\libtorrent\http_parser.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\include\libtorrent\lazy_entry.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\include\libtorrent\magnet_uri.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\include\libtorrent\parse_url.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\include\libtorrent\ssl_stream.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\include\libtorrent\udp_socket.hpp"
+				>
+			</File>
 			<Filter
 				Name="libtorrent"
 				>

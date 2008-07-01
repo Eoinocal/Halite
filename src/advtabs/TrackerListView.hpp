@@ -55,7 +55,7 @@ public:
 		array<bool, 2> visible = {true,true};
 		
 		SetDefaults(names, widths, order, visible, true);
-		Load();
+		load_from_ini();
 	}
 
 	BEGIN_MSG_MAP_EX(TrackerListViewCtrl)

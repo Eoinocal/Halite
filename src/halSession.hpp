@@ -888,7 +888,7 @@ public:
 		try
 		{
 		
-		the_torrents_.save();
+		the_torrents_.save_to_ini();
 		bittorrentIni.save_data();
 			
 		if (dht_on_) 
@@ -941,7 +941,7 @@ private:
 		bittorrentIni.load_data();
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(L"Loading torrent parameters.", hal::event_logger::info)));	
-		the_torrents_.load();
+		the_torrents_.load_from_ini();
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(L"Loading done!", hal::event_logger::info)));
 		

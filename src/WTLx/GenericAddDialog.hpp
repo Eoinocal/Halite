@@ -33,12 +33,12 @@ public:
 		iniClass(location, name),
 		rect_(0,0,0,0)
 	{
-		Load();	
+		load_from_ini();	
 	}
 
 	~GenericAddDialog()
 	{
-		Save();
+		save_to_ini();
 	}
 	
 	enum { IDD = dialogIDD };
@@ -116,13 +116,13 @@ private:
 
 template<class TBase, class dlgClass, int dialogIDD> 
 class GenericAddContainerDialog :
-	public CDialogImpl<GenericAddContainerDialog<TBase, dlgClass, dialogIDD> >,
-	public CDialogResize<GenericAddContainerDialog<TBase, dlgClass, dialogIDD> >,
+	public ATL::CDialogImpl<GenericAddContainerDialog<TBase, dlgClass, dialogIDD> >,
+	public WTL::CDialogResize<GenericAddContainerDialog<TBase, dlgClass, dialogIDD> >,
 	private hal::IniBase<GenericAddContainerDialog<TBase, dlgClass, dialogIDD> >,
 	private boost::noncopyable
 {
 	typedef GenericAddContainerDialog<TBase, dlgClass, dialogIDD> thisClass;
-	typedef CDialogResize<thisClass> resizeClass;
+	typedef WTL::CDialogResize<thisClass> resizeClass;
 	typedef hal::IniBase<thisClass> iniClass;
 	
 public:
@@ -132,12 +132,12 @@ public:
 		iniClass(location, name),
 		rect_(0,0,0,0)
 	{
-		Load();	
+		load_from_ini();	
 	}
 
 	~GenericAddContainerDialog()
 	{
-		Save();
+		save_to_ini();
 	}
 	
 	enum { IDD = HAL_GENERIC_HOLDER };

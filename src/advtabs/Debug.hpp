@@ -103,7 +103,7 @@ public:
 		
 		SetDefaults(names, widths, order, visible, true);
 		
-		load();
+		load_from_ini();
 	}
 	
 	~LogListViewCtrl()
@@ -116,7 +116,7 @@ public:
 	void saveSettings()
 	{
 		GetListViewDetails();
-		save();
+		save_to_ini();
 	}
 
     friend class boost::serialization::access;

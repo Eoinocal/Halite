@@ -18,7 +18,7 @@
 
 #define HALITE_SENDING_CMD 68816889
 
-//	#define _WTL_NO_AUTOMATIC_NAMESPACE
+// #define _WTL_NO_AUTOMATIC_NAMESPACE
 
 #include <winsock2.h>
 #include <shellapi.h>
