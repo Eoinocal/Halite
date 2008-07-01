@@ -98,8 +98,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	
 	boost::filesystem::path::default_name_check(boost::filesystem::native);
 
-	AtlInitCommonControls(ICC_COOL_CLASSES | ICC_BAR_CLASSES);	
-	HINSTANCE hInstRich = ::LoadLibrary(CRichEditCtrl::GetLibraryName());
+	WTL::AtlInitCommonControls(ICC_COOL_CLASSES | ICC_BAR_CLASSES);	
+	HINSTANCE hInstRich = ::LoadLibrary(WTL::CRichEditCtrl::GetLibraryName());
 	ATLASSERT(hInstRich != NULL);
    
 	int nRet = 0;	
@@ -149,7 +149,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg((wformat(L"Working Directory: %1%.") % hal::app().working_directory()), hal::event_logger::info)));		
 		
-		CMessageLoop theLoop;
+		WTL::CMessageLoop theLoop;
 		_Module.AddMessageLoop(&theLoop);
 			
 			if (halite().dll() != L"") hal::app().res_set_dll(halite().dll());
@@ -170,7 +170,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		
 		_Module.RemoveMessageLoop();
 
-		halite().save();
+		halite().save_to_ini();
 		hal::ini().save_data();		
 	}
 	}

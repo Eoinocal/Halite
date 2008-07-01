@@ -40,12 +40,12 @@ HaliteWindow::HaliteWindow(unsigned areYouMe = 0) :
 	rect.bottom = 430;
 	rect.right = 620;
 	
-	load();
+	load_from_ini();
 }
 
 HaliteWindow::~HaliteWindow()
 {
-	save();
+	save_to_ini();
 	ATLASSERT(!::IsWindow(m_hWnd));
 }
 
@@ -72,7 +72,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 
 	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading Halite config...")));
-	hal::config().load();
+	hal::config().load_from_ini();
 	
 	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Applying setting...")));
@@ -417,7 +417,7 @@ void HaliteWindow::OnDestroy()
 
 	splitterPos = m_Split.GetSplitterPos();
 
-	save();
+	save_to_ini();
 	hal::ini().save_data();
 	
 	if (halite().showMessage())
@@ -436,8 +436,8 @@ void HaliteWindow::OnDestroy()
 	}
 
 	// Resave for sake of your health.
-	save();
-	halite().save();
+	save_to_ini();
+	halite().save_to_ini();
 	hal::ini().save_data();
 		
 	HAL_DEV_MSG(L"Posting Quit Message");

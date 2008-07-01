@@ -40,7 +40,6 @@
 #include "halIni.hpp"
 #include "halEvent.hpp"
 #include "DdxEx.hpp"
-#include "ListViewEdit.hpp"
 #include "HaliteSortListViewCtrl.hpp"
 #include "NewTorrentTrackerLV.hpp"
 #include "NewTorrentPeersLV.hpp"
@@ -79,7 +78,7 @@ public:
 		array<bool, 3> visible = {true,true,true};
 		
 		SetDefaults(names, widths, order, visible, true);
-		Load();
+		load_from_ini();
 	}
 
 	BEGIN_MSG_MAP_EX(FilesListViewCtrl)
@@ -109,13 +108,13 @@ private:
 typedef FilesListViewCtrl::SelectionManager FilesListViewManager;
 
 class DetailsSheet :
-    public CPropertyPageImpl<DetailsSheet>,
-    public CWinDataExchangeEx<DetailsSheet>,
+	public WTL::CPropertyPageImpl<DetailsSheet>,
+	public CWinDataExchangeEx<DetailsSheet>,
 	public CAutoSizeWindow<DetailsSheet, false>
 {
 protected:
 	typedef DetailsSheet thisClass;
-	typedef CPropertyPageImpl<thisClass> sheetClass;
+	typedef WTL::CPropertyPageImpl<thisClass> sheetClass;
 	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
 
 public:
@@ -174,12 +173,12 @@ private:
 };
 
 class FilesSheet :
-    public CPropertyPageImpl<FilesSheet>,
+	public WTL::CPropertyPageImpl<FilesSheet>,
 	public CAutoSizeWindow<FilesSheet, false>
 {
 protected:
 	typedef FilesSheet thisClass;
-	typedef CPropertyPageImpl<thisClass> sheetClass;
+	typedef WTL::CPropertyPageImpl<thisClass> sheetClass;
 	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
 
 public:	
@@ -229,12 +228,12 @@ private:
 };
 
 class TrackerSheet :
-    public CPropertyPageImpl<TrackerSheet>,
+	public WTL::CPropertyPageImpl<TrackerSheet>,
 	public CAutoSizeWindow<TrackerSheet, false>
 {
 protected:
 	typedef TrackerSheet thisClass;
-	typedef CPropertyPageImpl<thisClass> sheetClass;
+	typedef WTL::CPropertyPageImpl<thisClass> sheetClass;
 	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
 
 public:	
@@ -272,12 +271,12 @@ private:
 };
 
 class PeersSheet :
-    public CPropertyPageImpl<PeersSheet>,
+	public WTL::CPropertyPageImpl<PeersSheet>,
 	public CAutoSizeWindow<PeersSheet, false>
 {
 protected:
 	typedef PeersSheet thisClass;
-	typedef CPropertyPageImpl<thisClass> sheetClass;
+	typedef WTL::CPropertyPageImpl<thisClass> sheetClass;
 	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
 
 public:	
@@ -316,13 +315,13 @@ private:
 };
 
 class NewTorrentDialog :
-	public CPropertySheet,
+	public WTL::CPropertySheet,
 	public hal::IniBase<NewTorrentDialog>,
-	public CDialogResize<NewTorrentDialog>
+	public WTL::CDialogResize<NewTorrentDialog>
 {
 	typedef NewTorrentDialog thisClass;
 	typedef hal::IniBase<thisClass> iniClass;
-	typedef CDialogResize<thisClass> resizeClass;
+	typedef WTL::CDialogResize<thisClass> resizeClass;
 
 public:
     NewTorrentDialog(LPCTSTR title = (LPCTSTR)NULL,
@@ -333,7 +332,7 @@ public:
 		rect_(0,0,0,0),
 		fileSheet_(bind(&NewTorrentDialog::EnableSave, this, _1))
     {
-		Load();
+		load_from_ini();
 
 		AddPage(fileSheet_);
 		AddPage(filesSheet_);
@@ -382,7 +381,7 @@ public:
 		SetMsgHandled(false);
 
 		GetWindowRect(rect_);
-		Save();
+		save_to_ini();
 	}
 
 	void EnableSave(bool enable)

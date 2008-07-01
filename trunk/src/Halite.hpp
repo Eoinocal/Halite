@@ -97,7 +97,7 @@ public:
 		logListLen_(128),
 		dll_(L"")
 	{
-		load();
+		load_from_ini();
 	}
 	
 	friend class boost::serialization::access;

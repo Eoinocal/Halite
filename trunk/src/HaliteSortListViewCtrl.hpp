@@ -193,6 +193,28 @@ public:
 		
 		autoSort_ = autoSort;
 	}
+
+	void SafeLoadFromIni()
+	{
+		std::vector<wstring> listNames;
+		std::vector<int> listWidths;
+		std::vector<int> listOrder;
+		std::vector<bool> listVisible;
+
+		listNames.assign(listNames_.begin(), listNames_.end());
+		listWidths.assign(listWidths_.begin(), listWidths_.end());
+		listOrder.assign(listOrder_.begin(), listOrder_.end());
+		listVisible.assign(listVisible_.begin(), listVisible_.end());
+
+		TBase* pT = static_cast<TBase*>(this);
+		if (!pT->load_from_ini() || !vectorSizePreConditions())
+		{
+			listNames_.assign(listNames.begin(), listNames.end());
+			listWidths_.assign(listWidths.begin(), listWidths.end());
+			listOrder_.assign(listOrder.begin(), listOrder.end());
+			listVisible_.assign(listVisible.begin(), listVisible.end());
+		}		
+	}
 	
 	void ApplyDetails()
 	{
@@ -465,8 +487,14 @@ protected:
 	SelectionManager manager_;
 	
 private:
-	void vectorSizePreConditions()
+	bool vectorSizePreConditions()
 	{
+		bool ret = (listNames_.size() == listWidths_.size()) &&
+			(listNames_.size() == listOrder_.size()) &&
+			(listNames_.size() == listVisible_.size());
+
+		assert(ret);
+		return ret;
 	}
 	
 	WTL::CMenu menu_;

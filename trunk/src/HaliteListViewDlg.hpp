@@ -104,7 +104,7 @@ public:
 	void OnBrowse(UINT, int, HWND hWnd)
 	{
 		std::wstring save_prompt = hal::app().res_wstr(IDS_SAVEPROMPT);		
-		CFolderDialog fldDlg(NULL, save_prompt.c_str(),
+		WTL::CFolderDialog fldDlg(NULL, save_prompt.c_str(),
 			BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE);
 		
 		wstring defaultSaveFolder = saveDirectory_;
@@ -120,7 +120,7 @@ public:
 	void OnMoveBrowse(UINT, int, HWND hWnd)
 	{
 		std::wstring save_prompt = hal::app().res_wstr(IDS_SAVEPROMPT);		
-		CFolderDialog fldDlg(NULL, save_prompt.c_str(),
+		WTL::CFolderDialog fldDlg(NULL, save_prompt.c_str(),
 			BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE);
 		
 		wstring defaultMoveFolder = moveToDirectory_;

@@ -29,14 +29,14 @@
 class SplashDialog :
 	public CDialogImpl<SplashDialog>,
 	public hal::IniBase<SplashDialog>,
-	public CWinDataExchange<SplashDialog>,
-	public CDialogResize<SplashDialog>
+	public WTL::CWinDataExchange<SplashDialog>,
+	public WTL::CDialogResize<SplashDialog>
 {
 protected:
 	typedef SplashDialog thisClass;
-	typedef CDialogImpl<thisClass> baseClass;
+	typedef ATL::CDialogImpl<thisClass> baseClass;
 	typedef hal::IniBase<thisClass> iniClass;
-	typedef CDialogResize<thisClass> resizeClass;
+	typedef WTL::CDialogResize<thisClass> resizeClass;
 
 public:
 	enum { IDD = IDD_CLOSESPLASH };
@@ -45,7 +45,7 @@ public:
 		iniClass("SplashDialog", "dialog"),	
 		rect_(0,0,0,0)
 	{
-		Load();
+		load_from_ini();
 	}
 
     BEGIN_MSG_MAP_EX(CMainDlg)
@@ -96,7 +96,7 @@ public:
 		Sleep(200);
 
 		GetWindowRect(rect_);
-		Save();
+		save_to_ini();
 		EndDialog(0);
 	}
 
@@ -119,7 +119,7 @@ public:
 		DoDataExchange(true);
 
 		GetWindowRect(rect_);
-		Save();
+		save_to_ini();
 		EndDialog(0);
 	}
 	
@@ -131,7 +131,7 @@ public:
 private:
 	boost::scoped_ptr<thread> thread_ptr;
 
-	CRect rect_;
+	WTL::CRect rect_;
 };
 
 #endif // RC_INVOKED

@@ -29,7 +29,7 @@ void TrackerListViewCtrl::OnDestroy()
 void TrackerListViewCtrl::saveSettings()
 {		
 	GetListViewDetails();
-	save();
+	save_to_ini();
 }
 
 void TrackerListViewCtrl::uiUpdate(const hal::TorrentDetail_ptr pT)

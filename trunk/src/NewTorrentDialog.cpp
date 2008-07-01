@@ -78,7 +78,7 @@ void FilesListViewCtrl::OnDestroy()
 void FilesListViewCtrl::saveSettings()
 {		
 	GetListViewDetails();
-	save();
+	save_to_ini();
 }
 
 void recurseDirectory(std::vector<wpath>& files, wpath baseDir, wpath relDir)
