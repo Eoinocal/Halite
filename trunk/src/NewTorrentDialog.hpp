@@ -110,12 +110,12 @@ typedef FilesListViewCtrl::SelectionManager FilesListViewManager;
 class DetailsSheet :
 	public WTL::CPropertyPageImpl<DetailsSheet>,
 	public CWinDataExchangeEx<DetailsSheet>,
-	public CAutoSizeWindow<DetailsSheet, false>
+	public ATL::CAutoSizeWindow<DetailsSheet, false>
 {
 protected:
 	typedef DetailsSheet thisClass;
 	typedef WTL::CPropertyPageImpl<thisClass> sheetClass;
-	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
+	typedef ATL::CAutoSizeWindow<thisClass, false> autosizeClass;
 
 public:
 	DetailsSheet(enable_save enableSave) :
@@ -174,12 +174,12 @@ private:
 
 class FilesSheet :
 	public WTL::CPropertyPageImpl<FilesSheet>,
-	public CAutoSizeWindow<FilesSheet, false>
+	public ATL::CAutoSizeWindow<FilesSheet, false>
 {
 protected:
 	typedef FilesSheet thisClass;
 	typedef WTL::CPropertyPageImpl<thisClass> sheetClass;
-	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
+	typedef ATL::CAutoSizeWindow<thisClass, false> autosizeClass;
 
 public:	
 	enum { IDD = IDD_NEWT_FILES };
@@ -229,12 +229,12 @@ private:
 
 class TrackerSheet :
 	public WTL::CPropertyPageImpl<TrackerSheet>,
-	public CAutoSizeWindow<TrackerSheet, false>
+	public ATL::CAutoSizeWindow<TrackerSheet, false>
 {
 protected:
 	typedef TrackerSheet thisClass;
 	typedef WTL::CPropertyPageImpl<thisClass> sheetClass;
-	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
+	typedef ATL::CAutoSizeWindow<thisClass, false> autosizeClass;
 
 public:	
 	enum { IDD = IDD_NEWT_TRACKERS };
@@ -272,12 +272,12 @@ private:
 
 class PeersSheet :
 	public WTL::CPropertyPageImpl<PeersSheet>,
-	public CAutoSizeWindow<PeersSheet, false>
+	public ATL::CAutoSizeWindow<PeersSheet, false>
 {
 protected:
 	typedef PeersSheet thisClass;
 	typedef WTL::CPropertyPageImpl<thisClass> sheetClass;
-	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
+	typedef ATL::CAutoSizeWindow<thisClass, false> autosizeClass;
 
 public:	
 	enum { IDD = IDD_NEWT_PEERS };

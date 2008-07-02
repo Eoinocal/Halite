@@ -459,13 +459,13 @@ void CTrayNotifyIcon::SetMenu(HMENU hMenu)
   m_Menu.Attach(hMenu);
 
 #ifdef _AFX
-  CMenu* pSubMenu = m_Menu.GetSubMenu(0);
+  WTL::CMenu* pSubMenu = m_Menu.GetSubMenu(0);
   ATLASSERT(pSubMenu); //Your menu resource has been designed incorrectly
 
   //Make the specified menu item the default (bold font)
   pSubMenu->SetDefaultItem(m_nDefaultMenuItem, m_bDefaultMenuItemByPos);
 #else
-  CMenuHandle subMenu = m_Menu.GetSubMenu(0);
+  WTL::CMenuHandle subMenu = m_Menu.GetSubMenu(0);
   ATLASSERT(subMenu.IsMenu()); //Your menu resource has been designed incorrectly
 
   //Make the specified menu item the default (bold font)
@@ -473,7 +473,7 @@ void CTrayNotifyIcon::SetMenu(HMENU hMenu)
 #endif
 }
 
-CMenu& CTrayNotifyIcon::GetMenu()
+WTL::CMenu& CTrayNotifyIcon::GetMenu()
 {
   return m_Menu;
 }
@@ -487,12 +487,12 @@ void CTrayNotifyIcon::SetDefaultMenuItem(UINT uItem, BOOL fByPos)
   if (m_Menu.operator HMENU())
   {
   #ifdef _AFX
-    CMenu* pSubMenu = m_Menu.GetSubMenu(0);
+    WTL::CMenu* pSubMenu = m_Menu.GetSubMenu(0);
     ATLASSERT(pSubMenu); //Your menu resource has been designed incorrectly
 
     pSubMenu->SetDefaultItem(m_nDefaultMenuItem, m_bDefaultMenuItemByPos);
   #else
-    CMenuHandle subMenu = m_Menu.GetSubMenu(0);
+    WTL::CMenuHandle subMenu = m_Menu.GetSubMenu(0);
     ATLASSERT(subMenu.IsMenu()); //Your menu resource has been designed incorrectly
 
     subMenu.SetMenuDefaultItem(m_nDefaultMenuItem, m_bDefaultMenuItemByPos);
@@ -503,7 +503,7 @@ void CTrayNotifyIcon::SetDefaultMenuItem(UINT uItem, BOOL fByPos)
 #ifdef _AFX
 BOOL CTrayNotifyIcon::Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, HICON hIcon, UINT nNotifyMessage, UINT uMenuID)
 #else
-BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, HICON hIcon, UINT nNotifyMessage, UINT uMenuID)
+BOOL CTrayNotifyIcon::Create(ATL::CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, HICON hIcon, UINT nNotifyMessage, UINT uMenuID)
 #endif
 {
   //Validate our parameters
@@ -532,7 +532,7 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
     return FALSE;
   }
 #ifdef _AFX
-  CMenu* pSubMenu = m_Menu.GetSubMenu(0);
+  WTL::CMenu* pSubMenu = m_Menu.GetSubMenu(0);
   if (!pSubMenu)
   {
     ATLASSERT(FALSE); //Your menu resource has been designed incorrectly
@@ -541,7 +541,7 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
   //Make the specified menu item the default (bold font)
   pSubMenu->SetDefaultItem(m_nDefaultMenuItem, m_bDefaultMenuItemByPos);
 #else
-  CMenuHandle subMenu = m_Menu.GetSubMenu(0);
+  WTL::CMenuHandle subMenu = m_Menu.GetSubMenu(0);
   if (!subMenu.IsMenu())
   {
     ATLASSERT(FALSE); //Your menu resource has been designed incorrectly
@@ -585,7 +585,7 @@ BOOL CTrayNotifyIcon::SetVersion(UINT uVersion)
   return Shell_NotifyIcon(NIM_SETVERSION, reinterpret_cast<PNOTIFYICONDATA>(&m_NotifyIconData));
 }
 
-HICON CTrayNotifyIcon::BitmapToIcon(CBitmap* pBitmap)
+HICON CTrayNotifyIcon::BitmapToIcon(WTL::CBitmap* pBitmap)
 {
   //Validate our parameters
   ATLASSERT(pBitmap);
@@ -600,7 +600,7 @@ HICON CTrayNotifyIcon::BitmapToIcon(CBitmap* pBitmap)
   memset(pMask, 0, nMaskSize);
 
   //Create a mask bitmap
-  CBitmap maskBitmap;
+  WTL::CBitmap maskBitmap;
 #ifdef _AFX
   BOOL bSuccess = maskBitmap.CreateBitmap(w, h, 1, 1, pMask);
 #else
@@ -628,7 +628,7 @@ HICON CTrayNotifyIcon::BitmapToIcon(CBitmap* pBitmap)
 #ifdef _AFX
 BOOL CTrayNotifyIcon::Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID)
 #else
-BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID)
+BOOL CTrayNotifyIcon::Create(ATL::CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, WTL::CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID)
 #endif
 {
   //Convert the bitmap to an ICON
@@ -643,7 +643,7 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
 #ifdef _AFX
 BOOL CTrayNotifyIcon::Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, HICON* phIcons, int nNumIcons, DWORD dwDelay, UINT nNotifyMessage, UINT uMenuID)
 #else
-BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, HICON* phIcons, int nNumIcons, DWORD dwDelay, UINT nNotifyMessage, UINT uMenuID)
+BOOL CTrayNotifyIcon::Create(ATL::CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, HICON* phIcons, int nNumIcons, DWORD dwDelay, UINT nNotifyMessage, UINT uMenuID)
 #endif
 {
   //Validate our parameters
@@ -663,7 +663,7 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
 #ifdef _AFX
 BOOL CTrayNotifyIcon::Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, HICON hIcon, UINT nNotifyMessage, UINT uMenuID, BOOL bNoSound)
 #else
-BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, HICON hIcon, UINT nNotifyMessage, UINT uMenuID, BOOL bNoSound)
+BOOL CTrayNotifyIcon::Create(ATL::CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, HICON hIcon, UINT nNotifyMessage, UINT uMenuID, BOOL bNoSound)
 #endif
 {
   //Validate our parameters
@@ -686,7 +686,7 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
     return FALSE;
   }
 #ifdef _AFX
-  CMenu* pSubMenu = m_Menu.GetSubMenu(0);
+  WTL::CMenu* pSubMenu = m_Menu.GetSubMenu(0);
   if (!pSubMenu)
   {
     ATLASSERT(FALSE); //Your menu resource has been designed incorrectly
@@ -695,7 +695,7 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
   //Make the specified menu item the default (bold font)
   pSubMenu->SetDefaultItem(m_nDefaultMenuItem, m_bDefaultMenuItemByPos);
 #else
-  CMenuHandle subMenu = m_Menu.GetSubMenu(0);
+  WTL::CMenuHandle subMenu = m_Menu.GetSubMenu(0);
   if (!subMenu.IsMenu())
   {
     ATLASSERT(FALSE); //Your menu resource has been designed incorrectly
@@ -772,9 +772,9 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
 }
 
 #ifdef _AFX
-BOOL CTrayNotifyIcon::Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID, BOOL bNoSound)
+BOOL CTrayNotifyIcon::Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, WTL::CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID, BOOL bNoSound)
 #else
-BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID, BOOL bNoSound)
+BOOL CTrayNotifyIcon::Create(ATL::CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, WTL::CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID, BOOL bNoSound)
 #endif
 {
   //Convert the bitmap to an ICON
@@ -789,7 +789,7 @@ BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipTe
 #ifdef _AFX
 BOOL CTrayNotifyIcon::Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, HICON* phIcons, int nNumIcons, DWORD dwDelay, UINT nNotifyMessage, UINT uMenuID, BOOL bNoSound)
 #else
-BOOL CTrayNotifyIcon::Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, HICON* phIcons, int nNumIcons, DWORD dwDelay, UINT nNotifyMessage, UINT uMenuID, BOOL bNoSound)
+BOOL CTrayNotifyIcon::Create(ATL::CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, HICON* phIcons, int nNumIcons, DWORD dwDelay, UINT nNotifyMessage, UINT uMenuID, BOOL bNoSound)
 #endif
 {
   //Validate our parameters
@@ -948,7 +948,7 @@ BOOL CTrayNotifyIcon::SetTooltipText(UINT nID)
   return SetTooltipText(sToolTipText);
 }
 
-BOOL CTrayNotifyIcon::SetIcon(CBitmap* pBitmap)
+BOOL CTrayNotifyIcon::SetIcon(WTL::CBitmap* pBitmap)
 {
   //Convert the bitmap to an ICON
   if (m_hDynamicIcon)
@@ -1041,7 +1041,7 @@ HICON CTrayNotifyIcon::LoadIconResource(UINT nIDResource)
 #ifdef _AFX
 BOOL CTrayNotifyIcon::SetNotificationWnd(CWnd* pNotifyWnd)
 #else
-BOOL CTrayNotifyIcon::SetNotificationWnd(CWindow* pNotifyWnd)
+BOOL CTrayNotifyIcon::SetNotificationWnd(ATL::CWindow* pNotifyWnd)
 #endif
 {
   //Validate our parameters
@@ -1088,7 +1088,7 @@ BOOL CTrayNotifyIcon::UsingAnimatedIcon() const
 #ifdef _AFX
 CWnd* CTrayNotifyIcon::GetNotificationWnd() const
 #else
-CWindow* CTrayNotifyIcon::GetNotificationWnd() const
+ATL::CWindow* CTrayNotifyIcon::GetNotificationWnd() const
 #endif
 {
   return m_pNotificationWnd;
@@ -1112,13 +1112,13 @@ LRESULT CTrayNotifyIcon::OnTrayNotification(WPARAM wID, LPARAM lEvent)
   CMenu* pSubMenu = m_Menu.GetSubMenu(0);
   ATLASSERT(pSubMenu); //Your menu resource has been designed incorrectly
 #else
-  CMenuHandle subMenu = m_Menu.GetSubMenu(0);
+  WTL::CMenuHandle subMenu = m_Menu.GetSubMenu(0);
   ATLASSERT(subMenu.IsMenu());
 #endif
 
   if (lEvent == WM_RBUTTONUP)
   {
-    CPoint ptCursor;
+    WTL::CPoint ptCursor;
     GetCursorPos(&ptCursor);
     ::SetForegroundWindow(m_NotifyIconData.hWnd);
   #ifdef _AFX
@@ -1143,7 +1143,7 @@ LRESULT CTrayNotifyIcon::OnTrayNotification(WPARAM wID, LPARAM lEvent)
   return 1; // handled
 }
 
-BOOL CTrayNotifyIcon::GetDynamicDCAndBitmap(CDC* pDC, CBitmap* pBitmap)
+BOOL CTrayNotifyIcon::GetDynamicDCAndBitmap(WTL::CDC* pDC, WTL::CBitmap* pBitmap)
 {
   //Validate our parameters
   ATLASSERT(pDC != NULL);
@@ -1155,7 +1155,7 @@ BOOL CTrayNotifyIcon::GetDynamicDCAndBitmap(CDC* pDC, CBitmap* pBitmap)
   if (pWndScreen == NULL)
     return FALSE;
 #else
-  CWindow WndScreen(::GetDesktopWindow());
+  ATL::CWindow WndScreen(::GetDesktopWindow());
   if (!WndScreen.IsWindow())
     return FALSE;
 #endif
@@ -1166,7 +1166,7 @@ BOOL CTrayNotifyIcon::GetDynamicDCAndBitmap(CDC* pDC, CBitmap* pBitmap)
   if (pDCScreen == NULL)
     return FALSE;
 #else
-  CDC DCScreen(WndScreen.GetDC());
+  WTL::CDC DCScreen(WndScreen.GetDC());
   if (DCScreen.IsNull())
     return FALSE;
 #endif

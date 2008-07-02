@@ -24,7 +24,7 @@
 #include "GenericAddDialog.hpp"
 
 class NewTorrent_PeersAddDialog :
-	public CDialogImpl<NewTorrent_PeersAddDialog>,
+	public ATL::CDialogImpl<NewTorrent_PeersAddDialog>,
 	public WTLx::GenericAddDialog<NewTorrent_PeersAddDialog, IDD_PEEREDIT>,
 	public WTL::CDialogResize<NewTorrent_PeersAddDialog>,
 	public CWinDataExchangeEx<NewTorrent_PeersAddDialog>

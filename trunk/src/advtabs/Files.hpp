@@ -367,7 +367,7 @@ private:
 };
 
 class FileStatic :
-	public CWindowImpl<FileStatic, WTL::CStatic>
+	public ATL::CWindowImpl<FileStatic, WTL::CStatic>
 {	
 public:
 	BEGIN_MSG_MAP_EX(FileStatic)

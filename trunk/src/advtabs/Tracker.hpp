@@ -27,14 +27,14 @@
 
 class AdvTrackerDialog :
 	public CHalTabPageImpl<AdvTrackerDialog>,
-	public CAutoSizeWindow<AdvTrackerDialog, false>,
+	public ATL::CAutoSizeWindow<AdvTrackerDialog, false>,
 	public CHaliteDialogBase<AdvTrackerDialog>,
 	public CWinDataExchangeEx<AdvTrackerDialog>
 {
 protected:
 	typedef AdvTrackerDialog thisClass;
 	typedef CHalTabPageImpl<thisClass> baseClass;
-	typedef CAutoSizeWindow<thisClass, false> autosizeClass;
+	typedef ATL::CAutoSizeWindow<thisClass, false> autosizeClass;
 	typedef CHaliteDialogBase<thisClass> dialogBaseClass;
 
 public:

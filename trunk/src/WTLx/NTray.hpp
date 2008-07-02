@@ -51,7 +51,7 @@ class CTrayNotifyIcon;
 
 //Class which handles subclassing the top level window and handles the timer
 //required for tray icon animation and taskbar creation message
-class CTRAYNOTIFYICON_EXT_CLASS CTrayIconHooker : public CWindowImpl<CTrayIconHooker>
+class CTRAYNOTIFYICON_EXT_CLASS CTrayIconHooker : public ATL::CWindowImpl<CTrayIconHooker>
 {
 public:
 //Constructors / Destructors
@@ -62,7 +62,7 @@ public:
 #ifdef _AFX
   BOOL Init(CTrayNotifyIcon* pTrayIcon, CWnd* pNotifyWnd);
 #else
-  BOOL Init(CTrayNotifyIcon* pTrayIcon, CWindow* pNotifyWnd);
+  BOOL Init(CTrayNotifyIcon* pTrayIcon, ATL::CWindow* pNotifyWnd);
 #endif  
   void StartUsingAnimation(HICON* phIcons, int nNumIcons, DWORD dwDelay);
   void StopUsingAnimation();
@@ -169,12 +169,12 @@ public:
   BOOL Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, WTL::CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);
   BOOL Create(CWnd* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, HICON* phIcons, int nNumIcons, DWORD dwDelay, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);
 #else
-  BOOL Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, HICON hIcon, UINT nNotifyMessage, UINT uMenuID = 0);
-  BOOL Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, WTL::CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID = 0);
-  BOOL Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, HICON* phIcons, int nNumIcons, DWORD dwDelay, UINT nNotifyMessage, UINT uMenuID = 0);
-  BOOL Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, HICON hIcon, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);                  
-  BOOL Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, WTL::CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);
-  BOOL Create(CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, HICON* phIcons, int nNumIcons, DWORD dwDelay, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);
+  BOOL Create(ATL::CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, HICON hIcon, UINT nNotifyMessage, UINT uMenuID = 0);
+  BOOL Create(ATL::CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, WTL::CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID = 0);
+  BOOL Create(ATL::CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, HICON* phIcons, int nNumIcons, DWORD dwDelay, UINT nNotifyMessage, UINT uMenuID = 0);
+  BOOL Create(ATL::CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, HICON hIcon, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);                  
+  BOOL Create(ATL::CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, WTL::CBitmap* pBitmap, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);
+  BOOL Create(ATL::CWindow* pNotifyWnd, UINT uID, LPCTSTR pszTooltipText, LPCTSTR pszBalloonText, LPCTSTR pszBalloonCaption, UINT nTimeout, BalloonStyle style, HICON* phIcons, int nNumIcons, DWORD dwDelay, UINT nNotifyMessage, UINT uMenuID = 0, BOOL bNoSound = FALSE);
 #endif  
 
 //Sets or gets the Tooltip text
@@ -198,7 +198,7 @@ public:
   BOOL SetNotificationWnd(CWnd* pNotifyWnd);
   CWnd* GetNotificationWnd() const;
 #else
-  BOOL SetNotificationWnd(CWindow* pNotifyWnd);
+  BOOL SetNotificationWnd(ATL::CWindow* pNotifyWnd);
   ATL::CWindow* GetNotificationWnd() const;
 #endif
 
@@ -249,7 +249,7 @@ protected:
 #ifdef _AFX  
   CWnd*            m_pNotificationWnd;
 #else
-  CWindow*         m_pNotificationWnd;
+  ATL::CWindow*         m_pNotificationWnd;
 #endif  
   CTrayIconHooker  m_HookWnd;
   WTL::CMenu       m_Menu;

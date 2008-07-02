@@ -15,7 +15,7 @@
 #include "GenericAddDialog.hpp"
 
 class NewTorrent_TrackerAddDialog :
-	public CDialogImpl<NewTorrent_TrackerAddDialog>,
+	public ATL::CDialogImpl<NewTorrent_TrackerAddDialog>,
 	public WTLx::GenericAddDialog<NewTorrent_TrackerAddDialog, IDD_TRACKEDIT>,
 	public WTL::CDialogResize<NewTorrent_TrackerAddDialog>,
 	public CWinDataExchangeEx<NewTorrent_TrackerAddDialog>

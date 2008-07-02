@@ -14,12 +14,12 @@
 
 template<typename T>
 class CHaliteEditCtrl :
-	public CWindowImpl<CHaliteEditCtrl<T>, WTL::CEdit>,
+	public ATL::CWindowImpl<CHaliteEditCtrl<T>, WTL::CEdit>,
 	private boost::noncopyable
 {
 protected:
 	typedef CHaliteEditCtrl<T> thisClass;
-	typedef CWindowImpl<thisClass, WTL::CEdit> baseClass;
+	typedef ATL::CWindowImpl<thisClass, WTL::CEdit> baseClass;
 	
 public:
 	explicit CHaliteEditCtrl(T lwr = 0, bool include = false, bool signal = true) :
@@ -43,7 +43,7 @@ public:
         baseClass::SubclassWindow(hWndNew);
 	}
 	
-	LRESULT OnChange(UINT uNotifyCode, int nID, CWindow wndCtl)
+	LRESULT OnChange(UINT uNotifyCode, int nID, ATL::CWindow wndCtl)
 	{	
 		if (unapplied_)
 		{
@@ -61,7 +61,7 @@ public:
 		return 0;
 	}
 	
-	LRESULT OnKillFocus(UINT uNotifyCode, int nID, CWindow wndCtl)
+	LRESULT OnKillFocus(UINT uNotifyCode, int nID, ATL::CWindow wndCtl)
 	{	
 		const int buffer_size = 512;
 		boost::array<wchar_t, buffer_size> buffer;

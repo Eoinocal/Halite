@@ -41,7 +41,7 @@ public:
         baseClass::SubclassWindow(hWndNew);
 	}
 	
-	LRESULT OnChange(UINT uNotifyCode, int nID, CWindow wndCtl)
+	LRESULT OnChange(UINT uNotifyCode, int nID, ATL::CWindow wndCtl)
 	{	
 		if (unapplied_)
 		{

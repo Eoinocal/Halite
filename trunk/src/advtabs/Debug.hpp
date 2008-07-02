@@ -22,7 +22,7 @@
 #include "../halIni.hpp"
 #include "../HaliteListViewCtrl.hpp"
 
-class LogEdit : public CWindowImpl<LogEdit, WTL::CEdit>
+class LogEdit : public ATL::CWindowImpl<LogEdit, WTL::CEdit>
 {
 public:
     BEGIN_MSG_MAP_EX(CEditImpl)
@@ -43,7 +43,7 @@ private:
 	boost::signals::scoped_connection editLogger;
 };
 
-class LogList : public CWindowImpl<LogList, WTL::CListBox>
+class LogList : public ATL::CWindowImpl<LogList, WTL::CListBox>
 {
 public:
     BEGIN_MSG_MAP_EX(LogList)
