@@ -27,7 +27,7 @@
 #include "halTorrent.hpp"
 
 class SplashDialog :
-	public CDialogImpl<SplashDialog>,
+	public ATL::CDialogImpl<SplashDialog>,
 	public hal::IniBase<SplashDialog>,
 	public WTL::CWinDataExchange<SplashDialog>,
 	public WTL::CDialogResize<SplashDialog>

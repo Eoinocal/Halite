@@ -17,7 +17,7 @@
 #include "GenericAddDialog.hpp"
 
 class TrackerAddDialog :
-	public CDialogImpl<TrackerAddDialog>,
+	public ATL::CDialogImpl<TrackerAddDialog>,
 	public WTLx::GenericAddDialog<TrackerAddDialog, IDD_TRACKEDIT>,
 	public WTL::CDialogResize<TrackerAddDialog>,
 	public CWinDataExchangeEx<TrackerAddDialog>

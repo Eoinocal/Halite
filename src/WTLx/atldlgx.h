@@ -72,7 +72,7 @@ namespace WTL
 // CEmptyDlgTemplate : Empty dialog template loading the dialog title from a resource string
 //
 
-typedef CWinTraits<WS_VISIBLE | WS_POPUP> CEmptyDlgTraits;
+typedef ATL::CWinTraits<WS_VISIBLE | WS_POPUP> CEmptyDlgTraits;
 
 template <UINT t_uIDS, class TDlgTraits = CEmptyDlgTraits>
 class CEmptyDlgTemplate : public CMemDlgTemplate
@@ -925,7 +925,7 @@ public:
 ////////////////////////////////////////////////////////////
 // CInPlaceEditor : In place editing dialog
 //
-typedef CWinTraitsOR<ES_AUTOHSCROLL> CInPlaceEditTraits;
+typedef ATL::CWinTraitsOR<ES_AUTOHSCROLL> CInPlaceEditTraits;
 
 template <
 	UINT t_uLength, // length of text buffer passed as lParam in DoModal() call

@@ -22,13 +22,13 @@
 #include "GenericAddDialog.hpp"
 
 class HaliteSaveAndMoveToDlg :
-	public CDialogImpl<HaliteSaveAndMoveToDlg>,
-	public CAutoSizeWindow<HaliteSaveAndMoveToDlg, true>,
+	public ATL::CDialogImpl<HaliteSaveAndMoveToDlg>,
+	public ATL::CAutoSizeWindow<HaliteSaveAndMoveToDlg, true>,
 	public CWinDataExchangeEx<HaliteSaveAndMoveToDlg>
 {
 public:
 	typedef HaliteSaveAndMoveToDlg thisClass;
-	typedef CAutoSizeWindow<thisClass, true> autosizeClass;
+	typedef ATL::CAutoSizeWindow<thisClass, true> autosizeClass;
 	
 public:
 	HaliteSaveAndMoveToDlg(wstring& s, wstring& m, bool& u, bool d = false) :

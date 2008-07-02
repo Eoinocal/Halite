@@ -21,11 +21,11 @@
 #include "halTorrent.hpp"
 
 class ProgressDialog :
-	public CDialogImpl<ProgressDialog>
+	public ATL::CDialogImpl<ProgressDialog>
 {
 protected:
 	typedef ProgressDialog thisClass;
-	typedef CDialogImpl<ProgressDialog> baseClass;
+	typedef ATL::CDialogImpl<ProgressDialog> baseClass;
 	
 	typedef boost::function<bool (hal::progress_callback fn)> threadFunction;
 

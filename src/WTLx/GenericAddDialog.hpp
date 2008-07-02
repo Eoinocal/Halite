@@ -74,12 +74,12 @@ public:
 		endDialog(0);
 	}
 
-	void OnCancel(UINT uNotifyCode, int nID, CWindow wndCtl)
+	void OnCancel(UINT uNotifyCode, int nID, ATL::CWindow wndCtl)
 	{
 		endDialog(0);
 	}
 
-	void OnOk(UINT uNotifyCode, int nID, CWindow wndCtl)
+	void OnOk(UINT uNotifyCode, int nID, ATL::CWindow wndCtl)
 	{
 		endDialog(1);
 	}
@@ -190,12 +190,12 @@ public:
 		endDialog(0);
 	}
 
-	void OnCancel(UINT uNotifyCode, int nID, CWindow wndCtl)
+	void OnCancel(UINT uNotifyCode, int nID, ATL::CWindow wndCtl)
 	{
 		endDialog(0);
 	}
 
-	void OnOk(UINT uNotifyCode, int nID, CWindow wndCtl)
+	void OnOk(UINT uNotifyCode, int nID, ATL::CWindow wndCtl)
 	{
 		endDialog(1);
 	}

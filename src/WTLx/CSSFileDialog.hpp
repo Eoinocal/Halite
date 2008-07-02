@@ -154,7 +154,7 @@ public:
 			m_ofn.hwndOwner = hWndParent;
 
 		ATLASSERT(m_hWnd == NULL);
-		_Module.AddCreateWndData(&m_thunk.cd, (CDialogImplBase*)this);
+		_Module.AddCreateWndData(&m_thunk.cd, (ATL::CDialogImplBase*)this);
 
 		// This is where we make our changes! If we are in Windows 2000 mode,
 		// we copy the contents of m_ofn into m_ofnex and call GetOpenFileName etc.
