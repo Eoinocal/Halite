@@ -42,9 +42,9 @@ HWND FileListView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowNa
 	
 	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER);
 	
-	SetColumnSortType(2, LVCOLSORT_CUSTOM, new ColumnAdapters::Size());
-	SetColumnSortType(3, LVCOLSORT_CUSTOM, new ColumnAdapters::Progress());
-	SetColumnSortType(4, LVCOLSORT_CUSTOM, new ColumnAdapters::Priority());
+	SetColumnSortType(2, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Size());
+	SetColumnSortType(3, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Progress());
+	SetColumnSortType(4, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Priority());
 	
 	return hwnd;
 }
@@ -73,7 +73,7 @@ HWND FileTreeView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowNa
 	HWND hwnd = treeClass::Create(hWndParent, (RECT &)rect.m_lpRect, szWindowName, dwStyle, dwExStyle, (UINT)MenuOrID.m_hMenu, lpCreateParam);
 	assert(hwnd);
 	
-	CMenuHandle menu;
+	WTL::CMenuHandle menu;
 	BOOL menu_created = menu.LoadMenu(IDR_FILESLISTVIEW_MENU);
 	assert(menu_created);	
 	
@@ -111,7 +111,7 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 
 	wpath branch;
 	
-	if (CTreeItem ti = GetSelectedItem())
+	if (WTL::CTreeItem ti = GetSelectedItem())
 	{			
 		do
 		{
@@ -149,7 +149,7 @@ void FileTreeView::determineFocused()
 {
 	wpath branch;
 	
-	if (CTreeItem ti = GetSelectedItem())
+	if (WTL::CTreeItem ti = GetSelectedItem())
 	{			
 		do
 		{
@@ -182,7 +182,7 @@ LRESULT AdvFilesDialog::onInitDialog(HWND, LPARAM)
 {
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
-	CRect rc; GetClientRect(&rc);
+	WTL::CRect rc; GetClientRect(&rc);
 	
 	static_.SubclassWindow(GetDlgItem(IDC_CONTAINER));
 	
@@ -203,7 +203,7 @@ LRESULT AdvFilesDialog::onInitDialog(HWND, LPARAM)
 	splitter_.SetSplitterPanes(tree_, list_);
 	splitter_.SetSplitterPos(splitterPos);
 	
-	CTreeItem ti = tree_.InsertItem(hal::app().res_wstr(HAL_TORRENT_ROOT).c_str(), TVI_ROOT, TVI_LAST);
+	WTL::CTreeItem ti = tree_.InsertItem(hal::app().res_wstr(HAL_TORRENT_ROOT).c_str(), TVI_ROOT, TVI_LAST);
 	
 //	DoDataExchange(false);
 	
@@ -214,7 +214,7 @@ void AdvFilesDialog::DlgResize_UpdateLayout(int cxWidth, int cyHeight)
 {
 	resizeClass::DlgResize_UpdateLayout(cxWidth, cyHeight);
 	
-	CRect rect; ::GetClientRect(GetDlgItem(IDC_CONTAINER), &rect);
+	WTL::CRect rect; ::GetClientRect(GetDlgItem(IDC_CONTAINER), &rect);
 	
 	splitter_.SetWindowPos(NULL, rect.left, rect.top,
 		rect.right - rect.left, rect.bottom - rect.top,

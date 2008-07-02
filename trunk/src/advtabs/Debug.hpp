@@ -22,7 +22,7 @@
 #include "../halIni.hpp"
 #include "../HaliteListViewCtrl.hpp"
 
-class LogEdit : public CWindowImpl<LogEdit, CEdit>
+class LogEdit : public CWindowImpl<LogEdit, WTL::CEdit>
 {
 public:
     BEGIN_MSG_MAP_EX(CEditImpl)
@@ -43,10 +43,10 @@ private:
 	boost::signals::scoped_connection editLogger;
 };
 
-class LogList : public CWindowImpl<LogList, CListBox>
+class LogList : public CWindowImpl<LogList, WTL::CListBox>
 {
 public:
-    BEGIN_MSG_MAP_EX(CListBox)
+    BEGIN_MSG_MAP_EX(LogList)
     END_MSG_MAP()
 
 	LogList() :
@@ -202,7 +202,7 @@ private:
 
 class AdvDebugDialog :
 	public CHalTabPageImpl<AdvDebugDialog>,
-	public CDialogResize<AdvDebugDialog>,
+	public WTL::CDialogResize<AdvDebugDialog>,
 	public CHaliteDialogBase<AdvDebugDialog>,
 	public CWinDataExchangeEx<AdvDebugDialog>,
 	private boost::noncopyable
@@ -210,7 +210,7 @@ class AdvDebugDialog :
 protected:
 	typedef AdvDebugDialog thisClass;
 	typedef CHalTabPageImpl<AdvDebugDialog> baseClass;
-	typedef CDialogResize<AdvDebugDialog> resizeClass;
+	typedef WTL::CDialogResize<AdvDebugDialog> resizeClass;
 	typedef CHaliteDialogBase<AdvDebugDialog> dialogBaseClass;
 
 public:

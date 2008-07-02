@@ -18,7 +18,7 @@ void TrackerListViewCtrl::OnAttach()
 	
 	ApplyDetails();
 	
-	SetColumnSortType(1, LVCOLSORT_LONG);
+	SetColumnSortType(1, WTL::LVCOLSORT_LONG);
 }
 
 void TrackerListViewCtrl::OnDestroy()

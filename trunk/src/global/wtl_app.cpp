@@ -21,7 +21,7 @@
 #include <atlbase.h>
 #include <atlapp.h>
 
-extern CAppModule _Module;
+extern WTL::CAppModule _Module;
 
 #include "wtl_app.hpp"
 #include "string_conv.hpp"

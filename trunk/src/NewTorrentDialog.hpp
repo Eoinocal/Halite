@@ -362,7 +362,7 @@ public:
 
     void OnShowWindow(BOOL bShow, UINT nStatus);
 
-	void OnSize(UINT, CSize)
+	void OnSize(UINT, WTL::CSize)
 	{
         SetMsgHandled(false);
 
@@ -400,7 +400,7 @@ public:
 
 private:
 	bool inited_;
-	CRect rect_;
+	WTL::CRect rect_;
 
 	void resizeActiveSheet()
 	{

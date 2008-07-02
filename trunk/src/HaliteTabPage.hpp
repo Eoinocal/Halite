@@ -12,7 +12,7 @@
 template <class T>
 class ATL_NO_VTABLE CHalTabPageImpl : 
 	public ATL::CDialogImpl< T >,
-	public CMessageFilter
+	public WTL::CMessageFilter
 {
 public:
     BEGIN_MSG_MAP_EX(CHalTabPageImpl)
@@ -30,7 +30,7 @@ protected:
 	{
 		return 1;
 		
-		CRect rect;
+		WTL::CRect rect;
 		GetClientRect(rect);
 		
 		if(hal::uxtheme().pIsAppThemed && hal::uxtheme().pIsAppThemed())

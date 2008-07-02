@@ -44,27 +44,27 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	
 	ApplyDetails();
 	
-	SetColumnSortType(0, LVCOLSORT_CUSTOM, new ColumnAdapters::Name());
-	SetColumnSortType(1, LVCOLSORT_CUSTOM, new ColumnAdapters::State());
-	SetColumnSortType(2, LVCOLSORT_CUSTOM, new ColumnAdapters::Progress());
-	SetColumnSortType(3, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedDown());
-	SetColumnSortType(4, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedUp());
-	SetColumnSortType(5, LVCOLSORT_CUSTOM, new ColumnAdapters::Peers());
-	SetColumnSortType(6, LVCOLSORT_CUSTOM, new ColumnAdapters::Seeds());
-	SetColumnSortType(7, LVCOLSORT_CUSTOM, new ColumnAdapters::ETA());
-	SetColumnSortType(8, LVCOLSORT_CUSTOM, new ColumnAdapters::DistributedCopies());
-	SetColumnSortType(9, LVCOLSORT_CUSTOM, new ColumnAdapters::Tracker());
-	SetColumnSortType(10, LVCOLSORT_CUSTOM, new ColumnAdapters::UpdateTrackerIn());
-	SetColumnSortType(11, LVCOLSORT_CUSTOM, new ColumnAdapters::Ratio());
-	SetColumnSortType(12, LVCOLSORT_CUSTOM, new ColumnAdapters::TotalWanted());
-	SetColumnSortType(13, LVCOLSORT_CUSTOM, new ColumnAdapters::Completed());
-	SetColumnSortType(14, LVCOLSORT_CUSTOM, new ColumnAdapters::Remaining());
-	SetColumnSortType(15, LVCOLSORT_CUSTOM, new ColumnAdapters::Downloaded());
-	SetColumnSortType(16, LVCOLSORT_CUSTOM, new ColumnAdapters::Uploaded());
-	SetColumnSortType(17, LVCOLSORT_CUSTOM, new ColumnAdapters::ActiveTime());
-	SetColumnSortType(18, LVCOLSORT_CUSTOM, new ColumnAdapters::SeedingTime());
-	SetColumnSortType(19, LVCOLSORT_CUSTOM, new ColumnAdapters::StartTime());
-	SetColumnSortType(20, LVCOLSORT_CUSTOM, new ColumnAdapters::FinishTime());
+	SetColumnSortType(0, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Name());
+	SetColumnSortType(1, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::State());
+	SetColumnSortType(2, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Progress());
+	SetColumnSortType(3, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedDown());
+	SetColumnSortType(4, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedUp());
+	SetColumnSortType(5, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Peers());
+	SetColumnSortType(6, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Seeds());
+	SetColumnSortType(7, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::ETA());
+	SetColumnSortType(8, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::DistributedCopies());
+	SetColumnSortType(9, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Tracker());
+	SetColumnSortType(10, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::UpdateTrackerIn());
+	SetColumnSortType(11, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Ratio());
+	SetColumnSortType(12, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::TotalWanted());
+	SetColumnSortType(13, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Completed());
+	SetColumnSortType(14, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Remaining());
+	SetColumnSortType(15, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Downloaded());
+	SetColumnSortType(16, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Uploaded());
+	SetColumnSortType(17, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::ActiveTime());
+	SetColumnSortType(18, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::SeedingTime());
+	SetColumnSortType(19, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::StartTime());
+	SetColumnSortType(20, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::FinishTime());
 }
 
 void HaliteListViewCtrl::OnDestroy()

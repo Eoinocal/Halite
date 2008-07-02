@@ -10,8 +10,8 @@
 #include "HaliteTabPage.hpp"
 
 class CHalTabCtrl : 
-	public CWindowImpl<CHalTabCtrl, CTabCtrl>,
-	public CMessageFilter
+	public ATL::CWindowImpl<CHalTabCtrl, WTL::CTabCtrl>,
+	public WTL::CMessageFilter
 {
 	struct CHalTabPage
 	{
@@ -58,7 +58,7 @@ public:
 	void Attach(HWND hWndNew)
 	{
 		ATLASSERT(::IsWindow(hWndNew));
-        CWindowImpl<CHalTabCtrl, CTabCtrl>::SubclassWindow(hWndNew);
+		CWindowImpl<CHalTabCtrl, WTL::CTabCtrl>::SubclassWindow(hWndNew);
 	}
 
 	void SetCurrentPage(unsigned index)
@@ -71,7 +71,7 @@ public:
 			currentPage_ = pages_[index].hWnd;
 			::ShowWindow(currentPage_, SW_SHOW);
 
-			RECT rect;
+			WTL::CRect rect;
 			GetClientRect(&rect);
 			AdjustRect(false, &rect);
 
@@ -86,9 +86,9 @@ public:
 		return 0;
 	}
 
-	void OnSize(UINT, CSize)
+	void OnSize(UINT, WTL::CSize)
 	{
-		CRect rect;
+		WTL::CRect rect;
 		GetClientRect(&rect);
 		AdjustRect(false, &rect);
 
