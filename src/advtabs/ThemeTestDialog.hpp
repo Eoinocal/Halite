@@ -18,12 +18,12 @@
 
 class ThemeTestDialog :
 	public CHalTabPageImpl<ThemeTestDialog>,
-	public CDialogResize<ThemeTestDialog>
+	public WTL::CDialogResize<ThemeTestDialog>
 {
 protected:
 	typedef ThemeTestDialog thisClass;
 	typedef CHalTabPageImpl<ThemeTestDialog> baseClass;
-	typedef CDialogResize<ThemeTestDialog> resizeClass;
+	typedef WTL::CDialogResize<ThemeTestDialog> resizeClass;
 public:
 	enum { IDD = IDD_THEMETEST };
 

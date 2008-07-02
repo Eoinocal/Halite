@@ -98,8 +98,8 @@ public:
 					
 		ApplyDetails();
 		
-		SetColumnSortType(2, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedDown());
-		SetColumnSortType(3, LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedUp());
+		SetColumnSortType(2, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedDown());
+		SetColumnSortType(3, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedUp());
 		
 		return true;
 	}
@@ -131,12 +131,12 @@ private:
 class AdvPeerDialog :
 	public CHalTabPageImpl<AdvPeerDialog>,
 	public CHaliteDialogBase<AdvPeerDialog>,
-	public CDialogResize<AdvPeerDialog>
+	public WTL::CDialogResize<AdvPeerDialog>
 {
 protected:
 	typedef AdvPeerDialog thisClass;
 	typedef CHalTabPageImpl<thisClass> baseClass;
-	typedef CDialogResize<thisClass> resizeClass;
+	typedef WTL::CDialogResize<thisClass> resizeClass;
 	typedef CHaliteDialogBase<AdvPeerDialog> dialogBaseClass;
 
 public:

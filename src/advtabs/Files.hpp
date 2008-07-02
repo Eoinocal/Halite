@@ -211,13 +211,13 @@ private:
 };
 
 class FileTreeView :
-	public CWindowImpl<FileTreeView, CTreeViewCtrlEx>,
+	public ATL::CWindowImpl<FileTreeView, WTL::CTreeViewCtrlEx>,
 	public hal::IniBase<FileTreeView>,
 	private boost::noncopyable
 {
 protected:
 	typedef FileTreeView thisClass;
-	typedef CWindowImpl<thisClass, CTreeViewCtrlEx> treeClass;
+	typedef ATL::CWindowImpl<thisClass, WTL::CTreeViewCtrlEx> treeClass;
 	typedef hal::IniBase<thisClass> iniClass;
 
 	friend class treeClass;
@@ -287,13 +287,13 @@ public:
 		ValidTreeItem() 
 		{}
 
-		ValidTreeItem(CTreeItem& t) :
+		ValidTreeItem(WTL::CTreeItem& t) :
 			valid(true),
 			treeItem(t)
 		{}
 		
 		bool valid;
-		CTreeItem treeItem;
+		WTL::CTreeItem treeItem;
 	};
 	
 	typedef std::map<wpath, ValidTreeItem> MapType;
@@ -305,7 +305,7 @@ public:
 		MapType::iterator i = map_.find(branchPath);		
 		if (i == map_.end())
 		{
-			CTreeItem ti = tree_.GetRootItem();
+			WTL::CTreeItem ti = tree_.GetRootItem();
 			
 			wpath branch;
 			foreach (wstring b, branchPath)
@@ -315,7 +315,7 @@ public:
 				
 				if (j == map_.end())
 				{
-					CTreeItem tmp = ti.AddTail(b.c_str(), -1);
+					WTL::CTreeItem tmp = ti.AddTail(b.c_str(), -1);
 					ti.Expand();
 					ti = tmp;
 					map_[branch] = ValidTreeItem(ti);
@@ -367,7 +367,7 @@ private:
 };
 
 class FileStatic :
-	public CWindowImpl<FileStatic, CStatic>
+	public CWindowImpl<FileStatic, WTL::CStatic>
 {	
 public:
 	BEGIN_MSG_MAP_EX(FileStatic)
@@ -377,7 +377,7 @@ public:
 
 class AdvFilesDialog :
 	public CHalTabPageImpl<AdvFilesDialog>,
-	public CDialogResize<AdvFilesDialog>,
+	public WTL::CDialogResize<AdvFilesDialog>,
 	public CHaliteDialogBase<AdvFilesDialog>,
 	public CWinDataExchangeEx<AdvFilesDialog>,
 	public hal::IniBase<AdvFilesDialog>,
@@ -386,7 +386,7 @@ class AdvFilesDialog :
 protected:
 	typedef AdvFilesDialog thisClass;
 	typedef CHalTabPageImpl<thisClass> baseClass;
-	typedef CDialogResize<thisClass> resizeClass;
+	typedef WTL::CDialogResize<thisClass> resizeClass;
 	typedef CHaliteDialogBase<thisClass> dialogBaseClass;
 	typedef hal::IniBase<thisClass> iniClass;
 
@@ -445,14 +445,14 @@ public:
 	void OnDestroy();
 
 protected:
-	CSplitterWindow splitter_;
+	WTL::CSplitterWindow splitter_;
 	unsigned int splitterPos;
 	
 	FileStatic static_;
 	FileTreeView tree_;
 	FileListView list_;
 	
-	std::map<wpath, CTreeItem> fileTreeMap_;
+	std::map<wpath, WTL::CTreeItem> fileTreeMap_;
 	TreeViewManager<FileTreeView> treeManager_;
 	
 	std::vector<FileLink> fileLinks_;

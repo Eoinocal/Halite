@@ -165,7 +165,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	RegisterDropTarget();
 	
 	// Register object for message filtering and idle updates
-	CMessageLoop* pLoop = _Module.GetMessageLoop();
+	WTL::CMessageLoop* pLoop = _Module.GetMessageLoop();
 	assert(pLoop != NULL);
 	pLoop->AddMessageFilter(this);
 	pLoop->AddIdleHandler(this);
@@ -444,7 +444,7 @@ void HaliteWindow::OnDestroy()
 	PostQuitMessage(0);	
 }
 
-void HaliteWindow::OnSize(UINT type, CSize)
+void HaliteWindow::OnSize(UINT type, WTL::CSize)
 {
 	if (type == SIZE_MINIMIZED)
 	{
@@ -465,7 +465,7 @@ void HaliteWindow::OnSize(UINT type, CSize)
 	SetMsgHandled(false);
 }	
 
-void HaliteWindow::OnMove(CSize)
+void HaliteWindow::OnMove(WTL::CSize)
 {
 	WINDOWPLACEMENT wnd = { sizeof(WINDOWPLACEMENT ) };
 	GetWindowPlacement(&wnd);

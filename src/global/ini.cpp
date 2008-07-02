@@ -18,7 +18,7 @@
 #include <atlbase.h>
 #include <atlapp.h>
 
-extern CAppModule _Module;
+extern WTL::CAppModule _Module;
 
 #include "tinyxml.hpp"
 #include "wtl_app.hpp"

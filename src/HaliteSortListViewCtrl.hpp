@@ -53,7 +53,7 @@ class CHaliteSortListViewCtrl :
 {
 public:
 	typedef CHaliteSortListViewCtrl<TBase, adapterType> thisClass;
-	typedef CSortListViewCtrlImpl<thisClass> parentClass;
+	typedef WTL::CSortListViewCtrlImpl<thisClass> parentClass;
 	
 	class CHaliteHeaderCtrl : public CWindowImpl<CHaliteHeaderCtrl, WTL::CHeaderCtrl>
 	{
@@ -74,7 +74,7 @@ public:
 		void Attach(HWND hWndNew)
 		{
 			ATLASSERT(::IsWindow(hWndNew));
-			CWindowImpl<CHaliteHeaderCtrl, CHeaderCtrl>::SubclassWindow(hWndNew);
+			CWindowImpl<CHaliteHeaderCtrl, WTL::CHeaderCtrl>::SubclassWindow(hWndNew);
 		}
 		
 		LRESULT OnRClick(int i, LPNMHDR pnmh, BOOL&)
@@ -132,7 +132,7 @@ public:
 	{		
 		if (TBase::LISTVIEW_ID_MENU)
 		{
-			CMenuHandle menu;
+			WTL::CMenuHandle menu;
 			BOOL menu_created = menu.LoadMenu(TBase::LISTVIEW_ID_MENU);
 			assert(menu_created);	
 			
@@ -386,7 +386,7 @@ public:
 	{
 		parentClass::SetColumnSortType(iCol, wType);
 		
-		if (LVCOLSORT_CUSTOM == wType)
+		if (WTL::LVCOLSORT_CUSTOM == wType)
 			regColumnAdapter(iCol, colAdapter);
 	}
 	

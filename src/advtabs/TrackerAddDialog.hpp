@@ -19,13 +19,13 @@
 class TrackerAddDialog :
 	public CDialogImpl<TrackerAddDialog>,
 	public WTLx::GenericAddDialog<TrackerAddDialog, IDD_TRACKEDIT>,
-	public CDialogResize<TrackerAddDialog>,
+	public WTL::CDialogResize<TrackerAddDialog>,
 	public CWinDataExchangeEx<TrackerAddDialog>
 {
 public:
 	typedef TrackerAddDialog thisClass;
 	typedef WTLx::GenericAddDialog<thisClass, IDD_TRACKEDIT> genericBaseClass;
-	typedef CDialogResize<thisClass> resizeClass;
+	typedef WTL::CDialogResize<thisClass> resizeClass;
 	
 public:
 	TrackerAddDialog(wstring title, hal::tracker_detail& tracker) :

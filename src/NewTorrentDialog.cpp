@@ -65,9 +65,9 @@ void FilesListViewCtrl::OnAttach()
 	
 	ApplyDetails();
 	
-	SetColumnSortType(0, LVCOLSORT_TEXTNOCASE);
-	SetColumnSortType(1, LVCOLSORT_TEXTNOCASE);
-	SetColumnSortType(2, LVCOLSORT_LONG);
+	SetColumnSortType(0, WTL::LVCOLSORT_TEXTNOCASE);
+	SetColumnSortType(1, WTL::LVCOLSORT_TEXTNOCASE);
+	SetColumnSortType(2, WTL::LVCOLSORT_LONG);
 }
 
 void FilesListViewCtrl::OnDestroy()
@@ -122,7 +122,7 @@ wpath DetailsSheet::OutputFile()
 
 void FilesSheet::OnDirBrowse(UINT, int, HWND hWnd)
 {	
-	CFolderDialog fldDlg(NULL, L"",	BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE);
+	WTL::CFolderDialog fldDlg(NULL, L"",	BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE);
 
 	try
 	{
@@ -364,7 +364,7 @@ void NewTorrentDialog::OnShowWindow(BOOL bShow, UINT nStatus)
 
     if (bShow && !inited_)
     {
-        CMenuHandle pSysMenu = GetSystemMenu(FALSE);
+		WTL::CMenuHandle pSysMenu = GetSystemMenu(FALSE);
 
     	if (pSysMenu != NULL)
             pSysMenu.InsertMenu(-1, MF_BYPOSITION|MF_STRING, SC_SIZE, L"&Size");
