@@ -1,10 +1,14 @@
 "English" ---> "Português"
 "English.rtf" --->  ??? 
+" %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s baixado - %2$.2fKB/s upado"
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB baixado - %2$.2fMB upado"
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB de %2$.2fMB"
 "%1% DHT node(s)" ---> "%1% DHT nó(s)"
 "%1% active torrent(s)" --->  ??? 
+"%1% peers from DHT." --->  ??? 
+"%1% port %2% mapping succeeded." --->  ??? 
+"%1% port mapping request failed." --->  ??? 
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Pausar Todos"
@@ -124,6 +128,7 @@
 "Importing IP Filters..." --->  ??? 
 "Incoming" ---> "Entrando"
 "Info" --->  ??? 
+"Informed of external IP address: %1%." --->  ??? 
 "Interested in us" ---> "Interessado na gente"
 "Interesting" ---> "Interessante"
 "Invalid torrent (%1%) from %2%." ---> "Torrent inválido (%1%) do %2%."
@@ -143,6 +148,7 @@
 "Move the completed torrent to:" --->  ??? 
 "N/A" --->  ??? 
 "NAT-PMG" --->  ??? 
+"NAT-PMP" --->  ??? 
 "Name" --->  ??? 
 "Name:" ---> "Nome:"
 "New" ---> "Novo"
@@ -151,6 +157,7 @@
 "Normal" ---> "Normal"
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" --->  ??? 
+"OS reported error for file '%1%'" --->  ??? 
 "Ok" --->  ??? 
 "Open &Halite" ---> "Abrir &Halite"
 "Open Download Folder" --->  ??? 
@@ -267,6 +274,7 @@
 "Trackers" --->  ??? 
 "Transferred:" ---> "Transferido:"
 "Type" ---> "Tipo"
+"UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
 "UnPlug and Play" --->  ??? 
@@ -284,6 +292,8 @@
 "Web Seed" ---> "Sementes da web"
 "Web Seeds and DHT Nodes" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml Exceção (%1%) com %2%."
+"\r\0" --->  ??? 
 "libTorrrent based client." --->  ??? 
+"resource.h\0" --->  ??? 
 "to" ---> "até"
 "∞" --->  ??? 

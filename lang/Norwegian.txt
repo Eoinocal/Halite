@@ -1,10 +1,14 @@
 "English" ---> "Norwegian"
 "English.rtf" --->  ??? 
+" %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "%1% DHT node(s)" ---> "%1% DHT node(r)"
 "%1% active torrent(s)" --->  ??? 
+"%1% peers from DHT." --->  ??? 
+"%1% port %2% mapping succeeded." --->  ??? 
+"%1% port mapping request failed." --->  ??? 
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Pause Alle"
@@ -124,6 +128,7 @@
 "Importing IP Filters..." --->  ??? 
 "Incoming" --->  ??? 
 "Info" --->  ??? 
+"Informed of external IP address: %1%." --->  ??? 
 "Interested in us" ---> "Interessert i oss"
 "Interesting" ---> "Interessant"
 "Invalid torrent (%1%) from %2%." ---> "Ugyldig torrent (%1%) fra %2%."
@@ -143,6 +148,7 @@
 "Move the completed torrent to:" --->  ??? 
 "N/A" ---> "I/T"
 "NAT-PMG" --->  ??? 
+"NAT-PMP" --->  ??? 
 "Name" --->  ??? 
 "Name:" ---> "Navn:"
 "New" ---> "Ny"
@@ -151,6 +157,7 @@
 "Normal" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" --->  ??? 
+"OS reported error for file '%1%'" --->  ??? 
 "Ok" --->  ??? 
 "Open &Halite" ---> "Åpne &Halite"
 "Open Download Folder" --->  ??? 
@@ -267,6 +274,7 @@
 "Trackers" --->  ??? 
 "Transferred:" --->  ??? 
 "Type" --->  ??? 
+"UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
 "UnPlug and Play" --->  ??? 
@@ -284,6 +292,8 @@
 "Web Seed" --->  ??? 
 "Web Seeds and DHT Nodes" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml unntak (%1%) med %2%."
+"\r\0" --->  ??? 
 "libTorrrent based client." ---> "libTorrrent basert klient."
+"resource.h\0" --->  ??? 
 "to" ---> "til"
 "∞" --->  ??? 
