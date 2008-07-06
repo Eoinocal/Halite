@@ -7,10 +7,10 @@
 #pragma once
 
 #define HAL_TRACKER_ADD_BEGIN	 	15500
-#define IDC_TRACKER_EDIT_URL        HAL_TRACKER_ADD_BEGIN + 1
-#define IDC_TRACKER_EDIT_TIER       HAL_TRACKER_ADD_BEGIN + 2
-#define IDC_TRACKER_TEXT_URL        HAL_TRACKER_ADD_BEGIN + 3
-#define IDC_TRACKER_TEXT_TIER       HAL_TRACKER_ADD_BEGIN + 4
+#define HAL_TRACKER_EDIT_URL        HAL_TRACKER_ADD_BEGIN + 1
+#define HAL_TRACKER_EDIT_TIER       HAL_TRACKER_ADD_BEGIN + 2
+#define HAL_TRACKER_TEXT_URL        HAL_TRACKER_ADD_BEGIN + 3
+#define HAL_TRACKER_TEXT_TIER       HAL_TRACKER_ADD_BEGIN + 4
 
 #ifndef RC_INVOKED
 
@@ -18,13 +18,13 @@
 
 class TrackerAddDialog :
 	public ATL::CDialogImpl<TrackerAddDialog>,
-	public WTLx::GenericAddDialog<TrackerAddDialog, IDD_TRACKEDIT>,
+	public WTLx::GenericAddDialog<TrackerAddDialog, HAL_TRACKEDIT>,
 	public WTL::CDialogResize<TrackerAddDialog>,
 	public CWinDataExchangeEx<TrackerAddDialog>
 {
 public:
 	typedef TrackerAddDialog thisClass;
-	typedef WTLx::GenericAddDialog<thisClass, IDD_TRACKEDIT> genericBaseClass;
+	typedef WTLx::GenericAddDialog<thisClass, HAL_TRACKEDIT> genericBaseClass;
 	typedef WTL::CDialogResize<thisClass> resizeClass;
 	
 public:
@@ -39,15 +39,15 @@ public:
     END_MSG_MAP()
 
     BEGIN_DDX_MAP(TrackerAddDialog)
-		DDX_EX_STDWSTRING(IDC_TRACKER_EDIT_URL, tracker_.url);
-        DDX_INT(IDC_TRACKER_EDIT_TIER, tracker_.tier)
+		DDX_EX_STDWSTRING(HAL_TRACKER_EDIT_URL, tracker_.url);
+        DDX_INT(HAL_TRACKER_EDIT_TIER, tracker_.tier)
     END_DDX_MAP()	
 
 	BEGIN_DLGRESIZE_MAP(thisClass)
-		DLGRESIZE_CONTROL(IDC_TRACKER_EDIT_URL, DLSZ_SIZE_X)
-		DLGRESIZE_CONTROL(IDC_TRACKER_EDIT_TIER, DLSZ_MOVE_X)
-		DLGRESIZE_CONTROL(IDC_TRACKER_TEXT_URL, DLSZ_SIZE_X)
-		DLGRESIZE_CONTROL(IDC_TRACKER_TEXT_TIER, DLSZ_MOVE_X)
+		DLGRESIZE_CONTROL(HAL_TRACKER_EDIT_URL, DLSZ_SIZE_X)
+		DLGRESIZE_CONTROL(HAL_TRACKER_EDIT_TIER, DLSZ_MOVE_X)
+		DLGRESIZE_CONTROL(HAL_TRACKER_TEXT_URL, DLSZ_SIZE_X)
+		DLGRESIZE_CONTROL(HAL_TRACKER_TEXT_TIER, DLSZ_MOVE_X)
 		DLGRESIZE_CONTROL(IDOK, DLSZ_MOVE_X|DLSZ_MOVE_Y)
 		DLGRESIZE_CONTROL(IDCANCEL, DLSZ_MOVE_X|DLSZ_MOVE_Y)
 	END_DLGRESIZE_MAP()

@@ -16,17 +16,17 @@ LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 {
 	dialogBaseClass::InitializeHalDialogBase();	
 	
-	m_list.Attach(GetDlgItem(IDC_TRACKERLIST));	
+	m_list.Attach(GetDlgItem(HAL_TRACKERLIST));	
 	m_list.attachEditedConnection(bind(&AdvTrackerDialog::trackerListEdited, this));
 
-	::EnableWindow(GetDlgItem(IDC_TRACKER_LOGINCHECK), false);
-	::EnableWindow(GetDlgItem(IDC_TRACKERLIST), false);
+	::EnableWindow(GetDlgItem(HAL_TRACKER_LOGINCHECK), false);
+	::EnableWindow(GetDlgItem(HAL_TRACKERLIST), false);
 	
 	username_ = L"";
 	password_ = L"";
 
-	userEdit_.SubclassWindow(GetDlgItem(IDC_TRACKER_USER));
-	passEdit_.SubclassWindow(GetDlgItem(IDC_TRACKER_PASS));
+	userEdit_.SubclassWindow(GetDlgItem(HAL_TRACKER_USER));
+	passEdit_.SubclassWindow(GetDlgItem(HAL_TRACKER_PASS));
 		
 	DoDataExchange(false);	
 	return 0;
@@ -36,15 +36,15 @@ void AdvTrackerDialog::setLoginUiState()
 {
 	if (username_ == L"")
 	{
-		::SendMessage(GetDlgItem(IDC_TRACKER_LOGINCHECK), BM_SETCHECK, BST_UNCHECKED, 0);
+		::SendMessage(GetDlgItem(HAL_TRACKER_LOGINCHECK), BM_SETCHECK, BST_UNCHECKED, 0);
 		password_ = L"";
 	}
 	else
 	{	
-		::SendMessage(GetDlgItem(IDC_TRACKER_LOGINCHECK), BM_SETCHECK, BST_CHECKED, 0);
+		::SendMessage(GetDlgItem(HAL_TRACKER_LOGINCHECK), BM_SETCHECK, BST_CHECKED, 0);
 	}
 	
-	onLoginCheck(0, 0, GetDlgItem(IDC_TRACKER_LOGINCHECK));	
+	onLoginCheck(0, 0, GetDlgItem(HAL_TRACKER_LOGINCHECK));	
 }
 
 void AdvTrackerDialog::onClose()
@@ -71,8 +71,8 @@ void AdvTrackerDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 {		
 	if (pT)
 	{		
-		::EnableWindow(GetDlgItem(IDC_TRACKER_LOGINCHECK), true);
-		::EnableWindow(GetDlgItem(IDC_TRACKERLIST), true);
+		::EnableWindow(GetDlgItem(HAL_TRACKER_LOGINCHECK), true);
+		::EnableWindow(GetDlgItem(HAL_TRACKERLIST), true);
 
 		std::pair<wstring, wstring> details = hal::bittorrent().get(pT).tracker_login;
 		
@@ -81,8 +81,8 @@ void AdvTrackerDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 	}
 	else
 	{				
-		::EnableWindow(GetDlgItem(IDC_TRACKER_LOGINCHECK), false);
-		::EnableWindow(GetDlgItem(IDC_TRACKERLIST), false);
+		::EnableWindow(GetDlgItem(HAL_TRACKER_LOGINCHECK), false);
+		::EnableWindow(GetDlgItem(HAL_TRACKERLIST), false);
 		
 		username_ = L"";
 		password_ = L"";
@@ -90,7 +90,7 @@ void AdvTrackerDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 	
 	m_list.uiUpdate(pT);
 			
-	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), false);	
+	::EnableWindow(GetDlgItem(HAL_TRACKER_APPLY), false);	
 	setLoginUiState();
 
 	DoDataExchange(false);
@@ -103,17 +103,17 @@ AdvTrackerDialog::CWindowMapStruct* AdvTrackerDialog::GetWindowMap()
 {
 #define TRACKER_LOGIN_LAYOUT \
 	WMB_HEAD(WMB_COL(_exp|50), WMB_COL(_exp|66), WMB_COL(_exp|33)), \
-		WMB_ROW(_auto,	IDC_TRACKER_LOGINCHECK,	_r,	_r), \
-		WMB_ROW(_auto,	IDC_TRACKER_USER_S, IDC_TRACKER_USER, _r), \
-		WMB_ROW(_auto,	IDC_TRACKER_PASS_S,	IDC_TRACKER_PASS, _r), \
-		WMB_ROW(_auto,	_, IDC_LOGIN_APPLY), \
-		WMB_ROW(_auto,	_, IDC_REANNOUNCE), \
+		WMB_ROW(_auto,	HAL_TRACKER_LOGINCHECK,	_r,	_r), \
+		WMB_ROW(_auto,	HAL_TRACKER_USER_S, HAL_TRACKER_USER, _r), \
+		WMB_ROW(_auto,	HAL_TRACKER_PASS_S,	HAL_TRACKER_PASS, _r), \
+		WMB_ROW(_auto,	_, HAL_LOGIN_APPLY), \
+		WMB_ROW(_auto,	_, HAL_REANNOUNCE), \
 	WMB_END()
 
 #define TRACKER_LIST_LAYOUT \
 	WMB_HEAD(WMB_COL(_exp), WMB_COLNOMIN(_exp|25), WMB_COL(_exp|25)), \
-		WMB_ROW(_auto,	IDC_TRACKER_LABEL, IDC_TRACKER_RESET, IDC_TRACKER_APPLY), \
-		WMB_ROW(_exp,	IDC_TRACKERLIST, _r, _r), \
+		WMB_ROW(_auto,	HAL_TRACKER_LABEL, HAL_TRACKER_RESET, HAL_TRACKER_APPLY), \
+		WMB_ROW(_exp,	HAL_TRACKERLIST, _r, _r), \
 	WMB_END()
 
 	BEGIN_WINDOW_MAP_INLINE(AdvTrackerDialog, 6, 6, 3, 3)
@@ -129,13 +129,13 @@ void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
 	
 	if (result == BST_CHECKED)
 	{
-		::EnableWindow(GetDlgItem(IDC_TRACKER_USER), true);
-		::EnableWindow(GetDlgItem(IDC_TRACKER_PASS), true);
+		::EnableWindow(GetDlgItem(HAL_TRACKER_USER), true);
+		::EnableWindow(GetDlgItem(HAL_TRACKER_PASS), true);
 	}
 	else
 	{
-		::EnableWindow(GetDlgItem(IDC_TRACKER_USER), false);
-		::EnableWindow(GetDlgItem(IDC_TRACKER_PASS), false);	
+		::EnableWindow(GetDlgItem(HAL_TRACKER_USER), false);
+		::EnableWindow(GetDlgItem(HAL_TRACKER_PASS), false);	
 
 		username_ = L"";	
 		password_ = L"";
@@ -174,7 +174,7 @@ void AdvTrackerDialog::onReannounce(UINT, int, HWND)
 
 void AdvTrackerDialog::trackerListEdited()
 {
-	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), true);
+	::EnableWindow(GetDlgItem(HAL_TRACKER_APPLY), true);
 }
 
 void AdvTrackerDialog::onReset(UINT, int, HWND)
@@ -192,7 +192,7 @@ void AdvTrackerDialog::onReset(UINT, int, HWND)
 			m_list.SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());
 		}
 	}
-	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), false);
+	::EnableWindow(GetDlgItem(HAL_TRACKER_APPLY), false);
 }
 
 void AdvTrackerDialog::onApply(UINT, int, HWND)
@@ -216,5 +216,5 @@ void AdvTrackerDialog::onApply(UINT, int, HWND)
 	if (hal::bit::torrent t = hal::bittorrent().get(focusedTorrent()))
 		t.trackers = trackers;
 	
-	::EnableWindow(GetDlgItem(IDC_TRACKER_APPLY), false);
+	::EnableWindow(GetDlgItem(HAL_TRACKER_APPLY), false);
 }

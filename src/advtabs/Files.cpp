@@ -74,7 +74,7 @@ HWND FileTreeView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowNa
 	assert(hwnd);
 	
 	WTL::CMenuHandle menu;
-	BOOL menu_created = menu.LoadMenu(IDR_FILESLISTVIEW_MENU);
+	BOOL menu_created = menu.LoadMenu(HAL_FILESLISTVIEW_MENU);
 	assert(menu_created);	
 	
 	menu_.Attach(menu.GetSubMenu(0));
@@ -184,9 +184,9 @@ LRESULT AdvFilesDialog::onInitDialog(HWND, LPARAM)
 	
 	WTL::CRect rc; GetClientRect(&rc);
 	
-	static_.SubclassWindow(GetDlgItem(IDC_CONTAINER));
+	static_.SubclassWindow(GetDlgItem(HAL_CONTAINER));
 	
-	splitter_.Create(GetDlgItem(IDC_CONTAINER), rc, NULL, WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN);
+	splitter_.Create(GetDlgItem(HAL_CONTAINER), rc, NULL, WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN);
 	splitter_.SetSplitterExtendedStyle(!SPLIT_PROPORTIONAL, SPLIT_PROPORTIONAL);
 	
 	list_.Create(splitter_, rc, NULL, 
@@ -214,7 +214,7 @@ void AdvFilesDialog::DlgResize_UpdateLayout(int cxWidth, int cyHeight)
 {
 	resizeClass::DlgResize_UpdateLayout(cxWidth, cyHeight);
 	
-	WTL::CRect rect; ::GetClientRect(GetDlgItem(IDC_CONTAINER), &rect);
+	WTL::CRect rect; ::GetClientRect(GetDlgItem(HAL_CONTAINER), &rect);
 	
 	splitter_.SetWindowPos(NULL, rect.left, rect.top,
 		rect.right - rect.left, rect.bottom - rect.top,

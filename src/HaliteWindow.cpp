@@ -94,7 +94,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	SetMenu(0);
 	
 	//Init ToolBar
-	HWND hWndToolBar = CreateSimpleToolBarCtrl(m_hWnd, IDR_MAINFRAME, FALSE, ATL_SIMPLE_TOOLBAR_PANE_STYLE);
+	HWND hWndToolBar = CreateSimpleToolBarCtrl(m_hWnd, HAL_MAINFRAME, FALSE, ATL_SIMPLE_TOOLBAR_PANE_STYLE);
 	
 	// Init ReBar
 	CreateSimpleReBar(ATL_SIMPLE_REBAR_NOBORDER_STYLE);
@@ -140,15 +140,15 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Creating tray icon...")));	
 	// Create the tray icon.
-	trayIcon_.Create(this, IDR_TRAY_MENU, L"Halite", 
-		CTrayNotifyIcon::LoadIconResource(IDR_APP_ICON), WM_TRAYNOTIFY, IDR_TRAY_MENU);
+	trayIcon_.Create(this, HAL_TRAY_MENU, L"Halite", 
+		CTrayNotifyIcon::LoadIconResource(HAL_APP_ICON), WM_TRAYNOTIFY, HAL_TRAY_MENU);
 	trayIcon_.Hide();
 	
 	// Add ToolBar and register it along with StatusBar for UIUpdates
 	UIAddToolBar(hWndToolBar);
 	UISetCheck(ID_VIEW_TOOLBAR, 1);
 	UISetCheck(ID_VIEW_STATUS_BAR, 1);
-	UISetCheck(IDR_TRAY_MENU, 1);	
+	UISetCheck(HAL_TRAY_MENU, 1);	
 	
 //	TBBUTTONINFO tbinfo = { sizeof(TBBUTTONINFO) };
 //	tbinfo.dwMask = TBIF_STATE;

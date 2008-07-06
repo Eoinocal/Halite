@@ -17,19 +17,19 @@ void AdvDebugDialog::onLoginCheck(UINT, int, HWND hWnd)
 	
 	if (result == BST_CHECKED)
 	{
-		::EnableWindow(GetDlgItem(IDC_TRACKER_USER), true);
-		::EnableWindow(GetDlgItem(IDC_TRACKER_PASS), true);
+		::EnableWindow(GetDlgItem(HAL_TRACKER_USER), true);
+		::EnableWindow(GetDlgItem(HAL_TRACKER_PASS), true);
 	}
 	else
 	{
-		::EnableWindow(GetDlgItem(IDC_TRACKER_USER), false);
-		::EnableWindow(GetDlgItem(IDC_TRACKER_PASS), false);
+		::EnableWindow(GetDlgItem(HAL_TRACKER_USER), false);
+		::EnableWindow(GetDlgItem(HAL_TRACKER_PASS), false);
 	}
 }
 
 LRESULT AdvDebugDialog::onInitDialog(HWND, LPARAM)
 {
-	logList.Attach(GetDlgItem(IDC_DEBUGLISTVIEW));
+	logList.Attach(GetDlgItem(HAL_DEBUGLISTVIEW));
 
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);	
 	DoDataExchange(false);
@@ -39,8 +39,8 @@ LRESULT AdvDebugDialog::onInitDialog(HWND, LPARAM)
 
 BOOL AdvDebugDialog::DoDataExchange(BOOL bSaveAndValidate, UINT nCtlID)
 {	
-	DDX_CHECK(IDC_DEBUGFILECHECK, halite().logToFile_)
-	DDX_CHECK(IDC_DEBUGDEBUGCHECK, halite().logDebug_)
+	DDX_CHECK(HAL_DEBUGFILECHECK, halite().logToFile_)
+	DDX_CHECK(HAL_DEBUGDEBUGCHECK, halite().logDebug_)
 
 	return TRUE;
 }

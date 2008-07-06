@@ -6,12 +6,12 @@
 
 #pragma once
 
-#define IDD_PROGRESS                    15000
+#define HAL_PROGRESS                    15000
 #define ID_PROGRESS_BEGIN				15001
 
-#define IDC_PROG_DESCP                  ID_PROGRESS_BEGIN + 1
-#define IDC_PROG_CANCEL                 ID_PROGRESS_BEGIN + 2
-#define IDC_PROG_PROGRESS               ID_PROGRESS_BEGIN + 3
+#define HAL_PROG_DESCP                  ID_PROGRESS_BEGIN + 1
+#define HAL_PROG_CANCEL                 ID_PROGRESS_BEGIN + 2
+#define HAL_PROG_PROGRESS               ID_PROGRESS_BEGIN + 3
 
 #ifndef RC_INVOKED
 
@@ -36,19 +36,19 @@ public:
 		stop_(false)
 	{}
 	
-	enum { IDD = IDD_PROGRESS };
+	enum { IDD = HAL_PROGRESS };
 
     BEGIN_MSG_MAP_EX(ProgressDialog)
 		MSG_WM_INITDIALOG(onInitDialog)
 
-		COMMAND_ID_HANDLER_EX(IDC_PROG_CANCEL, onCancel)
+		COMMAND_ID_HANDLER_EX(HAL_PROG_CANCEL, onCancel)
     END_MSG_MAP()
 	
 	LRESULT onInitDialog(HWND, LPARAM)
 	{
 		CenterWindow();
 		SetWindowText(windowText_.c_str());
-		prog_.Attach(GetDlgItem(IDC_PROG_PROGRESS));
+		prog_.Attach(GetDlgItem(HAL_PROG_PROGRESS));
 		prog_.SetRange(0, 100);
 		
 		thread_ptr.reset(new thread(bind(&ProgressDialog::ProgressThread, this)));
@@ -65,7 +65,7 @@ public:
 	
 	bool Callback(size_t progress, wstring description)
 	{
-		SetDlgItemText(IDC_PROG_DESCP, description.c_str());
+		SetDlgItemText(HAL_PROG_DESCP, description.c_str());
 		prog_.SetPos(progress);
 		
 		return stop_;

@@ -88,7 +88,7 @@ void AdvPeerDialog::uiUpdate(const hal::TorrentDetails& tD)
 
 LRESULT AdvPeerDialog::OnInitDialog(HWND, LPARAM)
 {	
-	peerList_.SubclassWindow(GetDlgItem(IDC_PEERLIST));
+	peerList_.SubclassWindow(GetDlgItem(HAL_PEERLIST));
 	
 	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);	
 	

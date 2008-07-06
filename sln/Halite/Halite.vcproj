@@ -1025,6 +1025,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\NewTorrentTrackerAD.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\NewTorrentTrackerLV.hpp"
 				>
 			</File>
