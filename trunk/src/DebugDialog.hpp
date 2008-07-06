@@ -41,7 +41,7 @@ private:
 	LogEdit logEdit;
 
 public:
-	enum { IDD = IDD_DEBUGDIALOG };
+	enum { IDD = HAL_DEBUGDIALOG };
 
 	BOOL PreTranslateMessage(MSG* pMsg)
 	{

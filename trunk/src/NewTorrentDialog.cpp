@@ -19,7 +19,7 @@ void DetailsSheet::OnOutBrowse(UINT, int, HWND hWnd)
 
 	if (dlgOpen.DoModal() == IDOK) 
 	{
-		SetDlgItemText(IDC_NEWT_FILE, dlgOpen.m_ofn.lpstrFile);
+		SetDlgItemText(HAL_NEWT_FILE, dlgOpen.m_ofn.lpstrFile);
 		EnableSave_(true);
 	}
 }
@@ -266,24 +266,24 @@ hal::web_seed_details_t PeersSheet::WebSeeds() const
 
 #define NEWTORRENT_SELECT_LAYOUT \
 	WMB_HEAD(WMB_COLNOMIN(_exp|150), WMB_COL(_auto), WMB_COL(_auto)), \
-		WMB_ROW(_auto,	IDC_NEWTORRENT_SELECT_TEXT, IDC_NEWT_FILE_BROWSE, IDC_NEWT_DIR_BROWSE), \
-		WMB_ROWNOMAX(_exp|50,	IDC_NEWT_LISTFILES,  _r, _r), \
+		WMB_ROW(_auto,	HAL_NEWTORRENT_SELECT_TEXT, HAL_NEWT_FILE_BROWSE, HAL_NEWT_DIR_BROWSE), \
+		WMB_ROWNOMAX(_exp|50,	HAL_NEWT_LISTFILES,  _r, _r), \
 	WMB_END()
 
 #define NEWTORRENT_BUTTONS_LAYOUT \
 	WMB_HEAD(WMB_COLNOMIN(_exp), WMB_COL(_auto), WMB_COL(_auto)), \
-		WMB_ROW(_auto,	IDC_NEWTORRENT_PRIVATE,  IDOK, IDCANCEL), \
+		WMB_ROW(_auto,	HAL_NEWTORRENT_PRIVATE,  IDOK, IDCANCEL), \
 	WMB_END()
 
 #define NEWTORRENT_COMMENT_LAYOUT \
 	WMB_HEAD(WMB_COLNOMIN(_exp)), \
-		WMB_ROW(_auto,	IDC_NEWTORRENT_COMMENT_TEXT), \
-		WMB_ROW(_exp,	IDC_NEWTORRENT_COMMENT), \
+		WMB_ROW(_auto,	HAL_NEWTORRENT_COMMENT_TEXT), \
+		WMB_ROW(_exp,	HAL_NEWTORRENT_COMMENT), \
 	WMB_END()
 
 #define NEWTORRENT_CREATOR_LAYOUT \
 	WMB_HEAD(WMB_COL(_auto), WMB_COLNOMIN(_exp)), \
-		WMB_ROW(_auto,	IDC_NEWTORRENT_CREATOR_TEXT,  IDC_NEWTORRENT_CREATOR), \
+		WMB_ROW(_auto,	HAL_NEWTORRENT_CREATOR_TEXT,  HAL_NEWTORRENT_CREATOR), \
 	WMB_END()
 
 #define NEWTORRENT_PIECESIZE_LAYOUT \
@@ -293,7 +293,7 @@ hal::web_seed_details_t PeersSheet::WebSeeds() const
 
 #define NEWTORRENT_OUTPUT_LAYOUT \
 	WMB_HEAD(WMB_COL(_auto), WMB_COLNOMIN(_exp), WMB_COL(_auto)), \
-		WMB_ROW(_auto,	IDC_NEWT_OUTFILE_TEXT,  IDC_NEWT_FILE, IDC_NEWT_OUT_BROWSE), \
+		WMB_ROW(_auto,	HAL_NEWT_OUTFILE_TEXT,  HAL_NEWT_FILE, HAL_NEWT_OUT_BROWSE), \
 	WMB_END()
 
 DetailsSheet::CWindowMapStruct* DetailsSheet::GetWindowMap()
@@ -304,7 +304,7 @@ DetailsSheet::CWindowMapStruct* DetailsSheet::GetWindowMap()
 		WMB_ROW(_exp, NEWTORRENT_COMMENT_LAYOUT),
 		WMB_ROW(_auto, NEWTORRENT_PIECESIZE_LAYOUT),
 		WMB_ROW(_auto, NEWTORRENT_OUTPUT_LAYOUT),
-		WMB_ROW(_auto, IDC_NEWTORRENT_PRIVATE),
+		WMB_ROW(_auto, HAL_NEWTORRENT_PRIVATE),
 		WMB_END() 
 	END_WINDOW_MAP_INLINE()	
 }	
@@ -327,8 +327,8 @@ FilesSheet::CWindowMapStruct* FilesSheet::GetWindowMap()
 
 #define NEWTORRENT_TRACKERS_LAYOUT \
 	WMB_HEAD(WMB_COLNOMIN(_exp), WMB_COL(_auto), WMB_COL(_auto)), \
-		WMB_ROW(_auto,	IDC_NEWTORRENT_TRACKERS_TEXT, _r, _r), \
-		WMB_ROWNOMAX(_exp|50,	IDC_NEWT_LISTTRACKERS,  _r, _r), \
+		WMB_ROW(_auto,	HAL_NEWTORRENT_TRACKERS_TEXT, _r, _r), \
+		WMB_ROWNOMAX(_exp|50,	HAL_NEWT_LISTTRACKERS,  _r, _r), \
 	WMB_END()
 
 TrackerSheet::CWindowMapStruct* TrackerSheet::GetWindowMap()
@@ -342,8 +342,8 @@ TrackerSheet::CWindowMapStruct* TrackerSheet::GetWindowMap()
 
 #define NEWTORRENT_PEERS_LAYOUT \
 	WMB_HEAD(WMB_COLNOMIN(_exp), WMB_COL(_auto), WMB_COL(_auto)), \
-		WMB_ROW(_auto,	IDC_NEWTORRENT_PEERS_TEXT, _r, _r), \
-		WMB_ROWNOMAX(_exp|50,	IDC_NEWT_LISTPEERS,  _r, _r), \
+		WMB_ROW(_auto,	HAL_NEWTORRENT_PEERS_TEXT, _r, _r), \
+		WMB_ROWNOMAX(_exp|50,	HAL_NEWT_LISTPEERS,  _r, _r), \
 	WMB_END()
 
 PeersSheet::CWindowMapStruct* PeersSheet::GetWindowMap()

@@ -25,7 +25,7 @@ protected:
 	typedef CHalTabPageImpl<ThemeTestDialog> baseClass;
 	typedef WTL::CDialogResize<ThemeTestDialog> resizeClass;
 public:
-	enum { IDD = IDD_THEMETEST };
+	enum { IDD = HAL_THEMETEST };
 
 	ThemeTestDialog()
 	{}
@@ -51,7 +51,7 @@ public:
 
 	LRESULT onInitDialog(HWND, LPARAM)
 	{
-		::SetWindowText(GetDlgItem(IDC_EDIT2), L"Eoin");
+		::SetWindowText(GetDlgItem(HAL_EDIT2), L"Eoin");
 		return 0;
 	}
 

@@ -10,11 +10,11 @@
 #define HAL_ADJUST_DLG	 				30100
 
 #define HAL_ADJUST_DLG_BEGIN	 		30101
-#define IDC_ADDT_MOVETO_FOLDER			HAL_ADJUST_DLG_BEGIN + 1
-#define IDC_ADDT_MOVETO_BROWSE			HAL_ADJUST_DLG_BEGIN + 2
-#define IDC_ADDT_MOVETO_CHECK			HAL_ADJUST_DLG_BEGIN + 3
-#define IDC_ADDT_DEFFLD_TEXT			HAL_ADJUST_DLG_BEGIN + 4
-#define IDC_ADDT_NOTE_TEXT				HAL_ADJUST_DLG_BEGIN + 5
+#define HAL_ADDT_MOVETO_FOLDER			HAL_ADJUST_DLG_BEGIN + 1
+#define HAL_ADDT_MOVETO_BROWSE			HAL_ADJUST_DLG_BEGIN + 2
+#define HAL_ADDT_MOVETO_CHECK			HAL_ADJUST_DLG_BEGIN + 3
+#define HAL_ADDT_DEFFLD_TEXT			HAL_ADJUST_DLG_BEGIN + 4
+#define HAL_ADDT_NOTE_TEXT				HAL_ADJUST_DLG_BEGIN + 5
 #define HAL_ADDT_TITLE					HAL_ADJUST_DLG_BEGIN + 6
 
 #ifndef RC_INVOKED
@@ -42,25 +42,25 @@ public:
 
     BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
-		COMMAND_ID_HANDLER_EX(IDC_ADDT_MOVETO_CHECK, OnMoveTo)
-		COMMAND_ID_HANDLER_EX(IDC_BC_SAVEBROWSE, OnBrowse)
-		COMMAND_ID_HANDLER_EX(IDC_ADDT_MOVETO_BROWSE, OnMoveBrowse)
+		COMMAND_ID_HANDLER_EX(HAL_ADDT_MOVETO_CHECK, OnMoveTo)
+		COMMAND_ID_HANDLER_EX(HAL_BC_SAVEBROWSE, OnBrowse)
+		COMMAND_ID_HANDLER_EX(HAL_ADDT_MOVETO_BROWSE, OnMoveBrowse)
 
         CHAIN_MSG_MAP(autosizeClass)
     END_MSG_MAP()
 
     BEGIN_DDX_MAP(thisClass)
-        DDX_CHECK(IDC_ADDT_MOVETO_CHECK, useMove_)
-		DDX_EX_STDWSTRING(IDC_BC_SAVEFOLDER, saveDirectory_)
-		DDX_EX_STDWSTRING(IDC_ADDT_MOVETO_FOLDER, moveToDirectory_)
+        DDX_CHECK(HAL_ADDT_MOVETO_CHECK, useMove_)
+		DDX_EX_STDWSTRING(HAL_BC_SAVEFOLDER, saveDirectory_)
+		DDX_EX_STDWSTRING(HAL_ADDT_MOVETO_FOLDER, moveToDirectory_)
     END_DDX_MAP()	
 
 #define ADD_FOLDERS_LAYOUT \
 	WMB_HEAD(WMB_COLNOMAX(_exp), WMB_COL(_auto)), \
-		WMB_ROW(_auto,	IDC_ADDT_DEFFLD_TEXT, _r), \
-		WMB_ROW(_auto,	IDC_BC_SAVEFOLDER, IDC_BC_SAVEBROWSE), \
-		WMB_ROW(_auto,	IDC_ADDT_MOVETO_CHECK, _r), \
-		WMB_ROW(_auto,	IDC_ADDT_MOVETO_FOLDER, IDC_ADDT_MOVETO_BROWSE), \
+		WMB_ROW(_auto,	HAL_ADDT_DEFFLD_TEXT, _r), \
+		WMB_ROW(_auto,	HAL_BC_SAVEFOLDER, HAL_BC_SAVEBROWSE), \
+		WMB_ROW(_auto,	HAL_ADDT_MOVETO_CHECK, _r), \
+		WMB_ROW(_auto,	HAL_ADDT_MOVETO_FOLDER, HAL_ADDT_MOVETO_BROWSE), \
 	WMB_END()
 
 	BEGIN_WINDOW_MAP(thisClass, 0, 0, 3, 3)
@@ -75,11 +75,11 @@ public:
 
 		if (disableSaveDir_)
 		{
-			::EnableWindow(GetDlgItem(IDC_BC_SAVEFOLDER), false);
-			::EnableWindow(GetDlgItem(IDC_BC_SAVEBROWSE), false);
+			::EnableWindow(GetDlgItem(HAL_BC_SAVEFOLDER), false);
+			::EnableWindow(GetDlgItem(HAL_BC_SAVEBROWSE), false);
 		}
 
-		OnMoveTo(0, 0, GetDlgItem(IDC_ADDT_MOVETO_CHECK));
+		OnMoveTo(0, 0, GetDlgItem(HAL_ADDT_MOVETO_CHECK));
 
 		SetMsgHandled(false);
 		return 0;
@@ -91,13 +91,13 @@ public:
 
 		if (result == BST_CHECKED)
 		{
-			::EnableWindow(GetDlgItem(IDC_ADDT_MOVETO_FOLDER), true);
-			::EnableWindow(GetDlgItem(IDC_ADDT_MOVETO_BROWSE), true);
+			::EnableWindow(GetDlgItem(HAL_ADDT_MOVETO_FOLDER), true);
+			::EnableWindow(GetDlgItem(HAL_ADDT_MOVETO_BROWSE), true);
 		}
 		else
 		{
-			::EnableWindow(GetDlgItem(IDC_ADDT_MOVETO_FOLDER), false);
-			::EnableWindow(GetDlgItem(IDC_ADDT_MOVETO_BROWSE), false);
+			::EnableWindow(GetDlgItem(HAL_ADDT_MOVETO_FOLDER), false);
+			::EnableWindow(GetDlgItem(HAL_ADDT_MOVETO_BROWSE), false);
 		}
 	}
 	

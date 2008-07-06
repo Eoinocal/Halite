@@ -25,13 +25,13 @@
 
 class NewTorrent_PeersAddDialog :
 	public ATL::CDialogImpl<NewTorrent_PeersAddDialog>,
-	public WTLx::GenericAddDialog<NewTorrent_PeersAddDialog, IDD_PEEREDIT>,
+	public WTLx::GenericAddDialog<NewTorrent_PeersAddDialog, HAL_PEEREDIT>,
 	public WTL::CDialogResize<NewTorrent_PeersAddDialog>,
 	public CWinDataExchangeEx<NewTorrent_PeersAddDialog>
 {
 public:
 	typedef NewTorrent_PeersAddDialog thisClass;
-	typedef WTLx::GenericAddDialog<thisClass, IDD_PEEREDIT> genericBaseClass;
+	typedef WTLx::GenericAddDialog<thisClass, HAL_PEEREDIT> genericBaseClass;
 	typedef WTL::CDialogResize<thisClass> resizeClass;
 	
 public:

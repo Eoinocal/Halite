@@ -140,7 +140,7 @@ protected:
 	typedef CHaliteDialogBase<AdvPeerDialog> dialogBaseClass;
 
 public:
-	enum { IDD = IDD_ADVPEER };
+	enum { IDD = HAL_ADVPEER };
 
 	AdvPeerDialog(HaliteWindow& halWindow) :
 		dialogBaseClass(halWindow)
@@ -165,7 +165,7 @@ public:
 	END_MSG_MAP()
 
 	BEGIN_DLGRESIZE_MAP(thisClass)
-		DLGRESIZE_CONTROL(IDC_PEERLIST, DLSZ_SIZE_X|DLSZ_SIZE_Y)
+		DLGRESIZE_CONTROL(HAL_PEERLIST, DLSZ_SIZE_X|DLSZ_SIZE_Y)
 	END_DLGRESIZE_MAP()
 
 	LRESULT OnInitDialog(HWND, LPARAM);

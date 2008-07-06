@@ -16,13 +16,13 @@
 
 class NewTorrent_TrackerAddDialog :
 	public ATL::CDialogImpl<NewTorrent_TrackerAddDialog>,
-	public WTLx::GenericAddDialog<NewTorrent_TrackerAddDialog, IDD_TRACKEDIT>,
+	public WTLx::GenericAddDialog<NewTorrent_TrackerAddDialog, HAL_TRACKEDIT>,
 	public WTL::CDialogResize<NewTorrent_TrackerAddDialog>,
 	public CWinDataExchangeEx<NewTorrent_TrackerAddDialog>
 {
 public:
 	typedef NewTorrent_TrackerAddDialog thisClass;
-	typedef WTLx::GenericAddDialog<thisClass, IDD_TRACKEDIT> genericBaseClass;
+	typedef WTLx::GenericAddDialog<thisClass, HAL_TRACKEDIT> genericBaseClass;
 	typedef WTL::CDialogResize<thisClass> resizeClass;
 	
 public:

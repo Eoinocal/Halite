@@ -149,7 +149,7 @@ public:
 
 public:	
 	enum { 
-		LISTVIEW_ID_MENU = IDR_FILESLISTVIEW_MENU,
+		LISTVIEW_ID_MENU = HAL_FILESLISTVIEW_MENU,
 		LISTVIEW_ID_COLUMNNAMES = HAL_DIALOGFILE_LISTVIEW_ADV,
 		LISTVIEW_ID_COLUMNWIDTHS = 0
 	};
@@ -391,7 +391,7 @@ protected:
 	typedef hal::IniBase<thisClass> iniClass;
 
 public:
-	enum { IDD = IDD_ADVFILES };
+	enum { IDD = HAL_ADVFILES };
 
 	AdvFilesDialog(HaliteWindow& halWindow) :
 		dialogBaseClass(halWindow),
@@ -425,7 +425,7 @@ public:
 	END_MSG_MAP()
 
 	BEGIN_DLGRESIZE_MAP(thisClass)
-		DLGRESIZE_CONTROL(IDC_CONTAINER, DLSZ_SIZE_X|DLSZ_SIZE_Y|DLSZ_REPAINT)
+		DLGRESIZE_CONTROL(HAL_CONTAINER, DLSZ_SIZE_X|DLSZ_SIZE_Y|DLSZ_REPAINT)
 	END_DLGRESIZE_MAP()
 
     friend class boost::serialization::access;

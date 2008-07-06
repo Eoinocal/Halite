@@ -163,7 +163,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			if (!hal::app().command_args().empty())
 				wndMain.ProcessFile(hal::app().command_args().front().c_str());
 			
-			wndMain.SetIcon(LoadIcon(hInstance, MAKEINTRESOURCE(IDR_APP_ICON)), false);	
+			wndMain.SetIcon(LoadIcon(hInstance, MAKEINTRESOURCE(HAL_APP_ICON)), false);	
 			wndMain.ShowWindow(nCmdShow);
 			
 			nRet = theLoop.Run();				
