@@ -1,10 +1,14 @@
 "English" ---> "Türkçe"
-"English.rtf" ---> "../lang/Turkish.rtf"
+"English.rtf" ---> "Türkçe.rtf"
+" %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s indir. - %2$.2fKB/s gönd."
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB indir. - %2$.2fMB gönd."
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB, toplam %2$.2fMB"
 "%1% DHT node(s)" ---> "%1% DHT nodu"
 "%1% active torrent(s)" ---> "%1% aktif torrent"
+"%1% peers from DHT." --->  ??? 
+"%1% port %2% mapping succeeded." --->  ??? 
+"%1% port mapping request failed." --->  ??? 
 "%1%, %2%." ---> "%1%, %2%."
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Eş. (%1%)"
 "&Pause All" ---> "Hepsini &Duraklat"
@@ -124,6 +128,7 @@
 "Importing IP Filters..." ---> "IP Süzgeçleri İçeri Aktarılıyor..."
 "Incoming" ---> "Gelen"
 "Info" ---> "Bilgi"
+"Informed of external IP address: %1%." --->  ??? 
 "Interested in us" ---> "Bizle ilgilendi"
 "Interesting" ---> "İlgileniyor"
 "Invalid torrent (%1%) from %2%." ---> "Geçersiz torrent (%1%) 'den %2%'ye."
@@ -143,6 +148,7 @@
 "Move the completed torrent to:" ---> "Biten torrenti buraya taşı :"
 "N/A" ---> "N/A"
 "NAT-PMG" ---> "NAT-PMG"
+"NAT-PMP" --->  ??? 
 "Name" ---> "İsim"
 "Name:" ---> "İsim:"
 "New" ---> "Yeni"
@@ -151,6 +157,7 @@
 "Normal" ---> "Normal"
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" ---> "Tamam"
+"OS reported error for file '%1%'" --->  ??? 
 "Ok" ---> "Tamam"
 "Open &Halite" ---> "&Halite Göster"
 "Open Download Folder" ---> "İndirme Klasörünü Aç"
@@ -267,6 +274,7 @@
 "Trackers" ---> "İzleyiciler"
 "Transferred:" ---> "Aktarılan"
 "Type" --->  ??? 
+"UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" ---> "URL"
 "UnPlug and Play" --->  ??? 
@@ -284,6 +292,8 @@
 "Web Seed" ---> "Web Kaynağı"
 "Web Seeds and DHT Nodes" ---> "Web Kaynakları ve DHT Nodları"
 "Xml Exception (%1%) with %2%." ---> "Xml İstisnası (%1%) ile %2%."
+"\r\0" --->  ??? 
 "libTorrrent based client." ---> "libTorrent tabanlı program."
+"resource.h\0" --->  ??? 
 "to" ---> "-"
 "∞" ---> "∞"
