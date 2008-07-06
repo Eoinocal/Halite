@@ -547,6 +547,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\HaliteWindow.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\halSession.cpp"
 				>
 			</File>
@@ -985,10 +989,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\HaliteWindow.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\HaliteWindow.hpp"
 				>
 			</File>
@@ -1201,6 +1201,54 @@
 			<File
 				RelativePath="..\..\res\Halite.rc"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories="&quot;$(ProjectDir)\..\..\src&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories="&quot;$(ProjectDir)\..\..\src&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories="&quot;$(ProjectDir)\..\..\src&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories="&quot;$(ProjectDir)\..\..\src&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Logging|Win32"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories="&quot;$(ProjectDir)\..\..\src&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Logging|x64"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories="&quot;$(ProjectDir)\..\..\src&quot;"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\res\Manifest.xml"
