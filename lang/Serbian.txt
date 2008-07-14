@@ -280,6 +280,6 @@
 "Web Seed" ---> "Web Seed"
 "Web Seeds and DHT Nodes" --->  "Weeb-seed i DHT-čvorovi"
 "Xml Exception (%1%) with %2%." ---> "XML Greška (%1%) kod (%2%)"
-"libTorrrent based client." ---> "Na libTorrent-u basiran klijent"
+"libTorrrent based client." ---> "Na libTorrent-u baziran klijent"
 "to" ---> "Do"
 "∞" ---> "-"
