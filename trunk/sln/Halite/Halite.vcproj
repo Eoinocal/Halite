@@ -1168,6 +1168,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\WTLx\ListViewIterators.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\WTLx\NTray.hpp"
 					>
 				</File>

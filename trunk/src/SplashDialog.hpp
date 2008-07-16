@@ -112,8 +112,6 @@ public:
 		SetDlgItemText(HAL_CSPLASH_NUM_ACT, hal::app().res_wstr(HAL_CSPLASH_SHUTDOWN_MSG).c_str());
 
 		hal::bittorrent().stopEventReceiver();
-		Sleep(3000);
-
 		hal::bittorrent().shutDownSession();
 		
 		DoDataExchange(true);

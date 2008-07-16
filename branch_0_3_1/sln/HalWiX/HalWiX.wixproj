@@ -141,9 +141,6 @@
     <OutputPath>bin\Release64\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <WixExtension Include="D:\Program Files (x86)\Windows Installer XML v3\bin\WixUIExtension.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Halite\Halite.vcproj">
       <Name>Halite</Name>
       <Project>{ed987c84-fff9-4656-8f27-2a65fc0847fd}</Project>
@@ -152,6 +149,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HalWiX.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="C:\Program Files (x86)\Windows Installer XML v3\bin\WixUIExtension.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WiX\v3.0\Wix.targets" />
   <!--

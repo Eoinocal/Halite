@@ -783,13 +783,14 @@ void bit::torrent::set_file_priorities(const std::pair<std::vector<int>, int>& p
 
 void bit::startEventReceiver()
 {
-	pimpl->keepChecking_ = true;
-	thread_t(bind(&asio::io_service::run, &pimpl->io_));
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Starting event handler.")));
+
+	pimpl->start_alert_handler();
 }
 
 void bit::stopEventReceiver()
 {
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Stopping event Handler.")));
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Stopping event handler.")));
 
 	pimpl->stop_alert_handler();
 }

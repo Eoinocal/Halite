@@ -41,6 +41,11 @@ struct event_impl
 
 event_logger::event_logger()
 {
+	init();
+}
+
+void event_logger::init()
+{
 	if (!s_event_impl)
 		s_event_impl.reset(new event_impl());
 

@@ -39,41 +39,19 @@
 namespace boost {
 namespace serialization {
 
-#define IP_SAVE  3
-
 template<class Archive, class address_type>
 void save(Archive& ar, const address_type& ip, const unsigned int version)
 {	
-#if IP_SAVE == 1
-	typename address_type::bytes_type bytes = ip.to_bytes();	
-	for (typename address_type::bytes_type::iterator i=bytes.begin(); i != bytes.end(); ++i)
-		ar & BOOST_SERIALIZATION_NVP(*i);
-#elif IP_SAVE == 2
-	string dotted = ip.to_string(); 
-	ar & BOOST_SERIALIZATION_NVP(dotted);
-#elif IP_SAVE == 3
 	unsigned long addr = ip.to_ulong();	
 	ar & BOOST_SERIALIZATION_NVP(addr);
-#endif
 }
 
 template<class Archive, class address_type>
 void load(Archive& ar, address_type& ip, const unsigned int version)
 {	
-#if IP_SAVE == 1
-	typename address_type::bytes_type bytes;	
-	for (typename address_type::bytes_type::iterator i=bytes.begin(); i != bytes.end(); ++i)
-		ar & BOOST_SERIALIZATION_NVP(*i);	
-	ip = address_type(bytes);
-#elif IP_SAVE == 2	
-	string dotted;
-	ar & BOOST_SERIALIZATION_NVP(dotted);	
-	ip = address_type::from_string(dotted);
-#elif IP_SAVE == 3
 	unsigned long addr;
 	ar & BOOST_SERIALIZATION_NVP(addr);	
 	ip = address_type(addr);
-#endif
 }
 
 template<class Archive, class String, class Traits>
@@ -96,8 +74,8 @@ template<class Archive, class String, class Traits>
 inline void serialize(
         Archive & ar,
         boost::filesystem::basic_path<String, Traits>& p,
-        const unsigned int file_version
-){
+        const unsigned int file_version)
+{
         split_free(ar, p, file_version);            
 }
 
@@ -231,41 +209,11 @@ catch (const std::exception& e) \
 class bit_impl
 {
 	friend class bit;
-	
-public:
-	
-	~bit_impl()
-	{
-		stop_alert_handler();
-		
-		//save_torrent_data();
-		
-		try
-		{
-		
-		if (ip_filter_changed_)
-		{	
-			fs::ofstream ofs(workingDirectory/L"IPFilter.bin", std::ios::binary);
-//			boost::archive::binary_oarchive oba(ofs);
-			
-			libt::ip_filter::filter_tuple_t vectors = ip_filter_.export_filter();	
-			
-			std::vector<libt::ip_range<asio::ip::address_v4> > v4(vectors.get<0>());
-			std::vector<libt::ip_range<asio::ip::address_v6> > v6(vectors.get<1>());
-			
-			v4.erase(std::remove(v4.begin(), v4.end(), 0), v4.end());
-			v6.erase(std::remove(v6.begin(), v6.end(), 0), v6.end());
 
-			write_vec_range(ofs, v4);
-//			write_vec_range(ofs, v6);
-		}	
-		}
-		catch(std::exception& e)
-		{
-			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(event_logger::critical, e, L"~BitTorrent_impl"))); 
-		}
-	}
+private:
+	bit_impl();	
+public:	
+	~bit_impl();
 
 	bool listen_on(std::pair<int, int> const& range)
 	{
@@ -593,6 +541,7 @@ public:
 	} 
 	signals;
 
+	void start_alert_handler();
 	void stop_alert_handler();
 	void alert_handler();
 
@@ -912,88 +861,6 @@ public:
 	const wpath workingDir() { return workingDirectory; };
 
 private:
-	bit_impl() :
-		session_(libt::fingerprint(HALITE_FINGERPRINT)),
-		timer_(io_),
-		keepChecking_(false),
-		bittorrentIni(L"BitTorrent.xml"),
-		the_torrents_(bittorrentIni),
-		defTorrentMaxConn_(-1),
-		defTorrentMaxUpload_(-1),
-		defTorrentDownload_(-1),
-		defTorrentUpload_(-1),
-		ip_filter_on_(false),
-		ip_filter_loaded_(false),
-		ip_filter_changed_(false),
-		ip_filter_count_(0),
-		dht_on_(false)
-	{
-		torrent_internal::the_session_ = &session_;
-		torrent_internal::workingDir_ = workingDir();
-		
-		session_.set_severity_level(libt::alert::debug);		
-		session_.add_extension(&libt::create_metadata_plugin);
-		session_.add_extension(&libt::create_ut_pex_plugin);
-		session_.set_max_half_open_connections(10);
-		
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(L"Loading BitTorrent.xml.", hal::event_logger::info)));		
-		bittorrentIni.load_data();
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(L"Loading torrent parameters.", hal::event_logger::info)));	
-		the_torrents_.load_from_ini();
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(L"Loading done!", hal::event_logger::info)));
-		
-		try
-		{						
-		if (fs::exists(workingDirectory/L"Torrents.xml"))
-		{
-			{
-			fs::wifstream ifs(workingDirectory/L"Torrents.xml");
-		
-			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Loading old Torrents.xml")));
-		
-			TorrentMap torrents;
-			boost::archive::xml_wiarchive ia(ifs);	
-			ia >> boost::serialization::make_nvp("torrents", torrents);
-			
-			the_torrents_ = torrents;
-			}
-			
-			event_log.post(shared_ptr<EventDetail>(new EventMsg(
-				wformat(L"Total %1%.") % the_torrents_.size())));				
-			
-			fs::rename(workingDirectory/L"Torrents.xml", workingDirectory/L"Torrents.xml.safe.to.delete");
-		}			
-		}
-		catch(const std::exception& e)
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventStdException(event_logger::fatal, e, L"Loading Old Torrents.xml")));
-		}		
-				
-		if (exists(workingDirectory/L"DHTState.bin"))
-		{
-			try
-			{
-				dht_state_ = haldecode(workingDirectory/L"DHTState.bin");
-			}		
-			catch(const std::exception& e)
-			{
-				event_log.post(shared_ptr<EventDetail>(
-					new EventStdException(event_logger::critical, e, L"Loading DHTState.bin")));
-			}
-		}
-		
-		{	libt::session_settings settings = session_.settings();
-			settings.user_agent = string("Halite ") + HALITE_VERSION_STRING;
-			session_.set_settings(settings);
-		}
-		
-		timer_.expires_from_now(boost::posix_time::seconds(5));
-		timer_.async_wait(bind(&bit_impl::alert_handler, this));
-	}
 
 	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn)
 	{		
@@ -1088,8 +955,7 @@ private:
 	libt::session session_;	
 	mutable mutex_t mutex_;
 
-	asio::io_service io_;
-	asio::deadline_timer timer_;
+	boost::optional<thread_t> alert_checker_;
 	bool keepChecking_;
 	
 	static wpath workingDirectory;
