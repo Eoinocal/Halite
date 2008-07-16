@@ -153,11 +153,12 @@ LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWn
 
 LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::remove_torrent, 
-			&hal::bittorrent(), _1));
+	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	{
+		hal::bittorrent().remove_torrent(val.text().c_str());
+	}
+	clearSelected();
 
-	clearSelected();	
 	return 0;
 }
 

@@ -97,6 +97,7 @@ public:
 		logListLen_(128),
 		dll_(L"")
 	{
+		hal::event_log.init();
 		load_from_ini();
 	}
 	

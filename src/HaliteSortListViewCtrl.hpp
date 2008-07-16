@@ -29,6 +29,7 @@
 #define LVS_EX_DOUBLEBUFFER     0x00010000
 
 #include "WTLx/SelectionManager.hpp"
+#include "WTLx/ListViewIterators.hpp"
 #include "HaliteUpdateLock.hpp"
 
 namespace hal
@@ -49,7 +50,8 @@ int compare(const T& l, const T& r)
 
 template <class TBase, typename adapterType=void*>
 class CHaliteSortListViewCtrl : 
-	public WTL::CSortListViewCtrlImpl<CHaliteSortListViewCtrl<TBase, adapterType> >
+	public WTL::CSortListViewCtrlImpl<CHaliteSortListViewCtrl<TBase, adapterType> >,
+	public WTLx::ListViewIterators<CHaliteSortListViewCtrl<TBase, adapterType> >
 {
 public:
 	typedef CHaliteSortListViewCtrl<TBase, adapterType> thisClass;
@@ -526,15 +528,14 @@ inline const std::wstring hal::to_wstr_shim<const winstl::listview_sequence::seq
 	return std::wstring(winstl::c_str_ptr(v));
 }
 
-
 namespace boost {
 namespace serialization {
-template <class TBase, typename adapterType>
-struct version< CHaliteSortListViewCtrl<TBase, adapterType> >
-{
-    typedef mpl::int_<2> type;
-    typedef mpl::integral_c_tag tag;
-    BOOST_STATIC_CONSTANT(unsigned int, value = version::type::value);                                                             
-};
+	template <class TBase, typename adapterType>
+	struct version< CHaliteSortListViewCtrl<TBase, adapterType> >
+	{
+		typedef mpl::int_<2> type;
+		typedef mpl::integral_c_tag tag;
+		BOOST_STATIC_CONSTANT(unsigned int, value = version::type::value);                                                             
+	};
 }
 }

@@ -67,6 +67,8 @@ public:
 	event_logger();
 	~event_logger();
 
+	void init();
+
 	bool is_active() { return pimpl_; }
 
 	boost::signals::connection attach(boost::function<void (boost::shared_ptr<EventDetail>)> fn);

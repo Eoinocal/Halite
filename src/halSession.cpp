@@ -8,6 +8,9 @@
 
 #define TORRENT_MAX_ALERT_TYPES 32
 
+#include <boost/utility/in_place_factory.hpp>
+#include <boost/none.hpp>
+
 #include <libtorrent/alert_types.hpp>
 #include <libtorrent/entry.hpp>
 #include <libtorrent/session.hpp>
@@ -26,6 +29,120 @@
 
 namespace hal
 {
+
+bit_impl::bit_impl() :
+	session_(libt::fingerprint(HALITE_FINGERPRINT)),
+	keepChecking_(false),
+	bittorrentIni(L"BitTorrent.xml"),
+	the_torrents_(bittorrentIni),
+	defTorrentMaxConn_(-1),
+	defTorrentMaxUpload_(-1),
+	defTorrentDownload_(-1),
+	defTorrentUpload_(-1),
+	ip_filter_on_(false),
+	ip_filter_loaded_(false),
+	ip_filter_changed_(false),
+	ip_filter_count_(0),
+	dht_on_(false)
+{
+	torrent_internal::the_session_ = &session_;
+	torrent_internal::workingDir_ = workingDir();
+	
+	session_.set_severity_level(libt::alert::debug);		
+	session_.add_extension(&libt::create_metadata_plugin);
+	session_.add_extension(&libt::create_ut_pex_plugin);
+	session_.set_max_half_open_connections(10);
+	
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"Loading BitTorrent.xml.", hal::event_logger::info)));		
+	bittorrentIni.load_data();
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"Loading torrent parameters.", hal::event_logger::info)));	
+	the_torrents_.load_from_ini();
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"Loading done!", hal::event_logger::info)));
+	
+	try
+	{						
+	if (fs::exists(workingDirectory/L"Torrents.xml"))
+	{
+		{
+		fs::wifstream ifs(workingDirectory/L"Torrents.xml");
+	
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Loading old Torrents.xml")));
+	
+		TorrentMap torrents;
+		boost::archive::xml_wiarchive ia(ifs);	
+		ia >> boost::serialization::make_nvp("torrents", torrents);
+		
+		the_torrents_ = torrents;
+		}
+		
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(
+			wformat(L"Total %1%.") % the_torrents_.size())));				
+		
+		fs::rename(workingDirectory/L"Torrents.xml", workingDirectory/L"Torrents.xml.safe.to.delete");
+	}			
+	}
+	catch(const std::exception& e)
+	{
+		event_log.post(shared_ptr<EventDetail>(
+			new EventStdException(event_logger::fatal, e, L"Loading Old Torrents.xml")));
+	}		
+			
+	if (exists(workingDirectory/L"DHTState.bin"))
+	{
+		try
+		{
+			dht_state_ = haldecode(workingDirectory/L"DHTState.bin");
+		}		
+		catch(const std::exception& e)
+		{
+			event_log.post(shared_ptr<EventDetail>(
+				new EventStdException(event_logger::critical, e, L"Loading DHTState.bin")));
+		}
+	}
+	
+	{	libt::session_settings settings = session_.settings();
+		settings.user_agent = string("Halite ") + HALITE_VERSION_STRING;
+		session_.set_settings(settings);
+	}
+	
+	start_alert_handler();
+}
+
+bit_impl::~bit_impl()
+{
+	stop_alert_handler();
+	
+	//save_torrent_data();
+	
+	try
+	{
+	
+	if (ip_filter_changed_)
+	{	
+		fs::ofstream ofs(workingDirectory/L"IPFilter.bin", std::ios::binary);
+//			boost::archive::binary_oarchive oba(ofs);
+		
+		libt::ip_filter::filter_tuple_t vectors = ip_filter_.export_filter();	
+		
+		std::vector<libt::ip_range<asio::ip::address_v4> > v4(vectors.get<0>());
+		std::vector<libt::ip_range<asio::ip::address_v6> > v6(vectors.get<1>());
+		
+		v4.erase(std::remove(v4.begin(), v4.end(), 0), v4.end());
+		v6.erase(std::remove(v6.begin(), v6.end(), 0), v6.end());
+
+		write_vec_range(ofs, v4);
+//			write_vec_range(ofs, v6);
+	}	
+	}
+	catch(std::exception& e)
+	{
+		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(event_logger::critical, e, L"~BitTorrent_impl"))); 
+	}
+}
 
 void bit_impl::ip_filter_count()
 {
@@ -161,18 +278,32 @@ bool bit_impl::ip_filter_import_dat(boost::filesystem::path file, progress_callb
 	return false;
 }
 
+void bit_impl::start_alert_handler()
+{
+	mutex_t::scoped_lock l(mutex_);
+
+	boost::function<void (void)> f = bind(&bit_impl::alert_handler, this);
+
+	keepChecking_ = true;
+	alert_checker_ = boost::in_place<boost::function<void (void)> >(bind(&bit_impl::alert_handler, this));
+}
+	
 void bit_impl::stop_alert_handler()
 {
 	mutex_t::scoped_lock l(mutex_);
 
 	keepChecking_ = false;
+
+	if (alert_checker_)
+	{
+		alert_checker_->interrupt();
+		alert_checker_ = boost::none;
+	}
 }
 	
 void bit_impl::alert_handler()
 {
-	mutex_t::scoped_lock l(mutex_);
-
-	if (keepChecking_)
+	while (keepChecking_)
 	{
 	
 	std::auto_ptr<libt::alert> p_alert = session_.pop_alert();
@@ -441,6 +572,7 @@ void bit_impl::alert_handler()
 	{	
 		try
 		{
+		mutex_t::scoped_lock l(mutex_);
 		
 		libt::handle_alert<
 			libt::external_ip_alert,
@@ -481,10 +613,10 @@ void bit_impl::alert_handler()
 		}
 		
 		p_alert = session_.pop_alert();
-	}
+
+		boost::this_thread::sleep(boost::posix_time::seconds(5));
+	}	
 	
-	timer_.expires_from_now(boost::posix_time::seconds(2));
-	timer_.async_wait(bind(&bit_impl::alert_handler, this));
 	}
 }
 
