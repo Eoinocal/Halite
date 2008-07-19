@@ -22,39 +22,39 @@
 "Add" ---> "Ajouter"
 "Advanced GUI" ---> "Interface avancée"
 "Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
-"Allocating" --->  ??? 
+"Allocating" --->  "Allocation en cours" 
 "Allow only one instance to run" --->  "N'autoriser qu'une instance"
-"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
+"An invalid connection policy, %1%, was passed as an encryption setting." --->  ???
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
 "Apply" ---> "OK"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  "Voulez-vous fermer Halite? Ceci stoppera tous les torrents actifs"
-"Auto Sort" --->  ??? 
+"Auto Sort" --->  "Tri automatique"
 "BitTorrent" --->  "BitTorrent"
 "Bittorrent Event: %1%." --->  ??? 
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Block %2% of piece %3% finished. (%1%)" --->  ??? 
-"Both" --->  ??? 
-"Calculating Piece Hashes..." --->  ??? 
+"Both" --->  "Les deux"
+"Calculating Piece Hashes..." --->  "Calcul des morceaux du Hash..."
 "Cancel" ---> "Annuler"
 "Checking Files" ---> "Vérification"
-"Choked" --->  ??? 
+"Choked" --->  "Choked"
 "Clear IP database" ---> "Vider IPfilter.dat"
-"Client" --->  ??? 
-"Close to tray" --->  ??? 
-"Comment" --->  ??? 
+"Client" --->  "Client"
+"Close to tray" --->  "Fermer en icone"
+"Comment" --->  "Commentaire"
 "Completed" --->  "Complété"
-"Completed:" ---> "Complété :"
+"Completed:" ---> "Complété:"
 "Confirm on close" --->  "Confirmation en quittant"
 "Connecting to Tracker" ---> "Connexion au tracker"
 "Connecting" ---> "Connexion"
-"Connection Policies" --->  ??? 
-"Construct a New Torrent" --->  ??? 
-"Copies" --->  ??? 
+"Connection Policies" --->  "Règles de connexion"
+"Construct a New Torrent" --->  "Créer un nouveau Torrent"
+"Copies" --->  "Copies"
 "Country" --->  "Pays"
-"Creating Torrent..." --->  ??? 
-"Creating a New Torrent File" --->  ??? 
-"Creator" --->  ??? 
-"Critical" --->  ??? 
+"Creating Torrent..." --->  "Création du Torrent..."
+"Creating a New Torrent File" --->  "Création d'un nouveau fichier Torrent"
+"Creator" --->  "Créateur"
+"Critical" --->  "Critique"
 "DHT Node" --->  "Node DHT"
 "DHT disabled" --->  "DHT désactivé"
 "DHT session could not start. Try selecting another port in the settings." ---> "La session DHT ne peut pas démarer. Sélectionner un port différent dans les options."
@@ -62,33 +62,33 @@
 "Debug Event: %1%." --->  ??? 
 "Debug" --->  "Debug"
 "Default save folder :" --->  "Dossier de sauvegarde par defaut:"
-"Delete" --->  ??? 
+"Delete" --->  "Supprimer"
 "Dev Msg: %1%." --->  ??? 
 "Dir." --->  ??? 
 "Disabled" --->  "Désactivé"
 "Distributed Hash Tables" --->  ??? 
-"Don't download" --->  ??? 
-"Down" ---> "R :"
-"Download Rate (KB/s) :" ---> "Réception (KB/s) :"
-"Download" --->  ??? 
+"Don't download" --->  "Ne pas télécharger"
+"Down" ---> "R:"
+"Download Rate (KB/s) :" ---> "Réception (KB/s):"
+"Download" --->  "Réception"
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Reçus %1$.2fMB, Envoyés %2$.2fMB, Ratio %3$.2f"
-"Downloaded" --->  ??? 
-"Downloading Metadata" --->  ??? 
-"Downloading" ---> "En téléchargement"
+"Downloaded" --->  "Reçus"
+"Downloading Metadata" --->  "Réception des Metadata"
+"Downloading" ---> "En cours de réception"
 "E&xit" ---> "Q&uitter"
-"ETA" --->  ??? 
-"ETA:" --->  ??? 
-"Edit Download Folders" --->  ??? 
-"Edit Peer" --->  ??? 
-"Edit Torrent Save Folders" --->  ??? 
-"Edit Tracker" --->  ??? 
-"Edit" --->  ??? 
-"Enable DHT" --->  ??? 
+"ETA" --->  "Temps restant" 
+"ETA:" --->  "Temps restant:"
+"Edit Download Folders" --->  "Modifier les dossiers de réception"
+"Edit Peer" --->  "Modifier un Peer"
+"Edit Torrent Save Folders" --->  "Modifier les dossiers des Torrent"
+"Edit Tracker" --->  "Modifier le Tracker"
+"Edit" --->  "Modifier"
+"Enable DHT" --->  "Activer le DHT"
 "Enable IP filtering." ---> "Activer le filtrage des IP"
-"Enable Protocol Encryption." --->  ??? 
+"Enable Protocol Encryption." --->  "Activer le brouillage de protocole"
 "Enable Remote Control" --->  ??? 
-"Enabled" --->  ??? 
-"Encoding Level" --->  ??? 
+"Enabled" --->  "Activé"
+"Encoding Level" --->  "Niveau d'encodage"
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Entrer l'URL du tracker pour le torrent."
 "Exception caught: %1%, from %2%." --->  ??? 
