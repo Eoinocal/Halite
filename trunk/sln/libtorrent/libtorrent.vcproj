@@ -816,6 +816,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\lib\libtorrent\include\libtorrent\error_code.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\lib\libtorrent\include\libtorrent\escape_string.hpp"
 					>
 				</File>

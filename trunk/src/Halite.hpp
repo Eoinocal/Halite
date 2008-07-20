@@ -123,6 +123,8 @@ public:
 	bool showMessage() { return showMessage_; }
 	
 	friend class GeneralOptions;
+	friend class GlobalOptions;
+	friend class PortOptions;
 	friend class SplashDialog;
 	friend class AdvDebugDialog;
 	friend int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);

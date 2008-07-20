@@ -15,10 +15,12 @@
 #define HAL_CONFIGREMOTE                103
 #define HAL_CONFIGSECURITY              108
 #define HAL_CONFIGPROXY                 109
+#define HAL_CONFIGGLOBAL				110
 #define HAL_ABOUT                       104
 #define HAL_CLOSESPLASH                 105
 #define HAL_HALITEDLG                   106
 #define HAL_TRAY_MENU                   107
+#define HAL_CONFIGPORTS					111
 #define HAL_CONFIGGENERAL               112
 #define HAL_ADVHALITEDLG                114
 #define HAL_APP_ICON                    114
