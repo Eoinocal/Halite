@@ -62,19 +62,10 @@ public:
 		halfConnLimit(10),
 		mappingType(0),
 		peerTimeout(30),
-		trackerTimeout(60),
-		active_downloads_(8),
-		active_seeds_(5),
-		seeds_hard_limit_(15),
-		seed_ratio_limit_(2.f),
-		seed_ratio_time_limit_(7.f),
-		seed_time_limit_(24 * 60 * 60),
-		dont_count_slow_torrents_(true),
-		auto_scrape_min_interval_(300),
-		auto_scrape_interval_(1800),
-		auto_manage_interval_(30),
-		close_redundant_connections_(true)
-	{}
+		trackerTimeout(60)
+	{
+		queue_settings_ = hal::bittorrent().get_queue_settings();
+	}
 	
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -134,18 +125,8 @@ public:
 			ar & BOOST_SERIALIZATION_NVP(trackerTimeout);
 		}
 
-		if (version > 4) {
-			ar & make_nvp("auto_manage_interval", auto_manage_interval_);
-			ar & make_nvp("active_downloads", active_downloads_);
-			ar & make_nvp("active_seeds", active_seeds_);
-			ar & make_nvp("seeds_hard_limit", seeds_hard_limit_);
-			ar & make_nvp("seed_ratio_limit", seed_ratio_limit_);
-			ar & make_nvp("seed_ratio_time_limit", seed_ratio_time_limit_);
-			ar & make_nvp("seed_time_limit", seed_time_limit_);
-			ar & make_nvp("dont_count_slow_torrents", dont_count_slow_torrents_);
-			ar & make_nvp("auto_scrape_interval", auto_scrape_interval_);
-			ar & make_nvp("auto_scrape_min_interval", auto_scrape_min_interval_);
-			ar & make_nvp("close_redundant_connections", close_redundant_connections_);
+		if (version > 5) {
+			ar & make_nvp("queue_settings", queue_settings_);
 		}
 	}
 	
@@ -210,24 +191,11 @@ private:
 	int peerTimeout;
 	int trackerTimeout;	
 
-	int auto_manage_interval_;
-
-	int active_downloads_;
-	int active_seeds_;
-	int seeds_hard_limit_;
-	float seed_ratio_limit_;
-	float seed_ratio_time_limit_;
-	int seed_time_limit_;
-	bool dont_count_slow_torrents_;
-
-	int auto_scrape_min_interval_;
-	int auto_scrape_interval_;
-	bool close_redundant_connections_;
-
+	hal::queue_settings queue_settings_;
 };
 
 Config& config();
 
 } // namespace hal
 
-BOOST_CLASS_VERSION(hal::Config, 5)
+BOOST_CLASS_VERSION(hal::Config, 6)
