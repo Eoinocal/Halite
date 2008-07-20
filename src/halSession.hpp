@@ -344,7 +344,51 @@ public:
 		session_.set_settings(settings);
 
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			wformat(L"Set Timeouts, peer %1%, tracker %2%") % peers % tracker)));
+			wformat(L"Set Timeouts, peer %1%, tracker %2%.") % peers % tracker)));
+	}
+
+
+	queue_settings get_queue_settings()
+	{		
+		libt::session_settings settings = session_.settings();
+		queue_settings queue;
+
+		queue.auto_manage_interval = settings.auto_manage_interval;
+		queue.active_downloads = settings.active_downloads;
+		queue.active_seeds = settings.active_seeds;
+		queue.seeds_hard_limit = settings.active_limit;
+		queue.seed_ratio_limit = settings.share_ratio_limit;
+		queue.seed_ratio_time_limit = settings.seed_time_ratio_limit;
+		queue.seed_time_limit = settings.seed_time_limit;
+		queue.dont_count_slow_torrents = settings.dont_count_slow_torrents;
+		queue.auto_scrape_min_interval = settings.auto_scrape_min_interval;
+		queue.auto_scrape_interval = settings.auto_scrape_interval;
+		queue.close_redundant_connections = settings.close_redundant_connections;
+
+		return queue;
+	}
+
+	void set_queue_settings(const queue_settings& queue)
+	{
+		libt::session_settings settings = session_.settings();
+
+		settings.auto_manage_interval = queue.auto_manage_interval;
+		settings.active_downloads = queue.active_downloads;
+		settings.active_seeds = queue.active_seeds;
+		settings.active_limit = queue.seeds_hard_limit;
+		settings.share_ratio_limit = queue.seed_ratio_limit;
+		settings.seed_time_ratio_limit = queue.seed_ratio_time_limit;
+		settings.seed_time_limit = queue.seed_time_limit;
+		settings.dont_count_slow_torrents = queue.dont_count_slow_torrents;
+		settings.auto_scrape_min_interval = queue.auto_scrape_min_interval;
+		settings.auto_scrape_interval = queue.auto_scrape_interval;
+		settings.close_redundant_connections = queue.close_redundant_connections;
+
+		session_.set_settings(settings);
+
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(
+			wformat(L"Set queue parameters, %1% downloads and %2% active seeds.") 
+				% settings.active_downloads % settings.active_seeds)));
 	}
 
 	void set_session_limits(int maxConn, int maxUpload)

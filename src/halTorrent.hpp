@@ -49,6 +49,60 @@ namespace libtorrent { struct peer_info; }
 
 namespace hal 
 {
+
+struct queue_settings
+{
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{	
+		ar & BOOST_SERIALIZATION_NVP(auto_manage_interval);
+		ar & BOOST_SERIALIZATION_NVP(active_downloads);
+		ar & BOOST_SERIALIZATION_NVP(active_seeds);
+		ar & BOOST_SERIALIZATION_NVP(seeds_hard_limit);
+		ar & BOOST_SERIALIZATION_NVP(seed_ratio_limit);
+		ar & BOOST_SERIALIZATION_NVP(seed_ratio_time_limit);
+		ar & BOOST_SERIALIZATION_NVP(seed_time_limit);
+		ar & BOOST_SERIALIZATION_NVP(dont_count_slow_torrents);
+		ar & BOOST_SERIALIZATION_NVP(auto_scrape_min_interval);
+		ar & BOOST_SERIALIZATION_NVP(auto_scrape_interval);
+		ar & BOOST_SERIALIZATION_NVP(close_redundant_connections);
+	}
+
+	bool operator==(const queue_settings& s) const
+	{
+		return (auto_manage_interval == s.auto_manage_interval &&
+			active_downloads == s.active_downloads &&
+			active_seeds == s.active_seeds &&
+			seeds_hard_limit == s.seeds_hard_limit &&
+			seed_ratio_limit == s.seed_ratio_limit &&
+			seed_ratio_time_limit == s.seed_ratio_time_limit &&
+			seed_time_limit == s.seed_time_limit &&
+			dont_count_slow_torrents == s.dont_count_slow_torrents &&
+			auto_scrape_min_interval == s.auto_scrape_min_interval &&
+			auto_scrape_interval == s.auto_scrape_interval &&
+			close_redundant_connections == s.close_redundant_connections);
+	}
+	
+	bool operator!=(const queue_settings& s) const
+	{
+		return !(*this == s);
+	}
+
+	int auto_manage_interval;
+
+	int active_downloads;
+	int active_seeds;
+	int seeds_hard_limit;
+	float seed_ratio_limit;
+	float seed_ratio_time_limit;
+	int seed_time_limit;
+	bool dont_count_slow_torrents;
+
+	int auto_scrape_min_interval;
+	int auto_scrape_interval;
+	bool close_redundant_connections;
+};
 	
 struct torrentBriefDetail 
 {
@@ -601,6 +655,9 @@ public:
 	void set_dht_settings(int max_peers_reply, int search_branching, 
 		int service_port, int max_fail_count);
 	void set_timeouts(int peers, int tracker);
+
+	queue_settings get_queue_settings();
+	void set_queue_settings(const queue_settings& s);
 	
 	const SessionDetail getSessionDetails();
 

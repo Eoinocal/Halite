@@ -182,6 +182,16 @@ void bit::set_timeouts(int peers, int tracker)
 	pimpl->set_timeouts(peers, tracker);
 }
 
+queue_settings bit::get_queue_settings()
+{
+	return pimpl->get_queue_settings();
+}
+
+void bit::set_queue_settings(const queue_settings& s)
+{
+	pimpl->set_queue_settings(s);
+}
+
 void bit::set_session_limits(int maxConn, int maxUpload)
 {		
 	pimpl->set_session_limits(maxConn, maxUpload);
