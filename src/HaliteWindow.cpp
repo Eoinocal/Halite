@@ -308,7 +308,7 @@ void HaliteWindow::issueUiUpdate()
 	try
 	{
 	
-	const hal::TorrentDetails& torrents = hal::bittorrent().updateTorrentDetails(
+	const hal::torrent_details_manager& torrents = hal::bittorrent().updatetorrent_details_manager(
 		haliteList.manager().selected(), haliteList.manager().allSelected());
 
 	ui_update_signal_(torrents);

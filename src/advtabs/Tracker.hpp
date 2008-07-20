@@ -90,8 +90,8 @@ public:
 	void onReset(UINT, int, HWND);
 
 	void setLoginUiState();	
-	void uiUpdate(const hal::TorrentDetails& tD);
-	void focusChanged(const hal::TorrentDetail_ptr pT);
+	void uiUpdate(const hal::torrent_details_manager& tD);
+	void focusChanged(const hal::torrent_details_ptr pT);
 	void trackerListEdited();
 
 protected:

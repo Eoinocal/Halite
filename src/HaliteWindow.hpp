@@ -105,12 +105,12 @@ public:
 
 	void ProcessFile(LPCTSTR lpszPath);
 	
-	boost::signals::connection connectUiUpdate(boost::function<void (const hal::TorrentDetails& allTorrents)> fn) 
+	boost::signals::connection connectUiUpdate(boost::function<void (const hal::torrent_details_manager& allTorrents)> fn) 
 	{ 
 		return ui_update_signal_.connect(fn); 
 	}
 	
-	boost::signal<void (const hal::TorrentDetails& allTorrents)> & ui_sig()
+	boost::signal<void (const hal::torrent_details_manager& allTorrents)> & ui_sig()
 	{ 
 		return ui_update_signal_; 
 	}
@@ -194,7 +194,7 @@ private:
 	void ShutdownThread();
 
 	// These two gotta be first!!!
-	boost::signal<void (const hal::TorrentDetails& tD)> ui_update_signal_;
+	boost::signal<void (const hal::torrent_details_manager& tD)> ui_update_signal_;
 	boost::signal<void ()> save_state_signal_;	
 	
 	WTL::CCommandBarCtrl m_CmdBar;

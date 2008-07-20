@@ -13,14 +13,14 @@
 
 #include "Peers.hpp"
 
-void PeerListView::uiUpdate(const hal::TorrentDetails& tD)
+void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 {
 	hal::try_update_lock<listClass> lock(*this);
 	if (lock) 
 	{		
 		peerDetails_.clear();
 		
-		foreach (const hal::TorrentDetail_ptr torrent, tD.selectedTorrents())
+		foreach (const hal::torrent_details_ptr torrent, tD.selectedTorrents())
 		{
 			std::copy(torrent->peerDetails().begin(), torrent->peerDetails().end(), 
 				std::back_inserter(peerDetails_));
@@ -81,7 +81,7 @@ void PeerListView::uiUpdate(const hal::TorrentDetails& tD)
 	}
 }
 
-void AdvPeerDialog::uiUpdate(const hal::TorrentDetails& tD)
+void AdvPeerDialog::uiUpdate(const hal::torrent_details_manager& tD)
 {
 	peerList_.uiUpdate(tD);
 }

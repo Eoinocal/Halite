@@ -32,7 +32,7 @@ void TrackerListViewCtrl::saveSettings()
 	save_to_ini();
 }
 
-void TrackerListViewCtrl::uiUpdate(const hal::TorrentDetail_ptr pT)
+void TrackerListViewCtrl::uiUpdate(const hal::torrent_details_ptr pT)
 {
 	if (hal::bit::torrent t = hal::bittorrent().get(pT))
 	{			

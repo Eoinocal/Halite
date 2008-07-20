@@ -796,12 +796,12 @@ public:
 
 				switch ((*i).torrent->state())
 				{
-					case TorrentDetail::torrent_stopped:
+					case torrent_details::torrent_stopped:
 						break;
-					case TorrentDetail::torrent_paused:
+					case torrent_details::torrent_paused:
 						(*i).torrent->add_to_session(true);
 						break;
-					case TorrentDetail::torrent_active:
+					case torrent_details::torrent_active:
 						(*i).torrent->add_to_session(false);
 						break;
 					default:
@@ -859,7 +859,7 @@ public:
 			for (TorrentManager::torrentByName::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
 					i != e; ++i)
 			{
-				if ((*i).torrent->state() != TorrentDetail::torrent_stopped)
+				if ((*i).torrent->state() != torrent_details::torrent_stopped)
 					++num_active;
 			}
 			

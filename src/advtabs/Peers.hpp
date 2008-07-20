@@ -122,7 +122,7 @@ public:
 		return peerDetails_[param->dwItemData];
 	}		
 
-	void uiUpdate(const hal::TorrentDetails& tD);
+	void uiUpdate(const hal::torrent_details_manager& tD);
 	
 private:
 	hal::PeerDetails peerDetails_;
@@ -171,7 +171,7 @@ public:
 	LRESULT OnInitDialog(HWND, LPARAM);
 	void OnClose();
 	
-	void uiUpdate(const hal::TorrentDetails& tD);
+	void uiUpdate(const hal::torrent_details_manager& tD);
 
 protected:
 	PeerListView peerList_;

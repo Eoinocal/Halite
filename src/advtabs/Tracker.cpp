@@ -67,7 +67,7 @@ LRESULT AdvTrackerDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl
 	return 0;
 }
 
-void AdvTrackerDialog::focusChanged(const hal::TorrentDetail_ptr pT)
+void AdvTrackerDialog::focusChanged(const hal::torrent_details_ptr pT)
 {		
 	if (pT)
 	{		
@@ -96,7 +96,7 @@ void AdvTrackerDialog::focusChanged(const hal::TorrentDetail_ptr pT)
 	DoDataExchange(false);
 }
 
-void AdvTrackerDialog::uiUpdate(const hal::TorrentDetails& tD)
+void AdvTrackerDialog::uiUpdate(const hal::torrent_details_manager& tD)
 {}
 
 AdvTrackerDialog::CWindowMapStruct* AdvTrackerDialog::GetWindowMap()

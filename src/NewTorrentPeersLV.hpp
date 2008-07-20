@@ -69,7 +69,7 @@ public:
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 
-	void uiUpdate(const hal::TorrentDetail_ptr pT);
+	void uiUpdate(const hal::torrent_details_ptr pT);
 	void saveSettings();
 
     friend class boost::serialization::access;
