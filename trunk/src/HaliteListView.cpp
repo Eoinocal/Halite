@@ -78,13 +78,13 @@ void HaliteListViewCtrl::saveSettings()
 	save_to_ini();
 }
 
-void HaliteListViewCtrl::uiUpdate(const hal::TorrentDetails& tD)
+void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 {
 	hal::try_update_lock<listClass> lock(*this);
 	if (lock) 
 	{
 	
-	foreach (const hal::TorrentDetail_ptr td, tD.torrents()) 
+	foreach (const hal::torrent_details_ptr td, tD.torrents()) 
 	{
 		LV_FINDINFO findInfo; 
 		findInfo.flags = LVFI_STRING;

@@ -48,7 +48,7 @@ bit& bittorrent()
 	return t;
 }
 
-const PeerDetails& TorrentDetail::peerDetails() const
+const PeerDetails& torrent_details::peerDetails() const
 {
 	if (!peerDetailsFilled_)
 	{
@@ -59,7 +59,7 @@ const PeerDetails& TorrentDetail::peerDetails() const
 	return peerDetails_;
 }
 
-const FileDetails& TorrentDetail::fileDetails() const
+const FileDetails& torrent_details::fileDetails() const
 {
 	if (!fileDetailsFilled_)
 	{
@@ -70,13 +70,13 @@ const FileDetails& TorrentDetail::fileDetails() const
 	return fileDetails_;
 }
 
-bool nameLess(const TorrentDetail_ptr& left, const TorrentDetail_ptr& right)
+bool nameLess(const torrent_details_ptr& left, const torrent_details_ptr& right)
 {
 	return left->state() < right->state();
 }
 
-void TorrentDetails::sort(
-	boost::function<bool (const TorrentDetail_ptr&, const TorrentDetail_ptr&)> fn) const
+void torrent_details_manager::sort(
+	boost::function<bool (const torrent_details_ptr&, const torrent_details_ptr&)> fn) const
 {
 	std::stable_sort(torrents_.begin(), torrents_.end(), fn);
 }
@@ -301,12 +301,12 @@ void bit::add_torrent(wpath file, wpath saveDirectory, bool startStopped, bool c
 	pimpl->add_torrent(file, saveDirectory, startStopped, compactStorage, moveToDirectory, useMoveTo);
 }
 
-const TorrentDetails& bit::torrentDetails()
+const torrent_details_manager& bit::torrentDetails()
 {
 	return torrentDetails_;
 }
 
-const TorrentDetails& bit::updateTorrentDetails(const wstring& focused, const std::set<wstring>& selected)
+const torrent_details_manager& bit::updatetorrent_details_manager(const wstring& focused, const std::set<wstring>& selected)
 {
 	try {
 	
@@ -318,7 +318,7 @@ const TorrentDetails& bit::updateTorrentDetails(const wstring& focused, const st
 	for (TorrentManager::torrentByName::iterator i=pimpl->the_torrents_.begin(), e=pimpl->the_torrents_.end(); i != e; ++i)
 	{
 		wstring utf8Name = (*i).torrent->name();
-		TorrentDetail_ptr pT = (*i).torrent->getTorrentDetail_ptr();
+		torrent_details_ptr pT = (*i).torrent->gettorrent_details_ptr();
 		
 		if (selected.find(utf8Name) != selected.end())
 		{
@@ -332,7 +332,7 @@ const TorrentDetails& bit::updateTorrentDetails(const wstring& focused, const st
 		torrentDetails_.torrents_.push_back(pT);
 	}
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "updateTorrentDetails")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "updatetorrent_details_manager")
 	
 	return torrentDetails_;
 }
@@ -569,7 +569,7 @@ void bit::unpauseAllTorrents()
 	for (TorrentManager::torrentByName::iterator i=pimpl->the_torrents_.begin(), e=pimpl->the_torrents_.end();
 		i != e; ++i)
 	{
-		if ((*i).torrent->in_session() && (*i).torrent->state() == TorrentDetail::torrent_paused)
+		if ((*i).torrent->in_session() && (*i).torrent->state() == torrent_details::torrent_paused)
 			(*i).torrent->resume();
 	}
 	

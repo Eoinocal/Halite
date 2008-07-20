@@ -195,10 +195,10 @@ inline bool FileDetailNamesLess(const FileDetail& l, const FileDetail& r)
 
 typedef std::vector<FileDetail> FileDetails;
 
-class TorrentDetail 
+class torrent_details 
 {
 public:
-	TorrentDetail(std::wstring n, std::wstring f, std::wstring sd, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
+	torrent_details(std::wstring n, std::wstring f, std::wstring sd, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
 			float c=0, float d=0, size_type tWD=0, size_type tW=0, size_type tU=0, size_type tpU=0, size_type tD=0, size_type tpD=0, boost::tuple<size_type, size_type, size_type, size_type> connections = boost::tuple<size_type, size_type, size_type, size_type>(0,0,0,0), float r=0, 
 			boost::posix_time::time_duration eta=boost::posix_time::seconds(0), boost::posix_time::time_duration uIn=boost::posix_time::seconds(0),
 			boost::posix_time::time_duration actve=boost::posix_time::seconds(0), boost::posix_time::time_duration seding=boost::posix_time::seconds(0), boost::posix_time::ptime srt=boost::posix_time::second_clock::universal_time(), boost::posix_time::ptime fin=boost::posix_time::second_clock::universal_time()) :
@@ -231,7 +231,7 @@ public:
 		finishTime_(fin)
 	{}
 
-	TorrentDetail() :	
+	torrent_details() :	
 		peerDetailsFilled_(false),
 		fileDetailsFilled_(false)
 	{};	
@@ -321,45 +321,45 @@ private:
 	mutable FileDetails fileDetails_;
 };
 
-typedef boost::shared_ptr<TorrentDetail> TorrentDetail_ptr;
-typedef boost::scoped_ptr<TorrentDetail> TorrentDetail_sptr;
-typedef boost::weak_ptr<TorrentDetail> TorrentDetail_wptr;
-typedef std::vector<TorrentDetail_ptr> TorrentDetail_vec;
-typedef std::map<std::wstring, TorrentDetail_ptr> TorrentDetail_map;
+typedef boost::shared_ptr<torrent_details> torrent_details_ptr;
+typedef boost::scoped_ptr<torrent_details> torrent_details_sptr;
+typedef boost::weak_ptr<torrent_details> torrent_details_wptr;
+typedef std::vector<torrent_details_ptr> torrent_details_vec;
+typedef std::map<std::wstring, torrent_details_ptr> torrent_details_map;
 
-class TorrentDetails
+class torrent_details_manager
 {
 public:	
-	void sort(boost::function<bool (const TorrentDetail_ptr&, const TorrentDetail_ptr&)> fn) const;
+	void sort(boost::function<bool (const torrent_details_ptr&, const torrent_details_ptr&)> fn) const;
 	
-	const TorrentDetail_vec torrents() const 
+	const torrent_details_vec torrents() const 
 	{
 		mutex_t::scoped_lock l(mutex_);	
 		return torrents_; 
 	}
 	
-	const TorrentDetail_vec selectedTorrents() const 
+	const torrent_details_vec selectedTorrents() const 
 	{ 
 		mutex_t::scoped_lock l(mutex_);	
 		return selectedTorrents_; 
 	}
 	
-	const TorrentDetail_ptr focusedTorrent() const 
+	const torrent_details_ptr focusedTorrent() const 
 	{
 		mutex_t::scoped_lock l(mutex_);	
 		return selectedTorrent_; 
 	}
 	
-	const TorrentDetail_ptr get(std::wstring filename) const
+	const torrent_details_ptr get(std::wstring filename) const
 	{
 		mutex_t::scoped_lock l(mutex_);	
 		
-		TorrentDetail_map::const_iterator i = torrentMap_.find(filename);
+		torrent_details_map::const_iterator i = torrentMap_.find(filename);
 		
 		if (i != torrentMap_.end())
 			return i->second;
 		else
-			return TorrentDetail_ptr();
+			return torrent_details_ptr();
 	}
 	
 	friend class bit;
@@ -376,11 +376,11 @@ private:
 		selectedTorrent_.reset();
 	}
 
-	mutable TorrentDetail_vec torrents_;
+	mutable torrent_details_vec torrents_;
 	
-	TorrentDetail_map torrentMap_;
-	TorrentDetail_vec selectedTorrents_;
-	TorrentDetail_ptr selectedTorrent_;
+	torrent_details_map torrentMap_;
+	torrent_details_vec selectedTorrents_;
+	torrent_details_ptr selectedTorrent_;
 	
 	mutable mutex_t mutex_;
 };
@@ -620,7 +620,7 @@ public:
 	}
 	
 	template<>
-	torrent get(const hal::TorrentDetail_ptr t)
+	torrent get(const hal::torrent_details_ptr t)
 	{
 		if (t) 
 			return get_wstr(t->name());
@@ -715,8 +715,8 @@ public:
 	float defTorrentDownload();
 	float defTorrentUpload();	
 
-	const TorrentDetails& torrentDetails();
-	const TorrentDetails& updateTorrentDetails(const std::wstring& focused, const std::set<std::wstring>& selected);
+	const torrent_details_manager& torrentDetails();
+	const torrent_details_manager& updatetorrent_details_manager(const std::wstring& focused, const std::set<std::wstring>& selected);
 	
 private:
 	bit();
@@ -727,7 +727,7 @@ private:
 	void remove_torrent_wstr(const std::wstring& filename);
 	void remove_torrent_wipe_files_wstr(const std::wstring&  filename);
 	
-	TorrentDetails torrentDetails_;
+	torrent_details_manager torrentDetails_;
 };
 
 bit& bittorrent();

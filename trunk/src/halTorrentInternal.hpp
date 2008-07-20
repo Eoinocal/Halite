@@ -513,7 +513,7 @@ public:
 	torrent_internal() :	
 		TORRENT_INTERNALS_DEFAULTS,
 		compactStorage_(true),
-		state_(TorrentDetail::torrent_stopped)
+		state_(torrent_details::torrent_stopped)
 	{}
 	
 	torrent_internal(wpath filename, wpath saveDirectory, bool compactStorage, wpath move_to_directory=L"") :
@@ -521,7 +521,7 @@ public:
 		save_directory_(saveDirectory.string()),
 		move_to_directory_(move_to_directory.string()),
 		compactStorage_(compactStorage),	
-		state_(TorrentDetail::torrent_stopped)
+		state_(torrent_details::torrent_stopped)
 	{
 		assert(the_session_);		
 		prepare(filename);
@@ -565,7 +565,7 @@ public:
 	
 	#undef TORRENT_INTERNALS_DEFAULTS
 	
-	TorrentDetail_ptr getTorrentDetail_ptr()
+	torrent_details_ptr gettorrent_details_ptr()
 	{	
 		mutex_t::scoped_lock l(mutex_);
 
@@ -590,19 +590,19 @@ public:
 		
 		switch (state_)
 		{
-		case TorrentDetail::torrent_paused:
+		case torrent_details::torrent_paused:
 			state = app().res_wstr(HAL_TORRENT_PAUSED);
 			break;
 			
-		case TorrentDetail::torrent_pausing:
+		case torrent_details::torrent_pausing:
 			state = app().res_wstr(HAL_TORRENT_PAUSING);
 			break;
 			
-		case TorrentDetail::torrent_stopped:
+		case torrent_details::torrent_stopped:
 			state = app().res_wstr(HAL_TORRENT_STOPPED);
 			break;
 			
-		case TorrentDetail::torrent_stopping:
+		case torrent_details::torrent_stopping:
 			state = app().res_wstr(HAL_TORRENT_STOPPING);
 			break;
 			
@@ -662,7 +662,7 @@ public:
 		
 		boost::tuple<size_t, size_t, size_t, size_t> connections = updatePeers();	
 
-		return TorrentDetail_ptr(new TorrentDetail(name_, filename_, saveDirectory().string(), state, hal::from_utf8(statusMemory_.current_tracker), 
+		return torrent_details_ptr(new torrent_details(name_, filename_, saveDirectory().string(), state, hal::from_utf8(statusMemory_.current_tracker), 
 			std::pair<float, float>(statusMemory_.download_payload_rate, statusMemory_.upload_payload_rate),
 			progress_, statusMemory_.distributed_copies, statusMemory_.total_wanted_done, statusMemory_.total_wanted, uploaded_, payloadUploaded_,
 			downloaded_, payloadDownloaded_, connections, ratio_, td, statusMemory_.next_announce, activeDuration_, seedingDuration_, startTime_, finishTime_));
@@ -671,15 +671,15 @@ public:
 		catch (const libt::invalid_handle&)
 		{
 			event_log.post(shared_ptr<EventDetail>(
-				new EventInvalidTorrent(event_logger::critical, event_logger::invalidTorrent, to_utf8(name_), "getTorrentDetail_ptr")));
+				new EventInvalidTorrent(event_logger::critical, event_logger::invalidTorrent, to_utf8(name_), "gettorrent_details_ptr")));
 		}
 		catch (const std::exception& e)
 		{
 			event_log.post(shared_ptr<EventDetail>(
-				new EventTorrentException(event_logger::critical, event_logger::torrentException, e.what(), to_utf8(name_), "getTorrentDetail_ptr")));
+				new EventTorrentException(event_logger::critical, event_logger::torrentException, e.what(), to_utf8(name_), "gettorrent_details_ptr")));
 		}
 		
-		return TorrentDetail_ptr(new TorrentDetail(name_, filename_, saveDirectory().string(), app().res_wstr(HAL_TORRENT_STOPPED), app().res_wstr(HAL_NA)));
+		return torrent_details_ptr(new torrent_details(name_, filename_, saveDirectory().string(), app().res_wstr(HAL_TORRENT_STOPPED), app().res_wstr(HAL_NA)));
 	}
 
 	void setTransferSpeed(float down, float up)
@@ -752,9 +752,9 @@ public:
 			
 			in_session_ = true;
 			if (paused)
-				state_ = TorrentDetail::torrent_paused;	
+				state_ = torrent_details::torrent_paused;	
 			else
-				state_ = TorrentDetail::torrent_active;	
+				state_ = torrent_details::torrent_active;	
 				
 			applySettings();
 			handle_.force_reannounce();
@@ -818,7 +818,7 @@ public:
 	{
 		mutex_t::scoped_lock l(mutex_);
 
-		if (state_ == TorrentDetail::torrent_stopped)
+		if (state_ == torrent_details::torrent_stopped)
 		{	
 			add_to_session(false);
 			assert(in_session());			
@@ -829,7 +829,7 @@ public:
 			handle_.resume();
 		}	
 		
-		state_ = TorrentDetail::torrent_active;			
+		state_ = torrent_details::torrent_active;			
 		assert(!handle_.is_paused());
 	}
 	
@@ -837,7 +837,7 @@ public:
 	{
 		mutex_t::scoped_lock l(mutex_);
 
-		if (state_ == TorrentDetail::torrent_stopped)
+		if (state_ == torrent_details::torrent_stopped)
 		{	
 			add_to_session(true);
 
@@ -852,7 +852,7 @@ public:
 			signals().torrent_paused.disconnect_all_once();
 			signals().torrent_paused.connect_once(bind(&torrent_internal::completed_pause, this));
 
-			state_ = TorrentDetail::torrent_pausing;	
+			state_ = torrent_details::torrent_pausing;	
 		}			
 	}
 	
@@ -860,9 +860,9 @@ public:
 	{
 		mutex_t::scoped_lock l(mutex_);
 
-		if (state_ != TorrentDetail::torrent_stopped)
+		if (state_ != torrent_details::torrent_stopped)
 		{
-			if (state_ == TorrentDetail::torrent_active)
+			if (state_ == torrent_details::torrent_active)
 			{
 				assert(in_session());
 
@@ -870,19 +870,19 @@ public:
 				signals().torrent_paused.connect_once(bind(&torrent_internal::completed_stop, this));
 				handle_.pause();
 
-				state_ = TorrentDetail::torrent_stopping;
+				state_ = torrent_details::torrent_stopping;
 			}
-			else if (state_ == TorrentDetail::torrent_paused)
+			else if (state_ == torrent_details::torrent_paused)
 			{			
 				remove_from_session();
-				state_ = TorrentDetail::torrent_stopped;				
+				state_ = torrent_details::torrent_stopped;				
 			}
 		}
 	}
 
 	void set_state_stopped()
 	{
-		state_ = TorrentDetail::torrent_stopped;
+		state_ = torrent_details::torrent_stopped;
 	}
 
 	void force_recheck()
@@ -892,20 +892,20 @@ public:
 
 		switch (state_)
 		{
-		case TorrentDetail::torrent_stopped:
+		case torrent_details::torrent_stopped:
 			clear_resume_data();
 			resume();
 			break;
 
-		case TorrentDetail::torrent_stopping:
-		case TorrentDetail::torrent_pausing:
+		case torrent_details::torrent_stopping:
+		case torrent_details::torrent_pausing:
 			signals().torrent_paused.disconnect_all_once();
 
-		case TorrentDetail::torrent_active:
+		case torrent_details::torrent_active:
 			signals().torrent_paused.disconnect_all_once();
 			signals().torrent_paused.connect_once(bind(&torrent_internal::handle_recheck, this));
 			handle_.pause();
-			state_ = TorrentDetail::torrent_pausing;
+			state_ = torrent_details::torrent_pausing;
 			break;
 
 		default:
@@ -1004,7 +1004,7 @@ public:
 		}
 	}
 	
-	bool is_active() const { return state_ == TorrentDetail::torrent_active; }
+	bool is_active() const { return state_ == torrent_details::torrent_active; }
 	
 	unsigned state() const { return state_; }
 	
@@ -1277,10 +1277,10 @@ public:
 		if (!fs::exists(save_directory_))
 			fs::create_directory(save_directory_);
 
-		if (state_ == TorrentDetail::torrent_stopping)
-			state_ = TorrentDetail::torrent_stopped;
-		else if (state_ == TorrentDetail::torrent_pausing)
-			state_ = TorrentDetail::torrent_paused;
+		if (state_ == torrent_details::torrent_stopping)
+			state_ = torrent_details::torrent_stopped;
+		else if (state_ == torrent_details::torrent_pausing)
+			state_ = torrent_details::torrent_paused;
 	}
 	
 	void extractNames(libt::entry& metadata)
@@ -1432,7 +1432,7 @@ private:
 		assert(in_session());
 		assert(handle_.is_paused());	
 				
-		state_ = TorrentDetail::torrent_paused;	
+		state_ = torrent_details::torrent_paused;	
 
 		HAL_DEV_MSG(L"completed_pause()");
 	}
@@ -1443,7 +1443,7 @@ private:
 		assert(in_session());
 		assert(handle_.is_paused());	
 		
-		state_ = TorrentDetail::torrent_stopped;
+		state_ = torrent_details::torrent_stopped;
 		
 		remove_from_session();
 		assert(!in_session());
@@ -1454,7 +1454,7 @@ private:
 	void handle_recheck()
 	{
 		mutex_t::scoped_lock l(mutex_);
-		state_ = TorrentDetail::torrent_stopped;
+		state_ = torrent_details::torrent_stopped;
 
 		remove_from_session(false);
 		assert(!in_session());

@@ -1072,6 +1072,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\advtabs\Queue.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\advtabs\ThemeTestDialog.hpp"
 					>
 				</File>

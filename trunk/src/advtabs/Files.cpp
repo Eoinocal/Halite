@@ -103,7 +103,7 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {	
 	hal::FileDetails fileDetails;
 	
-	if (hal::TorrentDetail_ptr torrent = hal::bittorrent().torrentDetails().focusedTorrent())
+	if (hal::torrent_details_ptr torrent = hal::bittorrent().torrentDetails().focusedTorrent())
 	{
 		std::copy(torrent->fileDetails().begin(), torrent->fileDetails().end(), 
 			std::back_inserter(fileDetails));
@@ -235,7 +235,7 @@ void AdvFilesDialog::doUiUpdate()
 	requestUiUpdate();
 }
 
-void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
+void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 {
 	list_.setFocused(focusedTorrent());
 	
@@ -295,7 +295,7 @@ void AdvFilesDialog::uiUpdate(const hal::TorrentDetails& tD)
 	}
 }
 
-void AdvFilesDialog::focusChanged(const hal::TorrentDetail_ptr pT)
+void AdvFilesDialog::focusChanged(const hal::torrent_details_ptr pT)
 {
 	fileLinks_.clear();
 	if (pT)

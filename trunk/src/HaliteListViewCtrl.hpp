@@ -240,7 +240,7 @@ protected:
 		virtual std::string str() = 0;
 	};
 	
-	// EG T is a TorrentDetail, so have array column_types
+	// EG T is a torrent_details, so have array column_types
 
 public:
 	typedef selection_manager<thisClass> selection_manage_class;

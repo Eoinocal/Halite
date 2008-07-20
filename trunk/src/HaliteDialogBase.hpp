@@ -63,11 +63,11 @@ public:
 	
 	#define logical_xor !=0==!
 	
-	void handleUiUpdate(const hal::TorrentDetails& tD)
+	void handleUiUpdate(const hal::torrent_details_manager& tD)
 	{
 		TBase* pT = static_cast<TBase*>(this);
 		
-		hal::TorrentDetail_ptr focused = tD.focusedTorrent();
+		hal::torrent_details_ptr focused = tD.focusedTorrent();
 		
 		if ((focusedTorrent_ logical_xor focused) ||
 				(focused && focusedTorrent_->name() != focused->name()))
@@ -83,13 +83,13 @@ public:
 		pT->uiUpdate(tD);
 	}
 
-	void uiUpdate(const hal::TorrentDetails& tD)
+	void uiUpdate(const hal::torrent_details_manager& tD)
 	{}	
 	
-	void focusChanged(const hal::TorrentDetail_ptr pT)
+	void focusChanged(const hal::torrent_details_ptr pT)
 	{}
 	
-	const hal::TorrentDetail_ptr focusedTorrent() { return focusedTorrent_; }
+	const hal::torrent_details_ptr focusedTorrent() { return focusedTorrent_; }
 	
 	template<typename T>
 	BOOL SetDlgItemInfo(int nID, T info)
@@ -101,7 +101,7 @@ public:
 	}
 	
 protected:
-	hal::TorrentDetail_ptr focusedTorrent_;
+	hal::torrent_details_ptr focusedTorrent_;
 
 private:
 	HaliteWindow& haliteWindow_;

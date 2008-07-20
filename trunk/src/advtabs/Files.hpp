@@ -203,11 +203,11 @@ public:
 		return focused_->fileDetails()[param->dwItemData];
 	}		
 	
-	void setFocused(const hal::TorrentDetail_ptr& f) { focused_ = f; }
-	const hal::TorrentDetail_ptr focused() { return focused_; }
+	void setFocused(const hal::torrent_details_ptr& f) { focused_ = f; }
+	const hal::torrent_details_ptr focused() { return focused_; }
 
 private:
-	hal::TorrentDetail_ptr focused_;
+	hal::torrent_details_ptr focused_;
 };
 
 class FileTreeView :
@@ -440,8 +440,8 @@ public:
 	
 	void DlgResize_UpdateLayout(int cxWidth, int cyHeight);
 	void doUiUpdate();
-	void uiUpdate(const hal::TorrentDetails& tD);
-	void focusChanged(const hal::TorrentDetail_ptr pT);
+	void uiUpdate(const hal::torrent_details_manager& tD);
+	void focusChanged(const hal::torrent_details_ptr pT);
 	void OnDestroy();
 
 protected:
