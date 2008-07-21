@@ -11,7 +11,7 @@
 #include "CSSFileDialog.hpp"
 
 #include "NewTorrentDialog.hpp"
-#include "NewTorrentPeersAD.hpp"
+#include "NewTorrentPeers.hpp"
 
 void DetailsSheet::OnOutBrowse(UINT, int, HWND hWnd)
 {	
