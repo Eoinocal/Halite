@@ -16,6 +16,7 @@
 #include <libtorrent/session.hpp>
 #include <libtorrent/ip_filter.hpp>
 #include <libtorrent/torrent_handle.hpp>
+#include <libtorrent/create_torrent.hpp>
 
 #include "global/wtl_app.hpp"
 #include "global/string_conv.hpp"
@@ -285,13 +286,12 @@ try
 	libt::file_storage fs;
 	libt::file_pool f_pool;
 
-
 	HAL_DEV_MSG(L"Files");
 	for (file_size_pairs_t::const_iterator i = params.file_size_pairs.begin(), e = params.file_size_pairs.end();
 			i != e; ++i)
 	{
 		HAL_DEV_MSG(wformat(L"file path: %1%, size: %2%") % (*i).first % (*i).second);
-		f_pool->add_file(to_utf8((*i).first.string()), (*i).second);
+		fs.add_file(to_utf8((*i).first.string()), (*i).second);
 	}
 
 	int piece_size = params.piece_size;
@@ -299,16 +299,16 @@ try
 	
 	libt::create_torrent t(fs, piece_size);
 	
-	boost::scoped_ptr<libt::storage_interface> store(
+/*	boost::scoped_ptr<libt::storage_interface> store(
 		libt::default_storage_constructor(t_info, to_utf8(params.root_path.string()),
 			f_pool));
-
+*/
 	HAL_DEV_MSG(L"Trackers");
 	for (tracker_details_t::const_iterator i = params.trackers.begin(), e = params.trackers.end();
 			i != e; ++i)
 	{
 		HAL_DEV_MSG(wformat(L"URL: %1%, Tier: %2%") % (*i).url % (*i).tier);
-		t_info->add_tracker(to_utf8((*i).url), (*i).tier);
+		t.add_tracker(to_utf8((*i).url), (*i).tier);
 	}
 
 	HAL_DEV_MSG(L"Web Seeds");
@@ -316,7 +316,7 @@ try
 			i != e; ++i)
 	{
 		HAL_DEV_MSG(wformat(L"URL: %1%") % (*i).url);
-		t_info->add_url_seed(to_utf8((*i).url));
+		t.add_url_seed(to_utf8((*i).url));
 	}
 
 	HAL_DEV_MSG(L"DHT Nodes");
@@ -324,19 +324,23 @@ try
 			i != e; ++i)
 	{
 		HAL_DEV_MSG(wformat(L"URL: %1%, port: %2%") % (*i).url % (*i).port);
-		t_info->add_node(hal::make_pair(to_utf8((*i).url), (*i).port));
+		t.add_node(hal::make_pair(to_utf8((*i).url), (*i).port));
 	}
 
+	boost::scoped_ptr<libt::storage_interface> store(
+		default_storage_constructor(const_cast<libt::file_storage&>(t.files()), to_utf8(params.root_path.string()),
+			f_pool));
+
 	// calculate the hash for all pieces
-	int num = t_info->num_pieces();
-	std::vector<char> piece_buf(piece_size);
+	int num = t.num_pieces();
+	std::vector<char> piece_buf(t.piece_length());
 
 	for (int i = 0; i < num; ++i)
 	{
-		store->read(&piece_buf[0], i, 0, t_info->piece_size(i));
+		store->read(&piece_buf[0], i, 0, t.piece_size(i));
 
-		libt::hasher h(&piece_buf[0], t_info->piece_size(i));
-		t_info->set_hash(i, h.final());
+		libt::hasher h(&piece_buf[0], t.piece_size(i));
+		t.set_hash(i, h.final());
 
 		if (fn(100*i / num, hal::app().res_wstr(HAL_NEWT_HASHING_PIECES)))
 		{
@@ -349,14 +353,15 @@ try
 		}
 	}
 
-	t_info->set_creator(to_utf8(params.creator).c_str());
-	t_info->set_comment(to_utf8(params.comment).c_str());
+	t.set_creator(to_utf8(params.creator).c_str());
+	t.set_comment(to_utf8(params.comment).c_str());
 	
-	t_info->set_priv(params.private_torrent);
+	//t.set_priv(params.private_torrent);
 
 	// create the torrent and print it to out
-	libt::entry e = t_info->create_torrent();
+	libt::entry e = t.generate();
 	halencode(out_file, e);
+
 	}
 	catch(const std::exception& e)
 	{

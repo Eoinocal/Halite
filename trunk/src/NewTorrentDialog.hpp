@@ -43,7 +43,7 @@
 #include "DdxEx.hpp"
 
 #include "HaliteSortListViewCtrl.hpp"
-#include "NewTorrentTrackerLV.hpp"
+#include "NewTorrentTracker.hpp"
 #include "NewTorrentPeers.hpp"
 
 typedef boost::function<void (bool)> enable_save;

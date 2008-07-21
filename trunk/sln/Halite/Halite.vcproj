@@ -567,7 +567,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\NewTorrentTrackerLV.cpp"
+				RelativePath="..\..\src\NewTorrentTracker.cpp"
 				>
 			</File>
 			<File
@@ -1025,7 +1025,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\NewTorrentTrackerAD.hpp"
+				RelativePath="..\..\src\NewTorrentTracker.hpp"
 				>
 			</File>
 			<File
