@@ -7,8 +7,7 @@
 #include "stdAfx.hpp"
 #include "halTorrent.hpp"
 
-#include "NewTorrentPeersLV.hpp"
-#include "NewTorrentPeersAD.hpp"
+#include "NewTorrentPeers.hpp"
 
 void NewTorrent_PeersListViewCtrl::OnAttach()
 {	
