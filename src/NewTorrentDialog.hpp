@@ -36,13 +36,15 @@
 #ifndef RC_INVOKED
 
 #include <boost/function.hpp>
+
 #include "halTorrent.hpp"
 #include "halIni.hpp"
 #include "halEvent.hpp"
 #include "DdxEx.hpp"
+
 #include "HaliteSortListViewCtrl.hpp"
 #include "NewTorrentTrackerLV.hpp"
-#include "NewTorrentPeersLV.hpp"
+#include "NewTorrentPeers.hpp"
 
 typedef boost::function<void (bool)> enable_save;
 
