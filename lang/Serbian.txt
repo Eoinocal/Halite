@@ -24,10 +24,10 @@
 "Alert %2%, Status code: %4%, Times %3%. (%1%)" ---> "Uzbuđenje %2%, statusni kod: %4%, vremena %3%. (%1%)"
 "Allocating" ---> "Dodeljeno"
 "Allow only one instance to run" --->  "Dozvoli samu jednu instancu" 
-"An invalid connection policy, %1%, was passed as an encryption setting." ---> "Nekorekktni način poveza, %1%, je upotrebljen."
+"An invalid connection policy, %1%, was passed as an encryption setting." ---> "Nekorektni način poveza, %1%, je upotrebljen."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Nekorektna stepenica šifracije, %1%, je upotrebljena."
 "Apply" ---> "Potvrdi"
-"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  "Jeste li sigurni, da želite halite zatvoriti?"
 "Auto Sort" ---> "Automatsko srtiranje"
 "BitTorrent" ---> "BitTorent"
 "Bittorrent Event: %1%." ---> "Bittorent događaj: %1%."

@@ -27,7 +27,7 @@
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Некорекни начин повеза, %1%, Је употреблјен."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Некоректна степеница шифрације, %1%, је употребњена."
 "Apply" ---> "Потврди"
-"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  "Јесте ли сигурни, да желите халите затворити?"
 "Auto Sort" ---> "Аутоматско сортиранје"
 "BitTorrent" ---> "БитТорент"
 "Bittorrent Event: %1%." ---> "Битторент догађај: %1%."
