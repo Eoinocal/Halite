@@ -46,20 +46,7 @@ public:
 	
 	NewTorrent_PeersListViewCtrl() :
 		iniClass("listviews/NewTorrentPeers", "NewPeersListView")
-	{
-		std::vector<wstring> names;	
-		wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
-
-		// "Tracker;Tier"
-		boost::split(names, column_names, boost::is_any_of(L";"));
-		
-		array<int, 3> widths = {287,50,50};
-		array<int, 3> order = {0,1,2};
-		array<bool, 3> visible = {true,true,true};
-		
-		SetDefaults(names, widths, order, visible, true);
-		load_from_ini();
-	}
+	{}
 
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_DESTROY(OnDestroy)

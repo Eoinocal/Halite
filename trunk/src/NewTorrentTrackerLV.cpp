@@ -13,10 +13,26 @@
 
 void NewTorrent_TrackerListViewCtrl::OnAttach()
 {
-	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
-	SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
+	WTL::CMenuHandle menu;
+	BOOL menu_created = menu.LoadMenu(LISTVIEW_ID_MENU);
+	InitialSetup(menu);
+
+	std::vector<wstring> names;	
+	wstring column_names = hal::app().res_wstr(HAL_TRACKER_LISTVIEW_COLUMNS);
+
+	// "Tracker;Tier"
+	boost::split(names, column_names, boost::is_any_of(L";"));
 	
-	ApplyDetails();
+	array<int, 2> widths = {287,50};
+	array<int, 2> order = {0,1};
+	array<bool, 2> visible = {true,true};	
+	
+	for (int i=0, e=2; i < e; ++i)
+	{
+		AddColumn(names[i].c_str(), i, visible[i], widths[i]);
+	}	
+	
+	load_from_ini();
 	
 	SetColumnSortType(1, WTL::LVCOLSORT_LONG);
 }

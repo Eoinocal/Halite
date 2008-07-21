@@ -174,15 +174,6 @@ public:
 		DWORD dwStyle = 0, DWORD dwExStyle = 0,
 		ATL::_U_MENUorID MenuOrID = 0U, LPVOID lpCreateParam = NULL);
 	
-	bool SubclassWindow(HWND hwnd)
-	{
-		if(!listClass::SubclassWindow(hwnd))
-			return false;
-		
-		ApplyDetails();		
-		return true;
-	}
-	
 	void OnDestroy()
 	{
 		saveSettings();

@@ -70,20 +70,7 @@ public:
 
 	thisClass() :
 		iniClass("listviews/advPeers", "PeerListView")
-	{					
-		std::vector<wstring> names;	
-		wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
-
-		// "Peer;Country;Download;Upload;Type;Client,Status"
-		boost::split(names, column_names, boost::is_any_of(L";"));
-		
-		array<int, 7> widths = {100,20,70,70,70,100,200};
-		array<int, 7> order = {0,1,2,3,4,5,6};
-		array<bool, 7> visible = {true,true,true,true,true,true,true};
-		
-		SetDefaults(names, widths, order, visible, true);
-		load_from_ini();
-	}
+	{}
 	
 	void saveSettings()
 	{
@@ -95,8 +82,25 @@ public:
 	{
 		if(!listClass::SubclassWindow(hwnd))
 			return false;
+
+		InitialSetup();	
+		
+		std::vector<wstring> names;	
+		wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
+
+		// "Peer;Country;Download;Upload;Type;Client,Status"
+		boost::split(names, column_names, boost::is_any_of(L";"));
+		
+		array<int, 7> widths = {100,20,70,70,70,100,200};
+		array<int, 7> order = {0,1,2,3,4,5,6};
+		array<bool, 7> visible = {true,true,true,true,true,true,true};
+
+		for (int i=0, e=7; i < e; ++i)
+		{
+			AddColumn(names[i].c_str(), i, visible[i], widths[i]);
+		}	
 					
-		ApplyDetails();
+		load_from_ini();
 		
 		SetColumnSortType(2, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedDown());
 		SetColumnSortType(3, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedUp());

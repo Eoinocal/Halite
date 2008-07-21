@@ -43,20 +43,7 @@ public:
 	
 	TrackerListViewCtrl(boost::filesystem::path location, std::string name) :
 		iniClass(location, name)
-	{
-		std::vector<wstring> names;	
-		wstring column_names = hal::app().res_wstr(HAL_TRACKER_LISTVIEW_COLUMNS);
-
-		// "Tracker;Tier"
-		boost::split(names, column_names, boost::is_any_of(L";"));
-		
-		array<int, 2> widths = {287,50};
-		array<int, 2> order = {0,1};
-		array<bool, 2> visible = {true,true};
-		
-		SetDefaults(names, widths, order, visible, true);
-		load_from_ini();
-	}
+	{}
 
 	BEGIN_MSG_MAP_EX(TrackerListViewCtrl)
 		MSG_WM_DESTROY(OnDestroy)

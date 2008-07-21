@@ -60,10 +60,24 @@ bool DetailsSheet::Private()
 
 void FilesListViewCtrl::OnAttach()
 {
-	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
-	SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
+	InitialSetup();		
+
+	std::vector<wstring> names;	
+	wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
+
+	// "Tracker;Tier"
+	boost::split(names, column_names, boost::is_any_of(L";"));
 	
-	ApplyDetails();
+	array<int, 3> widths = {50,287,50};
+	array<int, 3> order = {0,1,2};
+	array<bool, 3> visible = {true,true,true};
+	
+	for (int i=0, e=3; i < e; ++i)
+	{
+		AddColumn(names[i].c_str(), i, visible[i], widths[i]);
+	}	
+
+	load_from_ini();
 	
 	SetColumnSortType(0, WTL::LVCOLSORT_TEXTNOCASE);
 	SetColumnSortType(1, WTL::LVCOLSORT_TEXTNOCASE);

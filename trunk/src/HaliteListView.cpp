@@ -22,7 +22,14 @@ HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	iniClass("listviews/halite", "HaliteListView")
 {		
 	HalWindow.connectUiUpdate(bind(&HaliteListViewCtrl::uiUpdate, this, _1));
-	
+}
+
+void HaliteListViewCtrl::OnShowWindow(UINT, INT)
+{
+	WTL::CMenuHandle menu;
+	BOOL menu_created = menu.LoadMenu(HAL_LISTVIEW_MENU);
+	InitialSetup(menu);	
+
 	std::vector<wstring> names;	
 	wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
 	
@@ -32,17 +39,13 @@ HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	array<int, NumberOfColumns_s> order = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
 	array<bool, NumberOfColumns_s> visible = {true,true,true,true,true,true,true,true,true,true,true,\
 		true,true,true,true,true,true,true,true,true,true};
-	
-	SetDefaults(names, widths, order, visible);
-	SafeLoadFromIni();
-}
 
-void HaliteListViewCtrl::OnShowWindow(UINT, INT)
-{
-	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER);
-	SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
-	
-	ApplyDetails();
+	for (int i=0, e=NumberOfColumns_s; i < e; ++i)
+	{
+		AddColumn(names[i].c_str(), i, visible[i], widths[i]);
+	}	
+
+	SafeLoadFromIni();
 	
 	SetColumnSortType(0, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Name());
 	SetColumnSortType(1, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::State());
