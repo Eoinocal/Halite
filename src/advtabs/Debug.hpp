@@ -90,21 +90,7 @@ public:
 
 	LogListViewCtrl() :
 		iniClass("listviews/eventLog", "LogListView")
-	{
-		std::vector<wstring> names;	
-		wstring column_names = hal::app().res_wstr(HAL_DEBUG_LISTVIEW_COLUMNS);
-
-		// "Time;Message;Severity"
-		boost::split(names, column_names, boost::is_any_of(L";"));
-		
-		array<int, 3> widths = {67,419,69};
-		array<int, 3> order = {0,1,2};
-		array<bool, 3> visible = {true,true,true};
-		
-		SetDefaults(names, widths, order, visible, true);
-		
-		load_from_ini();
-	}
+	{}
 	
 	~LogListViewCtrl()
 	{
@@ -179,10 +165,24 @@ private:
 	{	
 		hal::mutex_t::scoped_lock l(mutex_);
 	
-		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP);
-		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
+		InitialSetup();		
+
+		std::vector<wstring> names;	
+		wstring column_names = hal::app().res_wstr(HAL_DEBUG_LISTVIEW_COLUMNS);
+
+		// "Time;Message;Severity"
+		boost::split(names, column_names, boost::is_any_of(L";"));
 		
-		ApplyDetails();
+		array<int, 3> widths = {67,419,69};
+		array<int, 3> order = {0,1,2};
+		array<bool, 3> visible = {true,true,true};
+
+		for (int i=0, e=3; i < e; ++i)
+		{
+			AddColumn(names[i].c_str(), i, visible[i], widths[i]);
+		}	
+	
+		load_from_ini();
 		
 		conn_ = hal::event_log.attach(bind(&LogListViewCtrl::operator(), this, _1));
 	}

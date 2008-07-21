@@ -17,19 +17,7 @@
 
 FileListView::FileListView() :
 	iniClass("listviews/advFiles", "FileListView")
-{					
-	std::vector<wstring> names;	
-	wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
-
-	boost::split(names, column_names, boost::is_any_of(L";"));
-	
-	array<int, 5> widths = {100,70,70,70,70};
-	array<int, 5> order = {0,1,2,3,4};
-	array<bool, 5> visible = {true,true,true,true,true};
-	
-	SetDefaults(names, widths, order, visible, true);
-	load_from_ini();
-}
+{}
 
 HWND FileListView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowName,
 	DWORD dwStyle, DWORD dwExStyle,
@@ -38,9 +26,25 @@ HWND FileListView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowNa
 	HWND hwnd = listClass::Create(hWndParent, rect.m_lpRect, szWindowName, dwStyle, dwExStyle, MenuOrID.m_hMenu, lpCreateParam);
 	assert(hwnd);
 	
-	ApplyDetails();
+	WTL::CMenuHandle menu;
+	BOOL menu_created = menu.LoadMenu(LISTVIEW_ID_MENU);
+	InitialSetup(menu);	
+
+	std::vector<wstring> names;	
+	wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
+
+	boost::split(names, column_names, boost::is_any_of(L";"));
 	
-	SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER);
+	array<int, 5> widths = {100,70,70,70,70};
+	array<int, 5> order = {0,1,2,3,4};
+	array<bool, 5> visible = {true,true,true,true,true};
+
+	for (int i=0, e=5; i < e; ++i)
+	{
+		AddColumn(names[i].c_str(), i, visible[i], widths[i]);
+	}	
+
+	load_from_ini();
 	
 	SetColumnSortType(2, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Size());
 	SetColumnSortType(3, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Progress());

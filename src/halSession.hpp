@@ -905,96 +905,7 @@ public:
 	const wpath workingDir() { return workingDirectory; };
 
 private:
-
-	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn)
-	{		
-/*	
-	try
-	{
-		libt::file_storage fs;
-		libt::file_pool f_pool;
-
-
-		HAL_DEV_MSG(L"Files");
-		for (file_size_pairs_t::const_iterator i = params.file_size_pairs.begin(), e = params.file_size_pairs.end();
-				i != e; ++i)
-		{
-			HAL_DEV_MSG(wformat(L"file path: %1%, size: %2%") % (*i).first % (*i).second);
-			f_pool->add_file(to_utf8((*i).first.string()), (*i).second);
-		}
-
-		int piece_size = params.piece_size;
-		HAL_DEV_MSG(wformat(L"piece size: %1%") % piece_size);
-		
-		libt::create_torrent t(fs, piece_size);
-		
-		boost::scoped_ptr<libt::storage_interface> store(
-			libt::default_storage_constructor(t_info, to_utf8(params.root_path.string()),
-				f_pool));
-
-		HAL_DEV_MSG(L"Trackers");
-		for (tracker_details_t::const_iterator i = params.trackers.begin(), e = params.trackers.end();
-				i != e; ++i)
-		{
-			HAL_DEV_MSG(wformat(L"URL: %1%, Tier: %2%") % (*i).url % (*i).tier);
-			t_info->add_tracker(to_utf8((*i).url), (*i).tier);
-		}
-
-		HAL_DEV_MSG(L"Web Seeds");
-		for (web_seed_details_t::const_iterator i = params.web_seeds.begin(), e = params.web_seeds.end();
-				i != e; ++i)
-		{
-			HAL_DEV_MSG(wformat(L"URL: %1%") % (*i).url);
-			t_info->add_url_seed(to_utf8((*i).url));
-		}
-
-		HAL_DEV_MSG(L"DHT Nodes");
-		for (dht_node_details_t::const_iterator i = params.dht_nodes.begin(), e = params.dht_nodes.end();
-				i != e; ++i)
-		{
-			HAL_DEV_MSG(wformat(L"URL: %1%, port: %2%") % (*i).url % (*i).port);
-			t_info->add_node(hal::make_pair(to_utf8((*i).url), (*i).port));
-		}
-
-		// calculate the hash for all pieces
-		int num = t_info->num_pieces();
-		std::vector<char> piece_buf(piece_size);
-
-		for (int i = 0; i < num; ++i)
-		{
-			store->read(&piece_buf[0], i, 0, t_info->piece_size(i));
-
-			libt::hasher h(&piece_buf[0], t_info->piece_size(i));
-			t_info->set_hash(i, h.final());
-
-			if (fn(100*i / num, hal::app().res_wstr(HAL_NEWT_HASHING_PIECES)))
-			{
-				// User canceled torrent creation.
-
-				hal::event_log.post(shared_ptr<hal::EventDetail>(
-					new hal::EventMsg(hal::app().res_wstr(HAL_NEWT_CREATION_CANCELED), hal::event_logger::info)));
-
-				return true;
-			}
-		}
-
-		t_info->set_creator(to_utf8(params.creator).c_str());
-		t_info->set_comment(to_utf8(params.comment).c_str());
-		
-		t_info->set_priv(params.private_torrent);
-
-		// create the torrent and print it to out
-		libt::entry e = t_info->create_torrent();
-		halencode(out_file, e);
-		}
-		catch(const std::exception& e)
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventStdException(event_logger::fatal, e, L"create_torrent")));
-		}	
-*/
-		return false;
-	}
+	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn);
 	
 	libt::session session_;	
 	mutable mutex_t mutex_;
@@ -1024,8 +935,7 @@ private:
 	
 	bool dht_on_;
 	libt::dht_settings dht_settings_;
-	libt::entry dht_state_;
-	
+	libt::entry dht_state_;	
 };
 
 }
