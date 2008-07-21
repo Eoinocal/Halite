@@ -19,6 +19,8 @@
 #define IDC_TRACKER_TEXT_URL        HAL_TRACKER_ADD_BEGIN + 3
 #define IDC_TRACKER_TEXT_TIER       HAL_TRACKER_ADD_BEGIN + 4
 
+#ifndef RC_INVOKED
+
 #include <boost/signals.hpp>
 #include <boost/function.hpp>
 
@@ -123,3 +125,6 @@ private:
 };
 
 typedef NewTorrent_TrackerListViewCtrl::SelectionManager NewTorrent_TrackerListViewManager;
+
+#endif
+
