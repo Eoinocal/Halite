@@ -563,7 +563,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\NewTorrentPeersLV.cpp"
+				RelativePath="..\..\src\NewTorrentPeers.cpp"
 				>
 			</File>
 			<File
@@ -1017,7 +1017,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\NewTorrentPeersAD.hpp"
+				RelativePath="..\..\src\NewTorrentPeers.hpp"
 				>
 			</File>
 			<File
