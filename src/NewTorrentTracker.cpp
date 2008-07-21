@@ -7,9 +7,7 @@
 #include "stdAfx.hpp"
 
 #include "halTorrent.hpp"
-
-#include "NewTorrentTrackerLV.hpp"
-#include "NewTorrentTrackerAD.hpp"
+#include "NewTorrentTracker.hpp"
 
 void NewTorrent_TrackerListViewCtrl::OnAttach()
 {
