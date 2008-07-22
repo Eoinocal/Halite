@@ -347,7 +347,6 @@ public:
 			wformat(L"Set Timeouts, peer %1%, tracker %2%.") % peers % tracker)));
 	}
 
-
 	queue_settings get_queue_settings()
 	{		
 		libt::session_settings settings = session_.settings();
@@ -389,6 +388,54 @@ public:
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(
 			wformat(L"Set queue parameters, %1% downloads and %2% active seeds.") 
 				% settings.active_downloads % settings.active_seeds)));
+	}
+
+
+	timeouts get_timeouts()
+	{		
+		libt::session_settings settings = session_.settings();
+		timeouts times;
+
+		times.tracker_completion_timeout = settings.tracker_completion_timeout;
+		times.tracker_receive_timeout = settings.tracker_receive_timeout;
+		times.stop_tracker_timeout = settings.stop_tracker_timeout;
+
+		times.request_queue_time = settings.request_queue_time;
+		times.piece_timeout = settings.piece_timeout;
+		times.min_reconnect_time = settings.min_reconnect_time;		
+
+		times.peer_timeout = settings.peer_timeout;
+		times.urlseed_timeout = settings.urlseed_timeout;
+		times.peer_connect_timeout = settings.peer_connect_timeout;
+		times.inactivity_timeout = settings.inactivity_timeout;
+		times.handshake_timeout = settings.handshake_timeout;
+
+		return times;
+	}
+
+	void set_timeouts(const timeouts& times)
+	{
+		libt::session_settings settings = session_.settings();
+
+		settings.tracker_completion_timeout = times.tracker_completion_timeout;
+		settings.tracker_receive_timeout = times.tracker_receive_timeout;
+		settings.stop_tracker_timeout = times.stop_tracker_timeout;
+
+		settings.request_queue_time = times.request_queue_time;
+		settings.piece_timeout = times.piece_timeout;
+		settings.min_reconnect_time = times.min_reconnect_time;		
+
+		settings.peer_timeout = times.peer_timeout;
+		settings.urlseed_timeout = times.urlseed_timeout;
+		settings.peer_connect_timeout = times.peer_connect_timeout;
+		settings.inactivity_timeout = times.inactivity_timeout;
+		settings.handshake_timeout = times.handshake_timeout;
+
+		session_.set_settings(settings);
+
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(
+			wformat(L"Set timeouts, peers- %1% secs, tracker- %2% secs.") 
+				% settings.peer_timeout % settings.tracker_receive_timeout)));
 	}
 
 	void set_session_limits(int maxConn, int maxUpload)

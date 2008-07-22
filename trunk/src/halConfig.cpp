@@ -100,7 +100,7 @@ bool Config::settingsThread()
 		dhtSearchBranching, dhtServicePort, 
 		dhtMaxFailCount);
 
-	bittorrent().set_timeouts(peerTimeout, trackerTimeout);	
+	bittorrent().set_timeouts(timeouts_);	
 	bittorrent().set_queue_settings(queue_settings_);
 	
 	if (enableDHT)

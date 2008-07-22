@@ -103,6 +103,42 @@ struct queue_settings
 	int auto_scrape_interval;
 	bool close_redundant_connections;
 };
+
+struct timeouts
+{
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{	
+		ar & BOOST_SERIALIZATION_NVP(tracker_completion_timeout);
+		ar & BOOST_SERIALIZATION_NVP(tracker_receive_timeout);
+		ar & BOOST_SERIALIZATION_NVP(stop_tracker_timeout);
+
+		ar & BOOST_SERIALIZATION_NVP(request_queue_time);
+		ar & BOOST_SERIALIZATION_NVP(piece_timeout);
+		ar & BOOST_SERIALIZATION_NVP(min_reconnect_time);
+
+		ar & BOOST_SERIALIZATION_NVP(peer_timeout);
+		ar & BOOST_SERIALIZATION_NVP(urlseed_timeout);
+		ar & BOOST_SERIALIZATION_NVP(peer_connect_timeout);
+		ar & BOOST_SERIALIZATION_NVP(inactivity_timeout);
+		ar & BOOST_SERIALIZATION_NVP(handshake_timeout);
+	}
+
+	int tracker_completion_timeout;
+	int tracker_receive_timeout;
+	int stop_tracker_timeout;
+
+	float request_queue_time;
+	int piece_timeout;
+	int min_reconnect_time;
+
+	int peer_timeout;
+	int urlseed_timeout;
+	int peer_connect_timeout;
+	int inactivity_timeout;
+	int handshake_timeout;
+};
 	
 struct torrentBriefDetail 
 {
@@ -654,10 +690,13 @@ public:
 	void set_session_speed(float download, float upload);
 	void set_dht_settings(int max_peers_reply, int search_branching, 
 		int service_port, int max_fail_count);
-	void set_timeouts(int peers, int tracker);
+	//void set_timeouts(int peers, int tracker);
 
 	queue_settings get_queue_settings();
 	void set_queue_settings(const queue_settings& s);
+	
+	timeouts get_timeouts();
+	void set_timeouts(const timeouts& t);
 	
 	const SessionDetail getSessionDetails();
 
