@@ -65,6 +65,7 @@ public:
 		trackerTimeout(60)
 	{
 		queue_settings_ = hal::bittorrent().get_queue_settings();
+		timeouts_ = hal::bittorrent().get_timeouts();
 	}
 	
 	friend class boost::serialization::access;
@@ -119,14 +120,15 @@ public:
 			ar & BOOST_SERIALIZATION_NVP(halfConn);
 			ar & BOOST_SERIALIZATION_NVP(halfConnLimit);
 		}
-		if (version > 2) {
+
+		if (version > 2 && version < 6) {
 			ar & BOOST_SERIALIZATION_NVP(mappingType);
 			ar & BOOST_SERIALIZATION_NVP(peerTimeout);
 			ar & BOOST_SERIALIZATION_NVP(trackerTimeout);
-		}
-
-		if (version > 5) {
+		} else if (version > 5) {
+			ar & BOOST_SERIALIZATION_NVP(mappingType);
 			ar & make_nvp("queue_settings", queue_settings_);
+			ar & make_nvp("timeouts", timeouts_);
 		}
 	}
 	
@@ -192,6 +194,7 @@ private:
 	int trackerTimeout;	
 
 	hal::queue_settings queue_settings_;
+	hal::timeouts timeouts_;
 };
 
 Config& config();
