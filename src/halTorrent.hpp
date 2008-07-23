@@ -688,9 +688,7 @@ public:
 	void setSessionHalfOpenLimit(int halfConn);
 	void set_session_limits(int maxConn, int maxUpload);
 	void set_session_speed(float download, float upload);
-	void set_dht_settings(int max_peers_reply, int search_branching, 
-		int service_port, int max_fail_count);
-	//void set_timeouts(int peers, int tracker);
+	void set_dht_settings(int max_peers_reply, int search_branching, int service_port, int max_fail_count);
 
 	queue_settings get_queue_settings();
 	void set_queue_settings(const queue_settings& s);

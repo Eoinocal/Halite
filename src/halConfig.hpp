@@ -120,13 +120,14 @@ public:
 			ar & BOOST_SERIALIZATION_NVP(halfConn);
 			ar & BOOST_SERIALIZATION_NVP(halfConnLimit);
 		}
+		if (version > 2) {
+			ar & BOOST_SERIALIZATION_NVP(mappingType);
+		}
 
 		if (version > 2 && version < 6) {
-			ar & BOOST_SERIALIZATION_NVP(mappingType);
-			ar & BOOST_SERIALIZATION_NVP(peerTimeout);
-			ar & BOOST_SERIALIZATION_NVP(trackerTimeout);
+			ar & make_nvp("peerTimeout", timeouts_.peer_connect_timeout);
+			ar & make_nvp("trackerTimeout", timeouts_.tracker_receive_timeout);
 		} else if (version > 5) {
-			ar & BOOST_SERIALIZATION_NVP(mappingType);
 			ar & make_nvp("queue_settings", queue_settings_);
 			ar & make_nvp("timeouts", timeouts_);
 		}
@@ -190,8 +191,6 @@ private:
 	int halfConnLimit;
 
 	int mappingType;
-	int peerTimeout;
-	int trackerTimeout;	
 
 	hal::queue_settings queue_settings_;
 	hal::timeouts timeouts_;
