@@ -647,7 +647,6 @@ private:
 			(listNames_.size() == listOrder_.size()) &&
 			(listNames_.size() == listVisible_.size());
 
-		assert(ret);
 		return ret;
 	}
 	

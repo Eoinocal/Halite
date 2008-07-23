@@ -17,6 +17,8 @@
 
 #include "halTorrent.hpp"
 
+#define HAL_CUSTOMDRAW_TITLEDATA 1000000000
+
 HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	halWindow_(HalWindow),
 	iniClass("listviews/halite", "HaliteListView")
@@ -35,10 +37,9 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	
 	boost::split(names, column_names, boost::is_any_of(L";"));
 	
-	array<int, NumberOfColumns_s> widths = {100,110,60,60,60,42,45,61,45,45,45,45,45,45,45,45,45,45,45,45,45};
-	array<int, NumberOfColumns_s> order = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+	array<int, NumberOfColumns_s> widths = {100,110,60,60,60,42,45,61,45,45,45,45,45,45,45,45,45,45,45,45,45,45};
 	array<bool, NumberOfColumns_s> visible = {true,true,true,true,true,true,true,true,true,true,true,\
-		true,true,true,true,true,true,true,true,true,true};
+		true,true,true,true,true,true,true,true,true,true,true};
 
 	for (int i=0, e=NumberOfColumns_s; i < e; ++i)
 	{
@@ -68,6 +69,17 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	SetColumnSortType(18, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::SeedingTime());
 	SetColumnSortType(19, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::StartTime());
 	SetColumnSortType(20, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::FinishTime());
+	SetColumnSortType(21, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::QueuePosition());
+
+	
+	int item_pos = AddItem(0, 0, L"Unmanaged", 0);
+	SetItemData(item_pos, HAL_CUSTOMDRAW_TITLEDATA);
+			
+	item_pos = AddItem(0, 0, L"Downloading", 0);
+	SetItemData(item_pos, HAL_CUSTOMDRAW_TITLEDATA);
+			
+	item_pos = AddItem(0, 0, L"Seeding", 0);
+	SetItemData(item_pos, HAL_CUSTOMDRAW_TITLEDATA);
 }
 
 void HaliteListViewCtrl::OnDestroy()
@@ -79,6 +91,21 @@ void HaliteListViewCtrl::saveSettings()
 {
 	GetListViewDetails();
 	save_to_ini();
+}
+
+DWORD HaliteListViewCtrl::OnPrePaint(int idCtrl, LPNMCUSTOMDRAW lpNMCD)
+{
+	return CDRF_NOTIFYITEMDRAW;
+}
+
+DWORD HaliteListViewCtrl::OnItemPrePaint(int idCtrl, LPNMCUSTOMDRAW lpNMCD)
+{
+	NMLVCUSTOMDRAW* pnmlv = (NMLVCUSTOMDRAW*) lpNMCD;
+
+	if (HAL_CUSTOMDRAW_TITLEDATA == pnmlv->nmcd.lItemlParam)
+		pnmlv->clrText = RGB(50,50,200);
+
+	return CDRF_DODEFAULT;
 }
 
 void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
