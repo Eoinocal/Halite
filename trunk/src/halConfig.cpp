@@ -87,18 +87,14 @@ bool Config::settingsThread()
 	
 	bittorrent().resume_all();	
 	
-	bittorrent().set_session_limits(
-		maxConnections, maxUploads);
-	bittorrent().set_session_speed(
-		downRate, upRate);
+	bittorrent().set_session_limits(maxConnections, maxUploads);
+	bittorrent().set_session_speed(	downRate, upRate);
 		
 	bittorrent().setTorrentDefaults(torrentMaxConnections,
-		torrentMaxUploads, torrentDownRate,
-		torrentUpRate);
+		torrentMaxUploads, torrentDownRate,	torrentUpRate);
 	
 	bittorrent().set_dht_settings(dhtMaxPeersReply, 
-		dhtSearchBranching, dhtServicePort, 
-		dhtMaxFailCount);
+		dhtSearchBranching, dhtServicePort, dhtMaxFailCount);
 
 	bittorrent().set_timeouts(timeouts_);	
 	bittorrent().set_queue_settings(queue_settings_);

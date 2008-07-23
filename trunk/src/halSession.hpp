@@ -390,7 +390,6 @@ public:
 				% settings.active_downloads % settings.active_seeds)));
 	}
 
-
 	timeouts get_timeouts()
 	{		
 		libt::session_settings settings = session_.settings();
