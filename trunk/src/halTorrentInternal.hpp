@@ -665,7 +665,7 @@ public:
 		return torrent_details_ptr(new torrent_details(name_, filename_, saveDirectory().string(), state, hal::from_utf8(statusMemory_.current_tracker), 
 			std::pair<float, float>(statusMemory_.download_payload_rate, statusMemory_.upload_payload_rate),
 			progress_, statusMemory_.distributed_copies, statusMemory_.total_wanted_done, statusMemory_.total_wanted, uploaded_, payloadUploaded_,
-			downloaded_, payloadDownloaded_, connections, ratio_, td, statusMemory_.next_announce, activeDuration_, seedingDuration_, startTime_, finishTime_));
+			downloaded_, payloadDownloaded_, connections, ratio_, td, statusMemory_.next_announce, activeDuration_, seedingDuration_, startTime_, finishTime_, handle_.queue_position()));
 
 		}
 		catch (const libt::invalid_handle&)

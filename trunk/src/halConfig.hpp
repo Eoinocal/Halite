@@ -60,9 +60,7 @@ public:
 		peConOutPolicy(1),
 		halfConn(true),
 		halfConnLimit(10),
-		mappingType(0),
-		peerTimeout(30),
-		trackerTimeout(60)
+		mappingType(0)
 	{
 		queue_settings_ = hal::bittorrent().get_queue_settings();
 		timeouts_ = hal::bittorrent().get_timeouts();
