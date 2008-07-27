@@ -49,6 +49,13 @@ namespace libtorrent { struct peer_info; }
 
 namespace hal 
 {
+
+inline boost::wformat wform(const std::wstring & f_string) {
+    using namespace boost::io;
+    boost::wformat fmter(f_string);
+    fmter.exceptions( no_error_bits  );
+    return fmter;
+}
 	
 struct torrentBriefDetail 
 {

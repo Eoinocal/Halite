@@ -340,7 +340,7 @@ public:
 		void operator()(libt::torrent_finished_alert const& a) const
 		{
 			event_log.post(shared_ptr<EventDetail>(
-				new EventMsg((wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
+				new EventMsg((wform(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
 						% get(a.handle)->name()), 
 					event_logger::info, a.timestamp())));
 			
@@ -350,7 +350,7 @@ public:
 		void operator()(libt::torrent_paused_alert const& a) const
 		{
 			event_log.post(shared_ptr<EventDetail>(
-				new EventMsg((wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 
+				new EventMsg((wform(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 
 						% get(a.handle)->name()), 
 					event_logger::info, a.timestamp())));
 
@@ -361,7 +361,7 @@ public:
 		{
 			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wformat(hal::app().res_wstr(HAL_PEER_ALERT))
+					wform(hal::app().res_wstr(HAL_PEER_ALERT))
 						% hal::from_utf8_safe(a.msg())
 						% hal::from_utf8_safe(a.ip.address().to_string()))
 			)	);				
@@ -371,7 +371,7 @@ public:
 		{
 			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wformat(hal::app().res_wstr(HAL_PEER_BAN_ALERT))
+					wform(hal::app().res_wstr(HAL_PEER_BAN_ALERT))
 						% get(a.handle)->name()
 						% hal::from_utf8_safe(a.ip.address().to_string()))
 			)	);				
@@ -381,7 +381,7 @@ public:
 		{
 			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wformat(hal::app().res_wstr(HAL_HASH_FAIL_ALERT))
+					wform(hal::app().res_wstr(HAL_HASH_FAIL_ALERT))
 						% get(a.handle)->name()
 						% a.piece_index)
 			)	);				
@@ -391,7 +391,7 @@ public:
 		{
 			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wformat(hal::app().res_wstr(HAL_URL_SEED_ALERT))
+					wform(hal::app().res_wstr(HAL_URL_SEED_ALERT))
 						% get(a.handle)->name()
 						% hal::from_utf8_safe(a.url)
 						% hal::from_utf8_safe(a.msg()))
@@ -402,7 +402,7 @@ public:
 		{
 			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wformat(hal::app().res_wstr(HAL_TRACKER_WARNING_ALERT))
+					wform(hal::app().res_wstr(HAL_TRACKER_WARNING_ALERT))
 						% get(a.handle)->name()
 						% hal::from_utf8_safe(a.msg()))
 			)	);				
@@ -411,7 +411,7 @@ public:
 		void operator()(libt::tracker_announce_alert const& a) const
 		{
 			event_log.post(shared_ptr<EventDetail>(
-				new EventMsg((wformat(hal::app().res_wstr(HAL_TRACKER_ANNOUNCE_ALERT)) 
+				new EventMsg((wform(hal::app().res_wstr(HAL_TRACKER_ANNOUNCE_ALERT)) 
 						% get(a.handle)->name()), 
 					event_logger::info, a.timestamp())));
 		}
@@ -420,7 +420,7 @@ public:
 		{
 			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wformat(hal::app().res_wstr(HAL_TRACKER_ALERT))
+					wform(hal::app().res_wstr(HAL_TRACKER_ALERT))
 						% get(a.handle)->name()
 						% hal::from_utf8_safe(a.msg())
 						% a.times_in_row
@@ -432,7 +432,7 @@ public:
 		{
 			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wformat(hal::app().res_wstr(HAL_TRACKER_REPLY_ALERT))
+					wform(hal::app().res_wstr(HAL_TRACKER_REPLY_ALERT))
 						% get(a.handle)->name()
 						% hal::from_utf8_safe(a.msg())
 						% a.num_peers)
@@ -443,7 +443,7 @@ public:
 		{
 			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wformat(hal::app().res_wstr(HAL_FAST_RESUME_ALERT))
+					wform(hal::app().res_wstr(HAL_FAST_RESUME_ALERT))
 						% get(a.handle)->name()
 						% hal::from_utf8_safe(a.msg()))
 			)	);				
@@ -453,7 +453,7 @@ public:
 		{
 			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(event_logger::debug, a.timestamp(),
-					wformat(hal::app().res_wstr(HAL_PIECE_FINISHED_ALERT))
+					wform(hal::app().res_wstr(HAL_PIECE_FINISHED_ALERT))
 						% get(a.handle)->name()
 						% a.piece_index)
 			)	);				
@@ -463,7 +463,7 @@ public:
 		{
 			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(event_logger::debug, a.timestamp(),
-					wformat(hal::app().res_wstr(HAL_BLOCK_FINISHED_ALERT))
+					wform(hal::app().res_wstr(HAL_BLOCK_FINISHED_ALERT))
 						% get(a.handle)->name()
 						% a.block_index
 						% a.piece_index)
@@ -474,7 +474,7 @@ public:
 		{
 			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(event_logger::debug, a.timestamp(),
-					wformat(hal::app().res_wstr(HAL_BLOCK_DOWNLOADING_ALERT))
+					wform(hal::app().res_wstr(HAL_BLOCK_DOWNLOADING_ALERT))
 						% get(a.handle)->name()
 						% a.block_index
 						% a.piece_index)
@@ -494,7 +494,7 @@ public:
 			{
 				event_log.post(shared_ptr<EventDetail>(
 					new EventGeneral(event_logger::info, a.timestamp(),
-						wformat(hal::app().res_wstr(HAL_LISTEN_FAILED_ALERT))
+						wform(hal::app().res_wstr(HAL_LISTEN_FAILED_ALERT))
 							% hal::from_utf8_safe(a.msg()))
 				)	);
 			}
@@ -504,7 +504,7 @@ public:
 		{
 			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(event_logger::info, a.timestamp(),
-					wformat(hal::app().res_wstr(HAL_LISTEN_SUCCEEDED_ALERT))
+					wform(hal::app().res_wstr(HAL_LISTEN_SUCCEEDED_ALERT))
 						% hal::from_utf8_safe(a.msg()))
 			)	);	
 
@@ -515,7 +515,7 @@ public:
 		{
 			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(event_logger::debug, a.timestamp(),
-					wformat(hal::app().res_wstr(HAL_IPFILTER_ALERT))
+					wform(hal::app().res_wstr(HAL_IPFILTER_ALERT))
 						% hal::from_utf8_safe(a.ip.to_string())
 						% hal::from_utf8_safe(a.msg()))
 			)	);				
@@ -666,7 +666,7 @@ private:
 			}
 			
 			event_log.post(shared_ptr<EventDetail>(new EventMsg(
-				wformat(L"Total %1%.") % theTorrents.size())));				
+				wform(L"Total %1%.") % theTorrents.size())));				
 			
 			fs::rename(workingDirectory/L"Torrents.xml", workingDirectory/L"Torrents.xml.safe.to.delete");
 		}			
@@ -706,14 +706,14 @@ private:
 		boost::intrusive_ptr<libt::torrent_info> t_info(new libt::torrent_info);
 
 		int piece_size = params.piece_size;
-		HAL_DEV_MSG(wformat(L"piece size: %1%") % piece_size);
+		HAL_DEV_MSG(wform(L"piece size: %1%") % piece_size);
 		t_info->set_piece_size(piece_size);
 
 		HAL_DEV_MSG(L"Files");
 		for (file_size_pairs_t::const_iterator i = params.file_size_pairs.begin(), e = params.file_size_pairs.end();
 				i != e; ++i)
 		{
-			HAL_DEV_MSG(wformat(L"file path: %1%, size: %2%") % (*i).first % (*i).second);
+			HAL_DEV_MSG(wform(L"file path: %1%, size: %2%") % (*i).first % (*i).second);
 			t_info->add_file(to_utf8((*i).first.string()), (*i).second);
 		}
 
@@ -727,7 +727,7 @@ private:
 		for (tracker_details_t::const_iterator i = params.trackers.begin(), e = params.trackers.end();
 				i != e; ++i)
 		{
-			HAL_DEV_MSG(wformat(L"URL: %1%, Tier: %2%") % (*i).url % (*i).tier);
+			HAL_DEV_MSG(wform(L"URL: %1%, Tier: %2%") % (*i).url % (*i).tier);
 			t_info->add_tracker(to_utf8((*i).url), (*i).tier);
 		}
 
@@ -735,7 +735,7 @@ private:
 		for (web_seed_details_t::const_iterator i = params.web_seeds.begin(), e = params.web_seeds.end();
 				i != e; ++i)
 		{
-			HAL_DEV_MSG(wformat(L"URL: %1%") % (*i).url);
+			HAL_DEV_MSG(wform(L"URL: %1%") % (*i).url);
 			t_info->add_url_seed(to_utf8((*i).url));
 		}
 
@@ -743,7 +743,7 @@ private:
 		for (dht_node_details_t::const_iterator i = params.dht_nodes.begin(), e = params.dht_nodes.end();
 				i != e; ++i)
 		{
-			HAL_DEV_MSG(wformat(L"URL: %1%, port: %2%") % (*i).url % (*i).port);
+			HAL_DEV_MSG(wform(L"URL: %1%, port: %2%") % (*i).url % (*i).port);
 			t_info->add_node(hal::make_pair(to_utf8((*i).url), (*i).port));
 		}
 
@@ -1012,7 +1012,7 @@ void bit::setTimeouts(int peers, int tracker)
 	pimpl->theSession.set_settings(settings);
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-		wformat(L"Set Timeouts, peer %1%, tracker %2%") % peers % tracker)));
+		wform(L"Set Timeouts, peer %1%, tracker %2%") % peers % tracker)));
 }
 
 void bit::setSessionLimits(int maxConn, int maxUpload)
@@ -1021,7 +1021,7 @@ void bit::setSessionLimits(int maxConn, int maxUpload)
 	pimpl->theSession.set_max_connections(maxConn);
 	
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-		wformat(L"Set connections totals %1% and uploads %2%.") 
+		wform(L"Set connections totals %1% and uploads %2%.") 
 			% maxConn % maxUpload)));
 }
 
@@ -1033,7 +1033,7 @@ void bit::setSessionSpeed(float download, float upload)
 	pimpl->theSession.set_upload_rate_limit(up);
 	
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-		wformat(L"Set session rates at download %1% and upload %2%.") 
+		wform(L"Set session rates at download %1% and upload %2%.") 
 			% pimpl->theSession.download_rate_limit() % pimpl->theSession.upload_rate_limit())));
 }
 
@@ -1151,7 +1151,7 @@ void bit::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool 
 			
 			hal::event_log.post(shared_ptr<hal::EventDetail>(
 				new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
-					(wformat(hal::app().res_wstr(HAL_INCORRECT_ENCODING_LEVEL)) % enc_level).str())));
+					(wform(hal::app().res_wstr(HAL_INCORRECT_ENCODING_LEVEL)) % enc_level).str())));
 	}
 
 	switch (in_enc_policy)
@@ -1170,7 +1170,7 @@ void bit::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool 
 			
 			hal::event_log.post(shared_ptr<hal::EventDetail>(
 				new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
-					(wformat(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
+					(wform(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
 	}
 
 	switch (out_enc_policy)
@@ -1189,7 +1189,7 @@ void bit::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool 
 			
 			hal::event_log.post(shared_ptr<hal::EventDetail>(
 				new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
-					(wformat(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
+					(wform(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
 	}
 	
 	pe.prefer_rc4 = prefer_rc4;
@@ -1315,7 +1315,7 @@ bool bit::ip_filter_import_dat(boost::filesystem::path file, progress_callback f
 				{
 					hal::event_log.post(shared_ptr<hal::EventDetail>(
 						new hal::EventDebug(hal::event_logger::info, 
-							from_utf8((format("Invalid IP range: %1%-%2%.") % first % last).str()))));
+						from_utf8((boost::format("Invalid IP range: %1%-%2%.") % first % last).str()))));
 				}
 			}
 		}
@@ -1359,7 +1359,7 @@ void bit::setSessionHalfOpenLimit(int halfConn)
 	pimpl->theSession.set_max_half_open_connections(halfConn);
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-		wformat(L"Set half-open connections limit to %1%.") % pimpl->theSession.max_half_open_connections())));
+		wform(L"Set half-open connections limit to %1%.") % pimpl->theSession.max_half_open_connections())));
 }
 
 void bit::setTorrentDefaults(int maxConn, int maxUpload, float download, float upload)
@@ -1368,13 +1368,13 @@ void bit::setTorrentDefaults(int maxConn, int maxUpload, float download, float u
 	pimpl->defTorrentMaxUpload_ = maxUpload;
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-		wformat(L"Set torrent connections total %1% and uploads %2%.") % maxConn % maxUpload)));
+		wform(L"Set torrent connections total %1% and uploads %2%.") % maxConn % maxUpload)));
 
 	pimpl->defTorrentDownload_ = download;
 	pimpl->defTorrentUpload_ = upload;
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-		wformat(L"Set torrent default rates at %1$.2fkb/s down and %2$.2fkb/s upload.") % download % upload)));
+		wform(L"Set torrent default rates at %1$.2fkb/s down and %2$.2fkb/s upload.") % download % upload)));
 }
 
 std::pair<libt::entry, libt::entry> bit_impl::prepTorrent(wpath filename, wpath saveDirectory)
@@ -1601,7 +1601,7 @@ void bit::closeAll(boost::optional<report_num_active> fn)
 				++num_active;
 		}
 		
-		event_log.post(shared_ptr<EventDetail>(new EventInfo(wformat(L"%1% still active") % num_active)));
+		event_log.post(shared_ptr<EventDetail>(new EventInfo(wform(L"%1% still active") % num_active)));
 
 		if (fn)	(*fn)(num_active);
 		Sleep(200);
@@ -1623,7 +1623,7 @@ PeerDetail::PeerDetail(libt::peer_info& peerInfo) :
 	
 #ifndef TORRENT_DISABLE_RESOLVE_COUNTRIES
 	if (peerInfo.country[0] != 0 && peerInfo.country[1] != 0)
-		country = (wformat(L"(%1%)") % hal::from_utf8_safe(string(peerInfo.country, 2))).str().c_str();
+		country = (wform(L"(%1%)") % hal::from_utf8_safe(string(peerInfo.country, 2))).str().c_str();
 #endif	
 
 	if (peerInfo.flags & libt::peer_info::handshake)

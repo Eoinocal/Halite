@@ -145,7 +145,7 @@ std::pair<std::string, std::string> extract_names(const wpath &file)
 				filename += ".torrent";
 		
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			wformat(L"Loaded names: %1%, %2%") % from_utf8(name) % from_utf8(filename))));
+			wform(L"Loaded names: %1%, %2%") % from_utf8(name) % from_utf8(filename))));
 
 		return std::make_pair(name, filename);
 	}
@@ -349,7 +349,7 @@ public:
 				filename_ += L".torrent";
 		
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			wformat(L"Loaded names: %1%, %2%") % name_ % filename_)));
+			wform(L"Loaded names: %1%, %2%") % name_ % filename_)));
 	}
 	
 	void updatePreVersion7Files(wstring originalFilename)
@@ -573,7 +573,7 @@ public:
 		mutex_t::scoped_lock l(mutex_);	
 		assert(the_session_ != 0);
 
-		HAL_DEV_MSG(wformat(L"add_to_session() paused=%1%") % paused);
+		HAL_DEV_MSG(wform(L"add_to_session() paused=%1%") % paused);
 		
 		if (!in_session()) 
 		{			
@@ -618,7 +618,7 @@ public:
 		mutex_t::scoped_lock l(mutex_);
 		assert(in_session());
 
-		HAL_DEV_MSG(wformat(L"remove_from_session() writeData=%1%") % writeData);
+		HAL_DEV_MSG(wform(L"remove_from_session() writeData=%1%") % writeData);
 		
 		if (writeData)
 		{
@@ -1102,7 +1102,7 @@ public:
 		const wpath torrentFile = workingDir_/L"torrents"/filename_;
 		
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			wformat(L"File: %1%, %2%.") % resumeFile % torrentFile)));
+			wform(L"File: %1%, %2%.") % resumeFile % torrentFile)));
 		
 		if (exists(resumeFile)) 
 			resumedata_ = haldecode(resumeFile);
@@ -1134,7 +1134,7 @@ public:
 				filename_ += L".torrent";
 		
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			wformat(L"Loaded names: %1%, %2%") % name_ % filename_)));
+			wform(L"Loaded names: %1%, %2%") % name_ % filename_)));
 	}
 	
 	libt::torrent_info& infoMemory()
@@ -1175,7 +1175,7 @@ private:
 			int up = (transferLimit_.second > 0) ? static_cast<int>(transferLimit_.second*1024) : -1;
 			handle_.set_upload_limit(up);
 
-			HAL_DEV_MSG(wformat(L"Applying Transfer Speed %1% - %2%") % down % up);
+			HAL_DEV_MSG(wform(L"Applying Transfer Speed %1% - %2%") % down % up);
 		}
 	}
 
@@ -1187,7 +1187,7 @@ private:
 			handle_.set_max_connections(connections_);
 			handle_.set_max_uploads(uploads_);
 
-			HAL_DEV_MSG(wformat(L"Applying Connection Limit %1% - %2%") % connections_ % uploads_);
+			HAL_DEV_MSG(wform(L"Applying Connection Limit %1% - %2%") % connections_ % uploads_);
 		}
 	}
 	
@@ -1198,7 +1198,7 @@ private:
 		{
 			handle_.set_ratio(ratio_);
 
-			HAL_DEV_MSG(wformat(L"Applying Ratio %1%") % ratio_);
+			HAL_DEV_MSG(wform(L"Applying Ratio %1%") % ratio_);
 		}
 	}
 	
@@ -1238,7 +1238,7 @@ private:
 					hal::to_utf8(trackerPassword_));
 			}
 
-			HAL_DEV_MSG(wformat(L"Applying Tracker Login User: %1%, Pass: %2%") % trackerUsername_ % trackerPassword_ );
+			HAL_DEV_MSG(wform(L"Applying Tracker Login User: %1%, Pass: %2%") % trackerUsername_ % trackerPassword_ );
 		}
 	}
 	
@@ -1261,7 +1261,7 @@ private:
 		{
 			handle_.resolve_countries(resolve_countries_);
 			
-			HAL_DEV_MSG(wformat(L"Applying Resolve Countries %1%") % resolve_countries_);
+			HAL_DEV_MSG(wform(L"Applying Resolve Countries %1%") % resolve_countries_);
 		}
 	}
 	
@@ -1442,7 +1442,7 @@ public:
 			torrent_internal_ptr TIp(new torrent_internal((*i).second));
 			
 			event_log.post(shared_ptr<EventDetail>(new EventMsg(
-				wformat(L"Converting %1%.") % TIp->name())));
+				wform(L"Converting %1%.") % TIp->name())));
 			
 			torrents_.insert(TorrentHolder(TIp));
 		}
