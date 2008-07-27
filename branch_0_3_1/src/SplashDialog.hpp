@@ -103,7 +103,7 @@ public:
 
 	void ReportNumActive(int num)
 	{
-		SetDlgItemText(HAL_CSPLASH_NUM_ACT, (wformat(hal::app().res_wstr(HAL_CSPLASH_ACT_MSG)) % num).str().c_str());
+		SetDlgItemText(HAL_CSPLASH_NUM_ACT, (hal::wform(hal::app().res_wstr(HAL_CSPLASH_ACT_MSG)) % num).str().c_str());
 	}
 
 	void SplashThread()

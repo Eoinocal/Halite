@@ -61,7 +61,7 @@ public:
 		hit.pt = lpnmitem->ptAction;
 		SubItemHitTest(&hit);
 
-		HAL_DEV_MSG(wformat(L"OnDoubleClick %1% %2%") % hit.iItem % hit.iSubItem);
+		HAL_DEV_MSG(hal::wform(L"OnDoubleClick %1% %2%") % hit.iItem % hit.iSubItem);
 
 		if (hit.iItem != -1 && hit.iSubItem != -1)
 		{
@@ -78,7 +78,7 @@ public:
 			//rect.InflateRect(-1,-1);
             //rect.OffsetRect(pt);
 
-			HAL_DEV_MSG(wformat(L"rect %1%,%2%-%3%,%4%") % rect.left % rect.top % rect.right % rect.bottom);
+			HAL_DEV_MSG(hal::wform(L"rect %1%,%2%-%3%,%4%") % rect.left % rect.top % rect.right % rect.bottom);
 			
 			CRect rc(0,0, 50, 20);
 			CRect rc1;
@@ -89,8 +89,8 @@ public:
 			GetWindowRect(rc1); 
 			::GetWindowRect(GetParent(), rc2); 
 
-			HAL_DEV_MSG(wformat(L"rc %1%,%2%-%3%,%4%") % rc1.left % rc1.top % rc1.right % rc1.bottom);
-			HAL_DEV_MSG(wformat(L"rc2 %1%,%2%-%3%,%4%") % rc2.left % rc2.top % rc2.right % rc2.bottom);
+			HAL_DEV_MSG(hal::wform(L"rc %1%,%2%-%3%,%4%") % rc1.left % rc1.top % rc1.right % rc1.bottom);
+			HAL_DEV_MSG(hal::wform(L"rc2 %1%,%2%-%3%,%4%") % rc2.left % rc2.top % rc2.right % rc2.bottom);
 
 			//OffsetRect(rcOwner, -rect.left, -rect.top); 
 			//OffsetRect(rcOwner, -rc.left, -rc.top); 
@@ -102,7 +102,7 @@ public:
 
 			bool bRes = CItemEditor::Edit(rc, buffer.elems, GetForegroundWindow());	
 
-			HAL_DEV_MSG(wformat(L"CItemEditor::Edit %1%") % bRes);	
+			HAL_DEV_MSG(hal::wform(L"CItemEditor::Edit %1%") % bRes);	
 		}
 		return true;
 	}

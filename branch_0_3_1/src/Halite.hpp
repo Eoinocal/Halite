@@ -11,8 +11,6 @@ using std::wstring;
 
 using boost::lexical_cast;
 using boost::array;
-using boost::format;
-using boost::wformat;
 using boost::bind;
 using boost::thread;
 using boost::shared_ptr;

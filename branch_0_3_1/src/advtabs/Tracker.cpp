@@ -151,7 +151,7 @@ void AdvTrackerDialog::onLoginApply(UINT, int, HWND)
 {
 	DoDataExchange(true);
 
-	HAL_DEV_MSG(wformat(L"Apply Tracker Login User: %1%, Pass: %2%") % username_ % password_ );
+	HAL_DEV_MSG(hal::wform(L"Apply Tracker Login User: %1%, Pass: %2%") % username_ % password_ );
 
 	if (hal::bit::torrent t = hal::bittorrent().get(focusedTorrent()))
 		t.tracker_login = make_pair(username_, password_);

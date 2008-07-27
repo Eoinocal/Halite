@@ -40,7 +40,7 @@ struct FileLink
 		order_(f.order())
 	{
 //		hal::event_log.post(shared_ptr<hal::EventDetail>(
-//			new hal::EventMsg(wformat(L"Con -> %1% - %2%.") % filename % order())));	
+//			new hal::EventMsg(hal::wform(L"Con -> %1% - %2%.") % filename % order())));	
 	}
 	
 	bool operator==(const FileLink& f) const
@@ -102,7 +102,7 @@ public:
 		virtual int compare(dataClass& l, dataClass& r) { return hal::compare(l.size, r.size); }		
 		virtual std::wstring print(dataClass& dc) 
 		{
-			return (wformat(L"%1$.2fMB") % 
+			return (hal::wform(L"%1$.2fMB") % 
 				(static_cast<double>(dc.size)/(1024*1024))).str(); 
 		}		
 	};
@@ -112,7 +112,7 @@ public:
 		virtual int compare(dataClass& l, dataClass& r) { return hal::compare(l.progress, r.progress); }		
 		virtual std::wstring print(dataClass& t) 
 		{
-			return (wformat(L"%1$.2f%%") % (t.progress*100)).str(); 
+			return (hal::wform(L"%1$.2f%%") % (t.progress*100)).str(); 
 		}		
 	};
 	

@@ -421,7 +421,7 @@ LRESULT NewTorrentDialog::OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 	int err_code = progDlg.DoModal();
 
-	HAL_DEV_MSG(wformat(L"progDlg err_code: %1%") % err_code);
+	HAL_DEV_MSG(hal::wform(L"progDlg err_code: %1%") % err_code);
 
 	if (err_code == 0) SendMessage(WM_CLOSE);
 
