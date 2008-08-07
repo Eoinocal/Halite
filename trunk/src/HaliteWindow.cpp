@@ -233,11 +233,11 @@ void HaliteWindow::updateWindow()
 	
 	if (details.port > -1)
 		UISetText(0, 
-			(wformat(hal::app().res_wstr(HAL_PORT_OPEN)) % details.port ).str().c_str());	
+			(hal::wform(hal::app().res_wstr(HAL_PORT_OPEN)) % details.port ).str().c_str());	
 	else
 		UISetText(0, hal::app().res_wstr(HAL_NOT_LISTENING).c_str());
 	
-	wstring downloadRates = (wformat(hal::app().res_wstr(HAL_DOWN_RATES)) 
+	wstring downloadRates = (hal::wform(hal::app().res_wstr(HAL_DOWN_RATES)) 
 			% (details.speed.first/1024) 
 			% (details.speed.second/1024)).str();
 	
@@ -246,7 +246,7 @@ void HaliteWindow::updateWindow()
 	
 	if (details.dht_on)
 	{
-		wstring dht = (wformat(hal::app().res_wstr(HAL_DHT_ON))
+		wstring dht = (hal::wform(hal::app().res_wstr(HAL_DHT_ON))
 			% details.dht_nodes).str();
 			
 		UISetText(2, dht.c_str());
@@ -258,7 +258,7 @@ void HaliteWindow::updateWindow()
 	
 	if (details.ip_filter_on)
 	{
-		wstring filter = (wformat(hal::app().res_wstr(HAL_IPFILTER_ON))
+		wstring filter = (hal::wform(hal::app().res_wstr(HAL_IPFILTER_ON))
 			% details.ip_ranges_filtered).str();
 		
 		UISetText(1, filter.c_str());
@@ -333,7 +333,7 @@ LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
 			wstring filename(static_cast<wchar_t*>(pCSD->lpData), pCSD->cbData/sizeof(wchar_t));
 			
 			hal::event_log.post(shared_ptr<hal::EventDetail>(
-				new hal::EventMsg((wformat(L"Recieved data: %1%.") % filename), hal::event_logger::info)));
+				new hal::EventMsg((hal::wform(L"Recieved data: %1%.") % filename), hal::event_logger::info)));
 		
 			ProcessFile(filename.c_str());
 			break;

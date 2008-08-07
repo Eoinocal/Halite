@@ -282,7 +282,7 @@ void bit::setSessionHalfOpenLimit(int halfConn)
 	pimpl->session_.set_max_half_open_connections(halfConn);
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-		wformat(L"Set half-open connections limit to %1%.") % pimpl->session_.max_half_open_connections())));
+		hal::wform(L"Set half-open connections limit to %1%.") % pimpl->session_.max_half_open_connections())));
 }
 
 void bit::setTorrentDefaults(int maxConn, int maxUpload, float download, float upload)
@@ -291,13 +291,13 @@ void bit::setTorrentDefaults(int maxConn, int maxUpload, float download, float u
 	pimpl->defTorrentMaxUpload_ = maxUpload;
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-		wformat(L"Set torrent connections total %1% and uploads %2%.") % maxConn % maxUpload)));
+		hal::wform(L"Set torrent connections total %1% and uploads %2%.") % maxConn % maxUpload)));
 
 	pimpl->defTorrentDownload_ = download;
 	pimpl->defTorrentUpload_ = upload;
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-		wformat(L"Set torrent default rates at %1$.2fkb/s down and %2$.2fkb/s upload.") % download % upload)));
+		hal::wform(L"Set torrent default rates at %1$.2fkb/s down and %2$.2fkb/s upload.") % download % upload)));
 }
 
 void bit::add_torrent(wpath file, wpath saveDirectory, bool startStopped, bool compactStorage, 
@@ -362,7 +362,7 @@ PeerDetail::PeerDetail(libt::peer_info& peerInfo) :
 	
 #ifndef TORRENT_DISABLE_RESOLVE_COUNTRIES
 	if (peerInfo.country[0] != 0 && peerInfo.country[1] != 0)
-		country = (wformat(L"(%1%)") % hal::from_utf8_safe(string(peerInfo.country, 2))).str().c_str();
+		country = (hal::wform(L"(%1%)") % hal::from_utf8_safe(string(peerInfo.country, 2))).str().c_str();
 #endif	
 
 	if (peerInfo.flags & libt::peer_info::handshake)

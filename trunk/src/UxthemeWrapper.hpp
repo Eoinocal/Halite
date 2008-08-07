@@ -30,7 +30,7 @@ public:
 			pDrawThemeParentBackground = 
 			  (DRAWPARENTTHEMEBACKGROUND) ::GetProcAddress(hinstDll, "DrawThemeParentBackground");
 			  
-//			::MessageBox(0, (wformat(L"%1%, %2%") % pIsAppThemed % pDrawThemeParentBackground).str().c_str(), L"Result", 0);
+//			::MessageBox(0, (hal::wform(L"%1%, %2%") % pIsAppThemed % pDrawThemeParentBackground).str().c_str(), L"Result", 0);
 		}
 	}
 	

@@ -39,7 +39,7 @@ protected:
 		virtual int compare(pD& l, pD& r)	{ return hal::compare(l.speed.first, r.speed.first); }		
 		virtual std::wstring print(pD& p) 
 		{
-			return (wformat(L"%1$.2fkb/s") % (p.speed.first/1024)).str(); 
+			return (hal::wform(L"%1$.2fkb/s") % (p.speed.first/1024)).str(); 
 		}		
 	};
 	
@@ -48,7 +48,7 @@ protected:
 		virtual int compare(pD& l, pD& r)	{ return hal::compare(l.speed.second, r.speed.second); }		
 		virtual std::wstring print(pD& p) 
 		{
-			return (wformat(L"%1$.2fkb/s") % (p.speed.second/1024)).str(); 
+			return (hal::wform(L"%1$.2fkb/s") % (p.speed.second/1024)).str(); 
 		}		
 	};
 	

@@ -99,7 +99,7 @@ public:
 	
 	virtual std::wstring msg()
 	{
-		return (boost::wformat(L"Code %1%") % code()).str();
+		return (wform(L"Code %1%") % code()).str();
 	}
 
 	event_logger::eventLevel level() { return level_; }
@@ -122,7 +122,7 @@ public:
 	
 	virtual std::wstring msg()
 	{
-		return (boost::wformat(hal::app().res_wstr(code())) % msg_).str();
+		return (wform(hal::app().res_wstr(code())) % msg_).str();
 	}
 	
 private:
@@ -157,7 +157,7 @@ public:
 	virtual std::wstring msg()
 	{
 		if (event_logger::noEvent != code())
-			return (boost::wformat(hal::app().res_wstr(code())) % msg_).str();
+			return (wform(hal::app().res_wstr(code())) % msg_).str();
 		else
 			return msg_;
 	}
@@ -179,7 +179,7 @@ public:
 	virtual std::wstring msg()
 	{
 		if (event_logger::noEvent != code())
-			return (boost::wformat(hal::app().res_wstr(code())) % msg_).str();
+			return (wform(hal::app().res_wstr(code())) % msg_).str();
 		else
 			return msg_;
 	}
@@ -198,7 +198,7 @@ public:
 	
 	virtual std::wstring msg()
 	{
-		return (boost::wformat(hal::app().res_wstr(code())) % msg_).str();
+		return (wform(hal::app().res_wstr(code())) % msg_).str();
 	}
 	
 private:
@@ -216,7 +216,7 @@ public:
 	
 	virtual std::wstring msg()
 	{
-		return (boost::wformat(hal::app().res_wstr(HAL_EVENT_XML_EXP)) % exp_ % msg_).str();
+		return (wform(hal::app().res_wstr(HAL_EVENT_XML_EXP)) % exp_ % msg_).str();
 	}
 	
 private:
@@ -236,7 +236,7 @@ public:
 	
 	virtual std::wstring msg()
 	{
-		return (boost::wformat(hal::app().res_wstr(code())) % torrent_ % function_).str();
+		return (wform(hal::app().res_wstr(code())) % torrent_ % function_).str();
 	}
 	
 private:
@@ -258,7 +258,7 @@ public:
 	
 	virtual std::wstring msg()
 	{
-		return (boost::wformat(hal::app().res_wstr(code())) % torrent_ % exception_ % function_).str();
+		return (wform(hal::app().res_wstr(code())) % torrent_ % exception_ % function_).str();
 	}
 	
 private:
@@ -278,7 +278,7 @@ public:
 	
 	virtual std::wstring msg()
 	{
-		return (boost::wformat(hal::app().res_wstr(code())) % exception_ % from_).str();
+		return (wform(hal::app().res_wstr(code())) % exception_ % from_).str();
 	}
 	
 private:
@@ -296,7 +296,7 @@ public:
 	
 	virtual std::wstring msg()
 	{
-		return (boost::wformat(hal::app().res_wstr(code())) % msg_).str();
+		return (wform(hal::app().res_wstr(code())) % msg_).str();
 	}
 	
 private:
