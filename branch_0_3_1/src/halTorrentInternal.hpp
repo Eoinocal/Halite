@@ -824,7 +824,20 @@ public:
 			return (s == libt::torrent_status::seeding ||
 						s == libt::torrent_status::finished);
 		}
-		else return false;
+		else 
+			return false;
+	}
+
+	bool is_seeding()
+	{
+		if (in_session())
+		{
+			libt::torrent_status::state_t s = handle_.status().state;
+
+			return (s == libt::torrent_status::seeding);
+		}
+		else 
+			return false;
 	}
 	
 	void finished()
@@ -832,7 +845,7 @@ public:
 		if (finishTime_.is_special())
 			finishTime_ = boost::posix_time::second_clock::universal_time();
 
-		if (is_finished())
+		if (is_seeding())
 		{
 			if (!move_to_directory_.empty() && 
 					move_to_directory_ !=  path_from_utf8(handle_.save_path()))

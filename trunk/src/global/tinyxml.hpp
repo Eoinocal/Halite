@@ -30,8 +30,6 @@ distribution.
 #define TIXML_USE_STL
 #endif
 
-#define HAL_BOOST_SERIALIZATION_COMPAT
-
 #ifdef _MSC_VER
 #pragma warning( push )
 #pragma warning( disable : 4530 )

@@ -1108,14 +1108,14 @@ bool document::load_file( FILE* file_, encoding encoding_ )
 		return true;
 }
 
-
 bool document::save_file( const char * filename ) const
 {
 	// The old c stuff lives on...
-	FILE* fp = f_open( filename, "w" );
+	FILE* fp = fopen( filename, "wc" );
 	if ( fp )
 	{
 		bool result = save_file( fp );
+		fflush( fp );
 		fclose( fp );
 		return result;
 	}
@@ -1125,10 +1125,11 @@ bool document::save_file( const char * filename ) const
 bool document::save_file( const wchar_t * filename ) const
 {
 	// The old c stuff lives on...
-	FILE* fp = _wfopen( filename, L"w" );
+	FILE* fp = _wfopen( filename, L"wc" );
 	if ( fp )
 	{
 		bool result = save_file( fp );
+		fflush( fp );
 		fclose( fp );
 		return result;
 	}

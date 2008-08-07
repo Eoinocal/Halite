@@ -103,7 +103,9 @@ DWORD HaliteListViewCtrl::OnItemPrePaint(int idCtrl, LPNMCUSTOMDRAW lpNMCD)
 	NMLVCUSTOMDRAW* pnmlv = (NMLVCUSTOMDRAW*) lpNMCD;
 
 	if (HAL_CUSTOMDRAW_TITLEDATA == pnmlv->nmcd.lItemlParam)
+	{
 		pnmlv->clrText = RGB(50,50,200);
+	}
 
 	return CDRF_DODEFAULT;
 }
