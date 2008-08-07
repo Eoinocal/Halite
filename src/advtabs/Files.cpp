@@ -227,7 +227,7 @@ void AdvFilesDialog::DlgResize_UpdateLayout(int cxWidth, int cyHeight)
 
 void AdvFilesDialog::doUiUpdate()
 {
-//	hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, (wformat(L"doUiUpdate %1%") % current_torrent_name_).str().c_str())));
+//	hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, (hal::wform(L"doUiUpdate %1%") % current_torrent_name_).str().c_str())));
 
 	tree_.determineFocused();
 	

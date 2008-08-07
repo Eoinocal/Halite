@@ -31,9 +31,6 @@ namespace hal
 	using boost::shared_ptr;
 	using boost::bind;
 
-	using boost::wformat;
-	using boost::format;
-
 	using fs::wpath;
 	using fs::path;
 }

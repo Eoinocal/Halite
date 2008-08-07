@@ -227,7 +227,7 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 		i != e; ++i)
 	{
 		wpath saveDir = hal::bittorrent().get(*i).save_directory;		
-		HAL_DEV_MSG(wformat(L"Name %1%, Save dir: %2%.") % *i % saveDir);
+		HAL_DEV_MSG(hal::wform(L"Name %1%, Save dir: %2%.") % *i % saveDir);
 
 		uniquePaths.insert(saveDir);
 	}
@@ -239,7 +239,7 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 	{	
 		wstring p = (*i).file_string();
 
-		HAL_DEV_MSG(wformat(L"Unique Save dir: %1%.") % p);
+		HAL_DEV_MSG(hal::wform(L"Unique Save dir: %1%.") % p);
 
 		sei.lpDirectory = p.c_str();
 		sei.lpFile = p.c_str();

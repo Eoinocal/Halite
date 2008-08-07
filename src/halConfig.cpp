@@ -28,7 +28,7 @@ bool Config::settingsThread()
 	bittorrent().set_mapping(mappingType);	
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			wformat(L"Trying port in range %1% - %2%.") % portFrom % portTo)));
+			hal::wform(L"Trying port in range %1% - %2%.") % portFrom % portTo)));
 	try
 	{
 	bool success = bittorrent().listen_on(
@@ -49,7 +49,7 @@ bool Config::settingsThread()
 		return false;
 	}
 
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(wformat(L"Opened listen port; %1%.") % bittorrent().is_listening_on())));
+	event_log.post(shared_ptr<EventDetail>(new EventMsg(hal::wform(L"Opened listen port; %1%.") % bittorrent().is_listening_on())));
 	
 	try
 	{

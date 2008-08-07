@@ -1,5 +1,5 @@
 
-//         Copyright Eóin O'Callaghan 2006 - 2007.
+//         Copyright Eóin O'Callaghan 2006 - 2008.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -35,7 +35,7 @@ protected:
 		
 		void sync_list(bool list_to_manager, bool signal_change=true)
 		{
-//			hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, (wformat(L"%1%, %2% %3%") % hal::from_utf8(selected_) % list_to_manager % signal_change).str().c_str())));
+//			hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, (hal::wform(L"%1%, %2% %3%") % hal::from_utf8(selected_) % list_to_manager % signal_change).str().c_str())));
 			if (list_to_manager)
 			{	
 				all_selected_.clear();
@@ -99,7 +99,7 @@ protected:
 			
 			int itemPos = m_list_.FindItem(&findInfo, -1);	
 			
-//			hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, (wformat(L"%1%, %2%") % torrent_name % itemPos).str().c_str())));
+//			hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, (hal::wform(L"%1%, %2%") % torrent_name % itemPos).str().c_str())));
 			
 			if (itemPos == -1)
 				return itemPos;

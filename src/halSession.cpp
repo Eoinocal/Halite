@@ -80,7 +80,7 @@ bit_impl::bit_impl() :
 		}
 		
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			wformat(L"Total %1%.") % the_torrents_.size())));				
+			hal::wform(L"Total %1%.") % the_torrents_.size())));				
 		
 		fs::rename(workingDirectory/L"Torrents.xml", workingDirectory/L"Torrents.xml.safe.to.delete");
 	}			
@@ -290,12 +290,12 @@ try
 	for (file_size_pairs_t::const_iterator i = params.file_size_pairs.begin(), e = params.file_size_pairs.end();
 			i != e; ++i)
 	{
-		HAL_DEV_MSG(wformat(L"file path: %1%, size: %2%") % (*i).first % (*i).second);
+		HAL_DEV_MSG(hal::wform(L"file path: %1%, size: %2%") % (*i).first % (*i).second);
 		fs.add_file(to_utf8((*i).first.string()), (*i).second);
 	}
 
 	int piece_size = params.piece_size;
-	HAL_DEV_MSG(wformat(L"piece size: %1%") % piece_size);
+	HAL_DEV_MSG(hal::wform(L"piece size: %1%") % piece_size);
 	
 	libt::create_torrent t(fs, piece_size);
 	
@@ -307,7 +307,7 @@ try
 	for (tracker_details_t::const_iterator i = params.trackers.begin(), e = params.trackers.end();
 			i != e; ++i)
 	{
-		HAL_DEV_MSG(wformat(L"URL: %1%, Tier: %2%") % (*i).url % (*i).tier);
+		HAL_DEV_MSG(hal::wform(L"URL: %1%, Tier: %2%") % (*i).url % (*i).tier);
 		t.add_tracker(to_utf8((*i).url), (*i).tier);
 	}
 
@@ -315,7 +315,7 @@ try
 	for (web_seed_details_t::const_iterator i = params.web_seeds.begin(), e = params.web_seeds.end();
 			i != e; ++i)
 	{
-		HAL_DEV_MSG(wformat(L"URL: %1%") % (*i).url);
+		HAL_DEV_MSG(hal::wform(L"URL: %1%") % (*i).url);
 		t.add_url_seed(to_utf8((*i).url));
 	}
 
@@ -323,7 +323,7 @@ try
 	for (dht_node_details_t::const_iterator i = params.dht_nodes.begin(), e = params.dht_nodes.end();
 			i != e; ++i)
 	{
-		HAL_DEV_MSG(wformat(L"URL: %1%, port: %2%") % (*i).url % (*i).port);
+		HAL_DEV_MSG(hal::wform(L"URL: %1%, port: %2%") % (*i).url % (*i).port);
 		t.add_node(hal::make_pair(to_utf8((*i).url), (*i).port));
 	}
 
@@ -414,7 +414,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_EXTERNAL_IP_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_EXTERNAL_IP_ALERT))
 					% hal::from_utf8_safe(a.message())
 					% hal::from_utf8_safe(a.external_address.to_string()))
 		)	);				
@@ -424,7 +424,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_PORTMAP_ERROR_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_PORTMAP_ERROR_ALERT))
 				% (a.type == 0 ? 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_PMP) : 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_UPNP)))
@@ -435,7 +435,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_PORTMAP_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_PORTMAP_ALERT))
 				% (a.type == 0 ? 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_PMP) : 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_UPNP))
@@ -447,7 +447,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_FILE_ERROR_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_FILE_ERROR_ALERT))
 				% hal::from_utf8_safe(a.file)
 				% hal::from_utf8_safe(a.msg))
 		)	);				
@@ -457,7 +457,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_DHT_REPLY_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_DHT_REPLY_ALERT))
 					% a.num_peers)
 		)	);				
 	}
@@ -465,7 +465,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::torrent_finished_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventMsg((wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
+			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
 					% get(a.handle)->name()), 
 				event_logger::info, a.timestamp())));
 		
@@ -475,7 +475,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::torrent_paused_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventMsg((wformat(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 
+			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 
 					% get(a.handle)->name()), 
 				event_logger::info, a.timestamp())));
 
@@ -486,7 +486,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_PEER_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_PEER_ALERT))
 					% hal::from_utf8_safe(a.message())
 					% hal::from_utf8_safe(a.ip.address().to_string()))
 		)	);				
@@ -496,7 +496,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_PEER_BAN_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_PEER_BAN_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.ip.address().to_string()))
 		)	);				
@@ -506,7 +506,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_HASH_FAIL_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_HASH_FAIL_ALERT))
 					% get(a.handle)->name()
 					% a.piece_index)
 		)	);				
@@ -516,7 +516,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_URL_SEED_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_URL_SEED_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.url)
 					% hal::from_utf8_safe(a.message()))
@@ -527,7 +527,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_TRACKER_WARNING_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_TRACKER_WARNING_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.message()))
 		)	);				
@@ -536,7 +536,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::tracker_announce_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventMsg((wformat(hal::app().res_wstr(HAL_TRACKER_ANNOUNCE_ALERT)) 
+			new EventMsg((hal::wform(hal::app().res_wstr(HAL_TRACKER_ANNOUNCE_ALERT)) 
 					% get(a.handle)->name()), 
 				event_logger::info, a.timestamp())));
 	}
@@ -545,7 +545,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_TRACKER_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_TRACKER_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.message())
 					% a.times_in_row
@@ -557,7 +557,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_TRACKER_REPLY_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_TRACKER_REPLY_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.message())
 					% a.num_peers)
@@ -568,7 +568,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_FAST_RESUME_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_FAST_RESUME_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.message()))
 		)	);				
@@ -578,7 +578,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(event_logger::debug, a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_PIECE_FINISHED_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_PIECE_FINISHED_ALERT))
 					% get(a.handle)->name()
 					% a.piece_index)
 		)	);				
@@ -588,7 +588,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(event_logger::debug, a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_BLOCK_FINISHED_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_BLOCK_FINISHED_ALERT))
 					% get(a.handle)->name()
 					% a.block_index
 					% a.piece_index)
@@ -599,7 +599,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(event_logger::debug, a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_BLOCK_DOWNLOADING_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_BLOCK_DOWNLOADING_ALERT))
 					% get(a.handle)->name()
 					% a.block_index
 					% a.piece_index)
@@ -619,7 +619,7 @@ void bit_impl::alert_handler()
 		{
 			event_log.post(shared_ptr<EventDetail>(
 				new EventGeneral(event_logger::info, a.timestamp(),
-					wformat(hal::app().res_wstr(HAL_LISTEN_FAILED_ALERT))
+					hal::wform(hal::app().res_wstr(HAL_LISTEN_FAILED_ALERT))
 						% hal::from_utf8_safe(a.message()))
 			)	);
 		}
@@ -629,7 +629,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(event_logger::info, a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_LISTEN_SUCCEEDED_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_LISTEN_SUCCEEDED_ALERT))
 					% hal::from_utf8_safe(a.message()))
 		)	);	
 
@@ -640,7 +640,7 @@ void bit_impl::alert_handler()
 	{
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(event_logger::debug, a.timestamp(),
-				wformat(hal::app().res_wstr(HAL_IPFILTER_ALERT))
+				hal::wform(hal::app().res_wstr(HAL_IPFILTER_ALERT))
 					% hal::from_utf8_safe(a.ip.to_string())
 					% hal::from_utf8_safe(a.message()))
 		)	);				

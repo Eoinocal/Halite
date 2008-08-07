@@ -344,7 +344,7 @@ public:
 		session_.set_settings(settings);
 
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			wformat(L"Set Timeouts, peer %1%, tracker %2%.") % peers % tracker)));
+			hal::wform(L"Set Timeouts, peer %1%, tracker %2%.") % peers % tracker)));
 	}
 
 	queue_settings get_queue_settings()
@@ -386,7 +386,7 @@ public:
 		session_.set_settings(settings);
 
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			wformat(L"Set queue parameters, %1% downloads and %2% active seeds.") 
+			hal::wform(L"Set queue parameters, %1% downloads and %2% active seeds.") 
 				% settings.active_downloads % settings.active_seeds)));
 	}
 
@@ -433,7 +433,7 @@ public:
 		session_.set_settings(settings);
 
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			wformat(L"Set timeouts, peers- %1% secs, tracker- %2% secs.") 
+			hal::wform(L"Set timeouts, peers- %1% secs, tracker- %2% secs.") 
 				% settings.peer_timeout % settings.tracker_receive_timeout)));
 	}
 
@@ -443,7 +443,7 @@ public:
 		session_.set_max_connections(maxConn);
 		
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			wformat(L"Set connections totals %1% and uploads %2%.") 
+			hal::wform(L"Set connections totals %1% and uploads %2%.") 
 				% maxConn % maxUpload)));
 	}
 
@@ -455,7 +455,7 @@ public:
 		session_.set_upload_rate_limit(up);
 		
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			wformat(L"Set session rates at download %1% and upload %2%.") 
+			hal::wform(L"Set session rates at download %1% and upload %2%.") 
 				% session_.download_rate_limit() % session_.upload_rate_limit())));
 	}
 
@@ -520,7 +520,7 @@ public:
 				
 				hal::event_log.post(shared_ptr<hal::EventDetail>(
 					new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
-						(wformat(hal::app().res_wstr(HAL_INCORRECT_ENCODING_LEVEL)) % enc_level).str())));
+						(hal::wform(hal::app().res_wstr(HAL_INCORRECT_ENCODING_LEVEL)) % enc_level).str())));
 		}
 
 		switch (in_enc_policy)
@@ -539,7 +539,7 @@ public:
 				
 				hal::event_log.post(shared_ptr<hal::EventDetail>(
 					new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
-						(wformat(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
+						(hal::wform(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
 		}
 
 		switch (out_enc_policy)
@@ -558,7 +558,7 @@ public:
 				
 				hal::event_log.post(shared_ptr<hal::EventDetail>(
 					new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
-						(wformat(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
+						(hal::wform(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
 		}
 		
 		pe.prefer_rc4 = prefer_rc4;
@@ -909,7 +909,7 @@ public:
 					++num_active;
 			}
 			
-			event_log.post(shared_ptr<EventDetail>(new EventInfo(wformat(L"%1% still active") % num_active)));
+			event_log.post(shared_ptr<EventDetail>(new EventInfo(hal::wform(L"%1% still active") % num_active)));
 
 			if (fn)	(*fn)(num_active);
 			Sleep(200);

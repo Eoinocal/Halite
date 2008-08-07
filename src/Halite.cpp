@@ -40,7 +40,7 @@ public:
 		{
 			if (!wofs.is_open()) wofs.open(hal::app().working_directory()/L"HaliteLog.txt");
 			
-			wofs << (wformat(L"%1% %2%, %3%\r\n") 
+			wofs << (hal::wform(L"%1% %2%, %3%\r\n") 
 				% event->timeStamp() % hal::event_logger::eventLevelToStr(event->level()) 
 				% event->msg()).str();
 			
@@ -141,13 +141,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	else
 	{
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(wformat(L"Exe Path: %1%.") % hal::app().exe_path())));		
+			new hal::EventMsg(hal::wform(L"Exe Path: %1%.") % hal::app().exe_path())));		
 		
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(wformat(L"Initial Path: %1%.") % hal::app().initial_path())));		
+			new hal::EventMsg(hal::wform(L"Initial Path: %1%.") % hal::app().initial_path())));		
 		
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg((wformat(L"Working Directory: %1%.") % hal::app().working_directory()), hal::event_logger::info)));		
+			new hal::EventMsg((hal::wform(L"Working Directory: %1%.") % hal::app().working_directory()), hal::event_logger::info)));		
 		
 		WTL::CMessageLoop theLoop;
 		_Module.AddMessageLoop(&theLoop);
