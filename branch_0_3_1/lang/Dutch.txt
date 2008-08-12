@@ -21,7 +21,7 @@
 "Add Torrent" ---> "Torrent toevoegen"
 "Add" ---> "Voeg toe"
 "Advanced GUI" ---> "Geavanceerde GUI"
-"Alert %2%, Status code: %4%, Times %3%. (%1%)" ---> "Alert %2%, Status code: %4%, Aantal keer %3%. (%1%)"
+"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
 "Allocating" ---> "Bezig met Alloceren"
 "Allow only one instance to run" ---> "Sta maar één draaiende instantie toe"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Een ongeldig verbindings regeling, %1%, is doorgegaan als encryptie instelling."
@@ -31,7 +31,7 @@
 "Are you sure you wish to delete all downloaded data?" --->  ??? 
 "Auto Sort" ---> "Auto Sorteren"
 "BitTorrent" ---> "BitTorrent"
-"Bittorrent Event: %1%." ---> "Bittorrent Gebeurtenis: %1%."
+"Bittorrent Event: %1%." --->  ??? 
 "Block %2% of piece %3% downloading. (%1%)" ---> "Blok %2% van deel %3% aan het downloaden. (%1%)"
 "Block %2% of piece %3% finished. (%1%)" ---> "Blok %2% van deel %3% voltooid. (%1%)"
 "Both" ---> "Beide"
@@ -80,7 +80,7 @@
 "E&xit" ---> "&Afsluiten"
 "ETA" --->  ??? 
 "ETA:" --->  ??? 
-"Edit Download Folders" ---> "Wijzig download mappen"
+"Edit Download Folders" ---> "Wijzig Download Map"
 "Edit Peer" ---> "Wijzig peer"
 "Edit Torrent Save Folders" ---> "Wijzig Torrent Opslaan Map"
 "Edit Tracker" ---> "Wijzig Tracker"
@@ -119,7 +119,7 @@
 "IP Filter blocked %1%, %2%." ---> "IP Filter blokkeerde %1%, %2%."
 "IP Filtering" ---> "IP Filtering"
 "IP filter disabled" ---> "IP filter uitgeschakeld"
-"IP version 6 listen attempt failed. Not serious." ---> "IPv6 listen poging mislukt. Niet ernstig."
+"IP version 6 listen attempt failed. Not serious." ---> "IPv6 listen attempt failed. Not serious."
 "Import ipfilter.dat" ---> "Importeer ipfilter.dat"
 "Importing IP Filters..." ---> "Bezig met importeren..."
 "Incoming" ---> "Inkomend"
@@ -221,8 +221,8 @@
 "Severity" ---> "Ernst"
 "Show this message in future" ---> "Toon dit bericht in de toekomst"
 "Shutting down session" ---> "Sessie wordt afgesloten"
-"Size" ---> "Grootte in Bytes"
-"Standard exception (%1%) thrown from %2%." ---> "Standard exceptie (%1%) geworpen van %2%."
+"Size" ---> "Grootte"
+"Standard exception (%1%) thrown from %2%." --->  ??? 
 "Start Time" ---> "Start Tijd"
 "Status" ---> "Status"
 "Status:" ---> "Status:"
@@ -244,7 +244,7 @@
 "Time" ---> "Tijd"
 "Torrent %1% finished." ---> "Torrent %1% voltooid."
 "Torrent %1% paused." ---> "Torrent %1% gepauzeerd."
-"Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) exceptie gevangen: %2% van %3%."
+"Torrent (%1%) exception caught: %2% from %3%." --->  ??? 
 "Torrent Defaults" ---> "Torrent Standaard"
 "Torrent File" ---> "Torrent Bestand"
 "Torrent Root" ---> "Torrent Hoofdmap"
@@ -260,8 +260,8 @@
 "Total upload slots :" ---> "Totaal aantal upload slots :"
 "Total" ---> "Totaal"
 "Tracker Announce. (%1%)" --->  ??? 
-"Tracker Event: %1%." ---> "Tracker Gebeurtenis: %1%."
-"Tracker warning: %2%! (%1%)" ---> "Tracker waarschuwing: %2%! (%1%)"
+"Tracker Event: %1%." --->  ??? 
+"Tracker warning: %2%! (%1%)" --->  ??? 
 "Tracker" --->  ??? 
 "Tracker:" --->  ??? 
 "Trackers" --->  ??? 
@@ -270,7 +270,7 @@
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
 "UnPlug and Play" --->  ??? 
-"Unicode exception: %1%." ---> "Unicode exceptie: %1%."
+"Unicode exception: %1%." --->  ??? 
 "Up" ---> "Up"
 "Update in:" ---> "Update over:"
 "Upload Rate (KB/s) :" ---> "Upload snelheid (KB/s) :"
@@ -283,7 +283,7 @@
 "Warning" ---> "Waarschuwing"
 "Web Seed" --->  ??? 
 "Web Seeds and DHT Nodes" ---> "Web Seeds en DHT Knopen"
-"Xml Exception (%1%) with %2%." ---> "Xml Exceptie (%1%) met %2%."
+"Xml Exception (%1%) with %2%." --->  ??? 
 "libTorrrent based client." ---> "op libTorrrent gebaseerde client."
 "to" ---> "tot"
 "∞" --->  ??? 

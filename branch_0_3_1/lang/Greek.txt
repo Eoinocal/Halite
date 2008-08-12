@@ -1,0 +1,289 @@
+"English" ---> "Ελληνικά"
+"English.rtf" ---> "../lang/Greek.rtf"
+"%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
+"%1$.2fMB down - %2$.2fMB up" --->  ??? 
+"%1$.2fMB of %2$.2fMB" --->  ??? 
+"%1% DHT node(s)" --->  ??? 
+"%1% active torrent(s)" --->  ??? 
+"%1%, %2%." --->  ??? 
+"%2%. %3% Peers. (%1%)" --->  ??? 
+"&Pause All" ---> "Παύση όλων"
+"&Resume All" ---> "Συνέχιση όλων"
+"(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
+"(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
+"(DHT will not apply to private torrents)" ---> "(Το DHT δεν εφαρμόζεται σε ιδιωτικά torrents)"
+"About" ---> "Περί"
+"Above Normal" ---> "Πάνω από το κανονικό"
+"Active" ---> "Ενεργό"
+"Add New Peer" --->  ??? 
+"Add New Tracker" ---> "Προσθήκη νέου Tracker"
+"Add New Web Seed or DHT Node" --->  ??? 
+"Add Torrent" --->  ??? 
+"Add" ---> "Προσθήκη"
+"Advanced GUI" ---> "Γραφικό περιβάλλον για προχωρημένους"
+"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
+"Allocating" --->  ??? 
+"Allow only one instance to run" --->  ??? 
+"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
+"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
+"Apply" ---> "Εφαρμογή"
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
+"Are you sure you wish to delete all downloaded data?" --->  ??? 
+"Auto Sort" ---> "Αυτόματη Ταξινόμηση"
+"BitTorrent" --->  ??? 
+"Bittorrent Event: %1%." --->  ??? 
+"Block %2% of piece %3% downloading. (%1%)" --->  ??? 
+"Block %2% of piece %3% finished. (%1%)" --->  ??? 
+"Both" --->  ??? 
+"Calculating Piece Hashes..." --->  ??? 
+"Cancel" --->  ??? 
+"Checking Files" ---> "Έλεγχος των αρχείων"
+"Choked" --->  ??? 
+"Clear IP database" ---> "Καθαρισμός βάσης διευθύνσεων IP"
+"Client" ---> "Πρόγραμμα"
+"Close to tray" --->  ??? 
+"Comment" --->  ??? 
+"Completed" ---> "Ολοκληρωμένα"
+"Completed:" ---> "Ολοκληρώθηκαν:"
+"Confirm on close" --->  ??? 
+"Connecting to Tracker" ---> "Συνδέεται στον Tracker"
+"Connecting" ---> "Συνδέεται"
+"Connection Policies" ---> "Πολιτική Σύνδεσης"
+"Construct a New Torrent" --->  ??? 
+"Copies" ---> "Αντίγραφα"
+"Country" ---> "Χώρα"
+"Creating Torrent..." --->  ??? 
+"Creating a New Torrent File" --->  ??? 
+"Creator" --->  ??? 
+"Critical" --->  ??? 
+"DHT Node" --->  ??? 
+"DHT disabled" --->  ??? 
+"DHT session could not start. Try selecting another port in the settings." ---> "Αδυναμία χρήσης του DHT. Επιλέξτε μία άλλη θύρα στις ρυθμίσεις."
+"DHT" --->  ??? 
+"Debug Event: %1%." --->  ??? 
+"Debug" --->  ??? 
+"Default save folder :" ---> "Προεπιλεγμένος φάκελος αποθήκευσης :"
+"Delete" ---> "Διαγραφή"
+"Details" --->  ??? 
+"Dev Msg: %1%." --->  ??? 
+"Dir." --->  ??? 
+"Disabled" ---> "Απενεργοποιημένο"
+"Distributed Hash Tables" --->  ??? 
+"Don't download" ---> "Μην το κατεβάζεις"
+"Down" ---> "Κατέβασμα"
+"Download Rate (KB/s) :" --->  ??? 
+"Download" ---> "Κατέβασμα"
+"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
+"Downloaded" ---> "Κατεβασμένα"
+"Downloading Metadata" --->  ??? 
+"Downloading" ---> "Κατεβαίνει"
+"E&xit" ---> "Έξοδος"
+"ETA" ---> "ETA"
+"ETA:" --->  ??? 
+"Edit Download Folders" --->  ??? 
+"Edit Peer" --->  ??? 
+"Edit Torrent Save Folders" --->  ??? 
+"Edit Tracker" --->  ??? 
+"Edit" ---> "Επεξεργασία"
+"Enable DHT" ---> "Ενεργοποίηση του DHT"
+"Enable IP filtering." ---> "Ενεργοποίηση περιορισμού διευθύνσεων IP."
+"Enable Protocol Encryption." ---> "Ενεργοποίηση Κρυπτογράφησης Πρωτοκόλλου"
+"Enable Remote Control" --->  ??? 
+"Enabled" ---> "Ενεργοποιημένο"
+"Encoding Level" ---> "Επίπεδο Κρυπτογράφησης"
+"Enter any Web Seed URLs and DHT Nodes." --->  ??? 
+"Enter the tracker URLs for the torrent." ---> "Δώσε τους trackers για αυτό το torrent."
+"Exception caught: %1%, from %2%." --->  ??? 
+"Failed, %1%" --->  ??? 
+"Fast resume failed: %2%. (%1%)" --->  ??? 
+"File" --->  ??? 
+"Filename" ---> "Όνομα αρχείου"
+"Files" ---> "Αρχεία"
+"Filtering %1% range(s)" --->  ??? 
+"Finish Time" --->  ??? 
+"Finished" ---> "Τελείωσε"
+"Force Close" --->  ??? 
+"Forced" ---> "Εξαναγκασμένο"
+"General Settings" ---> "Γενικές Επιλογές"
+"General" ---> "Γενικά"
+"Generated Torrent Name (Cannot change)" --->  ??? 
+"Global Limits" --->  ??? 
+"Halite BitTorrent Client" --->  ??? 
+"Halite Debug Dialog" --->  ??? 
+"Halite importing IP ranges..." --->  ??? 
+"Halite not listening!" --->  ??? 
+"Halite shutting down..." ---> "Το Halite κλείνει..."
+"Handshake" --->  ??? 
+"Has choked us" --->  ??? 
+"Hash failed for piece %2% of %1%." --->  ??? 
+"IP Filter blocked %1%, %2%." --->  ??? 
+"IP Filtering" ---> "Περιορισμός διευθύνσεων IP"
+"IP filter disabled" --->  ??? 
+"IP version 6 listen attempt failed. Not serious." --->  ??? 
+"Import ipfilter.dat" ---> "Εισαγωγή ipfilter.dat"
+"Importing IP Filters..." --->  ??? 
+"Incoming" ---> "Εισερχόμενα"
+"Info" --->  ??? 
+"Interested in us" --->  ??? 
+"Interesting" --->  ??? 
+"Invalid torrent (%1%) from %2%." --->  ??? 
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Θα χρειαστεί λίγος χρόνος για να τερματίσουν οι συνδέσεις του BitTorrent. Αμέσως μετά, αυτό το μήνυμα θα εξαφανιστεί και το πρόγραμμα θα κλείσει."
+"Language (requires restart)" ---> "Γλώσσα (χρειάζεται επανεκκίνηση)"
+"Limit the no. of half-open connections" ---> "Περιορισμός των half-open συνδέσεων σε : "
+"List of Trackers." ---> "Λίστα των Trackers."
+"Loading IP filters..." --->  ??? 
+"Local connection" ---> "Τοπική Σύνδεση"
+"Log debug events." --->  ??? 
+"Log to file." ---> "Καταγραφή σε αρχείο."
+"Logging" ---> "Καταγραφή"
+"Maximum" ---> "Μέγιστο"
+"Message" ---> "Μήνυμα"
+"Minimize to tray." ---> "Ελαχιστοποίηση στο tray."
+"Move finished torrents to :" --->  ??? 
+"Move the completed torrent to:" --->  ??? 
+"N/A" ---> "Δ/Υ"
+"NAT-PMG" --->  ??? 
+"Name" ---> "Όνομα"
+"Name:" ---> "Όνομα:"
+"New" ---> "Νέο"
+"None (Managed Externally)" --->  ??? 
+"None" --->  ??? 
+"Normal" ---> "Κανονικό"
+"Note. Compact Allocation is incompatible with File Selection" --->  ??? 
+"OK" --->  ??? 
+"Ok" --->  ??? 
+"Open &Halite" ---> "Άνοιγμα του &Halite"
+"Open Download Folder" --->  ??? 
+"Open a (single) port between : " ---> "Άνοιγμα (μίας) θύρας μεταξύ : "
+"Outgoing" ---> "Εξερχόμενα"
+"Output File" --->  ??? 
+"Overhead:" --->  ??? 
+"Password : " ---> "Κωδικός : "
+"Path" ---> "Διαδρομή"
+"Pause" ---> "Παύση"
+"Paused" ---> "Σε παύση"
+"Pausing" --->  ??? 
+"Peer %2%: %1%." --->  ??? 
+"Peer Event: %1%." --->  ??? 
+"Peer banned %2%. (%1%)" --->  ??? 
+"Peer" ---> "Peer"
+"Peers" ---> "Peers"
+"Peers:" --->  ??? 
+"Piece %2% finished. (%1%)" --->  ??? 
+"Piece Size (KBs)" --->  ??? 
+"Plaintext Encrypted" --->  ??? 
+"Plaintext" --->  ??? 
+"Port %1% open" --->  ??? 
+"Port (UDP) : " ---> "Θύρα (UDP) : "
+"Port : " ---> "Θύρα : "
+"Port Forwarding" --->  ??? 
+"Port to listen on : " --->  ??? 
+"Port" --->  ??? 
+"Prefer RC4" --->  ??? 
+"Priority" ---> "Προτεραιότητα"
+"Private" --->  ??? 
+"Progress" ---> "Πρόοδος"
+"Protocol Encryption" ---> "Πρωτόκολλο κρυπτογράφησης"
+"Proxies" --->  ??? 
+"Proxy Host/IP : " ---> "Διεύθυνση IP του Proxy : "
+"Proxy Settings" ---> "Ρυθμίσεις proxy"
+"Queued for Checking" --->  ??? 
+"Queued" --->  ??? 
+"RC4 Encrypted" --->  ??? 
+"RC4" --->  ??? 
+"Rates:" ---> "Ταχύτητες:"
+"Ratio (this session):" ---> "Αναλογία (αυτή τη φορά)"
+"Ratio" ---> "Αναλογία"
+"Ratio:" ---> "Αναλογία:"
+"Reannounce" ---> "Ανακοίνωση"
+"Recheck Files" --->  ??? 
+"Remaining" ---> "Απομένουν"
+"Remaining:" ---> "Απομένουν:"
+"Remote Control Options" --->  ??? 
+"Remote Control" --->  ??? 
+"Remove" ---> "Αφαίρεση"
+"Reset" --->  ??? 
+"Resume" ---> "Συνέχιση"
+"Review settings when adding torrent." --->  ??? 
+"Save" ---> "Αποθήκευση"
+"Saving Torrent" --->  ??? 
+"Security" ---> "Ασφάλεια"
+"Seeding" ---> "Seeding"
+"Seeds" ---> "Seeds"
+"Seeds:" --->  ??? 
+"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Επέλεξε έναν κατάλογο για την αποθήκευση. Επέλεξε 'άκυρο' για να αποθηκευτούν στην προεπιλεγμένη θέση."
+"Select a directory to save the files to or cancel to not download torrent at all." ---> "Επέλεξε ένα φάκελο για την αποθήκευση των αρχείων ή άκυρο για να μην κατέβει το torrent καθόλου."
+"Select a file or directory from which to construct the torrent." --->  ??? 
+"Select the (TCP) port (or range) on which to listen for incoming connections." --->  ??? 
+"Send login info to trackers." ---> "Αποστολή του Login στους trackers."
+"Set Priority" ---> "Όρισε προτεραιότητα"
+"Set as Primary" --->  ??? 
+"Severity" ---> "Σοβαρότητα"
+"Show this message in future" ---> "Προβολή αυτού του μηνύματος στο μέλλον"
+"Shutting down session" --->  ??? 
+"Size" ---> "Μέγεθος"
+"Standard exception (%1%) thrown from %2%." --->  ??? 
+"Start Time" ---> "Ώρα έναρξης"
+"Status" ---> "Κατάσταση"
+"Status:" ---> "Κατάσταση:"
+"Stop" ---> "Σταμάτημα"
+"Stopped initially (Allows changing advanced setting)" --->  ??? 
+"Stopped" ---> "Σταματημένο"
+"Stopping Torrents" --->  ??? 
+"Stopping" --->  ??? 
+"Successfully %1%." --->  ??? 
+"Supports extensions" --->  ??? 
+"Test" --->  ??? 
+"The BitTorrent session could not start. Try selecting another port in the settings." ---> "Δεν ήταν δυνατή η έναρξη του BitTorrent πρωτοκόλλου. Επέλεξε άλλη θύρα στις ρυθμίσεις."
+"The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
+"These options set global maximums which will always be honoured." ---> "Αυτές οι ρυθμίσεις καθορίζουν το γενικό μέγιστο, το οποίο τηρείται πάντα."
+"These options specify the default limits applied to new torrents." ---> "Αυτές οι ρυθμίσεις ορίζουν τα προεπιλεγμένα όρια, τα οποία εφαρμόζονται στα νέα torrent."
+"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
+"Tier" --->  ??? 
+"Time left:" ---> "Χρόνος που απομένει:"
+"Time" ---> "Χρόνος"
+"Torrent %1% finished." --->  ??? 
+"Torrent %1% paused." --->  ??? 
+"Torrent (%1%) exception caught: %2% from %3%." --->  ??? 
+"Torrent Defaults" --->  ??? 
+"Torrent File" ---> "Αρχείο Torrent"
+"Torrent Root" --->  ??? 
+"Torrent and Data" ---> "Torrent και Δεδομένα"
+"Torrent connection limits:" ---> "Όρια συνδέσεων του torrent"
+"Torrent save folder:" --->  ??? 
+"Torrent transfer rates (KB/s):" ---> "Ταχύτητα μεταφοράς torrent (KB/s):"
+"Torrent" --->  ??? 
+"Torrent:" --->  ??? 
+"Torrents" --->  ??? 
+"Total max connections :" --->  ??? 
+"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"Total upload slots :" --->  ??? 
+"Total" ---> "Σύνολο"
+"Tracker Announce. (%1%)" --->  ??? 
+"Tracker Event: %1%." --->  ??? 
+"Tracker warning: %2%! (%1%)" --->  ??? 
+"Tracker" ---> "Tracker"
+"Tracker:" --->  ??? 
+"Trackers" --->  ??? 
+"Transferred:" ---> "Μεταφέρθηκαν:"
+"Type" ---> "Τύπος"
+"URL Seed %2%, %3%. (%1%)" --->  ??? 
+"URL" --->  ??? 
+"UnPlug and Play" --->  ??? 
+"Unicode exception: %1%." --->  ??? 
+"Up" ---> "Ανέβασμα"
+"Update in:" ---> "Ανανέωση σε:"
+"Upload Rate (KB/s) :" --->  ??? 
+"Upload" ---> "Ανέβασμα"
+"Uploaded" ---> "Ανεβασμένα"
+"Use Compact Allocation." --->  ??? 
+"Use a proxy." ---> "Χρησιμοποίηση proxy."
+"User canceled Torrent file creation" --->  ??? 
+"Username : " ---> "Όνομα χρήστη : "
+"Warning" --->  ??? 
+"Web Seed" --->  ??? 
+"Web Seeds and DHT Nodes" --->  ??? 
+"Xml Exception (%1%) with %2%." --->  ??? 
+"libTorrrent based client." --->  ??? 
+"to" ---> "μέχρι"
+"∞" --->  ??? 

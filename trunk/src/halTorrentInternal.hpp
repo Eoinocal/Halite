@@ -615,9 +615,9 @@ public:
 			case libt::torrent_status::checking_files:
 				state = app().res_wstr(HAL_TORRENT_CHECKING_FILES);
 				break;
-			case libt::torrent_status::connecting_to_tracker:
-				state = app().res_wstr(HAL_TORRENT_CONNECTING);
-				break;
+//			case libt::torrent_status::connecting_to_tracker:
+//				state = app().res_wstr(HAL_TORRENT_CONNECTING);
+//				break;
 			case libt::torrent_status::downloading_metadata:
 				state = app().res_wstr(HAL_TORRENT_METADATA);
 				break;

@@ -4,7 +4,7 @@
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB runter - %2$.2fMB hoch"
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB von %2$.2fMB"
 "%1% DHT node(s)" ---> "%1% DHT-Knoten"
-"%1% active torrent(s)" --->  "%1% aktive(r) Torrent(s)"
+"%1% active torrent(s)" ---> "%1% aktive(r) Torrent(s)"
 "%1%, %2%." ---> "%1%, %2%."
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Peers. (%1%)"
 "&Pause All" ---> "Alle &pausieren"
@@ -15,7 +15,7 @@
 "About" ---> "Über"
 "Above Normal" ---> "Über normal"
 "Active" ---> "Aktiv"
-"Add New Peer" --->  "Neuen Peer hinzufügen"
+"Add New Peer" ---> "Neuen Peer hinzufügen"
 "Add New Tracker" ---> "Tracker hinzufügen"
 "Add New Web Seed or DHT Node" ---> "Neuen Webseed oder DHT-Node hinzufügen"
 "Add Torrent" ---> "Torrent hinzufügen"
@@ -28,6 +28,7 @@
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Ein ungültiges Verschlüsselungslevel, %1%, wurde als Verschlüsselungseinstellung verwendet."
 "Apply" ---> "Anwenden"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Sind Sie sich sicher, dass Sie Halite beenden wollen? Dies wird alle aktiven Torrents anhalten."
+"Are you sure you wish to delete all downloaded data?" --->  ??? 
 "Auto Sort" ---> "auto. Sortierung"
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." ---> "Bittorrent-Ereignis: %1%."
@@ -63,6 +64,7 @@
 "Debug" ---> "Debug"
 "Default save folder :" ---> "Standardverzeichnis:"
 "Delete" ---> "Löschen"
+"Details" --->  ??? 
 "Dev Msg: %1%." ---> "Entw.-Nachr.: %1%."
 "Dir." ---> "Verz."
 "Disabled" ---> "Deaktiviert"
@@ -104,6 +106,7 @@
 "Forced" ---> "Erzwungen"
 "General Settings" ---> "Allgemeines"
 "General" ---> "Allgemein"
+"Generated Torrent Name (Cannot change)" --->  ??? 
 "Global Limits" ---> "Globale Grenzen"
 "Halite BitTorrent Client" ---> "Halite BitTorrent Client"
 "Halite Debug Dialog" ---> "Halite-Debugdialog"
@@ -167,6 +170,7 @@
 "Peers" ---> "Peers"
 "Peers:" ---> "Peers:"
 "Piece %2% finished. (%1%)" ---> "Teil %2% fertiggestellt. (%1%)"
+"Piece Size (KBs)" --->  ??? 
 "Plaintext Encrypted" ---> "Klartext verschlüsselt"
 "Plaintext" ---> "Klartext"
 "Port %1% open" ---> "Port %1% offen"
@@ -274,7 +278,7 @@
 "Uploaded" ---> "Hinaufgeladen"
 "Use Compact Allocation." ---> "kompakte Zuweisung verwenden"
 "Use a proxy." ---> "Proxy verwenden"
-"User canceled Torrent file creation" ---> "Benutzer hat Torrenterstellung abgebrochen" 
+"User canceled Torrent file creation" ---> "Benutzer hat Torrenterstellung abgebrochen"
 "Username : " ---> "Benutzer:"
 "Warning" ---> "Warnung"
 "Web Seed" ---> "Webseed"
