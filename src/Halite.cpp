@@ -36,7 +36,7 @@ static class halite_log_file : public boost::signals::trackable
 public:	
 	void operator()(shared_ptr<hal::EventDetail> event)
 	{
-		if (halite().logToFile())
+		if (true || halite().logToFile())
 		{
 			if (!wofs.is_open()) wofs.open(hal::app().working_directory()/L"HaliteLog.txt");
 			
@@ -88,7 +88,7 @@ void num_active(int) {}
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 
-//	HAL_DEV_MSG(L"Hello");
+	HAL_DEV_MSG(L"Hello");
 //	hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, L"Hello")));
 
 //	::SetProcessAffinityMask(::GetCurrentProcess(), (DWORD_PTR)0x1);

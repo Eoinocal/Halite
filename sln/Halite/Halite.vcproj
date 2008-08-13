@@ -672,10 +672,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\global\ini_adapter.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\src\global\logger.cpp"
 					>
 				</File>
@@ -789,6 +785,214 @@
 				</File>
 				<File
 					RelativePath="..\..\src\global\tinyxmlparser.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Logging|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Logging|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\global\txml.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Logging|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Logging|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\global\txml_error.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Logging|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Logging|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\global\txml_ini_adapter.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Logging|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Logging|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\global\txml_parser.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -1100,10 +1304,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\global\ini_adapter.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\src\global\logger.hpp"
 					>
 				</File>
@@ -1113,6 +1313,22 @@
 				</File>
 				<File
 					RelativePath="..\..\src\global\tinyxml.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\global\txml.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\global\txml_iarchive.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\global\txml_ini_adapter.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\global\txml_oarchive.hpp"
 					>
 				</File>
 				<File
