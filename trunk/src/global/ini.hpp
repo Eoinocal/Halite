@@ -10,13 +10,13 @@
 #include <boost/smart_ptr.hpp>
 #include <boost/filesystem/path.hpp>
 
+namespace hal 
+{
+
 namespace xml
 {
 class node;
-}
-
-namespace hal 
-{
+} 
 
 class ini_impl;
 

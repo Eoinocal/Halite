@@ -6,10 +6,11 @@
 
 #pragma once
 
-#include <boost/archive/xml_woarchive.hpp>
-#include <boost/archive/xml_wiarchive.hpp>
+#define TXML_ARCHIVE_LOGGING
+#include "global/txml_oarchive.hpp"
+#include "global/txml_iarchive.hpp"
 
-#include "global/ini_adapter.hpp"
+#include "global/txml_ini_adapter.hpp"
 #include "halEvent.hpp"
 
 namespace hal 
@@ -31,12 +32,13 @@ public:
 	
 	void save_to_ini()
 	{
-		std::wstringstream xml_data;
-		
-		boost::archive::xml_woarchive oxml(xml_data);
+		std::stringstream xml_data;	
+		{
+		xml::txml_oarchive oxml(xml_data);	
 		T* pT = static_cast<T*>(this);	
 		oxml << boost::serialization::make_nvp(name_.c_str(), *pT);
-		
+		}
+
 		adapter_.save_stream_data(xml_data);
 	}
 
@@ -76,13 +78,13 @@ public:
 	
 	bool load_from_ini()
 	{
-		std::wstringstream xml_data;		
+		std::stringstream xml_data;		
 		adapter_.load_stream_data(xml_data);
 		
 		try 
 		{
-		
-		boost::archive::xml_wiarchive ixml(xml_data);	
+
+		xml::txml_iarchive ixml(xml_data);	
 		
 		T* pT = static_cast<T*>(this);	
 		ixml >> boost::serialization::make_nvp(name_.c_str(), *pT);
@@ -100,7 +102,7 @@ public:
 	}
 	
 private:
-	hal::ini_adapter adapter_;
+	hal::txml_ini_adapter adapter_;
 	std::string name_;	
 };
 

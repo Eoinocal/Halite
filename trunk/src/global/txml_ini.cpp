@@ -1,30 +1,19 @@
 
-//         Copyright Eóin O'Callaghan 2006 - 2008.
+//         Copyright Eóin O'Callaghan 2008 - 2008.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "stdAfx.hpp"
-
-#define WINVER 0x0500
-#define _WIN32_WINNT 0x0500
-#define _WIN32_IE 0x0500
-#define _RICHEDIT_VER 0x0200
-#define VC_EXTRALEAN
-
-#include <boost/foreach.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
-
-#include <atlbase.h>
-#include <atlapp.h>
-
-extern WTL::CAppModule _Module;
-
-#include "txml.hpp"
 #include "wtl_app.hpp"
 #include "logger.hpp"
 #include "string_conv.hpp"
-#include "ini.hpp"
+
+#include <boost/foreach.hpp>
+#include <boost/format.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+#include "txml_ini.hpp"
+#include "txml.hpp"
 
 #define foreach BOOST_FOREACH
 
@@ -34,10 +23,13 @@ namespace hal
 class ini_impl
 {
 public:
-	ini_impl(std::wstring filename) :
-		main_file_(app().working_directory()/filename),
-		working_file_(app().working_directory()/(filename + L".working"))
-	{		
+	ini_impl(boost::filesystem::wpath filename)
+	{
+		wlog() << boost::wformat(L"Ini initialized; %1%") % filename;
+
+		main_file_ = filename;
+		working_file_ = filename.string() + L".working";
+
 		if (boost::filesystem::exists(working_file_))
 		{			
 			std::wstringstream sstr;
@@ -45,7 +37,7 @@ public:
 			sstr.imbue(std::locale(std::cout.getloc(), facet));
 			sstr << boost::posix_time::second_clock::universal_time();
 
-			boost::filesystem::rename(working_file_, app().working_directory()/(filename + L"." + sstr.str()));			
+			boost::filesystem::rename(working_file_, (filename.string() + L"." + sstr.str()));			
 		}
 
 		if (boost::filesystem::exists(main_file_))
@@ -64,47 +56,63 @@ public:
 		}
 	}
 	
-	void load_data()
+	bool load_data()
 	{
+		wlog() << L"Ini load data file";
+
 		if (!xml_.load_file(working_file_.string()))
 		{
 			generate_default_file();
+
+			return false;
 		}
+
+		return true;
 	}
 	
-	void save_data()
+	bool save_data()
 	{		
-		xml_.save_file(working_file_.string());
+		wlog() << L"Ini save data file";
+
+		bool result = xml_.save_file(working_file_.string());
 
 		if (boost::filesystem::exists(working_file_))
 		{
 			boost::filesystem::remove(main_file_);
 			boost::filesystem::copy_file(working_file_, main_file_);
 		}
-	}
-	
-	bool save(boost::filesystem::path location, std::string data)
-	{
-		xml::node* data_node = get_data_node(location);
-		
-		// Should have correct node		
-		
-		return true;
+
+		return result;
 	}
 
 	bool save(boost::filesystem::path location, xml::node* data)
 	{
-		xml::node* data_node = get_data_node(location);
-		
-		data_node->clear();
-		data_node->link_end_child(data);
-		
-		return true;
+		wlog() << L"Ini save ...";
+
+		xml::node* data_node = get_save_data_node(location);
+
+		if (data_node)
+		{
+			wlog() << boost::wformat(L"Ini got save data node; %1%") % to_wstr_shim(location.string());
+
+			data_node->clear();
+			data_node->link_end_child(data);
+			
+			return true;
+		}
+		else
+		{
+			wlog() << boost::wformat(L"Not got save data node; %1%") % to_wstr_shim(location.string());
+
+			return false;
+		}
 	}
 	
 	xml::node* load(boost::filesystem::path location)
 	{
-		xml::node* data_node = get_data_node(location);
+		xml::node* data_node = get_load_data_node(location);
+
+		if (!data_node) return data_node;
 		
 		xml::node* data = data_node->first_child();
 		
@@ -117,13 +125,19 @@ public:
 private:
 	void generate_default_file()
 	{
+		wlog() << L"Ini generate default data";
+
 		xml_.link_end_child(new xml::declaration("1.0", "", ""));
 		
 		xml_.link_end_child(new xml::element("ini"));
+
+		wlog() << boost::wformat(L"Default file generated");
 	}
 	
-	xml::node* get_data_node(boost::filesystem::path location)
+	xml::node* get_save_data_node(boost::filesystem::path location)
 	{
+		wlog() << L"Get save data node";
+
 		xml::node* data_node = xml_.first_child("ini");
 		
 		if (!data_node)
@@ -147,48 +161,80 @@ private:
 
 		return data_node;
 	}
+
+	xml::node* get_load_data_node(boost::filesystem::path location)
+	{
+		xml::node* data_node = xml_.first_child("ini");
+		
+		if (!data_node) return data_node;
+		
+		foreach(std::string elem, location)
+		{
+			data_node = data_node->first_child(elem);
+			
+			if (!data_node) return data_node;
+		}
+
+		return data_node;
+	}
 	
 	boost::filesystem::wpath main_file_;
 	boost::filesystem::wpath working_file_;
+
 	xml::document xml_;
 };
 
-ini_file::ini_file(std::wstring filename) :
-	pimpl(new ini_impl(filename))
+txml_ini::txml_ini()
 {}
 
-ini_file::~ini_file()
+txml_ini::txml_ini(boost::filesystem::wpath filename)
+{
+	init(filename);
+}
+
+void txml_ini::init(boost::filesystem::wpath filename)
+{
+	assert(!pimpl);
+
+	if (!pimpl) pimpl.reset(new ini_impl(filename));
+}
+
+txml_ini::~txml_ini()
 {}
 
-void ini_file::load_data()
+bool txml_ini::load_data()
 {
-	pimpl->load_data();
+	assert(pimpl);
+
+	return pimpl->load_data();
 }
 
-void ini_file::save_data()
+bool txml_ini::save_data()
 {
-	pimpl->save_data();
+	assert(pimpl);
+
+	return pimpl->save_data();
 }
 
-bool ini_file::save(boost::filesystem::path location, std::string data)
+/*bool txml_ini::save(boost::filesystem::path location, std::string data)
 {
+	assert(pimpl);
+
+	return pimpl->save(location, data);
+}
+*/
+bool txml_ini::save(boost::filesystem::path location, xml::node* data)
+{
+	assert(pimpl);
+
 	return pimpl->save(location, data);
 }
 
-bool ini_file::save(boost::filesystem::path location, xml::node* data)
+xml::node* txml_ini::load(boost::filesystem::path location)
 {
-	return pimpl->save(location, data);
-}
+	assert(pimpl);
 
-xml::node* ini_file::load(boost::filesystem::path location)
-{
 	return pimpl->load(location);
 }
 
-ini_file& ini()
-{
-	static ini_file ini(L"Halite.xml");
-	return ini;
 }
-
-} // namespace hal
