@@ -47,7 +47,7 @@ struct event_impl;
 class event_logger : private boost::noncopyable
 {	
 public:	
-	enum eventLevel { dev, debug, info, warning, critical, fatal, none };
+	enum eventLevel { dev, xml_dev, debug, info, warning, critical, fatal, none };
 	
 	enum codes {
 		noEvent = 0,

@@ -4,7 +4,10 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#define HAL_EVENT_IMPL_UNIT
+
 #include "stdAfx.hpp"
+#include "halEvent.hpp"
 #include "Halite.hpp"
 
 #include <iostream>
@@ -25,13 +28,9 @@
 #include <libtorrent/torrent_handle.hpp>
 #include <libtorrent/peer_connection.hpp>
 
-#define HAL_EVENT_IMPL_UNIT
-#include "halEvent.hpp"
 
 namespace hal
 {
-
-static boost::shared_ptr<event_impl> s_event_impl;
 
 struct event_impl
 {
@@ -46,6 +45,8 @@ event_logger::event_logger()
 
 void event_logger::init()
 {
+	static boost::shared_ptr<event_impl> s_event_impl;
+
 	if (!s_event_impl)
 		s_event_impl.reset(new event_impl());
 
@@ -57,21 +58,30 @@ event_logger::~event_logger()
 
 boost::signals::connection event_logger::attach(boost::function<void (boost::shared_ptr<EventDetail>)> fn)
 {
+	if (pimpl_)
+	{
 	mutex_t::scoped_lock l(pimpl_->mutex_);
 	return pimpl_->event_signal_.connect(fn);
+	}
 }
 
 void event_logger::dettach(const boost::signals::connection& c)
 {
+	if (pimpl_)
+	{
 	mutex_t::scoped_lock l(pimpl_->mutex_);
 	pimpl_->event_signal_.disconnect(c);
+	}
 }
 
 void event_logger::post(boost::shared_ptr<EventDetail> e)
 {
+	if (pimpl_)
+	{
 	mutex_t::scoped_lock l(pimpl_->mutex_);
-	if (e->level() != hal::event_logger::debug || halite().logDebug())
+	if (e->level() != hal::event_logger::debug || halite().logDebug() || true)
 		pimpl_->event_signal_(e);
+	}
 }
 	
 std::wstring event_logger::eventLevelToStr(eventLevel event)
@@ -88,6 +98,8 @@ std::wstring event_logger::eventLevelToStr(eventLevel event)
 		return hal::app().res_wstr(HAL_EVENTCRITICAL);
 	case fatal:
 		return hal::app().res_wstr(HAL_EVENTCRITICAL);
+	case xml_dev:
+		return L"XML Dev";
 	default:
 		return hal::app().res_wstr(HAL_EVENTNONE);
 	}

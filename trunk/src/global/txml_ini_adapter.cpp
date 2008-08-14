@@ -4,6 +4,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include "../stdAfx.hpp"
 #include "wtl_app.hpp"
 #include "logger.hpp"
 #include "string_conv.hpp"
@@ -17,11 +18,24 @@
 #include "txml.hpp"
 #include "unicode.hpp"
 
+#define TXML_ARCHIVE_LOGGING
+
+#ifndef TXML_ARCHIVE_LOGGING
+#	define TXML_LOG(s)
+#else
+#	include "../halEvent.hpp"
+#	define TXML_LOG(msg) \
+	hal::event_log.post(boost::shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(msg, hal::event_logger::xml_dev))) 
+#endif
+
 namespace hal 
 {
 
 xml::node* txml_ini_adapter::get_load_data_node()
 {
+	TXML_LOG(L"Ini Adpater loading");
+
 	xml::node* data_node = 0;
 
 	std::vector<boost::filesystem::path>::const_iterator 
@@ -29,9 +43,12 @@ xml::node* txml_ini_adapter::get_load_data_node()
 
 	while (i!=e && !data_node)
 	{
+		TXML_LOG(boost::wformat(L" -- %1%") % to_wstr_shim(i->string()));
+
 		data_node = ini_.load(*i);
 		++i;
 	}
+
 
 	return data_node;
 }
@@ -57,18 +74,18 @@ bool txml_ini_adapter::load_stream_data(std::ostream& data)
 
 void txml_ini_adapter::save_stream_data(std::istream& data)
 {		
-	wlog() << boost::wformat(L"Ini Adapter Saving; %1%") % to_wstr_shim(locations_.front().string());
+	TXML_LOG(boost::wformat(L"Ini Adapter Saving; %1%") % to_wstr_shim(locations_.front().string()));
 	
 	xml::document doc;	
 	data >> doc;
 	
 	xml::node* data_node = doc.root_element();
 
-	wlog() << L"Data streamed";
+	TXML_LOG(L"Data streamed");
 	
 	bool ret = ini_.save(locations_.front(), data_node->clone());
 
-	wlog() << boost::wformat(L" - save %1%") % (ret ? L"successful" : L"failed");
+	TXML_LOG(boost::wformat(L" -- save %1%") % (ret ? L"successful" : L"failed"));
 }
 
 bool txml_ini_adapter::load_stream_data(std::wostream& data)

@@ -30,8 +30,10 @@
 #ifndef TXML_ARCHIVE_LOGGING
 #	define TXML_LOG(s)
 #else
-#	include "logger.hpp"
-#	define TXML_LOG(s) wlog() << s
+#	include "../halEvent.hpp"
+#	define TXML_LOG(msg) \
+	hal::event_log.post(boost::shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(msg, hal::event_logger::xml_dev))) 
 #endif
 
 namespace 
@@ -194,7 +196,7 @@ public:
 		{
 			xml::node* failsafe_current = 0;
 
-			TXML_LOG(boost::wformat(L" << load_start: %1%") % name);
+			TXML_LOG(boost::wformat(L" << load_start: %1%") % from_utf8(name));
 
 			node_stack_.push(current_node_);
 			failsafe_current = current_node_;
@@ -247,7 +249,7 @@ public:
 	{
 		if (name)
 		{
-			TXML_LOG(boost::wformat(L" << load_end: %1%") % name);
+			TXML_LOG(boost::wformat(L" << load_end: %1%") % from_utf8(name));
 
 			previous_child_node_ = current_node_;
 
@@ -273,6 +275,8 @@ public:
     template<class T>
     void load_override(const ::boost::serialization::nvp<T>& t, int)
 	{
+		TXML_LOG(boost::wformat(L" << loading: %1%") % t.name());
+
 		if (load_start(t.name()))
 		{
 			this->detail_common_iarchive::load_override(t.value(), 0);

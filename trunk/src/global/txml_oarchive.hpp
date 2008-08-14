@@ -28,8 +28,10 @@
 #ifndef TXML_ARCHIVE_LOGGING
 #	define TXML_LOG(s)
 #else
-#	include "logger.hpp"
-#	define TXML_LOG(s) wlog() << s
+#	include "../halEvent.hpp"
+#	define TXML_LOG(msg) \
+	hal::event_log.post(boost::shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(msg, hal::event_logger::xml_dev))) 
 #endif
 
 namespace 
