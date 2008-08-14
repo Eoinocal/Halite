@@ -50,6 +50,7 @@ public:
 	
 	void connect() 
 	{ 
+		hal::event_log.init();
 		conn_ = hal::event_log.attach(bind(&halite_log_file::operator(), this, _1)); 
 		assert(conn_.connected());
 	}
@@ -88,7 +89,6 @@ void num_active(int) {}
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 
-	HAL_DEV_MSG(L"Hello");
 //	hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, L"Hello")));
 
 //	::SetProcessAffinityMask(::GetCurrentProcess(), (DWORD_PTR)0x1);
@@ -142,9 +142,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	{
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(hal::wform(L"Exe Path: %1%.") % hal::app().exe_path())));		
+
+		HAL_DEV_MSG(L"Hello");
 		
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(hal::wform(L"Initial Path: %1%.") % hal::app().initial_path())));		
+
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(L"Hi again", hal::event_logger::dev)));		
 		
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg((hal::wform(L"Working Directory: %1%.") % hal::app().working_directory()), hal::event_logger::info)));		

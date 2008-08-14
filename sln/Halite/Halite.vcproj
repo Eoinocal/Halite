@@ -523,6 +523,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\..\src\AdvHaliteDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\ConfigOptions.cpp"
 				>
 			</File>
@@ -663,10 +667,6 @@
 			<Filter
 				Name="global"
 				>
-				<File
-					RelativePath="..\..\src\AdvHaliteDialog.cpp"
-					>
-				</File>
 				<File
 					RelativePath="..\..\src\global\ini.cpp"
 					>
