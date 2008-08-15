@@ -30,22 +30,13 @@ class Config :
 public:
 	Config() :
 		hal::IniBase<Config>("globals/bittorrent", "Config"),
-		maxConnections(200),
-		maxUploads(20),
-		downRate(-1),
-		upRate(-1),
-		torrentMaxConnections(50),
-		torrentMaxUploads(10),
-		torrentDownRate(-1),
-		torrentUpRate(-1),
+		globals_(),
+		torrent_defaults_(),
 		portFrom(6881),
 		portTo(6881),
 		portRange(false),
-		enableDHT(false),
-		dhtMaxPeersReply(50),
-		dhtSearchBranching(5),		
-		dhtServicePort(6881),
-		dhtMaxFailCount(20),
+		enable_dht_(true),
+		dht_settings_(),
 		enableIPFilter(false),
 		enableProxy(false),
 		proxyPort(0),
@@ -53,11 +44,8 @@ public:
 		defaultMoveToFolder((hal::app().exe_path().branch_path()/L"completed").string()),
 		useMoveTo(false),
 		savePrompt(true),
-		enablePe(false),
-		peEncLevel(0),
-		pePerferRc4(false),
-		peConInPolicy(1),
-		peConOutPolicy(1),
+		enable_pe_(false),
+		pe_settings_(),
 		halfConn(true),
 		halfConnLimit(10),
 		mappingType(0)
@@ -71,63 +59,62 @@ public:
 	void serialize(Archive& ar, const unsigned int version)
 	{	
 		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 6:
+		ar	& make_nvp("globals", globals_)
+			& make_nvp("torrent_defaults", torrent_defaults_)
+			& make_nvp("queue_settings", queue_settings_)
+			& make_nvp("timeouts", timeouts_)
+			& make_nvp("enable_dht", enable_dht_)
+			& make_nvp("dht_settings", dht_settings_)
+			& make_nvp("enable_pe", enable_pe_)
+			& make_nvp("pe_settings", pe_settings_);
+		break;
 
-		ar & BOOST_SERIALIZATION_NVP(maxConnections);
-		ar & BOOST_SERIALIZATION_NVP(maxUploads);
-		ar & BOOST_SERIALIZATION_NVP(downRate);
-		ar & BOOST_SERIALIZATION_NVP(upRate);
-		ar & BOOST_SERIALIZATION_NVP(portFrom);
-		ar & BOOST_SERIALIZATION_NVP(portTo);
-		
-		ar & BOOST_SERIALIZATION_NVP(enableDHT);
-		ar & BOOST_SERIALIZATION_NVP(dhtMaxPeersReply);
-		ar & BOOST_SERIALIZATION_NVP(dhtSearchBranching);
-		ar & BOOST_SERIALIZATION_NVP(dhtServicePort);
-		ar & BOOST_SERIALIZATION_NVP(dhtMaxFailCount);
-		ar & BOOST_SERIALIZATION_NVP(enableIPFilter);
-		ar & BOOST_SERIALIZATION_NVP(portRange);
-		
-		ar & BOOST_SERIALIZATION_NVP(torrentMaxConnections);
-		ar & BOOST_SERIALIZATION_NVP(torrentMaxUploads);
-		ar & BOOST_SERIALIZATION_NVP(torrentDownRate);
-		ar & BOOST_SERIALIZATION_NVP(torrentUpRate);
-		
-		if (version <= 1) {
-			ar & BOOST_SERIALIZATION_NVP(enableProxy);
-			ar & BOOST_SERIALIZATION_NVP(proxyHost);
-			ar & BOOST_SERIALIZATION_NVP(proxyPort);
-			ar & BOOST_SERIALIZATION_NVP(proxyUsername);
-			ar & BOOST_SERIALIZATION_NVP(proxyPassword);
-		}
-		
-		ar & BOOST_SERIALIZATION_NVP(defaultSaveFolder);
-		if (version > 3) {
-			ar & BOOST_SERIALIZATION_NVP(defaultMoveToFolder);
-			ar & BOOST_SERIALIZATION_NVP(useMoveTo);
-		}
-		ar & BOOST_SERIALIZATION_NVP(savePrompt);
-		
-		if (version > 0) {
-			ar & BOOST_SERIALIZATION_NVP(enablePe);
-			ar & BOOST_SERIALIZATION_NVP(peEncLevel);
-			ar & BOOST_SERIALIZATION_NVP(pePerferRc4);
-			ar & BOOST_SERIALIZATION_NVP(peConInPolicy);
-			ar & BOOST_SERIALIZATION_NVP(peConOutPolicy);
-		}
-		if (version > 1) {
-			ar & BOOST_SERIALIZATION_NVP(halfConn);
-			ar & BOOST_SERIALIZATION_NVP(halfConnLimit);
-		}
-		if (version > 2) {
-			ar & BOOST_SERIALIZATION_NVP(mappingType);
-		}
+		case 4:
+		ar	& BOOST_SERIALIZATION_NVP(defaultMoveToFolder);
+			& BOOST_SERIALIZATION_NVP(useMoveTo);
 
-		if (version > 2 && version < 6) {
-			ar & make_nvp("peerTimeout", timeouts_.peer_connect_timeout);
-			ar & make_nvp("trackerTimeout", timeouts_.tracker_receive_timeout);
-		} else if (version > 5) {
-			ar & make_nvp("queue_settings", queue_settings_);
-			ar & make_nvp("timeouts", timeouts_);
+		case 3:
+		ar	& BOOST_SERIALIZATION_NVP(mappingType);
+
+		case 2:
+		ar	& BOOST_SERIALIZATION_NVP(halfConn)
+			& BOOST_SERIALIZATION_NVP(halfConnLimit);
+
+		case 1:
+		ar	& make_nvp("enablePe", enable_pe_)
+			& make_nvp("peEncLevel", pe_settings_.encrypt_level)
+			& make_nvp("pePerferRc4", pe_settings_.prefer_rc4)
+			& make_nvp("peConInPolicy", pe_settings_.conn_in_policy)
+			& make_nvp("peConOutPolicy", pe_settings_.conn_out_policy);
+
+		case 0:
+		ar	& make_nvp("maxConnections", globals_.total)
+			& make_nvp("maxUploads", globals_.uploads)
+			& make_nvp("downRate", globals_.download_rate)
+			& make_nvp("upRate", globals_.upload_rate)
+			& BOOST_SERIALIZATION_NVP(portFrom)
+			& BOOST_SERIALIZATION_NVP(portTo);
+		
+		ar	& make_nvp("enableDHT", enable_dht_)
+			& make_nvp("dhtMaxPeersReply", dht_settings_.max_peers_reply)
+			& make_nvp("dhtSearchBranching", dht_settings_.search_branching)
+			& make_nvp("dhtServicePort", dht_settings_.service_port)
+			& make_nvp("dhtMaxFailCount", dht_settings_.max_fail_count);
+		
+		ar	& make_nvp("peerTimeout", timeouts_.peer_connect_timeout)
+			& make_nvp("trackerTimeout", timeouts_.tracker_receive_timeout);
+
+		ar	& BOOST_SERIALIZATION_NVP(enableIPFilter)
+			& BOOST_SERIALIZATION_NVP(portRange)
+			& make_nvp("torrentMaxConnections", torrent_defaults_.total)
+			& make_nvp("torrentMaxUploads", torrent_defaults_.uploads)
+			& make_nvp("torrentDownRate", torrent_defaults_.download_rate)
+			& make_nvp("torrentUpRate", torrent_defaults_.upload_rate)
+			& BOOST_SERIALIZATION_NVP(defaultSaveFolder)
+			& BOOST_SERIALIZATION_NVP(savePrompt);
 		}
 	}
 	
@@ -144,27 +131,15 @@ public:
 private:
 	bool settingsThread();
 	
-	int maxConnections;
-	int maxUploads;
-	
-	float downRate;
-	float upRate;
-
-	int torrentMaxConnections;
-	int torrentMaxUploads;
-	
-	float torrentDownRate;
-	float torrentUpRate;
+	hal::connections globals_;
+	hal::connections torrent_defaults_;
 	
 	int portFrom;
 	int portTo;
 	bool portRange;
 	
-	bool enableDHT;
-	int dhtMaxPeersReply;
-	int dhtSearchBranching;
-	int dhtServicePort;
-	int dhtMaxFailCount;
+	bool enable_dht_;
+	hal::dht_settings dht_settings_;
 	
 	bool enableIPFilter;
 	
@@ -179,11 +154,8 @@ private:
 	bool useMoveTo;
 	bool savePrompt;
 
-    bool enablePe;
-    int peEncLevel;
-    bool pePerferRc4;
-    int peConInPolicy;
-    int peConOutPolicy;
+    bool enable_pe_;
+	hal::pe_settings pe_settings_;
 	
 	bool halfConn;
 	int halfConnLimit;

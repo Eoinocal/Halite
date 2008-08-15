@@ -156,20 +156,14 @@ void bit::stop_listening()
 	pimpl->stop_listening();
 }
 
-bool bit::ensure_dht_on()
+bool bit::ensure_dht_on(const hal::dht_settings& dht)
 {
-	return pimpl->ensure_dht_on();
+	return pimpl->ensure_dht_on(dht);
 }
 
 void bit::ensure_dht_off()
 {
 	pimpl->ensure_dht_off();
-}
-
-void bit::set_dht_settings(int max_peers_reply, int search_branching, 
-	int service_port, int max_fail_count)
-{
-	pimpl->set_dht_settings(max_peers_reply, search_branching, service_port, max_fail_count);
 }
 
 void bit::set_mapping(int mapping)
@@ -219,9 +213,9 @@ void bit::ensure_ip_filter_off()
 
 #ifndef TORRENT_DISABLE_ENCRYPTION	
 
-void bit::ensure_pe_on(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4)
+void bit::ensure_pe_on(const pe_settings& pe)
 {
-	pimpl->ensure_pe_on(enc_level, in_enc_policy, out_enc_policy, prefer_rc4);
+	pimpl->ensure_pe_on(pe);
 }
 
 void bit::ensure_pe_off()
@@ -285,19 +279,21 @@ void bit::setSessionHalfOpenLimit(int halfConn)
 		hal::wform(L"Set half-open connections limit to %1%.") % pimpl->session_.max_half_open_connections())));
 }
 
-void bit::setTorrentDefaults(int maxConn, int maxUpload, float download, float upload)
+void bit::set_torrent_defaults(const connections& defaults)
 {
-	pimpl->defTorrentMaxConn_ = maxConn;
-	pimpl->defTorrentMaxUpload_ = maxUpload;
+	pimpl->defTorrentMaxConn_ = defaults.total;
+	pimpl->defTorrentMaxUpload_ = defaults.uploads;
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-		hal::wform(L"Set torrent connections total %1% and uploads %2%.") % maxConn % maxUpload)));
+		hal::wform(L"Set torrent connections total %1% and uploads %2%.") 
+			% defaults.total % defaults.uploads)));
 
-	pimpl->defTorrentDownload_ = download;
-	pimpl->defTorrentUpload_ = upload;
+	pimpl->defTorrentDownload_ = defaults.download_rate;
+	pimpl->defTorrentUpload_ = defaults.upload_rate;
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-		hal::wform(L"Set torrent default rates at %1$.2fkb/s down and %2$.2fkb/s upload.") % download % upload)));
+		hal::wform(L"Set torrent default rates at %1$.2fkb/s down and %2$.2fkb/s upload.") 
+			% defaults.download_rate % defaults.upload_rate)));
 }
 
 void bit::add_torrent(wpath file, wpath saveDirectory, bool startStopped, bool compactStorage, 

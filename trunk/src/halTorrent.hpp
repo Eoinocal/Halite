@@ -148,6 +148,81 @@ struct timeouts
 	int inactivity_timeout;
 	int handshake_timeout;
 };
+
+struct dht_settings
+{
+	dht_settings() :
+		max_peers_reply(50),
+		search_branching(5),
+		service_port(6881),
+		max_fail_count(20)
+	{}
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{	
+		ar & BOOST_SERIALIZATION_NVP(max_peers_reply);
+		ar & BOOST_SERIALIZATION_NVP(search_branching);
+		ar & BOOST_SERIALIZATION_NVP(service_port);
+		ar & BOOST_SERIALIZATION_NVP(max_fail_count);
+	}
+
+	int max_peers_reply;
+	int search_branching;
+	int service_port;
+	int max_fail_count;
+};
+
+struct pe_settings
+{
+	pe_settings() :
+		encrypt_level(0),
+		prefer_rc4(false),
+		conn_in_policy(1),
+		conn_out_policy(1)
+	{}
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{	
+		ar & BOOST_SERIALIZATION_NVP(encrypt_level);
+		ar & BOOST_SERIALIZATION_NVP(prefer_rc4);
+		ar & BOOST_SERIALIZATION_NVP(conn_in_policy);
+		ar & BOOST_SERIALIZATION_NVP(conn_out_policy);
+	}
+
+    int encrypt_level;
+    bool prefer_rc4;
+    int conn_in_policy;
+    int conn_out_policy;
+};
+
+struct connections
+{
+	connections() :
+		total(50),
+		uploads(10),
+		download_rate(-1),
+		upload_rate(-1)
+	{}
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{	
+		ar & BOOST_SERIALIZATION_NVP(total);
+		ar & BOOST_SERIALIZATION_NVP(uploads);
+		ar & BOOST_SERIALIZATION_NVP(download_rate);
+		ar & BOOST_SERIALIZATION_NVP(upload_rate);
+	}
+
+    int total;
+    int uploads;
+    float download_rate;
+    float upload_rate;
+};
 	
 struct torrentBriefDetail 
 {
@@ -682,10 +757,10 @@ public:
 	int is_listening_on();
 	void stop_listening();
 	
-	bool ensure_dht_on();
+	bool ensure_dht_on(const dht_settings& dht);
 	void ensure_dht_off();
 	
-	void ensure_pe_on(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4);
+	void ensure_pe_on(const pe_settings& pe);
 	void ensure_pe_off();
 	
 	bool ensure_ip_filter_on(progress_callback fn);
@@ -702,7 +777,6 @@ public:
 	void setSessionHalfOpenLimit(int halfConn);
 	void set_session_limits(int maxConn, int maxUpload);
 	void set_session_speed(float download, float upload);
-	void set_dht_settings(int max_peers_reply, int search_branching, int service_port, int max_fail_count);
 
 	queue_settings get_queue_settings();
 	void set_queue_settings(const queue_settings& s);
@@ -712,7 +786,7 @@ public:
 	
 	const SessionDetail getSessionDetails();
 
-	void setTorrentDefaults(int maxConn, int maxUpload, float download, float upload);	
+	void set_torrent_defaults(const connections& defaults);	
 	void add_torrent(boost::filesystem::wpath file, boost::filesystem::wpath saveDirectory, 
 		bool startPaused=false, bool compactStorage=false, 
 		boost::filesystem::wpath moveToDirectory=L"", bool useMoveTo=false);

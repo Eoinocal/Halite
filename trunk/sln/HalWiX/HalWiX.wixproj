@@ -141,7 +141,9 @@
     <OutputPath>bin\Release64\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <WixExtension Include="C:\Program Files (x86)\Windows Installer XML v3\bin\WixUIExtension.dll" />
+    <WixExtension Include="WixUIExtension">
+      <HintPath>C:\Program Files (x86)\Windows Installer XML v3\bin\WixUIExtension.dll</HintPath>
+    </WixExtension>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Halite\Halite.vcproj">

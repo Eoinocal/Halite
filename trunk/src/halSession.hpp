@@ -266,8 +266,20 @@ public:
 		session_.listen_on(std::make_pair(0, 0));
 	}
 
-	bool ensure_dht_on()
-	{
+	bool ensure_dht_on(const dht_settings& dht)
+	{		
+		libt::dht_settings settings;
+		settings.max_peers_reply = dht.max_peers_reply;
+		settings.search_branching = dht.search_branching;
+		settings.service_port = dht.service_port;
+		settings.max_fail_count = dht.max_fail_count;
+		
+		if (dht_settings_ != settings)
+		{
+			dht_settings_ = settings;
+			session_.set_dht_settings(dht_settings_);
+		}
+
 		if (!dht_on_)
 		{		
 			try
@@ -287,22 +299,6 @@ public:
 		{
 			session_.stop_dht();		
 			dht_on_ = false;
-		}
-	}
-
-	void set_dht_settings(int max_peers_reply, int search_branching, 
-		int service_port, int max_fail_count)
-	{
-		libt::dht_settings settings;
-		settings.max_peers_reply = max_peers_reply;
-		settings.search_branching = search_branching;
-		settings.service_port = service_port;
-		settings.max_fail_count = max_fail_count;
-		
-		if (dht_settings_ != settings)
-		{
-			dht_settings_ = settings;
-			session_.set_dht_settings(dht_settings_);
 		}
 	}
 
@@ -500,11 +496,11 @@ public:
 	}
 
 	#ifndef TORRENT_DISABLE_ENCRYPTION	
-	void ensure_pe_on(int enc_level, int in_enc_policy, int out_enc_policy, bool prefer_rc4)
+	void ensure_pe_on(const pe_settings& pe_s)
 	{
 		libt::pe_settings pe;
 		
-		switch (enc_level)
+		switch (pe_s.encrypt_level)
 		{
 			case 0:
 				pe.allowed_enc_level = libt::pe_settings::plaintext;
@@ -520,10 +516,10 @@ public:
 				
 				hal::event_log.post(shared_ptr<hal::EventDetail>(
 					new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
-						(hal::wform(hal::app().res_wstr(HAL_INCORRECT_ENCODING_LEVEL)) % enc_level).str())));
+						(hal::wform(hal::app().res_wstr(HAL_INCORRECT_ENCODING_LEVEL)) % pe_s.encrypt_level).str())));
 		}
 
-		switch (in_enc_policy)
+		switch (pe_s.conn_in_policy)
 		{
 			case 0:
 				pe.in_enc_policy = libt::pe_settings::forced;
@@ -539,10 +535,10 @@ public:
 				
 				hal::event_log.post(shared_ptr<hal::EventDetail>(
 					new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
-						(hal::wform(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
+						(hal::wform(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % pe_s.conn_in_policy).str())));
 		}
 
-		switch (out_enc_policy)
+		switch (pe_s.conn_out_policy)
 		{
 			case 0:
 				pe.out_enc_policy = libt::pe_settings::forced;
@@ -558,10 +554,10 @@ public:
 				
 				hal::event_log.post(shared_ptr<hal::EventDetail>(
 					new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
-						(hal::wform(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % in_enc_policy).str())));
+						(hal::wform(hal::app().res_wstr(HAL_INCORRECT_CONNECT_POLICY)) % pe_s.conn_out_policy).str())));
 		}
 		
-		pe.prefer_rc4 = prefer_rc4;
+		pe.prefer_rc4 = pe_s.prefer_rc4;
 		
 		try
 		{
