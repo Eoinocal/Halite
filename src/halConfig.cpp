@@ -70,9 +70,9 @@ bool Config::settingsThread()
 
 	try
 	{
-	if (enablePe)
+	if (enable_pe_)
 	{
-		bittorrent().ensure_pe_on(peEncLevel, peConInPolicy, peConOutPolicy, pePerferRc4);
+		bittorrent().ensure_pe_on(pe_settings_);
 	}
 	else
 		bittorrent().ensure_pe_off();
@@ -87,21 +87,17 @@ bool Config::settingsThread()
 	
 	bittorrent().resume_all();	
 	
-	bittorrent().set_session_limits(maxConnections, maxUploads);
-	bittorrent().set_session_speed(	downRate, upRate);
+	bittorrent().set_session_limits(globals_.total, globals_.uploads);
+	bittorrent().set_session_speed(globals_.download_rate, globals_.upload_rate);
 		
-	bittorrent().setTorrentDefaults(torrentMaxConnections,
-		torrentMaxUploads, torrentDownRate,	torrentUpRate);
-	
-	bittorrent().set_dht_settings(dhtMaxPeersReply, 
-		dhtSearchBranching, dhtServicePort, dhtMaxFailCount);
+	bittorrent().set_torrent_defaults(torrent_defaults_);
 
 	bittorrent().set_timeouts(timeouts_);	
 	bittorrent().set_queue_settings(queue_settings_);
 	
-	if (enableDHT)
+	if (enable_dht_)
 	{
-		if (!bittorrent().ensure_dht_on())
+		if (!bittorrent().ensure_dht_on(dht_settings_))
 		{
 			bittorrent().ensure_dht_off();
 			

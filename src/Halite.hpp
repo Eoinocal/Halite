@@ -103,15 +103,30 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{	
-        ar & BOOST_SERIALIZATION_NVP(oneInst);
-		ar & BOOST_SERIALIZATION_NVP(logDebug_);
-		ar & boost::serialization::make_nvp("showMessage", showMessage_);
-		
-		ar & BOOST_SERIALIZATION_NVP(logToFile_);
-		if (version > 1)
-			ar & BOOST_SERIALIZATION_NVP(logListLen_);
-		if (version > 0)
-			ar & BOOST_SERIALIZATION_NVP(dll_);
+		using boost::serialization::make_nvp;
+
+		switch (version)
+		{
+		case 4:
+		ar	& make_nvp("one_inst", oneInst)
+			& make_nvp("show_message", showMessage_)
+			& make_nvp("log_debug", logDebug_)
+			& make_nvp("log_list_length", logListLen_)
+			& make_nvp("log_to_file", logToFile_)
+			& make_nvp("lang_dll", dll_);
+		break;
+
+		case 3:
+		case 2:
+		ar	& make_nvp("dll_", dll_);
+		case 1:
+		ar	& make_nvp("logListLen_", logListLen_);
+		case 0:
+		ar	& make_nvp("oneInst", oneInst)
+			& make_nvp("logDebug_", logDebug_)
+			& make_nvp("showMessage", showMessage_)
+			& make_nvp("logToFile_", logToFile_);
+		}
 	}	
 	
 	bool logToFile() { return logToFile_; }
@@ -138,4 +153,4 @@ private:
 
 Halite& halite();
 
-BOOST_CLASS_VERSION(Halite, 3)
+BOOST_CLASS_VERSION(Halite, 4)
