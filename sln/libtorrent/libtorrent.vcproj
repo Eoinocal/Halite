@@ -459,7 +459,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-trunk\src\error_code.cpp"
+				RelativePath="..\..\lib\libtorrent\src\error_code.cpp"
 				>
 			</File>
 			<File
@@ -467,7 +467,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-trunk\src\file.cpp"
+				RelativePath="..\..\lib\libtorrent\src\file.cpp"
 				>
 			</File>
 			<File
