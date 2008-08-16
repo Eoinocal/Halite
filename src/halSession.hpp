@@ -302,31 +302,27 @@ public:
 		}
 	}
 
-	void set_mapping(int mapping)
+	void set_mapping(bool upnp, bool nat_pmp)
 	{
-		if (mapping != bit::mappingNone)
+		if (upnp)
 		{
-			if (mapping == bit::mappingUPnP)
-			{
-				event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Starting UPnP mapping.")));
-				session_.stop_upnp();
-				session_.stop_natpmp();
-
-				signals.successful_listen.connect_once(bind(&libt::session::start_upnp, &session_));
-			}
-			else
-			{
-				event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Starting NAT-PMP mapping.")));
-				session_.stop_upnp();
-				session_.stop_natpmp();
-
-				signals.successful_listen.connect_once(bind(&libt::session::start_natpmp, &session_));
-			}
+			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Starting UPnP mapping.")));
+			session_.start_upnp();
 		}
 		else
 		{
-			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"No mapping.")));
+			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Stopping UPnP mapping.")));
 			session_.stop_upnp();
+		}
+
+		if (nat_pmp)
+		{
+			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Starting NAT-PMP mapping.")));
+			session_.start_natpmp();
+		}
+		else
+		{
+			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Stopping NAT-PMP mapping.")));
 			session_.stop_natpmp();
 		}
 	}

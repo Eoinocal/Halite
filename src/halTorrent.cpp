@@ -166,9 +166,9 @@ void bit::ensure_dht_off()
 	pimpl->ensure_dht_off();
 }
 
-void bit::set_mapping(int mapping)
+void bit::set_mapping(bool upnp, bool nat_pmp)
 {
-	pimpl->set_mapping(mapping);
+	pimpl->set_mapping(upnp, nat_pmp);
 }
 
 queue_settings bit::get_queue_settings()

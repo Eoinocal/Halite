@@ -25,14 +25,13 @@ bool Config::settingsThread()
 {	
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Applying BitTorrent session settings.")));	
 
-	bittorrent().set_mapping(mappingType);	
+	bittorrent().set_mapping(mapping_upnp_, mapping_nat_pmp_);	
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			hal::wform(L"Trying port in range %1% - %2%.") % portFrom % portTo)));
+			hal::wform(L"Trying port in range %1% - %2%.") % port_range_.first % port_range_.second)));
 	try
 	{
-	bool success = bittorrent().listen_on(
-		std::make_pair(portFrom, portTo));
+	bool success = bittorrent().listen_on(port_range_);
 	if (!success)
 	{
 		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
@@ -83,7 +82,7 @@ bool Config::settingsThread()
 				new hal::EventStdException(event_logger::critical, e, L"settingsThread, Protocol Encryption"))); 
 	}
 	
-	bittorrent().setSessionHalfOpenLimit(halfConnLimit);
+	bittorrent().setSessionHalfOpenLimit(half_connections_limit_);
 	
 	bittorrent().resume_all();	
 	

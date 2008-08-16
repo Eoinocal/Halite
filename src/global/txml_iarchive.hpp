@@ -137,20 +137,25 @@ public:
 
 	void init() 
 	{
-		std::string signature = read_attribute<std::string>("signature");
-		int version = read_attribute<int>("version");
+		if (current_node_)
+		{
+			std::string signature = read_attribute<std::string>("signature");
+			int version = read_attribute<int>("version");
 
-		TXML_LOG(boost::wformat(L" << siganture: %1%, version: %2%") % from_utf8(signature) % version);
+			TXML_LOG(boost::wformat(L" << siganture: %1%, version: %2%") % from_utf8(signature) % version);
+		}
 	}
 
 	template<typename T>
 	T read_attribute(const char* attribute_name, const char* fallback_name=0)
 	{
-		T type;
+		T type = T();
 
 		TXML_LOG(boost::wformat(L" << attribute_name: %1%") % from_utf8(attribute_name));
 
 		xml::element* e = current_node_->to_element();
+		if (!e) return type;
+
 		int result = e->query_value_attribute(attribute_name, &type);
 
 		if (result == xml::TIXML_NO_ATTRIBUTE && fallback_name != 0)
@@ -174,6 +179,8 @@ public:
 		TXML_LOG(boost::wformat(L" << attribute_name: %1%") % from_utf8(attribute_name));
 
 		xml::element* e = current_node_->to_element();
+		if (!e) return type;
+
 		int result = e->query_value_attribute(attribute_name, &type);
 
 		if (result == xml::TIXML_NO_ATTRIBUTE && fallback_name != 0)
@@ -280,7 +287,7 @@ public:
 	{
 		TXML_LOG(boost::wformat(L" << loading: %1%") % t.name());
 
-		if (load_start(t.name()))
+		if (current_node_ && load_start(t.name()))
 		{
 			this->detail_common_iarchive::load_override(t.value(), 0);
 			load_end(t.name());
