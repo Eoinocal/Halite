@@ -349,26 +349,26 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	try
 	{
 	
-	wstring saveDirectory = wpath(hal::config().defaultSaveFolder).native_file_string();
-	wstring moveToDirectory = wpath(hal::config().defaultMoveToFolder).native_file_string();
-	bool useMoveTo = hal::config().useMoveTo;
+	wstring default_save_folder = wpath(hal::config().default_save_folder_).native_file_string();
+	wstring default_move_folder = wpath(hal::config().default_move_folder_).native_file_string();
+	bool use_move_to = hal::config().use_move_to_;
 	bool startPaused = false;
 	bool compactStorage = false;
 	
-	if (!boost::filesystem::exists(saveDirectory))
-		boost::filesystem::create_directory(saveDirectory);
+	if (!boost::filesystem::exists(default_save_folder))
+		boost::filesystem::create_directory(default_save_folder);
 
-	if (hal::config().savePrompt)
+	if (hal::config().save_prompt_)
 	{
-		AddTorrentDialog addTorrent(saveDirectory, moveToDirectory, useMoveTo, startPaused, compactStorage);	
+		AddTorrentDialog addTorrent(default_save_folder, default_move_folder, use_move_to, startPaused, compactStorage);	
 		
 		if (IDOK != addTorrent.DoModal())
 			return;
 	}
 	
 	wpath file(lpszPath, boost::filesystem::native);	
-	hal::bittorrent().add_torrent(file, wpath(saveDirectory), startPaused, compactStorage, 
-		wpath(moveToDirectory), useMoveTo);
+	hal::bittorrent().add_torrent(file, wpath(default_save_folder), startPaused, compactStorage, 
+		wpath(default_move_folder), use_move_to);
 
 	ui().update();
 

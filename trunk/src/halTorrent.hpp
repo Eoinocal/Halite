@@ -766,7 +766,7 @@ public:
 	bool ensure_ip_filter_on(progress_callback fn);
 	void ensure_ip_filter_off();
 
-	void set_mapping(int mapping);
+	void set_mapping(bool upnp, bool nat_pmp);
 
 	void ip_v4_filter_block(boost::asio::ip::address_v4 first, boost::asio::ip::address_v4 last);
 	void ip_v6_filter_block(boost::asio::ip::address_v6 first, boost::asio::ip::address_v6 last);

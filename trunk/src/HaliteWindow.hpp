@@ -176,15 +176,31 @@ protected:
     friend class boost::serialization::access;
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
-	{
-		ar & BOOST_SERIALIZATION_NVP(rect);
-		ar & BOOST_SERIALIZATION_NVP(splitterPos);
-		ar & BOOST_SERIALIZATION_NVP(use_tray);
-		ar & BOOST_SERIALIZATION_NVP(advancedUI);
-		ar & BOOST_SERIALIZATION_NVP(activeTab);
-		if (version > 0) {
-			ar & BOOST_SERIALIZATION_NVP(closeToTray);
-			ar & BOOST_SERIALIZATION_NVP(confirmClose);
+	{		
+		using boost::serialization::make_nvp;
+
+		switch (version)
+		{
+		case 2:
+		ar	& make_nvp("close_to_tray", closeToTray)
+			& make_nvp("use_tray", use_tray)
+			& make_nvp("confirm_close", confirmClose)
+			& make_nvp("splitter_pos", splitterPos)
+			& make_nvp("advanced_ui", advancedUI)
+			& make_nvp("active_tab", activeTab)
+			& make_nvp("rect", rect);
+		break;
+
+		case 1:
+		ar	& make_nvp("closeToTray", closeToTray)
+			& make_nvp("confirmClose", confirmClose);
+			
+		case 0:
+		ar	& make_nvp("rect", rect)
+			& make_nvp("splitterPos", splitterPos)
+			& make_nvp("use_tray", use_tray)
+			& make_nvp("advancedUI", advancedUI)
+			& make_nvp("activeTab", activeTab);
 		}
 	}
 	
@@ -222,6 +238,6 @@ private:
 	int activeTab;
 };
 
-BOOST_CLASS_VERSION(HaliteWindow, 1)
+BOOST_CLASS_VERSION(HaliteWindow, 2)
 
 #endif // RC_INVOKED
