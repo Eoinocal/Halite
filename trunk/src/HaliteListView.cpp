@@ -72,14 +72,14 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	SetColumnSortType(21, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::QueuePosition());
 
 	
-	int item_pos = AddItem(0, 0, L"Unmanaged", 0);
+/*	int item_pos = AddItem(0, 0, L"Unmanaged", 0);
 	SetItemData(item_pos, HAL_CUSTOMDRAW_TITLEDATA);
 			
 	item_pos = AddItem(0, 0, L"Downloading", 0);
 	SetItemData(item_pos, HAL_CUSTOMDRAW_TITLEDATA);
 			
 	item_pos = AddItem(0, 0, L"Seeding", 0);
-	SetItemData(item_pos, HAL_CUSTOMDRAW_TITLEDATA);
+	SetItemData(item_pos, HAL_CUSTOMDRAW_TITLEDATA);*/
 }
 
 void HaliteListViewCtrl::OnDestroy()
