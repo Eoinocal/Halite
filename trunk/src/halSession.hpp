@@ -637,7 +637,7 @@ public:
 		std::pair<std::string, std::string> names = extract_names(file);
 		wstring xml_name = from_utf8(names.first) + L".xml";
 
-		if (fs::exists(file.branch_path()/xml_name))
+		if (false && fs::exists(file.branch_path()/xml_name))
 		{
 			torrent_standalone tsa;
 			
