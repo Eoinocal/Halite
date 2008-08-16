@@ -106,7 +106,7 @@
 "Forced" ---> "Натеран"
 "General Settings" ---> "Опште"
 "General" ---> "Опште"
-"Generated Torrent Name (Cannot change)" --->  "Генерирано име торента (непроменљиво)"
+"Generated Torrent Name (Cannot change)" ---> "Генерирано име торента (непроменљиво)"
 "Global Limits" ---> "Глобално лимитирање"
 "Halite BitTorrent Client" ---> "Халите битторент клијент"
 "Halite Debug Dialog" ---> "Халите, диалог "
