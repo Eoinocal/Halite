@@ -164,7 +164,7 @@
 "Paused" ---> "Pauziran"
 "Pausing" ---> "Pauziraj"
 "Peer %2%: %1%." ---> "Izvor %2%: %1%."
-"Peer Event: %1%." ---> "Izvor događaj: %1%."
+"Peer Event: %1%." ---> "Izvorni događaj: %1%."
 "Peer banned %2%. (%1%)" ---> "Izvor %2% Banovan. (%1%)"
 "Peer" ---> "Izvor"
 "Peers" ---> "Izvori"
