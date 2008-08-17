@@ -211,14 +211,14 @@ public:
 			boost::filesystem::path location(name);
 
 			if (previous_child_node_ &&
-					previous_child_branch_ == location.branch_path())
+					previous_child_branch_ == location.parent_path())
 			{
 			//	TXML_LOG(boost::wformat(L" << previous_child: %1%") % previous_child_node_->to_element()->get_text());
-				failsafe_current = previous_child_node_->next_sibling(location.leaf());
+				failsafe_current = previous_child_node_->next_sibling(location.filename());
 				previous_child_node_ = 0;
 				
 				if (!failsafe_current) 
-					failsafe_current = current_node_->first_child(location.leaf());;
+					failsafe_current = current_node_->first_child(location.filename());;
 			}
 			else
 			{
@@ -249,7 +249,7 @@ public:
 			{
 				current_node_ = failsafe_current;
 
-				previous_child_branch_ = location.branch_path();
+				previous_child_branch_ = location.parent_path();
 			}
 		}
 		return true;

@@ -36,7 +36,7 @@ static class halite_log_file : public boost::signals::trackable
 public:	
 	void operator()(shared_ptr<hal::EventDetail> event)
 	{
-		if (true || halite().logToFile())
+		if (halite().logToFile())
 		{
 			if (!wofs.is_open()) wofs.open(hal::app().working_directory()/L"HaliteLog.txt");
 			

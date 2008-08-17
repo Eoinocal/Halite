@@ -192,8 +192,8 @@ public:
 
 			boost::filesystem::path branch(name);
 
-			std::string leaf = branch.leaf();
-			branch = branch.branch_path();
+			std::string leaf = branch.filename();
+			branch = branch.parent_path();
 
 			foreach(std::string elem, branch)
 			{

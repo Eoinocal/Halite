@@ -66,7 +66,7 @@ public:
 			for (int i=1; i<nArgs; ++i) 
 				command_args_.push_back(szArglist[i]);
 				
-			working_directory_ = exe_path_.branch_path();
+			working_directory_ = exe_path_.parent_path();
 		}		
 		LocalFree(szArglist);	
 	}

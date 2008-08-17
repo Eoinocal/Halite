@@ -79,7 +79,7 @@ void event_logger::post(boost::shared_ptr<EventDetail> e)
 	if (pimpl_)
 	{
 	mutex_t::scoped_lock l(pimpl_->mutex_);
-	if (e->level() != hal::event_logger::debug || halite().logDebug() || true)
+	if (e->level() != hal::event_logger::debug || halite().logDebug())
 		pimpl_->event_signal_(e);
 	}
 }
