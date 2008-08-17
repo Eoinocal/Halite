@@ -323,7 +323,7 @@ public:
 			if (!(*i).second.valid)
 			{
 				(*i).second.valid = true;
-				EnsureValid(branchPath.branch_path());
+				EnsureValid(branchPath.parent_path());
 			}
 		}
 	}

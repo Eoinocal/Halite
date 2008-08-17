@@ -265,8 +265,8 @@ typedef std::vector<PeerDetail> PeerDetails;
 struct FileDetail
 {
 	FileDetail(boost::filesystem::wpath p, boost::int64_t s=0, float pg=0, int pr=1, size_t o=0, unsigned t=FileDetail::file) :
-		branch(p.branch_path()),
-		filename(p.leaf()),
+		branch(p.parent_path()),
+		filename(p.filename()),
 		type(t),
 		size(s),
 		progress(pg),

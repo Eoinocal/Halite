@@ -102,11 +102,11 @@ void recurseDirectory(std::vector<wpath>& files, wpath baseDir, wpath relDir)
 	if (hal::fs::is_directory(currentDir))
     {
 		for (hal::fs::wdirectory_iterator i(currentDir), end; i != end; ++i)
-			recurseDirectory(files, baseDir, relDir / i->leaf());
+			recurseDirectory(files, baseDir, relDir / i->filename());
     }
     else
     {
-		files.push_back(baseDir.leaf()/relDir);		
+		files.push_back(baseDir.filename()/relDir);		
     }
 }
 
@@ -119,11 +119,11 @@ void FilesSheet::OnFileBrowse(UINT, int, HWND hWnd)
 		files_.clear();
 		wpath file = wpath(dlgOpen.m_ofn.lpstrFile);
 
-		fileRoot_ = file.branch_path();		
-		files_.push_back(file.leaf());
+		fileRoot_ = file.parent_path();		
+		files_.push_back(file.filename());
 
 		UpdateFileList();
-		SetDlgItemText(HAL_NEWT_FILE_NAME_EDIT, file.leaf().c_str());
+		SetDlgItemText(HAL_NEWT_FILE_NAME_EDIT, file.filename().c_str());
 	}
 
 }
@@ -145,11 +145,11 @@ void FilesSheet::OnDirBrowse(UINT, int, HWND hWnd)
 	{
 		files_.clear();
 
-		fileRoot_ = wpath(fldDlg.m_szFolderPath).branch_path();
+		fileRoot_ = wpath(fldDlg.m_szFolderPath).parent_path();
 		recurseDirectory(files_, wpath(fldDlg.m_szFolderPath), L"");
 
 		UpdateFileList();		
-		SetDlgItemText(HAL_NEWT_FILE_NAME_EDIT, fileRoot_.leaf().c_str());
+		SetDlgItemText(HAL_NEWT_FILE_NAME_EDIT, fileRoot_.filename().c_str());
 	}
 
 	}
@@ -166,9 +166,9 @@ void FilesSheet::UpdateFileList()
 
 	foreach(wpath& file, files_)
 	{
-		int itemPos = filesList_.AddItem(0, 0, file.leaf().c_str(), 0);
+		int itemPos = filesList_.AddItem(0, 0, file.filename().c_str(), 0);
 
-		filesList_.SetItemText(itemPos, 1, file.branch_path().file_string().c_str());
+		filesList_.SetItemText(itemPos, 1, file.parent_path().file_string().c_str());
 		filesList_.SetItemText(itemPos, 2, lexical_cast<wstring>(
 			hal::fs::file_size(fileRoot_/file)).c_str());
 	}

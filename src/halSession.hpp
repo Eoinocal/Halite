@@ -637,11 +637,11 @@ public:
 		std::pair<std::string, std::string> names = extract_names(file);
 		wstring xml_name = from_utf8(names.first) + L".xml";
 
-		if (false && fs::exists(file.branch_path()/xml_name))
+		if (false && fs::exists(file.parent_path()/xml_name))
 		{
 			torrent_standalone tsa;
 			
-			if (tsa.load_standalone(file.branch_path()/xml_name))
+			if (tsa.load_standalone(file.parent_path()/xml_name))
 			{
 				TIp = tsa.torrent;
 				
@@ -696,12 +696,12 @@ public:
 			torrentName += L".torrent";
 		
 		wpath torrentFilename = torrentName;
-		const wpath resumeFile = workingDirectory/L"resume"/torrentFilename.leaf();
+		const wpath resumeFile = workingDirectory/L"resume"/torrentFilename.filename();
 		
 		//  vvv Handle old naming style!
-		const wpath oldResumeFile = workingDirectory/L"resume"/filename.leaf();
+		const wpath oldResumeFile = workingDirectory/L"resume"/filename.filename();
 		
-		if (filename.leaf() != torrentFilename.leaf() && exists(oldResumeFile))
+		if (filename.filename() != torrentFilename.filename() && exists(oldResumeFile))
 			fs::rename(oldResumeFile, resumeFile);
 		//  ^^^ Handle old naming style!	
 		
@@ -725,8 +725,8 @@ public:
 		if (!fs::exists(workingDirectory/L"torrents"))
 			fs::create_directory(workingDirectory/L"torrents");
 
-		if (!fs::exists(workingDirectory/L"torrents"/torrentFilename.leaf()))
-			fs::copy_file(filename.string(), workingDirectory/L"torrents"/torrentFilename.leaf());
+		if (!fs::exists(workingDirectory/L"torrents"/torrentFilename.filename()))
+			fs::copy_file(filename.string(), workingDirectory/L"torrents"/torrentFilename.filename());
 
 		if (!fs::exists(saveDirectory))
 			fs::create_directory(saveDirectory);
@@ -760,7 +760,7 @@ public:
 					, end(m_info.end_files(true)); i != end; ++i)
 				{
 					std::string p = (hal::path_to_utf8(pIT->saveDirectory()) / i->path).string();
-					fs::path bp = i->path.branch_path();
+					fs::path bp = i->path.parent_path();
 					
 					std::pair<std::set<std::string>::iterator, bool> ret;
 					ret.second = true;
@@ -768,7 +768,7 @@ public:
 					{
 						std::pair<std::set<std::string>::iterator, bool> ret = 
 							directories.insert((hal::path_to_utf8(pIT->saveDirectory()) / bp).string());
-						bp = bp.branch_path();
+						bp = bp.parent_path();
 					}
 					if (!fs::remove(hal::from_utf8(p).c_str()) && errno != ENOENT)
 						error = std::strerror(errno);
