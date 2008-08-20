@@ -479,6 +479,7 @@ void bit_impl::alert_handler()
 					% get(a.handle)->name()), 
 				event_logger::info, a.timestamp())));
 
+		HAL_DEV_MSG(L"torrent_paused_alert");
 		get(a.handle)->signals().torrent_paused();
 	}
 	

@@ -454,7 +454,7 @@ public:
 struct signalers
 {
 	signaler<> torrent_finished;
-	signaler<> torrent_paused;
+	boost::signal<void ()> torrent_paused;
 };
 
 
@@ -849,8 +849,10 @@ public:
 			assert(in_session());
 
 			handle_.pause();
-			signals().torrent_paused.disconnect_all_once();
-			signals().torrent_paused.connect_once(bind(&torrent_internal::completed_pause, this));
+			//signals().torrent_paused.disconnect_all_once();
+
+			signaler_wrapper* sig = new signaler_wrapper(bind(&torrent_internal::completed_pause, this));
+			signals().torrent_paused.connect(bind(&signaler_wrapper::operator(), sig));
 
 			state_ = torrent_details::torrent_pausing;	
 		}			
@@ -866,8 +868,8 @@ public:
 			{
 				assert(in_session());
 
-				signals().torrent_paused.disconnect_all_once();
-				signals().torrent_paused.connect_once(bind(&torrent_internal::completed_stop, this));
+//				signals().torrent_paused.disconnect_all_once();
+//				signals().torrent_paused.connect_once(bind(&torrent_internal::completed_stop, this));
 				handle_.pause();
 
 				state_ = torrent_details::torrent_stopping;
@@ -899,11 +901,11 @@ public:
 
 		case torrent_details::torrent_stopping:
 		case torrent_details::torrent_pausing:
-			signals().torrent_paused.disconnect_all_once();
+//			signals().torrent_paused.disconnect_all_once();
 
 		case torrent_details::torrent_active:
-			signals().torrent_paused.disconnect_all_once();
-			signals().torrent_paused.connect_once(bind(&torrent_internal::handle_recheck, this));
+//			signals().torrent_paused.disconnect_all_once();
+//			signals().torrent_paused.connect_once(bind(&torrent_internal::handle_recheck, this));
 			handle_.pause();
 			state_ = torrent_details::torrent_pausing;
 			break;
@@ -1426,7 +1428,7 @@ private:
 		}
 	}
 	
-	void completed_pause()
+	bool completed_pause()
 	{
 		mutex_t::scoped_lock l(mutex_);
 		assert(in_session());
@@ -1435,6 +1437,8 @@ private:
 		state_ = torrent_details::torrent_paused;	
 
 		HAL_DEV_MSG(L"completed_pause()");
+
+		return true;
 	}
 
 	void completed_stop()

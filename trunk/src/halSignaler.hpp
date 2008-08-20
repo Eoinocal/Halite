@@ -8,6 +8,29 @@
 namespace hal
 {
 
+struct signaler_wrapper : public boost::signals::trackable
+{
+	signaler_wrapper(boost::function<bool ()> f) :
+		f_(f)
+	{
+		HAL_DEV_MSG(L"signaler_wrapper ctor");
+	}
+
+	void operator()() 
+	{
+		HAL_DEV_MSG(L"signaler_wrapper operator()");
+
+		if (f_())
+		{
+			HAL_DEV_MSG(L"Disconnecting");
+			delete this;
+		}
+	}
+
+private:
+	boost::function<bool ()> f_;
+};
+
 struct once
 {
 	template<typename S>
