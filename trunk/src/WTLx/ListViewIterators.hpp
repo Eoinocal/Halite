@@ -41,13 +41,13 @@ protected:
 	is_selected_iterator is_selected_begin()
 	{
 		winstl::listview_sequence lv_seq(*(static_cast<List*>(this)));
-		return make_filter_iterator<is_selected>(lv_seq.begin(), lv_seq.end());
+		return boost::make_filter_iterator<is_selected>(lv_seq.begin(), lv_seq.end());
 	}
 
 	is_selected_iterator is_selected_end()
 	{
 		winstl::listview_sequence lv_seq(*(static_cast<List*>(this)));
-		return make_filter_iterator<is_selected>(lv_seq.end(), lv_seq.end());
+		return boost::make_filter_iterator<is_selected>(lv_seq.end(), lv_seq.end());
 	}
 
 	struct is_checked 
@@ -69,13 +69,13 @@ protected:
 	is_checked_iterator is_checked_begin()
 	{
 		winstl::listview_sequence lv_seq(*(static_cast<List*>(this)));
-		return make_filter_iterator<is_checked>(is_checked(this), lv_seq.begin(), lv_seq.end());
+		return boost::make_filter_iterator<is_checked>(is_checked(this), lv_seq.begin(), lv_seq.end());
 	}
 
 	is_checked_iterator is_checked_end()
 	{
 		winstl::listview_sequence lv_seq(*(static_cast<List*>(this)));
-		return make_filter_iterator<is_checked>(is_checked(this), lv_seq.end(), lv_seq.end());
+		return boost::make_filter_iterator<is_checked>(is_checked(this), lv_seq.end(), lv_seq.end());
 	}
 
 	typedef winstl::listview_sequence::sequence_value_type list_value_type;

@@ -508,7 +508,8 @@ public:
 		totalBase_(0), \
 		progress_(0), \
 		startTime_(boost::posix_time::second_clock::universal_time()), \
-		in_session_(false)
+		in_session_(false), \
+		queue_position_(0)
 		
 	torrent_internal() :	
 		TORRENT_INTERNALS_DEFAULTS,
@@ -576,6 +577,8 @@ public:
 		{
 			statusMemory_ = handle_.status();
 			progress_ = statusMemory_.progress;
+
+			queue_position_ = handle_.queue_position();
 		}
 		else
 		{
@@ -665,7 +668,7 @@ public:
 		return torrent_details_ptr(new torrent_details(name_, filename_, saveDirectory().string(), state, hal::from_utf8(statusMemory_.current_tracker), 
 			std::pair<float, float>(statusMemory_.download_payload_rate, statusMemory_.upload_payload_rate),
 			progress_, statusMemory_.distributed_copies, statusMemory_.total_wanted_done, statusMemory_.total_wanted, uploaded_, payloadUploaded_,
-			downloaded_, payloadDownloaded_, connections, ratio_, td, statusMemory_.next_announce, activeDuration_, seedingDuration_, startTime_, finishTime_, handle_.queue_position()));
+			downloaded_, payloadDownloaded_, connections, ratio_, td, statusMemory_.next_announce, activeDuration_, seedingDuration_, startTime_, finishTime_, queue_position_));
 
 		}
 		catch (const libt::invalid_handle&)
@@ -830,7 +833,7 @@ public:
 		}	
 		
 		state_ = torrent_details::torrent_active;			
-		assert(!handle_.is_paused());
+		//assert(!handle_.is_paused());
 	}
 	
 	void pause()
@@ -842,12 +845,13 @@ public:
 			add_to_session(true);
 
 			assert(in_session());
-		//	assert(handle_.is_paused());
+			assert(handle_.is_paused());
 		}
 		else
 		{
 			assert(in_session());
 
+			HAL_DEV_MSG(hal::wform(L"pause() - handle_.pause()"));
 			handle_.pause();
 			//signals().torrent_paused.disconnect_all_once();
 
@@ -868,8 +872,10 @@ public:
 			{
 				assert(in_session());
 
-//				signals().torrent_paused.disconnect_all_once();
-//				signals().torrent_paused.connect_once(bind(&torrent_internal::completed_stop, this));
+				signaler_wrapper* sig = new signaler_wrapper(bind(&torrent_internal::completed_stop, this));
+				signals().torrent_paused.connect(bind(&signaler_wrapper::operator(), sig));
+				
+				HAL_DEV_MSG(hal::wform(L"stop() - handle_.pause()"));
 				handle_.pause();
 
 				state_ = torrent_details::torrent_stopping;
@@ -1441,7 +1447,7 @@ private:
 		return true;
 	}
 
-	void completed_stop()
+	bool completed_stop()
 	{
 		mutex_t::scoped_lock l(mutex_);
 		assert(in_session());
@@ -1453,6 +1459,8 @@ private:
 		assert(!in_session());
 
 		HAL_DEV_MSG(L"completed_stop()");
+
+		return true;
 	}
 
 	void handle_recheck()
@@ -1522,6 +1530,7 @@ private:
 	libt::torrent_status statusMemory_;
 	FileDetails fileDetailsMemory_;
 	
+	int queue_position_;
 	bool compactStorage_;
 };
 

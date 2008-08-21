@@ -285,7 +285,10 @@ public:
     template<class T>
     void load_override(const ::boost::serialization::nvp<T>& t, int)
 	{
-		if (t.name()) TXML_LOG(boost::wformat(L" << loading: %1%") % t.name());
+		if (t.name()) 
+		{
+			TXML_LOG(boost::wformat(L" << loading: %1%") % t.name());
+		}
 
 		if (current_node_ && load_start(t.name()))
 		{

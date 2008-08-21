@@ -128,8 +128,8 @@ bit_impl::~bit_impl()
 		
 		libt::ip_filter::filter_tuple_t vectors = ip_filter_.export_filter();	
 		
-		std::vector<libt::ip_range<asio::ip::address_v4> > v4(vectors.get<0>());
-		std::vector<libt::ip_range<asio::ip::address_v6> > v6(vectors.get<1>());
+		std::vector<libt::ip_range<boost::asio::ip::address_v4> > v4(vectors.get<0>());
+		std::vector<libt::ip_range<boost::asio::ip::address_v6> > v6(vectors.get<1>());
 		
 		v4.erase(std::remove(v4.begin(), v4.end(), 0), v4.end());
 		v6.erase(std::remove(v6.begin(), v6.end(), 0), v6.end());
@@ -176,20 +176,20 @@ void bit_impl::ip_filter_load(progress_callback fn)
 				if (fn) if (fn(size_t(i/total), hal::app().res_wstr(HAL_TORRENT_LOAD_FILTERS))) break;
 			}
 			
-			read_range_to_filter<asio::ip::address_v4>(ifs, ip_filter_);
+			read_range_to_filter<boost::asio::ip::address_v4>(ifs, ip_filter_);
 		}
 	}	
 }
 
-void  bit_impl::ip_filter_import(std::vector<libt::ip_range<asio::ip::address_v4> >& v4,
-	std::vector<libt::ip_range<asio::ip::address_v6> >& v6)
+void  bit_impl::ip_filter_import(std::vector<libt::ip_range<boost::asio::ip::address_v4> >& v4,
+	std::vector<libt::ip_range<boost::asio::ip::address_v6> >& v6)
 {
-	for(std::vector<libt::ip_range<asio::ip::address_v4> >::iterator i=v4.begin();
+	for(std::vector<libt::ip_range<boost::asio::ip::address_v4> >::iterator i=v4.begin();
 		i != v4.end(); ++i)
 	{
 		ip_filter_.add_rule(i->first, i->last, libt::ip_filter::blocked);
 	}
-/*	for(std::vector<libt::ip_range<asio::ip::address_v6> >::iterator i=v6.begin();
+/*	for(std::vector<libt::ip_range<boost::asio::ip::address_v6> >::iterator i=v6.begin();
 		i != v6.end(); ++i)
 	{
 		ip_filter_.add_rule(i->first, i->last, libt::ip_filter::blocked);
@@ -253,14 +253,14 @@ bool bit_impl::ip_filter_import_dat(boost::filesystem::path file, progress_callb
 				
 				try
 				{			
-				ip_filter_.add_rule(asio::ip::address_v4::from_string(first),
-					asio::ip::address_v4::from_string(last), libt::ip_filter::blocked);	
+				ip_filter_.add_rule(boost::asio::ip::address_v4::from_string(first),
+					boost::asio::ip::address_v4::from_string(last), libt::ip_filter::blocked);	
 				}
 				catch(...)
 				{
 					hal::event_log.post(shared_ptr<hal::EventDetail>(
 						new hal::EventDebug(hal::event_logger::info, 
-							from_utf8((format("Invalid IP range: %1%-%2%.") % first % last).str()))));
+						from_utf8((boost::format("Invalid IP range: %1%-%2%.") % first % last).str()))));
 				}
 			}
 		}
@@ -376,6 +376,9 @@ try
 void bit_impl::start_alert_handler()
 {
 	mutex_t::scoped_lock l(mutex_);
+	
+	HAL_DEV_MSG(hal::wform(L"start_alert_handler"));
+
 
 	boost::function<void (void)> f = bind(&bit_impl::alert_handler, this);
 
@@ -464,6 +467,8 @@ void bit_impl::alert_handler()
 
 	void operator()(libt::torrent_finished_alert const& a) const
 	{
+		HAL_DEV_MSG(L"torrent_finished_alert");
+
 		event_log.post(shared_ptr<EventDetail>(
 			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
 					% get(a.handle)->name()), 
@@ -474,12 +479,13 @@ void bit_impl::alert_handler()
 	
 	void operator()(libt::torrent_paused_alert const& a) const
 	{
+		HAL_DEV_MSG(L"torrent_paused_alert");
+
 		event_log.post(shared_ptr<EventDetail>(
 			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 
 					% get(a.handle)->name()), 
 				event_logger::info, a.timestamp())));
 
-		HAL_DEV_MSG(L"torrent_paused_alert");
 		get(a.handle)->signals().torrent_paused();
 	}
 	
@@ -536,6 +542,8 @@ void bit_impl::alert_handler()
 	
 	void operator()(libt::tracker_announce_alert const& a) const
 	{
+		HAL_DEV_MSG(hal::wform(L"HAL_TRACKER_ANNOUNCE_ALERT"));
+
 		event_log.post(shared_ptr<EventDetail>(
 			new EventMsg((hal::wform(hal::app().res_wstr(HAL_TRACKER_ANNOUNCE_ALERT)) 
 					% get(a.handle)->name()), 
@@ -563,6 +571,16 @@ void bit_impl::alert_handler()
 					% hal::from_utf8_safe(a.message())
 					% a.num_peers)
 		)	);				
+	}
+	
+	void operator()(libt::save_resume_data_alert const& a) const
+	{
+		event_log.post(shared_ptr<EventDetail>(
+			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+				hal::wform(hal::app().res_wstr(HAL_FAST_RESUME_ALERT))
+					% get(a.handle)->name()
+					% hal::from_utf8_safe(a.message()))
+		)	);		
 	}
 	
 	void operator()(libt::fastresume_rejected_alert const& a) const
@@ -647,12 +665,12 @@ void bit_impl::alert_handler()
 		)	);				
 	}
 	
-	void operator()(libt::alert const& a) const
+/*	void operator()(libt::alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
 				new EventLibtorrent(lbtAlertToHalEvent(a.severity()), 
 					a.timestamp(), event_logger::unclassified, hal::from_utf8_safe(a.message()))));		
-	}
+	}*/
 	
 	private:
 		bit_impl& bit_impl_;
@@ -669,8 +687,11 @@ void bit_impl::alert_handler()
 		try
 		{
 		mutex_t::scoped_lock l(mutex_);
+	
+		HAL_DEV_MSG(hal::wform(L"DEV_MSG: %1%") % from_utf8(p_alert->message()));
 		
 		libt::handle_alert<
+			libt::save_resume_data_alert,
 			libt::external_ip_alert,
 			libt::portmap_error_alert,
 			libt::portmap_alert,
@@ -692,14 +713,13 @@ void bit_impl::alert_handler()
 			libt::block_downloading_alert,
 			libt::listen_failed_alert,
 			libt::listen_succeeded_alert,
-			libt::peer_blocked_alert,
-			libt::alert
+			libt::peer_blocked_alert
 		>::handle_alert(p_alert, handler);			
 		
 		}
 		catch(libt::unhandled_alert&)
 		{
-			handler(*p_alert);
+//			handler(*p_alert);
 		}
 		catch(std::exception& e)
 		{
@@ -710,7 +730,7 @@ void bit_impl::alert_handler()
 		
 		p_alert = session_.pop_alert();
 
-		boost::this_thread::sleep(boost::posix_time::seconds(5));
+		boost::this_thread::interruption_point();
 	}	
 	
 	}
