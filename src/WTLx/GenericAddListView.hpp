@@ -21,14 +21,14 @@
 namespace WTLx
 {
 
-template<class ListClass, bool supportSingleClickOnEmtpy=false,
+template<typename ListClass, bool supportSingleClickOnEmtpy=false,
 	int listID_NEW=HAL_GENERIC_ALV_NEW, 
 	int listID_EDIT=HAL_GENERIC_ALV_EDIT, 
 	int listID_DELETE=HAL_GENERIC_ALV_DELETE
 	>
 class GenericAddListView
 {
-	friend class ListClass;
+//	friend class ListClass;
 	
 public:
 	BEGIN_MSG_MAP_EX(GenericAddListView)

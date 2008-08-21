@@ -410,6 +410,9 @@ void HaliteWindow::ShutdownThread()
  
 void HaliteWindow::OnDestroy()
 {	
+	try
+	{
+
 	KillTimer(ID_UPDATE_TIMER);
 	KillTimer(ID_SAVE_TIMER);
 
@@ -434,6 +437,8 @@ void HaliteWindow::OnDestroy()
 		thread shutdown(bind(& HaliteWindow::ShutdownThread, this));
 		shutdown.join();
 	}
+		
+	HAL_DEV_MSG(L"Saving before quiting");
 
 	// Resave for sake of your health.
 	save_to_ini();
@@ -442,6 +447,13 @@ void HaliteWindow::OnDestroy()
 		
 	HAL_DEV_MSG(L"Posting Quit Message");
 	PostQuitMessage(0);	
+
+	}
+	catch(const std::exception& e)
+	{
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(hal::event_logger::fatal, e, L"HaliteWindow::OnDestroy()")));
+	}	
 }
 
 void HaliteWindow::OnSize(UINT type, WTL::CSize)

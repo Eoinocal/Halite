@@ -224,14 +224,14 @@ void bit::ensure_pe_off()
 }
 #endif
 
-void bit::ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 last)
+void bit::ip_v4_filter_block(boost::asio::ip::address_v4 first, boost::asio::ip::address_v4 last)
 {
 	pimpl->ip_filter_.add_rule(first, last, libt::ip_filter::blocked);
 	pimpl->ip_filter_count();
 	pimpl->ip_filter_changed_ = true;
 }
 
-void bit::ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last)
+void bit::ip_v6_filter_block(boost::asio::ip::address_v6 first, boost::asio::ip::address_v6 last)
 {
 	pimpl->ip_v6_filter_block(first, last);
 }

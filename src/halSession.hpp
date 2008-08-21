@@ -587,14 +587,14 @@ public:
 	}
 	#endif
 
-	void ip_v4_filter_block(asio::ip::address_v4 first, asio::ip::address_v4 last)
+	void ip_v4_filter_block(boost::asio::ip::address_v4 first, boost::asio::ip::address_v4 last)
 	{
 		ip_filter_.add_rule(first, last, libt::ip_filter::blocked);
 		ip_filter_count();
 		ip_filter_changed_ = true;
 	}
 
-	void ip_v6_filter_block(asio::ip::address_v6 first, asio::ip::address_v6 last)
+	void ip_v6_filter_block(boost::asio::ip::address_v6 first, boost::asio::ip::address_v6 last)
 	{
 		ip_filter_.add_rule(first, last, libt::ip_filter::blocked);
 		ip_filter_count();
@@ -970,8 +970,8 @@ private:
 	
 	void ip_filter_count();
 	void ip_filter_load(progress_callback fn);
-	void ip_filter_import(std::vector<libt::ip_range<asio::ip::address_v4> >& v4,
-		std::vector<libt::ip_range<asio::ip::address_v6> >& v6);
+	void ip_filter_import(std::vector<libt::ip_range<boost::asio::ip::address_v4> >& v4,
+		std::vector<libt::ip_range<boost::asio::ip::address_v6> >& v6);
 	
 	bool dht_on_;
 	libt::dht_settings dht_settings_;
