@@ -151,7 +151,9 @@
     <Compile Include="HalWiX.wxs" />
   </ItemGroup>
   <ItemGroup>
-    <WixExtension Include="C:\Program Files (x86)\Windows Installer XML v3\bin\WixUIExtension.dll" />
+    <WixExtension Include="WixUIExtension">
+      <HintPath>C:\Program Files (x86)\Windows Installer XML v3\bin\WixUIExtension.dll</HintPath>
+    </WixExtension>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WiX\v3.0\Wix.targets" />
   <!--
