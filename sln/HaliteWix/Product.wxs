@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?define VerGeneration = "0" ?>
+<?define VerMajor = "3" ?>
+<?define VerMinor = "1" ?>
+<?define VerUpdate = "5" ?>
+<?define VerBuild = "0550" ?>
+
+<?define GMmbVer = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor).$(var.VerUpdate)" ?>
+<?define GMmbHex = "$(var.VerGeneration)$(var.VerMajor)$(var.VerMinor)$(var.VerUpdate)" ?>
+<?define UpgradeMinVer = "0.3.1" ?>
+
+<?define ProductName = "Halite" ?>
+
+<?if $(var.MyCPU) = "x64" ?>
+<?define CpuId = "2" ?>
+<?define PFilesFolder = "ProgramFiles64Folder" ?>
+<?define Platforms = "x64" ?>
+<?define CpuPostfix = " (x64 edition)" ?>
+<?define Is64 = "yes" ?>
+<?define ReleaseFolder = "x64\Release\" ?>
+<?else ?>
+<?define CpuId = "1" ?>
+<?define PFilesFolder = "ProgramFilesFolder" ?>
+<?define Platforms = "Intel" ?>
+<?define CpuPostfix = "" ?>
+<?define Is64 = "no" ?>
+<?define ReleaseFolder = "Release\" ?>
+<?endif ?>
+
+<?define BaseId = "E3A8BF7D-962F-476$(var.CpuId)" ?>
+<?define BaseIdVer = "$(var.BaseId)-$(var.GMmbHex)-$(var.VerBuild)" ?>
+<?define ProductId   = "$(var.BaseIdVer)01000000" ?>
+<?define PackageId   = "$(var.BaseIdVer)02000000" ?>
+<?define CompId      = "$(var.BaseIdVer)03000000" ?>
+<?define UpgradeCode = "$(var.BaseId)-0000-000004000000" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product
+      Id="$(var.ProductId)"
+      UpgradeCode="$(var.UpgradeCode)"
+      Name="$(var.ProductName) $(var.GMmbVer)$(var.CpuPostfix)"
+      Language="1033"
+      Version="$(var.GMmbVer)"
+      Manufacturer="BinaryNotions.com">
+
+      <Package
+          Description="$(var.ProductName)$(var.CpuPostfix) Package"
+          Comments="$(var.ProductName)$(var.CpuPostfix) Package"
+          InstallerVersion="200"
+          Compressed="yes"
+          Platforms="$(var.Platforms)"
+        />
+
+		<Media Id="1" Cabinet="Halite.cab" EmbedCab="yes" />
+    
+    <Property Id="INSTALLDIR">
+      <RegistrySearch Id="MyHalitePath" Type="raw" Root="HKCU" Key="Software\Halite" Name="Path" />
+    </Property>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="AppDataFolder" />
+      <Directory Id="DesktopFolder" />
+
+      <Directory Id="ProgramMenuFolder">        
+        <Directory Id="HaliteProgramMenuFolder" Name="Halite">
+          
+          <Component Id='HaliteExeStartMenuFolder' Guid='{D6B80025-50FC-4760-89B2-72340616AD19}'>
+            <RegistryKey Root="HKCU" Key="Software\Halite\Uninstall">
+              <RegistryValue Value="HaliteProgramMenuFolder"
+                             Type="string"
+                             KeyPath="yes" />
+            </RegistryKey>
+            <RemoveFolder Id="RemoveShorcutFolder" On="uninstall" />            
+          </Component>
+          
+        </Directory>
+      </Directory>
+
+      <Directory Id="$(var.PFilesFolder)" Name="Files">
+        <Directory Id="INSTALLDIR" Name="Halite">
+
+          <Component Id="InstallRegCU" Guid="{CE5457FD-CD23-48e6-A54E-4004E936AA86}" DiskId="1" Win64="$(var.Is64)">
+            <Registry Id="MyInstallRegCU" Root="HKCU" Key="Software\Halite" Name="Path"
+               Action="write" Type="string" Value="[INSTALLDIR]" />
+          </Component>
+
+          <Component Id='ReadMeText' Win64='$(var.Is64)' Guid='0E8E2FD3-7658-4429-BBD1-BBDF76E99D71'>
+            <File Id='Readme' Name='readme.txt' DiskId='1' Source='..\..\Readme.txt' />
+          </Component>
+
+          <Component Id='HaliteExe' Win64='$(var.Is64)' Guid='{601CEE5B-5AE0-462f-BB19-A6FDBD520E40}'>
+            <File Id='HaliteFile' Name='Halite.exe' DiskId='1' Source='$(var.ProjectDir)\..\..\$(var.ReleaseFolder)Halite.exe'>
+              <Shortcut Id="desktopHaliteFile" Directory="DesktopFolder" Name="Halite"
+                  WorkingDirectory='INSTALLDIR' Advertise="yes" Icon="HaliteIcon.exe" IconIndex="0" />
+              <Shortcut Id="startmenuHaliteFile" Directory="HaliteProgramMenuFolder" Name="Halite"
+                  WorkingDirectory='INSTALLDIR' Advertise="yes" Icon="HaliteIcon.exe" IconIndex="0" />
+            </File>
+
+            <ProgId Id='Halite.torrent' Advertise="no" Description='BitTorrent Torrent File'>
+              <Extension Id='torrent' ContentType='application/torrent'>
+                <Verb Id='open' Command='Open' TargetFile='HaliteFile' Argument='"%1"' />
+              </Extension>
+            </ProgId>
+          </Component>
+          
+				</Directory>
+			</Directory>
+      
+		</Directory>
+
+    <Feature Id="HaliteComponents" Title="Halite (Core)" Level="1" Absent="disallow" AllowAdvertise='no'
+             ConfigurableDirectory="INSTALLDIR">
+      <ComponentRef Id="HaliteExe" />
+      <ComponentRef Id="HaliteExeStartMenuFolder" />
+      <ComponentRef Id="InstallRegCU" />
+      <ComponentRef Id="ReadMeText" />
+    </Feature>
+
+    <Icon Id="HaliteIcon.exe" SourceFile="..\..\$(var.ReleaseFolder)Halite.exe" />
+
+    <UIRef Id="WixUI_FeatureTree" />
+    
+	</Product>
+</Wix>

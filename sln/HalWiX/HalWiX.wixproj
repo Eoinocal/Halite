@@ -141,11 +141,6 @@
     <OutputPath>bin\Release64\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <WixExtension Include="WixUIExtension">
-      <HintPath>C:\Program Files (x86)\Windows Installer XML v3\bin\WixUIExtension.dll</HintPath>
-    </WixExtension>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="HalWiX.wxs" />
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +149,14 @@
       <Project>{ed987c84-fff9-4656-8f27-2a65fc0847fd}</Project>
       <Private>True</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>D:\Program Files (x86)\Windows Installer XML v3\bin\WixUIExtension.dll</HintPath>
+    </WixExtension>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>D:\Program Files (x86)\Windows Installer XML v3\bin\WixUIExtension.dll</HintPath>
+    </WixExtension>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WiX\v3.0\Wix.targets" />
   <!--
