@@ -82,22 +82,7 @@ class Halite :
 	private boost::noncopyable
 {
 public:
-	Halite() :
-		hal::IniBase<Halite>("globals/halite", "Halite"),
-		oneInst(false),
-#ifdef TORRENT_LOGGING
-		logDebug_(true),
-#else
-		logDebug_(false),
-#endif
-		showMessage_(true),
-		logToFile_(true),
-		logListLen_(128),
-		dll_(L"")
-	{
-		hal::event_log.init();
-		load_from_ini();
-	}
+	Halite();
 	
 	friend class boost::serialization::access;
 	template<class Archive>

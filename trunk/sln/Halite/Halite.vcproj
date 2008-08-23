@@ -51,6 +51,7 @@
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdAfx.hpp"
 				WarningLevel="3"

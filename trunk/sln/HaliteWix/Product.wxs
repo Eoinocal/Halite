@@ -70,7 +70,7 @@
               <RegistryValue Value="HaliteProgramMenuFolder"
                              Type="string"
                              KeyPath="yes" />
-            </RegistryKey>
+              </RegistryKey>
             <RemoveFolder Id="RemoveShorcutFolder" On="uninstall" />            
           </Component>
           
@@ -81,8 +81,12 @@
         <Directory Id="INSTALLDIR" Name="Halite">
 
           <Component Id="InstallRegCU" Guid="{CE5457FD-CD23-48e6-A54E-4004E936AA86}" DiskId="1" Win64="$(var.Is64)">
-            <Registry Id="MyInstallRegCU" Root="HKCU" Key="Software\Halite" Name="Path"
-               Action="write" Type="string" Value="[INSTALLDIR]" />
+            <RegistryKey Root="HKCU" Key="Software\Halite">
+              <RegistryValue Value="[INSTALLDIR]"
+                             Type="string"
+                              Name="Path"
+                             KeyPath="yes" />
+            </RegistryKey>
           </Component>
 
           <Component Id='ReadMeText' Win64='$(var.Is64)' Guid='0E8E2FD3-7658-4429-BBD1-BBDF76E99D71'>
