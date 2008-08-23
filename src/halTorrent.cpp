@@ -98,7 +98,7 @@ web_seed_or_dht_node_detail::web_seed_or_dht_node_detail(std::wstring u, int p) 
 	port(p), 
 	type(hal::app().res_wstr(HAL_INT_NEWT_ADD_PEERS_DHT)) 
 {}
-wpath bit_impl::workingDirectory = hal::app().working_directory();
+wpath bit_impl::workingDirectory = hal::app().working_directory;
 
 bit::bit() :
 	pimpl(new bit_impl())

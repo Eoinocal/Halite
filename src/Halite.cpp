@@ -16,6 +16,8 @@
 #include <winstl/registry/reg_key.hpp>
 #include <winstl/registry/reg_value.hpp>
 
+#include <boost/filesystem/convenience.hpp>
+
 #include "WinAPIMutex.hpp"
 
 #include "global/ini.hpp"
@@ -59,7 +61,7 @@ public:
 	{
 		if (halite().logToFile())
 		{
-			if (!wofs.is_open()) wofs.open(hal::app().working_directory()/L"HaliteLog.txt");
+			if (!wofs.is_open()) wofs.open(hal::app().get_working_directory()/L"HaliteLog.txt");
 			
 			wofs << (hal::wform(L"%1% %2%, %3%\r\n") 
 				% event->timeStamp() % hal::event_logger::eventLevelToStr(event->level()) 
@@ -110,21 +112,27 @@ void num_active(int) {}
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 
-//	hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, L"Hello")));
-
-//	::SetProcessAffinityMask(::GetCurrentProcess(), (DWORD_PTR)0x1);
-
 	try 
 	{
 	
 	boost::filesystem::path::default_name_check(boost::filesystem::native);
 
-	winstl::reg_key_w reg_path(HKEY_CURRENT_USER, L"SOFTWARE\\Halite");
-	winstl::reg_value_w reg_path_value = reg_path.get_value(L"path");
+	try
+	{
+		winstl::reg_key_w reg_path(HKEY_CURRENT_USER, L"SOFTWARE\\Halite");
+		winstl::reg_value_w reg_path_value = reg_path.get_value(L"path");
 
-	
+		if (hal::app().get_local_appdata())
+			hal::app().working_directory = hal::app().get_local_appdata().get()/L"Halite";
+	}
+	catch(...)
+	{
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(hal::wform(L"Exe Path: %1%.") % hal::app().exe_path())));		
+			new hal::EventMsg(L"No registry entry found.")));		
+	}
+	
+	if (!boost::filesystem::is_directory(hal::app().working_directory))
+		boost::filesystem::create_directories(hal::app().working_directory);
 
 	WTL::AtlInitCommonControls(ICC_COOL_CLASSES | ICC_BAR_CLASSES);	
 	HINSTANCE hInstRich = ::LoadLibrary(WTL::CRichEditCtrl::GetLibraryName());
@@ -169,18 +177,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	else
 	{
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(hal::wform(L"Exe Path: %1%.") % hal::app().exe_path())));		
+			new hal::EventMsg(hal::wform(L"App Data Path: %1%.") % hal::app().local_appdata)));		
 
-		HAL_DEV_MSG(L"Hello");
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(hal::wform(L"Exe Path: %1%.") % hal::app().exe_path())));		
 		
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(hal::wform(L"Initial Path: %1%.") % hal::app().initial_path())));		
-
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(L"Hi again", hal::event_logger::dev)));		
 		
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg((hal::wform(L"Working Directory: %1%.") % hal::app().working_directory()), hal::event_logger::info)));		
+			new hal::EventMsg((hal::wform(L"Working Directory: %1%.") % hal::app().working_directory), hal::event_logger::info)));		
 		
 		WTL::CMessageLoop theLoop;
 		_Module.AddMessageLoop(&theLoop);

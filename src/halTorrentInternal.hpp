@@ -380,19 +380,19 @@ public:
 		try 
 		{
 
-		wpath oldFile = app().working_directory()/L"torrents"/originalFilename;
+		wpath oldFile = app().get_working_directory()/L"torrents"/originalFilename;
 		
 		if (fs::exists(oldFile)) 
 			extractNames(haldecode(oldFile));
 		
-		wpath oldResumeFile = app().working_directory()/L"resume"/originalFilename;
+		wpath oldResumeFile = app().get_working_directory()/L"resume"/originalFilename;
 		
 		if (filename_ != originalFilename)
 		{
-			fs::rename(oldFile, app().working_directory()/L"torrents"/filename_);
+			fs::rename(oldFile, app().get_working_directory()/L"torrents"/filename_);
 			
 			if (fs::exists(oldResumeFile))
-				fs::rename(oldResumeFile, app().working_directory()/L"resume"/filename_);
+				fs::rename(oldResumeFile, app().get_working_directory()/L"resume"/filename_);
 		}
 		
 		}

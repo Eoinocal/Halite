@@ -18,14 +18,14 @@
 <?define Platforms = "x64" ?>
 <?define CpuPostfix = " (x64 edition)" ?>
 <?define Is64 = "yes" ?>
-<?define ReleaseFolder = "x64\Release\" ?>
+<?define ReleaseFolder = "x64\$(var.Configuration)\" ?>
 <?else ?>
 <?define CpuId = "1" ?>
 <?define PFilesFolder = "ProgramFilesFolder" ?>
 <?define Platforms = "Intel" ?>
 <?define CpuPostfix = "" ?>
 <?define Is64 = "no" ?>
-<?define ReleaseFolder = "Release\" ?>
+<?define ReleaseFolder = "$(var.Configuration)\" ?>
 <?endif ?>
 
 <?define BaseId = "E3A8BF7D-962F-476$(var.CpuId)" ?>
