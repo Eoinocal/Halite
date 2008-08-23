@@ -7,6 +7,7 @@
 #include "stdAfx.hpp"
 
 #include <boost/array.hpp>
+#include <boost/optional.hpp>
 
 #define WINVER 0x0500
 #define _WIN32_WINNT 0x0500
@@ -36,6 +37,13 @@ extern WTL::CAppModule _Module;
 #define BOOST_UTF8_DECL BOOST_FILESYSTEM_DECL
 
 #include <boost/detail/utf8_codecvt_facet.hpp>
+
+#include <winstl/error/error_desc.hpp>
+#include <winstl/filesystem/current_directory.hpp>
+#include <winstl/shell/browse_for_folder.hpp>
+#include <winstl/shell/file_operations.hpp>
+#include <stlsoft/smartptr/scoped_handle.hpp>
+#include <winstl/shell/memory/functions.h>
 
 namespace hal
 {
@@ -69,6 +77,7 @@ public:
 			working_directory_ = exe_path_.parent_path();
 		}		
 		LocalFree(szArglist);	
+
 	}
 
 	friend class app_module;
@@ -82,6 +91,7 @@ private:
 	boost::filesystem::wpath exe_path_;
 	boost::filesystem::wpath initial_path_;
 	boost::filesystem::wpath working_directory_;
+	boost::optional<boost::filesystem::wpath> local_appdata_;
 	
 	std::vector<std::wstring> command_args_;	
 };
@@ -105,9 +115,37 @@ const boost::filesystem::wpath& app_module::initial_path() const
 	return pimpl->initial_path_; 
 }
 
-const boost::filesystem::wpath& app_module::working_directory() const 
+const boost::filesystem::wpath& app_module::get_working_directory() const 
 { 
 	return pimpl->working_directory_; 
+}
+
+void app_module::set_working_directory(const boost::filesystem::wpath& p) 
+{ 
+	pimpl->working_directory_ = p; 
+}
+
+const boost::optional<boost::filesystem::wpath>& app_module::get_local_appdata() const 
+{ 
+	if (!pimpl->local_appdata_)
+	{
+		wchar_t displayName[_MAX_PATH + 1];
+		LPITEMIDLIST iil;
+		HRESULT hr = ::SHGetSpecialFolderLocation(NULL, CSIDL_LOCAL_APPDATA, &iil);
+	  
+		if(FAILED(hr))
+		{
+		}
+		else
+		{
+			stlsoft::scoped_handle<void*> iil_(iil, winstl::SHMemFree);
+
+			::SHGetPathFromIDList(iil, displayName);
+			pimpl->local_appdata_ = std::wstring(displayName);
+		}
+	}
+
+	return pimpl->local_appdata_; 
 }
 	
 const std::vector<std::wstring>& app_module::command_args() const 

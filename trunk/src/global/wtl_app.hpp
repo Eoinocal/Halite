@@ -18,6 +18,9 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 
+#include <stlsoft/properties/method_properties.hpp>
+#include <stlsoft/util/operator_bool_adaptor.hpp>
+
 namespace hal
 {
 
@@ -27,9 +30,14 @@ class app_module
 {
 public:	
 	const std::wstring& exe_string() const;
+
 	const boost::filesystem::wpath& exe_path() const;
 	const boost::filesystem::wpath& initial_path() const;
-	const boost::filesystem::wpath& working_directory() const;
+
+	const boost::filesystem::wpath& get_working_directory() const;
+	void set_working_directory(const boost::filesystem::wpath& p);
+	
+	const boost::optional<boost::filesystem::wpath>& get_local_appdata() const;
 	
 	const std::vector<std::wstring>& command_args() const;
 	
@@ -39,6 +47,12 @@ public:
 	std::pair<void*,size_t> res_find_lock(unsigned name, unsigned type);
 	
 	friend app_module& app();
+
+	STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(const boost::optional<boost::filesystem::wpath>&, app_module, 
+		get_local_appdata, local_appdata);
+
+	STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(const boost::filesystem::wpath&, const boost::filesystem::wpath&, 
+		app_module, get_working_directory, set_working_directory, working_directory);
 	
 private:
 	boost::scoped_ptr<app_impl> pimpl;

@@ -35,8 +35,8 @@ class ini_impl
 {
 public:
 	ini_impl(std::wstring filename) :
-		main_file_(app().working_directory()/filename),
-		working_file_(app().working_directory()/(filename + L".working"))
+		main_file_(app().get_working_directory()/filename),
+		working_file_(app().get_working_directory()/(filename + L".working"))
 	{		
 		if (boost::filesystem::exists(working_file_))
 		{			
@@ -45,7 +45,7 @@ public:
 			sstr.imbue(std::locale(std::cout.getloc(), facet));
 			sstr << boost::posix_time::second_clock::universal_time();
 
-			boost::filesystem::rename(working_file_, app().working_directory()/(filename + L"." + sstr.str()));			
+			boost::filesystem::rename(working_file_, app().get_working_directory()/(filename + L"." + sstr.str()));			
 		}
 
 		if (boost::filesystem::exists(main_file_))
