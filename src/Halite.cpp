@@ -12,6 +12,10 @@
 
 #include "Halite.hpp"
 
+#include <winstl/registry/registry.hpp>
+#include <winstl/registry/reg_key.hpp>
+#include <winstl/registry/reg_value.hpp>
+
 #include "WinAPIMutex.hpp"
 
 #include "global/ini.hpp"
@@ -25,6 +29,23 @@ Halite& halite()
 {
 	static Halite h;
 	return h;
+}
+
+Halite::Halite() :
+		hal::IniBase<Halite>("globals/halite", "Halite"),
+		oneInst(false),
+#ifdef TORRENT_LOGGING
+		logDebug_(true),
+#else
+		logDebug_(false),
+#endif
+		showMessage_(true),
+		logToFile_(true),
+		logListLen_(128),
+		dll_(L"")
+{
+	hal::event_log.init();
+	load_from_ini();
 }
 
 namespace fs = boost::filesystem;
@@ -92,11 +113,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 //	hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, L"Hello")));
 
 //	::SetProcessAffinityMask(::GetCurrentProcess(), (DWORD_PTR)0x1);
-	
+
 	try 
 	{
 	
 	boost::filesystem::path::default_name_check(boost::filesystem::native);
+
+	winstl::reg_key_w reg_path(HKEY_CURRENT_USER, L"SOFTWARE\\Halite");
+	winstl::reg_value_w reg_path_value = reg_path.get_value(L"path");
+
+	
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(hal::wform(L"Exe Path: %1%.") % hal::app().exe_path())));		
 
 	WTL::AtlInitCommonControls(ICC_COOL_CLASSES | ICC_BAR_CLASSES);	
 	HINSTANCE hInstRich = ::LoadLibrary(WTL::CRichEditCtrl::GetLibraryName());

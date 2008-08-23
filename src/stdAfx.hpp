@@ -98,4 +98,3 @@ extern WTL::CAppModule _Module;
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/split_free.hpp>
 #include <boost/date_time/posix_time/time_serialize.hpp>
-
