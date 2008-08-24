@@ -109,27 +109,41 @@ static BOOL CALLBACK hwndSearcher(HWND hWnd, LPARAM lParam)
 
 void num_active(int) {}
 
+LONG WINAPI MyUnhandledExceptionFilter(_EXCEPTION_POINTERS *ExceptionInfo)
+{
+	//hal::event_log.post(shared_ptr<hal::EventDetail>(
+	//	new hal::EventMsg(hal::wform(L"Initial Path: %1%.") % hal::app().initial_path())));	
+
+	std::wstring code = lexical_cast<std::wstring>(ExceptionInfo->ExceptionRecord->ExceptionCode);
+	::MessageBoxW(0, code.c_str(), L"Hey", 0);
+
+	return EXCEPTION_CONTINUE_SEARCH;
+}
+
+
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 
-	try 
-	{
+/*	try 
+	{*/
+	::SetUnhandledExceptionFilter(&MyUnhandledExceptionFilter);
+
 	
 	boost::filesystem::path::default_name_check(boost::filesystem::native);
 
-	try
-	{
+/*	try
+	{*/
 		winstl::reg_key_w reg_path(HKEY_CURRENT_USER, L"SOFTWARE\\Halite");
 		winstl::reg_value_w reg_path_value = reg_path.get_value(L"path");
 
 		if (hal::app().get_local_appdata())
 			hal::app().working_directory = hal::app().get_local_appdata().get()/L"Halite";
-	}
+/*	}
 	catch(...)
 	{
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(L"No registry entry found.")));		
-	}
+	}*/
 	
 	if (!boost::filesystem::is_directory(hal::app().working_directory))
 		boost::filesystem::create_directories(hal::app().working_directory);
@@ -219,11 +233,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	
 	return nRet;
 	
-	}
+/*	}
 	catch (const std::exception& e)
 	{
 	MessageBoxA(0, e.what(), "Exception Thrown!", 0);
 	
 	return -1;
-	}	
+	}	*/
 }
