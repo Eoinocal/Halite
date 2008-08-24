@@ -171,7 +171,7 @@
 "Peers:" ---> "Извори:"
 "Piece %2% finished. (%1%)" ---> "Део %2% завршен. (%1%)"
 "Piece Size (KBs)" --->  "Већина дела (КБс) 
-"Plaintext Encrypted" ---> "Шифрирано "
+"Plaintext Encrypted" ---> "Јасно шифрирано"
 "Plaintext" ---> "Јасно"
 "Port %1% open" ---> "Порт %1% отворен"
 "Port (UDP) : " ---> "Порт (УДП): "
