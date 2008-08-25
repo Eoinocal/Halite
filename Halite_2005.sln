@@ -1,0 +1,71 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halite", "sln\Halite\Halite_2005.vcproj", "{ED987C84-FFF9-4656-8F27-2A65FC0847FD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8} = {333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libtorrent", "sln\libtorrent\libtorrent_2005.vcproj", "{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "HalWiX", "sln\HalWiX\HalWiX.wixproj", "{B9C9CB3A-22F4-466B-9AEA-79C621DCD40A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release Logging|Any CPU = Release Logging|Any CPU
+		Release Logging|Win32 = Release Logging|Win32
+		Release Logging|x64 = Release Logging|x64
+		Release|Any CPU = Release|Any CPU
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Debug|Win32.Build.0 = Debug|Win32
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Debug|x64.ActiveCfg = Debug|x64
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Debug|x64.Build.0 = Debug|x64
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Release Logging|Any CPU.ActiveCfg = Release Logging|x64
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Release Logging|Win32.ActiveCfg = Release Logging|Win32
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Release Logging|Win32.Build.0 = Release Logging|Win32
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Release Logging|x64.ActiveCfg = Release Logging|x64
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Release Logging|x64.Build.0 = Release Logging|x64
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Release|Any CPU.ActiveCfg = Release|x64
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Release|Win32.ActiveCfg = Release|Win32
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Release|Win32.Build.0 = Release|Win32
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Release|x64.ActiveCfg = Release|x64
+		{ED987C84-FFF9-4656-8F27-2A65FC0847FD}.Release|x64.Build.0 = Release|x64
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Debug|Win32.Build.0 = Debug|Win32
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Debug|x64.ActiveCfg = Debug|x64
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Debug|x64.Build.0 = Debug|x64
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Release Logging|Any CPU.ActiveCfg = Release Logging|x64
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Release Logging|Win32.ActiveCfg = Release Logging|Win32
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Release Logging|Win32.Build.0 = Release Logging|Win32
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Release Logging|x64.ActiveCfg = Release Logging|x64
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Release Logging|x64.Build.0 = Release Logging|x64
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Release|Any CPU.ActiveCfg = Release|x64
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Release|Win32.ActiveCfg = Release|Win32
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Release|Win32.Build.0 = Release|Win32
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Release|x64.ActiveCfg = Release|x64
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}.Release|x64.Build.0 = Release|x64
+		{B9C9CB3A-22F4-466B-9AEA-79C621DCD40A}.Debug|Any CPU.ActiveCfg = Debug x86|Any CPU
+		{B9C9CB3A-22F4-466B-9AEA-79C621DCD40A}.Debug|Win32.ActiveCfg = Debug x86|Any CPU
+		{B9C9CB3A-22F4-466B-9AEA-79C621DCD40A}.Debug|x64.ActiveCfg = Debug x86|Any CPU
+		{B9C9CB3A-22F4-466B-9AEA-79C621DCD40A}.Release Logging|Any CPU.ActiveCfg = Release x86|Any CPU
+		{B9C9CB3A-22F4-466B-9AEA-79C621DCD40A}.Release Logging|Win32.ActiveCfg = Release x86|Any CPU
+		{B9C9CB3A-22F4-466B-9AEA-79C621DCD40A}.Release Logging|x64.ActiveCfg = Release x64|Any CPU
+		{B9C9CB3A-22F4-466B-9AEA-79C621DCD40A}.Release|Any CPU.ActiveCfg = Release x86|Any CPU
+		{B9C9CB3A-22F4-466B-9AEA-79C621DCD40A}.Release|Win32.ActiveCfg = Release x86|Any CPU
+		{B9C9CB3A-22F4-466B-9AEA-79C621DCD40A}.Release|Win32.Build.0 = Release x86|Any CPU
+		{B9C9CB3A-22F4-466B-9AEA-79C621DCD40A}.Release|x64.ActiveCfg = Release x64|Any CPU
+		{B9C9CB3A-22F4-466B-9AEA-79C621DCD40A}.Release|x64.Build.0 = Release x64|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
