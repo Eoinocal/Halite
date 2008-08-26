@@ -77,7 +77,7 @@
 "Downloaded" ---> "Preuzeto"
 "Downloading Metadata" ---> "Puni meta-fajlove"
 "Downloading" ---> "Preuzima se"
-"E&xit" ---> "Pr&ekinuti"
+"E&xit" ---> "Prekinuti"
 "ETA" ---> "Preostalo"
 "ETA:" ---> "Preostalo:"
 "Edit Download Folders" ---> "Promeni ulaznu mapu"
