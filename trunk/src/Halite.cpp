@@ -109,22 +109,10 @@ static BOOL CALLBACK hwndSearcher(HWND hWnd, LPARAM lParam)
 
 void num_active(int) {}
 
-LONG WINAPI MyUnhandledExceptionFilter(_EXCEPTION_POINTERS *ExceptionInfo)
-{
-	std::wstring code = lexical_cast<std::wstring>(ExceptionInfo->ExceptionRecord->ExceptionCode);
-	::MessageBoxW(0, code.c_str(), L"Hey", 0);
-
-	return EXCEPTION_CONTINUE_SEARCH;
-}
-
-
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-
 	try 
 	{
-	::SetUnhandledExceptionFilter(&MyUnhandledExceptionFilter);
-
 	
 	boost::filesystem::path::default_name_check(boost::filesystem::native);
 
@@ -139,7 +127,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	catch(...)
 	{
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(L"No registry entry found.")));		
+			new hal::EventMsg(L"No registry entry found, using portable mode", hal::event_logger::info)));		
 	}
 	
 	if (!boost::filesystem::is_directory(hal::app().working_directory))
