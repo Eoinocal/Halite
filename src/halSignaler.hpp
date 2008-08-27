@@ -22,8 +22,8 @@ struct signaler_wrapper : public boost::signals::trackable
 
 		if (f_())
 		{
-			HAL_DEV_MSG(L"Disconnecting");
-			delete this;
+		//	HAL_DEV_MSG(L"Disconnecting");
+		//	delete this;
 		}
 	}
 

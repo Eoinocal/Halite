@@ -24,6 +24,7 @@
 #	include "Halite.hpp"
 #endif
 
+#include "win32_exception.hpp"
 #include "halTorrent.hpp"
 
 class SplashDialog :
@@ -107,17 +108,50 @@ public:
 
 	void SplashThread()
 	{
+		win32_exception::install_handler();
+
+		try
+		{
+
+		HAL_DEV_MSG(L"SplashThread() calling hal::bittorrent().close_all()");
+
 		hal::bittorrent().close_all(boost::optional<boost::function<void (int)> >(bind(&SplashDialog::ReportNumActive, this, _1)));
 		
 		SetDlgItemText(HAL_CSPLASH_NUM_ACT, hal::app().res_wstr(HAL_CSPLASH_SHUTDOWN_MSG).c_str());
 
+		HAL_DEV_MSG(L"SplashThread() calling hal::bittorrent().stopEventReceiver()");
 		hal::bittorrent().stopEventReceiver();
+		HAL_DEV_MSG(L"SplashThread() calling hal::bittorrent().shutDownSession()");
 		hal::bittorrent().shutDownSession();
 		
 		DoDataExchange(true);
 
 		GetWindowRect(rect_);
 		save_to_ini();
+
+		}
+		catch (const access_violation& e) 
+		{
+			hal::event_log.post(shared_ptr<hal::EventDetail>(
+				new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
+				(hal::wform(L"Alert handler access_violation (code %1$x) at %2$x. IsWrite %3%, badd address %4$x") % e.code() % (unsigned)e.where() % e.isWrite() % (unsigned)e.badAddress()).str())));
+		}
+		catch (const win32_exception& e) 
+		{
+			hal::event_log.post(shared_ptr<hal::EventDetail>(
+				new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
+				(hal::wform(L"Alert handler win32_exception (code %1$x) at %2$x") % e.code() % (unsigned)e.where()).str())));
+		}
+		catch(std::exception& e)
+		{
+			hal::event_log.post(shared_ptr<hal::EventDetail>(\
+				new hal::EventStdException(hal::event_logger::debug, e, L"SplashThread()")));
+		}
+		catch(...)
+		{
+			HAL_DEV_MSG(L"SplashThread() catch all");
+		}
+
 		EndDialog(0);
 	}
 	

@@ -400,12 +400,28 @@ void HaliteWindow::OnClose()
 
 void HaliteWindow::ShutdownThread()
 {
+	try
+	{
+
 	hal::bittorrent().close_all(0);
 
 	hal::bittorrent().stopEventReceiver();
 	Sleep(3000);
 
 	hal::bittorrent().shutDownSession();
+
+	}
+	catch(std::exception& e)
+	{
+		hal::event_log.post(shared_ptr<hal::EventDetail>(\
+			new hal::EventStdException(hal::event_logger::debug, e, L"ShutdownThread()")));
+	}
+	catch(...)
+	{
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
+			new hal::EventGeneral(hal::event_logger::warning, 
+				hal::event_logger::unclassified, L"ShutdownThread() catch all")));
+	}
 }
  
 void HaliteWindow::OnDestroy()

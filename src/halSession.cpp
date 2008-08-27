@@ -18,6 +18,8 @@
 #include <libtorrent/torrent_handle.hpp>
 #include <libtorrent/create_torrent.hpp>
 
+#include "win32_exception.hpp"
+
 #include "global/wtl_app.hpp"
 #include "global/string_conv.hpp"
 #include "global/ini_adapter.hpp"
@@ -114,6 +116,8 @@ bit_impl::bit_impl() :
 
 bit_impl::~bit_impl()
 {
+	HAL_DEV_MSG(L"Commence ~BitTorrent_impl"); 
+
 	stop_alert_handler();
 	
 	//save_torrent_data();
@@ -143,6 +147,14 @@ bit_impl::~bit_impl()
 		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
 			new hal::EventStdException(event_logger::critical, e, L"~BitTorrent_impl"))); 
 	}
+	catch(...)
+	{
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
+			new hal::EventGeneral(hal::event_logger::warning, 
+				hal::event_logger::unclassified, L"End ~BitTorrent_impl catch all")));
+	}
+
+	HAL_DEV_MSG(L"~BitTorrent_impl"); 
 }
 
 void bit_impl::ip_filter_count()
@@ -372,13 +384,11 @@ try
 	return false;
 }
 
-
 void bit_impl::start_alert_handler()
 {
 	mutex_t::scoped_lock l(mutex_);
 	
 	HAL_DEV_MSG(hal::wform(L"start_alert_handler"));
-
 
 	boost::function<void (void)> f = bind(&bit_impl::alert_handler, this);
 
@@ -394,13 +404,24 @@ void bit_impl::stop_alert_handler()
 
 	if (alert_checker_)
 	{
+		HAL_DEV_MSG(hal::wform(L"Interrupting alert handler"));
+
 		alert_checker_->interrupt();
 		alert_checker_ = boost::none;
+	}
+	else
+	{
+		HAL_DEV_MSG(hal::wform(L"Alert handler already stopped"));
 	}
 }
 	
 void bit_impl::alert_handler()
 {
+	win32_exception::install_handler();
+
+	try
+	{
+
 	while (keepChecking_)
 	{
 	
@@ -733,6 +754,25 @@ void bit_impl::alert_handler()
 		boost::this_thread::interruption_point();
 	}	
 	
+	}
+
+	}
+	catch (const win32_exception& e) {
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
+			new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
+			(hal::wform(L"Alert handler win32_exception (code %1%) at %2%") % e.code() % 123).str())));
+    }
+	catch(std::exception& e)
+	{
+		// These are logged as debug because they are rarely important to act on!
+		event_log.post(shared_ptr<EventDetail>(\
+			new EventStdException(event_logger::debug, e, L"alertHandler")));
+	}
+
+	catch(...)
+	{
+		hal::event_log.post(shared_ptr<hal::EventDetail>(
+			new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, L"Alert handler catch all")));
 	}
 }
 

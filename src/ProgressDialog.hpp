@@ -58,9 +58,23 @@ public:
 
 	void ProgressThread()
 	{
+		try
+		{
+
 		int err_code = (fn_(bind(&ProgressDialog::Callback, this, _1, _2)) ? 1 : 0);
 		
 		EndDialog(err_code);
+
+		}
+		catch(std::exception& e)
+		{
+			hal::event_log.post(shared_ptr<hal::EventDetail>(\
+				new hal::EventStdException(hal::event_logger::debug, e, L"ProgressThread()")));
+		}
+		catch(...)
+		{
+			HAL_DEV_MSG(L"ProgressThread() catch all");
+		}
 	}
 	
 	bool Callback(size_t progress, wstring description)

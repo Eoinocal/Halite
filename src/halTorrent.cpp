@@ -123,7 +123,11 @@ catch (const std::exception& e) \
 
 void bit::shutDownSession()
 {
+	HAL_DEV_MSG(L"Commence shutDownSession()"); 
+
 	pimpl.reset();
+
+	HAL_DEV_MSG(L"End shutDownSession()"); 
 }
 
 void bit::save_torrent_data()

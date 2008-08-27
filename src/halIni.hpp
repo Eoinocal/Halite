@@ -6,7 +6,7 @@
 
 #pragma once
 
-//#define TXML_ARCHIVE_LOGGING
+// #define TXML_ARCHIVE_LOGGING
 #include "global/txml_oarchive.hpp"
 #include "global/txml_iarchive.hpp"
 
@@ -29,6 +29,11 @@ public:
 		adapter_(boost::filesystem::path(""), ini),
 		name_(name)
 	{}
+	
+	~IniBase()
+	{
+		TXML_LOG(L"~IniBase()");
+	}
 	
 	void save_to_ini()
 	{
