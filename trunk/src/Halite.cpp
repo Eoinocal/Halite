@@ -115,6 +115,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	{
 	
 	boost::filesystem::path::default_name_check(boost::filesystem::native);
+//	_set_abort_behavior( 0, _WRITE_ABORT_MSG);
 
 	try
 	{
@@ -221,7 +222,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	}
 	catch (const std::exception& e)
 	{
-	MessageBoxA(0, e.what(), "Exception Thrown!", 0);
+	std::cerr << e.what() << " Exception Thrown!" << std::endl;//MessageBoxA(0, e.what(), "Exception Thrown!", 0);
 	
 	return -1;
 	}	

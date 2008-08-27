@@ -1439,10 +1439,10 @@ private:
 		mutex_t::scoped_lock l(mutex_);
 		assert(in_session());
 		assert(handle_.is_paused());	
-				
-		state_ = torrent_details::torrent_paused;	
 
 		HAL_DEV_MSG(L"completed_pause()");
+				
+		state_ = torrent_details::torrent_paused;	
 
 		return true;
 	}
@@ -1451,14 +1451,14 @@ private:
 	{
 		mutex_t::scoped_lock l(mutex_);
 		assert(in_session());
-	//	assert(handle_.is_paused());	
-		
-		state_ = torrent_details::torrent_stopped;
+	//	assert(handle_.is_paused());			
 		
 		remove_from_session();
 		assert(!in_session());
 
 		HAL_DEV_MSG(L"completed_stop()");
+
+		state_ = torrent_details::torrent_stopped;
 
 		return true;
 	}

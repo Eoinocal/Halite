@@ -632,6 +632,10 @@
 				RelativePath="..\..\src\UxthemeWrapper.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\..\src\win32_exception.cpp"
+				>
+			</File>
 			<Filter
 				Name="advtabs"
 				>
@@ -1238,6 +1242,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\UxthemeWrapper.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\win32_exception.hpp"
 				>
 			</File>
 			<File
