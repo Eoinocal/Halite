@@ -23,100 +23,106 @@ bool Config::settingsChanged()
 
 bool Config::settingsThread()
 {	
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Applying BitTorrent session settings.")));	
-
-	bittorrent().setMapping(mappingType);	
-
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			hal::wform(L"Trying port in range %1% - %2%.") % portFrom % portTo)));
 	try
 	{
-	bool success = bittorrent().listenOn(
-		std::make_pair(portFrom, portTo));
-	if (!success)
-	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventDebug(event_logger::critical, L"settingsThread, Init")));
-		
-		return false;
-	}
-	}
-	catch(const std::exception& e)
-	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(event_logger::critical, e, L"settingsThread, Init"))); 
-		
-		return false;
-	}
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Applying BitTorrent session settings.")));	
 
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(hal::wform(L"Opened listen port; %1%.") % bittorrent().isListeningOn())));
-	
-	try
-	{
-	if (enableIPFilter)
-	{
-		ProgressDialog progDlg(L"Loading IP filters...", bind(
-			&bit::ensureIpFilterOn, &bittorrent(), _1));
-		progDlg.DoModal();
-	}
-	else
-		bittorrent().ensureIpFilterOff();
-	}
-	catch(const std::exception& e)
-	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(event_logger::critical, e, L"settingsThread, Load IP Filter"))); 
-	}	
+		bittorrent().setMapping(mappingType);	
 
-	try
-	{
-	if (enablePe)
-	{
-		bittorrent().ensurePeOn(peEncLevel, peConInPolicy, peConOutPolicy, pePerferRc4);
-	}
-	else
-		bittorrent().ensurePeOff();
-	}
-	catch(const std::exception& e)
-	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(event_logger::critical, e, L"settingsThread, Protocol Encryption"))); 
-	}
-	
-	bittorrent().setSessionHalfOpenLimit(halfConnLimit);
-	
-	bittorrent().resumeAll();	
-	
-	bittorrent().setSessionLimits(
-		maxConnections, maxUploads);
-	bittorrent().setSessionSpeed(
-		downRate, upRate);
-		
-	bittorrent().setTorrentDefaults(torrentMaxConnections,
-		torrentMaxUploads, torrentDownRate,
-		torrentUpRate);
-	
-	bittorrent().setDhtSettings(dhtMaxPeersReply, 
-		dhtSearchBranching, dhtServicePort, 
-		dhtMaxFailCount);
-
-	bittorrent().setTimeouts(peerTimeout, trackerTimeout);
-	
-	if (enableDHT)
-	{
-		if (!bittorrent().ensureDhtOn())
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(
+				hal::wform(L"Trying port in range %1% - %2%.") % portFrom % portTo)));
+		try
 		{
+		bool success = bittorrent().listenOn(
+			std::make_pair(portFrom, portTo));
+		if (!success)
+		{
+			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventDebug(event_logger::critical, L"settingsThread, Init")));
+			
+			return false;
+		}
+		}
+		catch(const std::exception& e)
+		{
+			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(event_logger::critical, e, L"settingsThread, Init"))); 
+			
+			return false;
+		}
+
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(hal::wform(L"Opened listen port; %1%.") % bittorrent().isListeningOn())));
+		
+		try
+		{
+		if (enableIPFilter)
+		{
+			ProgressDialog progDlg(L"Loading IP filters...", bind(
+				&bit::ensureIpFilterOn, &bittorrent(), _1));
+			progDlg.DoModal();
+		}
+		else
+			bittorrent().ensureIpFilterOff();
+		}
+		catch(const std::exception& e)
+		{
+			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(event_logger::critical, e, L"settingsThread, Load IP Filter"))); 
+		}	
+
+		try
+		{
+		if (enablePe)
+		{
+			bittorrent().ensurePeOn(peEncLevel, peConInPolicy, peConOutPolicy, pePerferRc4);
+		}
+		else
+			bittorrent().ensurePeOff();
+		}
+		catch(const std::exception& e)
+		{
+			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+					new hal::EventStdException(event_logger::critical, e, L"settingsThread, Protocol Encryption"))); 
+		}
+		
+		bittorrent().setSessionHalfOpenLimit(halfConnLimit);
+		
+		bittorrent().resumeAll();	
+		
+		bittorrent().setSessionLimits(
+			maxConnections, maxUploads);
+		bittorrent().setSessionSpeed(
+			downRate, upRate);
+			
+		bittorrent().setTorrentDefaults(torrentMaxConnections,
+			torrentMaxUploads, torrentDownRate,
+			torrentUpRate);
+		
+		bittorrent().setDhtSettings(dhtMaxPeersReply, 
+			dhtSearchBranching, dhtServicePort, 
+			dhtMaxFailCount);
+
+		bittorrent().setTimeouts(peerTimeout, trackerTimeout);
+		
+		if (enableDHT)
+		{
+			if (!bittorrent().ensureDhtOn())
+			{
+				bittorrent().ensureDhtOff();
+				
+				hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+					new hal::EventDebug(event_logger::critical, L"settingsThread, DHT Error"))); 
+			}
+		}
+		else
 			bittorrent().ensureDhtOff();
 			
-			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventDebug(event_logger::critical, L"settingsThread, DHT Error"))); 
-		}
+		// Settings seem to have applied ok!
+		save_to_ini();	
+
 	}
-	else
-		bittorrent().ensureDhtOff();
-		
-	// Settings seem to have applied ok!
-	save_to_ini();	
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"Config::settingsThread()")
+
 	return true;
 }
 

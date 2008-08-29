@@ -269,11 +269,7 @@ void HaliteWindow::updateWindow()
 	}
 	
 	}
-	catch (std::exception& e)
-	{
-		hal::event_log.post(shared_ptr<hal::EventDetail>(\
-			new hal::EventStdException(hal::event_logger::info, e, L"updateWindow")));
-	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::updateWindow()")
 }
 
 void HaliteWindow::OnTimer(UINT uTimerID)
@@ -291,11 +287,7 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 		hal::bittorrent().saveTorrentData();	
 	
 		}
-		catch (std::exception& e)
-		{
-			hal::event_log.post(shared_ptr<hal::EventDetail>(\
-				new hal::EventStdException(hal::event_logger::info, e, L"saveTimer")));
-		}
+		HAL_GENERIC_FN_EXCEPTION_CATCH(L"IniBase::OnTimer() - ID_SAVE_TIMER")
 	}
 	else 
 	{		
@@ -314,11 +306,7 @@ void HaliteWindow::issueUiUpdate()
 	ui_update_signal_(torrents);
 
 	}
-	catch (std::exception& e)
-	{
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(hal::event_logger::info, e, L"updateTimer")));
-	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::issueUiUpdate()")
 }
 
 LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
@@ -378,6 +366,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 		hal::event_log.post(shared_ptr<hal::EventDetail>(
 			new hal::EventDebug(hal::event_logger::warning, L"filesystem error")));
 	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::ProcessFile()")
 }
 
 void HaliteWindow::OnClose()

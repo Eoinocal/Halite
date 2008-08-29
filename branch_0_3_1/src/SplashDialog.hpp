@@ -24,6 +24,7 @@
 #	include "Halite.hpp"
 #endif
 
+#include "win32_exception.hpp"
 #include "halTorrent.hpp"
 
 class SplashDialog :
@@ -108,6 +109,11 @@ public:
 
 	void SplashThread()
 	{
+		win32_exception::install_handler();
+
+		try
+		{
+
 		hal::bittorrent().closeAll(boost::optional<boost::function<void (int)> >(bind(&SplashDialog::ReportNumActive, this, _1)));
 		
 		SetDlgItemText(HAL_CSPLASH_NUM_ACT, hal::app().res_wstr(HAL_CSPLASH_SHUTDOWN_MSG).c_str());
@@ -121,6 +127,9 @@ public:
 
 		GetWindowRect(rect_);
 		save_to_ini();
+
+		}
+		HAL_GENERIC_FN_EXCEPTION_CATCH(L"SplashThread()")
 
 		EndDialog(0);
 	}

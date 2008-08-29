@@ -300,11 +300,7 @@ public:
 //			write_vec_range(ofs, v6);
 		}	
 		}
-		catch(std::exception& e)
-		{
-			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(event_logger::critical, e, L"~BitTorrent_impl"))); 
-		}
+		HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::~bit_impl()")
 	}
 
 	struct 
@@ -323,265 +319,270 @@ public:
 		
 	void alertHandler()
 	{
-		mutex_t::scoped_lock l(mutex_);
+		try
+		{
+			mutex_t::scoped_lock l(mutex_);
 
-		if (keepChecking_)
-		{
-		
-		std::auto_ptr<libt::alert> p_alert = theSession.pop_alert();
-		
-		class AlertHandler
-		{
-		public:
-		AlertHandler(bit_impl& bit_impl) :
-			bit_impl_(bit_impl)
-		{}
-		
-		void operator()(libt::torrent_finished_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventMsg((wform(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
-						% get(a.handle)->name()), 
-					event_logger::info, a.timestamp())));
+			if (keepChecking_)
+			{
 			
-			get(a.handle)->finished();	
-		}
-		
-		void operator()(libt::torrent_paused_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventMsg((wform(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 
-						% get(a.handle)->name()), 
-					event_logger::info, a.timestamp())));
-
-			get(a.handle)->signals().torrent_paused();
-		}
-		
-		void operator()(libt::peer_error_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wform(hal::app().res_wstr(HAL_PEER_ALERT))
-						% hal::from_utf8_safe(a.msg())
-						% hal::from_utf8_safe(a.ip.address().to_string()))
-			)	);				
-		}
+			std::auto_ptr<libt::alert> p_alert = theSession.pop_alert();
 			
-		void operator()(libt::peer_ban_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wform(hal::app().res_wstr(HAL_PEER_BAN_ALERT))
-						% get(a.handle)->name()
-						% hal::from_utf8_safe(a.ip.address().to_string()))
-			)	);				
-		}
+			class AlertHandler
+			{
+			public:
+			AlertHandler(bit_impl& bit_impl) :
+				bit_impl_(bit_impl)
+			{}
 			
-		void operator()(libt::hash_failed_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wform(hal::app().res_wstr(HAL_HASH_FAIL_ALERT))
-						% get(a.handle)->name()
-						% a.piece_index)
-			)	);				
-		}
-			
-		void operator()(libt::url_seed_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wform(hal::app().res_wstr(HAL_URL_SEED_ALERT))
-						% get(a.handle)->name()
-						% hal::from_utf8_safe(a.url)
-						% hal::from_utf8_safe(a.msg()))
-			)	);				
-		}
-		
-		void operator()(libt::tracker_warning_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wform(hal::app().res_wstr(HAL_TRACKER_WARNING_ALERT))
-						% get(a.handle)->name()
-						% hal::from_utf8_safe(a.msg()))
-			)	);				
-		}
-		
-		void operator()(libt::tracker_announce_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventMsg((wform(hal::app().res_wstr(HAL_TRACKER_ANNOUNCE_ALERT)) 
-						% get(a.handle)->name()), 
-					event_logger::info, a.timestamp())));
-		}
-		
-		void operator()(libt::tracker_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wform(hal::app().res_wstr(HAL_TRACKER_ALERT))
-						% get(a.handle)->name()
-						% hal::from_utf8_safe(a.msg())
-						% a.times_in_row
-						% a.status_code)
-			)	);				
-		}
-		
-		void operator()(libt::tracker_reply_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wform(hal::app().res_wstr(HAL_TRACKER_REPLY_ALERT))
-						% get(a.handle)->name()
-						% hal::from_utf8_safe(a.msg())
-						% a.num_peers)
-			)	);				
-		}
-		
-		void operator()(libt::fastresume_rejected_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
-					wform(hal::app().res_wstr(HAL_FAST_RESUME_ALERT))
-						% get(a.handle)->name()
-						% hal::from_utf8_safe(a.msg()))
-			)	);				
-		}
-		
-		void operator()(libt::piece_finished_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventGeneral(event_logger::debug, a.timestamp(),
-					wform(hal::app().res_wstr(HAL_PIECE_FINISHED_ALERT))
-						% get(a.handle)->name()
-						% a.piece_index)
-			)	);				
-		}
-		
-		void operator()(libt::block_finished_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventGeneral(event_logger::debug, a.timestamp(),
-					wform(hal::app().res_wstr(HAL_BLOCK_FINISHED_ALERT))
-						% get(a.handle)->name()
-						% a.block_index
-						% a.piece_index)
-			)	);				
-		}
-		
-		void operator()(libt::block_downloading_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventGeneral(event_logger::debug, a.timestamp(),
-					wform(hal::app().res_wstr(HAL_BLOCK_DOWNLOADING_ALERT))
-						% get(a.handle)->name()
-						% a.block_index
-						% a.piece_index)
-			)	);				
-		}
-		
-		void operator()(libt::listen_failed_alert const& a) const
-		{
-			if (a.endpoint.address().is_v6())
-			{	
-				event_log.post(shared_ptr<EventDetail>(
-					new EventGeneral(event_logger::info, a.timestamp(),
-						hal::app().res_wstr(HAL_LISTEN_V6_FAILED_ALERT))
-				)	);		
-			}
-			else
+			void operator()(libt::torrent_finished_alert const& a) const
 			{
 				event_log.post(shared_ptr<EventDetail>(
-					new EventGeneral(event_logger::info, a.timestamp(),
-						wform(hal::app().res_wstr(HAL_LISTEN_FAILED_ALERT))
+					new EventMsg((wform(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
+							% get(a.handle)->name()), 
+						event_logger::info, a.timestamp())));
+				
+				get(a.handle)->finished();	
+			}
+			
+			void operator()(libt::torrent_paused_alert const& a) const
+			{
+				event_log.post(shared_ptr<EventDetail>(
+					new EventMsg((wform(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 
+							% get(a.handle)->name()), 
+						event_logger::info, a.timestamp())));
+
+				get(a.handle)->signals().torrent_paused();
+			}
+			
+			void operator()(libt::peer_error_alert const& a) const
+			{
+				event_log.post(shared_ptr<EventDetail>(
+					new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+						wform(hal::app().res_wstr(HAL_PEER_ALERT))
+							% hal::from_utf8_safe(a.msg())
+							% hal::from_utf8_safe(a.ip.address().to_string()))
+				)	);				
+			}
+				
+			void operator()(libt::peer_ban_alert const& a) const
+			{
+				event_log.post(shared_ptr<EventDetail>(
+					new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+						wform(hal::app().res_wstr(HAL_PEER_BAN_ALERT))
+							% get(a.handle)->name()
+							% hal::from_utf8_safe(a.ip.address().to_string()))
+				)	);				
+			}
+				
+			void operator()(libt::hash_failed_alert const& a) const
+			{
+				event_log.post(shared_ptr<EventDetail>(
+					new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+						wform(hal::app().res_wstr(HAL_HASH_FAIL_ALERT))
+							% get(a.handle)->name()
+							% a.piece_index)
+				)	);				
+			}
+				
+			void operator()(libt::url_seed_alert const& a) const
+			{
+				event_log.post(shared_ptr<EventDetail>(
+					new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+						wform(hal::app().res_wstr(HAL_URL_SEED_ALERT))
+							% get(a.handle)->name()
+							% hal::from_utf8_safe(a.url)
 							% hal::from_utf8_safe(a.msg()))
-				)	);
+				)	);				
 			}
-		}
-		
-		void operator()(libt::listen_succeeded_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventGeneral(event_logger::info, a.timestamp(),
-					wform(hal::app().res_wstr(HAL_LISTEN_SUCCEEDED_ALERT))
-						% hal::from_utf8_safe(a.msg()))
-			)	);	
+			
+			void operator()(libt::tracker_warning_alert const& a) const
+			{
+				event_log.post(shared_ptr<EventDetail>(
+					new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+						wform(hal::app().res_wstr(HAL_TRACKER_WARNING_ALERT))
+							% get(a.handle)->name()
+							% hal::from_utf8_safe(a.msg()))
+				)	);				
+			}
+			
+			void operator()(libt::tracker_announce_alert const& a) const
+			{
+				event_log.post(shared_ptr<EventDetail>(
+					new EventMsg((wform(hal::app().res_wstr(HAL_TRACKER_ANNOUNCE_ALERT)) 
+							% get(a.handle)->name()), 
+						event_logger::info, a.timestamp())));
+			}
+			
+			void operator()(libt::tracker_alert const& a) const
+			{
+				event_log.post(shared_ptr<EventDetail>(
+					new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+						wform(hal::app().res_wstr(HAL_TRACKER_ALERT))
+							% get(a.handle)->name()
+							% hal::from_utf8_safe(a.msg())
+							% a.times_in_row
+							% a.status_code)
+				)	);				
+			}
+			
+			void operator()(libt::tracker_reply_alert const& a) const
+			{
+				event_log.post(shared_ptr<EventDetail>(
+					new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+						wform(hal::app().res_wstr(HAL_TRACKER_REPLY_ALERT))
+							% get(a.handle)->name()
+							% hal::from_utf8_safe(a.msg())
+							% a.num_peers)
+				)	);				
+			}
+			
+			void operator()(libt::fastresume_rejected_alert const& a) const
+			{
+				event_log.post(shared_ptr<EventDetail>(
+					new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+						wform(hal::app().res_wstr(HAL_FAST_RESUME_ALERT))
+							% get(a.handle)->name()
+							% hal::from_utf8_safe(a.msg()))
+				)	);				
+			}
+			
+			void operator()(libt::piece_finished_alert const& a) const
+			{
+				event_log.post(shared_ptr<EventDetail>(
+					new EventGeneral(event_logger::debug, a.timestamp(),
+						wform(hal::app().res_wstr(HAL_PIECE_FINISHED_ALERT))
+							% get(a.handle)->name()
+							% a.piece_index)
+				)	);				
+			}
+			
+			void operator()(libt::block_finished_alert const& a) const
+			{
+				event_log.post(shared_ptr<EventDetail>(
+					new EventGeneral(event_logger::debug, a.timestamp(),
+						wform(hal::app().res_wstr(HAL_BLOCK_FINISHED_ALERT))
+							% get(a.handle)->name()
+							% a.block_index
+							% a.piece_index)
+				)	);				
+			}
+			
+			void operator()(libt::block_downloading_alert const& a) const
+			{
+				event_log.post(shared_ptr<EventDetail>(
+					new EventGeneral(event_logger::debug, a.timestamp(),
+						wform(hal::app().res_wstr(HAL_BLOCK_DOWNLOADING_ALERT))
+							% get(a.handle)->name()
+							% a.block_index
+							% a.piece_index)
+				)	);				
+			}
+			
+			void operator()(libt::listen_failed_alert const& a) const
+			{
+				if (a.endpoint.address().is_v6())
+				{	
+					event_log.post(shared_ptr<EventDetail>(
+						new EventGeneral(event_logger::info, a.timestamp(),
+							hal::app().res_wstr(HAL_LISTEN_V6_FAILED_ALERT))
+					)	);		
+				}
+				else
+				{
+					event_log.post(shared_ptr<EventDetail>(
+						new EventGeneral(event_logger::info, a.timestamp(),
+							wform(hal::app().res_wstr(HAL_LISTEN_FAILED_ALERT))
+								% hal::from_utf8_safe(a.msg()))
+					)	);
+				}
+			}
+			
+			void operator()(libt::listen_succeeded_alert const& a) const
+			{
+				event_log.post(shared_ptr<EventDetail>(
+					new EventGeneral(event_logger::info, a.timestamp(),
+						wform(hal::app().res_wstr(HAL_LISTEN_SUCCEEDED_ALERT))
+							% hal::from_utf8_safe(a.msg()))
+				)	);	
 
-			bit_impl_.signals.successful_listen();
-		}
-		
-		void operator()(libt::peer_blocked_alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventGeneral(event_logger::debug, a.timestamp(),
-					wform(hal::app().res_wstr(HAL_IPFILTER_ALERT))
-						% hal::from_utf8_safe(a.ip.to_string())
-						% hal::from_utf8_safe(a.msg()))
-			)	);				
-		}
-		
-		void operator()(libt::alert const& a) const
-		{
-			event_log.post(shared_ptr<EventDetail>(
-					new EventLibtorrent(lbtAlertToHalEvent(a.severity()), 
-						a.timestamp(), event_logger::unclassified, hal::from_utf8_safe(a.msg()))));		
-		}
-		
-		private:
-			bit_impl& bit_impl_;
-			
-			torrent_internal_ptr get(libt::torrent_handle h) const 
-			{ 
-				return bit_impl_.theTorrents.get(from_utf8_safe(h.get_torrent_info().name())); 
+				bit_impl_.signals.successful_listen();
 			}
-		
-		} handler(*this);
-		
-		while (p_alert.get())
-		{	
-			try
+			
+			void operator()(libt::peer_blocked_alert const& a) const
 			{
-			
-			libt::handle_alert<
-				libt::torrent_finished_alert,
-				libt::torrent_paused_alert,
-				libt::peer_error_alert,
-				libt::peer_ban_alert,
-				libt::hash_failed_alert,
-				libt::url_seed_alert,
-				libt::tracker_alert,
-				libt::tracker_warning_alert,
-				libt::tracker_announce_alert,
-				libt::tracker_reply_alert,
-				libt::fastresume_rejected_alert,
-				libt::piece_finished_alert,
-				libt::block_finished_alert,
-				libt::block_downloading_alert,
-				libt::listen_failed_alert,
-				libt::listen_succeeded_alert,
-				libt::peer_blocked_alert,
-				libt::alert
-			>::handle_alert(p_alert, handler);			
-			
+				event_log.post(shared_ptr<EventDetail>(
+					new EventGeneral(event_logger::debug, a.timestamp(),
+						wform(hal::app().res_wstr(HAL_IPFILTER_ALERT))
+							% hal::from_utf8_safe(a.ip.to_string())
+							% hal::from_utf8_safe(a.msg()))
+				)	);				
 			}
-			catch(libt::unhandled_alert&)
+			
+			void operator()(libt::alert const& a) const
 			{
-				handler(*p_alert);
-			}
-			catch(std::exception& e)
-			{
-				// These are logged as debug because they are rarely important to act on!
-				event_log.post(shared_ptr<EventDetail>(\
-					new EventStdException(event_logger::debug, e, L"alertHandler")));
+				event_log.post(shared_ptr<EventDetail>(
+						new EventLibtorrent(lbtAlertToHalEvent(a.severity()), 
+							a.timestamp(), event_logger::unclassified, hal::from_utf8_safe(a.msg()))));		
 			}
 			
-			p_alert = theSession.pop_alert();
+			private:
+				bit_impl& bit_impl_;
+				
+				torrent_internal_ptr get(libt::torrent_handle h) const 
+				{ 
+					return bit_impl_.theTorrents.get(from_utf8_safe(h.get_torrent_info().name())); 
+				}
+			
+			} handler(*this);
+			
+			while (p_alert.get())
+			{	
+				try
+				{
+				
+				libt::handle_alert<
+					libt::torrent_finished_alert,
+					libt::torrent_paused_alert,
+					libt::peer_error_alert,
+					libt::peer_ban_alert,
+					libt::hash_failed_alert,
+					libt::url_seed_alert,
+					libt::tracker_alert,
+					libt::tracker_warning_alert,
+					libt::tracker_announce_alert,
+					libt::tracker_reply_alert,
+					libt::fastresume_rejected_alert,
+					libt::piece_finished_alert,
+					libt::block_finished_alert,
+					libt::block_downloading_alert,
+					libt::listen_failed_alert,
+					libt::listen_succeeded_alert,
+					libt::peer_blocked_alert,
+					libt::alert
+				>::handle_alert(p_alert, handler);			
+				
+				}
+				catch(libt::unhandled_alert&)
+				{
+					handler(*p_alert);
+				}
+				catch(std::exception& e)
+				{
+					// These are logged as debug because they are rarely important to act on!
+					event_log.post(shared_ptr<EventDetail>(\
+						new EventStdException(event_logger::debug, e, L"alertHandler")));
+				}
+				
+				p_alert = theSession.pop_alert();
+			}
+			
+			timer_.expires_from_now(boost::posix_time::seconds(2));
+			timer_.async_wait(bind(&bit_impl::alertHandler, this));
+			}
+
 		}
-		
-		timer_.expires_from_now(boost::posix_time::seconds(2));
-		timer_.async_wait(bind(&bit_impl::alertHandler, this));
-		}
+		HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::alertHandler()")
 	}
 	
 	void saveTorrentData()
@@ -598,12 +599,8 @@ public:
 			halencode(workingDirectory/L"DHTState.bin", theSession.dht_state());
 		}
 		
-		}		
-		catch(std::exception& e)
-		{
-			event_log.post(shared_ptr<EventDetail>(\
-				new EventStdException(event_logger::critical, e, L"saveTorrentData")));
-		}
+		}	
+		HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::saveTorrentData()")
 	}
 	
 	int defTorrentMaxConn() { return defTorrentMaxConn_; }
@@ -630,73 +627,77 @@ private:
 		ip_filter_count_(0),
 		dht_on_(false)
 	{
-		torrent_internal::the_session_ = &theSession;
-		torrent_internal::workingDir_ = workingDir();
-		
-		theSession.set_severity_level(libt::alert::debug);		
-		theSession.add_extension(&libt::create_metadata_plugin);
-		theSession.add_extension(&libt::create_ut_pex_plugin);
-		theSession.set_max_half_open_connections(10);
-		
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(L"Loading BitTorrent.xml.", hal::event_logger::info)));		
-		bittorrentIni.load_data();
-
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(L"Loading torrent parameters.", hal::event_logger::info)));	
-		theTorrents.load_from_ini();
-
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(L"Loading done!", hal::event_logger::info)));
-		
 		try
-		{						
-		if (fs::exists(workingDirectory/L"Torrents.xml"))
 		{
-			{
-			fs::wifstream ifs(workingDirectory/L"Torrents.xml");
-		
-			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Loading old Torrents.xml")));
-		
-			TorrentMap torrents;
-			boost::archive::xml_wiarchive ia(ifs);	
-			ia >> boost::serialization::make_nvp("torrents", torrents);
+			torrent_internal::the_session_ = &theSession;
+			torrent_internal::workingDir_ = workingDir();
 			
-			theTorrents = torrents;
-			}
+			theSession.set_severity_level(libt::alert::debug);		
+			theSession.add_extension(&libt::create_metadata_plugin);
+			theSession.add_extension(&libt::create_ut_pex_plugin);
+			theSession.set_max_half_open_connections(10);
 			
-			event_log.post(shared_ptr<EventDetail>(new EventMsg(
-				wform(L"Total %1%.") % theTorrents.size())));				
+			hal::event_log.post(shared_ptr<hal::EventDetail>(
+				new hal::EventMsg(L"Loading BitTorrent.xml.", hal::event_logger::info)));		
+			bittorrentIni.load_data();
+
+			hal::event_log.post(shared_ptr<hal::EventDetail>(
+				new hal::EventMsg(L"Loading torrent parameters.", hal::event_logger::info)));	
+			theTorrents.load_from_ini();
+
+			hal::event_log.post(shared_ptr<hal::EventDetail>(
+				new hal::EventMsg(L"Loading done!", hal::event_logger::info)));
 			
-			fs::rename(workingDirectory/L"Torrents.xml", workingDirectory/L"Torrents.xml.safe.to.delete");
-		}			
-		}
-		catch(const std::exception& e)
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventStdException(event_logger::fatal, e, L"Loading Old Torrents.xml")));
-		}		
-				
-		if (exists(workingDirectory/L"DHTState.bin"))
-		{
 			try
+			{						
+			if (fs::exists(workingDirectory/L"Torrents.xml"))
 			{
-				dht_state_ = haldecode(workingDirectory/L"DHTState.bin");
-			}		
+				{
+				fs::wifstream ifs(workingDirectory/L"Torrents.xml");
+			
+				event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Loading old Torrents.xml")));
+			
+				TorrentMap torrents;
+				boost::archive::xml_wiarchive ia(ifs);	
+				ia >> boost::serialization::make_nvp("torrents", torrents);
+				
+				theTorrents = torrents;
+				}
+				
+				event_log.post(shared_ptr<EventDetail>(new EventMsg(
+					wform(L"Total %1%.") % theTorrents.size())));				
+				
+				fs::rename(workingDirectory/L"Torrents.xml", workingDirectory/L"Torrents.xml.safe.to.delete");
+			}			
+			}
 			catch(const std::exception& e)
 			{
 				event_log.post(shared_ptr<EventDetail>(
-					new EventStdException(event_logger::critical, e, L"Loading DHTState.bin")));
+					new EventStdException(event_logger::fatal, e, L"Loading Old Torrents.xml")));
+			}		
+					
+			if (exists(workingDirectory/L"DHTState.bin"))
+			{
+				try
+				{
+					dht_state_ = haldecode(workingDirectory/L"DHTState.bin");
+				}		
+				catch(const std::exception& e)
+				{
+					event_log.post(shared_ptr<EventDetail>(
+						new EventStdException(event_logger::critical, e, L"Loading DHTState.bin")));
+				}
 			}
+			
+			{	libt::session_settings settings = theSession.settings();
+				settings.user_agent = string("Halite ") + HALITE_VERSION_STRING;
+				theSession.set_settings(settings);
+			}
+			
+			timer_.expires_from_now(boost::posix_time::seconds(5));
+			timer_.async_wait(bind(&bit_impl::alertHandler, this));
 		}
-		
-		{	libt::session_settings settings = theSession.settings();
-			settings.user_agent = string("Halite ") + HALITE_VERSION_STRING;
-			theSession.set_settings(settings);
-		}
-		
-		timer_.expires_from_now(boost::posix_time::seconds(5));
-		timer_.async_wait(bind(&bit_impl::alertHandler, this));
+		HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::bit_impl()")
 	}
 
 	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn)
@@ -777,12 +778,9 @@ private:
 		// create the torrent and print it to out
 		libt::entry e = t_info->create_torrent();
 		halencode(out_file, e);
+
 		}
-		catch(const std::exception& e)
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventStdException(event_logger::fatal, e, L"create_torrent")));
-		}	
+		HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::create_torrent()")
 
 		return false;
 	}
@@ -1109,13 +1107,7 @@ bool bit::ensureIpFilterOn(progress_callback fn)
 	}
 	
 	}
-	catch(const std::exception& e)
-	{		
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(event_logger::critical, e, L"ensureIpFilterOn"))); 
-
-		ensureIpFilterOff();
-	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit::ensureIpFilterOn")
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"IP filters on.")));	
 
@@ -1200,13 +1192,7 @@ void bit::ensurePeOn(int enc_level, int in_enc_policy, int out_enc_policy, bool 
 	pimpl->theSession.set_pe_settings(pe);
 	
 	}
-	catch(const std::exception& e)
-	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(event_logger::critical, e, L"ensurePeOn"))); 
-				
-		ensurePeOff();		
-	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit::ensurePeOn")
 	
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Protocol encryption on.")));
 }
@@ -1325,11 +1311,7 @@ bool bit::ip_filter_import_dat(boost::filesystem::path file, progress_callback f
 	pimpl->ip_filter_count();
 	
 	}
-	catch(const std::exception& e)
-	{
-		event_log.post(shared_ptr<EventDetail>(
-			new EventStdException(event_logger::critical, e, L"ip_filter_import_dat")));
-	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit::ip_filter_import_dat()")
 
 	return false;
 }

@@ -139,11 +139,7 @@ void FilesSheet::OnDirBrowse(UINT, int, HWND hWnd)
 	}
 
 	}
-	catch(const std::exception& e)
-	{
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(hal::event_logger::fatal, e, L"DetailsSheet::OnDirBrowse")));
-	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"FilesSheet::OnDirBrowse()")
 }
 
 void FilesSheet::UpdateFileList()
@@ -186,12 +182,7 @@ hal::file_size_pairs_t FilesSheet::FileSizePairs() const
 	}
 
 	}
-	catch(const std::exception& e)
-	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(hal::event_logger::critical, e, 
-				L"DetailsSheet::FileSizePairs")));
-	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"FilesSheet::FileSizePairs()")
 
 	return filePairs;
 }
@@ -426,12 +417,7 @@ LRESULT NewTorrentDialog::OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	if (err_code == 0) SendMessage(WM_CLOSE);
 
 	}
-	catch(const std::exception& e)
-	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(hal::event_logger::critical, e, 
-				L"NewTorrentDialog::OnSave")));
-	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"NewTorrentDialog::OnSave()")
 
 	return 0;
 }

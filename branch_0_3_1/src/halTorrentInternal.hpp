@@ -603,11 +603,7 @@ public:
 		HAL_DEV_MSG(L"Added to session");
 
 		}
-		catch(std::exception& e)
-		{
-			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(event_logger::critical, e, L"addToSession"))); 
-		}
+		HAL_GENERIC_FN_EXCEPTION_CATCH(L"torrent_internal::add_to_session()")
 	}
 	
 	void remove_from_session(bool writeData=true)
@@ -639,11 +635,7 @@ public:
 		HAL_DEV_MSG(L"Removed from session!");
 
 		}
-		catch(std::exception& e)
-		{
-			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(event_logger::critical, e, L"removeFromSession"))); 
-		}
+		HAL_GENERIC_FN_EXCEPTION_CATCH(L"torrent_internal::remove_from_session()")
 	}
 	
 	bool in_session() const
@@ -1673,11 +1665,7 @@ TorrentDetail_ptr torrent_internal::getTorrentDetail_ptr()
 		event_log.post(shared_ptr<EventDetail>(
 			new EventInvalidTorrent(event_logger::critical, event_logger::invalidTorrent, to_utf8(name_), "getTorrentDetail_ptr")));
 	}
-	catch (const std::exception& e)
-	{
-		event_log.post(shared_ptr<EventDetail>(
-			new EventTorrentException(event_logger::critical, event_logger::torrentException, e.what(), to_utf8(name_), "getTorrentDetail_ptr")));
-	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"torrent_internal::getTorrentDetail_ptr()")
 	
 	return TorrentDetail_ptr(new TorrentDetail(name_, filename_, saveDirectory().string(), app().res_wstr(HAL_TORRENT_STOPPED), app().res_wstr(HAL_NA)));
 }

@@ -53,6 +53,8 @@ public:
 	template<typename P>
 	bool load_standalone(const P& location)
 	{
+		bool result = false;
+		
 		try 
 		{		
 		fs::wifstream ifs(location);
@@ -62,41 +64,35 @@ public:
 		T* pT = static_cast<T*>(this);	
 		ixml >> boost::serialization::make_nvp(name_.c_str(), *pT);
 
-		return true;
-		
-		}
-		catch (const std::exception& e)
-		{			
-			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventXmlException(hal::from_utf8(e.what()), L"load_standalone"))); 
+		result = true;	
 
-			return false;
 		}
+		HAL_GENERIC_FN_EXCEPTION_CATCH(L"IniBase::load_standalone()")
+
+		return result;
 	}
 	
 	bool load_from_ini()
 	{
-		std::wstringstream xml_data;		
-		adapter_.load_stream_data(xml_data);
+		bool result = false;
 		
 		try 
 		{
+
+		std::wstringstream xml_data;		
+		adapter_.load_stream_data(xml_data);
 		
 		boost::archive::xml_wiarchive ixml(xml_data);	
 		
 		T* pT = static_cast<T*>(this);	
 		ixml >> boost::serialization::make_nvp(name_.c_str(), *pT);
-		
-		}
-		catch (const std::exception& e)
-		{			
-			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventXmlException(hal::from_utf8(e.what()), hal::from_utf8(name_)))); 
 
-			return false;
-		}
+		result = true;	
 
-		return true;
+		}
+		HAL_GENERIC_FN_EXCEPTION_CATCH(L"IniBase::load_from_ini()")
+
+		return result;
 	}
 	
 private:

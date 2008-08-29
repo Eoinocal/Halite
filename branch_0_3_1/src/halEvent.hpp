@@ -26,6 +26,10 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/smart_ptr.hpp>
 
+#include <boost/preprocessor/cat.hpp>
+#include <boost/preprocessor/stringize.hpp>
+#include "win32_exception.hpp"
+
 #include "global/wtl_app.hpp"
 #include "global/string_conv.hpp"
 
@@ -38,6 +42,32 @@
 #else
 #	define HAL_DEV_MSG(msg)
 #endif
+
+#define HAL_GENERIC_FN_EXCEPTION_CATCH(FUNCTION) \
+catch (const access_violation& e) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"%1% access_violation (code %2$x) at %3$x. Bad address %4$x") % hal::to_wstr_shim(FUNCTION) % e.code() % (unsigned)e.where() % (unsigned)e.badAddress(), \
+			hal::event_logger::dev))); \
+} \
+catch (const win32_exception& e) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"%1% win32_exception (code %2$x) at %3$x") % hal::to_wstr_shim(FUNCTION) % e.code() % (unsigned)e.where(), \
+			hal::event_logger::dev))); \
+} \
+catch(std::exception& e) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"%1% std::exception, %2%") % hal::to_wstr_shim(FUNCTION) % hal::from_utf8(e.what()), \
+			hal::event_logger::dev))); \
+} \
+catch(...) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"%1% catch all") % hal::to_wstr_shim(FUNCTION), \
+			hal::event_logger::dev))); \
+} \
 
 namespace hal 
 {

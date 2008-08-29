@@ -137,8 +137,7 @@ public:
 		PostMessage(WM_USER_LOGPOST, 0, 0);
 		
 		}
-		catch(...)
-		{}
+		HAL_GENERIC_FN_EXCEPTION_CATCH(L"LogListViewCtrl::operator()")
 	}
 
 	LRESULT OnMessageLogPost(UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -162,8 +161,7 @@ public:
 			DeleteItem(halite().logListLen());
 
 		}
-		catch(...)
-		{}
+		HAL_GENERIC_FN_EXCEPTION_CATCH(L"LogListViewCtrl::OnMessageLogPost()")
 
 		events_.pop_front();
 
