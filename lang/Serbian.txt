@@ -170,7 +170,7 @@
 "Peers" ---> "Izvori"
 "Peers:" ---> "Izvori:"
 "Piece %2% finished. (%1%)" ---> "Deo %2% završen. (%1%)"
-"Piece Size (KBs)" --->  "Većina dela (KBs)" 
+"Piece Size (KBs)" --->  "Većina dela (KB)" 
 "Plaintext Encrypted" ---> "Jasno šifrirano"
 "Plaintext" ---> "Jasno"
 "Port %1% open" ---> "Port %1% otvoren"
