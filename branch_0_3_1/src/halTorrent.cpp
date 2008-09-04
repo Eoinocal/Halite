@@ -319,6 +319,8 @@ public:
 		
 	void alertHandler()
 	{
+		win32_exception::install_handler();
+
 		try
 		{
 			mutex_t::scoped_lock l(mutex_);
@@ -540,6 +542,9 @@ public:
 			{	
 				try
 				{
+
+					int* p = 0;
+					int q = * p;
 				
 				libt::handle_alert<
 					libt::torrent_finished_alert,
@@ -562,6 +567,14 @@ public:
 					libt::alert
 				>::handle_alert(p_alert, handler);			
 				
+				}
+				catch(const access_violation& e)
+				{
+					throw e;
+				}
+				catch(const win32_exception& e)
+				{
+					throw e;
 				}
 				catch(libt::unhandled_alert&)
 				{
@@ -834,14 +847,32 @@ catch (const libt::invalid_handle&) \
 		new EventInvalidTorrent(event_logger::critical, event_logger::invalidTorrent, name, std::string(FUNCTION)))); \
 }\
 catch (const invalidTorrent& t) \
-{\
+{ \
 	event_log.post(shared_ptr<EventDetail>( \
 		new EventInvalidTorrent(event_logger::info, event_logger::invalidTorrent, t.who(), std::string(FUNCTION)))); \
-}\
+} \
+catch (const access_violation& e) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"Torrent property %1% access_violation (code %2$x) at %3$x. Bad address %4$x") % hal::from_utf8(FUNCTION) % e.code() % (unsigned)e.where() % (unsigned)e.badAddress(), \
+			hal::event_logger::dev))); \
+} \
+catch (const win32_exception& e) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"Torrent property %1% win32_exception (code %2$x) at %3$x") % hal::from_utf8(FUNCTION) % e.code() % (unsigned)e.where(), \
+			hal::event_logger::dev))); \
+} \
 catch (const std::exception& e) \
-{\
+{ \
 	event_log.post(shared_ptr<EventDetail>( \
 		new EventTorrentException(event_logger::critical, event_logger::torrentException, std::string(e.what()), name, std::string(FUNCTION)))); \
+} \
+catch(...) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"%1% catch all") % hal::from_utf8(FUNCTION), \
+			hal::event_logger::dev))); \
 }
 
 #define HAL_GENERIC_TORRENT_EXCEPTION_CATCH(TORRENT, FUNCTION) \
@@ -855,10 +886,28 @@ catch (const invalidTorrent& t) \
 	event_log.post(shared_ptr<EventDetail>( \
 		new EventInvalidTorrent(event_logger::info, event_logger::invalidTorrent, t.who(), std::string(FUNCTION)))); \
 }\
+catch (const access_violation& e) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"Generic Torrent %1% access_violation (code %2$x) at %3$x. Bad address %4$x (%5%)") % hal::from_utf8(FUNCTION) % e.code() % (unsigned)e.where() % (unsigned)e.badAddress() % TORRENT, \
+			hal::event_logger::dev))); \
+} \
+catch (const win32_exception& e) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"Generic Torrent %1% win32_exception (code %2$x) at %3$x (%4%)") % hal::from_utf8(FUNCTION) % e.code() % (unsigned)e.where() % TORRENT, \
+			hal::event_logger::dev))); \
+} \
 catch (const std::exception& e) \
-{\
+{ \
 	event_log.post(shared_ptr<EventDetail>( \
 		new EventTorrentException(event_logger::critical, event_logger::torrentException, std::string(e.what()), TORRENT, std::string(FUNCTION)))); \
+} \
+catch (...) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"Generic Torrent %1% catch all") % hal::from_utf8(FUNCTION), \
+			hal::event_logger::dev))); \
 }
 
 void bit::shutDownSession()
@@ -1458,7 +1507,7 @@ void bit::addTorrent(wpath file, wpath saveDirectory, bool startStopped, bool co
 			me->set_state_stopped();
 	}
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(to_utf8(file.string()), "addTorrent")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(file.string(), "addTorrent")
 }
 
 const TorrentDetails& bit::torrentDetails()
