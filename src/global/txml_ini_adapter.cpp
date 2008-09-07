@@ -18,8 +18,6 @@
 #include "txml.hpp"
 #include "unicode.hpp"
 
-#define TXML_ARCHIVE_LOGGING
-
 #ifndef TXML_ARCHIVE_LOGGING
 #	define TXML_LOG(s)
 #else

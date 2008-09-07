@@ -48,8 +48,11 @@ bit_impl::bit_impl() :
 	ip_filter_count_(0),
 	dht_on_(false)
 {
+	try
+	{
+
 	torrent_internal::the_session_ = &session_;
-	torrent_internal::workingDir_ = workingDir();
+	torrent_internal::workingDir_ = hal::app().get_working_directory();
 	
 	session_.set_severity_level(libt::alert::debug);		
 	session_.add_extension(&libt::create_metadata_plugin);
@@ -67,10 +70,10 @@ bit_impl::bit_impl() :
 	
 	try
 	{						
-	if (fs::exists(workingDirectory/L"Torrents.xml"))
+	if (fs::exists(hal::app().get_working_directory()/L"Torrents.xml"))
 	{
 		{
-		fs::wifstream ifs(workingDirectory/L"Torrents.xml");
+		fs::wifstream ifs(hal::app().get_working_directory()/L"Torrents.xml");
 	
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Loading old Torrents.xml")));
 	
@@ -84,7 +87,7 @@ bit_impl::bit_impl() :
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(
 			hal::wform(L"Total %1%.") % the_torrents_.size())));				
 		
-		fs::rename(workingDirectory/L"Torrents.xml", workingDirectory/L"Torrents.xml.safe.to.delete");
+		fs::rename(hal::app().get_working_directory()/L"Torrents.xml", hal::app().get_working_directory()/L"Torrents.xml.safe.to.delete");
 	}			
 	}
 	catch(const std::exception& e)
@@ -93,11 +96,11 @@ bit_impl::bit_impl() :
 			new EventStdException(event_logger::fatal, e, L"Loading Old Torrents.xml")));
 	}		
 			
-	if (exists(workingDirectory/L"DHTState.bin"))
+	if (exists(hal::app().get_working_directory()/L"DHTState.bin"))
 	{
 		try
 		{
-			dht_state_ = haldecode(workingDirectory/L"DHTState.bin");
+			dht_state_ = haldecode(hal::app().get_working_directory()/L"DHTState.bin");
 		}		
 		catch(const std::exception& e)
 		{
@@ -112,23 +115,23 @@ bit_impl::bit_impl() :
 	}
 	
 	start_alert_handler();
+
+	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::bit_impl()")
 }
 
 bit_impl::~bit_impl()
-{
-	HAL_DEV_MSG(L"Commence ~BitTorrent_impl"); 
-
-	stop_alert_handler();
-	
-	//save_torrent_data();
-	
+{	
 	try
 	{
+	HAL_DEV_MSG(L"Commence ~BitTorrent_impl"); 
+
+	stop_alert_handler();	
+	//save_torrent_data();
 	
 	if (ip_filter_changed_)
 	{	
-		fs::ofstream ofs(workingDirectory/L"IPFilter.bin", std::ios::binary);
-//			boost::archive::binary_oarchive oba(ofs);
+		fs::ofstream ofs(hal::app().get_working_directory()/L"IPFilter.bin", std::ios::binary);
+//		boost::archive::binary_oarchive oba(ofs);
 		
 		libt::ip_filter::filter_tuple_t vectors = ip_filter_.export_filter();	
 		
@@ -139,22 +142,10 @@ bit_impl::~bit_impl()
 		v6.erase(std::remove(v6.begin(), v6.end(), 0), v6.end());
 
 		write_vec_range(ofs, v4);
-//			write_vec_range(ofs, v6);
+//		write_vec_range(ofs, v6);
 	}	
-	}
-	catch(std::exception& e)
-	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(event_logger::critical, e, L"~BitTorrent_impl"))); 
-	}
-	catch(...)
-	{
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventGeneral(hal::event_logger::warning, 
-				hal::event_logger::unclassified, L"End ~BitTorrent_impl catch all")));
-	}
 
-	HAL_DEV_MSG(L"~BitTorrent_impl"); 
+	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"~BitTorrent_impl")
 }
 
 void bit_impl::ip_filter_count()
@@ -170,7 +161,7 @@ void bit_impl::ip_filter_count()
 
 void bit_impl::ip_filter_load(progress_callback fn)
 {
-	fs::ifstream ifs(workingDirectory/L"IPFilter.bin", std::ios::binary);
+	fs::ifstream ifs(hal::app().get_working_directory()/L"IPFilter.bin", std::ios::binary);
 	if (ifs)
 	{
 		size_t v4_size;
@@ -293,8 +284,8 @@ bool bit_impl::ip_filter_import_dat(boost::filesystem::path file, progress_callb
 
 bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn)
 {		
-try
-{
+	try
+	{
 	libt::file_storage fs;
 	libt::file_pool f_pool;
 
@@ -374,12 +365,7 @@ try
 	libt::entry e = t.generate();
 	halencode(out_file, e);
 
-	}
-	catch(const std::exception& e)
-	{
-		event_log.post(shared_ptr<EventDetail>(
-			new EventStdException(event_logger::fatal, e, L"create_torrent")));
-	}	
+	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::create_torrent()")
 
 	return false;
 }
@@ -708,8 +694,6 @@ void bit_impl::alert_handler()
 		try
 		{
 		mutex_t::scoped_lock l(mutex_);
-	
-		HAL_DEV_MSG(hal::wform(L"DEV_MSG: %1%") % from_utf8(p_alert->message()));
 		
 		libt::handle_alert<
 			libt::save_resume_data_alert,
@@ -756,24 +740,7 @@ void bit_impl::alert_handler()
 	
 	}
 
-	}
-	catch (const win32_exception& e) {
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, 
-			(hal::wform(L"Alert handler win32_exception (code %1%) at %2%") % e.code() % 123).str())));
-    }
-	catch(std::exception& e)
-	{
-		// These are logged as debug because they are rarely important to act on!
-		event_log.post(shared_ptr<EventDetail>(\
-			new EventStdException(event_logger::debug, e, L"alertHandler")));
-	}
-
-	catch(...)
-	{
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventGeneral(hal::event_logger::warning, hal::event_logger::unclassified, L"Alert handler catch all")));
-	}
+	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::alert_handler()")
 }
 
 }

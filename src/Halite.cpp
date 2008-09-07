@@ -111,11 +111,14 @@ void num_active(int) {}
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+	win32_exception::install_handler();
+
+	int return_result = -1;
+
 	try 
 	{
 	
 	boost::filesystem::path::default_name_check(boost::filesystem::native);
-//	_set_abort_behavior( 0, _WRITE_ABORT_MSG);
 
 	try
 	{
@@ -138,7 +141,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	HINSTANCE hInstRich = ::LoadLibrary(WTL::CRichEditCtrl::GetLibraryName());
 	ATLASSERT(hInstRich != NULL);
    
-	int nRet = 0;	
 	HRESULT hRes = _Module.Init(NULL, hInstance);
 	assert (SUCCEEDED(hRes));	
 	
@@ -205,7 +207,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			wndMain.SetIcon(LoadIcon(hInstance, MAKEINTRESOURCE(HAL_APP_ICON)), false);	
 			wndMain.ShowWindow(nCmdShow);
 			
-			nRet = theLoop.Run();				
+			return_result = theLoop.Run();				
 		
 		_Module.RemoveMessageLoop();
 
@@ -217,13 +219,31 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	::FreeLibrary(hInstRich);	
 	_Module.Term();
 	
-	return nRet;
-	
 	}
-	catch (const std::exception& e)
+	catch (const access_violation& e)
 	{
-	std::cerr << e.what() << " Exception Thrown!" << std::endl;//MessageBoxA(0, e.what(), "Exception Thrown!", 0);
+		wstring msg = (hal::wform(L"WinMain() access_violation (code %1$x) at %2$x. Bad address %3$x") 
+			% e.code() % (unsigned)e.where() % (unsigned)e.badAddress()).str();
+
+		MessageBox(0, msg.c_str(), L"Exception Thrown!", 0);
+	} 
+	catch (const win32_exception& e)
+	{
+		wstring msg = (hal::wform(L"WinMain() win32_exception (code %1$x) at %2$x") 
+			% e.code() % (unsigned)e.where()).str();
+
+		MessageBox(0, msg.c_str(), L"Exception Thrown!", 0);
+	}
+	catch (std::exception& e)
+	{
+		wstring msg = (hal::wform(L"WinMain() std::exception, %1%") % hal::from_utf8(e.what())).str();
+
+		MessageBox(0, msg.c_str(), L"Exception Thrown!", 0);
+	}
+	catch (...)
+	{
+		MessageBox(0, L"WinMain() catch all", L"Exception Thrown!", 0);
+	}
 	
-	return -1;
-	}	
+	return return_result;
 }

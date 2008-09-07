@@ -23,6 +23,11 @@ bool Config::settingsChanged()
 
 bool Config::settingsThread()
 {	
+	win32_exception::install_handler();
+
+	try
+	{
+
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Applying BitTorrent session settings.")));	
 
 	bittorrent().set_mapping(mapping_upnp_, mapping_nat_pmp_);	
@@ -110,6 +115,10 @@ bool Config::settingsThread()
 	// Settings seem to have applied ok!
 	save_to_ini();	
 	return true;
+
+	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"Config::settingsThread()")
+
+	return false;
 }
 
 Config& config()

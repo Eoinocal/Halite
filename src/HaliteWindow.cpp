@@ -268,12 +268,7 @@ void HaliteWindow::updateWindow()
 		UISetText(1, hal::app().res_wstr(HAL_IPFILTER_OFF).c_str());
 	}
 	
-	}
-	catch (std::exception& e)
-	{
-		hal::event_log.post(shared_ptr<hal::EventDetail>(\
-			new hal::EventStdException(hal::event_logger::info, e, L"updateWindow")));
-	}
+	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::updateWindow()")
 }
 
 void HaliteWindow::OnTimer(UINT uTimerID)
@@ -290,12 +285,7 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 		hal::ini().save_data();
 		hal::bittorrent().save_torrent_data();	
 	
-		}
-		catch (std::exception& e)
-		{
-			hal::event_log.post(shared_ptr<hal::EventDetail>(\
-				new hal::EventStdException(hal::event_logger::info, e, L"saveTimer")));
-		}
+		} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::OnTimer(ID_SAVE_TIMER)")
 	}
 	else 
 	{		
@@ -313,12 +303,7 @@ void HaliteWindow::issueUiUpdate()
 
 	ui_update_signal_(torrents);
 
-	}
-	catch (std::exception& e)
-	{
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(hal::event_logger::info, e, L"updateTimer")));
-	}
+	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::issueUiUpdate()")
 }
 
 LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
@@ -403,6 +388,7 @@ void HaliteWindow::ShutdownThread()
 	try
 	{
 
+	win32_exception::install_handler();
 	hal::bittorrent().close_all(0);
 
 	hal::bittorrent().stopEventReceiver();
@@ -410,18 +396,7 @@ void HaliteWindow::ShutdownThread()
 
 	hal::bittorrent().shutDownSession();
 
-	}
-	catch(std::exception& e)
-	{
-		hal::event_log.post(shared_ptr<hal::EventDetail>(\
-			new hal::EventStdException(hal::event_logger::debug, e, L"ShutdownThread()")));
-	}
-	catch(...)
-	{
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventGeneral(hal::event_logger::warning, 
-				hal::event_logger::unclassified, L"ShutdownThread() catch all")));
-	}
+	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::ShutdownThread()")
 }
  
 void HaliteWindow::OnDestroy()
@@ -464,12 +439,7 @@ void HaliteWindow::OnDestroy()
 	HAL_DEV_MSG(L"Posting Quit Message");
 	PostQuitMessage(0);	
 
-	}
-	catch(const std::exception& e)
-	{
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(hal::event_logger::fatal, e, L"HaliteWindow::OnDestroy()")));
-	}	
+	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::OnDestroy()")
 }
 
 void HaliteWindow::OnSize(UINT type, WTL::CSize)
