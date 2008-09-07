@@ -129,8 +129,7 @@ public:
 		GetWindowRect(rect_);
 		save_to_ini();
 
-		}
-		HAL_GENERIC_FN_EXCEPTION_CATCH(L"SplashThread()")
+		} HAL_GENERIC_FN_EXCEPTION_CATCH(L"SplashThread()")
 
 		EndDialog(0);
 	}

@@ -201,12 +201,9 @@ public:
 	{
 		if (name)
 		{
-			xml::node* failsafe_current = 0;
-
 			TXML_LOG(boost::wformat(L" << load_start: %1%") % from_utf8(name));
 
-			node_stack_.push(current_node_);
-			failsafe_current = current_node_;
+			xml::node* failsafe_current = current_node_;
 
 			boost::filesystem::path location(name);
 
@@ -262,9 +259,6 @@ public:
 			TXML_LOG(boost::wformat(L" << load_end: %1%") % from_utf8(name));
 
 			previous_child_node_ = current_node_;
-
-			current_node_ = node_stack_.top();
-			node_stack_.pop();
 		}
 	}
 
@@ -285,6 +279,8 @@ public:
     template<class T>
     void load_override(const ::boost::serialization::nvp<T>& t, int)
 	{
+		node_stack_.push(current_node_);
+
 		if (t.name()) 
 		{
 			TXML_LOG(boost::wformat(L" << loading: %1%") % t.name());
@@ -297,6 +293,9 @@ public:
 		}
 		else
 			TXML_LOG(boost::wformat(L" << load_aborted: %1%") % t.name());
+
+		current_node_ = node_stack_.top();
+		node_stack_.pop();
     }
 
 	// specific overrides for attributes - not name value pairs so we

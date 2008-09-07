@@ -7,10 +7,10 @@
 #pragma once
 
 // #define TXML_ARCHIVE_LOGGING
+#include "global/txml_ini_adapter.hpp"
 #include "global/txml_oarchive.hpp"
 #include "global/txml_iarchive.hpp"
 
-#include "global/txml_ini_adapter.hpp"
 #include "halEvent.hpp"
 
 namespace hal 

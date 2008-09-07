@@ -698,10 +698,10 @@ public:
 			torrentName += L".torrent";
 		
 		wpath torrentFilename = torrentName;
-		const wpath resumeFile = workingDirectory/L"resume"/torrentFilename.filename();
+		const wpath resumeFile = hal::app().get_working_directory()/L"resume"/torrentFilename.filename();
 		
 		//  vvv Handle old naming style!
-		const wpath oldResumeFile = workingDirectory/L"resume"/filename.filename();
+		const wpath oldResumeFile = hal::app().get_working_directory()/L"resume"/filename.filename();
 		
 		if (filename.filename() != torrentFilename.filename() && exists(oldResumeFile))
 			fs::rename(oldResumeFile, resumeFile);
@@ -724,11 +724,11 @@ public:
 			}
 		}
 
-		if (!fs::exists(workingDirectory/L"torrents"))
-			fs::create_directory(workingDirectory/L"torrents");
+		if (!fs::exists(hal::app().get_working_directory()/L"torrents"))
+			fs::create_directory(hal::app().get_working_directory()/L"torrents");
 
-		if (!fs::exists(workingDirectory/L"torrents"/torrentFilename.filename()))
-			fs::copy_file(filename.string(), workingDirectory/L"torrents"/torrentFilename.filename());
+		if (!fs::exists(hal::app().get_working_directory()/L"torrents"/torrentFilename.filename()))
+			fs::copy_file(filename.string(), hal::app().get_working_directory()/L"torrents"/torrentFilename.filename());
 
 		if (!fs::exists(saveDirectory))
 			fs::create_directory(saveDirectory);
@@ -825,7 +825,7 @@ public:
 		
 		for (TorrentManager::torrentByName::iterator i=the_torrents_.begin(), e=the_torrents_.end(); i != e;)
 		{
-			wpath file = wpath(workingDirectory)/L"torrents"/(*i).torrent->filename();
+			wpath file = wpath(hal::app().get_working_directory())/L"torrents"/(*i).torrent->filename();
 			
 			if (exists(file))
 			{		
@@ -926,7 +926,7 @@ public:
 			
 		if (dht_on_) 
 		{	
-			halencode(workingDirectory/L"DHTState.bin", session_.dht_state());
+			halencode(hal::app().get_working_directory()/L"DHTState.bin", session_.dht_state());
 		}
 		
 		}		
@@ -942,8 +942,6 @@ public:
 	float defTorrentDownload() { return defTorrentDownload_; }
 	float defTorrentUpload() { return defTorrentUpload_; }
 	
-	const wpath workingDir() { return workingDirectory; };
-
 private:
 	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn);
 	
@@ -953,7 +951,7 @@ private:
 	boost::optional<thread_t> alert_checker_;
 	bool keepChecking_;
 	
-	static wpath workingDirectory;
+	wpath working_directory_;
 	ini_file bittorrentIni;
 	TorrentManager the_torrents_;	
 	

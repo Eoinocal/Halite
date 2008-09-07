@@ -67,7 +67,7 @@ catch(...) \
 	hal::event_log.post(shared_ptr<hal::EventDetail>( \
 		new hal::EventMsg(hal::wform(L"%1% catch all") % hal::to_wstr_shim(FUNCTION), \
 			hal::event_logger::critical))); \
-} \
+}
 
 namespace hal 
 {

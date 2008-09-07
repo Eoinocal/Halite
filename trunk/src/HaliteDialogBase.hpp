@@ -65,6 +65,9 @@ public:
 	
 	void handleUiUpdate(const hal::torrent_details_manager& tD)
 	{
+		try
+		{
+
 		TBase* pT = static_cast<TBase*>(this);
 		
 		hal::torrent_details_ptr focused = tD.focusedTorrent();
@@ -74,13 +77,15 @@ public:
 		{
 			pT->focusChanged(focusedTorrent_ = focused);
 			
-			hal::event_log.post(shared_ptr<hal::EventDetail>(
-				new hal::EventMsg(L"Adv dialog focusChanged")));
+			HAL_DEV_MSG(hal::wform(L"HaliteDialogBase::handleUiUpdate(%1%)") 
+				% hal::to_wstr_shim(focusedTorrent_->name()));
 		}
 		else
 			focusedTorrent_ = focused;
 	
 		pT->uiUpdate(tD);
+
+		} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteDialogBase::handleUiUpdate()")
 	}
 
 	void uiUpdate(const hal::torrent_details_manager& tD)
