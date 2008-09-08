@@ -189,6 +189,41 @@ static event_logger::eventLevel lbtAlertToHalEvent(libt::alert::severity_t sever
 	}
 }
 
+#define HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH(FUNCTION) \
+catch (const libt::invalid_handle&) \
+{\
+	event_log.post(shared_ptr<EventDetail>( \
+		new EventInvalidTorrent(event_logger::critical, event_logger::invalidTorrent, name, std::string(FUNCTION)))); \
+}\
+catch (const invalidTorrent& t) \
+{ \
+	event_log.post(shared_ptr<EventDetail>( \
+		new EventInvalidTorrent(event_logger::info, event_logger::invalidTorrent, t.who(), std::string(FUNCTION)))); \
+} \
+catch (const access_violation& e) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"Torrent property %1% access_violation (code %2$x) at %3$x. Bad address %4$x") % hal::from_utf8(FUNCTION) % e.code() % (unsigned)e.where() % (unsigned)e.badAddress(), \
+			hal::event_logger::critical))); \
+} \
+catch (const win32_exception& e) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"Torrent property %1% win32_exception (code %2$x) at %3$x") % hal::from_utf8(FUNCTION) % e.code() % (unsigned)e.where(), \
+			hal::event_logger::critical))); \
+} \
+catch (const std::exception& e) \
+{ \
+	event_log.post(shared_ptr<EventDetail>( \
+		new EventTorrentException(event_logger::critical, event_logger::torrentException, std::string(e.what()), name, std::string(FUNCTION)))); \
+} \
+catch(...) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"%1% catch all") % hal::from_utf8(FUNCTION), \
+			hal::event_logger::critical))); \
+}
+
 #define HAL_GENERIC_TORRENT_EXCEPTION_CATCH(TORRENT, FUNCTION) \
 catch (const libt::invalid_handle&) \
 {\
@@ -200,10 +235,28 @@ catch (const invalidTorrent& t) \
 	event_log.post(shared_ptr<EventDetail>( \
 		new EventInvalidTorrent(event_logger::info, event_logger::invalidTorrent, t.who(), std::string(FUNCTION)))); \
 }\
+catch (const access_violation& e) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"Generic Torrent %1% access_violation (code %2$x) at %3$x. Bad address %4$x (%5%)") % hal::from_utf8(FUNCTION) % e.code() % (unsigned)e.where() % (unsigned)e.badAddress() % TORRENT, \
+			hal::event_logger::critical))); \
+} \
+catch (const win32_exception& e) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"Generic Torrent %1% win32_exception (code %2$x) at %3$x (%4%)") % hal::from_utf8(FUNCTION) % e.code() % (unsigned)e.where() % TORRENT, \
+			hal::event_logger::critical))); \
+} \
 catch (const std::exception& e) \
-{\
+{ \
 	event_log.post(shared_ptr<EventDetail>( \
 		new EventTorrentException(event_logger::critical, event_logger::torrentException, std::string(e.what()), TORRENT, std::string(FUNCTION)))); \
+} \
+catch (...) \
+{ \
+	hal::event_log.post(shared_ptr<hal::EventDetail>( \
+		new hal::EventMsg(hal::wform(L"Generic Torrent %1% catch all") % hal::from_utf8(FUNCTION), \
+			hal::event_logger::critical))); \
 }
 
 class bit_impl
@@ -688,10 +741,9 @@ public:
 		}
 	}
 
-	std::pair<libt::entry, libt::entry> prep_torrent(wpath filename, wpath saveDirectory)
+	std::pair<boost::intrusive_ptr<libt::torrent_info>, libt::entry> prep_torrent(wpath filename, wpath saveDirectory)
 	{
-		libt::entry metadata = haldecode(filename);
-		libt::torrent_info info(metadata);
+		libt::torrent_info info(path_to_utf8(filename));
 	 	
 		wstring torrentName = hal::from_utf8_safe(info.name());
 		if (!boost::find_last(torrentName, L".torrent")) 
@@ -733,7 +785,7 @@ public:
 		if (!fs::exists(saveDirectory))
 			fs::create_directory(saveDirectory);
 		
-		return std::make_pair(metadata, resumeData);
+		return std::make_pair(info, resumeData);
 	}
 
 	void removal_thread(torrent_internal_ptr pIT, bool wipeFiles)
@@ -752,7 +804,7 @@ public:
 			}
 			else
 			{
-				libt::torrent_info m_info = pIT->infoMemory();
+				//libt::torrent_info m_info = pIT->infoMemory();
 				
 /*				// delete the files from disk
 				std::string error;

@@ -62,17 +62,19 @@ boost::signals::connection event_logger::attach(boost::function<void (boost::sha
 {
 	if (pimpl_)
 	{
-	mutex_t::scoped_lock l(pimpl_->mutex_);
-	return pimpl_->event_signal_.connect(fn);
+		mutex_t::scoped_lock l(pimpl_->mutex_);
+		return pimpl_->event_signal_.connect(fn);
 	}
+	else
+		return boost::signals::connection();
 }
 
 void event_logger::dettach(const boost::signals::connection& c)
 {
 	if (pimpl_)
 	{
-	mutex_t::scoped_lock l(pimpl_->mutex_);
-	pimpl_->event_signal_.disconnect(c);
+		mutex_t::scoped_lock l(pimpl_->mutex_);
+		pimpl_->event_signal_.disconnect(c);
 	}
 }
 

@@ -159,7 +159,7 @@ std::pair<std::string, std::string> extract_names(const wpath &file)
 {
 	if (fs::exists(file)) 
 	{	
-		libt::torrent_info info(haldecode(file));
+		libt::torrent_info info(path_to_utf8(file));
 
 		std::string name = info.name();	
 		std::string filename = name;
@@ -285,6 +285,7 @@ private:
 	mutable boost::posix_time::ptime start_;		
 };
 	
+#if 0
 class TorrentInternalOld
 {
 public:	
@@ -362,10 +363,9 @@ public:
 		}
     }
 	
-	void extractNames(libt::entry& metadata)
-	{		
-		libt::torrent_info info(metadata);				
-		name_ = hal::from_utf8_safe(info.name());
+	void extractNames(boost::intrusive_ptr<libt::torrent_info> metadata)
+	{					
+		name_ = hal::from_utf8_safe(metadata->name());
 		
 		filename_ = name_;
 		if (!boost::find_last(filename_, L".torrent")) 
@@ -449,14 +449,13 @@ public:
 	
 	bool compactStorage_;
 };
-
+#endif
 
 struct signalers
 {
 	signaler<> torrent_finished;
 	boost::signal<void ()> torrent_paused;
 };
-
 
 class torrent_internal;
 typedef shared_ptr<torrent_internal> torrent_internal_ptr;
@@ -527,7 +526,7 @@ public:
 		assert(the_session_);		
 		prepare(filename);
 	}
-	
+#if 0	
 	torrent_internal(const TorrentInternalOld& t) :
 		transferLimit_(t.transferLimit_),
 		state_(t.state_),
@@ -563,7 +562,8 @@ public:
 		fileDetailsMemory_(t.fileDetailsMemory_),
 		compactStorage_(t.compactStorage_)
 	{}
-	
+#endif
+
 	#undef TORRENT_INTERNALS_DEFAULTS
 	
 	torrent_details_ptr gettorrent_details_ptr()
@@ -748,7 +748,14 @@ public:
 			if (compactStorage_)
 				storage = libt::storage_mode_compact;
 			
-			handle_ = the_session_->add_torrent(metadata_, dir, resumedata_, storage, paused);			
+			libt::add_torrent_params atp;
+
+			atp.save_path = dir;
+			atp.ti = info_memory();
+			atp.storage_mode = storage;
+			atp.paused = paused;
+
+			handle_ = the_session_->add_torrent(atp);			
 			assert(handle_.is_valid());
 			
 			clear_resume_data();
@@ -787,7 +794,7 @@ public:
 		if (writeData)
 		{
 			HAL_DEV_MSG(L"getting resume data");
-			resumedata_ = handle_.write_resume_data(); // Update the fast-resume data
+//			resumedata_ = handle_.save(); // Update the fast-resume data
 			HAL_DEV_MSG(L"writing resume data");
 			write_resume_data();
 
@@ -1054,9 +1061,9 @@ public:
 	
 	const std::vector<tracker_detail>& getTrackers()
 	{
-		if (trackers_.empty() && infoMemory_)
+		if (trackers_.empty() && info_memory_)
 		{
-			std::vector<libt::announce_entry> trackers = infoMemory_->trackers();
+			std::vector<libt::announce_entry> trackers = info_memory_->trackers();
 			
 			foreach (const libt::announce_entry& entry, trackers)
 			{
@@ -1166,9 +1173,9 @@ public:
 	}
     }
 
-	void setEntryData(libtorrent::entry metadata, libtorrent::entry resumedata)
+	void setEntryData(boost::intrusive_ptr<libt::torrent_info> metadata, libtorrent::entry resumedata)
 	{		
-		metadata_ = metadata;
+		info_memory_ = metadata;
 		resumedata_ = resumedata;
 	}
 
@@ -1222,10 +1229,10 @@ public:
 	{
 		if (fileDetailsMemory_.empty())
 		{
-			libt::torrent_info& info = infoMemory();
+			boost::intrusive_ptr<libt::torrent_info> info = info_memory();
 			std::vector<libt::file_entry> files;
 			
-			std::copy(info.begin_files(), info.end_files(), 
+			std::copy(info->begin_files(), info->end_files(), 
 				std::back_inserter(files));					
 				
 			if (filePriorities_.size() != files.size())
@@ -1245,7 +1252,7 @@ public:
 		
 		if (in_session())
 		{			
-			std::vector<float> fileProgress;			
+			std::vector<libt::size_type> fileProgress;			
 			handle_.file_progress(fileProgress);
 			
 			for(size_t i=0, e=fileDetailsMemory_.size(); i<e; ++i)
@@ -1263,9 +1270,9 @@ public:
 		mutex_t::scoped_lock l(mutex_);
 		
 		if (fs::exists(filename)) 
-			metadata_ = haldecode(filename);
+			info_memory_ = new libt::torrent_info(path_to_utf8(filename));
 		
-		extractNames(metadata_);			
+		extractNames(info_memory());			
 		
 		const wpath resumeFile = workingDir_/L"resume"/filename_;
 		const wpath torrentFile = workingDir_/L"torrents"/filename_;
@@ -1273,8 +1280,8 @@ public:
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(
 			hal::wform(L"File: %1%, %2%.") % resumeFile % torrentFile)));
 		
-		if (exists(resumeFile)) 
-			resumedata_ = haldecode(resumeFile);
+	//	if (exists(resumeFile)) 
+	//		resumedata_ = haldecode(resumeFile);
 
 		if (!exists(workingDir_/L"torrents"))
 			create_directory(workingDir_/L"torrents");
@@ -1291,12 +1298,11 @@ public:
 			state_ = torrent_details::torrent_paused;
 	}
 	
-	void extractNames(libt::entry& metadata)
+	void extractNames(boost::intrusive_ptr<libt::torrent_info> metadata)
 	{
 		mutex_t::scoped_lock l(mutex_);
-		
-		libt::torrent_info info(metadata);				
-		name_ = hal::from_utf8_safe(info.name());
+				
+		name_ = hal::from_utf8_safe(metadata->name());
 		
 		filename_ = name_;
 		if (!boost::find_last(filename_, L".torrent")) 
@@ -1306,11 +1312,13 @@ public:
 			hal::wform(L"Loaded names: %1%, %2%") % name_ % filename_)));
 	}
 	
-	libt::torrent_info& infoMemory()
+	boost::intrusive_ptr<libt::torrent_info> info_memory()
 	{
-		if (!infoMemory_) infoMemory_ = libt::torrent_info(metadata_);
+		if (!info_memory_) 
+			info_memory_ = 
+				boost::intrusive_ptr<libt::torrent_info>(new libt::torrent_info(path_to_utf8(filename())));
 		
-		return *infoMemory_;
+		return info_memory_;
 	}
 	
 	signalers& signals()
@@ -1500,7 +1508,7 @@ private:
 	wstring originalFilename_;
 	libt::torrent_handle handle_;	
 	
-	libt::entry metadata_;
+//	boost::intrusive_ptr<libt::torrent_info> metadata_;
 	libt::entry resumedata_;
 	
 	wstring trackerUsername_;	
@@ -1526,7 +1534,7 @@ private:
 	
 	float progress_;
 	
-	boost::optional<libt::torrent_info> infoMemory_;
+	boost::intrusive_ptr<libt::torrent_info> info_memory_;
 	libt::torrent_status statusMemory_;
 	FileDetails fileDetailsMemory_;
 	
@@ -1606,7 +1614,7 @@ public:
 	TorrentManager(ini_file& ini) :
 		iniClass("bittorrent", "TorrentManager", ini)
 	{}
-	
+#if 0	
 	TorrentManager& operator=(const TorrentMap& map)
 	{
 		torrents_.clear();
@@ -1623,7 +1631,7 @@ public:
 		
 		return *this;
 	}
-	
+#endif	
 	std::pair<torrentByName::iterator, bool> insert(const TorrentHolder& h)
 	{
 		return torrents_.get<byName>().insert(h);
