@@ -72,6 +72,8 @@ bit_impl::bit_impl() :
 	{						
 	if (fs::exists(hal::app().get_working_directory()/L"Torrents.xml"))
 	{
+		assert(false);
+#if 0
 		{
 		fs::wifstream ifs(hal::app().get_working_directory()/L"Torrents.xml");
 	
@@ -88,6 +90,7 @@ bit_impl::bit_impl() :
 			hal::wform(L"Total %1%.") % the_torrents_.size())));				
 		
 		fs::rename(hal::app().get_working_directory()/L"Torrents.xml", hal::app().get_working_directory()/L"Torrents.xml.safe.to.delete");
+#endif
 	}			
 	}
 	catch(const std::exception& e)
