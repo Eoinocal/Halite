@@ -52,9 +52,8 @@ bit_impl::bit_impl() :
 	{
 
 	torrent_internal::the_session_ = &session_;
-	torrent_internal::workingDir_ = hal::app().get_working_directory();
-	
-	session_.set_severity_level(libt::alert::debug);		
+
+	session_.session::set_alert_mask(libt::alert::all_categories);		
 	session_.add_extension(&libt::create_metadata_plugin);
 	session_.add_extension(&libt::create_ut_pex_plugin);
 	session_.set_max_half_open_connections(10);
@@ -426,7 +425,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::external_ip_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_EXTERNAL_IP_ALERT))
 					% hal::from_utf8_safe(a.message())
 					% hal::from_utf8_safe(a.external_address.to_string()))
@@ -436,7 +435,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::portmap_error_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_PORTMAP_ERROR_ALERT))
 				% (a.type == 0 ? 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_PMP) : 
@@ -447,7 +446,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::portmap_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_PORTMAP_ALERT))
 				% (a.type == 0 ? 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_PMP) : 
@@ -459,7 +458,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::file_error_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_FILE_ERROR_ALERT))
 				% hal::from_utf8_safe(a.file)
 				% hal::from_utf8_safe(a.msg))
@@ -469,7 +468,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::dht_reply_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_DHT_REPLY_ALERT))
 					% a.num_peers)
 		)	);				
@@ -502,7 +501,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::peer_error_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_PEER_ALERT))
 					% hal::from_utf8_safe(a.message())
 					% hal::from_utf8_safe(a.ip.address().to_string()))
@@ -512,7 +511,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::peer_ban_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_PEER_BAN_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.ip.address().to_string()))
@@ -522,7 +521,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::hash_failed_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_HASH_FAIL_ALERT))
 					% get(a.handle)->name()
 					% a.piece_index)
@@ -532,7 +531,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::url_seed_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_URL_SEED_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.url)
@@ -543,7 +542,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::tracker_warning_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_TRACKER_WARNING_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.message()))
@@ -563,7 +562,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::tracker_error_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_TRACKER_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.message())
@@ -575,7 +574,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::tracker_reply_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_TRACKER_REPLY_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.message())
@@ -586,7 +585,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::save_resume_data_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_FAST_RESUME_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.message()))
@@ -596,7 +595,7 @@ void bit_impl::alert_handler()
 	void operator()(libt::fastresume_rejected_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
-			new EventGeneral(lbtAlertToHalEvent(a.severity()), a.timestamp(),
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_FAST_RESUME_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.message()))

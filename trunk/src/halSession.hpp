@@ -189,6 +189,33 @@ static event_logger::eventLevel lbtAlertToHalEvent(libt::alert::severity_t sever
 	}
 }
 
+static event_logger::eventLevel lbt_category_to_event(int category)
+{
+	switch (category)
+	{
+	case libt::alert::debug_notification:
+		return event_logger::debug;
+	
+	case libt::alert::peer_notification:
+	case libt::alert::port_mapping_notification:
+	case libt::alert::storage_notification:
+	case libt::alert::tracker_notification:
+	case libt::alert::status_notification:
+	case libt::alert::progress_notification:
+	case libt::alert::ip_block_notification:
+		return event_logger::info;
+	
+	case libt::alert::performance_warning:
+		return event_logger::warning;
+	
+	case libt::alert::error_notification:
+		return event_logger::critical;
+	
+	default:
+		return event_logger::none;
+	}
+}
+
 #define HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH(FUNCTION) \
 catch (const libt::invalid_handle&) \
 {\
@@ -740,7 +767,7 @@ public:
 					std::string(e.what()), to_utf8(file.string()), std::string("addTorrent"))));
 		}
 	}
-
+#if 0
 	std::pair<boost::intrusive_ptr<libt::torrent_info>, libt::entry> prep_torrent(wpath filename, wpath saveDirectory)
 	{
 		libt::torrent_info info(path_to_utf8(filename));
@@ -787,7 +814,7 @@ public:
 		
 		return std::make_pair(info, resumeData);
 	}
-
+#endif
 	void removal_thread(torrent_internal_ptr pIT, bool wipeFiles)
 	{
 		try {
@@ -1003,7 +1030,6 @@ private:
 	boost::optional<thread_t> alert_checker_;
 	bool keepChecking_;
 	
-	wpath working_directory_;
 	ini_file bittorrentIni;
 	TorrentManager the_torrents_;	
 	

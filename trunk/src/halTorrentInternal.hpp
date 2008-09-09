@@ -1573,10 +1573,10 @@ class TorrentManager :
 
 			if (version < 1)
 			{
-				TorrentInternalOld t;
+/*				TorrentInternalOld t;
 				ar & make_nvp("torrent", t);
 				
-				torrent.reset(new torrent_internal(t));
+				torrent.reset(new torrent_internal(t));*/
 			}
 			else
 			{
