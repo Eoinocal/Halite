@@ -87,11 +87,7 @@ void num_active(int) {}
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-
-//	HAL_DEV_MSG(L"Hello");
-//	hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, L"Hello")));
-
-//	::SetProcessAffinityMask(::GetCurrentProcess(), (DWORD_PTR)0x1);
+	int int_result = -1;
 	
 	try 
 	{
@@ -102,7 +98,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	HINSTANCE hInstRich = ::LoadLibrary(CRichEditCtrl::GetLibraryName());
 	ATLASSERT(hInstRich != NULL);
    
-	int nRet = 0;	
 	HRESULT hRes = _Module.Init(NULL, hInstance);
 	assert (SUCCEEDED(hRes));	
 	
@@ -166,7 +161,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			wndMain.SetIcon(LoadIcon(hInstance, MAKEINTRESOURCE(IDR_APP_ICON)), false);	
 			wndMain.ShowWindow(nCmdShow);
 			
-			nRet = theLoop.Run();				
+			int_result = theLoop.Run();				
 		
 		_Module.RemoveMessageLoop();
 
@@ -178,13 +173,26 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	::FreeLibrary(hInstRich);	
 	_Module.Term();
 	
-	return nRet;
-	
 	}
-	catch (const std::exception& e)
+	catch(const access_violation& e)
 	{
-	MessageBoxA(0, e.what(), "Exception Thrown!", 0);
+		MessageBoxW(0, (hal::wform(L"WinMain() access_violation (code %1$x) at %2$x. Bad address %3$x") 
+			% e.code() % (unsigned)e.where() % (unsigned)e.badAddress()).str().c_str(), L"Exception Thrown!", 0);
+	}
+	catch(const win32_exception& e)
+	{
+		MessageBoxW(0, (hal::wform(L"WinMain() win32_exception (code %1$x) at %2$x") 
+			% e.code() % (unsigned)e.where()).str().c_str(), L"Exception Thrown!", 0);
+	}
+	catch(const std::exception& e)
+	{
+		MessageBoxW(0, (hal::wform(L"WinMain() std::exception, %1%") 
+			% hal::from_utf8(e.what())).str().c_str(), L"Exception Thrown!", 0);
+	}
+	catch(...)
+	{
+		MessageBoxW(0, L"WinMain() catch all", L"Exception Thrown!", 0);
+	}
 	
-	return -1;
-	}	
+	return int_result;
 }

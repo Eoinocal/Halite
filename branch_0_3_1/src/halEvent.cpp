@@ -65,7 +65,7 @@ void event_logger::dettach(const boost::signals::connection& c)
 void event_logger::post(boost::shared_ptr<EventDetail> e)
 {
 	mutex_t::scoped_lock l(pimpl_->mutex_);
-	if (e->level() != hal::event_logger::debug || halite().logDebug())
+	if (e->level() > hal::event_logger::debug || halite().logDebug())
 		pimpl_->event_signal_(e);
 }
 	

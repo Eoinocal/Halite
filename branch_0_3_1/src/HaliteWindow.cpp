@@ -389,12 +389,20 @@ void HaliteWindow::OnClose()
 
 void HaliteWindow::ShutdownThread()
 {
+	win32_exception::install_handler();
+
+	try
+	{
+
 	hal::bittorrent().closeAll(0);
 
 	hal::bittorrent().stopEventReceiver();
 	Sleep(3000);
 
 	hal::bittorrent().shutDownSession();
+
+	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L" HaliteWindow::ShutdownThread()")
 }
  
 void HaliteWindow::OnDestroy()

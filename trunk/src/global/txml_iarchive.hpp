@@ -9,18 +9,21 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 
-#include <boost/archive/xml_iarchive.hpp>
+//#include <boost/archive/xml_iarchive.hpp>
 
-#include <boost/serialization/version.hpp>
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/map.hpp>
-#include <boost/serialization/split_free.hpp>
+#pragma warning (push)
+#pragma warning (disable : 4099)
+#	include <boost/serialization/version.hpp>
+#	include <boost/serialization/vector.hpp>
+#	include <boost/serialization/map.hpp>
+#	include <boost/serialization/split_free.hpp>
 
-#include <boost/archive/impl/basic_text_iprimitive.ipp>
-#include <boost/archive/impl/xml_iarchive_impl.ipp>
-#include <boost/archive/impl/basic_xml_iarchive.ipp>
-#include <boost/archive/impl/archive_pointer_iserializer.ipp>
-#include <boost/archive/shared_ptr_helper.hpp>
+#	include <boost/archive/impl/basic_text_iprimitive.ipp>
+#	include <boost/archive/impl/xml_iarchive_impl.ipp>
+//#	include <boost/archive/impl/basic_xml_iarchive.ipp>
+#	include <boost/archive/impl/archive_pointer_iserializer.ipp>
+#	include <boost/archive/shared_ptr_helper.hpp>
+#pragma warning (pop)
 
 #include "global/string_conv.hpp"
 #include "txml.hpp"

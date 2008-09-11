@@ -58,8 +58,17 @@ public:
 
 	void ProgressThread()
 	{
-		int err_code = (fn_(bind(&ProgressDialog::Callback, this, _1, _2)) ? 1 : 0);
-		
+		win32_exception::install_handler();
+		int err_code = -1;
+
+		try
+		{
+
+		err_code = (fn_(bind(&ProgressDialog::Callback, this, _1, _2)) ? 1 : 0);
+
+		}
+		HAL_GENERIC_FN_EXCEPTION_CATCH(L"ProgressThread()")
+
 		EndDialog(err_code);
 	}
 	

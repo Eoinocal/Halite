@@ -13,8 +13,6 @@
 #include <boost/array.hpp>
 #include <boost/signals.hpp>
 #include <boost/algorithm/string/split.hpp>
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/split_free.hpp>
 #include <boost/ptr_container/ptr_map.hpp>
 
 #include <winstl/controls/listview_sequence.hpp>

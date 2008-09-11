@@ -8,7 +8,6 @@
 
 #include "stdAfx.hpp"
 
-
 #include "halEvent.hpp"
 #include "Halite.hpp"
 
@@ -21,15 +20,16 @@
 #include <string>
 #include <vector>
 
-#include <libtorrent/file.hpp>
-#include <libtorrent/hasher.hpp>
-#include <libtorrent/entry.hpp>
-#include <libtorrent/bencode.hpp>
-#include <libtorrent/session.hpp>
-#include <libtorrent/ip_filter.hpp>
-#include <libtorrent/torrent_handle.hpp>
-#include <libtorrent/peer_connection.hpp>
-
+#pragma warning (push, 1)
+#	include <libtorrent/file.hpp>
+#	include <libtorrent/hasher.hpp>
+#	include <libtorrent/entry.hpp>
+#	include <libtorrent/bencode.hpp>
+#	include <libtorrent/session.hpp>
+#	include <libtorrent/ip_filter.hpp>
+#	include <libtorrent/torrent_handle.hpp>
+#	include <libtorrent/peer_connection.hpp>
+#pragma warning (pop) 
 
 namespace hal
 {

@@ -6,91 +6,23 @@
 
 #pragma once
 
-#define HALITE_VERSION					0, 3, 1, 525
-#define HALITE_VERSION_STRING			"v 0.3.1.5 dev 525"
-#define	HALITE_FINGERPRINT				"HL", 0, 3, 1, 5
+#include "halTorrentDefines.hpp"
 
-#ifndef HAL_NA
-#define HAL_NA 40013
-#endif
-
-#define HAL_TORRENT_EXT_BEGIN 				41000
-#define LBT_EVENT_TORRENT_FINISHED			HAL_TORRENT_EXT_BEGIN + 1
-#define HAL_PEER_BAN_ALERT					HAL_TORRENT_EXT_BEGIN + 2
-#define HAL_HASH_FAIL_ALERT					HAL_TORRENT_EXT_BEGIN + 3
-#define HAL_URL_SEED_ALERT					HAL_TORRENT_EXT_BEGIN + 5
-#define HAL_TRACKER_WARNING_ALERT			HAL_TORRENT_EXT_BEGIN + 4
-#define HAL_TRACKER_ANNOUNCE_ALERT			HAL_TORRENT_EXT_BEGIN + 6
-#define HAL_TRACKER_ALERT					HAL_TORRENT_EXT_BEGIN + 7
-#define HAL_TRACKER_REPLY_ALERT				HAL_TORRENT_EXT_BEGIN + 8
-#define LBT_EVENT_TORRENT_PAUSED			HAL_TORRENT_EXT_BEGIN + 9
-#define HAL_FAST_RESUME_ALERT				HAL_TORRENT_EXT_BEGIN + 10
-#define HAL_PIECE_FINISHED_ALERT			HAL_TORRENT_EXT_BEGIN + 11
-#define HAL_BLOCK_FINISHED_ALERT			HAL_TORRENT_EXT_BEGIN + 12
-#define HAL_BLOCK_DOWNLOADING_ALERT			HAL_TORRENT_EXT_BEGIN + 13
-#define HAL_LISTEN_SUCCEEDED_ALERT			HAL_TORRENT_EXT_BEGIN + 14
-#define HAL_LISTEN_FAILED_ALERT				HAL_TORRENT_EXT_BEGIN + 15
-#define HAL_IPFILTER_ALERT					HAL_TORRENT_EXT_BEGIN + 16
-#define HAL_INCORRECT_ENCODING_LEVEL		HAL_TORRENT_EXT_BEGIN + 17
-#define HAL_INCORRECT_CONNECT_POLICY    	HAL_TORRENT_EXT_BEGIN + 18
-#define HAL_PEER_ALERT						HAL_TORRENT_EXT_BEGIN + 19
-#define HAL_LISTEN_V6_FAILED_ALERT			HAL_TORRENT_EXT_BEGIN + 20
-#define HAL_TORRENT_LOAD_FILTERS			HAL_TORRENT_EXT_BEGIN + 21
-#define HAL_EXTERNAL_IP_ALERT				HAL_TORRENT_EXT_BEGIN + 22
-#define HAL_PORTMAP_ERROR_ALERT				HAL_TORRENT_EXT_BEGIN + 23
-#define HAL_PORTMAP_ALERT					HAL_TORRENT_EXT_BEGIN + 24
-#define HAL_PORTMAP_TYPE_PMP				HAL_TORRENT_EXT_BEGIN + 25			
-#define HAL_PORTMAP_TYPE_UPNP				HAL_TORRENT_EXT_BEGIN + 26
-#define HAL_FILE_ERROR_ALERT				HAL_TORRENT_EXT_BEGIN + 27
-#define HAL_DHT_REPLY_ALERT					HAL_TORRENT_EXT_BEGIN + 28
-
-#define HAL_TORRENT_INT_BEGIN 				42000
-#define HAL_PEER_INTERESTING            	HAL_TORRENT_INT_BEGIN + 1
-#define HAL_PEER_CHOKED             		HAL_TORRENT_INT_BEGIN + 2
-#define HAL_PEER_REMOTE_INTERESTING			HAL_TORRENT_INT_BEGIN + 3
-#define HAL_PEER_REMOTE_CHOKED				HAL_TORRENT_INT_BEGIN + 4
-#define HAL_PEER_SUPPORT_EXTENSIONS			HAL_TORRENT_INT_BEGIN + 5
-#define HAL_PEER_LOCAL_CONNECTION			HAL_TORRENT_INT_BEGIN + 6
-#define HAL_PEER_HANDSHAKE					HAL_TORRENT_INT_BEGIN + 7
-#define HAL_PEER_CONNECTING					HAL_TORRENT_INT_BEGIN + 8
-#define HAL_PEER_QUEUED						HAL_TORRENT_INT_BEGIN + 9
-#define HAL_PEER_RC4_ENCRYPTED				HAL_TORRENT_INT_BEGIN + 10
-#define HAL_PEER_PLAINTEXT_ENCRYPTED		HAL_TORRENT_INT_BEGIN + 11
-#define HAL_TORRENT_QUEUED_CHECKING			HAL_TORRENT_INT_BEGIN + 12
-#define HAL_TORRENT_CHECKING_FILES			HAL_TORRENT_INT_BEGIN + 13
-#define HAL_TORRENT_CONNECTING				HAL_TORRENT_INT_BEGIN + 14
-#define HAL_TORRENT_DOWNLOADING				HAL_TORRENT_INT_BEGIN + 15
-#define HAL_TORRENT_FINISHED				HAL_TORRENT_INT_BEGIN + 16
-#define HAL_TORRENT_SEEDING					HAL_TORRENT_INT_BEGIN + 17
-#define HAL_TORRENT_ALLOCATING				HAL_TORRENT_INT_BEGIN + 18
-#define HAL_TORRENT_QUEUED					HAL_TORRENT_INT_BEGIN + 19
-#define HAL_TORRENT_STOPPED					HAL_TORRENT_INT_BEGIN + 20
-#define HAL_TORRENT_PAUSED					HAL_TORRENT_INT_BEGIN + 21
-#define HAL_TORRENT_STOPPING				HAL_TORRENT_INT_BEGIN + 22
-#define HAL_TORRENT_PAUSING					HAL_TORRENT_INT_BEGIN + 23
-#define HAL_TORRENT_METADATA            	HAL_TORRENT_INT_BEGIN + 24
-#define HAL_NEWT_CREATING_TORRENT			HAL_TORRENT_INT_BEGIN + 25
-#define HAL_NEWT_HASHING_PIECES            	HAL_TORRENT_INT_BEGIN + 26
-#define HAL_TORRENT_IMPORT_FILTERS         	HAL_TORRENT_INT_BEGIN + 27
-#define HAL_INT_NEWT_ADD_PEERS_WEB         	HAL_TORRENT_INT_BEGIN + 28
-#define HAL_INT_NEWT_ADD_PEERS_DHT         	HAL_TORRENT_INT_BEGIN + 29
-#define HAL_NEWT_CREATION_CANCELED         	HAL_TORRENT_INT_BEGIN + 30
-
-#ifndef RC_INVOKED
-
-#include <libtorrent/file.hpp>
-#include <libtorrent/hasher.hpp>
-#include <libtorrent/storage.hpp>
-#include <libtorrent/file_pool.hpp>
-#include <libtorrent/alert_types.hpp>
-#include <libtorrent/entry.hpp>
-#include <libtorrent/bencode.hpp>
-#include <libtorrent/session.hpp>
-#include <libtorrent/ip_filter.hpp>
-#include <libtorrent/torrent_handle.hpp>
-#include <libtorrent/peer_connection.hpp>
-#include <libtorrent/extensions/metadata_transfer.hpp>
-#include <libtorrent/extensions/ut_pex.hpp>
+#pragma warning (push, 1)
+#	include <libtorrent/file.hpp>
+#	include <libtorrent/hasher.hpp>
+#	include <libtorrent/storage.hpp>
+#	include <libtorrent/file_pool.hpp>
+#	include <libtorrent/alert_types.hpp>
+#	include <libtorrent/entry.hpp>
+#	include <libtorrent/bencode.hpp>
+#	include <libtorrent/session.hpp>
+#	include <libtorrent/ip_filter.hpp>
+#	include <libtorrent/torrent_handle.hpp>
+#	include <libtorrent/peer_connection.hpp>
+#	include <libtorrent/extensions/metadata_transfer.hpp>
+#	include <libtorrent/extensions/ut_pex.hpp>
+#pragma warning (pop) 
 
 #include <boost/tuple/tuple.hpp>
 #include <boost/enable_shared_from_this.hpp>
@@ -100,7 +32,10 @@
 #include <boost/multi_index/identity.hpp>
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/tag.hpp>
-#include <boost/serialization/shared_ptr.hpp>
+
+#include <boost/statechart/event.hpp>
+#include <boost/statechart/state_machine.hpp>
+#include <boost/statechart/simple_state.hpp>
 
 #include "halIni.hpp"
 #include "halTypes.hpp"
@@ -119,6 +54,8 @@ namespace hal
 {
 
 namespace libt = libtorrent;
+namespace sc = boost::statechart;
+
 
 inline
 libt::entry haldecode(const wpath &file) 
@@ -285,172 +222,6 @@ private:
 	mutable boost::posix_time::ptime start_;		
 };
 	
-#if 0
-class TorrentInternalOld
-{
-public:	
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
-    {
-		using boost::serialization::make_nvp;
-
-        ar & make_nvp("transferLimit", transferLimit_);
-        ar & make_nvp("connections", connections_);
-        ar & make_nvp("uploads", uploads_);	
-		
-		if (version > 6) {
-			ar & make_nvp("filename", filename_);
-		}
-		else 
-		{
-			wstring originalFilename;
-			ar & make_nvp("filename", originalFilename);
-			
-			updatePreVersion7Files(originalFilename);
-		}
-		
-        ar & make_nvp("saveDirectory", save_directory_);
-		
-		if (version > 7) {
-			ar & make_nvp("payloadUploaded_", payloadUploaded_);
-			ar & make_nvp("payloadDownloaded_", payloadDownloaded_);
-			ar & make_nvp("uploaded_", uploaded_);
-			ar & make_nvp("downloaded_", downloaded_);	
-			ar & make_nvp("ratio", ratio_);	
-		} 
-		else if (version > 3) {
-			ar & make_nvp("payloadUploaded_", payloadUploaded_);
-			ar & make_nvp("payloadDownloaded_", payloadDownloaded_);
-			ar & make_nvp("uploaded_", uploaded_);
-			ar & make_nvp("downloaded_", downloaded_);		
-		} 
-		else if (version > 1)
-		{
-			ar & make_nvp("totalUploaded", totalUploaded_);
-			ar & make_nvp("ratio", ratio_);
-			
-			payloadUploaded_.reset(totalUploaded_);
-		}
-		
-		if (version > 0) {
-			ar & make_nvp("trackerUsername", trackerUsername_);
-			ar & make_nvp("trackerPassword", trackerPassword_);
-		}
-		if (version > 1) {
-			ar & make_nvp("state", state_);
-			ar & make_nvp("trackers", trackers_);
-		}
-	
-		if (version > 2) {
-			ar & make_nvp("resolve_countries", resolve_countries_);
-		}
-		if (version > 4) {
-			ar & make_nvp("file_priorities", filePriorities_);
-		}
-		if (version > 5) {
-			ar & make_nvp("startTime", startTime_);
-			ar & make_nvp("activeDuration", activeDuration_);
-			ar & make_nvp("seedingDuration", seedingDuration_);
-		}
-		if (version > 6) {
-			ar & make_nvp("name", name_);
-			ar & make_nvp("compactStorage", compactStorage_);
-			ar & make_nvp("finishTime", finishTime_);
-		}
-		if (version > 8) {
-			ar & make_nvp("progress", progress_);
-		}
-    }
-	
-	void extractNames(boost::intrusive_ptr<libt::torrent_info> metadata)
-	{					
-		name_ = hal::from_utf8_safe(metadata->name());
-		
-		filename_ = name_;
-		if (!boost::find_last(filename_, L".torrent")) 
-				filename_ += L".torrent";
-		
-		event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			hal::wform(L"Loaded names: %1%, %2%") % name_ % filename_)));
-	}
-	
-	void updatePreVersion7Files(wstring originalFilename)
-	{
-		try 
-		{
-
-		wpath oldFile = app().get_working_directory()/L"torrents"/originalFilename;
-		
-		if (fs::exists(oldFile)) 
-			extractNames(haldecode(oldFile));
-		
-		wpath oldResumeFile = app().get_working_directory()/L"resume"/originalFilename;
-		
-		if (filename_ != originalFilename)
-		{
-			fs::rename(oldFile, app().get_working_directory()/L"torrents"/filename_);
-			
-			if (fs::exists(oldResumeFile))
-				fs::rename(oldResumeFile, app().get_working_directory()/L"resume"/filename_);
-		}
-		
-		}
-		catch(std::exception &e) 
-		{		
-			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(event_logger::critical, e, L"updatePreVersion7Files"))); 
-		}
-	}
-	
-	std::pair<float, float> transferLimit_;
-	
-	unsigned state_;
-	int connections_;
-	int uploads_;
-	bool in_session_;
-	float ratio_;
-	bool resolve_countries_;
-	
-	wstring filename_;
-	wstring name_;
-	wstring save_directory_;
-	wstring originalFilename_;
-	libt::torrent_handle handle_;	
-	
-	libt::entry metadata_;
-	libt::entry resumedata_;
-	
-	wstring trackerUsername_;	
-	wstring trackerPassword_;
-	
-	boost::int64_t totalUploaded_;
-	boost::int64_t totalBase_;
-	
-	transfer_tracker<boost::int64_t> payloadUploaded_;
-	transfer_tracker<boost::int64_t> payloadDownloaded_;
-	transfer_tracker<boost::int64_t> uploaded_;
-	transfer_tracker<boost::int64_t> downloaded_;
-	
-	boost::posix_time::ptime startTime_;
-	boost::posix_time::ptime finishTime_;
-	duration_tracker activeDuration_;
-	duration_tracker seedingDuration_;
-	
-	std::vector<tracker_detail> trackers_;
-	std::vector<libt::announce_entry> torrent_trackers_;
-	std::vector<libt::peer_info> peers_;	
-	std::vector<int> filePriorities_;
-	
-	float progress_;
-	
-	libt::torrent_status statusMemory_;
-	FileDetails fileDetailsMemory_;
-	
-	bool compactStorage_;
-};
-#endif
-
 struct signalers
 {
 	signaler<> torrent_finished;
@@ -495,6 +266,21 @@ class torrent_internal :
 	friend class bit_impl;	
 	friend class bit::torrent::exec_around_ptr::proxy;
 
+	struct out_of_session;
+	struct in_the_session;
+
+	struct torrent_state_machive : sc::state_machine<torrent_state_machive, out_of_session> {};
+
+	struct out_of_session : sc::simple_state<out_of_session, torrent_state_machive> {};
+
+	struct paused;
+	struct active;
+
+	struct in_the_session : sc::simple_state<in_the_session, torrent_state_machive, paused> {};
+
+	struct paused : sc::simple_state<paused, in_the_session> {};
+	struct active : sc::simple_state<active, in_the_session> {};
+
 public:
 	#define TORRENT_INTERNALS_DEFAULTS \
 		originalFilename_(L""), \
@@ -526,43 +312,6 @@ public:
 		assert(the_session_);		
 		prepare(filename);
 	}
-#if 0	
-	torrent_internal(const TorrentInternalOld& t) :
-		transferLimit_(t.transferLimit_),
-		state_(t.state_),
-		connections_(t.connections_),
-		uploads_(t.uploads_),
-		ratio_(t.ratio_),
-		resolve_countries_(t.resolve_countries_),
-		filename_(t.filename_),
-		name_(t.name_),
-		save_directory_(t.save_directory_),
-		originalFilename_(t.originalFilename_),
-		handle_(t.handle_),
-		metadata_(t.metadata_),
-		resumedata_(t.resumedata_),
-		trackerUsername_(t.trackerUsername_),	
-		trackerPassword_(t.trackerPassword_),
-		totalUploaded_(t.totalUploaded_),
-		totalBase_(t.totalBase_),
-		payloadUploaded_(t.payloadUploaded_),
-		payloadDownloaded_(t.payloadDownloaded_),
-		uploaded_(t.uploaded_),
-		downloaded_(t.downloaded_),
-		startTime_(t.startTime_),
-		finishTime_(t.finishTime_),
-		activeDuration_(t.activeDuration_),
-		seedingDuration_(t.seedingDuration_),
-		trackers_(t.trackers_),
-		torrent_trackers_(t.torrent_trackers_),
-		peers_(t.peers_),
-		filePriorities_(t.filePriorities_),
-		progress_(t.progress_),
-		statusMemory_(t.statusMemory_),
-		fileDetailsMemory_(t.fileDetailsMemory_),
-		compactStorage_(t.compactStorage_)
-	{}
-#endif
 
 	#undef TORRENT_INTERNALS_DEFAULTS
 	
@@ -1571,18 +1320,7 @@ class TorrentManager :
 		{
 			using boost::serialization::make_nvp;
 
-			if (version < 1)
-			{
-/*				TorrentInternalOld t;
-				ar & make_nvp("torrent", t);
-				
-				torrent.reset(new torrent_internal(t));*/
-			}
-			else
-			{
-				ar & make_nvp("torrent", torrent);
-			} 
-			
+			ar & make_nvp("torrent", torrent);
 			ar & make_nvp("filename", filename);
 			ar & make_nvp("name", name);
 		}
@@ -1614,24 +1352,7 @@ public:
 	TorrentManager(ini_file& ini) :
 		iniClass("bittorrent", "TorrentManager", ini)
 	{}
-#if 0	
-	TorrentManager& operator=(const TorrentMap& map)
-	{
-		torrents_.clear();
-		
-		for (TorrentMap::const_iterator i=map.begin(), e=map.end(); i != e; ++i)
-		{	
-			torrent_internal_ptr TIp(new torrent_internal((*i).second));
-			
-			event_log.post(shared_ptr<EventDetail>(new EventMsg(
-				hal::wform(L"Converting %1%.") % TIp->name())));
-			
-			torrents_.insert(TorrentHolder(TIp));
-		}
-		
-		return *this;
-	}
-#endif	
+
 	std::pair<torrentByName::iterator, bool> insert(const TorrentHolder& h)
 	{
 		return torrents_.get<byName>().insert(h);
@@ -1708,5 +1429,3 @@ private:
 } // namespace hal
 
 BOOST_CLASS_VERSION(hal::TorrentManager::TorrentHolder, 1)
-
-#endif // RC_INVOKED
