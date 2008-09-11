@@ -6,20 +6,6 @@
 
 #include "stdAfx.hpp"
 
-#include <libtorrent/file.hpp>
-#include <libtorrent/hasher.hpp>
-#include <libtorrent/storage.hpp>
-#include <libtorrent/file_pool.hpp>
-#include <libtorrent/alert_types.hpp>
-#include <libtorrent/entry.hpp>
-#include <libtorrent/bencode.hpp>
-#include <libtorrent/session.hpp>
-#include <libtorrent/ip_filter.hpp>
-#include <libtorrent/torrent_handle.hpp>
-#include <libtorrent/peer_connection.hpp>
-#include <libtorrent/extensions/metadata_transfer.hpp>
-#include <libtorrent/extensions/ut_pex.hpp>
-
 #include "global/wtl_app.hpp"
 #include "global/string_conv.hpp"
 #include "global/ini_adapter.hpp"

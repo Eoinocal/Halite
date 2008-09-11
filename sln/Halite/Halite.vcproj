@@ -533,6 +533,54 @@
 			<File
 				RelativePath="..\..\src\halEvent.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Logging|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Logging|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\Halite.cpp"
@@ -556,6 +604,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\halTorrent.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\halTorrentIntStates.cpp"
 				>
 			</File>
 			<File
@@ -1206,6 +1258,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\halTorrent.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\halTorrentDefines.hpp"
 				>
 			</File>
 			<File

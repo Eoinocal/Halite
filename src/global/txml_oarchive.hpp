@@ -8,17 +8,20 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/filesystem/path.hpp>
 
-#include <boost/archive/xml_oarchive.hpp>
+//#include <boost/archive/xml_oarchive.hpp>
 
-#include <boost/serialization/version.hpp>
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/map.hpp>
-#include <boost/serialization/split_free.hpp>
+#pragma warning (push)
+#pragma warning (disable : 4099)
+#	include <boost/serialization/version.hpp>
+#	include <boost/serialization/vector.hpp>
+#	include <boost/serialization/map.hpp>
+#	include <boost/serialization/split_free.hpp>
 
-#include <boost/archive/impl/basic_text_oprimitive.ipp>
-#include <boost/archive/impl/xml_oarchive_impl.ipp>
-#include <boost/archive/impl/basic_xml_oarchive.ipp>
-#include <boost/archive/impl/archive_pointer_oserializer.ipp>
+#	include <boost/archive/impl/basic_text_oprimitive.ipp>
+#	include <boost/archive/impl/xml_oarchive_impl.ipp>
+#	include <boost/archive/impl/basic_xml_oarchive.ipp>
+#	include <boost/archive/impl/archive_pointer_oserializer.ipp>
+#pragma warning (pop)
 
 #include "global/string_conv.hpp"
 #include "txml.hpp"

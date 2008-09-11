@@ -11,13 +11,6 @@
 #include <boost/utility/in_place_factory.hpp>
 #include <boost/none.hpp>
 
-#include <libtorrent/alert_types.hpp>
-#include <libtorrent/entry.hpp>
-#include <libtorrent/session.hpp>
-#include <libtorrent/ip_filter.hpp>
-#include <libtorrent/torrent_handle.hpp>
-#include <libtorrent/create_torrent.hpp>
-
 #include "win32_exception.hpp"
 
 #include "global/wtl_app.hpp"
@@ -29,6 +22,10 @@
 #include "halEvent.hpp"
 #include "halSignaler.hpp"
 #include "halSession.hpp"
+
+#pragma warning (push, 1)
+#	include <libtorrent/create_torrent.hpp>
+#pragma warning (pop) 
 
 namespace hal
 {

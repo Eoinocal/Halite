@@ -6,10 +6,6 @@
 
 #pragma once
 
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/serialization/version.hpp>
-
 #include "global/string_conv.hpp"
 #include "global/wtl_app.hpp"
 

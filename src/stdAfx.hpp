@@ -18,33 +18,36 @@
 
 #define HALITE_SENDING_CMD 68816889
 
-#define _ATL_NO_AUTOMATIC_NAMESPACE
-#define _WTL_NO_AUTOMATIC_NAMESPACE
+#pragma warning (push)
+#pragma warning (disable : 4996)
+#	define _ATL_NO_AUTOMATIC_NAMESPACE
+#	define _WTL_NO_AUTOMATIC_NAMESPACE
+#	define _ATL_USE_DDX_FLOAT
 
-#include <winsock2.h>
-#include <shellapi.h>
-#include <atlbase.h>
-#include <atlapp.h>
+#	include <winsock2.h>
+#	include <shellapi.h>
+#	include <atlbase.h>
+#	include <atlapp.h>
 
-extern WTL::CAppModule _Module;
-#define _ATL_USE_DDX_FLOAT
+#	include <atlwin.h>
+#	include <atlframe.h>
+#	include <atlmisc.h>
+#	include <atlcrack.h>
+#	include <atldlgs.h>
+#	include <atlsplit.h>
+#	include <atlctrls.h>
+#	include <atlctrlw.h>
+#	include <atlctrlx.h>
+#	include <atlddx.h>
+#	include <atlscrl.h>
 
-#include <atlwin.h>
-#include <atlframe.h>
-#include <atlmisc.h>
-#include <atlcrack.h>
-#include <atldlgs.h>
-#include <atlsplit.h>
-#include <atlctrls.h>
-#include <atlctrlw.h>
-#include <atlctrlx.h>
-#include <atlddx.h>
-#include <atlscrl.h>
+#	include "AtlAutosizeDlg.h"
+#pragma warning (pop)
 
-#include "AtlAutosizeDlg.h"
 //#include <stlsoft/util/nulldef.h>
 
 #include "../res/resource.h"
+extern WTL::CAppModule _Module;
 
 // Include very common C++ and Boost libraries
 
@@ -80,21 +83,28 @@ extern WTL::CAppModule _Module;
 
 #include <boost/xpressive/xpressive.hpp>
 
-#include <boost/archive/text_woarchive.hpp>
-#include <boost/archive/text_wiarchive.hpp>
-#include <boost/archive/binary_woarchive.hpp>
-#include <boost/archive/binary_wiarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/basic_xml_archive.hpp>
-#include <boost/archive/xml_woarchive.hpp>
-#include <boost/archive/xml_wiarchive.hpp>
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/serialization/version.hpp>
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/map.hpp>
-#include <boost/serialization/split_free.hpp>
+#pragma warning (push)
+#pragma warning (disable : 4099)
+#	include <boost/archive/text_woarchive.hpp>
+#	include <boost/archive/text_wiarchive.hpp>
+#	include <boost/archive/binary_woarchive.hpp>
+#	include <boost/archive/binary_wiarchive.hpp>
+#	include <boost/archive/text_oarchive.hpp>
+#	include <boost/archive/text_iarchive.hpp>
+#	include <boost/archive/binary_oarchive.hpp>
+#	include <boost/archive/binary_iarchive.hpp>
+#	include <boost/archive/basic_xml_archive.hpp>
+#	include <boost/archive/xml_woarchive.hpp>
+#	include <boost/archive/xml_wiarchive.hpp>
+#	include <boost/archive/xml_oarchive.hpp>
+#	include <boost/archive/xml_iarchive.hpp>
+
+#	include <boost/serialization/version.hpp>
+#	include <boost/serialization/vector.hpp>
+#	include <boost/serialization/map.hpp>
+#	include <boost/serialization/split_free.hpp>
+#	include <boost/serialization/vector.hpp>
+#	include <boost/serialization/shared_ptr.hpp>
+#pragma warning (pop)
+
 #include <boost/date_time/posix_time/time_serialize.hpp>

@@ -50,9 +50,9 @@ public:
 	template<typename P>
 	void save_standalone(const P& location)
 	{
-		fs::wofstream ofs(location);
+		fs::ofstream ofs(location);
 		
-		boost::archive::xml_woarchive oxml(ofs);
+		xml::txml_oarchive oxml(ofs);
 		T* pT = static_cast<T*>(this);	
 		oxml << boost::serialization::make_nvp(name_.c_str(), *pT);
 	}
@@ -62,9 +62,9 @@ public:
 	{
 		try 
 		{		
-		fs::wifstream ifs(location);
+		fs::ifstream ifs(location);
 
-		boost::archive::xml_wiarchive ixml(ifs);
+		xml::txml_iarchive ixml(ifs);
 
 		T* pT = static_cast<T*>(this);	
 		ixml >> boost::serialization::make_nvp(name_.c_str(), *pT);
