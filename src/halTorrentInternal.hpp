@@ -7,6 +7,7 @@
 #pragma once
 
 #include "halTorrentDefines.hpp"
+#define HAL_TORRENT_STATE_LOGGING
 
 #pragma warning (push, 1)
 #	include <libtorrent/file.hpp>
@@ -266,20 +267,34 @@ class torrent_internal :
 	friend class bit_impl;	
 	friend class bit::torrent::exec_around_ptr::proxy;
 
+private:
 	struct out_of_session;
 	struct in_the_session;
 
-	struct torrent_state_machive : sc::state_machine<torrent_state_machive, out_of_session> {};
+	struct torrent_state_machine : sc::state_machine<torrent_state_machine, out_of_session> {};
 
-	struct out_of_session : sc::simple_state<out_of_session, torrent_state_machive> {};
+	struct out_of_session : sc::simple_state<out_of_session, torrent_state_machine> {};
 
 	struct paused;
 	struct active;
 
-	struct in_the_session : sc::simple_state<in_the_session, torrent_state_machive, paused> {};
+	struct in_the_session : sc::simple_state<in_the_session, torrent_state_machine, paused> 
+	{
+		in_the_session();
+		~in_the_session();
+	};
 
-	struct paused : sc::simple_state<paused, in_the_session> {};
-	struct active : sc::simple_state<active, in_the_session> {};
+	struct paused : sc::simple_state<paused, in_the_session>
+	{
+		paused();
+		~paused();
+	};
+
+	struct active : sc::simple_state<active, in_the_session>
+	{
+		active();
+		~active();
+	};
 
 public:
 	#define TORRENT_INTERNALS_DEFAULTS \
@@ -300,7 +315,9 @@ public:
 		TORRENT_INTERNALS_DEFAULTS,
 		compactStorage_(true),
 		state_(torrent_details::torrent_stopped)
-	{}
+	{
+		machine_.initiate();
+	}
 	
 	torrent_internal(wpath filename, wpath saveDirectory, bool compactStorage, wpath move_to_directory=L"") :
 		TORRENT_INTERNALS_DEFAULTS,
@@ -309,7 +326,9 @@ public:
 		compactStorage_(compactStorage),	
 		state_(torrent_details::torrent_stopped)
 	{
-		assert(the_session_);		
+		assert(the_session_);	
+		machine_.initiate();
+
 		prepare(filename);
 	}
 
@@ -547,8 +566,8 @@ public:
 			HAL_DEV_MSG(L"writing resume data");
 			write_resume_data();
 
-			torrent_standalone tsa(shared_from_this());
-			tsa.save_standalone(workingDir_/L"torrents"/(name_+L".xml"));
+//			torrent_standalone tsa(shared_from_this());
+//			tsa.save_standalone(workingDir_/L"torrents"/(name_+L".xml"));
 		}
 		
 		HAL_DEV_MSG(L"removing handle from session");
@@ -1240,6 +1259,8 @@ private:
 	static wpath workingDir_;
 	
 	mutable mutex_t mutex_;
+
+	torrent_state_machine machine_;
 	
 	std::pair<float, float> transferLimit_;
 	
