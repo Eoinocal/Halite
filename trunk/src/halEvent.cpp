@@ -103,7 +103,9 @@ std::wstring event_logger::eventLevelToStr(eventLevel event)
 	case fatal:
 		return hal::app().res_wstr(HAL_EVENTCRITICAL);
 	case xml_dev:
-		return L"XML Dev";
+		return L"XML Log";
+	case torrent_dev:
+		return L"Torrent Log";
 	default:
 		return hal::app().res_wstr(HAL_EVENTNONE);
 	}
