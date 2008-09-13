@@ -7,7 +7,17 @@
 #pragma once
 
 #include "halTorrentDefines.hpp"
+
 #define HAL_TORRENT_STATE_LOGGING
+
+#ifndef HAL_TORRENT_STATE_LOGGING
+#	define TORRENT_STATE_LOG(s)
+#else
+#	include "../halEvent.hpp"
+#	define TORRENT_STATE_LOG(msg) \
+	hal::event_log.post(boost::shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(msg, hal::event_logger::torrent_dev))) 
+#endif
 
 #pragma warning (push, 1)
 #	include <libtorrent/file.hpp>
@@ -506,6 +516,7 @@ public:
 		assert(the_session_ != 0);
 
 		HAL_DEV_MSG(hal::wform(L"add_to_session() paused=%1%") % paused);
+		TORRENT_STATE_LOG(L"Entering in_the_session() fake");
 		
 		if (!in_session()) 
 		{			

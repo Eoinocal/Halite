@@ -77,8 +77,9 @@ public:
 		{
 			pT->focusChanged(focusedTorrent_ = focused);
 			
-			HAL_DEV_MSG(hal::wform(L"HaliteDialogBase::handleUiUpdate(%1%)") 
-				% hal::to_wstr_shim(focusedTorrent_->name()));
+			if (focusedTorrent_)
+				HAL_DEV_MSG(hal::wform(L"HaliteDialogBase::handleUiUpdate(%1%)") 
+					% hal::to_wstr_shim(focusedTorrent_->name()));
 		}
 		else
 			focusedTorrent_ = focused;
