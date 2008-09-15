@@ -8,8 +8,6 @@
 
 #include "halTorrentDefines.hpp"
 
-#define HAL_TORRENT_STATE_LOGGING
-
 #ifndef HAL_TORRENT_STATE_LOGGING
 #	define TORRENT_STATE_LOG(s)
 #else
@@ -326,6 +324,7 @@ public:
 		compactStorage_(true),
 		state_(torrent_details::torrent_stopped)
 	{
+		TORRENT_STATE_LOG(L"Torrent state machine initiate");
 		machine_.initiate();
 	}
 	
@@ -337,6 +336,8 @@ public:
 		state_(torrent_details::torrent_stopped)
 	{
 		assert(the_session_);	
+		
+		TORRENT_STATE_LOG(L"Torrent state machine initiate");
 		machine_.initiate();
 
 		prepare(filename);
@@ -516,7 +517,6 @@ public:
 		assert(the_session_ != 0);
 
 		HAL_DEV_MSG(hal::wform(L"add_to_session() paused=%1%") % paused);
-		TORRENT_STATE_LOG(L"Entering in_the_session() fake");
 		
 		if (!in_session()) 
 		{			
@@ -710,7 +710,7 @@ public:
 	void write_resume_data()
 	{					
 		HAL_DEV_MSG(L"write_resume_data()");
-		wpath resumeDir = workingDir_/L"resume";
+		wpath resumeDir = hal::app().get_working_directory()/L"resume";
 		
 		if (!exists(resumeDir))
 			create_directory(resumeDir);
@@ -722,7 +722,7 @@ public:
 	
 	void clear_resume_data()
 	{
-		wpath resumeFile = workingDir_/L"resume"/filename_;
+		wpath resumeFile = hal::app().get_working_directory()/L"resume"/filename_;
 		
 		if (exists(resumeFile))
 			remove(resumeFile);
@@ -1053,8 +1053,8 @@ public:
 		
 		extractNames(info_memory());			
 		
-		const wpath resumeFile = workingDir_/L"resume"/filename_;
-		const wpath torrentFile = workingDir_/L"torrents"/filename_;
+		const wpath resumeFile = hal::app().get_working_directory()/L"resume"/filename_;
+		const wpath torrentFile = hal::app().get_working_directory()/L"torrents"/filename_;
 		
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(
 			hal::wform(L"File: %1%, %2%.") % resumeFile % torrentFile)));
@@ -1062,8 +1062,8 @@ public:
 	//	if (exists(resumeFile)) 
 	//		resumedata_ = haldecode(resumeFile);
 
-		if (!exists(workingDir_/L"torrents"))
-			create_directory(workingDir_/L"torrents");
+		if (!exists(hal::app().get_working_directory()/L"torrents"))
+			create_directory(hal::app().get_working_directory()/L"torrents");
 
 		if (!exists(torrentFile))
 			copy_file(filename.string(), torrentFile);
@@ -1267,7 +1267,6 @@ private:
 	}
 		
 	static libt::session* the_session_;
-	static wpath workingDir_;
 	
 	mutable mutex_t mutex_;
 
