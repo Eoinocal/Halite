@@ -22,7 +22,6 @@
 namespace hal 
 {
 	libtorrent::session* torrent_internal::the_session_ = 0;
-	wpath torrent_internal::workingDir_;
 }
 
 namespace hal 

@@ -18,6 +18,9 @@
 
 #define HALITE_SENDING_CMD 68816889
 
+#define HAL_TORRENT_STATE_LOGGING
+// #define TXML_ARCHIVE_LOGGING
+
 #pragma warning (push)
 #pragma warning (disable : 4996)
 #	define _ATL_NO_AUTOMATIC_NAMESPACE

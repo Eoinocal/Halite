@@ -736,6 +736,8 @@ void bit_impl::alert_handler()
 
 		boost::this_thread::interruption_point();
 	}	
+		
+	boost::this_thread::sleep(pt::milliseconds(100));
 	
 	}
 
