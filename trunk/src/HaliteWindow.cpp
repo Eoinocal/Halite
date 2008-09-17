@@ -114,6 +114,9 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	
 	m_hWndClient = m_Split.m_hWnd;
 
+			MARGINS m = {20, 20, 0, 100};
+		SetMargins(m);
+
 	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Creating main listview...")));	
 	// Create ListView and Dialog

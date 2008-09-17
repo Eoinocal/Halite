@@ -352,7 +352,7 @@ public:
 		try
 		{
 
-		if (in_session())
+		if (true || in_session())
 		{
 			statusMemory_ = handle_.status();
 			progress_ = statusMemory_.progress;

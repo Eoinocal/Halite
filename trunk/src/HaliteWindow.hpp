@@ -13,8 +13,10 @@
 #ifndef RC_INVOKED
 
 #include "stdAfx.hpp"
+#include "Aero.h"
 #include "DropFileTarget.h"
 #include "NTray.hpp"
+
 #include "HaliteListView.hpp"
 #include "halIni.hpp"
 #include "halTorrent.hpp"
@@ -35,7 +37,8 @@ private:
 };
 
 class HaliteWindow :
-	public WTL::CFrameWindowImpl<HaliteWindow>,
+//	public WTL::CFrameWindowImpl<HaliteWindow>,
+	public WTL::CAeroFrameImpl<HaliteWindow>,
 	public WTL::CUpdateUI<HaliteWindow>,
 	public CDropFileTarget<HaliteWindow>,
 	public WTL::CMessageFilter,

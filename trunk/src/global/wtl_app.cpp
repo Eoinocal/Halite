@@ -9,21 +9,6 @@
 #include <boost/array.hpp>
 #include <boost/optional.hpp>
 
-#define WINVER 0x0500
-#define _WIN32_WINNT 0x0500
-#define _WIN32_IE 0x0500
-#define _RICHEDIT_VER 0x0200
-#define VC_EXTRALEAN
-
-#ifdef WIN32_LEAN_AND_MEAN
-#undef WIN32_LEAN_AND_MEAN
-#endif
-
-#include <atlbase.h>
-#include <atlapp.h>
-
-extern WTL::CAppModule _Module;
-
 #include "wtl_app.hpp"
 #include "string_conv.hpp"
 

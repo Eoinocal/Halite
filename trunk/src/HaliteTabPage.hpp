@@ -7,21 +7,21 @@
 #pragma once
 
 #include "stdAfx.hpp"
-#include "UxthemeWrapper.hpp"
+//#include "UxthemeWrapper.hpp"
 
 template <class T>
 class ATL_NO_VTABLE CHalTabPageImpl : 
 	public ATL::CDialogImpl< T >,
-	public WTL::CMessageFilter
+	public WTL::CMessageFilter,
+	public WTL::CThemeImpl<CHalTabPageImpl<T> >
 {
 public:
     BEGIN_MSG_MAP_EX(CHalTabPageImpl)
-//		MSG_WM_ERASEBKGND(OnEraseBkgnd)
 		MSG_WM_CTLCOLORDLG(OnCltColorDlg)
 		MSG_WM_CTLCOLORBTN(OnCltColor)
-//		MSG_WM_CTLCOLOREDIT(OnCltColorEdit)
 		MSG_WM_CTLCOLORSTATIC(OnCltColor)
 
+		CHAIN_MSG_MAP(WTL::CThemeImpl<CHalTabPageImpl<T> >)
         DEFAULT_REFLECTION_HANDLER()
     END_MSG_MAP()
 
@@ -30,15 +30,20 @@ protected:
 	{
 		return 1;
 		
-		WTL::CRect rect;
+		CRect rect;
 		GetClientRect(rect);
 		
-		if(hal::uxtheme().pIsAppThemed && hal::uxtheme().pIsAppThemed())
+		if(IsThemingSupported() && IsAppThemed())
 		{
-			if (hal::uxtheme().pDrawThemeParentBackground)
+			if(GetThemeClassList() == NULL)
 			{
-				hal::uxtheme().pDrawThemeParentBackground(*this, dc, rect);
+				SetThemeClassList(L"Tab");
+				OpenThemeData();
 			}
+		//	if (uxtheme().pDrawThemeParentBackground)
+		//	{
+				DrawThemeParentBackground(dc, rect);
+		//	}
 		}
 		
 		return 1;
@@ -49,17 +54,20 @@ protected:
 	{
 		SetMsgHandled(false);
 
-		if (hal::uxtheme().pIsAppThemed)
-			if(hal::uxtheme().pIsAppThemed())
+		if(IsThemingSupported() && IsAppThemed())
+		{
+			if(GetThemeClassList() == NULL)
 			{
-				RECT rect;
-				GetClientRect(&rect);
-				if (hal::uxtheme().pDrawThemeParentBackground)
-				{
-					hal::uxtheme().pDrawThemeParentBackground(hWnd, hDC, &rect);
-					SetMsgHandled(true);
-				}
+				SetThemeClassList(L"Tab");
+				OpenThemeData();
 			}
+
+			WTL::CRect rect;
+			GetClientRect(rect);
+
+			DrawThemeParentBackground(hDC, rect);
+			SetMsgHandled(true);
+		}
 
 		return (LRESULT)::GetStockObject(HOLLOW_BRUSH);
 	}
@@ -68,29 +76,22 @@ protected:
 	{
 		SetMsgHandled(false);
 
-		if (hal::uxtheme().pIsAppThemed)
-			if(hal::uxtheme().pIsAppThemed())
+		if(IsThemingSupported() && IsAppThemed())
+		{
+			if(GetThemeClassList() == NULL)
 			{
-				RECT rect;
-				::GetClientRect(hWnd, &rect);
-				::SetBkMode(hDC, TRANSPARENT);
-				if (hal::uxtheme().pDrawThemeParentBackground)
-				{
-					hal::uxtheme().pDrawThemeParentBackground(hWnd, hDC, &rect);
-					SetMsgHandled(true);
-				}
+				SetThemeClassList(L"Tab");
+				OpenThemeData();
 			}
 
+			WTL::CRect rect;
+			::GetClientRect(hWnd, &rect);
+			::SetBkMode(hDC, TRANSPARENT);
+
+			::DrawThemeParentBackground(hWnd, hDC, rect);
+			SetMsgHandled(true);
+		}
+
 		return (LRESULT)::GetStockObject(HOLLOW_BRUSH);
-	}
-	
-	LRESULT OnCltColorEdit(HDC hDC, HWND hWnd)
-	{
-		SetMsgHandled(true);
-
-    SetTextColor(hDC, RGB(255,0,0));            // red
-   // SetBkColor(hDC, RGB(255,255,0));            // yellow
-    return (LRESULT)::GetSysColorBrush(COLOR_WINDOW);   // hilight colour
-
 	}
 };
