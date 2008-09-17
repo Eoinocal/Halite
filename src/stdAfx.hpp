@@ -6,12 +6,14 @@
 
 #pragma once
 
-#define WINVER 0x0500
-#define _WIN32_WINNT 0x0500
-#define _WIN32_IE 0x0500
-#define _RICHEDIT_VER 0x0200
-#define VC_EXTRALEAN
+#define WINVER		0x0600
+#define _WIN32_WINNT	0x0600
+#define _WIN32_IE	0x0700
+#define _RICHEDIT_VER	0x0200
 
+#ifndef VC_EXTRALEAN
+#define VC_EXTRALEAN
+#endif
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
@@ -43,6 +45,7 @@
 #	include <atlctrlx.h>
 #	include <atlddx.h>
 #	include <atlscrl.h>
+#	include <atltheme.h>
 
 #	include "AtlAutosizeDlg.h"
 #pragma warning (pop)
