@@ -99,7 +99,7 @@
 "File" ---> "Fajl"
 "Filename" ---> "Ime fajla"
 "Files" ---> "Fajlovi"
-"Filtering %1% range(s)" ---> "%1% IP-sekcije filtrirane"
+"Filtering %1% range(s)" ---> "%1% Blokiranih IP-sekcija"
 "Finish Time" ---> "Vreme završetka"
 "Finished" ---> "Završeno"
 "Force Close" ---> "Nasilno zatvaranje"
