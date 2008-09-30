@@ -15,7 +15,7 @@
 "About" ---> "О нама"
 "Above Normal" ---> "Преко нормалног"
 "Active" ---> "Активан"
-"Add New Peer" ---> "Додај нови извор" 
+"Add New Peer" ---> "Додај нови клијенат" 
 "Add New Tracker" ---> "Унеси новог трекера"
 "Add New Web Seed or DHT Node" ---> "Додај нови 'webseed' или ДХТ чвор"
 "Add Torrent" ---> "Додај торент"
