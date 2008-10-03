@@ -69,6 +69,8 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	SetWindowText(L"Halite");
 	MoveWindow(rect.left, rect.top,	rect.right-rect.left, rect.bottom-rect.top, false);	
 
+//		MARGINS m = {20, 20, 0, 100};
+//		SetMargins(m);
 
 	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading Halite config...")));
@@ -113,9 +115,6 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	m_Split.SetSplitterPos(splitterPos);
 	
 	m_hWndClient = m_Split.m_hWnd;
-
-			MARGINS m = {20, 20, 0, 100};
-		SetMargins(m);
 
 	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Creating main listview...")));	

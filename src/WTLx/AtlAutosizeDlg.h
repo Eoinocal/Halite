@@ -729,11 +729,11 @@ public:
 		if(wParam != NULL) {
 			WTL::CDCHandle dc = (HDC)wParam;
 			dc.SetViewportOrg(-pt.x, -pt.y);
-			pT->DoPaint(dc);
+			pT->AutoSizeDoPaint(dc);
 		} else {
 			WTL::CPaintDC dc(pT->m_hWnd);
 			dc.SetViewportOrg(-pt.x, -pt.y);
-			pT->DoPaint(dc.m_hDC);
+			pT->AutoSizeDoPaint(dc.m_hDC);
 		}
 		
 		return 0;
@@ -903,7 +903,7 @@ public:
 	/// Does the paint work. You can override it, but remember to call this method in the end, otherwise Transparent ctrls won't be painted.
 	/** \param dc The hDC to paint to
 	 */
-	void DoPaint(WTL::CDCHandle dc)
+	void AutoSizeDoPaint(WTL::CDCHandle dc)
 	{
 		T* pT = static_cast<T*>(this);
 		ATLVERIFY(pT->HandleTransparentMap(dc));
