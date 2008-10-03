@@ -1,5 +1,5 @@
-"English" ---> "Slovenian"
-"English.rtf" ---> "Slovenian.rtf"
+﻿"English" ---> "Slovenian"
+"English.rtf" ---> "../lang/Slovenian.rtf"
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s dol - %2$.2fKB/s gor"
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB dol - %2$.2fMB gor"
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB od %2$.2fMB"

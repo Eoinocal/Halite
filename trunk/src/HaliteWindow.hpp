@@ -87,7 +87,8 @@ public:
 
 		REFLECT_NOTIFICATIONS()
 		CHAIN_MSG_MAP(CUpdateUI<HaliteWindow>)
-		CHAIN_MSG_MAP(CFrameWindowImpl<HaliteWindow>)
+//		CHAIN_MSG_MAP(CFrameWindowImpl<HaliteWindow>)
+		CHAIN_MSG_MAP(WTL::CAeroFrameImpl<HaliteWindow>)
 		CHAIN_MSG_MAP(CDropFileTarget<HaliteWindow>)
 	END_MSG_MAP()
 

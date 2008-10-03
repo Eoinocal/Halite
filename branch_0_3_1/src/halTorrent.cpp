@@ -583,7 +583,7 @@ public:
 				catch(std::exception& e)
 				{
 					// These are logged as debug because they are rarely important to act on!
-					event_log.post(shared_ptr<EventDetail>(\
+					event_log.post(shared_ptr<EventDetail>(
 						new EventStdException(event_logger::debug, e, L"alertHandler")));
 				}
 				

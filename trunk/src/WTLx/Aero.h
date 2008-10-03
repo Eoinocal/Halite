@@ -178,7 +178,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 // CAeroDialogImpl - dialog implementation of Aero translucency (when available)
 
-template <class T, class TBase  = CWindow>
+template <class T, class TBase  = ATL::CWindow>
 class ATL_NO_VTABLE CAeroDialogImpl : public ATL::CDialogImpl<T, TBase>, public CAeroImpl<T>
 {
 public:
