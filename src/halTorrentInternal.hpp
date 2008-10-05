@@ -517,36 +517,34 @@ public:
 		assert(the_session_ != 0);
 
 		HAL_DEV_MSG(hal::wform(L"add_to_session() paused=%1%") % paused);
+
 		
 		if (!in_session()) 
-		{			
-			path dir = path_to_utf8(save_directory_);
-			
-			libt::storage_mode_t storage = libt::storage_mode_sparse;
-			
-			if (compactStorage_)
-				storage = libt::storage_mode_compact;
-			
-			libt::add_torrent_params atp;
+		{	
+			libt::add_torrent_params p;
 
-			atp.save_path = dir;
-			atp.ti = info_memory();
-			atp.storage_mode = storage;
-			atp.paused = paused;
+			string torrent_file = to_utf8((hal::app().get_working_directory()/L"torrents"/filename_).string());
+			info_memory_.reset(new libt::torrent_info(torrent_file.c_str()));
 
-			handle_ = the_session_->add_torrent(atp);			
+			std::string resume_file = to_utf8((hal::app().get_working_directory()/L"resume" / (name_ + L".fastresume")).string());
+
+			std::vector<char> buf;
+			if (libt::load_file(resume_file.c_str(), buf) == 0)
+				p.resume_data = &buf;
+
+			p.ti = info_memory_;
+			p.save_path = path_to_utf8(save_directory_);
+			p.storage_mode = libt::storage_mode_compact;//compactStorage_ ? libt::storage_mode_compact : libt::storage_mode_sparse;
+			p.paused = paused;
+			p.duplicate_is_error = false;
+			p.auto_managed = false;
+
+			handle_ = the_session_->add_torrent(p);		
 			assert(handle_.is_valid());
-			
-			clear_resume_data();
-			
 			in_session_ = true;
-			if (paused)
-				state_ = torrent_details::torrent_paused;	
-			else
-				state_ = torrent_details::torrent_active;	
-				
-			applySettings();
-			handle_.force_reannounce();
+			
+		//	clear_resume_data();
+		//	handle_.force_reannounce();
 		}	
 
 		assert(in_session());
@@ -715,8 +713,8 @@ public:
 		if (!exists(resumeDir))
 			create_directory(resumeDir);
 				
-		bool halencode_result = halencode(resumeDir/filename_, resumedata_);
-		assert(halencode_result);
+//		bool halencode_result = halencode(resumeDir/filename_, resumedata_);
+//		assert(halencode_result);
 		HAL_DEV_MSG(L"Written!");
 	}
 	
@@ -727,7 +725,7 @@ public:
 		if (exists(resumeFile))
 			remove(resumeFile);
 
-		resumedata_ = libt::entry();
+//		resumedata_ = libt::entry();
 	}
 
 	const wpath get_save_directory()
@@ -955,7 +953,7 @@ public:
 	void setEntryData(boost::intrusive_ptr<libt::torrent_info> metadata, libtorrent::entry resumedata)
 	{		
 		info_memory_ = metadata;
-		resumedata_ = resumedata;
+//		resumedata_ = resumedata;
 	}
 
 	std::vector<libt::peer_info>& peers() { return peers_; }
@@ -1289,7 +1287,7 @@ private:
 	libt::torrent_handle handle_;	
 	
 //	boost::intrusive_ptr<libt::torrent_info> metadata_;
-	libt::entry resumedata_;
+	libt::lazy_entry resumedata_;
 	
 	wstring trackerUsername_;	
 	wstring trackerPassword_;

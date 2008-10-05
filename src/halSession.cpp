@@ -372,13 +372,16 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 void bit_impl::start_alert_handler()
 {
 	mutex_t::scoped_lock l(mutex_);
-	
-	HAL_DEV_MSG(hal::wform(L"start_alert_handler"));
 
-	boost::function<void (void)> f = bind(&bit_impl::alert_handler, this);
+	if (alert_checker_ == boost::none)
+	{	
+		HAL_DEV_MSG(hal::wform(L"start_alert_handler"));
 
-	keepChecking_ = true;
-	alert_checker_ = boost::in_place<boost::function<void (void)> >(bind(&bit_impl::alert_handler, this));
+		boost::function<void (void)> f = bind(&bit_impl::alert_handler, this);
+
+		keepChecking_ = true;
+		alert_checker_ = boost::in_place<boost::function<void (void)> >(bind(&bit_impl::alert_handler, this));
+	}
 }
 	
 void bit_impl::stop_alert_handler()
