@@ -6,19 +6,7 @@
 
 #include "stdAfx.hpp"
 
-#define WINVER 0x0500
-#define _WIN32_WINNT 0x0500
-#define _WIN32_IE 0x0500
-#define _RICHEDIT_VER 0x0200
-#define VC_EXTRALEAN
-
-#include <boost/foreach.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-
-#include <atlbase.h>
-#include <atlapp.h>
-
-extern WTL::CAppModule _Module;
 
 #include "txml.hpp"
 #include "wtl_app.hpp"
@@ -132,7 +120,7 @@ private:
 			xml_.link_end_child(data_node);
 		}
 		
-		foreach(std::string elem, location)
+		foreach (std::string elem, location)
 		{
 			xml::node* child_node = data_node->first_child(elem);
 			

@@ -498,6 +498,18 @@ void bit_impl::alert_handler()
 		get(a.handle)->signals().torrent_paused();
 	}
 	
+	void operator()(libt::save_resume_data_alert const& a) const
+	{
+		event_log.post(shared_ptr<EventDetail>(
+			new EventMsg((hal::wform(hal::app().res_wstr(HAL_WRITE_RESUME_ALERT)) 
+					% get(a.handle)->name()), 
+				event_logger::info, a.timestamp())));
+
+		if (a.resume_data)
+			get(a.handle)->write_resume_data(*a.resume_data);
+		get(a.handle)->signals().resume_data();
+	}
+	
 	void operator()(libt::peer_error_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
@@ -582,16 +594,6 @@ void bit_impl::alert_handler()
 		)	);				
 	}
 	
-	void operator()(libt::save_resume_data_alert const& a) const
-	{
-		event_log.post(shared_ptr<EventDetail>(
-			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
-				hal::wform(hal::app().res_wstr(HAL_FAST_RESUME_ALERT))
-					% get(a.handle)->name()
-					% hal::from_utf8_safe(a.message()))
-		)	);		
-	}
-	
 	void operator()(libt::fastresume_rejected_alert const& a) const
 	{
 		event_log.post(shared_ptr<EventDetail>(
@@ -661,7 +663,7 @@ void bit_impl::alert_handler()
 					% hal::from_utf8_safe(a.message()))
 		)	);	
 
-		bit_impl_.signals.successful_listen();
+		//bit_impl_.signals.successful_listen();
 	}
 	
 	void operator()(libt::peer_blocked_alert const& a) const

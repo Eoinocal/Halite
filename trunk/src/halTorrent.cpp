@@ -564,12 +564,12 @@ bit::torrent::exec_around_ptr::proxy::proxy(torrent_internal* t) :
 	t_(t),
 	l_(t->mutex_)
 {
-	HAL_DEV_MSG(L"Ctor proxy");
+//	HAL_DEV_MSG(L"Ctor proxy");
 }
 
 bit::torrent::exec_around_ptr::proxy::~proxy() 
 {
-	HAL_DEV_MSG(L"Dtor proxy");
+//	HAL_DEV_MSG(L"Dtor proxy");
 }
 
 const std::wstring bit::torrent::get_name() const
