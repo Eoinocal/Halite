@@ -79,8 +79,8 @@ public:
 			
 			if (focusedTorrent_)
 			{
-				HAL_DEV_MSG(hal::wform(L"HaliteDialogBase::handleUiUpdate(%1%)") 
-					% hal::to_wstr_shim(focusedTorrent_->name()));
+			//	HAL_DEV_MSG(hal::wform(L"HaliteDialogBase::handleUiUpdate(%1%)") 
+			//		% hal::to_wstr_shim(focusedTorrent_->name()));
 			}
 		}
 		else

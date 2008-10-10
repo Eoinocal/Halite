@@ -234,7 +234,9 @@ private:
 struct signalers
 {
 	signaler<> torrent_finished;
+
 	boost::signal<void ()> torrent_paused;
+	boost::signal<void ()> resume_data;
 };
 
 class torrent_internal;
@@ -352,7 +354,7 @@ public:
 		try
 		{
 
-		if (true || in_session())
+		if (in_session())
 		{
 			statusMemory_ = handle_.status();
 			progress_ = statusMemory_.progress;
@@ -517,7 +519,6 @@ public:
 		assert(the_session_ != 0);
 
 		HAL_DEV_MSG(hal::wform(L"add_to_session() paused=%1%") % paused);
-
 		
 		if (!in_session()) 
 		{	
@@ -530,11 +531,14 @@ public:
 
 			std::vector<char> buf;
 			if (libt::load_file(resume_file.c_str(), buf) == 0)
+			{
+				HAL_DEV_MSG(L"Using resume data");
 				p.resume_data = &buf;
+			}
 
 			p.ti = info_memory_;
 			p.save_path = path_to_utf8(save_directory_);
-			p.storage_mode = libt::storage_mode_compact;//compactStorage_ ? libt::storage_mode_compact : libt::storage_mode_sparse;
+			p.storage_mode = compactStorage_ ? libt::storage_mode_compact : libt::storage_mode_sparse;
 			p.paused = paused;
 			p.duplicate_is_error = false;
 			p.auto_managed = false;
@@ -558,7 +562,7 @@ public:
 		}
 	}
 	
-	void remove_from_session(bool writeData=true)
+	bool remove_from_session(bool write_data=true)
 	{
 		try
 		{
@@ -566,31 +570,37 @@ public:
 		mutex_t::scoped_lock l(mutex_);
 		assert(in_session());
 
-		HAL_DEV_MSG(hal::wform(L"remove_from_session() writeData=%1%") % writeData);
+		HAL_DEV_MSG(hal::wform(L"remove_from_session() writeData=%1%") % write_data);
 		
-		if (writeData)
+		if (write_data)
 		{
-			HAL_DEV_MSG(L"getting resume data");
-//			resumedata_ = handle_.save(); // Update the fast-resume data
-			HAL_DEV_MSG(L"writing resume data");
-			write_resume_data();
-
-//			torrent_standalone tsa(shared_from_this());
-//			tsa.save_standalone(workingDir_/L"torrents"/(name_+L".xml"));
-		}
+			HAL_DEV_MSG(L"requesting resume data");			
 		
-		HAL_DEV_MSG(L"removing handle from session");
-		the_session_->remove_torrent(handle_);
-		in_session_ = false;
+			signaler_wrapper<>* sig = new signaler_wrapper<>(bind(&torrent_internal::remove_from_session, this, false));
+			signals().resume_data.connect(bind(&signaler_wrapper<>::operator(), sig));
+			
+			handle_.save_resume_data();
 
-		assert(!in_session());	
-		HAL_DEV_MSG(L"Removed from session!");
+			return false;
+		}
+		else
+		{		
+			HAL_DEV_MSG(L"removing handle from session");
+			the_session_->remove_torrent(handle_);
+			in_session_ = false;
+
+			assert(!in_session());	
+			HAL_DEV_MSG(L"Removed from session!");
+
+			return true;
+		}
 
 		}
 		catch(std::exception& e)
 		{
 			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(event_logger::critical, e, L"removeFromSession"))); 
+				new hal::EventStdException(event_logger::critical, e, L"remove_fromSession"))); 
+			return false;
 		}
 	}
 	
@@ -637,10 +647,9 @@ public:
 
 			HAL_DEV_MSG(hal::wform(L"pause() - handle_.pause()"));
 			handle_.pause();
-			//signals().torrent_paused.disconnect_all_once();
 
-			signaler_wrapper* sig = new signaler_wrapper(bind(&torrent_internal::completed_pause, this));
-			signals().torrent_paused.connect(bind(&signaler_wrapper::operator(), sig));
+			signaler_wrapper<>* sig = new signaler_wrapper<>(bind(&torrent_internal::completed_pause, this));
+			signals().torrent_paused.connect(bind(&signaler_wrapper<>::operator(), sig));
 
 			state_ = torrent_details::torrent_pausing;	
 		}			
@@ -656,8 +665,8 @@ public:
 			{
 				assert(in_session());
 
-				signaler_wrapper* sig = new signaler_wrapper(bind(&torrent_internal::completed_stop, this));
-				signals().torrent_paused.connect(bind(&signaler_wrapper::operator(), sig));
+				signaler_wrapper<>* sig = new signaler_wrapper<>(bind(&torrent_internal::completed_stop, this));
+				signals().torrent_paused.connect(bind(&signaler_wrapper<>::operator(), sig));
 				
 				HAL_DEV_MSG(hal::wform(L"stop() - handle_.pause()"));
 				handle_.pause();
@@ -705,25 +714,28 @@ public:
 		};
 	}
 	
-	void write_resume_data()
+	void write_resume_data(const libt::entry& ent)
 	{					
 		HAL_DEV_MSG(L"write_resume_data()");
-		wpath resumeDir = hal::app().get_working_directory()/L"resume";
+
+		wpath resume_dir = hal::app().get_working_directory()/L"resume";
 		
-		if (!exists(resumeDir))
-			create_directory(resumeDir);
-				
-//		bool halencode_result = halencode(resumeDir/filename_, resumedata_);
-//		assert(halencode_result);
+		if (!exists(resume_dir))
+			create_directory(resume_dir);
+
+		boost::filesystem::ofstream out(resume_dir/(name_ + L".fastresume"), std::ios_base::binary);
+		out.unsetf(std::ios_base::skipws);
+		bencode(std::ostream_iterator<char>(out), ent);
+
 		HAL_DEV_MSG(L"Written!");
 	}
 	
 	void clear_resume_data()
 	{
-		wpath resumeFile = hal::app().get_working_directory()/L"resume"/filename_;
+		wpath resume_file = hal::app().get_working_directory()/L"resume"/filename_;
 		
-		if (exists(resumeFile))
-			remove(resumeFile);
+		if (exists(resume_file))
+			remove(resume_file);
 
 //		resumedata_ = libt::entry();
 	}
@@ -1236,12 +1248,13 @@ private:
 	{
 		mutex_t::scoped_lock l(mutex_);
 		assert(in_session());
-	//	assert(handle_.is_paused());			
+		assert(handle_.is_paused());			
 		
-		remove_from_session();
-		assert(!in_session());
-
-		HAL_DEV_MSG(L"completed_stop()");
+		if (remove_from_session())
+		{
+			assert(!in_session());
+			HAL_DEV_MSG(L"completed_stop()");
+		}
 
 		state_ = torrent_details::torrent_stopped;
 
@@ -1287,7 +1300,7 @@ private:
 	libt::torrent_handle handle_;	
 	
 //	boost::intrusive_ptr<libt::torrent_info> metadata_;
-	libt::lazy_entry resumedata_;
+//	boost::shared_ptr<libt::entry> resumedata_;
 	
 	wstring trackerUsername_;	
 	wstring trackerPassword_;
