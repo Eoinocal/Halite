@@ -1,4 +1,4 @@
-"English" ---> "Italiano"
+﻿"English" ---> "Italiano"
 "English.rtf" ---> "../lang/Italian.rtf"
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
@@ -28,7 +28,7 @@
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Un livello di codifica non valido, %1%, è stato inserito nella configurazione di criptaggio."
 "Apply" ---> "Applica"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Sei sicuro di voler chiudere Halite? Tutti i torrents attivi si fermeranno"
-"Are you sure you wish to delete all downloaded data?" --->  ??? 
+"Are you sure you wish to delete all downloaded data?" --->  "Sei sicuro di voler cancellare anche tutti i dati scaricati?" 
 "Auto Sort" ---> "Ordina Automaticamente"
 "BitTorrent" --->  ??? 
 "Bittorrent Event: %1%." ---> "Evento Bittorrent: %1%."
@@ -64,9 +64,9 @@
 "Debug" --->  ??? 
 "Default save folder :" ---> "Cartella predefinita di salvataggio"
 "Delete" ---> "Elimina"
-"Details" --->  ??? 
+"Details" --->  "Dettagli" 
 "Dev Msg: %1%." --->  ??? 
-"Dir." --->  ??? 
+"Dir." --->  ???
 "Disabled" ---> "Disabilitata"
 "Distributed Hash Tables" --->  ??? 
 "Don't download" ---> "Non scaricare"
@@ -106,7 +106,7 @@
 "Forced" ---> "Forzata"
 "General Settings" ---> "Opzioni Generali"
 "General" ---> "Generale"
-"Generated Torrent Name (Cannot change)" --->  ??? 
+"Generated Torrent Name (Cannot change)" --->  "Nome Torrent Generato (non modificabile)" 
 "Global Limits" ---> "Limiti Globali"
 "Halite BitTorrent Client" --->  ??? 
 "Halite Debug Dialog" ---> "Finestra di Debug di Halite"
@@ -156,7 +156,7 @@
 "Open Download Folder" ---> "Apri Cartella Download"
 "Open a (single) port between : " ---> "Apri una (singola) porta tra :"
 "Outgoing" ---> "Uscente"
-"Output File" --->  ??? 
+"Output File" --->  "File Risultante" 
 "Overhead:" --->  ??? 
 "Password : " --->  ??? 
 "Path" ---> "Destinazione"
@@ -170,7 +170,7 @@
 "Peers" --->  ??? 
 "Peers:" --->  ??? 
 "Piece %2% finished. (%1%)" ---> "Pezzo %2% completato. (%1%)"
-"Piece Size (KBs)" --->  ??? 
+"Piece Size (KBs)" --->  "Dimensione Pezzo (KBs)" 
 "Plaintext Encrypted" ---> "Criptato Plaintext"
 "Plaintext" --->  ??? 
 "Port %1% open" ---> "Porta %1% aperta"
@@ -212,7 +212,7 @@
 "Seeds" --->  ??? 
 "Seeds:" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Seleziona una cartella in cui salvare i files. Premi annulla per accettare la destinazione predefinita."
-"Select a directory to save the files to or cancel to not download torrent at all." ---> "Seleziona una directory in cui salvare i files, o annulla per non scaricare il torrent."
+"Select a directory to save the files to or cancel to not download torrent at all." ---> "Seleziona una cartella in cui salvare i files, o annulla per non scaricare il torrent."
 "Select a file or directory from which to construct the torrent." ---> "Seleziona un file o una cartella da cui creare il torrent."
 "Select the (TCP) port (or range) on which to listen for incoming connections." ---> "Seleziona la porta TCP (o l'intervallo) per le connessioni entranti."
 "Send login info to trackers." ---> "Manda informazioni di login ai trackers."
@@ -282,7 +282,7 @@
 "Username : " ---> "Nome Utente :"
 "Warning" --->  ??? 
 "Web Seed" --->  ??? 
-"Web Seeds and DHT Nodes" --->  ??? 
+"Web Seeds and DHT Nodes" --->  "Web Seeds e DHT Nodes" 
 "Xml Exception (%1%) with %2%." --->  ??? 
 "libTorrrent based client." ---> "client basato su libTorrent."
 "to" ---> "e"
