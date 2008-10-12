@@ -43,7 +43,7 @@
 "Client" ---> "Клијент"
 "Close to tray" ---> "Пребаци у 'tray'"
 "Comment" ---> "Коментар"
-"Completed" ---> "Комплетан фајл"
+"Completed" ---> "Комплетирано"
 "Completed:" ---> "Завршено:"
 "Confirm on close" ---> "Потврди пред затварањем"
 "Connecting to Tracker" ---> "Повезује се на трекер"
