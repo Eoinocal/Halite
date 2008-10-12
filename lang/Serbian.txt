@@ -275,7 +275,7 @@
 "Update in:" ---> "Obnova za:"
 "Upload Rate (KB/s) :" ---> "Brzina izlaznog protoka (KB/s):"
 "Upload" ---> "Otpremaš"
-"Uploaded" ---> "Već ponudjeno"
+"Uploaded" ---> "Već podelio"
 "Use Compact Allocation." ---> "Upotrebi kompaktno dodavanje"
 "Use a proxy." ---> "Upotrebi Proksi-servera"
 "User canceled Torrent file creation" ---> "Korisnik je prekinuo pravljenje torenta"
