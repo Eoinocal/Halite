@@ -554,6 +554,9 @@ public:
 		assert(in_session());
 		HAL_DEV_MSG(L"Added to session");
 
+		if (handle_.is_paused())
+			state_ = torrent_details::torrent_paused;	
+
 		}
 		catch(std::exception& e)
 		{

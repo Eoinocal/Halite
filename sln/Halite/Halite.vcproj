@@ -71,7 +71,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="&quot;$(SolutionDir)lib\openssl\bin\debug\link-static\runtime-link-static\threading-multi\libeay32.lib&quot; &quot;$(SolutionDir)lib\openssl\bin\debug\link-static\runtime-link-static\threading-multi\ssleay32.lib&quot;"
 				LinkIncremental="2"
-				DelayLoadDLLs="uxtheme.dll; dwmapi.dll"
+				DelayLoadDLLs="uxtheme.dll; dwmapi.dll; ws2_32.dll"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
