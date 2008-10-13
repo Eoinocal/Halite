@@ -81,7 +81,7 @@
 "ETA" ---> "Preostalo"
 "ETA:" ---> "Preostalo:"
 "Edit Download Folders" ---> "Promeni ulaznu mapu"
-"Edit Peer" ---> "Preoradi klijenat"
+"Edit Peer" ---> "Preoradi mušteriju"
 "Edit Torrent Save Folders" ---> "Promeni ulaznu mapu za torent fajlove"
 "Edit Tracker" ---> "Obradi trekera"
 "Edit" ---> "Uredi"
