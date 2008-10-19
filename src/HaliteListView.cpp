@@ -46,6 +46,25 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 		AddColumn(names[i].c_str(), i, visible[i], widths[i]);
 	}	
 
+
+//	int ret = EnableGroupView(true);
+	if (IsGroupViewEnabled())
+	{
+//		RemoveAllGroups();
+
+		LVGROUP lvg = { sizeof(LVGROUP) };
+
+		lvg.mask = LVGF_HEADER|LVGF_GROUPID|LVGF_STATE|LVGF_ALIGN ;
+		lvg.pszHeader = L"Eoin";
+		lvg.cchHeader = 5;
+		lvg.iGroupId = 1;
+		lvg.state = LVGS_NORMAL;
+		lvg.uAlign = LVGA_HEADER_LEFT;
+
+		int grp = InsertGroup(-1, &lvg);
+//		MoveItemToGroup(1, 1);
+	}
+
 	SafeLoadFromIni();
 	
 	SetColumnSortType(0, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Name());
@@ -116,6 +135,8 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	if (lock) 
 	{
 	
+
+
 	foreach (const hal::torrent_details_ptr td, tD.torrents()) 
 	{
 		LV_FINDINFO findInfo; 
@@ -124,7 +145,22 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 		
 		int itemPos = FindItem(&findInfo, -1);
 		if (itemPos < 0)
-			itemPos = AddItem(0, 0, td->name().c_str(), 0);
+		{
+					LVITEM lvItem = { 0 };
+		lvItem.mask = LVIF_TEXT|LVIF_GROUPID;
+		lvItem.iItem = 0;
+		lvItem.iSubItem = 0;
+		lvItem.pszText = (LPTSTR)td->name().c_str();
+		lvItem.iGroupId = 0;
+
+			lvItem.mask |= LVIF_IMAGE;
+			lvItem.iImage = 0;
+
+			itemPos =  InsertItem(&lvItem);
+
+		//	AddItem(0, 0, td->name().c_str(), 0);
+		//	MoveItemToGroup(itemPos, 0);
+		}
 
 		for (size_t i=1; i<NumberOfColumns_s; ++i)
 		{

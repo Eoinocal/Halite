@@ -137,7 +137,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	if (!boost::filesystem::is_directory(hal::app().working_directory))
 		boost::filesystem::create_directories(hal::app().working_directory);
 
-	WTL::AtlInitCommonControls(ICC_COOL_CLASSES | ICC_BAR_CLASSES);	
+	WTL::AtlInitCommonControls(ICC_COOL_CLASSES | ICC_BAR_CLASSES|ICC_LISTVIEW_CLASSES);	
 	HINSTANCE hInstRich = ::LoadLibrary(WTL::CRichEditCtrl::GetLibraryName());
 	ATLASSERT(hInstRich != NULL);
    
