@@ -74,7 +74,7 @@
 "Download Rate (KB/s) :" ---> "Downloadrate (KB/s):"
 "Download" ---> "Download"
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Geladen %1$.2fMB, Gesendet %2$.2fMB, Verhältnis %3$.2f."
-"Downloaded" ---> "Downloaded"
+"Downloaded" ---> "Heruntergeladen"
 "Downloading Metadata" ---> "Lade Metadaten"
 "Downloading" ---> "Ladend"
 "E&xit" ---> "Be&enden"
