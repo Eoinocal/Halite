@@ -1,4 +1,4 @@
-"English" ---> "Español (España)"
+﻿"English" ---> "Español (España)"
 "English.rtf" ---> "../lang/Spanish.rtf"
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
@@ -14,11 +14,11 @@
 "(DHT will not apply to private torrents)" ---> "(DHT no se aplicará a torrents privados)"
 "About" ---> "Acerca de"
 "Above Normal" ---> "Mayor de lo normal"
-"Active" --->  ??? 
+"Active" --->  "Activo"
 "Add New Peer" --->  ??? 
 "Add New Tracker" ---> "Añadir nuevo Tracker"
 "Add New Web Seed or DHT Node" --->  ??? 
-"Add Torrent" --->  ??? 
+"Add Torrent" --->  "Añadir Torrent"
 "Add" ---> "Añadir"
 "Advanced GUI" ---> "GUI avanzada"
 "Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
@@ -74,7 +74,7 @@
 "Download Rate (KB/s) :" ---> "Tasa de bajada (KB/s) :"
 "Download" ---> "Descarga"
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Descargado %1$.2fMB, subido %2$.2fMB, ratio %3$.2f."
-"Downloaded" --->  ??? 
+"Downloaded" ---> "Descargado"
 "Downloading Metadata" ---> "Descargando Metadata"
 "Downloading" ---> "Descargando"
 "E&xit" ---> "&Salir"
@@ -96,7 +96,7 @@
 "Exception caught: %1%, from %2%." ---> "Excepción atrapada: %1%, de %2%."
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
-"File" --->  ??? 
+"File" ---> "Archivo"
 "Filename" ---> "Nombre de archivo"
 "Files" ---> "Archivos"
 "Filtering %1% range(s)" ---> "Filtrando %1% rango(s)"
@@ -143,7 +143,7 @@
 "Move the completed torrent to:" --->  ??? 
 "N/A" --->  ??? 
 "NAT-PMG" --->  ??? 
-"Name" --->  ??? 
+"Name" ---> "Nombre"
 "Name:" ---> "Nombre:"
 "New" ---> "Nuevo"
 "None (Managed Externally)" --->  ??? 
@@ -151,7 +151,7 @@
 "Normal" ---> "Normal"
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" ---> "Aceptar"
-"Ok" --->  ??? 
+"Ok" --->  "Aceptar"
 "Open &Halite" ---> "Abrir &Halite"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "Abrir un (único) puerto entre :"
@@ -178,7 +178,7 @@
 "Port : " ---> "Puerto : "
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Puerto a escuchar en : "
-"Port" --->  ??? 
+"Port" ---> "Puerto"
 "Prefer RC4" ---> "Preferir RC4"
 "Priority" ---> "Prioridad"
 "Private" --->  ??? 
@@ -193,11 +193,11 @@
 "RC4" ---> "RC4"
 "Rates:" --->  ??? 
 "Ratio (this session):" ---> "Ratio (esta sesión):"
-"Ratio" --->  ??? 
+"Ratio" --->  "Ratio"
 "Ratio:" ---> "Ratio:"
 "Reannounce" --->  ??? 
 "Recheck Files" --->  ??? 
-"Remaining" --->  ??? 
+"Remaining" ---> "Restante"
 "Remaining:" ---> "Restante:"
 "Remote Control Options" ---> "Opciones del control remoto"
 "Remote Control" ---> "Control remoto"
@@ -209,7 +209,7 @@
 "Saving Torrent" --->  ??? 
 "Security" ---> "Seguridad"
 "Seeding" --->  ??? 
-"Seeds" --->  ??? 
+"Seeds" ---> "Semillas"
 "Seeds:" ---> "Semillas:"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Selecciona un directorio donde guardar las descargas. Pulsa Cancelar para aceptar el directorio por defecto."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Elige el directorio donde guardar los archivos o pulsa Cancelar para no descargar el torrent."
@@ -230,7 +230,7 @@
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Stopped" ---> "Detenido"
 "Stopping Torrents" --->  ??? 
-"Stopping" --->  ??? 
+"Stopping" ---> "Detenando"
 "Successfully %1%." --->  ??? 
 "Supports extensions" ---> "Soporta extensiones"
 "Test" --->  ??? 
@@ -241,7 +241,7 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "En esta sesión se han descargado %1$.2fMB y subido %2$.2fMB. Ratio %3$.2f."
 "Tier" --->  ??? 
 "Time left:" ---> "Tiempo restante:"
-"Time" --->  ??? 
+"Time" ---> "Tiempo"
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Se capturó una excepción del torrent (%1%): %2% de %3%."
@@ -275,7 +275,7 @@
 "Update in:" ---> "Actualización en:"
 "Upload Rate (KB/s) :" ---> "Tasa de subida (KB/s) :"
 "Upload" ---> "Subida"
-"Uploaded" --->  ??? 
+"Uploaded" ---> "Subido"
 "Use Compact Allocation." --->  ??? 
 "Use a proxy." ---> "Usar proxy."
 "User canceled Torrent file creation" --->  ??? 
