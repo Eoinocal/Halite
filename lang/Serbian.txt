@@ -226,7 +226,7 @@
 "Start Time" ---> "Početo preuzimanje"
 "Status" ---> "Akcija"
 "Status:" ---> "Akcija:"
-"Stop" ---> "Stopiraj"
+"Stop" ---> "Zaustavi"
 "Stopped initially (Allows changing advanced setting)" ---> "Početno stopiran (dozvoljava promenu produžnog uređaja)"
 "Stopped" ---> "Zaustavljen"
 "Stopping Torrents" ---> "Stopiraj torente"
