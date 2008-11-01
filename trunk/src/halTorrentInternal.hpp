@@ -122,6 +122,20 @@ std::pair<std::string, std::string> extract_names(const wpath &file)
 		return std::make_pair("", "");
 }
 
+inline libt::storage_mode_t hal_allocation_to_libt(bit::allocations alloc)
+{
+	switch (alloc)
+	{
+	case bit::full_allocation:
+		return libt::storage_mode_allocate;
+	case bit::compact_allocation:
+		return libt::storage_mode_compact;
+	case bit::sparse_allocation:
+	default:
+		return libt::storage_mode_sparse;
+	}
+}
+
 class invalidTorrent : public std::exception
 {
 public:
@@ -323,18 +337,18 @@ public:
 		
 	torrent_internal() :	
 		TORRENT_INTERNALS_DEFAULTS,
-		compactStorage_(true),
+		allocation_(bit::sparse_allocation),
 		state_(torrent_details::torrent_stopped)
 	{
 		TORRENT_STATE_LOG(L"Torrent state machine initiate");
 		machine_.initiate();
 	}
 	
-	torrent_internal(wpath filename, wpath saveDirectory, bool compactStorage, wpath move_to_directory=L"") :
+		torrent_internal(wpath filename, wpath saveDirectory, bit::allocations alloc, wpath move_to_directory=L"") :
 		TORRENT_INTERNALS_DEFAULTS,
 		save_directory_(saveDirectory.string()),
 		move_to_directory_(move_to_directory.string()),
-		compactStorage_(compactStorage),	
+		allocation_(alloc),	
 		state_(torrent_details::torrent_stopped)
 	{
 		assert(the_session_);	
@@ -538,7 +552,7 @@ public:
 
 			p.ti = info_memory_;
 			p.save_path = path_to_utf8(save_directory_);
-			p.storage_mode = compactStorage_ ? libt::storage_mode_compact : libt::storage_mode_sparse;
+			p.storage_mode = hal_allocation_to_libt(allocation_);
 			p.paused = paused;
 			p.duplicate_is_error = false;
 			p.auto_managed = false;
@@ -896,7 +910,8 @@ public:
 			ar & make_nvp("ratio", ratio_);	
 			ar & make_nvp("progress", progress_);
 			ar & make_nvp("state", state_);
-			ar & make_nvp("compact_storage", compactStorage_);	
+//			ar & make_nvp("compact_storage", compactStorage_);	
+			ar & make_nvp("allocation_type", allocation_);	
 			ar & make_nvp("resolve_countries", resolve_countries_);	
 
 			ar & make_nvp("tracker_username", trackerUsername_);
@@ -1334,6 +1349,7 @@ private:
 	
 	int queue_position_;
 	bool compactStorage_;
+	bit::allocations allocation_;
 };
 
 typedef std::map<std::string, TorrentInternalOld> TorrentMap;
