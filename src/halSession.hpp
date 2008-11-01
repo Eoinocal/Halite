@@ -710,7 +710,7 @@ public:
 	void stop_alert_handler();
 	void alert_handler();
 
-	void add_torrent(wpath file, wpath saveDirectory, bool startStopped, bool compactStorage, 
+	void add_torrent(wpath file, wpath saveDirectory, bool startStopped, bit::allocations alloc, 
 			boost::filesystem::wpath moveToDirectory, bool useMoveTo) 
 	{
 		try 
@@ -739,9 +739,9 @@ public:
 		if (!TIp)
 		{
 			if (useMoveTo)
-				TIp.reset(new torrent_internal(file, saveDirectory, compactStorage, moveToDirectory));		
+				TIp.reset(new torrent_internal(file, saveDirectory, alloc, moveToDirectory));		
 			else
-				TIp.reset(new torrent_internal(file, saveDirectory, compactStorage));
+				TIp.reset(new torrent_internal(file, saveDirectory, alloc));
 
 			TIp->setTransferSpeed(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload());
 			TIp->setConnectionLimit(bittorrent().defTorrentMaxConn(), bittorrent().defTorrentMaxUpload());

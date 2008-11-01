@@ -733,6 +733,13 @@ public:
 		mappingNatPMP
 	};
 
+	enum allocations
+	{
+		sparse_allocation = 1,
+		compact_allocation,
+		full_allocation
+	};
+
 	void shutDownSession();
 	void save_torrent_data();
 
@@ -788,7 +795,7 @@ public:
 
 	void set_torrent_defaults(const connections& defaults);	
 	void add_torrent(boost::filesystem::wpath file, boost::filesystem::wpath saveDirectory, 
-		bool startPaused=false, bool compactStorage=false, 
+		bool startPaused=false, allocations alloc=hal::bit::sparse_allocation, 
 		boost::filesystem::wpath moveToDirectory=L"", bool useMoveTo=false);
 	
 	void getAllPeerDetails(const std::string& filename, PeerDetails& peerContainer);
