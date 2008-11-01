@@ -331,6 +331,7 @@ public:
 		totalUploaded_(0), \
 		totalBase_(0), \
 		progress_(0), \
+		managed_(false), \
 		startTime_(boost::posix_time::second_clock::universal_time()), \
 		in_session_(false), \
 		queue_position_(0)
@@ -460,10 +461,28 @@ public:
 		
 		boost::tuple<size_t, size_t, size_t, size_t> connections = updatePeers();	
 
-		return torrent_details_ptr(new torrent_details(name_, filename_, saveDirectory().string(), state, hal::from_utf8(statusMemory_.current_tracker), 
-			std::pair<float, float>(statusMemory_.download_payload_rate, statusMemory_.upload_payload_rate),
-			progress_, statusMemory_.distributed_copies, statusMemory_.total_wanted_done, statusMemory_.total_wanted, uploaded_, payloadUploaded_,
-			downloaded_, payloadDownloaded_, connections, ratio_, td, statusMemory_.next_announce, activeDuration_, seedingDuration_, startTime_, finishTime_, queue_position_));
+		return torrent_details_ptr(new torrent_details(
+			name_, filename_, 
+			saveDirectory().string(), 
+			state, 
+			hal::from_utf8(statusMemory_.current_tracker), 
+			std::pair<float, float>(
+				statusMemory_.download_payload_rate, 
+				statusMemory_.upload_payload_rate),
+			progress_, 
+			statusMemory_.distributed_copies, 
+			statusMemory_.total_wanted_done, 
+			statusMemory_.total_wanted, 
+			uploaded_, payloadUploaded_,
+			downloaded_, payloadDownloaded_, 
+			connections, 
+			ratio_, 
+			td, 
+			statusMemory_.next_announce, 
+			activeDuration_, seedingDuration_, 
+			startTime_, finishTime_, 
+			queue_position_,
+			get_managed()));
 
 		}
 		catch (const libt::invalid_handle&)
@@ -477,7 +496,11 @@ public:
 				new EventTorrentException(event_logger::critical, event_logger::torrentException, e.what(), to_utf8(name_), "gettorrent_details_ptr")));
 		}
 		
-		return torrent_details_ptr(new torrent_details(name_, filename_, saveDirectory().string(), app().res_wstr(HAL_TORRENT_STOPPED), app().res_wstr(HAL_NA)));
+		return torrent_details_ptr(new torrent_details(
+			name_, filename_, 
+			saveDirectory().string(), 
+			app().res_wstr(HAL_TORRENT_STOPPED), 
+			app().res_wstr(HAL_NA)));
 	}
 
 	void setTransferSpeed(float down, float up)
@@ -523,6 +546,24 @@ public:
 	{
 		return ratio_;
 	}
+
+	void set_managed(bool m)
+	{
+		mutex_t::scoped_lock l(mutex_);
+		managed_ = m;
+		
+		if (in_session()) handle_.auto_managed(managed_);
+	}
+
+	bool get_managed()
+	{
+		if (in_session())
+		{
+			assert(managed_ == handle_.is_auto_managed());
+		}
+
+		return managed_;
+	}
 	
 	void add_to_session(bool paused = false)
 	{
@@ -555,7 +596,7 @@ public:
 			p.storage_mode = hal_allocation_to_libt(allocation_);
 			p.paused = paused;
 			p.duplicate_is_error = false;
-			p.auto_managed = false;
+			p.auto_managed = managed_;
 
 			handle_ = the_session_->add_torrent(p);		
 			assert(handle_.is_valid());
@@ -932,6 +973,7 @@ public:
 			ar & make_nvp("finish_time", finishTime_);
 			ar & make_nvp("active_duration", activeDuration_);
 			ar & make_nvp("seeding_duration", seedingDuration_);
+			ar & make_nvp("managed", managed_);
 					
 		} 
 		else 
@@ -1349,6 +1391,7 @@ private:
 	
 	int queue_position_;
 	bool compactStorage_;
+	bool managed_;
 	bit::allocations allocation_;
 };
 

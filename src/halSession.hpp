@@ -710,7 +710,7 @@ public:
 	void stop_alert_handler();
 	void alert_handler();
 
-	void add_torrent(wpath file, wpath saveDirectory, bool startStopped, bit::allocations alloc, 
+	void add_torrent(wpath file, wpath saveDirectory, bool startStopped, bool managed, bit::allocations alloc, 
 			boost::filesystem::wpath moveToDirectory, bool useMoveTo) 
 	{
 		try 
@@ -743,6 +743,7 @@ public:
 			else
 				TIp.reset(new torrent_internal(file, saveDirectory, alloc));
 
+			TIp->set_managed(managed);
 			TIp->setTransferSpeed(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload());
 			TIp->setConnectionLimit(bittorrent().defTorrentMaxConn(), bittorrent().defTorrentMaxUpload());
 		}
@@ -979,7 +980,7 @@ public:
 			for (TorrentManager::torrentByName::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
 					i != e; ++i)
 			{
-				if ((*i).torrent->state() != torrent_details::torrent_stopped)
+				if ((*i).torrent && (*i).torrent->state() != torrent_details::torrent_stopped)
 					++num_active;
 			}
 			

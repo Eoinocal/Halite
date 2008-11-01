@@ -19,6 +19,9 @@
 
 #define HAL_CUSTOMDRAW_TITLEDATA 1000000000
 
+#define HAL_AUTO_MANAGED 1
+#define HAL_UNMANAGED 2
+
 HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	halWindow_(HalWindow),
 	iniClass("listviews/halite", "HaliteListView")
@@ -37,9 +40,9 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	
 	boost::split(names, column_names, boost::is_any_of(L";"));
 	
-	array<int, NumberOfColumns_s> widths = {100,110,60,60,60,42,45,61,45,45,45,45,45,45,45,45,45,45,45,45,45,45};
+	array<int, NumberOfColumns_s> widths = {100,110,60,60,60,42,45,61,45,45,45,45,45,45,45,45,45,45,45,45,45,30,45};
 	array<bool, NumberOfColumns_s> visible = {true,true,true,true,true,true,true,true,true,true,true,\
-		true,true,true,true,true,true,true,true,true,true,true};
+		true,true,true,true,true,true,true,true,true,true,true,true};
 
 	for (int i=0, e=NumberOfColumns_s; i < e; ++i)
 	{
@@ -47,24 +50,33 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	}	
 
 
-//	int ret = EnableGroupView(true);
-/*	if (IsGroupViewEnabled())
+	int ret = EnableGroupView(true);
+	if (IsGroupViewEnabled())
 	{
 //		RemoveAllGroups();
 
 		LVGROUP lvg = { sizeof(LVGROUP) };
 
-		lvg.mask = LVGF_HEADER|LVGF_GROUPID|LVGF_STATE|LVGF_ALIGN ;
-		lvg.pszHeader = L"Eoin";
-		lvg.cchHeader = 5;
-		lvg.iGroupId = 1;
-		lvg.state = LVGS_NORMAL;
-		lvg.uAlign = LVGA_HEADER_LEFT;
+		lvg.mask = LVGF_HEADER|LVGF_GROUPID ;
+		lvg.pszHeader = L"Auto-managed";
+//		lvg.cchHeader = 5;
+		lvg.iGroupId = HAL_AUTO_MANAGED;
+//		lvg.state = LVGS_NORMAL;
+//		lvg.uAlign = LVGA_HEADER_LEFT;
 
 		int grp = InsertGroup(-1, &lvg);
+
+		lvg.mask = LVGF_HEADER|LVGF_GROUPID ;
+		lvg.pszHeader = L"Unmanaged";
+//		lvg.cchHeader = 5;
+		lvg.iGroupId = HAL_UNMANAGED;
+//		lvg.state = LVGS_NORMAL;
+//		lvg.uAlign = LVGA_HEADER_LEFT;
+
+		grp = InsertGroup(-1, &lvg);
 //		MoveItemToGroup(1, 1);
 	}
-*/
+
 	SafeLoadFromIni();
 	
 	SetColumnSortType(0, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Name());
@@ -88,7 +100,8 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	SetColumnSortType(18, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::SeedingTime());
 	SetColumnSortType(19, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::StartTime());
 	SetColumnSortType(20, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::FinishTime());
-	SetColumnSortType(21, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::QueuePosition());
+	SetColumnSortType(21, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Managed());
+	SetColumnSortType(22, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::QueuePosition());
 
 	
 /*	int item_pos = AddItem(0, 0, L"Unmanaged", 0);
@@ -134,11 +147,28 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	hal::try_update_lock<listClass> lock(*this);
 	if (lock) 
 	{
-	
+		if (GetItemCount() > 0)
+		{
+			LVITEM lvItem = { 0 };
+			lvItem.mask = LVIF_TEXT|LVIF_GROUPID|LVIF_COLUMNS;
+			lvItem.iItem = 0;
+			lvItem.iSubItem = 0;
 
+			hal::win_c_str<std::wstring> str(2048);
+
+			lvItem.pszText = str;
+			lvItem.cchTextMax = str.size();
+
+			GetItem(&lvItem);
+			DeleteItem(lvItem.iItem);
+
+			lvItem.iItem = GetItemCount();
+			InsertItem(&lvItem);
+		}
 
 	foreach (const hal::torrent_details_ptr td, tD.torrents()) 
 	{
+
 		LV_FINDINFO findInfo; 
 		findInfo.flags = LVFI_STRING;
 		findInfo.psz = const_cast<LPTSTR>(td->name().c_str());
@@ -146,19 +176,23 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 		int itemPos = FindItem(&findInfo, -1);
 		if (itemPos < 0)
 		{
-/*			LVITEM lvItem = { 0 };
-			lvItem.mask = LVIF_TEXT|LVIF_GROUPID;
+			LVITEM lvItem = { 0 };
+			lvItem.mask = LVIF_TEXT|LVIF_GROUPID|LVIF_COLUMNS;
 			lvItem.iItem = 0;
 			lvItem.iSubItem = 0;
 			lvItem.pszText = (LPTSTR)td->name().c_str();
-			lvItem.iGroupId = 0;
+
+			if (td->managed())
+				lvItem.iGroupId = HAL_AUTO_MANAGED;
+			else
+				lvItem.iGroupId = HAL_UNMANAGED;
 
 			lvItem.mask |= LVIF_IMAGE;
 			lvItem.iImage = 0;
 
-			itemPos =  InsertItem(&lvItem);
-*/
-			AddItem(0, 0, td->name().c_str(), 0);
+			itemPos = InsertItem(&lvItem);
+
+		//	AddItem(0, 0, td->name().c_str(), 0);
 		//	MoveItemToGroup(itemPos, 0);
 		}
 
@@ -166,11 +200,16 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 		{
 			SetItemText(itemPos, i, getColumnAdapter(i)->print(td).c_str());
 		}
+
+//		if (td->queue_position() == 0)
+//		{
+
+//		}
 	}
 	
 	int iCol = GetSortColumn();
-	if (autoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
-		DoSortItems(iCol, IsSortDescending());
+	//if (autoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
+	//	DoSortItems(iCol, IsSortDescending());
 	
 	}
 }

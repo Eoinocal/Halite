@@ -318,10 +318,26 @@ typedef std::vector<FileDetail> FileDetails;
 class torrent_details 
 {
 public:
-	torrent_details(std::wstring n, std::wstring f, std::wstring sd, std::wstring s, std::wstring cT, std::pair<float,float> sp=std::pair<float,float>(0,0),
-			float c=0, float d=0, size_type tWD=0, size_type tW=0, size_type tU=0, size_type tpU=0, size_type tD=0, size_type tpD=0, boost::tuple<size_type, size_type, size_type, size_type> connections = boost::tuple<size_type, size_type, size_type, size_type>(0,0,0,0), float r=0, 
-			boost::posix_time::time_duration eta=boost::posix_time::seconds(0), boost::posix_time::time_duration uIn=boost::posix_time::seconds(0),
-			boost::posix_time::time_duration actve=boost::posix_time::seconds(0), boost::posix_time::time_duration seding=boost::posix_time::seconds(0), boost::posix_time::ptime srt=boost::posix_time::second_clock::universal_time(), boost::posix_time::ptime fin=boost::posix_time::second_clock::universal_time(), int q_p=-1) :
+	torrent_details(std::wstring n, std::wstring f, 
+			std::wstring sd, 
+			std::wstring s, 
+			std::wstring cT, 
+			std::pair<float,float> sp=std::pair<float,float>(0,0),
+			float c=0, 	float d=0, 
+			size_type tWD=0, size_type tW=0, 
+			size_type tU=0, size_type tpU=0, 
+			size_type tD=0, size_type tpD=0, 
+			boost::tuple<size_type, size_type, size_type, size_type> connections = 
+				boost::tuple<size_type, size_type, size_type, size_type>(0,0,0,0), 
+			float r=0, 
+			boost::posix_time::time_duration eta=boost::posix_time::seconds(0), 
+			boost::posix_time::time_duration uIn=boost::posix_time::seconds(0),
+			boost::posix_time::time_duration actve=boost::posix_time::seconds(0), 
+			boost::posix_time::time_duration seding=boost::posix_time::seconds(0), 
+			boost::posix_time::ptime srt=boost::posix_time::second_clock::universal_time(), 
+			boost::posix_time::ptime fin=boost::posix_time::second_clock::universal_time(), 
+			int q_p=-1, 
+			bool man=false) :
 		filename_(f),
 		name_(n),
 		saveDir_(sd),
@@ -349,7 +365,8 @@ public:
 		seeding_(seding),
 		startTime_(srt),
 		finishTime_(fin),
-		queue_position_(q_p)
+		queue_position_(q_p),
+		managed_(man)
 	{}
 
 	torrent_details() :	
@@ -402,6 +419,7 @@ public:
 	const boost::posix_time::ptime& finishTime() { return finishTime_; }
 
 	int queue_position() const { return queue_position_; }
+	bool managed() const { return managed_; }
 	
 public:
 	std::wstring filename_;
@@ -437,6 +455,7 @@ public:
 	boost::posix_time::ptime finishTime_;
 
 	int queue_position_;
+	bool managed_;
 	
 private:
 	mutable bool peerDetailsFilled_;
@@ -795,7 +814,7 @@ public:
 
 	void set_torrent_defaults(const connections& defaults);	
 	void add_torrent(boost::filesystem::wpath file, boost::filesystem::wpath saveDirectory, 
-		bool startPaused=false, allocations alloc=hal::bit::sparse_allocation, 
+		bool startPaused=false, bool managed=false, allocations alloc=hal::bit::sparse_allocation, 
 		boost::filesystem::wpath moveToDirectory=L"", bool useMoveTo=false);
 	
 	void getAllPeerDetails(const std::string& filename, PeerDetails& peerContainer);
