@@ -340,7 +340,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	wstring default_move_folder = wpath(hal::config().default_move_folder_).native_file_string();
 	bool use_move_to = hal::config().use_move_to_;
 	bool startPaused = false;
-	bool compactStorage = false;
+	bool managed = false;
 	hal::bit::allocations allocation_type = hal::bit::sparse_allocation;
 	
 	if (!boost::filesystem::exists(default_save_folder))
@@ -348,14 +348,14 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 
 	if (hal::config().save_prompt_)
 	{
-		AddTorrentDialog addTorrent(default_save_folder, default_move_folder, use_move_to, startPaused, compactStorage, allocation_type);	
+		AddTorrentDialog addTorrent(default_save_folder, default_move_folder, use_move_to, startPaused, managed, allocation_type);	
 		
 		if (IDOK != addTorrent.DoModal())
 			return;
 	}
 	
 	wpath file(lpszPath, boost::filesystem::native);	
-	hal::bittorrent().add_torrent(file, wpath(default_save_folder), startPaused, allocation_type, 
+	hal::bittorrent().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type, 
 		wpath(default_move_folder), use_move_to);
 
 	ui().update();
