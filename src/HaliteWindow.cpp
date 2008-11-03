@@ -556,6 +556,25 @@ LRESULT HaliteWindow::OnHelp(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHa
 	return 0;
 }
 
+LRESULT HaliteWindow::OnToolbarExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	if (!confirmClose || (confirmClose && 
+		MessageBox(hal::app().res_wstr(HAL_WINDOW_CLOSECONFRIM).c_str(), 
+			hal::app().res_wstr(HAL_HALITE).c_str(), MB_YESNO) == IDYES))
+	{
+		DestroyWindow();
+	}
+	
+	return 0;
+}
+
+LRESULT HaliteWindow::OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+
+	
+	return 0;
+}
+
 LRESULT HaliteWindow::OnViewStatusBar(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	BOOL bVisible = !::IsWindowVisible(m_hWndStatusBar);

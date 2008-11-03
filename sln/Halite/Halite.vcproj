@@ -1338,6 +1338,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\global\string_conv.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\advtabs\ThemeTestDialog.hpp"
 					>
 				</File>
@@ -1371,10 +1375,6 @@
 				</File>
 				<File
 					RelativePath="..\..\src\global\logger.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\global\string_conv.hpp"
 					>
 				</File>
 				<File

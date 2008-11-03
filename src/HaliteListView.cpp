@@ -19,12 +19,11 @@
 
 #define HAL_CUSTOMDRAW_TITLEDATA 1000000000
 
-#define HAL_AUTO_MANAGED 1
-#define HAL_UNMANAGED 2
 
 HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	halWindow_(HalWindow),
-	iniClass("listviews/halite", "HaliteListView")
+	iniClass("listviews/halite", "HaliteListView"),
+	queue_view_(false)
 {		
 	HalWindow.connectUiUpdate(bind(&HaliteListViewCtrl::uiUpdate, this, _1));
 }
@@ -50,32 +49,7 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	}	
 
 
-	int ret = EnableGroupView(true);
-	if (IsGroupViewEnabled())
-	{
-//		RemoveAllGroups();
 
-		LVGROUP lvg = { sizeof(LVGROUP) };
-
-		lvg.mask = LVGF_HEADER|LVGF_GROUPID ;
-		lvg.pszHeader = L"Auto-managed";
-//		lvg.cchHeader = 5;
-		lvg.iGroupId = HAL_AUTO_MANAGED;
-//		lvg.state = LVGS_NORMAL;
-//		lvg.uAlign = LVGA_HEADER_LEFT;
-
-		int grp = InsertGroup(-1, &lvg);
-
-		lvg.mask = LVGF_HEADER|LVGF_GROUPID ;
-		lvg.pszHeader = L"Unmanaged";
-//		lvg.cchHeader = 5;
-		lvg.iGroupId = HAL_UNMANAGED;
-//		lvg.state = LVGS_NORMAL;
-//		lvg.uAlign = LVGA_HEADER_LEFT;
-
-		grp = InsertGroup(-1, &lvg);
-//		MoveItemToGroup(1, 1);
-	}
 
 	SafeLoadFromIni();
 	
@@ -103,6 +77,7 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	SetColumnSortType(21, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Managed());
 	SetColumnSortType(22, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::QueuePosition());
 
+	queue_view_mode();
 	
 /*	int item_pos = AddItem(0, 0, L"Unmanaged", 0);
 	SetItemData(item_pos, HAL_CUSTOMDRAW_TITLEDATA);
@@ -147,24 +122,27 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	hal::try_update_lock<listClass> lock(*this);
 	if (lock) 
 	{
-		if (GetItemCount() > 0)
-		{
-			LVITEM lvItem = { 0 };
-			lvItem.mask = LVIF_TEXT|LVIF_GROUPID|LVIF_COLUMNS;
-			lvItem.iItem = 0;
-			lvItem.iSubItem = 0;
 
-			hal::win_c_str<std::wstring> str(2048);
+#	if 0
+	if (GetItemCount() > 0)
+	{
+		LVITEM lvItem = { 0 };
+		lvItem.mask = LVIF_TEXT|LVIF_GROUPID|LVIF_COLUMNS;
+		lvItem.iItem = 0;
+		lvItem.iSubItem = 0;
 
-			lvItem.pszText = str;
-			lvItem.cchTextMax = str.size();
+		hal::win_c_str<std::wstring> str(2048);
 
-			GetItem(&lvItem);
-			DeleteItem(lvItem.iItem);
+		lvItem.pszText = str;
+		lvItem.cchTextMax = str.size();
 
-			lvItem.iItem = GetItemCount();
-			InsertItem(&lvItem);
-		}
+		GetItem(&lvItem);
+		DeleteItem(lvItem.iItem);
+
+		lvItem.iItem = GetItemCount();
+		InsertItem(&lvItem);
+	}
+#	endif
 
 	foreach (const hal::torrent_details_ptr td, tD.torrents()) 
 	{
@@ -177,39 +155,36 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 		if (itemPos < 0)
 		{
 			LVITEM lvItem = { 0 };
-			lvItem.mask = LVIF_TEXT|LVIF_GROUPID|LVIF_COLUMNS;
+			lvItem.mask = LVIF_TEXT;
 			lvItem.iItem = 0;
 			lvItem.iSubItem = 0;
 			lvItem.pszText = (LPTSTR)td->name().c_str();
 
-			if (td->managed())
-				lvItem.iGroupId = HAL_AUTO_MANAGED;
-			else
-				lvItem.iGroupId = HAL_UNMANAGED;
+			if (IsGroupViewEnabled())
+			{
+				lvItem.mask |= LVIF_GROUPID|LVIF_COLUMNS;
+
+				if (td->managed())
+					lvItem.iGroupId = HAL_AUTO_MANAGED;
+				else
+					lvItem.iGroupId = HAL_UNMANAGED;
+			}
 
 			lvItem.mask |= LVIF_IMAGE;
 			lvItem.iImage = 0;
 
 			itemPos = InsertItem(&lvItem);
-
-		//	AddItem(0, 0, td->name().c_str(), 0);
-		//	MoveItemToGroup(itemPos, 0);
 		}
 
 		for (size_t i=1; i<NumberOfColumns_s; ++i)
 		{
 			SetItemText(itemPos, i, getColumnAdapter(i)->print(td).c_str());
 		}
-
-//		if (td->queue_position() == 0)
-//		{
-
-//		}
 	}
 	
 	int iCol = GetSortColumn();
-	//if (autoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
-	//	DoSortItems(iCol, IsSortDescending());
+	if (autoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
+		DoSortItems(iCol, IsSortDescending());
 	
 	}
 }
@@ -357,6 +332,69 @@ LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndC
 	}
 
 	return 0;
+}
+
+LRESULT HaliteListViewCtrl::OnQueueView(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	queue_view_ ^= true;
+
+	queue_view_mode();
+	
+	return 0;
+}
+
+void HaliteListViewCtrl::queue_view_mode()
+{
+	DeleteAllItems();
+
+	if (queue_view_)
+	{
+		int ret = EnableGroupView(true);
+		if (IsGroupViewEnabled())
+		{
+			LVGROUP lvg = { sizeof(LVGROUP) };
+
+			lvg.mask = LVGF_HEADER|LVGF_GROUPID ;
+			wstring unmanaged = hal::app().res_wstr(HAL_UNMANAGED);
+			lvg.pszHeader = (LPWSTR)unmanaged.c_str();
+			lvg.iGroupId = HAL_UNMANAGED;
+
+			int grp = InsertGroup(-1, &lvg);
+
+			lvg.mask = LVGF_HEADER|LVGF_GROUPID ;
+			wstring managed_seed = hal::app().res_wstr(HAL_MANAGED_SEEDING);
+			lvg.pszHeader = (LPWSTR)managed_seed.c_str();
+			lvg.iGroupId = HAL_MANAGED_SEEDING;
+
+			grp = InsertGroup(-1, &lvg);
+
+			lvg.mask = LVGF_HEADER|LVGF_GROUPID ;
+			wstring managed_down = hal::app().res_wstr(HAL_MANAGED_DOWNLOADING);
+			lvg.pszHeader = (LPWSTR)managed_down.c_str();
+			lvg.iGroupId = HAL_MANAGED_DOWNLOADING;
+
+			grp = InsertGroup(-1, &lvg);
+
+			lvg.mask = LVGF_HEADER|LVGF_GROUPID ;
+			wstring auto_managed = hal::app().res_wstr(HAL_AUTO_MANAGED);
+			lvg.pszHeader = (LPWSTR)auto_managed.c_str();
+			lvg.iGroupId = HAL_AUTO_MANAGED;
+
+			grp = InsertGroup(-1, &lvg);
+		}
+	}
+	else
+	{
+		RemoveAllGroups();
+		int ret = EnableGroupView(false);
+	}
+
+	MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
+	
+	minfo.fMask = MIIM_STATE;
+	minfo.fState = queue_view_ ? MFS_CHECKED : MFS_UNCHECKED;
+	
+	menu_.SetMenuItemInfo(HAL_LVM_QUEUE_VIEW, false, &minfo);
 }
 
 //LRESULT HaliteListViewCtrl::OnDeleteItem(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHandled*/)
