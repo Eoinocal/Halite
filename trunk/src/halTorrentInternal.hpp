@@ -482,7 +482,7 @@ public:
 			activeDuration_, seedingDuration_, 
 			startTime_, finishTime_, 
 			queue_position_,
-			get_managed()));
+			is_managed()));
 
 		}
 		catch (const libt::invalid_handle&)
@@ -501,6 +501,28 @@ public:
 			saveDirectory().string(), 
 			app().res_wstr(HAL_TORRENT_STOPPED), 
 			app().res_wstr(HAL_NA)));
+	}
+
+	void adjust_queue_position(bit::queue_adjustments adjust)
+	{
+		if (in_session() && is_managed())
+		{
+			switch (adjust)
+			{
+			case bit::move_up:
+				handle_.queue_position_up();
+				break;
+			case bit::move_down:
+				handle_.queue_position_down();
+				break;
+			case bit::move_to_top:
+				handle_.queue_position_top();
+				break;
+			case bit::move_to_bottom:
+				handle_.queue_position_bottom();
+				break;
+			};
+		}
 	}
 
 	void setTransferSpeed(float down, float up)
@@ -555,7 +577,7 @@ public:
 		if (in_session()) handle_.auto_managed(managed_);
 	}
 
-	bool get_managed()
+	bool is_managed()
 	{
 		if (in_session())
 		{
@@ -668,7 +690,7 @@ public:
 
 		return (in_session_ && the_session_ != 0 && handle_.is_valid());
 	}
-	
+
 	void resume()
 	{
 		mutex_t::scoped_lock l(mutex_);

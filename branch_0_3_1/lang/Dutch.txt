@@ -1,4 +1,4 @@
-﻿"English" ---> "Nederlands"
+"English" ---> "Nederlands"
 "English.rtf" ---> "../lang/Dutch.rtf"
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
@@ -70,7 +70,7 @@
 "Disabled" ---> "Uitschakelen"
 "Distributed Hash Tables" --->  ??? 
 "Don't download" ---> "Niet Downloaden"
-"Down" ---> ???
+"Down" --->  ??? 
 "Download Rate (KB/s) :" ---> "Download Snelheid (KB/s) :"
 "Download" ---> "Download"
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Gedownload %1$.2fMB, Geupload %2$.2fMB, Ratio %3$.2f."
@@ -91,7 +91,7 @@
 "Enable Remote Control" ---> "Beheer op afstand inschakelen"
 "Enabled" ---> "Inschakelen"
 "Encoding Level" ---> "Encryptie niveau"
-"Enter any Web Seed URLs and DHT Nodes." --->  "Vul een Web Seed URL of DHT knoop in." 
+"Enter any Web Seed URLs and DHT Nodes." ---> "Vul een Web Seed URL of DHT knoop in."
 "Enter the tracker URLs for the torrent." ---> "Vul de tracker URLs in voor de torrent."
 "Exception caught: %1%, from %2%." ---> "Exceptie gevangen: %1%, van %2%."
 "Failed, %1%" ---> "Mislukt, %1%"
@@ -106,7 +106,7 @@
 "Forced" ---> "Forceren"
 "General Settings" ---> "Algemene Opties"
 "General" ---> "Algemeen"
-"Generated Torrent Name (Cannot change)" --->  "Gegenereerde Torrent naam (Kan niet veranderen)"
+"Generated Torrent Name (Cannot change)" ---> "Gegenereerde Torrent naam (Kan niet veranderen)"
 "Global Limits" ---> "Globale Limieten"
 "Halite BitTorrent Client" --->  ??? 
 "Halite Debug Dialog" ---> "Halite Debug Venster"
@@ -164,12 +164,12 @@
 "Paused" ---> "Gepauzeerd"
 "Pausing" ---> "Pauzeert"
 "Peer %2%: %1%." --->  ??? 
-"Peer Event: %1%." ---> ???
-"Peer banned %2%. (%1%)" ---> ???
+"Peer Event: %1%." --->  ??? 
+"Peer banned %2%. (%1%)" --->  ??? 
 "Peer" ---> "Peer"
 "Peers" --->  ??? 
 "Peers:" --->  ??? 
-"Piece %2% finished. (%1%)" ---> ???
+"Piece %2% finished. (%1%)" --->  ??? 
 "Piece Size (KBs)" --->  ??? 
 "Plaintext Encrypted" ---> "Gewone text encryptie"
 "Plaintext" ---> "Platte Tekst"

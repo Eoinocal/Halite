@@ -1,4 +1,4 @@
-﻿"English" ---> "Türkçe"
+"English" ---> "Türkçe"
 "English.rtf" ---> "../lang/Turkish.rtf"
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s indir. - %2$.2fKB/s gönd."
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB indir. - %2$.2fMB gönd."

@@ -9,6 +9,8 @@
 #define ID_WINDOW_BEGIN	 			13000
 #define HAL_WINDOW_CLOSECONFRIM		ID_WINDOW_BEGIN + 1
 #define HAL_WINDOW_SOCKETS_FAILED	ID_WINDOW_BEGIN + 2
+#define HAL_WINDOW_AUTOSHUTDOWN		ID_WINDOW_BEGIN + 3
+#define HAL_WINDOW_EXIT				ID_WINDOW_BEGIN + 4
 
 #ifndef RC_INVOKED
 
@@ -84,6 +86,9 @@ public:
 		COMMAND_ID_HANDLER(ID_TRAY_RESUMEALL, OnResumeAll)
 		COMMAND_ID_HANDLER(ID_TRAY_PAUSEALL, OnPauseAll)
 		COMMAND_ID_HANDLER(ID_TRAY_EXIT, OnTrayExit)
+
+		COMMAND_ID_HANDLER(HAL_WINDOW_AUTOSHUTDOWN, OnAutoShutdown)
+		COMMAND_ID_HANDLER(HAL_WINDOW_EXIT, OnToolbarExit)
 
 		REFLECT_NOTIFICATIONS()
 		CHAIN_MSG_MAP(CUpdateUI<HaliteWindow>)
@@ -163,6 +168,8 @@ protected:
 	LRESULT OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnHelp(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnAdvanced(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnToolbarExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
 	LRESULT OnViewStatusBar(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnEraseBkgnd(HDC hdc);

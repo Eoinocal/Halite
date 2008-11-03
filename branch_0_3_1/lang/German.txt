@@ -1,4 +1,4 @@
-﻿"English" ---> "Deutsch"
+"English" ---> "Deutsch"
 "English.rtf" ---> "../lang/German.rtf"
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s runter - %2$.2fKB/s hoch"
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB runter - %2$.2fMB hoch"

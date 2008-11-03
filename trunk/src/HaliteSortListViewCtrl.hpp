@@ -637,6 +637,8 @@ protected:
 	}
 	
 	SelectionManager manager_;
+	WTL::CMenu menu_;
+	CHaliteHeaderCtrl header_;	
 	
 private:
 	bool vectorSizePreConditions()
@@ -646,10 +648,7 @@ private:
 			(listNames_.size() == listVisible_.size());
 
 		return ret;
-	}
-	
-	WTL::CMenu menu_;
-	CHaliteHeaderCtrl header_;	
+	}	
 	
 	mutable std::vector<wstring> listNames_;
 	mutable std::vector<int> listWidths_;

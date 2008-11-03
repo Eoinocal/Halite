@@ -1,5 +1,5 @@
 "English" ---> "French"
-"English.rtf" ---> "French.rtf"
+"English.rtf" ---> "../lang/French.rtf"
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s R - %2$.2fKB/s E"
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB R - %2$.2fMB E"
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB de %2$.2fMB"

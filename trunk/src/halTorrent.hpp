@@ -625,7 +625,29 @@ class torrent_internal;
 
 class bit
 {
-public:	
+public:		
+
+	enum mappings
+	{
+		mappingNone = 0,
+		mappingUPnP,
+		mappingNatPMP
+	};
+
+	enum allocations
+	{
+		sparse_allocation = 1,
+		compact_allocation,
+		full_allocation
+	};
+
+	enum queue_adjustments
+	{
+		move_up = 0,
+		move_down,
+		move_to_top,
+		move_to_bottom
+	};
 
 	class null_torrent : public std::exception
 	{
@@ -705,6 +727,9 @@ public:
 
 		void set_file_priorities(const vec_int_pair&);
 
+		void set_managed(bool);
+		bool get_managed() const;
+
 	public:
 		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(const std::wstring, class_type, 
 			get_name, name);
@@ -733,30 +758,18 @@ public:
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(std::vector<tracker_detail>, const std::vector<tracker_detail>&, 
 			class_type, get_trackers, set_trackers, trackers);
 
+		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(bool, bool, class_type, 
+			get_managed, set_managed, managed);
+
 		STLSOFT_METHOD_PROPERTY_SET_EXTERNAL(const vec_int_pair&, class_type, 
 			set_file_priorities, file_priorities);
 
 		void reset_trackers();
-
 		bool is_open() const;
-
+		void adjust_queue_position(bit::queue_adjustments adjust);
 
 	private:
 		exec_around_ptr ptr;
-	};
-
-	enum mappings
-	{
-		mappingNone = 0,
-		mappingUPnP,
-		mappingNatPMP
-	};
-
-	enum allocations
-	{
-		sparse_allocation = 1,
-		compact_allocation,
-		full_allocation
 	};
 
 	void shutDownSession();

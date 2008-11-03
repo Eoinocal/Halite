@@ -420,219 +420,219 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\alert.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\alert.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\assert.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\assert.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\broadcast_socket.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\broadcast_socket.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\bt_peer_connection.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\bt_peer_connection.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\connection_queue.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\connection_queue.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\create_torrent.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\create_torrent.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\disk_buffer_holder.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\disk_buffer_holder.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\disk_io_thread.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\disk_io_thread.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\entry.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\entry.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\enum_net.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\enum_net.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\error_code.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\error_code.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\escape_string.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\escape_string.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\file.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\file.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\file_pool.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\file_pool.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\file_storage.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\file_storage.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\GeoIP.c"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\GeoIP.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\gzip.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\gzip.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\http_connection.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\http_connection.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\http_parser.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\http_parser.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\http_stream.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\http_stream.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\http_tracker_connection.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\http_tracker_connection.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\identify_client.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\identify_client.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\instantiate_connection.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\instantiate_connection.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\ip_filter.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\ip_filter.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\lazy_bdecode.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\lazy_bdecode.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\logger.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\logger.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\lsd.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\lsd.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\magnet_uri.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\magnet_uri.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\memdebug.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\memdebug.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\metadata_transfer.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\metadata_transfer.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\natpmp.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\natpmp.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\parse_url.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\parse_url.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\pe_crypto.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\pe_crypto.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\peer_connection.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\peer_connection.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\piece_picker.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\piece_picker.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\policy.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\policy.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\session.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\session.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\session_impl.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\session_impl.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\sha1.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\sha1.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\smart_ban.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\smart_ban.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\socks4_stream.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\socks4_stream.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\socks5_stream.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\socks5_stream.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\stat.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\stat.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\storage.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\storage.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\torrent.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\torrent.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\torrent_handle.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\torrent_handle.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\torrent_info.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\torrent_info.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\tracker_manager.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\tracker_manager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\udp_socket.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\udp_socket.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\udp_tracker_connection.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\udp_tracker_connection.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\upnp.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\upnp.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\ut_metadata.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\ut_metadata.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\ut_pex.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\ut_pex.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\web_peer_connection.cpp"
+				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\web_peer_connection.cpp"
 				>
 			</File>
 			<Filter

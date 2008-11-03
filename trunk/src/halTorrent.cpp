@@ -763,6 +763,35 @@ void bit::torrent::set_file_priorities(const std::pair<std::vector<int>, int>& p
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_trackers")
 }
 
+void bit::torrent::adjust_queue_position(bit::queue_adjustments adjust)
+{
+	try { 
+
+	ptr->adjust_queue_position(adjust);
+	
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::adjust_queue_position")
+}
+
+bool bit::torrent::get_managed() const
+{
+	try {
+	
+	return ptr->is_managed();
+	
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_managed")
+	
+	return false;
+}
+
+void bit::torrent::set_managed(bool m)
+{
+	try {
+	
+	ptr->set_managed(m);
+	
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_managed")
+}
+
 void bit::startEventReceiver()
 {
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Starting event handler.")));
