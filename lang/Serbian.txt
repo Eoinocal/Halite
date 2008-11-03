@@ -160,7 +160,7 @@
 "Overhead:" ---> "Neupotrebljivo:"
 "Password : " ---> "Lozinka:"
 "Path" ---> "Put"
-"Pause" ---> "Pauza"
+"Pause" ---> "Pauziraj"
 "Paused" ---> "Pauziran"
 "Pausing" ---> "Pauziraj"
 "Peer %2%: %1%." ---> "Mušterija %2%: %1%."
