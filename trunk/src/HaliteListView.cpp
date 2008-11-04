@@ -48,9 +48,6 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 		AddColumn(names[i].c_str(), i, visible[i], widths[i]);
 	}	
 
-
-
-
 	SafeLoadFromIni();
 	
 	SetColumnSortType(0, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Name());
@@ -334,6 +331,56 @@ LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndC
 	return 0;
 }
 
+LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	foreach(const list_value_type val, std::make_pair(is_selected_begin(), is_selected_end()))
+	{
+		hal::bittorrent().get(std::wstring(winstl::c_str_ptr(val))).managed = true;
+	}
+	DeleteAllItems();
+	halWindow_.issueUiUpdate();
+
+	return 0;
+}
+
+LRESULT HaliteListViewCtrl::OnSetUnmanaged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	foreach(const list_value_type val, std::make_pair(is_selected_begin(), is_selected_end()))
+	{
+		hal::bittorrent().get(std::wstring(winstl::c_str_ptr(val))).managed = false;
+	}
+	DeleteAllItems();
+	halWindow_.issueUiUpdate();
+
+	return 0;
+}
+
+LRESULT HaliteListViewCtrl::OnAdjustQueuePosition(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	foreach(const list_value_type val, std::make_pair(is_selected_begin(), is_selected_end()))
+	{
+		hal::bit::torrent t = hal::bittorrent().get(std::wstring(winstl::c_str_ptr(val)));
+
+		switch (wID)
+		{
+		case HAL_QUEUE_MOVE_TOP:
+			t.adjust_queue_position(hal::bit::move_to_top);
+			break;
+		case HAL_QUEUE_MOVE_UP:
+			t.adjust_queue_position(hal::bit::move_up);		
+			break;
+		case HAL_QUEUE_MOVE_DOWN:
+			t.adjust_queue_position(hal::bit::move_down);		
+			break;
+		case HAL_QUEUE_MOVE_BOTTOM:
+			t.adjust_queue_position(hal::bit::move_to_bottom);		
+			break;
+		};
+	}
+	
+	return 0;
+}
+
 LRESULT HaliteListViewCtrl::OnQueueView(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	queue_view_ ^= true;
@@ -388,6 +435,7 @@ void HaliteListViewCtrl::queue_view_mode()
 		RemoveAllGroups();
 		int ret = EnableGroupView(false);
 	}
+	halWindow_.issueUiUpdate();
 
 	MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
 	
