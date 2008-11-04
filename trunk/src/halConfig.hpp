@@ -30,6 +30,7 @@ public:
 		torrent_defaults_(),
 		port_range_(6881,6881),
 		use_port_range_(false),
+		randomize_port_(false),
 		enable_dht_(true),
 		dht_settings_(),
 		enableIPFilter(false),
@@ -63,6 +64,7 @@ public:
 			& make_nvp("default_move_folder", default_move_folder_)
 			& make_nvp("use_move_to", use_move_to_)
 			& make_nvp("save_prompt", save_prompt_)
+			& make_nvp("randomize_port", randomize_port_)			
 			& make_nvp("torrent_defaults", torrent_defaults_)
 			& make_nvp("queue_settings", queue_settings_)
 			& make_nvp("timeouts", timeouts_)
@@ -139,6 +141,7 @@ private:
 
 	std::pair<int, int> port_range_;
 	bool use_port_range_;
+	bool randomize_port_;
 
 	hal::connections torrent_defaults_;
 

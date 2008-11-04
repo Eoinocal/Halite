@@ -23,6 +23,8 @@
 #	include <libtorrent/alert_types.hpp>
 #	include <libtorrent/entry.hpp>
 #	include <libtorrent/bencode.hpp>
+#	include <libtorrent/upnp.hpp>
+#	include <libtorrent/natpmp.hpp>
 #	include <libtorrent/session.hpp>
 #	include <libtorrent/ip_filter.hpp>
 #	include <libtorrent/torrent_handle.hpp>
@@ -388,24 +390,38 @@ public:
 		if (upnp)
 		{
 			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Starting UPnP mapping.")));
-			session_.start_upnp();
+
+			upnp_ = session_.start_upnp();
 		}
 		else
 		{
 			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Stopping UPnP mapping.")));
+
 			session_.stop_upnp();
+			upnp_ = NULL;
 		}
 
 		if (nat_pmp)
 		{
 			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Starting NAT-PMP mapping.")));
-			session_.start_natpmp();
+
+			natpmp_ = session_.start_natpmp();
 		}
 		else
 		{
 			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Stopping NAT-PMP mapping.")));
+
 			session_.stop_natpmp();
+			natpmp_ = NULL;
 		}
+	}
+
+	std::wstring upnp_router_model()
+	{
+		if (upnp_)
+			return to_wstr_shim(upnp_->router_model());
+		else
+			return L"UPnP not started";
 	}
 
 	void set_timeouts(int peers, int tracker)
@@ -1054,6 +1070,9 @@ private:
 	bool dht_on_;
 	libt::dht_settings dht_settings_;
 	libt::entry dht_state_;	
+
+	libt::upnp* upnp_;
+	libt::natpmp* natpmp_;
 };
 
 }
