@@ -51,7 +51,7 @@ HaliteWindow::~HaliteWindow()
 
 BOOL HaliteWindow::PreTranslateMessage(MSG* pMsg)
 {
-	if(CFrameWindowImpl<HaliteWindow>::PreTranslateMessage(pMsg))
+	if(CFrameWindowImpl<thisClass>::PreTranslateMessage(pMsg))
 		return TRUE;
 
 	if (!advancedUI)
@@ -148,9 +148,9 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	
 	// Add ToolBar and register it along with StatusBar for UIUpdates
 	UIAddToolBar(hWndToolBar);
-	UISetCheck(ID_VIEW_TOOLBAR, 1);
-	UISetCheck(ID_VIEW_STATUS_BAR, 1);
-	UISetCheck(HAL_TRAY_MENU, 1);	
+	UISetCheck(ID_VIEW_TOOLBAR, true);
+	UISetCheck(ID_VIEW_STATUS_BAR, true);
+	UISetCheck(HAL_TRAY_MENU, true);	
 	
 //	TBBUTTONINFO tbinfo = { sizeof(TBBUTTONINFO) };
 //	tbinfo.dwMask = TBIF_STATE;
@@ -180,8 +180,11 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	hal::bittorrent().startEventReceiver();
 	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Initial setup complete!")));
+
+	UpdateLayout();
 	issueUiUpdate();
-	
+
+		
 	}
 	catch(const std::exception& e)
 	{
@@ -223,7 +226,8 @@ void HaliteWindow::setCorrectDialog()
 		mp_advDlg->ShowWindow(SW_SHOW);
 		m_Split.SetSplitterPanes(haliteList, *mp_advDlg);
 	}
-	ui().update();
+
+	issueUiUpdate();
 }
 
 void HaliteWindow::updateWindow()
@@ -269,6 +273,8 @@ void HaliteWindow::updateWindow()
 	{
 		UISetText(1, hal::app().res_wstr(HAL_IPFILTER_OFF).c_str());
 	}
+
+	UpdateLayout();
 	
 	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::updateWindow()")
 }
@@ -358,7 +364,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	hal::bittorrent().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type, 
 		wpath(default_move_folder), use_move_to);
 
-	ui().update();
+	issueUiUpdate();
 
 	}
 	catch(const boost::filesystem::filesystem_error&)
@@ -463,6 +469,7 @@ void HaliteWindow::OnSize(UINT type, WTL::CSize)
 		GetWindowRect(rect);
 	}
 	
+	UpdateLayout();
 	SetMsgHandled(false);
 }	
 
@@ -534,7 +541,7 @@ LRESULT HaliteWindow::OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 {
 	hal::bittorrent().pauseAllTorrents();
 	
-	ui().update();
+	issueUiUpdate();
 	return 0;
 }
 
@@ -542,7 +549,7 @@ LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL
 {
 	hal::bittorrent().unpauseAllTorrents();
 	
-	ui().update();
+	issueUiUpdate();
 	return 0;
 }
 

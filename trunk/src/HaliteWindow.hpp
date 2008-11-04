@@ -39,8 +39,8 @@ private:
 };
 
 class HaliteWindow :
-//	public WTL::CFrameWindowImpl<HaliteWindow>,
-	public WTL::CAeroFrameImpl<HaliteWindow>,
+	public WTL::CFrameWindowImpl<HaliteWindow>,
+//	public WTL::CAeroFrameImpl<HaliteWindow>,
 	public WTL::CUpdateUI<HaliteWindow>,
 	public CDropFileTarget<HaliteWindow>,
 	public WTL::CMessageFilter,
@@ -48,15 +48,20 @@ class HaliteWindow :
 	public hal::IniBase<HaliteWindow>,
 	private boost::noncopyable
 {
+	typedef HaliteWindow thisClass;
+	typedef WTL::CFrameWindowImpl<thisClass> frameClass;
+	typedef WTL::CUpdateUI<thisClass> updateUiClass;
+	typedef CDropFileTarget<thisClass> dropClass;
+
 public:
 	HaliteWindow(unsigned ARE_YOU_ME);
 	~HaliteWindow();
 
 	DECLARE_FRAME_WND_CLASS(NULL, HAL_MAINFRAME);
 
-	ui_signal& ui() { return ui_; }
+//	ui_signal& ui() { return ui_; }
 
-	BEGIN_MSG_MAP_EX(HaliteWindow)
+	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_CREATE(OnCreate)
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_DESTROY(OnDestroy)
@@ -91,10 +96,9 @@ public:
 		COMMAND_ID_HANDLER(HAL_WINDOW_EXIT, OnToolbarExit)
 
 		REFLECT_NOTIFICATIONS()
-		CHAIN_MSG_MAP(CUpdateUI<HaliteWindow>)
-//		CHAIN_MSG_MAP(CFrameWindowImpl<HaliteWindow>)
-		CHAIN_MSG_MAP(WTL::CAeroFrameImpl<HaliteWindow>)
-		CHAIN_MSG_MAP(CDropFileTarget<HaliteWindow>)
+		CHAIN_MSG_MAP(frameClass)
+		CHAIN_MSG_MAP(updateUiClass)
+		CHAIN_MSG_MAP(dropClass)
 	END_MSG_MAP()
 
 	BEGIN_UPDATE_UI_MAP(HaliteWindow)
@@ -103,7 +107,7 @@ public:
 
 		UPDATE_ELEMENT(ID_VIEW_STATUS_BAR, UPDUI_MENUPOPUP)
         UPDATE_ELEMENT(0, UPDUI_STATUSBAR)
-        UPDATE_ELEMENT(1, UPDUI_STATUSBAR)
+		UPDATE_ELEMENT(1, UPDUI_STATUSBAR)
         UPDATE_ELEMENT(2, UPDUI_STATUSBAR)
         UPDATE_ELEMENT(3, UPDUI_STATUSBAR)
 	END_UPDATE_UI_MAP()

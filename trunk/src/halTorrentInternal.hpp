@@ -447,23 +447,23 @@ public:
 		totalBase_ = statusMemory_.total_payload_upload;
 		
 		uploaded_.update(statusMemory_.total_upload);
-		payloadUploaded_.update(statusMemory_.total_payload_upload);
+		payload_uploaded_.update(statusMemory_.total_payload_upload);
 		downloaded_.update(statusMemory_.total_download);
-		payloadDownloaded_.update(statusMemory_.total_payload_download);
+		payload_downloaded_.update(statusMemory_.total_payload_download);
 		
 		if (is_active())
 		{
-			activeDuration_.update();
+			active_duration_.update();
 			
 			if (libt::torrent_status::seeding == statusMemory_.state)
-				seedingDuration_.update();
+				seeding_duration_.update();
 		}	
 		
-		boost::tuple<size_t, size_t, size_t, size_t> connections = updatePeers();	
+		boost::tuple<size_t, size_t, size_t, size_t> connections = update_peers();	
 
 		return torrent_details_ptr(new torrent_details(
 			name_, filename_, 
-			saveDirectory().string(), 
+			save_directory().string(), 
 			state, 
 			hal::from_utf8(statusMemory_.current_tracker), 
 			std::pair<float, float>(
@@ -473,13 +473,13 @@ public:
 			statusMemory_.distributed_copies, 
 			statusMemory_.total_wanted_done, 
 			statusMemory_.total_wanted, 
-			uploaded_, payloadUploaded_,
-			downloaded_, payloadDownloaded_, 
+			uploaded_, payload_uploaded_,
+			downloaded_, payload_downloaded_, 
 			connections, 
 			ratio_, 
 			td, 
 			statusMemory_.next_announce, 
-			activeDuration_, seedingDuration_, 
+			active_duration_, seeding_duration_, 
 			startTime_, finishTime_, 
 			queue_position_,
 			is_managed()));
@@ -498,7 +498,7 @@ public:
 		
 		return torrent_details_ptr(new torrent_details(
 			name_, filename_, 
-			saveDirectory().string(), 
+			save_directory().string(), 
 			app().res_wstr(HAL_TORRENT_STOPPED), 
 			app().res_wstr(HAL_NA)));
 	}
@@ -531,7 +531,7 @@ public:
 
 		transferLimit_ = std::make_pair(down, up);
 		
-		applyTransferSpeed();
+		apply_transfer_speed();
 	}
 
 	void setConnectionLimit(int maxConn, int maxUpload)		
@@ -541,7 +541,7 @@ public:
 		connections_ = maxConn;
 		uploads_ = maxUpload;
 		
-		applyConnectionLimit();
+		apply_connection_limit();
 	}
 
 	std::pair<float, float> getTransferSpeed()
@@ -897,7 +897,7 @@ public:
 		trackerUsername_ = username;
 		trackerPassword_ = password;
 		
-		applyTrackerLogin();
+		apply_tracker_login();
 	}	
 	
 	std::pair<wstring, wstring> getTrackerLogin() const
@@ -911,7 +911,7 @@ public:
 	
 	const libt::torrent_handle& handle() const { return handle_; }
 
-	void resetTrackers()
+	void reset_trackers()
 	{
 		if (in_session())
 		{
@@ -920,12 +920,12 @@ public:
 		}
 	}
 	
-	void setTrackers(const std::vector<tracker_detail>& tracker_details)
+	void set_trackers(const std::vector<tracker_detail>& tracker_details)
 	{
 		trackers_.clear();
 		trackers_.assign(tracker_details.begin(), tracker_details.end());
 		
-		applyTrackers();
+		apply_trackers();
 	}
 	
 	const std::vector<tracker_detail>& getTrackers()
@@ -943,18 +943,18 @@ public:
 		return trackers_;
 	}
 	
-	void setFilePriorities(std::vector<int> fileIndices, int priority)
+	void set_file_priorities(std::vector<int> fileIndices, int priority)
 	{
 		if (!filePriorities_.empty())
 		{
 			foreach(int i, fileIndices)
 				filePriorities_[i] = priority;
 				
-			applyFilePriorities();
+			apply_file_priorities();
 		}
 	}
 
-	const wpath& saveDirectory() { return save_directory_; }
+	const wpath& save_directory() { return save_directory_; }
 	
     friend class boost::serialization::access;
     template<class Archive>
@@ -973,7 +973,7 @@ public:
 			ar & make_nvp("ratio", ratio_);	
 			ar & make_nvp("progress", progress_);
 			ar & make_nvp("state", state_);
-//			ar & make_nvp("compact_storage", compactStorage_);	
+//			ar & make_nvp("compact_storage", compact_storage_);	
 			ar & make_nvp("allocation_type", allocation_);	
 			ar & make_nvp("resolve_countries", resolve_countries_);	
 
@@ -984,8 +984,8 @@ public:
 			ar & make_nvp("save_directory", save_directory_);
 			ar & make_nvp("move_to_directory", move_to_directory_);
 			
-			ar & make_nvp("payload_uploaded", payloadUploaded_);
-			ar & make_nvp("payload_downloaded", payloadDownloaded_);
+			ar & make_nvp("payload_uploaded", payload_uploaded_);
+			ar & make_nvp("payload_downloaded", payload_downloaded_);
 			ar & make_nvp("uploaded", uploaded_);
 			ar & make_nvp("downloaded", downloaded_);			
 					
@@ -993,8 +993,8 @@ public:
 			
 			ar & make_nvp("start_time", startTime_);
 			ar & make_nvp("finish_time", finishTime_);
-			ar & make_nvp("active_duration", activeDuration_);
-			ar & make_nvp("seeding_duration", seedingDuration_);
+			ar & make_nvp("active_duration", active_duration_);
+			ar & make_nvp("seeding_duration", seeding_duration_);
 			ar & make_nvp("managed", managed_);
 					
 		} 
@@ -1017,8 +1017,8 @@ public:
 				move_to_directory_ = save_directory_;
 			}
 			
-			ar & make_nvp("payloadUploaded_", payloadUploaded_);
-			ar & make_nvp("payloadDownloaded_", payloadDownloaded_);
+			ar & make_nvp("payload_uploaded_", payload_uploaded_);
+			ar & make_nvp("payload_downloaded_", payload_downloaded_);
 			ar & make_nvp("uploaded_", uploaded_);
 			ar & make_nvp("downloaded_", downloaded_);	
 			ar & make_nvp("ratio", ratio_);	
@@ -1033,11 +1033,11 @@ public:
 			ar & make_nvp("file_priorities", filePriorities_);
 			
 			ar & make_nvp("startTime", startTime_);
-			ar & make_nvp("activeDuration", activeDuration_);
-			ar & make_nvp("seedingDuration", seedingDuration_);
+			ar & make_nvp("activeDuration", active_duration_);
+			ar & make_nvp("seedingDuration", seeding_duration_);
 			
 			ar & make_nvp("name", name_);
-			ar & make_nvp("compactStorage", compactStorage_);
+			ar & make_nvp("compactStorage", compact_storage_);
 			ar & make_nvp("finishTime", finishTime_);
 			
 			ar & make_nvp("progress", progress_);
@@ -1052,7 +1052,7 @@ public:
 
 	std::vector<libt::peer_info>& peers() { return peers_; }
 	
-	boost::tuple<size_t, size_t, size_t, size_t> updatePeers()
+	boost::tuple<size_t, size_t, size_t, size_t> update_peers()
 	{
 		if (in_session())
 			handle_.get_peer_info(peers_);
@@ -1085,7 +1085,7 @@ public:
 		return boost::make_tuple(totalPeers, peersConnected, totalSeeds, seedsConnected);
 	}
 	
-	void getPeerDetails(PeerDetails& peerDetails) const
+	void get_peer_details(PeerDetails& peerDetails) const
 	{
 		if (in_session())
 		{
@@ -1096,7 +1096,7 @@ public:
 		}
 	}
 
-	void getFileDetails(FileDetails& fileDetails)
+	void get_file_details(FileDetails& fileDetails)
 	{
 		if (fileDetailsMemory_.empty())
 		{
@@ -1201,18 +1201,18 @@ public:
 private:	
 	signalers signals_;
 
-	void applySettings()
+	void apply_settings()
 	{		
-		applyTransferSpeed();
-		applyConnectionLimit();
+		apply_transfer_speed();
+		apply_connection_limit();
 		apply_ratio();
-		applyTrackers();
-		applyTrackerLogin();
-		applyFilePriorities();
-		applyResolveCountries();
+		apply_trackers();
+		apply_tracker_login();
+		apply_file_priorities();
+		apply_resolve_countries();
 	}
 	
-	void applyTransferSpeed()
+	void apply_transfer_speed()
 	{
 		mutex_t::scoped_lock l(mutex_);
 		if (in_session())
@@ -1227,7 +1227,7 @@ private:
 		}
 	}
 
-	void applyConnectionLimit()
+	void apply_connection_limit()
 	{
 		mutex_t::scoped_lock l(mutex_);
 		if (in_session())
@@ -1250,7 +1250,7 @@ private:
 		}
 	}
 	
-	void applyTrackers()
+	void apply_trackers()
 	{
 		mutex_t::scoped_lock l(mutex_);
 		if (in_session())
@@ -1275,7 +1275,7 @@ private:
 		}
 	}
 	
-	void applyTrackerLogin()
+	void apply_tracker_login()
 	{
 		mutex_t::scoped_lock l(mutex_);
 		if (in_session())
@@ -1290,7 +1290,7 @@ private:
 		}
 	}
 	
-	void applyFilePriorities()
+	void apply_file_priorities()
 	{		
 		mutex_t::scoped_lock l(mutex_);
 		if (in_session()) 
@@ -1302,7 +1302,7 @@ private:
 		}
 	}	
 	
-	void applyResolveCountries()
+	void apply_resolve_countries()
 	{
 		mutex_t::scoped_lock l(mutex_);
 		if (in_session())
@@ -1390,15 +1390,15 @@ private:
 	boost::int64_t totalUploaded_;
 	boost::int64_t totalBase_;
 	
-	transfer_tracker<boost::int64_t> payloadUploaded_;
-	transfer_tracker<boost::int64_t> payloadDownloaded_;
+	transfer_tracker<boost::int64_t> payload_uploaded_;
+	transfer_tracker<boost::int64_t> payload_downloaded_;
 	transfer_tracker<boost::int64_t> uploaded_;
 	transfer_tracker<boost::int64_t> downloaded_;
 	
 	pt::ptime startTime_;
 	pt::ptime finishTime_;
-	duration_tracker activeDuration_;
-	duration_tracker seedingDuration_;
+	duration_tracker active_duration_;
+	duration_tracker seeding_duration_;
 	
 	std::vector<tracker_detail> trackers_;
 	std::vector<libt::announce_entry> torrent_trackers_;
@@ -1412,7 +1412,7 @@ private:
 	FileDetails fileDetailsMemory_;
 	
 	int queue_position_;
-	bool compactStorage_;
+	bool compact_storage_;
 	bool managed_;
 	bit::allocations allocation_;
 };
