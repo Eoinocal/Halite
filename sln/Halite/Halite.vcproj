@@ -1338,10 +1338,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\global\string_conv.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\src\advtabs\ThemeTestDialog.hpp"
 					>
 				</File>
@@ -1366,15 +1362,15 @@
 				Name="global"
 				>
 				<File
-					RelativePath="..\..\src\WTLx\GenericAddListView.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\src\global\ini.hpp"
 					>
 				</File>
 				<File
 					RelativePath="..\..\src\global\logger.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\global\string_conv.hpp"
 					>
 				</File>
 				<File
@@ -1443,6 +1439,10 @@
 				</File>
 				<File
 					RelativePath="..\..\src\WTLx\GenericAddDialog.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\WTLx\GenericAddListView.hpp"
 					>
 				</File>
 				<File

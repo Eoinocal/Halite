@@ -142,6 +142,11 @@ void bit::set_mapping(bool upnp, bool nat_pmp)
 	pimpl->set_mapping(upnp, nat_pmp);
 }
 
+std::wstring bit::upnp_router_model()
+{
+	return pimpl->upnp_router_model();
+}
+
 queue_settings bit::get_queue_settings()
 {
 	return pimpl->get_queue_settings();

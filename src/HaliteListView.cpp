@@ -377,6 +377,8 @@ LRESULT HaliteListViewCtrl::OnAdjustQueuePosition(WORD wNotifyCode, WORD wID, HW
 			break;
 		};
 	}
+
+	halWindow_.issueUiUpdate();
 	
 	return 0;
 }
