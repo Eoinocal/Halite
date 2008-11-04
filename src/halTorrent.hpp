@@ -791,6 +791,8 @@ public:
 		else
 			return torrent();
 	}	
+
+	torrent get_wstr(const std::wstring& filename);
 	
 	bool listen_on(std::pair<int, int> const& portRange);
 	int is_listening_on();
@@ -885,8 +887,6 @@ public:
 private:
 	bit();
 	boost::scoped_ptr<bit_impl> pimpl;
-
-	torrent get_wstr(const std::wstring& filename);
 	
 	void remove_torrent_wstr(const std::wstring& filename);
 	void remove_torrent_wipe_files_wstr(const std::wstring&  filename);
