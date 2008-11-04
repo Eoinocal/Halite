@@ -385,7 +385,7 @@ public:
 	
 //	const std::wstring& filename() const { return filename_; }
 	const std::wstring& name() const { return name_; }
-	const std::wstring& saveDirectory() const { return saveDir_; }
+	const std::wstring& save_directory() const { return saveDir_; }
 	const std::wstring& state() const { return state_; }
 	const std::wstring& currentTracker() const { return currentTracker_; }
 	

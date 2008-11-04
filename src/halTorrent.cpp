@@ -393,7 +393,7 @@ void bit::getAllPeerDetails(const std::wstring& filename, PeerDetails& peerConta
 {
 	try {
 	
-	pimpl->the_torrents_.get(filename)->getPeerDetails(peerContainer);
+	pimpl->the_torrents_.get(filename)->get_peer_details(peerContainer);
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getAllPeerDetails")
 }
@@ -407,7 +407,7 @@ void bit::getAllFileDetails(const std::wstring& filename, FileDetails& fileDetai
 {
 	try {
 	
-	pimpl->the_torrents_.get(filename)->getFileDetails(fileDetails);
+	pimpl->the_torrents_.get(filename)->get_file_details(fileDetails);
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getAllFileDetails")
 }
@@ -745,7 +745,7 @@ void bit::torrent::set_trackers(const std::vector<tracker_detail>& trackers)
 {
 	try {
 	
-	ptr->setTrackers(trackers);
+	ptr->set_trackers(trackers);
 	
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_trackers")
 }
@@ -754,7 +754,7 @@ void bit::torrent::reset_trackers()
 {
 	try {
 	
-	ptr->resetTrackers();
+	ptr->reset_trackers();
 	
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_trackers")
 }
@@ -763,7 +763,7 @@ void bit::torrent::set_file_priorities(const std::pair<std::vector<int>, int>& p
 {
 	try { 
 
-	ptr->setFilePriorities(p.first, p.second);
+	ptr->set_file_priorities(p.first, p.second);
 	
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_trackers")
 }

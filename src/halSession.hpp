@@ -858,7 +858,7 @@ public:
 				for (libt::torrent_info::file_iterator i = m_info.begin_files(true)
 					, end(m_info.end_files(true)); i != end; ++i)
 				{
-					std::string p = (hal::path_to_utf8(pIT->saveDirectory()) / i->path).string();
+					std::string p = (hal::path_to_utf8(pIT->save_directory()) / i->path).string();
 					fs::path bp = i->path.parent_path();
 					
 					std::pair<std::set<std::string>::iterator, bool> ret;
@@ -866,7 +866,7 @@ public:
 					while (ret.second && !bp.empty())
 					{
 						std::pair<std::set<std::string>::iterator, bool> ret = 
-							directories.insert((hal::path_to_utf8(pIT->saveDirectory()) / bp).string());
+							directories.insert((hal::path_to_utf8(pIT->save_directory()) / bp).string());
 						bp = bp.parent_path();
 					}
 					if (!fs::remove(hal::from_utf8(p).c_str()) && errno != ENOENT)
