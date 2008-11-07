@@ -384,6 +384,11 @@ PeerDetail::PeerDetail(libt::peer_info& peerInfo) :
 	}	
 }
 
+const cache_details bit::get_cache_details() const
+{
+	return pimpl->get_cache_details();
+}
+
 void bit::getAllPeerDetails(const std::string& filename, PeerDetails& peerContainer)
 {
 	getAllPeerDetails(from_utf8_safe(filename), peerContainer);

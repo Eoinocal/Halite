@@ -226,6 +226,17 @@ struct connections
 
 struct cache_details
 {
+	cache_details() :
+		blocks_written(-1),
+		writes(-1),
+		blocks_read(-1),
+		blocks_read_hit(-1),
+		reads(-1),
+		cache_size(-1),
+		read_cache_size(-1),
+		write_cache_size(-1)
+	{}
+
 	cache_details(size_type b_w,
 			size_type w,
 			size_type b_r,
@@ -239,7 +250,8 @@ struct cache_details
 		blocks_read_hit(b_r_h),
 		reads(r),
 		cache_size(c_s),
-		read_cache_size(r_c_s)
+		read_cache_size(r_c_s),
+		write_cache_size(cache_size-read_cache_size)
 	{}
 
     size_type blocks_written;
@@ -249,6 +261,7 @@ struct cache_details
     size_type reads;
     int cache_size;
     int read_cache_size;
+	int write_cache_size;
 };
 	
 struct torrentBriefDetail 
@@ -852,6 +865,8 @@ public:
 	
 	timeouts get_timeouts();
 	void set_timeouts(const timeouts& t);
+
+	const cache_details get_cache_details() const;
 	
 	const SessionDetail getSessionDetails();
 
