@@ -548,6 +548,15 @@ public:
 				% session_.download_rate_limit() % session_.upload_rate_limit())));
 	}
 
+	cache_details get_cache_details() const
+	{
+		libt::cache_status cs = session_.get_cache_status();
+
+		return cache_details(cs.blocks_written, cs.writes, 
+			cs.blocks_read, cs.blocks_read_hit, cs.reads,
+			cs.cache_size, cs.read_cache_size);
+	}
+
 	bool ensure_ip_filter_on(progress_callback fn)
 	{
 		try
