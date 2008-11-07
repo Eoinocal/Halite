@@ -223,6 +223,33 @@ struct connections
     float download_rate;
     float upload_rate;
 };
+
+struct cache_details
+{
+	cache_details(size_type b_w,
+			size_type w,
+			size_type b_r,
+			size_type b_r_h,
+			size_type r,
+			int c_s,
+			int r_c_s) :
+		blocks_written(b_w),
+		writes(w),
+		blocks_read(b_r),
+		blocks_read_hit(b_r_h),
+		reads(r),
+		cache_size(c_s),
+		read_cache_size(r_c_s)
+	{}
+
+    size_type blocks_written;
+    size_type writes;
+    size_type blocks_read;
+    size_type blocks_read_hit;
+    size_type reads;
+    int cache_size;
+    int read_cache_size;
+};
 	
 struct torrentBriefDetail 
 {
