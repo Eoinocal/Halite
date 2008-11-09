@@ -77,7 +77,9 @@ public:
 			& make_nvp("half_connections", half_connections_)
 			& make_nvp("half_connections_limit", half_connections_limit_)
 			& make_nvp("mapping_upnp", mapping_upnp_)
-			& make_nvp("mapping_nat_pmp", mapping_nat_pmp_);
+			& make_nvp("mapping_nat_pmp", mapping_nat_pmp_)
+			& make_nvp("cache_settings", cache_settings_);
+
 		break;
 
 		case 4:
@@ -170,6 +172,8 @@ private:
 
 	bool mapping_upnp_;
 	bool mapping_nat_pmp_;
+
+	hal::cache_settings cache_settings_;
 
 	hal::queue_settings queue_settings_;
 	hal::timeouts timeouts_;
