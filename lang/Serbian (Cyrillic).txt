@@ -220,7 +220,7 @@
 "Set as Primary" ---> "Одреди као главни"
 "Severity" ---> "Важности"
 "Show this message in future" ---> "Показуј ми ову поруку"
-"Shutting down session" ---> "Прекини седницу"
+"Shutting down session" ---> "Прекида се седница"
 "Size" ---> "Величина"
 "Standard exception (%1%) thrown from %2%." ---> "Стандартни изузетак (%1%) десио се код (%2%)"
 "Start Time" ---> "Почето преузимање"
