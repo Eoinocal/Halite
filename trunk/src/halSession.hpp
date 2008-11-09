@@ -436,6 +436,31 @@ public:
 			hal::wform(L"Set Timeouts, peer %1%, tracker %2%.") % peers % tracker)));
 	}
 
+	cache_settings get_cache_settings()
+	{
+		libt::session_settings settings = session_.settings();
+		cache_settings cache;
+
+		cache.cache_size = settings.cache_size;
+		cache.cache_expiry = settings.cache_expiry;
+
+		return cache;
+	}
+
+	void set_cache_settings(const cache_settings& cache)
+	{
+		libt::session_settings settings = session_.settings();
+
+		settings.cache_size = cache.cache_size;
+		settings.cache_expiry = cache.cache_expiry;
+
+		session_.set_settings(settings);
+
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(
+			hal::wform(L"Set cache parameters, %1% size and %2% expiry.") 
+				% settings.cache_size % settings.cache_expiry)));
+	}
+
 	queue_settings get_queue_settings()
 	{		
 		libt::session_settings settings = session_.settings();

@@ -174,6 +174,25 @@ struct dht_settings
 	int max_fail_count;
 };
 
+struct cache_settings
+{
+	cache_settings() :
+		cache_size(512),
+		cache_expiry(60)
+	{}
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{	
+		ar & BOOST_SERIALIZATION_NVP(cache_size);
+		ar & BOOST_SERIALIZATION_NVP(cache_expiry);
+	}
+
+	int cache_size;
+	int cache_expiry;
+};
+
 struct pe_settings
 {
 	pe_settings() :
@@ -867,6 +886,9 @@ public:
 	void set_timeouts(const timeouts& t);
 
 	const cache_details get_cache_details() const;
+
+	void set_cache_settings(const cache_settings& cache);
+	cache_settings get_cache_settings() const;
 	
 	const SessionDetail getSessionDetails();
 
