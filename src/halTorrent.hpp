@@ -253,6 +253,8 @@ struct cache_details
 		reads(-1),
 		cache_size(-1),
 		read_cache_size(-1),
+		write_ratio(-1),
+		read_ratio(-1),
 		write_cache_size(-1)
 	{}
 
@@ -271,7 +273,12 @@ struct cache_details
 		cache_size(c_s),
 		read_cache_size(r_c_s),
 		write_cache_size(cache_size-read_cache_size)
-	{}
+	{
+		write_ratio = (blocks_written == 0) ? 0 :
+			static_cast<double>(blocks_written-writes) / blocks_written;
+
+		read_ratio = (blocks_read == 0) ? 0 :
+			static_cast<double>(blocks_read_hit) / blocks_read;}
 
     size_type blocks_written;
     size_type writes;
@@ -280,6 +287,9 @@ struct cache_details
     size_type reads;
     int cache_size;
     int read_cache_size;
+
+	double write_ratio;
+	double read_ratio;
 	int write_cache_size;
 };
 	
