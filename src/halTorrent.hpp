@@ -841,7 +841,7 @@ public:
 		exec_around_ptr ptr;
 	};
 
-	void shutDownSession();
+	void shutdown_session();
 	void save_torrent_data();
 
 	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn);
@@ -931,8 +931,8 @@ public:
 	void recheckTorrent(const std::string& filename);
 	void recheckTorrent(const std::wstring& filename);
 	
-	void pauseAllTorrents();
-	void unpauseAllTorrents();
+	void pause_all_torrents();
+	void unpause_all_torrents();
 
 	template<typename S>
 	void remove_torrent(S filename)
@@ -947,7 +947,7 @@ public:
 	}	
 
 	void startEventReceiver();
-	void stopEventReceiver();
+	void stop_event_receiver();
 	
 	friend bit& bittorrent();
 	

@@ -965,7 +965,7 @@ public:
 					
 				(*i).torrent->prepare(file);	
 
-				switch ((*i).torrent->state())
+				switch ((*i).torrent->get_state())
 				{
 					case torrent_details::torrent_stopped:
 						break;
@@ -1037,7 +1037,7 @@ public:
 			event_log.post(shared_ptr<EventDetail>(new EventInfo(hal::wform(L"%1% still active") % num_active)));
 
 			if (fn)	(*fn)(num_active);
-			Sleep(200);
+			boost::this_thread::sleep(pt::milliseconds(500));
 		}
 		
 		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"All torrents stopped.")));		

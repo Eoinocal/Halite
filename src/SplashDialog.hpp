@@ -18,6 +18,9 @@
 
 #ifndef RC_INVOKED
 
+#include <boost/utility/in_place_factory.hpp>
+#include <boost/none.hpp>
+
 #ifndef HALITE_MINI
 #	include "Halite.hpp"
 #else
@@ -84,21 +87,35 @@ public:
 
 		CenterWindow();
 
-		DoDataExchange(false);
+		DoDataExchange(false);		
 		
-		thread_ptr.reset(new thread(bind(&SplashDialog::SplashThread, this)));
+		thread_splash = boost::in_place<boost::function<void (void)> >(bind(&SplashDialog::SplashThread, this));
 		
 		return 0;
 	}
 
 	void OnForceClose(UINT, int, HWND hWnd)
+	{		
+		thread_splash->interrupt();
+		thread_splash = boost::none;
+		Sleep(2000);
+		
+		RequiredToEnd();
+	}
+
+	void RequiredToEnd()
 	{
-		thread_ptr.reset();
-		Sleep(200);
+		SetDlgItemText(HAL_CSPLASH_NUM_ACT, hal::app().res_wstr(HAL_CSPLASH_SHUTDOWN_MSG).c_str());
+
+		HAL_DEV_MSG(L"SplashThread() calling hal::bittorrent().stop_event_receiver()");
+		hal::bittorrent().stop_event_receiver();
+		HAL_DEV_MSG(L"SplashThread() calling hal::bittorrent().shutdown_session()");
+		hal::bittorrent().shutdown_session();
+
+		DoDataExchange(true);
 
 		GetWindowRect(rect_);
 		save_to_ini();
-		EndDialog(0);
 	}
 
 	void ReportNumActive(int num)
@@ -115,19 +132,10 @@ public:
 
 		HAL_DEV_MSG(L"SplashThread() calling hal::bittorrent().close_all()");
 
-		hal::bittorrent().close_all(boost::optional<boost::function<void (int)> >(bind(&SplashDialog::ReportNumActive, this, _1)));
+		hal::bittorrent().close_all(boost::optional<boost::function<void (int)> >
+			(bind(&SplashDialog::ReportNumActive, this, _1)));
 		
-		SetDlgItemText(HAL_CSPLASH_NUM_ACT, hal::app().res_wstr(HAL_CSPLASH_SHUTDOWN_MSG).c_str());
-
-		HAL_DEV_MSG(L"SplashThread() calling hal::bittorrent().stopEventReceiver()");
-		hal::bittorrent().stopEventReceiver();
-		HAL_DEV_MSG(L"SplashThread() calling hal::bittorrent().shutDownSession()");
-		hal::bittorrent().shutDownSession();
-		
-		DoDataExchange(true);
-
-		GetWindowRect(rect_);
-		save_to_ini();
+		RequiredToEnd();		
 
 		} HAL_GENERIC_FN_EXCEPTION_CATCH(L"SplashThread()")
 
@@ -140,7 +148,7 @@ public:
 	}
 	
 private:
-	boost::scoped_ptr<thread> thread_ptr;
+	boost::optional<hal::thread_t> thread_splash;
 
 	WTL::CRect rect_;
 };
