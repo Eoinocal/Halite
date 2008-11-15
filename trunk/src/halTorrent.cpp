@@ -88,13 +88,13 @@ bit::bit() :
 	pimpl(new bit_impl())
 {}
 
-void bit::shutDownSession()
+void bit::shutdown_session()
 {
-	HAL_DEV_MSG(L"Commence shutDownSession()"); 
+	HAL_DEV_MSG(L"Commence shutdown_session()"); 
 
 	pimpl.reset();
 
-	HAL_DEV_MSG(L"End shutDownSession()"); 
+	HAL_DEV_MSG(L"End shutdown_session()"); 
 }
 
 void bit::save_torrent_data()
@@ -530,7 +530,7 @@ void bit::remove_torrent_wipe_files_wstr(const std::wstring& filename)
 	pimpl->remove_torrent_wipe_files(hal::to_wstr_shim(filename));
 }
 
-void bit::pauseAllTorrents()
+void bit::pause_all_torrents()
 {	
 	try {
 	
@@ -544,14 +544,14 @@ void bit::pauseAllTorrents()
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "pauseAllTorrents")
 }
 
-void bit::unpauseAllTorrents()
+void bit::unpause_all_torrents()
 {	
 	try {
 	
 	for (TorrentManager::torrentByName::iterator i=pimpl->the_torrents_.begin(), e=pimpl->the_torrents_.end();
 		i != e; ++i)
 	{
-		if ((*i).torrent->in_session() && (*i).torrent->state() == torrent_details::torrent_paused)
+		if ((*i).torrent->in_session() && (*i).torrent->get_state() == torrent_details::torrent_paused)
 			(*i).torrent->resume();
 	}
 	
@@ -809,7 +809,7 @@ void bit::startEventReceiver()
 	pimpl->start_alert_handler();
 }
 
-void bit::stopEventReceiver()
+void bit::stop_event_receiver()
 {
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Stopping event handler.")));
 

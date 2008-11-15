@@ -6,50 +6,45 @@
 <?define VerUpdate = "5" ?>
 <?define VerBuild = "0550" ?>
 
-<?define GMmbVer = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor).$(var.VerUpdate)" ?>
-<?define GMmbHex = "$(var.VerGeneration)$(var.VerMajor)$(var.VerMinor)$(var.VerUpdate)" ?>
+<?define FullGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor).$(var.VerUpdate) Build $(var.VerBuild)" ?>
+<?define ShortGMmbVersion = "$(var.VerMajor).$(var.VerMinor).$(var.VerUpdate)" ?>
 <?define UpgradeMinVer = "0.3.1" ?>
-
-<?define ProductName = "Halite" ?>
 
 <?if $(var.MyCPU) = "x64" ?>
 <?define CpuId = "2" ?>
-<?define PFilesFolder = "ProgramFiles64Folder" ?>
+<?define ProgFilesFolder = "ProgramFiles64Folder" ?>
 <?define Platforms = "x64" ?>
 <?define CpuPostfix = " (x64 edition)" ?>
 <?define Is64 = "yes" ?>
 <?define ReleaseFolder = "x64\$(var.Configuration)\" ?>
 <?else ?>
 <?define CpuId = "1" ?>
-<?define PFilesFolder = "ProgramFilesFolder" ?>
-<?define Platforms = "Intel" ?>
+<?define ProgFilesFolder = "ProgramFilesFolder" ?>
+<?define Platforms = "x86" ?>
 <?define CpuPostfix = "" ?>
 <?define Is64 = "no" ?>
 <?define ReleaseFolder = "$(var.Configuration)\" ?>
 <?endif ?>
 
-<?define BaseId = "E3A8BF7D-962F-476$(var.CpuId)" ?>
-<?define BaseIdVer = "$(var.BaseId)-$(var.GMmbHex)-$(var.VerBuild)" ?>
-<?define ProductId   = "$(var.BaseIdVer)01000000" ?>
-<?define PackageId   = "$(var.BaseIdVer)02000000" ?>
-<?define CompId      = "$(var.BaseIdVer)03000000" ?>
-<?define UpgradeCode = "$(var.BaseId)-0000-000004000000" ?>
+<?define ProductName = "Halite" ?>
+<?define ProductFullName = "$(var.ProductName) $(var.FullGMmbVersion)$(var.CpuPostfix)" ?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product
-      Id="$(var.ProductId)"
-      UpgradeCode="$(var.UpgradeCode)"
-      Name="$(var.ProductName) $(var.GMmbVer)$(var.CpuPostfix)"
+      Id="9A922120-7458-4C6D-9DA9-512923EAD311"
+      UpgradeCode="45A10CBE-B399-48E5-865E-DBCE99A411E5"
+      Name="$(var.ProductName)"
       Language="1033"
-      Version="$(var.GMmbVer)"
+      Version="$(var.ShortGMmbVersion)"
       Manufacturer="BinaryNotions.com">
 
       <Package
-          Description="$(var.ProductName)$(var.CpuPostfix) Package"
-          Comments="$(var.ProductName)$(var.CpuPostfix) Package"
+          Description="$(var.ProductFullName) Package"
+          Comments="$(var.ProductFullName) Package"
           InstallerVersion="200"
           Compressed="yes"
-          Platforms="$(var.Platforms)"
+          ShortNames="no"
+          Platform="$(var.Platforms)"
         />
 
 		<Media Id="1" Cabinet="Halite.cab" EmbedCab="yes" />
@@ -77,7 +72,7 @@
         </Directory>
       </Directory>
 
-      <Directory Id="$(var.PFilesFolder)" Name="Files">
+      <Directory Id="$(var.ProgFilesFolder)" Name="Files">
         <Directory Id="INSTALLDIR" Name="Halite">
 
           <Component Id="InstallRegCU" Guid="{CE5457FD-CD23-48e6-A54E-4004E936AA86}" DiskId="1" Win64="$(var.Is64)">

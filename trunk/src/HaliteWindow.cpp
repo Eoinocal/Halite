@@ -400,10 +400,10 @@ void HaliteWindow::ShutdownThread()
 	win32_exception::install_handler();
 	hal::bittorrent().close_all(0);
 
-	hal::bittorrent().stopEventReceiver();
+	hal::bittorrent().stop_event_receiver();
 	Sleep(3000);
 
-	hal::bittorrent().shutDownSession();
+	hal::bittorrent().shutdown_session();
 
 	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::ShutdownThread()")
 }
@@ -539,7 +539,7 @@ LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	hal::bittorrent().pauseAllTorrents();
+	hal::bittorrent().pause_all_torrents();
 	
 	issueUiUpdate();
 	return 0;
@@ -547,7 +547,7 @@ LRESULT HaliteWindow::OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	hal::bittorrent().unpauseAllTorrents();
+	hal::bittorrent().unpause_all_torrents();
 	
 	issueUiUpdate();
 	return 0;

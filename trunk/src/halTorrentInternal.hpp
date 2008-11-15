@@ -338,9 +338,9 @@ public:
 		
 	torrent_internal() :	
 		TORRENT_INTERNALS_DEFAULTS,
-		allocation_(bit::sparse_allocation),
-		state_(torrent_details::torrent_stopped)
+		allocation_(bit::sparse_allocation)
 	{
+		state(torrent_details::torrent_stopped);
 		TORRENT_STATE_LOG(L"Torrent state machine initiate");
 		machine_.initiate();
 	}
@@ -349,9 +349,9 @@ public:
 		TORRENT_INTERNALS_DEFAULTS,
 		save_directory_(saveDirectory.string()),
 		move_to_directory_(move_to_directory.string()),
-		allocation_(alloc),	
-		state_(torrent_details::torrent_stopped)
+		allocation_(alloc)
 	{
+		state(torrent_details::torrent_stopped);
 		assert(the_session_);	
 		
 		TORRENT_STATE_LOG(L"Torrent state machine initiate");
@@ -385,52 +385,52 @@ public:
 			statusMemory_.next_announce = boost::posix_time::seconds(0);		
 		}
 		
-		wstring state;
+		wstring state_str;
 		
-		switch (state_)
+		switch (state())
 		{
 		case torrent_details::torrent_paused:
-			state = app().res_wstr(HAL_TORRENT_PAUSED);
+			state_str = app().res_wstr(HAL_TORRENT_PAUSED);
 			break;
 			
 		case torrent_details::torrent_pausing:
-			state = app().res_wstr(HAL_TORRENT_PAUSING);
+			state_str = app().res_wstr(HAL_TORRENT_PAUSING);
 			break;
 			
 		case torrent_details::torrent_stopped:
-			state = app().res_wstr(HAL_TORRENT_STOPPED);
+			state_str = app().res_wstr(HAL_TORRENT_STOPPED);
 			break;
 			
 		case torrent_details::torrent_stopping:
-			state = app().res_wstr(HAL_TORRENT_STOPPING);
+			state_str = app().res_wstr(HAL_TORRENT_STOPPING);
 			break;
 			
 		default:
 			switch (statusMemory_.state)
 			{
 			case libt::torrent_status::queued_for_checking:
-				state = app().res_wstr(HAL_TORRENT_QUEUED_CHECKING);
+				state_str = app().res_wstr(HAL_TORRENT_QUEUED_CHECKING);
 				break;
 			case libt::torrent_status::checking_files:
-				state = app().res_wstr(HAL_TORRENT_CHECKING_FILES);
+				state_str = app().res_wstr(HAL_TORRENT_CHECKING_FILES);
 				break;
 //			case libt::torrent_status::connecting_to_tracker:
 //				state = app().res_wstr(HAL_TORRENT_CONNECTING);
 //				break;
 			case libt::torrent_status::downloading_metadata:
-				state = app().res_wstr(HAL_TORRENT_METADATA);
+				state_str = app().res_wstr(HAL_TORRENT_METADATA);
 				break;
 			case libt::torrent_status::downloading:
-				state = app().res_wstr(HAL_TORRENT_DOWNLOADING);
+				state_str = app().res_wstr(HAL_TORRENT_DOWNLOADING);
 				break;
 			case libt::torrent_status::finished:
-				state = app().res_wstr(HAL_TORRENT_FINISHED);
+				state_str = app().res_wstr(HAL_TORRENT_FINISHED);
 				break;
 			case libt::torrent_status::seeding:
-				state = app().res_wstr(HAL_TORRENT_SEEDING);
+				state_str = app().res_wstr(HAL_TORRENT_SEEDING);
 				break;
 			case libt::torrent_status::allocating:
-				state = app().res_wstr(HAL_TORRENT_ALLOCATING);
+				state_str = app().res_wstr(HAL_TORRENT_ALLOCATING);
 				break;
 			}	
 		}
@@ -464,7 +464,7 @@ public:
 		return torrent_details_ptr(new torrent_details(
 			name_, filename_, 
 			save_directory().string(), 
-			state, 
+			state_str, 
 			hal::from_utf8(statusMemory_.current_tracker), 
 			std::pair<float, float>(
 				statusMemory_.download_payload_rate, 
@@ -632,13 +632,13 @@ public:
 		HAL_DEV_MSG(L"Added to session");
 
 		if (handle_.is_paused())
-			state_ = torrent_details::torrent_paused;	
+			state(torrent_details::torrent_paused);	
 
 		}
 		catch(std::exception& e)
 		{
 			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(event_logger::critical, e, L"addToSession"))); 
+				new hal::EventStdException(event_logger::critical, e, L"add_to_session"))); 
 		}
 	}
 	
@@ -679,7 +679,7 @@ public:
 		catch(std::exception& e)
 		{
 			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(event_logger::critical, e, L"remove_fromSession"))); 
+				new hal::EventStdException(event_logger::critical, e, L"remove_from_session()"))); 
 			return false;
 		}
 	}
@@ -694,8 +694,9 @@ public:
 	void resume()
 	{
 		mutex_t::scoped_lock l(mutex_);
+		HAL_DEV_MSG(hal::wform(L"resume() - %1%") % name_);
 
-		if (state_ == torrent_details::torrent_stopped)
+		if (state() == torrent_details::torrent_stopped)
 		{	
 			add_to_session(false);
 			assert(in_session());			
@@ -706,15 +707,16 @@ public:
 			handle_.resume();
 		}	
 		
-		state_ = torrent_details::torrent_active;			
+		state(torrent_details::torrent_active);			
 		//assert(!handle_.is_paused());
 	}
 	
 	void pause()
 	{
 		mutex_t::scoped_lock l(mutex_);
+		HAL_DEV_MSG(hal::wform(L"pause() - %1%") % name_);
 
-		if (state_ == torrent_details::torrent_stopped)
+		if (state() == torrent_details::torrent_stopped)
 		{	
 			add_to_session(true);
 
@@ -731,19 +733,23 @@ public:
 			signaler_wrapper<>* sig = new signaler_wrapper<>(bind(&torrent_internal::completed_pause, this));
 			signals().torrent_paused.connect(bind(&signaler_wrapper<>::operator(), sig));
 
-			state_ = torrent_details::torrent_pausing;	
+			state(torrent_details::torrent_pausing);	
 		}			
 	}
 	
 	void stop()
 	{
 		mutex_t::scoped_lock l(mutex_);
+		HAL_DEV_MSG(hal::wform(L"stop() - %1%") % name_);
 
-		if (state_ != torrent_details::torrent_stopped)
+		HAL_DEV_MSG(hal::wform(L"stop() requesting"));
+
+		if (state() != torrent_details::torrent_stopped)
 		{
-			if (state_ == torrent_details::torrent_active)
+			if (state() == torrent_details::torrent_active)
 			{
 				assert(in_session());
+				assert(!(handle_.is_paused()));
 
 				signaler_wrapper<>* sig = new signaler_wrapper<>(bind(&torrent_internal::completed_stop, this));
 				signals().torrent_paused.connect(bind(&signaler_wrapper<>::operator(), sig));
@@ -751,19 +757,19 @@ public:
 				HAL_DEV_MSG(hal::wform(L"stop() - handle_.pause()"));
 				handle_.pause();
 
-				state_ = torrent_details::torrent_stopping;
+				state(torrent_details::torrent_stopping);
 			}
-			else if (state_ == torrent_details::torrent_paused)
+			else if (state() == torrent_details::torrent_paused)
 			{			
 				remove_from_session();
-				state_ = torrent_details::torrent_stopped;				
+				state(torrent_details::torrent_stopped);				
 			}
 		}
 	}
 
 	void set_state_stopped()
 	{
-		state_ = torrent_details::torrent_stopped;
+		state(torrent_details::torrent_stopped);
 	}
 
 	void force_recheck()
@@ -771,7 +777,7 @@ public:
 		mutex_t::scoped_lock l(mutex_);		
 		HAL_DEV_MSG(L"force_recheck()");
 
-		switch (state_)
+		switch (state())
 		{
 		case torrent_details::torrent_stopped:
 			clear_resume_data();
@@ -786,7 +792,7 @@ public:
 //			signals().torrent_paused.disconnect_all_once();
 //			signals().torrent_paused.connect_once(bind(&torrent_internal::handle_recheck, this));
 			handle_.pause();
-			state_ = torrent_details::torrent_pausing;
+			state(torrent_details::torrent_pausing);
 			break;
 
 		default:
@@ -888,9 +894,12 @@ public:
 		}
 	}
 	
-	bool is_active() const { return state_ == torrent_details::torrent_active; }
-	
-	unsigned state() const { return state_; }
+	bool is_active() const { return state() == torrent_details::torrent_active; }
+
+	unsigned get_state()
+	{
+		return state_;
+	}
 	
 	void setTrackerLogin(wstring username, wstring password)
 	{
@@ -1163,10 +1172,12 @@ public:
 		if (!fs::exists(save_directory_))
 			fs::create_directory(save_directory_);
 
+		// These here should not make state changes based on torrent 
+		// session status since it has not been initialized yet.
 		if (state_ == torrent_details::torrent_stopping)
-			state_ = torrent_details::torrent_stopped;
+			state(torrent_details::torrent_stopped);
 		else if (state_ == torrent_details::torrent_pausing)
-			state_ = torrent_details::torrent_paused;
+			state(torrent_details::torrent_paused);
 	}
 	
 	void extractNames(boost::intrusive_ptr<libt::torrent_info> metadata)
@@ -1321,7 +1332,7 @@ private:
 
 		HAL_DEV_MSG(L"completed_pause()");
 				
-		state_ = torrent_details::torrent_paused;	
+		state(torrent_details::torrent_paused);
 
 		return true;
 	}
@@ -1338,7 +1349,7 @@ private:
 			HAL_DEV_MSG(L"completed_stop()");
 		}
 
-		state_ = torrent_details::torrent_stopped;
+		state(torrent_details::torrent_stopped);
 
 		return true;
 	}
@@ -1346,7 +1357,7 @@ private:
 	void handle_recheck()
 	{
 		mutex_t::scoped_lock l(mutex_);
-		state_ = torrent_details::torrent_stopped;
+		state(torrent_details::torrent_stopped);
 
 		remove_from_session(false);
 		assert(!in_session());
@@ -1358,6 +1369,67 @@ private:
 
 		HAL_DEV_MSG(L"handle_recheck()");
 	}
+
+	void state(unsigned s)
+	{
+		switch (s)
+		{
+		case torrent_details::torrent_stopped:
+			HAL_DEV_MSG(L"state() - stopped");
+			break;
+		case torrent_details::torrent_stopping:
+			HAL_DEV_MSG(L"state() - stopping");
+			break;
+		case torrent_details::torrent_pausing:
+			HAL_DEV_MSG(L"state() - pausing");
+			break;
+		case torrent_details::torrent_active:
+			HAL_DEV_MSG(L"state() - active");
+			break;
+		case torrent_details::torrent_paused:
+			HAL_DEV_MSG(L"state() - paused");
+			break;
+		default:
+			HAL_DEV_MSG(L"state() - unknown");
+			break;
+		};
+		state_ = s;
+	}	
+	
+	unsigned state() const 
+	{ 
+		if (in_session())
+		{
+			if (handle_.is_paused())
+			{
+				if (state_ != torrent_details::torrent_paused)
+				{			
+					HAL_DEV_MSG(L"Should really be paused!");
+					state_ = torrent_details::torrent_paused;
+				}
+			}
+			else				
+			{			
+				if (state_ != torrent_details::torrent_active &&
+					state_ != torrent_details::torrent_pausing &&
+					state_ != torrent_details::torrent_stopping)
+				{			
+					HAL_DEV_MSG(L"Should really be active!");
+					state_ = torrent_details::torrent_active;
+				}
+			}			
+		}
+		else
+		{
+			if (state_ != torrent_details::torrent_stopped)
+			{			
+				HAL_DEV_MSG(L"Should really be stopped!");
+				state_ = torrent_details::torrent_stopped;
+			}
+		}
+		
+		return state_; 
+	}
 		
 	static libt::session* the_session_;
 	
@@ -1367,7 +1439,7 @@ private:
 	
 	std::pair<float, float> transferLimit_;
 	
-	unsigned state_;
+	mutable unsigned state_;
 	int connections_;
 	int uploads_;
 	bool in_session_;
