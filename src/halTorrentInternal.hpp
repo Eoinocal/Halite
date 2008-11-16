@@ -1328,7 +1328,7 @@ private:
 	{
 		mutex_t::scoped_lock l(mutex_);
 		assert(in_session());
-		assert(handle_.is_paused());	
+//		assert(handle_.is_paused());	
 
 		HAL_DEV_MSG(L"completed_pause()");
 				
@@ -1341,7 +1341,7 @@ private:
 	{
 		mutex_t::scoped_lock l(mutex_);
 		assert(in_session());
-		assert(handle_.is_paused());			
+//		assert(handle_.is_paused());			
 		
 		if (remove_from_session())
 		{

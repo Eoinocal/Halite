@@ -24,11 +24,13 @@ bool Config::settingsChanged()
 bool Config::settingsThread()
 {	
 	win32_exception::install_handler();
+	std::srand(GetTickCount());
 
 	try
 	{
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Applying BitTorrent session settings.")));	
+	unsigned listen_port = port_range_.first;
 
 	bittorrent().set_mapping(mapping_upnp_, mapping_nat_pmp_);
 
@@ -37,17 +39,15 @@ bool Config::settingsThread()
 
 	if (randomize_port_)
 	{
-		std::srand(GetTickCount());
-
 		for (int i=0, e=10; i!=e; ++i)
 		{
 			unsigned range = port_range_.second - port_range_.first;
-			unsigned port = port_range_.first + (range * std::rand())/RAND_MAX;
+			listen_port = port_range_.first + (range * std::rand())/RAND_MAX;
 
 			event_log.post(shared_ptr<EventDetail>(new EventMsg(
-					hal::wform(L"Attempting port %1%.") % port)));
+					hal::wform(L"Attempting port %1%.") % listen_port)));
 
-			bool success = bittorrent().listen_on(std::make_pair(port,port));
+			bool success = bittorrent().listen_on(std::make_pair(listen_port, listen_port));
 			if (success) break;
 		}
 	}
@@ -124,6 +124,18 @@ bool Config::settingsThread()
 	
 	if (enable_dht_)
 	{
+		unsigned old_port = dht_settings_.service_port;
+
+		if (dht_random_port_)
+		{
+			unsigned range = dht_upper_port_ - dht_settings_.service_port;
+			dht_settings_.service_port = dht_settings_.service_port + (range * std::rand())/RAND_MAX;
+		}
+		else if (dht_radio_ == 1)
+		{
+			dht_settings_.service_port = listen_port;
+		}
+
 		if (!bittorrent().ensure_dht_on(dht_settings_))
 		{
 			bittorrent().ensure_dht_off();
@@ -131,6 +143,8 @@ bool Config::settingsThread()
 			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
 				new hal::EventDebug(event_logger::critical, L"settingsThread, DHT Error"))); 
 		}
+		
+		dht_settings_.service_port = old_port;
 	}
 	else
 		bittorrent().ensure_dht_off();
