@@ -357,6 +357,8 @@ public:
 		settings.service_port = dht.service_port;
 		settings.max_fail_count = dht.max_fail_count;
 		
+		HAL_DEV_MSG(hal::wform(L"Seleted DHT port = %1%") % settings.service_port);
+		
 		if (dht_settings_ != settings)
 		{
 			dht_settings_ = settings;

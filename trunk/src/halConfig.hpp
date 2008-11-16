@@ -33,6 +33,9 @@ public:
 		randomize_port_(false),
 		enable_dht_(true),
 		dht_settings_(),
+		dht_random_port_(0),
+		dht_upper_port_(0),
+		dht_radio_(1),
 		enableIPFilter(false),
 		enableProxy(false),
 		proxyPort(0),
@@ -70,6 +73,9 @@ public:
 			& make_nvp("timeouts", timeouts_)
 			& make_nvp("enable_dht", enable_dht_)
 			& make_nvp("dht_settings", dht_settings_)
+			& make_nvp("dht_settings/random_port", dht_random_port_)
+			& make_nvp("dht_settings/upper_port", dht_upper_port_)
+			& make_nvp("dht_radio", dht_radio_)
 			& make_nvp("enable_pe", enable_pe_)
 			& make_nvp("pe_settings", pe_settings_)
 			& make_nvp("port_range", port_range_)
@@ -154,6 +160,9 @@ private:
 	
 	bool enable_dht_;
 	hal::dht_settings dht_settings_;
+	bool dht_random_port_;
+	unsigned dht_upper_port_;
+	int dht_radio_;
 	
 	bool enableIPFilter;
 	
@@ -163,7 +172,6 @@ private:
 	std::wstring proxyUsername;
 	std::wstring proxyPassword;
 	
-
     bool enable_pe_;
 	hal::pe_settings pe_settings_;
 	
