@@ -109,10 +109,11 @@ public:
 	
 	struct Progress : public ColAdapter_t
 	{
-		virtual int compare(dataClass& l, dataClass& r) { return hal::compare(l.progress, r.progress); }		
+		virtual int compare(dataClass& l, dataClass& r) { return hal::compare(static_cast<double>(l.progress)/l.size, 
+			static_cast<double>(r.progress)/r.size); }		
 		virtual std::wstring print(dataClass& t) 
 		{
-			return (hal::wform(L"%1$.2f%%") % (t.progress*100)).str(); 
+			return (hal::wform(L"%1$.2f%%") % (static_cast<double>(t.progress)/t.size*100)).str(); 
 		}		
 	};
 	

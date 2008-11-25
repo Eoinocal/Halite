@@ -885,7 +885,7 @@ public:
 	size_t ip_filter_size();
 	void clear_ip_filter();	
 	
-	void setSessionHalfOpenLimit(int halfConn);
+	void set_session_half_open_limit(int halfConn);
 	void set_session_limits(int maxConn, int maxUpload);
 	void set_session_speed(float download, float upload);
 
@@ -900,36 +900,36 @@ public:
 	void set_cache_settings(const cache_settings& cache);
 	cache_settings get_cache_settings() const;
 	
-	const SessionDetail getSessionDetails();
+	const SessionDetail get_session_details();
 
 	void set_torrent_defaults(const connections& defaults);	
 	void add_torrent(boost::filesystem::wpath file, boost::filesystem::wpath saveDirectory, 
 		bool startPaused=false, bool managed=false, allocations alloc=hal::bit::sparse_allocation, 
 		boost::filesystem::wpath moveToDirectory=L"", bool useMoveTo=false);
 	
-	void getAllPeerDetails(const std::string& filename, PeerDetails& peerContainer);
-	void getAllPeerDetails(const std::wstring& filename, PeerDetails& peerContainer);
-	void getAllFileDetails(const std::string& filename, FileDetails& fileDetails);
-	void getAllFileDetails(const std::wstring& filename, FileDetails& fileDetails);
+	void get_all_peer_details(const std::string& filename, PeerDetails& peerContainer);
+	void get_all_peer_details(const std::wstring& filename, PeerDetails& peerContainer);
+	void get_all_file_details(const std::string& filename, FileDetails& fileDetails);
+	void get_all_file_details(const std::wstring& filename, FileDetails& fileDetails);
 	
 	void resume_all();
 	void close_all(boost::optional<report_num_active> fn);
 	
-	bool isTorrent(const std::string& filename);
-	bool isTorrent(const std::wstring& filename);	
+	bool is_torrent(const std::string& filename);
+	bool is_torrent(const std::wstring& filename);	
 	
-	void pauseTorrent(const std::string& filename);
-	void pauseTorrent(const std::wstring& filename);
-	void resumeTorrent(const std::string& filename);
-	void resumeTorrent(const std::wstring& filename);
-	void stopTorrent(const std::string& filename);
-	void stopTorrent(const std::wstring& filename);
-	bool isTorrentActive(const std::string& filename);
-	bool isTorrentActive(const std::wstring& filename);
-	void reannounceTorrent(const std::string& filename);
-	void reannounceTorrent(const std::wstring& filename);
-	void recheckTorrent(const std::string& filename);
-	void recheckTorrent(const std::wstring& filename);
+	void pause_torrent(const std::string& filename);
+	void pause_torrent(const std::wstring& filename);
+	void resume_torrent(const std::string& filename);
+	void resume_torrent(const std::wstring& filename);
+	void stop_torrent(const std::string& filename);
+	void stop_torrent(const std::wstring& filename);
+	bool is_torrent_active(const std::string& filename);
+	bool is_torrent_active(const std::wstring& filename);
+	void reannounce_torrent(const std::string& filename);
+	void reannounce_torrent(const std::wstring& filename);
+	void recheck_torrent(const std::string& filename);
+	void recheck_torrent(const std::wstring& filename);
 	
 	void pause_all_torrents();
 	void unpause_all_torrents();
@@ -946,7 +946,7 @@ public:
 		remove_torrent_wipe_files_wstr(to_wstr_shim(filename)); 
 	}	
 
-	void startEventReceiver();
+	void start_event_receiver();
 	void stop_event_receiver();
 	
 	friend bit& bittorrent();

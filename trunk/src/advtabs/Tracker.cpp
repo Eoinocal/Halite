@@ -161,13 +161,13 @@ void AdvTrackerDialog::onReannounce(UINT, int, HWND)
 {
 	if (hal::bittorrent().torrentDetails().focusedTorrent())
 	{
-		if (!hal::bittorrent().isTorrentActive(focusedTorrent()->name()))
+		if (!hal::bittorrent().is_torrent_active(focusedTorrent()->name()))
 		{
-			hal::bittorrent().resumeTorrent(focusedTorrent()->name());
+			hal::bittorrent().resume_torrent(focusedTorrent()->name());
 		}
 		else
 		{
-			hal::bittorrent().reannounceTorrent(focusedTorrent()->name());
+			hal::bittorrent().reannounce_torrent(focusedTorrent()->name());
 		}
 	}
 }

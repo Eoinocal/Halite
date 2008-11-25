@@ -37,7 +37,7 @@ const PeerDetails& torrent_details::peerDetails() const
 {
 	if (!peerDetailsFilled_)
 	{
-		bittorrent().getAllPeerDetails(hal::to_utf8(name_), peerDetails_);
+		bittorrent().get_all_peer_details(hal::to_utf8(name_), peerDetails_);
 		peerDetailsFilled_ = true;
 	}
 	
@@ -48,7 +48,7 @@ const FileDetails& torrent_details::fileDetails() const
 {
 	if (!fileDetailsFilled_)
 	{
-		bittorrent().getAllFileDetails(hal::to_utf8(name_), fileDetails_);
+		bittorrent().get_all_file_details(hal::to_utf8(name_), fileDetails_);
 		fileDetailsFilled_ = true;
 	}
 	
@@ -227,7 +227,7 @@ bool bit::ip_filter_import_dat(boost::filesystem::path file, progress_callback f
 	return pimpl->ip_filter_import_dat(file, fn, octalFix);
 }
 
-const SessionDetail bit::getSessionDetails()
+const SessionDetail bit::get_session_details()
 {
 	SessionDetail details;
 	
@@ -247,7 +247,7 @@ const SessionDetail bit::getSessionDetails()
 	return details;
 }
 
-void bit::setSessionHalfOpenLimit(int halfConn)
+void bit::set_session_half_open_limit(int halfConn)
 {
 	pimpl->session_.set_max_half_open_connections(halfConn);
 
@@ -295,7 +295,7 @@ const torrent_details_manager& bit::updatetorrent_details_manager(const wstring&
 	for (TorrentManager::torrentByName::iterator i=pimpl->the_torrents_.begin(), e=pimpl->the_torrents_.end(); i != e; ++i)
 	{
 		wstring utf8Name = (*i).torrent->name();
-		torrent_details_ptr pT = (*i).torrent->gettorrent_details_ptr();
+		torrent_details_ptr pT = (*i).torrent->get_torrent_details_ptr();
 		
 		if (selected.find(utf8Name) != selected.end())
 		{
@@ -389,12 +389,12 @@ const cache_details bit::get_cache_details() const
 	return pimpl->get_cache_details();
 }
 
-void bit::getAllPeerDetails(const std::string& filename, PeerDetails& peerContainer)
+void bit::get_all_peer_details(const std::string& filename, PeerDetails& peerContainer)
 {
-	getAllPeerDetails(from_utf8_safe(filename), peerContainer);
+	get_all_peer_details(from_utf8_safe(filename), peerContainer);
 }
 
-void bit::getAllPeerDetails(const std::wstring& filename, PeerDetails& peerContainer)
+void bit::get_all_peer_details(const std::wstring& filename, PeerDetails& peerContainer)
 {
 	try {
 	
@@ -403,12 +403,12 @@ void bit::getAllPeerDetails(const std::wstring& filename, PeerDetails& peerConta
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getAllPeerDetails")
 }
 
-void bit::getAllFileDetails(const std::string& filename, FileDetails& fileDetails)
+void bit::get_all_file_details(const std::string& filename, FileDetails& fileDetails)
 {
-	getAllFileDetails(from_utf8_safe(filename), fileDetails);
+	get_all_file_details(from_utf8_safe(filename), fileDetails);
 }
 
-void bit::getAllFileDetails(const std::wstring& filename, FileDetails& fileDetails)
+void bit::get_all_file_details(const std::wstring& filename, FileDetails& fileDetails)
 {
 	try {
 	
@@ -417,12 +417,12 @@ void bit::getAllFileDetails(const std::wstring& filename, FileDetails& fileDetai
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "getAllFileDetails")
 }
 
-bool bit::isTorrent(const std::string& filename)
+bool bit::is_torrent(const std::string& filename)
 {	
-	return isTorrent(hal::to_wstr_shim(filename));
+	return is_torrent(hal::to_wstr_shim(filename));
 }
 
-bool bit::isTorrent(const std::wstring& filename)
+bool bit::is_torrent(const std::wstring& filename)
 {	
 	try {
 	
@@ -433,12 +433,12 @@ bool bit::isTorrent(const std::wstring& filename)
 	return false;
 }
 
-void bit::pauseTorrent(const std::string& filename)
+void bit::pause_torrent(const std::string& filename)
 {
-	pauseTorrent(hal::to_wstr_shim(filename));
+	pause_torrent(hal::to_wstr_shim(filename));
 }
 
-void bit::pauseTorrent(const std::wstring& filename)
+void bit::pause_torrent(const std::wstring& filename)
 {
 	try {
 	
@@ -447,12 +447,12 @@ void bit::pauseTorrent(const std::wstring& filename)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "pauseTorrent")
 }
 
-void bit::resumeTorrent(const std::string& filename)
+void bit::resume_torrent(const std::string& filename)
 {
-	resumeTorrent(hal::to_wstr_shim(filename));
+	resume_torrent(hal::to_wstr_shim(filename));
 }
 
-void bit::resumeTorrent(const std::wstring& filename)
+void bit::resume_torrent(const std::wstring& filename)
 {
 	try {
 	
@@ -461,12 +461,12 @@ void bit::resumeTorrent(const std::wstring& filename)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "resumeTorrent")
 }
 
-void bit::stopTorrent(const std::string& filename)
+void bit::stop_torrent(const std::string& filename)
 {
-	stopTorrent(hal::to_wstr_shim(filename));
+	stop_torrent(hal::to_wstr_shim(filename));
 }
 
-void bit::stopTorrent(const std::wstring& filename)
+void bit::stop_torrent(const std::wstring& filename)
 {
 	try {
 	
@@ -475,12 +475,12 @@ void bit::stopTorrent(const std::wstring& filename)
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "stopTorrent")
 }
 
-bool bit::isTorrentActive(const std::string& filename)
+bool bit::is_torrent_active(const std::string& filename)
 {
-	return isTorrentActive(hal::to_wstr_shim(filename));
+	return is_torrent_active(hal::to_wstr_shim(filename));
 }
 
-bool bit::isTorrentActive(const std::wstring& filename)
+bool bit::is_torrent_active(const std::wstring& filename)
 {
 	try {
 	
@@ -491,12 +491,12 @@ bool bit::isTorrentActive(const std::wstring& filename)
 	return false; // ??? is this correct
 }
 
-void bit::reannounceTorrent(const std::string& filename)
+void bit::reannounce_torrent(const std::string& filename)
 {
-	reannounceTorrent(hal::to_wstr_shim(filename));
+	reannounce_torrent(hal::to_wstr_shim(filename));
 }
 
-void bit::reannounceTorrent(const std::wstring& filename)
+void bit::reannounce_torrent(const std::wstring& filename)
 {
 	try {
 	
@@ -506,12 +506,12 @@ void bit::reannounceTorrent(const std::wstring& filename)
 }
 
 
-void bit::recheckTorrent(const std::string& filename)
+void bit::recheck_torrent(const std::string& filename)
 {
-	recheckTorrent(hal::to_wstr_shim(filename));
+	recheck_torrent(hal::to_wstr_shim(filename));
 }
 
-void bit::recheckTorrent(const std::wstring& filename)
+void bit::recheck_torrent(const std::wstring& filename)
 {
 	try {
 	
@@ -617,7 +617,7 @@ std::pair<int, int> bit::torrent::get_connection_limits() const
 {
 	try {
 	
-	return ptr->getConnectionLimit();
+	return ptr->get_connection_limit();
 	
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_connection_limits")
 	
@@ -628,7 +628,7 @@ void bit::torrent::set_connection_limits(const std::pair<int, int>& l)
 {
 	try {
 	
-	ptr->setConnectionLimit(l.first, l.second);
+	ptr->set_connection_limit(l.first, l.second);
 	
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_connection_limits")
 }
@@ -637,7 +637,7 @@ std::pair<float, float> bit::torrent::get_rate_limits() const
 {
 	try {
 	
-	return ptr->getTransferSpeed();
+	return ptr->get_transfer_speed();
 	
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_rate_limits")
 	
@@ -697,7 +697,7 @@ std::pair<wstring, wstring> bit::torrent::get_tracker_login() const
 {
 	try {
 	
-	return ptr->getTrackerLogin();
+	return ptr->get_tracker_login();
 	
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("get_tracker_login")
 	
@@ -708,7 +708,7 @@ void bit::torrent::set_tracker_login(const std::pair<wstring, wstring>& p)
 {
 	try {
 	
-	ptr->setTrackerLogin(p.first, p.second);
+	ptr->set_tracker_login(p.first, p.second);
 	
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_tracker_login")
 }
@@ -739,7 +739,7 @@ std::vector<tracker_detail> bit::torrent::get_trackers() const
 {
 	try {
 	
-	return ptr->getTrackers();
+	return ptr->get_trackers();
 	
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_trackers")
 	
@@ -802,7 +802,7 @@ void bit::torrent::set_managed(bool m)
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_managed")
 }
 
-void bit::startEventReceiver()
+void bit::start_event_receiver()
 {
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Starting event handler.")));
 

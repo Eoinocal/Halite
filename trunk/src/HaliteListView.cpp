@@ -198,7 +198,7 @@ HaliteListViewCtrl::tD HaliteListViewCtrl::CustomItemConversion(LVCompareParam* 
 LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::resumeTorrent, 
+		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::resume_torrent, 
 			&hal::bittorrent(), _1));
 	
 	return 0;
@@ -207,7 +207,7 @@ LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 LRESULT HaliteListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {	
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::pauseTorrent, 
+		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::pause_torrent, 
 			&hal::bittorrent(), _1));
 	
 	return 0;
@@ -216,7 +216,7 @@ LRESULT HaliteListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BO
 LRESULT HaliteListViewCtrl::OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::stopTorrent, 
+		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::stop_torrent, 
 			&hal::bittorrent(), _1));
 
 	return 0;
@@ -244,7 +244,7 @@ LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::recheckTorrent, 
+		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::recheck_torrent, 
 			&hal::bittorrent(), _1));	
 
 	return 0;

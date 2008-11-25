@@ -110,7 +110,7 @@ bool Config::settingsThread()
 				new hal::EventStdException(event_logger::critical, e, L"settingsThread, Protocol Encryption"))); 
 	}
 	
-	bittorrent().setSessionHalfOpenLimit(half_connections_limit_);
+	bittorrent().set_session_half_open_limit(half_connections_limit_);
 	
 	bittorrent().resume_all();	
 	

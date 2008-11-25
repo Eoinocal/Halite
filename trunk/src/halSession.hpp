@@ -797,7 +797,7 @@ public:
 
 			TIp->set_managed(managed);
 			TIp->setTransferSpeed(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload());
-			TIp->setConnectionLimit(bittorrent().defTorrentMaxConn(), bittorrent().defTorrentMaxUpload());
+			TIp->set_connection_limit(bittorrent().defTorrentMaxConn(), bittorrent().defTorrentMaxUpload());
 		}
 		
 		std::pair<TorrentManager::torrentByName::iterator, bool> p =
@@ -976,6 +976,7 @@ public:
 						break;
 					case torrent_details::torrent_active:
 						(*i).torrent->add_to_session(false);
+						(*i).torrent->resume();
 						break;
 					default:
 						assert(false);
