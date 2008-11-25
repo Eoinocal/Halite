@@ -322,8 +322,8 @@ private:
 
 public:
 	#define TORRENT_INTERNALS_DEFAULTS \
-		originalFilename_(L""), \
-		transferLimit_(std::pair<float, float>(-1, -1)), \
+		original_filename_(L""), \
+		transfer_limit_(std::pair<float, float>(-1, -1)), \
 		connections_(-1), \
 		uploads_(-1), \
 		ratio_(0), \
@@ -362,7 +362,7 @@ public:
 
 	#undef TORRENT_INTERNALS_DEFAULTS
 	
-	torrent_details_ptr gettorrent_details_ptr()
+	torrent_details_ptr get_torrent_details_ptr()
 	{	
 		mutex_t::scoped_lock l(mutex_);
 
@@ -488,12 +488,12 @@ public:
 		catch (const libt::invalid_handle&)
 		{
 			event_log.post(shared_ptr<EventDetail>(
-				new EventInvalidTorrent(event_logger::critical, event_logger::invalidTorrent, to_utf8(name_), "gettorrent_details_ptr")));
+				new EventInvalidTorrent(event_logger::critical, event_logger::invalidTorrent, to_utf8(name_), "get_torrent_details_ptr")));
 		}
 		catch (const std::exception& e)
 		{
 			event_log.post(shared_ptr<EventDetail>(
-				new EventTorrentException(event_logger::critical, event_logger::torrentException, e.what(), to_utf8(name_), "gettorrent_details_ptr")));
+				new EventTorrentException(event_logger::critical, event_logger::torrentException, e.what(), to_utf8(name_), "get_torrent_details_ptr")));
 		}
 		
 		return torrent_details_ptr(new torrent_details(
@@ -529,12 +529,12 @@ public:
 	{	
 		mutex_t::scoped_lock l(mutex_);
 
-		transferLimit_ = std::make_pair(down, up);
+		transfer_limit_ = std::make_pair(down, up);
 		
 		apply_transfer_speed();
 	}
 
-	void setConnectionLimit(int maxConn, int maxUpload)		
+	void set_connection_limit(int maxConn, int maxUpload)		
 	{
 		mutex_t::scoped_lock l(mutex_);
 
@@ -544,12 +544,12 @@ public:
 		apply_connection_limit();
 	}
 
-	std::pair<float, float> getTransferSpeed()
+	std::pair<float, float> get_transfer_speed()
 	{
-		return transferLimit_;
+		return transfer_limit_;
 	}
 
-	std::pair<int, int> getConnectionLimit()
+	std::pair<int, int> get_connection_limit()
 	{
 		return std::make_pair(connections_, uploads_);
 	}
@@ -646,11 +646,16 @@ public:
 	{
 		try
 		{
+		HAL_DEV_MSG(hal::wform(L"remove_from_session() write_data=%1%") % write_data);
 
 		mutex_t::scoped_lock l(mutex_);
-		assert(in_session());
+		if (!in_session())
+		{
+			in_session_ = false;
+			HAL_DEV_MSG(L"Was not is session!");
 
-		HAL_DEV_MSG(hal::wform(L"remove_from_session() writeData=%1%") % write_data);
+			return false;
+		}
 		
 		if (write_data)
 		{
@@ -901,22 +906,22 @@ public:
 		return state_;
 	}
 	
-	void setTrackerLogin(wstring username, wstring password)
+	void set_tracker_login(wstring username, wstring password)
 	{
-		trackerUsername_ = username;
-		trackerPassword_ = password;
+		tracker_username_ = username;
+		tracker_password_ = password;
 		
 		apply_tracker_login();
 	}	
 	
-	std::pair<wstring, wstring> getTrackerLogin() const
+	std::pair<wstring, wstring> get_tracker_login() const
 	{
-		return make_pair(trackerUsername_, trackerPassword_);
+		return make_pair(tracker_username_, tracker_password_);
 	}
 	
 	const wstring& filename() const { return filename_; }
 	
-	const wstring& originalFilename() const { return originalFilename_; }
+	const wstring& original_filename() const { return original_filename_; }
 	
 	const libt::torrent_handle& handle() const { return handle_; }
 
@@ -937,7 +942,7 @@ public:
 		apply_trackers();
 	}
 	
-	const std::vector<tracker_detail>& getTrackers()
+	const std::vector<tracker_detail>& get_trackers()
 	{
 		if (trackers_.empty() && info_memory_)
 		{
@@ -972,7 +977,7 @@ public:
 		using boost::serialization::make_nvp;
 
 		if (version > 1) {
-			ar & make_nvp("transfer_limits", transferLimit_);
+			ar & make_nvp("transfer_limits", transfer_limit_);
 			ar & make_nvp("connection_limits", connections_);
 			ar & make_nvp("upload_limits", uploads_);	
 
@@ -986,8 +991,8 @@ public:
 			ar & make_nvp("allocation_type", allocation_);	
 			ar & make_nvp("resolve_countries", resolve_countries_);	
 
-			ar & make_nvp("tracker_username", trackerUsername_);
-			ar & make_nvp("tracker_password", trackerPassword_);
+			ar & make_nvp("tracker_username", tracker_username_);
+			ar & make_nvp("tracker_password", tracker_password_);
 			ar & make_nvp("trackers", trackers_);
 
 			ar & make_nvp("save_directory", save_directory_);
@@ -1009,7 +1014,7 @@ public:
 		} 
 		else 
 		{
-		    ar & make_nvp("transferLimit", transferLimit_);
+		    ar & make_nvp("transferLimit", transfer_limit_);
 			ar & make_nvp("connections", connections_);
 			ar & make_nvp("uploads", uploads_);			
 			ar & make_nvp("filename", filename_);	
@@ -1031,8 +1036,8 @@ public:
 			ar & make_nvp("uploaded_", uploaded_);
 			ar & make_nvp("downloaded_", downloaded_);	
 			ar & make_nvp("ratio", ratio_);	
-			ar & make_nvp("trackerUsername", trackerUsername_);
-			ar & make_nvp("trackerPassword", trackerPassword_);
+			ar & make_nvp("trackerUsername", tracker_username_);
+			ar & make_nvp("trackerPassword", tracker_password_);
 			
 			ar & make_nvp("state", state_);
 			ar & make_nvp("trackers", trackers_);
@@ -1053,7 +1058,7 @@ public:
 	}
     }
 
-	void setEntryData(boost::intrusive_ptr<libt::torrent_info> metadata, libtorrent::entry resumedata)
+	void set_entry_data(boost::intrusive_ptr<libt::torrent_info> metadata, libtorrent::entry resumedata)
 	{		
 		info_memory_ = metadata;
 //		resumedata_ = resumedata;
@@ -1152,7 +1157,7 @@ public:
 		if (fs::exists(filename)) 
 			info_memory_ = new libt::torrent_info(path_to_utf8(filename));
 		
-		extractNames(info_memory());			
+		extract_names(info_memory());			
 		
 		const wpath resumeFile = hal::app().get_working_directory()/L"resume"/filename_;
 		const wpath torrentFile = hal::app().get_working_directory()/L"torrents"/filename_;
@@ -1180,7 +1185,7 @@ public:
 			state(torrent_details::torrent_paused);
 	}
 	
-	void extractNames(boost::intrusive_ptr<libt::torrent_info> metadata)
+	void extract_names(boost::intrusive_ptr<libt::torrent_info> metadata)
 	{
 		mutex_t::scoped_lock l(mutex_);
 				
@@ -1228,10 +1233,10 @@ private:
 		mutex_t::scoped_lock l(mutex_);
 		if (in_session())
 		{
-			int down = (transferLimit_.first > 0) ? static_cast<int>(transferLimit_.first*1024) : -1;
+			int down = (transfer_limit_.first > 0) ? static_cast<int>(transfer_limit_.first*1024) : -1;
 			handle_.set_download_limit(down);
 			
-			int up = (transferLimit_.second > 0) ? static_cast<int>(transferLimit_.second*1024) : -1;
+			int up = (transfer_limit_.second > 0) ? static_cast<int>(transfer_limit_.second*1024) : -1;
 			handle_.set_upload_limit(up);
 
 			HAL_DEV_MSG(hal::wform(L"Applying Transfer Speed %1% - %2%") % down % up);
@@ -1291,13 +1296,13 @@ private:
 		mutex_t::scoped_lock l(mutex_);
 		if (in_session())
 		{
-			if (trackerUsername_ != L"")
+			if (tracker_username_ != L"")
 			{
-				handle_.set_tracker_login(hal::to_utf8(trackerUsername_),
-					hal::to_utf8(trackerPassword_));
+				handle_.set_tracker_login(hal::to_utf8(tracker_username_),
+					hal::to_utf8(tracker_password_));
 			}
 
-			HAL_DEV_MSG(hal::wform(L"Applying Tracker Login User: %1%, Pass: %2%") % trackerUsername_ % trackerPassword_ );
+			HAL_DEV_MSG(hal::wform(L"Applying Tracker Login User: %1%, Pass: %2%") % tracker_username_ % tracker_password_ );
 		}
 	}
 	
@@ -1437,7 +1442,7 @@ private:
 
 	torrent_state_machine machine_;
 	
-	std::pair<float, float> transferLimit_;
+	std::pair<float, float> transfer_limit_;
 	
 	mutable unsigned state_;
 	int connections_;
@@ -1450,14 +1455,14 @@ private:
 	wstring name_;
 	wpath save_directory_;
 	wpath move_to_directory_;
-	wstring originalFilename_;
+	wstring original_filename_;
 	libt::torrent_handle handle_;	
 	
 //	boost::intrusive_ptr<libt::torrent_info> metadata_;
 //	boost::shared_ptr<libt::entry> resumedata_;
 	
-	wstring trackerUsername_;	
-	wstring trackerPassword_;
+	wstring tracker_username_;	
+	wstring tracker_password_;
 	
 	boost::int64_t totalUploaded_;
 	boost::int64_t totalBase_;

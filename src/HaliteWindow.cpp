@@ -177,7 +177,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	
 	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Starting event reciever...")));
-	hal::bittorrent().startEventReceiver();
+	hal::bittorrent().start_event_receiver();
 	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Initial setup complete!")));
 
@@ -235,7 +235,7 @@ void HaliteWindow::updateWindow()
 	try
 	{
 	
-	hal::SessionDetail details = hal::bittorrent().getSessionDetails();
+	hal::SessionDetail details = hal::bittorrent().get_session_details();
 	
 	if (details.port > -1)
 		UISetText(0, 

@@ -158,7 +158,7 @@ std::wstring app_module::res_wstr(unsigned uID)
 	// The upper size limit ain't nice, but at least it's safe from buffer overflow
 	win_c_str<std::wstring> str(2048);
 	
-	int size = ::LoadString(_Module.GetResourceInstance(), uID, str, str.size());
+	size_t size = ::LoadString(_Module.GetResourceInstance(), uID, str, str.size());
 	assert(size != 0);
 	
 	return str;
