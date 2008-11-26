@@ -11,7 +11,7 @@
 "&Resume All" ---> "Све наставити"
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(У-И) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(У-И) 0000.000KB/s - 0000.000KB/s"
-"(DHT will not apply to private torrents)" ---> "(ДХТ неће се палити за приватне торенте)"
+"(DHT will not apply to private torrents)" ---> "(ДХТ неће се палити уз приватне торенте)"
 "About" ---> "О нама"
 "Above Normal" ---> "Преко нормалног"
 "Active" ---> "Активан"

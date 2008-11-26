@@ -11,7 +11,7 @@
 "&Resume All" ---> "Sve nastaviti"
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(U-I) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(U-I) 0000.000KB/s - 0000.000KB/s"
-"(DHT will not apply to private torrents)" ---> "(DHT neće se paliti za privatne torente)"
+"(DHT will not apply to private torrents)" ---> "(DHT neće se paliti uz privatne torente)"
 "About" ---> "O nama"
 "Above Normal" ---> "Preko normalnog"
 "Active" ---> "Aktivan"
