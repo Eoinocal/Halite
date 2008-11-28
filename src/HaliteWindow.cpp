@@ -4,10 +4,6 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <string>
-#include <boost/format.hpp>
-#include <boost/bind.hpp>
-
 #include "stdAfx.hpp"
 #include "Halite.hpp"
 #include "HaliteWindow.hpp"

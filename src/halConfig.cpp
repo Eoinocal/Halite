@@ -31,13 +31,14 @@ bool Config::settingsThread()
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Applying BitTorrent session settings.")));	
 	unsigned listen_port = port_range_.first;
+	int current_port = bittorrent().is_listening_on();
 
 	bittorrent().set_mapping(mapping_upnp_, mapping_nat_pmp_);
 
 	try
 	{		
 
-	if (randomize_port_)
+	if (randomize_port_ && (current_port < port_range_.first || current_port > port_range_.second))
 	{
 		for (int i=0, e=10; i!=e; ++i)
 		{
@@ -80,7 +81,7 @@ bool Config::settingsThread()
 	
 	try
 	{
-	if (enableIPFilter)
+	if (enable_ip_filter_)
 	{
 		ProgressDialog progDlg(L"Loading IP filters...", bind(
 			&bit::ensure_ip_filter_on, &bittorrent(), _1));
@@ -121,6 +122,16 @@ bool Config::settingsThread()
 
 	bittorrent().set_timeouts(timeouts_);	
 	bittorrent().set_queue_settings(queue_settings_);
+	bittorrent().set_resolve_countries(resolve_countries_);
+
+	if (metadata_plugin_)
+		bittorrent().start_metadata_plugin();
+	if (ut_metadata_plugin_)
+		bittorrent().start_ut_metadata_plugin();
+	if (ut_pex_plugin_)
+		bittorrent().start_ut_pex_plugin();
+	if (smart_ban_plugin_)
+		bittorrent().start_smart_ban_plugin();
 	
 	if (enable_dht_)
 	{
@@ -133,7 +144,7 @@ bool Config::settingsThread()
 		}
 		else if (dht_radio_ == 1)
 		{
-			dht_settings_.service_port = listen_port;
+			dht_settings_.service_port = bittorrent().is_listening_on();
 		}
 
 		if (!bittorrent().ensure_dht_on(dht_settings_))

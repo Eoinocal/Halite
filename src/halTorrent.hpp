@@ -876,6 +876,12 @@ public:
 	bool ensure_ip_filter_on(progress_callback fn);
 	void ensure_ip_filter_off();
 
+	void set_resolve_countries(bool);
+	void start_smart_ban_plugin();
+	void start_ut_pex_plugin();
+	void start_ut_metadata_plugin();
+	void start_metadata_plugin();
+
 	void set_mapping(bool upnp, bool nat_pmp);
 	std::wstring upnp_router_model();
 

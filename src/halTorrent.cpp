@@ -187,6 +187,31 @@ void bit::ensure_ip_filter_off()
 	pimpl->ensure_ip_filter_off();
 }
 
+void bit::set_resolve_countries(bool b)
+{
+	pimpl->set_resolve_countries(b);
+}
+
+void bit::start_smart_ban_plugin()
+{
+	pimpl->start_smart_ban_plugin();
+}
+
+void bit::start_ut_pex_plugin()
+{
+	pimpl->start_ut_pex_plugin();
+}
+
+void bit::start_ut_metadata_plugin()
+{
+	pimpl->start_ut_metadata_plugin();
+}
+
+void bit::start_metadata_plugin()
+{
+	pimpl->start_metadata_plugin();
+}
+
 #ifndef TORRENT_DISABLE_ENCRYPTION	
 
 void bit::ensure_pe_on(const pe_settings& pe)
