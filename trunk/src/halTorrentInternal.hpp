@@ -1184,6 +1184,12 @@ public:
 		else if (state_ == torrent_details::torrent_pausing)
 			state(torrent_details::torrent_paused);
 	}
+
+	void set_resolve_countries(bool b)
+	{
+		resolve_countries_ = b;
+		apply_resolve_countries();
+	}
 	
 	void extract_names(boost::intrusive_ptr<libt::torrent_info> metadata)
 	{

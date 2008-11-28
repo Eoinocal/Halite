@@ -31,6 +31,8 @@
 #	include <libtorrent/peer_connection.hpp>
 #	include <libtorrent/extensions/metadata_transfer.hpp>
 #	include <libtorrent/extensions/ut_pex.hpp>
+#	include <libtorrent/extensions/ut_metadata.hpp>
+#	include <libtorrent/extensions/smart_ban.hpp>
 #pragma warning (pop) 
 
 #include "halIni.hpp"
@@ -719,6 +721,44 @@ public:
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Protocol encryption off.")));
 	}
 	#endif
+	
+	void set_resolve_countries(bool b)
+	{		
+		for (TorrentManager::torrentByName::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
+			i != e; ++i)
+		{
+			(*i).torrent->set_resolve_countries(b);
+		}
+
+		if (b)			
+			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Set to resolve countries.")));
+		else			
+			event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Not resolving countries.")));
+	}
+
+	void start_smart_ban_plugin()
+	{
+		session_.add_extension(&libt::create_smart_ban_plugin);
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Started smart ban plugin.")));
+	}
+
+	void start_ut_pex_plugin()
+	{
+		session_.add_extension(&libt::create_ut_pex_plugin);
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Started uTorrent peer exchange plugin.")));
+	}
+
+	void start_ut_metadata_plugin()
+	{
+		session_.add_extension(&libt::create_ut_metadata_plugin);
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Started uTorrent metadata plugin.")));
+	}
+
+	void start_metadata_plugin()
+	{
+		session_.add_extension(&libt::create_metadata_plugin);
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Started metadata plugin.")));
+	}
 
 	void ip_v4_filter_block(boost::asio::ip::address_v4 first, boost::asio::ip::address_v4 last)
 	{

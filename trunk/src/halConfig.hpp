@@ -36,7 +36,7 @@ public:
 		dht_random_port_(0),
 		dht_upper_port_(0),
 		dht_radio_(1),
-		enableIPFilter(false),
+		enable_ip_filter_(false),
 		enableProxy(false),
 		proxyPort(0),
 		default_save_folder_((hal::app().exe_path().parent_path()/L"incoming").string()),
@@ -48,7 +48,12 @@ public:
 		half_connections_(true),
 		half_connections_limit_(10),
 		mapping_upnp_(false),
-		mapping_nat_pmp_(false)
+		mapping_nat_pmp_(false),
+		resolve_countries_(false),
+		metadata_plugin_(false),
+		ut_metadata_plugin_(false),
+		ut_pex_plugin_(false),
+		smart_ban_plugin_(false)
 	{
 		queue_settings_ = hal::bittorrent().get_queue_settings();
 		timeouts_ = hal::bittorrent().get_timeouts();
@@ -77,6 +82,7 @@ public:
 			& make_nvp("dht_settings/upper_port", dht_upper_port_)
 			& make_nvp("dht_radio", dht_radio_)
 			& make_nvp("enable_pe", enable_pe_)
+			& make_nvp("enable_ip_filter", enable_ip_filter_)
 			& make_nvp("pe_settings", pe_settings_)
 			& make_nvp("port_range", port_range_)
 			& make_nvp("use_port_range", use_port_range_)
@@ -84,8 +90,12 @@ public:
 			& make_nvp("half_connections_limit", half_connections_limit_)
 			& make_nvp("mapping_upnp", mapping_upnp_)
 			& make_nvp("mapping_nat_pmp", mapping_nat_pmp_)
-			& make_nvp("cache_settings", cache_settings_);
-
+			& make_nvp("cache_settings", cache_settings_)
+			& make_nvp("resolve_countries", resolve_countries_)
+			& make_nvp("plugins/metadata", metadata_plugin_)
+			& make_nvp("plugins/ut_metadata", ut_metadata_plugin_)
+			& make_nvp("plugins/ut_pex", ut_pex_plugin_)
+			& make_nvp("plugins/smart_ban", smart_ban_plugin_);
 		break;
 
 		case 4:
@@ -121,7 +131,7 @@ public:
 		ar	& make_nvp("peerTimeout", timeouts_.peer_connect_timeout)
 			& make_nvp("trackerTimeout", timeouts_.tracker_receive_timeout);
 
-		ar	& BOOST_SERIALIZATION_NVP(enableIPFilter)
+		ar	& make_nvp("enableIPFilter", enable_ip_filter_)
 			& make_nvp("portRange", use_port_range_)
 			& make_nvp("torrentMaxConnections", torrent_defaults_.total)
 			& make_nvp("torrentMaxUploads", torrent_defaults_.uploads)
@@ -164,7 +174,7 @@ private:
 	unsigned dht_upper_port_;
 	int dht_radio_;
 	
-	bool enableIPFilter;
+	bool enable_ip_filter_;
 	
 	bool enableProxy;
 	std::wstring proxyHost;
@@ -180,6 +190,12 @@ private:
 
 	bool mapping_upnp_;
 	bool mapping_nat_pmp_;
+
+	bool resolve_countries_;
+	bool metadata_plugin_;
+	bool ut_metadata_plugin_;
+	bool ut_pex_plugin_;
+	bool smart_ban_plugin_;
 
 	hal::cache_settings cache_settings_;
 
