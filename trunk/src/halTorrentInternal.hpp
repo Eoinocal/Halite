@@ -525,7 +525,7 @@ public:
 		}
 	}
 
-	void setTransferSpeed(float down, float up)
+	void set_transfer_speed(float down, float up)
 	{	
 		mutex_t::scoped_lock l(mutex_);
 

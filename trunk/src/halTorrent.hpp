@@ -957,10 +957,10 @@ public:
 	
 	friend bit& bittorrent();
 	
-	int defTorrentMaxConn();
-	int defTorrentMaxUpload();
-	float defTorrentDownload();
-	float defTorrentUpload();	
+	int default_torrent_max_connections();
+	int default_torrent_max_uploads();
+	float default_torrent_download();
+	float default_torrent_upload();	
 
 	const torrent_details_manager& torrentDetails();
 	const torrent_details_manager& updatetorrent_details_manager(const std::wstring& focused, const std::set<std::wstring>& selected);
