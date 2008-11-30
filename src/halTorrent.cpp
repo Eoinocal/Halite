@@ -282,15 +282,15 @@ void bit::set_session_half_open_limit(int halfConn)
 
 void bit::set_torrent_defaults(const connections& defaults)
 {
-	pimpl->defTorrentMaxConn_ = defaults.total;
-	pimpl->defTorrentMaxUpload_ = defaults.uploads;
+	pimpl->default_torrent_max_connections_ = defaults.total;
+	pimpl->default_torrent_max_uploads_ = defaults.uploads;
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
 		hal::wform(L"Set torrent connections total %1% and uploads %2%.") 
 			% defaults.total % defaults.uploads)));
 
-	pimpl->defTorrentDownload_ = defaults.download_rate;
-	pimpl->defTorrentUpload_ = defaults.upload_rate;
+	pimpl->default_torrent_download_ = defaults.download_rate;
+	pimpl->default_torrent_upload_ = defaults.upload_rate;
 
 	event_log.post(shared_ptr<EventDetail>(new EventMsg(
 		hal::wform(L"Set torrent default rates at %1$.2fkb/s down and %2$.2fkb/s upload.") 
@@ -673,7 +673,7 @@ void bit::torrent::set_rate_limits(const std::pair<float, float>& l)
 {
 	try {
 	
-	ptr->setTransferSpeed(l.first, l.second);
+	ptr->set_transfer_speed(l.first, l.second);
 	
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_rate_limits")
 }
@@ -841,9 +841,9 @@ void bit::stop_event_receiver()
 	pimpl->stop_alert_handler();
 }
 
-int bit::defTorrentMaxConn() { return pimpl->defTorrentMaxConn_; }
-int bit::defTorrentMaxUpload() { return pimpl->defTorrentMaxUpload_; }
-float bit::defTorrentDownload() { return pimpl->defTorrentDownload_; }
-float bit::defTorrentUpload() { return pimpl->defTorrentUpload_; }
+int bit::default_torrent_max_connections() { return pimpl->default_torrent_max_connections_; }
+int bit::default_torrent_max_uploads() { return pimpl->default_torrent_max_uploads_; }
+float bit::default_torrent_download() { return pimpl->default_torrent_download_; }
+float bit::default_torrent_upload() { return pimpl->default_torrent_upload_; }
 	
 };

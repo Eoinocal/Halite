@@ -724,10 +724,12 @@ public:
 	
 	void set_resolve_countries(bool b)
 	{		
+		resolve_countries_ = b;
+
 		for (TorrentManager::torrentByName::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
 			i != e; ++i)
 		{
-			(*i).torrent->set_resolve_countries(b);
+			(*i).torrent->set_resolve_countries(resolve_countries_);
 		}
 
 		if (b)			
@@ -836,8 +838,9 @@ public:
 				TIp.reset(new torrent_internal(file, saveDirectory, alloc));
 
 			TIp->set_managed(managed);
-			TIp->setTransferSpeed(bittorrent().defTorrentDownload(), bittorrent().defTorrentUpload());
-			TIp->set_connection_limit(bittorrent().defTorrentMaxConn(), bittorrent().defTorrentMaxUpload());
+			TIp->set_transfer_speed(bittorrent().default_torrent_download(), bittorrent().default_torrent_upload());
+			TIp->set_connection_limit(bittorrent().default_torrent_max_connections(), bittorrent().default_torrent_max_uploads());
+			TIp->set_resolve_countries(resolve_countries_);
 		}
 		
 		std::pair<TorrentManager::torrentByName::iterator, bool> p =
@@ -1111,10 +1114,10 @@ public:
 		}
 	}
 	
-	int defTorrentMaxConn() { return defTorrentMaxConn_; }
-	int defTorrentMaxUpload() { return defTorrentMaxUpload_; }
-	float defTorrentDownload() { return defTorrentDownload_; }
-	float defTorrentUpload() { return defTorrentUpload_; }
+	int default_torrent_max_connections() { return default_torrent_max_connections_; }
+	int default_torrent_max_uploads() { return default_torrent_max_uploads_; }
+	float default_torrent_download() { return default_torrent_download_; }
+	float default_torrent_upload() { return default_torrent_upload_; }
 	
 private:
 	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn);
@@ -1128,11 +1131,12 @@ private:
 	ini_file bittorrentIni;
 	TorrentManager the_torrents_;	
 	
-	int defTorrentMaxConn_;
-	int defTorrentMaxUpload_;
-	float defTorrentDownload_;
-	float defTorrentUpload_;
+	int default_torrent_max_connections_;
+	int default_torrent_max_uploads_;
+	float default_torrent_download_;
+	float default_torrent_upload_;
 	
+	bool resolve_countries_;
 	bool ip_filter_on_;
 	bool ip_filter_loaded_;
 	bool ip_filter_changed_;
