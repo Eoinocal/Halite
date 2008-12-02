@@ -67,12 +67,17 @@ public:
     txml_iarchive(std::istream& is, unsigned int flags = 0) :
 		basic_text_iprimitive<std::istream>(stream_, 0 != (flags & arc::no_codecvt)),
 		detail_common_iarchive(flags),
+		boost_xml_compat_(false),
 		is_(is),		
 		previous_child_node_(0)
     {
 		is_ >> xml_;
 
 		current_node_ = xml_.root_element();
+
+		boost_xml_compat_ = (current_node_->value_str() == "boost_serialization");
+		TXML_LOG(boost::wformat(L" << boost_serialization compatibility %1%") % (boost_xml_compat_ ? "on" : "off"));
+
 		init();
 	}
 
@@ -308,7 +313,14 @@ public:
 
 	void load_override(arc::object_id_type& t, int)
 	{ 
-		t = read_attribute<arc::object_id_type>(arc::OBJECT_ID(), arc::OBJECT_REFERENCE());		
+		if (boost_xml_compat_)
+		{
+			std::string id = read_attribute<std::string>(arc::OBJECT_ID(), arc::OBJECT_REFERENCE());
+
+			t = boost::lexical_cast<int>(id.substr(1));
+		}
+		else
+			t = read_attribute<arc::object_id_type>(arc::OBJECT_ID(), arc::OBJECT_REFERENCE());		
 	}
     
 	void load_override(arc::version_type& t, int)
@@ -325,6 +337,8 @@ public:
 	{ 
 		t = read_attribute<arc::tracking_type>(arc::TRACKING()); 
 	}
+
+	bool boost_xml_compat_;
 
 	xml::document xml_;
 
