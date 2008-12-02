@@ -8,6 +8,10 @@
 
 #include "stdAfx.hpp"
 
+#ifdef TXML_ARCHIVE_LOGGING
+#undef TXML_ARCHIVE_LOGGING
+#endif
+
 #include "halEvent.hpp"
 #include "Halite.hpp"
 
