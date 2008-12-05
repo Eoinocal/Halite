@@ -97,6 +97,9 @@ void FilesListViewCtrl::saveSettings()
 
 void recurseDirectory(std::vector<wpath>& files, wpath baseDir, wpath relDir)
 {	
+	hal::event_log.post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(hal::wform(L"recursing %1%  /  %2%") % baseDir.file_string() % relDir.file_string())));		
+
 	wpath currentDir(baseDir / relDir);
 
 	if (hal::fs::is_directory(currentDir))
@@ -106,7 +109,7 @@ void recurseDirectory(std::vector<wpath>& files, wpath baseDir, wpath relDir)
     }
     else
     {
-		files.push_back(baseDir.filename()/relDir);		
+		files.push_back(relDir);		
     }
 }
 
@@ -136,7 +139,7 @@ wpath DetailsSheet::OutputFile()
 
 void FilesSheet::OnDirBrowse(UINT, int, HWND hWnd)
 {	
-	WTL::CFolderDialog fldDlg(NULL, L"",	BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE);
+	WTL::CFolderDialog fldDlg(NULL, L"", BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE);
 
 	try
 	{
@@ -145,7 +148,7 @@ void FilesSheet::OnDirBrowse(UINT, int, HWND hWnd)
 	{
 		files_.clear();
 
-		fileRoot_ = wpath(fldDlg.m_szFolderPath).parent_path();
+		fileRoot_ = wpath(fldDlg.m_szFolderPath);
 		recurseDirectory(files_, wpath(fldDlg.m_szFolderPath), L"");
 
 		UpdateFileList();		

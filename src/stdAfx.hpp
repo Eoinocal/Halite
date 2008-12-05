@@ -6,10 +6,10 @@
 
 #pragma once
 
-#define WINVER		0x0600
-#define _WIN32_WINNT	0x0600
-#define _WIN32_IE	0x0700
-#define _RICHEDIT_VER	0x0200
+#define WINVER				0x0600
+#define _WIN32_WINNT		0x0600
+#define _WIN32_IE			0x0700
+#define _RICHEDIT_VER		0x0200
 
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN
@@ -20,8 +20,8 @@
 
 #define HALITE_SENDING_CMD 68816889
 
-#define HAL_TORRENT_STATE_LOGGING
-#define TXML_ARCHIVE_LOGGING
+//#define HAL_TORRENT_STATE_LOGGING
+//#define TXML_ARCHIVE_LOGGING
 
 #pragma warning (push)
 #pragma warning (disable : 4996)

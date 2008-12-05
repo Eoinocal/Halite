@@ -345,7 +345,7 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 		libt::hasher h(&piece_buf[0], t.piece_size(i));
 		t.set_hash(i, h.final());
 
-		if (fn(100*i / num, hal::app().res_wstr(HAL_NEWT_HASHING_PIECES)))
+		if (((i*37) % num == 0) && fn(100*i / num, hal::app().res_wstr(HAL_NEWT_HASHING_PIECES)))
 		{
 			// User canceled torrent creation.
 
@@ -363,9 +363,13 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 
 	// create the torrent and print it to out
 	libt::entry e = t.generate();
+	
+	HAL_DEV_MSG(hal::wform(L"Writing to: %1%") % out_file);
 	halencode(out_file, e);
 
 	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::create_torrent()")
+	
+	HAL_DEV_MSG(L"Torrent creation completed!");
 
 	return false;
 }

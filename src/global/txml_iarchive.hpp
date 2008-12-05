@@ -74,10 +74,6 @@ public:
 		is_ >> xml_;
 
 		current_node_ = xml_.root_element();
-
-		boost_xml_compat_ = (current_node_->value_str() == "boost_serialization");
-		TXML_LOG(boost::wformat(L" << boost_serialization compatibility %1%") % (boost_xml_compat_ ? "on" : "off"));
-
 		init();
 	}
 
@@ -147,6 +143,9 @@ public:
 	{
 		if (current_node_)
 		{
+			boost_xml_compat_ = (current_node_->value_str() == "boost_serialization");
+			TXML_LOG(boost::wformat(L" << boost_serialization compatibility %1%") % (boost_xml_compat_ ? "on" : "off"));
+
 			std::string signature = read_attribute<std::string>("signature");
 			int version = read_attribute<int>("version");
 
