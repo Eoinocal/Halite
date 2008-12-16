@@ -278,8 +278,13 @@ public:
 	void init()
 	{
 		// xml header
+#if BOOST_VERSION < 103700
 		write_attribute("signature", arc::ARCHIVE_SIGNATURE());
 		write_attribute("version", arc::ARCHIVE_VERSION());
+#else
+		write_attribute("signature", arc::BOOST_ARCHIVE_SIGNATURE());
+		write_attribute("version", arc::BOOST_ARCHIVE_VERSION());
+#endif
 	}
 
 	// specific overrides for attributes - not name value pairs so we
@@ -287,32 +292,56 @@ public:
 
 	void save_override(const arc::object_id_type & t, int i)
 	{ 
+#if BOOST_VERSION < 103700
 		write_attribute(arc::OBJECT_ID(), t);
+#else
+		write_attribute(arc::BOOST_ARCHIVE_XML_OBJECT_ID(), t);
+#endif
 	}
 
     void save_override(const arc::object_reference_type & t, int)
 	{
+#if BOOST_VERSION < 103700
 		write_attribute(arc::OBJECT_REFERENCE(), t);
+#else
+		write_attribute(arc::BOOST_ARCHIVE_XML_OBJECT_REFERENCE(), t);
+#endif
 	}
     
 	void save_override(const arc::version_type & t, int i)
 	{ 
+#if BOOST_VERSION < 103700
 		write_attribute(arc::VERSION(), t);
+#else
+		write_attribute(arc::BOOST_ARCHIVE_XML_VERSION(), t);
+#endif
 	}
     
 	void save_override(const arc::class_id_type & t, int i)
 	{ 
+#if BOOST_VERSION < 103700
 		write_attribute(arc::CLASS_ID(), t);
+#else
+		write_attribute(arc::BOOST_ARCHIVE_XML_CLASS_ID(), t);
+#endif
 	}
     
 	void save_override(const arc::class_id_optional_type & t, int i)
 	{ 
+#if BOOST_VERSION < 103700
 		write_attribute(arc::CLASS_ID(), t); 
+#else
+		write_attribute(arc::BOOST_ARCHIVE_XML_CLASS_ID(), t); 
+#endif
 	}
     
 	void save_override(const arc::class_id_reference_type & t, int i)
 	{ 
+#if BOOST_VERSION < 103700
 		write_attribute(arc::CLASS_ID_REFERENCE(), t); 
+#else
+		write_attribute(arc::BOOST_ARCHIVE_XML_CLASS_ID_REFERENCE(), t); 
+#endif
 	}
     
 	void save_override(const arc::class_name_type & t, int i)
@@ -321,12 +350,20 @@ public:
 		if(NULL == key)
 			return;
 
+#if BOOST_VERSION < 103700
 		write_attribute(arc::CLASS_NAME(), key);
+#else
+		write_attribute(arc::BOOST_ARCHIVE_XML_CLASS_NAME(), key);
+#endif
 	}
     
 	void save_override(const arc::tracking_type & t, int i)
 	{ 
+#if BOOST_VERSION < 103700
 		write_attribute(arc::TRACKING(), t.t); 
+#else
+		write_attribute(arc::BOOST_ARCHIVE_XML_TRACKING(), t.t); 
+#endif
 	}
 
 	xml::document xml_;
