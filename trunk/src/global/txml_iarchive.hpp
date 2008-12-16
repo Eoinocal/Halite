@@ -314,27 +314,47 @@ public:
 	{ 
 		if (boost_xml_compat_)
 		{
+#if BOOST_VERSION < 103700
 			std::string id = read_attribute<std::string>(arc::OBJECT_ID(), arc::OBJECT_REFERENCE());
+#else
+			std::string id = read_attribute<std::string>(arc::BOOST_ARCHIVE_XML_OBJECT_ID(), arc::BOOST_ARCHIVE_XML_OBJECT_REFERENCE());
+#endif
 
 			t = boost::lexical_cast<int>(id.substr(1));
 		}
 		else
-			t = read_attribute<arc::object_id_type>(arc::OBJECT_ID(), arc::OBJECT_REFERENCE());		
+#if BOOST_VERSION < 103700
+			t = read_attribute<arc::object_id_type>(arc::OBJECT_ID(), arc::OBJECT_REFERENCE());	
+#else
+			t = read_attribute<arc::object_id_type>(arc::BOOST_ARCHIVE_XML_OBJECT_ID(), arc::BOOST_ARCHIVE_XML_OBJECT_REFERENCE());	
+#endif
 	}
     
 	void load_override(arc::version_type& t, int)
 	{ 
+#if BOOST_VERSION < 103700
 		t = read_attribute<arc::version_type>(arc::VERSION());
+#else
+		t = read_attribute<arc::version_type>(arc::BOOST_ARCHIVE_XML_VERSION());
+#endif
 	}
     
 	void load_override(arc::class_id_type& t, int)
 	{ 
+#if BOOST_VERSION < 103700
 		t = read_attribute<arc::class_id_type>(arc::CLASS_ID(), arc::CLASS_ID_REFERENCE());
+#else
+		t = read_attribute<arc::class_id_type>(arc::BOOST_ARCHIVE_XML_CLASS_ID(), arc::BOOST_ARCHIVE_XML_CLASS_ID_REFERENCE());
+#endif
 	}
     
 	void load_override(arc::tracking_type& t, int)
 	{ 
+#if BOOST_VERSION < 103700
 		t = read_attribute<arc::tracking_type>(arc::TRACKING()); 
+#else
+		t = read_attribute<arc::tracking_type>(arc::BOOST_ARCHIVE_XML_TRACKING()); 
+#endif
 	}
 
 	bool boost_xml_compat_;
