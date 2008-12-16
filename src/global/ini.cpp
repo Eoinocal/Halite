@@ -142,7 +142,7 @@ private:
 };
 
 ini_file::ini_file(std::wstring filename) :
-	pimpl(new ini_impl(filename))
+	pimpl_(new ini_impl(filename))
 {}
 
 ini_file::~ini_file()
@@ -150,27 +150,27 @@ ini_file::~ini_file()
 
 void ini_file::load_data()
 {
-	pimpl->load_data();
+	pimpl_->load_data();
 }
 
 void ini_file::save_data()
 {
-	pimpl->save_data();
+	pimpl_->save_data();
 }
 
 bool ini_file::save(boost::filesystem::path location, std::string data)
 {
-	return pimpl->save(location, data);
+	return pimpl_->save(location, data);
 }
 
 bool ini_file::save(boost::filesystem::path location, xml::node* data)
 {
-	return pimpl->save(location, data);
+	return pimpl_->save(location, data);
 }
 
 xml::node* ini_file::load(boost::filesystem::path location)
 {
-	return pimpl->load(location);
+	return pimpl_->load(location);
 }
 
 ini_file& ini()

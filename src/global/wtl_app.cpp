@@ -82,37 +82,37 @@ private:
 };
 
 app_module::app_module() :
-	pimpl(new app_impl())
+	pimpl_(new app_impl())
 {}
 
 const std::wstring& app_module::exe_string() const 
 { 
-	return pimpl->exe_string_; 
+	return pimpl_->exe_string_; 
 }
 
 const boost::filesystem::wpath& app_module::exe_path() const 
 { 
-	return pimpl->exe_path_; 
+	return pimpl_->exe_path_; 
 }
 
 const boost::filesystem::wpath& app_module::initial_path() const 
 { 
-	return pimpl->initial_path_; 
+	return pimpl_->initial_path_; 
 }
 
 const boost::filesystem::wpath& app_module::get_working_directory() const 
 { 
-	return pimpl->working_directory_; 
+	return pimpl_->working_directory_; 
 }
 
 void app_module::set_working_directory(const boost::filesystem::wpath& p) 
 { 
-	pimpl->working_directory_ = p; 
+	pimpl_->working_directory_ = p; 
 }
 
 const boost::optional<boost::filesystem::wpath>& app_module::get_local_appdata() const 
 { 
-	if (!pimpl->local_appdata_)
+	if (!pimpl_->local_appdata_)
 	{
 		wchar_t displayName[_MAX_PATH + 1];
 		LPITEMIDLIST iil;
@@ -126,28 +126,28 @@ const boost::optional<boost::filesystem::wpath>& app_module::get_local_appdata()
 			stlsoft::scoped_handle<void*> iil_(iil, winstl::SHMemFree);
 
 			::SHGetPathFromIDList(iil, displayName);
-			pimpl->local_appdata_ = std::wstring(displayName);
+			pimpl_->local_appdata_ = std::wstring(displayName);
 		}
 	}
 
-	return pimpl->local_appdata_; 
+	return pimpl_->local_appdata_; 
 }
 	
 const std::vector<std::wstring>& app_module::command_args() const 
 { 
-	return pimpl->command_args_; 
+	return pimpl_->command_args_; 
 }
 	
 void app_module::res_revert()
 {
-	if (pimpl->hmod_) FreeLibrary(pimpl->hmod_);
-	_Module.SetResourceInstance(pimpl->instance_);
+	if (pimpl_->hmod_) FreeLibrary(pimpl_->hmod_);
+	_Module.SetResourceInstance(pimpl_->instance_);
 }
 
 void app_module::res_set_dll(std::wstring dll)
 {
-	if (pimpl->hmod_) FreeLibrary(pimpl->hmod_);
-	pimpl->res_dll_ = dll;
+	if (pimpl_->hmod_) FreeLibrary(pimpl_->hmod_);
+	pimpl_->res_dll_ = dll;
 	
 	HMODULE hmod_ = ::LoadLibraryEx(dll.c_str(), 0, LOAD_LIBRARY_AS_DATAFILE);
 	_Module.SetResourceInstance(reinterpret_cast<HINSTANCE>(hmod_));

@@ -93,11 +93,17 @@ LRESULT FileTreeView::OnRClick(int i, LPNMHDR pnmh, BOOL&)
 	
 	if (menu_)
 	{
-		assert (menu_.IsMenu());
+		assert(menu_.IsMenu());
 
-		POINT ptPoint;
-		GetCursorPos(&ptPoint);
-		menu_.TrackPopupMenu(0, ptPoint.x, ptPoint.y, m_hWnd);
+		WTL::CPoint cur_pt;
+		GetCursorPos(&cur_pt);
+
+		WTL::CPoint pt = cur_pt;			
+		ScreenToClient(&pt);
+
+		WTL::CTreeItem ti = HitTest(pt, 0);
+
+		menu_.TrackPopupMenu(0, pt.x, pt.y, m_hWnd);
 	}
 
 	return 0;

@@ -128,8 +128,11 @@ bit_impl::~bit_impl()
 	stop_alert_handler();	
 	//save_torrent_data();
 	
+	HAL_DEV_MSG(L"Handler stopped!"); 
 	if (ip_filter_changed_)
 	{	
+		HAL_DEV_MSG(L"IP Filter needs saving."); 
+
 		fs::ofstream ofs(hal::app().get_working_directory()/L"IPFilter.bin", std::ios::binary);
 //		boost::archive::binary_oarchive oba(ofs);
 		
@@ -400,6 +403,7 @@ void bit_impl::stop_alert_handler()
 		HAL_DEV_MSG(hal::wform(L"Interrupting alert handler"));
 
 		alert_checker_->interrupt();
+		alert_checker_->join();
 		alert_checker_ = boost::none;
 	}
 	else
@@ -739,7 +743,7 @@ void bit_impl::alert_handler()
 		{
 			// These are logged as debug because they are rarely important to act on!
 			event_log.post(shared_ptr<EventDetail>(\
-				new EventStdException(event_logger::debug, e, L"alertHandler")));
+				new EventStdException(event_logger::debug, e, L"bit_impl::alert_handler()")));
 		}
 		
 		p_alert = session_.pop_alert();
@@ -750,8 +754,20 @@ void bit_impl::alert_handler()
 	boost::this_thread::sleep(pt::milliseconds(100));
 	
 	}
+	
+	boost::this_thread::interruption_point();
 
-	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::alert_handler()")
+	} 
+	catch(boost::thread_interrupted&)
+	{
+		// Not an error!
+
+		event_log.post(shared_ptr<EventDetail>(
+			new EventMsg(L"thread_interrupted exception", event_logger::info)));
+
+		return;
+	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::alert_handler()")
 }
 
 }

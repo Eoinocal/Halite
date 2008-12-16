@@ -37,7 +37,7 @@ public:
 	friend ini_file& ini();
 	
 private:	
-	std::auto_ptr<ini_impl> pimpl;
+	std::auto_ptr<ini_impl> pimpl_;
 };
 
 ini_file& ini();

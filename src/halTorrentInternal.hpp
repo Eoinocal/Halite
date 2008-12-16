@@ -581,7 +581,7 @@ public:
 	{
 		if (in_session())
 		{
-			assert(managed_ == handle_.is_auto_managed());
+			managed_ = handle_.is_auto_managed();
 		}
 
 		return managed_;
