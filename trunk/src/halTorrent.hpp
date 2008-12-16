@@ -967,7 +967,10 @@ public:
 	
 private:
 	bit();
-	boost::scoped_ptr<bit_impl> pimpl;
+
+	bit_impl* pimpl();
+	const bit_impl* pimpl() const;
+	boost::scoped_ptr<bit_impl> pimpl_;
 	
 	void remove_torrent_wstr(const std::wstring& filename);
 	void remove_torrent_wipe_files_wstr(const std::wstring&  filename);

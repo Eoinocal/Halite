@@ -96,9 +96,10 @@ public:
 
 	void OnForceClose(UINT, int, HWND hWnd)
 	{		
+		HAL_DEV_MSG(L"SplashDialog::OnForceClose()");
+
 		thread_splash->interrupt();
-		thread_splash = boost::none;
-		Sleep(2000);
+		Sleep(20);
 		
 		RequiredToEnd();
 	}
@@ -111,6 +112,7 @@ public:
 		hal::bittorrent().stop_event_receiver();
 		HAL_DEV_MSG(L"SplashThread() calling hal::bittorrent().shutdown_session()");
 		hal::bittorrent().shutdown_session();
+		HAL_DEV_MSG(L"SplashThread() Session shutdown");
 
 		DoDataExchange(true);
 

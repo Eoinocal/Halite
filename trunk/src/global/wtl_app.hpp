@@ -55,7 +55,7 @@ public:
 		app_module, get_working_directory, set_working_directory, working_directory);
 	
 private:
-	boost::scoped_ptr<app_impl> pimpl;
+	boost::scoped_ptr<app_impl> pimpl_;
 	
 	app_module();
 };
