@@ -190,10 +190,10 @@ public:
 			boost::serialization::base_object<listClass>(*this));
 	}
 	
-	dataClass CustomItemConversion(LVCompareParam* param, int iSortCol)
+/*	dataClass CustomItemConversion(LVCompareParam* param, int iSortCol)
 	{			
 		return focused_->fileDetails()[param->dwItemData];
-	}		
+	}		*/
 	
 	void setFocused(const hal::torrent_details_ptr& f) { focused_ = f; }
 	const hal::torrent_details_ptr focused() { return focused_; }

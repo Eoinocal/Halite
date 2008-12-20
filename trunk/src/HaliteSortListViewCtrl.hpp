@@ -46,14 +46,14 @@ int compare(const T& l, const T& r)
 
 }
 
-template <class TBase, typename adapterType=void*>
+template <class TBase, typename AdapterType=void*>
 class CHaliteSortListViewCtrl : 
-	public WTL::CSortListViewCtrlImpl<CHaliteSortListViewCtrl<TBase, adapterType> >,
-	public WTLx::ListViewIterators<CHaliteSortListViewCtrl<TBase, adapterType> >
+	public ATL::CWindowImpl<TBase, WTL::CListViewCtrl>,
+	public WTLx::ListViewIterators<CHaliteSortListViewCtrl<TBase, AdapterType> >
 {
 public:
-	typedef CHaliteSortListViewCtrl<TBase, adapterType> thisClass;
-	typedef WTL::CSortListViewCtrlImpl<thisClass> parentClass;
+	typedef CHaliteSortListViewCtrl<TBase, AdapterType> thisClass;
+	typedef ATL::CWindowImpl<TBase, WTL::CListViewCtrl> parentClass;
 	
 	class CHaliteHeaderCtrl : public CWindowImpl<CHaliteHeaderCtrl, WTL::CHeaderCtrl>
 	{
@@ -114,8 +114,8 @@ public:
 	
 	struct ColumnAdapter
 	{
-		virtual int compare(adapterType& l, adapterType& r) = 0;
-		virtual std::wstring print(adapterType& t) = 0;
+		virtual int compare(AdapterType& l, AdapterType& r) = 0;
+		virtual std::wstring print(AdapterType& t) = 0;
 	};
 
 public:
@@ -147,7 +147,7 @@ public:
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_ITEMCHANGED, OnItemChanged)
 
 		DEFAULT_REFLECTION_HANDLER()
-		CHAIN_MSG_MAP(parentClass)
+//		CHAIN_MSG_MAP(parentClass)
 	END_MSG_MAP()
 
 	void Attach(HWND hWndNew)
@@ -167,7 +167,7 @@ public:
 			(RECT &)rect.m_lpRect, szWindowName, dwStyle, dwExStyle, (UINT)MenuOrID.m_hMenu, lpCreateParam);
 			
 		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER|LVS_EX_SUBITEMIMAGES);
-		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
+//		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
 		
 		return hwnd;
 	}
@@ -178,7 +178,7 @@ public:
 			return false;
 			
 		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER);
-		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
+//		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
 		
 		return true;
 	}		
@@ -283,7 +283,7 @@ public:
 	void InitialSetup(WTL::CMenuHandle menu=WTL::CMenuHandle())
 	{
 		SetExtendedListViewStyle(LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER);
-		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS,SORTLV_USESHELLBITMAPS);
+//		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS,SORTLV_USESHELLBITMAPS);
 
 		MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
 		
@@ -329,8 +329,8 @@ public:
 		
 		GetColumnOrderArray(listNames_.size(), &listOrder_[0]);
 		
-		sortCol_ = GetSortColumn();
-		descending_ = IsSortDescending();	
+/*		sortCol_ = GetSortColumn();
+		descending_ = IsSortDescending();	*/
 	}
 	
 	LRESULT OnAutoSort(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
@@ -474,7 +474,7 @@ public:
 
 	void SetColumnSortType(int iCol, WORD wType, ColumnAdapter* colAdapter=NULL)
 	{
-		parentClass::SetColumnSortType(iCol, wType);
+//		parentClass::SetColumnSortType(iCol, wType);
 		
 		if (WTL::LVCOLSORT_CUSTOM == wType)
 			regColumnAdapter(iCol, colAdapter);
@@ -512,8 +512,8 @@ public:
 		}
 
 		GetColumnOrderArray(listOrder_.size(), &listOrder_[0]);
-		sortCol_ = GetSortColumn();
-		descending_ = IsSortDescending();	
+//		sortCol_ = GetSortColumn();
+//		descending_ = IsSortDescending();	
 
 		using boost::serialization::make_nvp;
 
@@ -541,10 +541,10 @@ public:
 		
 		SetColumnOrderArray(listOrder_.size(), &listOrder_[0]);
 
-		m_bSortDescending = descending_;
+/*		m_bSortDescending = descending_;
 		if (sortCol_ >= 0 && sortCol_ < m_arrColSortType.GetSize())
 			SetSortColumn(sortCol_);
-
+*/
 		for (size_t i=0; i<listWidths_.size(); ++i)
 		{
 			SetColumnWidth(i, listWidths_[i]);
@@ -555,8 +555,8 @@ public:
 			}
 		}
 
-		SetColumnOrderState();
-		SetSortState();
+//		SetColumnOrderState();
+//		SetSortState();
     }
 
     BOOST_SERIALIZATION_SPLIT_MEMBER()
@@ -575,25 +575,25 @@ public:
 	void clearSelected() { manager_.clear_all_selected(); }
 	void clearAll() { manager_.clear_all(); }
 	
-	int CompareItemsCustom(LVCompareParam* pItem1, LVCompareParam* pItem2, int iSortCol)
+/*	int CompareItemsCustom(LVCompareParam* pItem1, LVCompareParam* pItem2, int iSortCol)
 	{
 		hal::mutex_update_lock<thisClass> lock(*this);
 		
 		TBase* pT = static_cast<TBase*>(this);
 		
-		adapterType left = pT->CustomItemConversion(pItem1, iSortCol);
-		adapterType right = pT->CustomItemConversion(pItem2, iSortCol);
+		AdapterType left = pT->CustomItemConversion(pItem1, iSortCol);
+		AdapterType right = pT->CustomItemConversion(pItem2, iSortCol);
 		
 		return pT->CustomItemComparision(left, right, iSortCol);
 	}
-	
+	*/
 	bool autoSort() { return autoSort_; }
 	
 	void ConditionallyDoAutoSort()
 	{
-		int iCol = GetSortColumn();
+/*		int iCol = GetSortColumn();
 		if (autoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
-			DoSortItems(iCol, IsSortDescending());	
+			DoSortItems(iCol, IsSortDescending());	*/
 	}
 		
 	ColumnAdapter* getColumnAdapter(size_t index)
@@ -614,13 +614,13 @@ public:
 	}
 
 protected:	
-	inline void* CustomItemConversion(LVCompareParam* param, int iSortCol)
+/*	inline void* CustomItemConversion(LVCompareParam* param, int iSortCol)
 	{
 		assert(false);
 		return NULL;
 	}
 	
-	int CustomItemComparision(adapterType left, adapterType right, int iSortCol)
+	int CustomItemComparision(AdapterType left, AdapterType right, int iSortCol)
 	{
 		ColumnAdapter* pCA = getColumnAdapter(iSortCol);
 		
@@ -629,12 +629,15 @@ protected:
 		else 
 			return 0;
 	}
-	
+	*/
 	void regColumnAdapter(size_t key, ColumnAdapter* colAdapter)
 	{
 		assert (colAdapter);
 		columnAdapters_.insert(key, colAdapter);
 	}
+
+//	AdapterType convert(const LPLVITEM item);
+//	void convert(LPLVITEM item, AdapterType adapter);
 	
 	SelectionManager manager_;
 	WTL::CMenu menu_;
@@ -678,8 +681,8 @@ inline const std::wstring hal::to_wstr_shim<const winstl::listview_sequence::seq
 
 namespace boost {
 namespace serialization {
-	template <class TBase, typename adapterType>
-	struct version< CHaliteSortListViewCtrl<TBase, adapterType> >
+	template <class TBase, typename AdapterType>
+	struct version< CHaliteSortListViewCtrl<TBase, AdapterType> >
 	{
 		typedef mpl::int_<2> type;
 		typedef mpl::integral_c_tag tag;

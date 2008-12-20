@@ -121,10 +121,10 @@ public:
 			boost::serialization::base_object<listClass>(*this));
 	}
 	
-	pD CustomItemConversion(LVCompareParam* param, int iSortCol)
+/*	pD CustomItemConversion(LVCompareParam* param, int iSortCol)
 	{			
 		return peerDetails_[param->dwItemData];
-	}		
+	}		*/
 
 	void uiUpdate(const hal::torrent_details_manager& tD);
 	

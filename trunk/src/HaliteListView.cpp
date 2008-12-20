@@ -86,6 +86,12 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	SetItemData(item_pos, HAL_CUSTOMDRAW_TITLEDATA);*/
 }
 
+std::wstring HaliteListViewCtrl::get_string(int index, int subitem)
+{
+	//switch
+	return L"";
+}
+
 void HaliteListViewCtrl::OnDestroy()
 {
 	saveSettings();
@@ -179,22 +185,37 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 		}
 	}
 	
-	int iCol = GetSortColumn();
+/*	int iCol = GetSortColumn();
 	if (autoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
 		DoSortItems(iCol, IsSortDescending());
-	
+*/	
 	}
 }
 
-HaliteListViewCtrl::tD HaliteListViewCtrl::CustomItemConversion(LVCompareParam* param, int iSortCol)
+/*HaliteListViewCtrl::tD HaliteListViewCtrl::CustomItemConversion(LVCompareParam* param, int iSortCol)
 {
 	boost::array<wchar_t, MAX_PATH> buffer;
 	GetItemText(param->iItem, 0, buffer.c_array(), buffer.size());		
 	wstring torrent = buffer.data();
 	
 	return hal::bittorrent().torrentDetails().get(torrent);
+}*/
+/*
+HaliteListViewCtrl::tD HaliteListViewCtrl::convert(const LPLVITEM item)
+{	
+	win_c_str<std::wstring> str(MAX_PATH);
+	GetItemText(item->iItem, 0, str, str.size());
+
+	return hal::bittorrent().torrentDetails().get(str);
 }
 
+void HaliteListViewCtrl::convert(LPLVITEM item, const HaliteListViewCtrl::AdapterType tD)
+{
+	win_c_str<std::wstring> str(MAX_PATH);
+
+	GetItemText(item);
+}
+*/
 LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
