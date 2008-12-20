@@ -1553,14 +1553,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath="..\Jamfile.v2"
-			>
-		</File>
-		<File
-			RelativePath="..\Readme.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
