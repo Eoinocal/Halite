@@ -392,7 +392,7 @@ public:
 			std::wstring s, 
 			std::wstring cT, 
 			std::pair<float,float> sp=std::pair<float,float>(0,0),
-			float c=0, 	float d=0, 
+			float c=0, float d=0, 
 			size_type tWD=0, size_type tW=0, 
 			size_type tU=0, size_type tpU=0, 
 			size_type tD=0, size_type tpD=0, 
@@ -451,6 +451,34 @@ public:
 		torrent_pausing,
 		torrent_stopping
 	};
+
+	enum details
+	{
+		name_e = 0,
+		state_e,
+		progress_e,
+		speed_down_e,
+		speed_up_e,
+		peers_e,
+		seeds_e,
+		eta_e,
+		distributed_copies_e,
+		tracker,
+		update_tracker_in_e,
+		ratio_e,
+		total_wanted_e,
+		completed_e,
+		remaining_e,
+		downloaded_e,
+		uploaded_e,
+		active_time_e,
+		seeding_time_e,
+		start_time_e,
+		finish_time_e,
+		managed_e,
+		queue_position_e
+	};
+
 	
 //	const std::wstring& filename() const { return filename_; }
 	const std::wstring& name() const { return name_; }
@@ -489,6 +517,9 @@ public:
 
 	int queue_position() const { return queue_position_; }
 	bool managed() const { return managed_; }
+
+	bool less(const torrent_details& r, size_t index = 0);
+	std::wstring to_wstring(size_t index = 0);
 	
 public:
 	std::wstring filename_;
@@ -543,7 +574,7 @@ typedef std::map<std::wstring, torrent_details_ptr> torrent_details_map;
 class torrent_details_manager
 {
 public:	
-	void sort(boost::function<bool (const torrent_details_ptr&, const torrent_details_ptr&)> fn) const;
+	void sort(size_t index) const;
 	
 	const torrent_details_vec torrents() const 
 	{
@@ -580,7 +611,7 @@ public:
 private:
 	void clearAll(const mutex_t::scoped_lock&)
 	{
-		// !! No mutex lock, it should only be call from functions which 
+		// !! No mutex lock, it should only be called from functions which 
 		// have the lock themselves, hence the unused function param
 		
 		torrents_.clear();

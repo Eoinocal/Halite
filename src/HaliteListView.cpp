@@ -126,6 +126,11 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	if (lock) 
 	{
 
+		tD.sort(hal::torrent_details::peers_e);
+
+		if (IsGroupViewEnabled())
+			tD.sort(hal::torrent_details::managed_e);
+
 #	if 0
 	if (GetItemCount() > 0)
 	{
@@ -147,41 +152,48 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	}
 #	endif
 
-	foreach (const hal::torrent_details_ptr td, tD.torrents()) 
+	for (size_t td_index=0, e=tD.torrents().size(); td_index<e; ++td_index)
 	{
-
-		LV_FINDINFO findInfo; 
+		hal::torrent_details_ptr td = tD.torrents()[td_index];
+		/*LV_FINDINFO findInfo; 
 		findInfo.flags = LVFI_STRING;
 		findInfo.psz = const_cast<LPTSTR>(td->name().c_str());
 		
 		int itemPos = FindItem(&findInfo, -1);
-		if (itemPos < 0)
+		*/
+
+		LVITEM lvItem = { 0 };
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iSubItem = 0;
+		lvItem.pszText = (LPTSTR)td->name().c_str();
+
+		if (IsGroupViewEnabled())
 		{
-			LVITEM lvItem = { 0 };
-			lvItem.mask = LVIF_TEXT;
-			lvItem.iItem = 0;
-			lvItem.iSubItem = 0;
-			lvItem.pszText = (LPTSTR)td->name().c_str();
+			lvItem.mask |= LVIF_GROUPID|LVIF_COLUMNS;
 
-			if (IsGroupViewEnabled())
-			{
-				lvItem.mask |= LVIF_GROUPID|LVIF_COLUMNS;
-
-				if (td->managed())
-					lvItem.iGroupId = HAL_AUTO_MANAGED;
-				else
-					lvItem.iGroupId = HAL_UNMANAGED;
-			}
-
-			lvItem.mask |= LVIF_IMAGE;
-			lvItem.iImage = 0;
-
-			itemPos = InsertItem(&lvItem);
+			if (td->managed())
+				lvItem.iGroupId = HAL_AUTO_MANAGED;
+			else
+				lvItem.iGroupId = HAL_UNMANAGED;
 		}
 
+		lvItem.mask |= LVIF_IMAGE;
+		lvItem.iImage = 0;
+
+		if (GetItemCount() <= static_cast<int>(td_index))
+		{
+			lvItem.iItem = GetItemCount();
+			td_index = InsertItem(&lvItem);
+		}
+		else
+		{
+			lvItem.iItem = td_index;
+			SetItem(&lvItem);
+		}
+	
 		for (size_t i=1; i<NumberOfColumns_s; ++i)
 		{
-			SetItemText(itemPos, i, getColumnAdapter(i)->print(td).c_str());
+			SetItemText(td_index, i, td->to_wstring(i).c_str());
 		}
 	}
 	
@@ -190,6 +202,13 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 		DoSortItems(iCol, IsSortDescending());
 */	
 	}
+}
+
+void HaliteListViewCtrl::SortByColumn(size_t column_index)
+{
+	//std::sort(data_elements_.begin(), data_elements_.end(), 
+	//	);
+	
 }
 
 /*HaliteListViewCtrl::tD HaliteListViewCtrl::CustomItemConversion(LVCompareParam* param, int iSortCol)

@@ -60,10 +60,208 @@ bool nameLess(const torrent_details_ptr& left, const torrent_details_ptr& right)
 	return left->state() < right->state();
 }
 
-void torrent_details_manager::sort(
-	boost::function<bool (const torrent_details_ptr&, const torrent_details_ptr&)> fn) const
+bool torrent_details::less(const torrent_details& r, size_t index)
 {
-	std::stable_sort(torrents_.begin(), torrents_.end(), fn);
+	switch (index)
+	{
+	case name_e: return name_ < r.name_;
+	case state_e: return state_ < r.state_;
+
+	case speed_down_e: return speed_.first < r.speed_.first;
+	case speed_up_e: return speed_.second < r.speed_.second;
+	case progress_e: return completion_ < r.completion_;
+	case distributed_copies_e: return distributed_copies_ < r.distributed_copies_;
+
+	case remaining_e: 
+		{
+		boost::int64_t left = totalWanted_-totalWantedDone_;
+		boost::int64_t right = r.totalWanted_-r.totalWantedDone_;
+
+		return left < right;
+		}
+
+	case total_wanted_e: return totalWanted_ < r.totalWanted_;
+	case completed_e: return totalWantedDone_ < r.totalWantedDone_; 
+
+	case uploaded_e: return totalUploaded_ < r.totalUploaded_;
+	case downloaded_e: return totalPayloadUploaded_ < r.totalPayloadUploaded_;
+
+	case peers_e: return peers_ < r.peers_;
+	case seeds_e: return seeds_ < r.seeds_;
+
+	case ratio_e: 
+		{
+		float left = (totalPayloadDownloaded_) 
+				? static_cast<float>(totalPayloadUploaded_)
+					/ static_cast<float>(totalPayloadDownloaded_)
+				: 0;
+		
+		float right = (r.totalPayloadDownloaded_) 
+				? static_cast<float>(r.totalPayloadUploaded_)
+					/ static_cast<float>(r.totalPayloadDownloaded_)
+				: 0;
+		
+		return left < right; 
+		}
+
+	case eta_e: return estimatedTimeLeft_ < r.estimatedTimeLeft_;
+	case tracker: return currentTracker_ < r.currentTracker_;
+	case update_tracker_in_e: return updateTrackerIn_ < r.updateTrackerIn_;
+
+	case active_time_e: return active_ < r.active_;
+	case seeding_time_e: return seeding_ < r.seeding_;
+	case start_time_e: return startTime_ < r.startTime_;
+	case finish_time_e: return finishTime_ < r.finishTime_;
+
+	case queue_position_e: return queue_position_ < r.queue_position_;
+	case managed_e: return managed_ < r.managed_;
+
+	default: return false; // ???
+	};
+}
+
+std::wstring torrent_details::to_wstring(size_t index)
+{
+	switch (index)
+	{
+	case name_e: return name_;
+	case state_e: return state_;
+
+	case progress_e: return (wform(L"%1$.2f%%") % (completion_*100)).str(); 
+	case speed_down_e: return (wform(L"%1$.2fkb/s") % (speed_.first/1024)).str(); 
+	case speed_up_e: return (wform(L"%1$.2fkb/s") % (speed_.second/1024)).str(); 
+
+	case distributed_copies_e: 
+		{
+		float copies = distributed_copies_;
+		
+		if (copies < 0)
+			return L"Seeding"; 
+		else
+			return (hal::wform(L"%1$.2f") % copies).str();	
+		}
+
+	case remaining_e: 
+		{
+		return (wform(L"%1$.2fMB") % (static_cast<float>(totalWanted_-totalWantedDone_)/(1024*1024))).str(); 
+		}
+
+	case completed_e: return (wform(L"%1$.2fMB") % (static_cast<float>(totalWantedDone_)/(1024*1024))).str();
+
+	case total_wanted_e: 
+		{
+		return (wform(L"%1$.2fMB") % (static_cast<float>(totalWanted_-totalWantedDone_)/(1024*1024))).str(); 
+		}
+
+	case uploaded_e: 
+		{
+		return (wform(L"%1$.2fMB") % (static_cast<float>(totalPayloadUploaded_)/(1024*1024))).str(); 
+		}
+
+	case downloaded_e: 
+		{
+		return (wform(L"%1$.2fMB") % (static_cast<float>(totalPayloadDownloaded_)/(1024*1024))).str(); 
+		}
+
+	case peers_e: return (wform(L"%1% (%2%)") % connectedPeers_ % peers_).str(); 
+	case seeds_e: return (wform(L"%1% (%2%)") % connectedSeeds_ % seeds_).str(); 
+
+	case ratio_e: 
+		{
+			float ratio = (totalPayloadDownloaded_) 
+				? static_cast<float>(totalPayloadUploaded_)
+					/ static_cast<float>(totalPayloadDownloaded_)
+				: 0;
+			
+			return (wform(L"%1$.2f") % ratio).str(); 
+		}
+
+	case eta_e: 
+		{ 
+		if (!estimatedTimeLeft_.is_special())
+			return hal::from_utf8(
+				boost::posix_time::to_simple_string(estimatedTimeLeft_));
+		else
+			return app().res_wstr(HAL_INF);		
+		}	
+
+	case tracker: return currentTracker_;
+
+	case update_tracker_in_e:		
+		{ 
+		if (!updateTrackerIn_.is_special())
+			return from_utf8(
+				boost::posix_time::to_simple_string(updateTrackerIn_));
+		else
+			return app().res_wstr(HAL_INF);		
+		}	
+
+	case active_time_e: 
+		{
+		if (!active_.is_special())
+			return from_utf8(
+				boost::posix_time::to_simple_string(active_));
+		else
+			return app().res_wstr(HAL_INF);		
+		}
+
+	case seeding_time_e: 
+		{ 
+		if (!seeding_.is_special())
+			return from_utf8(
+				boost::posix_time::to_simple_string(seeding_));
+		else
+			return app().res_wstr(HAL_INF);
+		}	
+
+	case start_time_e: 
+		{ 
+		if (!startTime_.is_special())
+			return from_utf8(
+				boost::posix_time::to_simple_string(startTime_));
+		else
+			return app().res_wstr(IDS_NA);
+		}		
+
+	case finish_time_e: 		
+		{ 
+		if (!finishTime_.is_special())
+			return from_utf8(
+				boost::posix_time::to_simple_string(finishTime_));
+		else
+			return app().res_wstr(IDS_NA);	
+		}		
+
+	case queue_position_e: 
+		{
+			if (queue_position_ != -1)
+				return (wform(L"%1%") % queue_position_).str(); 
+			else
+				return app().res_wstr(IDS_NA);		
+		}
+
+	case managed_e:
+		{ 
+		if (managed_)
+			return L"Yes";
+		else
+			return L"No"; 	
+		}	
+
+	default: return L"(Undefined)"; // ???
+	};
+}
+
+template<typename torrent_Tptr>
+bool torrent_details_less(torrent_Tptr l, torrent_Tptr r, size_t index = 0)
+{
+	return l->less(*r, index);
+}
+
+void torrent_details_manager::sort(size_t column_index) const
+{
+	std::stable_sort(torrents_.begin(), torrents_.end(), 
+		bind(&torrent_details_less<torrent_details_ptr>, _1, _2, column_index));
 }
 
 web_seed_or_dht_node_detail::web_seed_or_dht_node_detail() : 

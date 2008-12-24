@@ -58,7 +58,7 @@ public:
 	class CHaliteHeaderCtrl : public CWindowImpl<CHaliteHeaderCtrl, WTL::CHeaderCtrl>
 	{
 	public:
-		enum { COL_MENU_NAMES = 123, COL_MAX_NAMES = 256};
+		enum { COL_MENU_NAMES = 123, COL_MAX_NAMES = 256 };
 
 		CHaliteHeaderCtrl(thisClass& listView) :
 			listView_(listView)
@@ -97,8 +97,8 @@ public:
 			minfo.fMask = MIIM_STATE;
 			minfo.fState = visible ? MFS_CHECKED : MFS_UNCHECKED;
 		
-			menu_.SetMenuItemInfo(wID, false, &minfo);*/
-
+			menu_.SetMenuItemInfo(wID, false, &minfo);
+		*/
 			return 0;
 		}
 
@@ -424,6 +424,11 @@ public:
 		return 0;
 	}
 
+	void SortByColumn(size_t column_index)
+	{
+		/* Overwriteable */
+	}
+
 	int AddColumn(LPCTSTR strItem, int nItem, bool visible, int width=-1)
 	{
 		return AddColumn(strItem, nItem, -1,
@@ -435,7 +440,6 @@ public:
 			int nMask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM,
 			int nFmt = LVCFMT_LEFT, bool visible=true, int width=-1)
 	{
-
 		int i = parentClass::AddColumn(strItem, nItem, nSubItem, nMask, nFmt);
 
 		if (i == -1) return i;
