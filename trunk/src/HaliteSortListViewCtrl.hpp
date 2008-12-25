@@ -286,7 +286,7 @@ public:
 	void InitialSetup(WTL::CMenuHandle menu=WTL::CMenuHandle())
 	{
 		SetExtendedListViewStyle(LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER);
-//		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS,SORTLV_USESHELLBITMAPS);
+		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS,SORTLV_USESHELLBITMAPS);
 
 		MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
 		
@@ -402,6 +402,15 @@ public:
 		return 0;
 	}
 
+/*	LRESULT OnSortChanged(int, LPNMHDR pnmh, BOOL&)
+	{		
+		hal::try_update_lock<thisClass> lock(*this);
+		
+		if (lock) manager_.sync_list(true, true);
+		
+		return 0;
+	}
+*/
 	LRESULT OnRClick(int i, LPNMHDR pnmh, BOOL&)
 	{
 		LPNMITEMACTIVATE pia = (LPNMITEMACTIVATE)pnmh;
@@ -430,6 +439,11 @@ public:
 	void SortByColumn(size_t column_index)
 	{
 		/* Overwriteable */
+	}
+
+	bool DoSortItems(int iCol, bool bDescending = false)
+	{
+		return true;
 	}
 
 	int AddColumn(LPCTSTR strItem, int nItem, bool visible, int width=-1)
@@ -481,7 +495,7 @@ public:
 
 	void SetColumnSortType(int iCol, WORD wType, ColumnAdapter* colAdapter=NULL)
 	{
-//		parentClass::SetColumnSortType(iCol, wType);
+		listClass::SetColumnSortType(iCol, wType);
 		
 		if (WTL::LVCOLSORT_CUSTOM == wType)
 			regColumnAdapter(iCol, colAdapter);

@@ -5,6 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include "stdAfx.hpp"
+#include <functional>
 
 #include "global/wtl_app.hpp"
 #include "global/string_conv.hpp"
@@ -60,7 +61,7 @@ bool nameLess(const torrent_details_ptr& left, const torrent_details_ptr& right)
 	return left->state() < right->state();
 }
 
-bool torrent_details::less(const torrent_details& r, size_t index)
+bool torrent_details::less(const torrent_details& r, size_t index) const
 {
 	switch (index)
 	{
@@ -83,8 +84,8 @@ bool torrent_details::less(const torrent_details& r, size_t index)
 	case total_wanted_e: return totalWanted_ < r.totalWanted_;
 	case completed_e: return totalWantedDone_ < r.totalWantedDone_; 
 
-	case uploaded_e: return totalUploaded_ < r.totalUploaded_;
-	case downloaded_e: return totalPayloadUploaded_ < r.totalPayloadUploaded_;
+	case uploaded_e: return totalPayloadUploaded_ < r.totalPayloadUploaded_;
+	case downloaded_e: return totalPayloadDownloaded_ < r.totalPayloadDownloaded_;
 
 	case peers_e: return peers_ < r.peers_;
 	case seeds_e: return seeds_ < r.seeds_;
@@ -253,15 +254,18 @@ std::wstring torrent_details::to_wstring(size_t index)
 }
 
 template<typename torrent_Tptr>
-bool torrent_details_less(torrent_Tptr l, torrent_Tptr r, size_t index = 0)
+bool torrent_details_compare(torrent_Tptr l, torrent_Tptr r, size_t index = 0, bool cmp_less = true)
 {
-	return l->less(*r, index);
+	if (cmp_less)
+		return l->less(*r, index);
+	else
+		return r->less(*l, index);
 }
 
-void torrent_details_manager::sort(size_t column_index) const
+void torrent_details_manager::sort(size_t column_index, bool cmp_less) const
 {
 	std::stable_sort(torrents_.begin(), torrents_.end(), 
-		bind(&torrent_details_less<torrent_details_ptr>, _1, _2, column_index));
+		bind(&torrent_details_compare<torrent_details_ptr>, _1, _2, column_index, cmp_less));
 }
 
 web_seed_or_dht_node_detail::web_seed_or_dht_node_detail() : 

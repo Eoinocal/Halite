@@ -518,7 +518,7 @@ public:
 	int queue_position() const { return queue_position_; }
 	bool managed() const { return managed_; }
 
-	bool less(const torrent_details& r, size_t index = 0);
+	bool less(const torrent_details& r, size_t index = 0) const;
 	std::wstring to_wstring(size_t index = 0);
 	
 public:
@@ -574,7 +574,7 @@ typedef std::map<std::wstring, torrent_details_ptr> torrent_details_map;
 class torrent_details_manager
 {
 public:	
-	void sort(size_t index) const;
+	void sort(size_t index, bool cmp_less = true) const;
 	
 	const torrent_details_vec torrents() const 
 	{

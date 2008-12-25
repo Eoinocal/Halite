@@ -49,41 +49,11 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	}	
 
 	SafeLoadFromIni();
-	
-	SetColumnSortType(0, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Name());
-	SetColumnSortType(1, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::State());
-	SetColumnSortType(2, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Progress());
-	SetColumnSortType(3, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedDown());
-	SetColumnSortType(4, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedUp());
-	SetColumnSortType(5, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Peers());
-	SetColumnSortType(6, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Seeds());
-	SetColumnSortType(7, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::ETA());
-	SetColumnSortType(8, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::DistributedCopies());
-	SetColumnSortType(9, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Tracker());
-	SetColumnSortType(10, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::UpdateTrackerIn());
-	SetColumnSortType(11, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Ratio());
-	SetColumnSortType(12, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::TotalWanted());
-	SetColumnSortType(13, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Completed());
-	SetColumnSortType(14, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Remaining());
-	SetColumnSortType(15, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Downloaded());
-	SetColumnSortType(16, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Uploaded());
-	SetColumnSortType(17, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::ActiveTime());
-	SetColumnSortType(18, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::SeedingTime());
-	SetColumnSortType(19, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::StartTime());
-	SetColumnSortType(20, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::FinishTime());
-	SetColumnSortType(21, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Managed());
-	SetColumnSortType(22, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::QueuePosition());
 
-	queue_view_mode();
+	for (unsigned i=0, e = hal::torrent_details::queue_position_e-hal::torrent_details::name_e; i <= e; ++i)
+		SetColumnSortType(i, i + (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), NULL);
 	
-/*	int item_pos = AddItem(0, 0, L"Unmanaged", 0);
-	SetItemData(item_pos, HAL_CUSTOMDRAW_TITLEDATA);
-			
-	item_pos = AddItem(0, 0, L"Downloading", 0);
-	SetItemData(item_pos, HAL_CUSTOMDRAW_TITLEDATA);
-			
-	item_pos = AddItem(0, 0, L"Seeding", 0);
-	SetItemData(item_pos, HAL_CUSTOMDRAW_TITLEDATA);*/
+	queue_view_mode();
 }
 
 std::wstring HaliteListViewCtrl::get_string(int index, int subitem)
@@ -125,8 +95,21 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	hal::try_update_lock<listClass> lock(*this);
 	if (lock) 
 	{
+		
+		int iCol = GetSortColumn();
+		//HAL_DEV_MSG(hal::wform(L"GetSortColumn with: %1%") % iCol);
 
-		tD.sort(hal::torrent_details::peers_e);
+		if (iCol != -1)
+		{
+			
+			int index = GetColumnSortType(iCol);
+			
+			if (index > WTL::LVCOLSORT_LAST)
+			{
+			HAL_DEV_MSG(hal::wform(L"Sorting with: %1%, %2%") % index % (index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e)) );
+			tD.sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSortDescending());
+			}
+		}
 
 		if (IsGroupViewEnabled())
 			tD.sort(hal::torrent_details::managed_e);
@@ -204,11 +187,20 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	}
 }
 
-void HaliteListViewCtrl::SortByColumn(size_t column_index)
-{
-	//std::sort(data_elements_.begin(), data_elements_.end(), 
-	//	);
+bool HaliteListViewCtrl::DoSortItems(int iCol, bool bDescending)
+{	
+	HAL_DEV_MSG(hal::wform(L"DoSortItems(int iCol = %1%, bool bDescending = %2%) - issuing update!") % iCol % bDescending);
+
+	halWindow_.issueUiUpdate();
+
+	return true;
+}
+
+LRESULT HaliteListViewCtrl::OnSortChanged(int, LPNMHDR pnmh, BOOL&)
+{		
+	halWindow_.issueUiUpdate();
 	
+	return 0;
 }
 
 /*HaliteListViewCtrl::tD HaliteListViewCtrl::CustomItemConversion(LVCompareParam* param, int iSortCol)
