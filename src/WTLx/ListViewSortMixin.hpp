@@ -16,12 +16,12 @@ namespace WTLx
 {
 
 template<typename T>
-class ListViewSortMixin
+class ListViewSortMixin : public WTL::CSortListViewImpl<T>
 {
 protected:
 	
 	// Column sort types. Can be set on a per-column basis with the SetColumnSortType method.
-	enum
+/*	enum
 	{
 		LVCOLSORT_NONE,
 		LVCOLSORT_TEXT,   // default
@@ -47,16 +47,16 @@ protected:
 		m_iSortDown = 1,
 		m_nShellSortUpID = 133
 	};	
-
-	BEGIN_MSG_MAP(CSortListViewImpl)
-		MESSAGE_HANDLER(LVM_INSERTCOLUMN, OnInsertColumn)
-		MESSAGE_HANDLER(LVM_DELETECOLUMN, OnDeleteColumn)
+*/
+	BEGIN_MSG_MAP(ListViewSortMixin)
+		MESSAGE_HANDLER(LVM_INSERTCOLUMN, WTL::CSortListViewImpl<T>::OnInsertColumn)
+		MESSAGE_HANDLER(LVM_DELETECOLUMN, WTL::CSortListViewImpl<T>::OnDeleteColumn)
 		NOTIFY_CODE_HANDLER(HDN_ITEMCLICKA, OnHeaderItemClick)
 		NOTIFY_CODE_HANDLER(HDN_ITEMCLICKW, OnHeaderItemClick)
-		MESSAGE_HANDLER(WM_SETTINGCHANGE, OnSettingChange)
+		MESSAGE_HANDLER(WM_SETTINGCHANGE, WTL::CSortListViewImpl<T>::OnSettingChange)
 	END_MSG_MAP()
 
-	LRESULT OnInsertColumn(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/)	
+/*	LRESULT OnInsertColumn(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& )	
 	{
 		T* pT = static_cast<T*>(this);
 		LRESULT lRet = pT->DefWindowProc(uMsg, wParam, lParam);
@@ -70,7 +70,7 @@ protected:
 
 		for(int i = nCount - 1; i > lRet; i--)
 			m_arrColSortType[i] = m_arrColSortType[i - 1];
-		m_arrColSortType[(int)lRet] = 0;
+		m_arrColSortType[(int)lRet] = LVCOLSORT_TEXT;
 
 		if(lRet <= m_iSortColumn)
 			m_iSortColumn++;
@@ -78,7 +78,7 @@ protected:
 		return lRet;
 	}
 
-	LRESULT OnDeleteColumn(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/)	
+	LRESULT OnDeleteColumn(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&)	
 	{
 		T* pT = static_cast<T*>(this);
 		LRESULT lRet = pT->DefWindowProc(uMsg, wParam, lParam);
@@ -95,7 +95,7 @@ protected:
 		return lRet;
 	}
 
-	LRESULT OnSettingChange(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& bHandled)
+	LRESULT OnSettingChange(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 	{
 #ifndef _WIN32_WCE
 		if(wParam == SPI_SETNONCLIENTMETRICS)
@@ -118,7 +118,7 @@ protected:
 				SetSortColumn(m_iSortColumn);
 		}
 	}
-
+*/
 	DWORD SetListViewSortMixinExtendedStyle(DWORD dwExtendedStyle, DWORD dwMask = 0)
 	{
 		DWORD dwPrevStyle = m_dwSortLVExtendedStyle;
@@ -129,26 +129,41 @@ protected:
 		return dwPrevStyle;
 	}
 
-	int GetColumnCount() const
+	DWORD GetListViewSortMixibExtendedStyle() const
+	{
+		return m_dwSortLVExtendedStyle;
+	}
+	
+
+	void SetColumnSortType(int iCol, WORD wType)
+	{
+		HAL_DEV_MSG(hal::wform(L"SetColumnSortType(int iCol = %1%, WORD wType = %2%)") % iCol % wType);
+
+		ATLASSERT(iCol >= 0 && iCol < m_arrColSortType.GetSize());
+		ATLASSERT(wType >= WTL::LVCOLSORT_NONE);
+		m_arrColSortType[iCol] = wType;		
+	}
+
+/*	int GetColumnCount() const
 	{
 		const T* pT = static_cast<const T*>(this);
 		ATLASSERT(::IsWindow(pT->m_hWnd));
 		WTL::CHeaderCtrl header = pT->GetHeader();
 		return header.m_hWnd != NULL ? header.GetItemCount() : 0;
 	}
-	
-	LRESULT OnHeaderItemClick(int /*idCtrl*/, LPNMHDR pnmh, BOOL& bHandled)
-	{
+	*/
+	LRESULT OnHeaderItemClick(int idCtrl, LPNMHDR pnmh, BOOL& bHandled)
+	{		
+		HAL_DEV_MSG(hal::wform(L"OnHeaderItemClick(int idCtrl = %1%, LPNMHDR pnmh, BOOL& bHandled)") % idCtrl);
+
 		LPNMHEADER p = (LPNMHEADER)pnmh;
 		if(p->iButton == 0)
 		{
 			int iOld = m_iSortColumn;
 			bool bDescending = (m_iSortColumn == p->iItem) ? !m_bSortDescending : false;
 
-			DoSortItems(p->iItem, bDescending);
-
-//			if (DoSortItems(p->iItem, bDescending))
-//				NotifyParentSortChanged(p->iItem, iOld);
+			if (DoSortItems(p->iItem, bDescending))
+				NotifyParentSortChanged(p->iItem, iOld);
 		}
 		bHandled = FALSE;
 		return 0;
@@ -157,13 +172,20 @@ protected:
 //  Operations
 	bool DoSortItems(int iCol, bool bDescending = false)
 	{
+		HAL_DEV_MSG(hal::wform(L"DoSortItems(int iCol = %1%, bool bDescending = %2%)") % iCol % bDescending);
+
 		T* pT = static_cast<T*>(this);
 		ATLASSERT(::IsWindow(pT->m_hWnd));
 		ATLASSERT(iCol >= 0 && iCol < m_arrColSortType.GetSize());
 
 		WORD wType = m_arrColSortType[iCol];
-		if(wType == -1)
+		if(wType == WTL::LVCOLSORT_NONE)
 			return false;
+		else if (wType <= WTL::LVCOLSORT_LAST)
+		{
+			HAL_DEV_MSG(hal::wform(L"wType = %1%, passing DoSort() to base class") % wType);
+			return WTL::CSortListViewImpl<T>::DoSortItems(iCol, bDescending);
+		}
 
 		int nCount = pT->GetItemCount();
 		if(nCount < 2)
@@ -177,7 +199,7 @@ protected:
 		if(m_bUseWaitCursor)
 			waitCursor.Set();
 
-		bool bRet = true;
+		bool bRet = pT->DoSortItems(iCol, bDescending);
 
 		if(bRet)
 		{
@@ -190,7 +212,7 @@ protected:
 
 		return bRet;
 	}
-
+/*
 	void SetSortColumn(int iCol)
 	{
 		T* pT = static_cast<T*>(this);
@@ -344,6 +366,30 @@ protected:
 		dc.SelectPen(hpenOld);
 	}
 
+	int GetSortColumn() const
+	{
+		return m_iSortColumn;
+	}
+
+	void SetColumnSortType(int iCol, WORD wType)
+	{
+		ATLASSERT(iCol >= 0 && iCol < m_arrColSortType.GetSize());
+		ATLASSERT(wType >= LVCOLSORT_NONE && wType <= LVCOLSORT_LAST);
+		m_arrColSortType[iCol] = wType;
+	}
+
+	WORD GetColumnSortType(int iCol) const
+	{
+		ATLASSERT((iCol >= 0) && iCol < m_arrColSortType.GetSize());
+		return m_arrColSortType[iCol];
+	}
+
+	bool IsSortDescending() const
+	{
+		return m_bSortDescending;
+	}
+
+private:
 	bool m_bSortDescending;
 	bool m_bCommCtrl6;
 	int m_iSortColumn;
@@ -353,6 +399,7 @@ protected:
 	DWORD m_dwSortLVExtendedStyle;
 	ATL::CSimpleArray<WORD> m_arrColSortType;
 	bool m_bUseWaitCursor;
+	*/
 };
 
 }
