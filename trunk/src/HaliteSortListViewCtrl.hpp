@@ -28,6 +28,7 @@
 
 #include "WTLx/SelectionManager.hpp"
 #include "WTLx/ListViewIterators.hpp"
+#include "WTLx/ListViewSortMixin.hpp"
 #include "HaliteUpdateLock.hpp"
 
 namespace hal
@@ -49,11 +50,13 @@ int compare(const T& l, const T& r)
 template <class TBase, typename AdapterType=void*>
 class CHaliteSortListViewCtrl : 
 	public ATL::CWindowImpl<TBase, WTL::CListViewCtrl>,
-	public WTLx::ListViewIterators<CHaliteSortListViewCtrl<TBase, AdapterType> >
+	public WTLx::ListViewIterators<CHaliteSortListViewCtrl<TBase, AdapterType> >,
+	public WTLx::ListViewSortMixin<CHaliteSortListViewCtrl<TBase, AdapterType> >
 {
 public:
 	typedef CHaliteSortListViewCtrl<TBase, AdapterType> thisClass;
 	typedef ATL::CWindowImpl<TBase, WTL::CListViewCtrl> parentClass;
+	typedef WTLx::ListViewSortMixin<thisClass> listClass;
 	
 	class CHaliteHeaderCtrl : public CWindowImpl<CHaliteHeaderCtrl, WTL::CHeaderCtrl>
 	{
@@ -146,8 +149,8 @@ public:
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_RCLICK, OnRClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_ITEMCHANGED, OnItemChanged)
 
+		CHAIN_MSG_MAP(listClass)
 		DEFAULT_REFLECTION_HANDLER()
-//		CHAIN_MSG_MAP(parentClass)
 	END_MSG_MAP()
 
 	void Attach(HWND hWndNew)
@@ -158,7 +161,7 @@ public:
 		TBase* pT = static_cast<TBase*>(this);
 		pT->OnAttach();
 	}
-	
+
 	HWND Create(HWND hWndParent, ATL::_U_RECT rect = NULL, LPCTSTR szWindowName = NULL,
 			DWORD dwStyle = 0, DWORD dwExStyle = 0,
 			ATL::_U_MENUorID MenuOrID = 0U, LPVOID lpCreateParam = NULL)
@@ -167,7 +170,7 @@ public:
 			(RECT &)rect.m_lpRect, szWindowName, dwStyle, dwExStyle, (UINT)MenuOrID.m_hMenu, lpCreateParam);
 			
 		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER|LVS_EX_SUBITEMIMAGES);
-//		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
+		SetListViewSortMixinExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
 		
 		return hwnd;
 	}
@@ -178,7 +181,7 @@ public:
 			return false;
 			
 		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER);
-//		SetSortListViewExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
+		SetListViewSortMixinExtendedStyle(SORTLV_USESHELLBITMAPS, SORTLV_USESHELLBITMAPS);
 		
 		return true;
 	}		

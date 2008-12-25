@@ -1454,6 +1454,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\WTLx\ListViewSortMixin.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\WTLx\NTray.hpp"
 					>
 				</File>
