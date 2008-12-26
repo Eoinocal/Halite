@@ -91,10 +91,13 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	hal::try_update_lock<listClass> lock(*this);
 	if (lock) 
 	{		
+	
+	int col_sort_index = GetSortColumn();
 
-	if (GetSortColumn() != -1)
+	// Perform external ListView sort here.
+	if (col_sort_index != -1)
 	{		
-		int index = GetColumnSortType(GetSortColumn());
+		int index = GetColumnSortType(col_sort_index);
 		
 		if (index > WTL::LVCOLSORT_LAST)
 			tD.sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSortDescending());
@@ -103,19 +106,19 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	if (IsGroupViewEnabled())
 		tD.sort(hal::torrent_details::managed_e);
 
+	bool sort_once = IsSortOnce();
 
+	// Update details here.
 	for (size_t td_index=0, e=tD.torrents().size(); td_index<e; ++td_index)
 	{
 		hal::torrent_details_ptr td = tD.torrents()[td_index];
 	
 		int item_pos = td_index;
-
-		bool a = AutoSort();
-		bool s = IsSortOnce();
 		
-		HAL_DEV_MSG(hal::wform(L"AutoSort() = %1%, SortOnce() = %2%, !AutoSort() && !SortOnce() = %3%") % a % s % (!a && !s));
+		HAL_DEV_SORT_MSG(hal::wform(L"AutoSort() = %1%, SortOnce() = %2%, !AutoSort() && !SortOnce() = %3%") 
+			% AutoSort() % sort_once % (!AutoSort() && !sort_once));
 
-		if (!a && !s)
+		if (!AutoSort() && !sort_once)
 		{
 			LV_FINDINFO findInfo; 
 			findInfo.flags = LVFI_STRING;
@@ -124,7 +127,7 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 			item_pos = FindItem(&findInfo, -1);
 		}
 		
-		HAL_DEV_MSG(hal::wform(L"Item = %1%, Index = %2%") % td->name() % item_pos);
+		HAL_DEV_SORT_MSG(hal::wform(L"Item = %1%, Index = %2%") % td->name() % item_pos);
 
 		LVITEM lvItem = { 0 };
 		lvItem.mask = LVIF_TEXT;
@@ -161,10 +164,13 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 		}
 	}
 	
-/*	int iCol = GetSortColumn();
-	if (AutoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
-		DoSortItems(iCol, IsSortDescending());
-*/	
+	// Perform internal ListView sort here.
+	if (AutoSort() && col_sort_index >= 0 && col_sort_index < m_arrColSortType.GetSize())
+	{
+		if (GetColumnSortType(col_sort_index) <= WTL::LVCOLSORT_CUSTOM)
+			DoSortItems(col_sort_index, IsSortDescending());
+	}
+	
 	}
 }
 

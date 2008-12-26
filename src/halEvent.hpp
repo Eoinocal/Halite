@@ -43,6 +43,14 @@
 #	define HAL_DEV_MSG(msg)
 #endif
 
+#ifdef HAL_SORT_LOGGING
+#	define HAL_DEV_SORT_MSG(msg) \
+	hal::event_log.post(boost::shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(msg, hal::event_logger::dev))) 
+#else
+#	define HAL_DEV_SORT_MSG(msg)
+#endif
+
 #define HAL_GENERIC_FN_EXCEPTION_CATCH(FUNCTION) \
 catch (const access_violation& e) \
 { \

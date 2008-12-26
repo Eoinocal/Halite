@@ -95,13 +95,6 @@ public:
 
 			bool visible = listView_.OnNameChecked(wID-COL_MENU_NAMES);
 
-		/*	MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
-		
-			minfo.fMask = MIIM_STATE;
-			minfo.fState = visible ? MFS_CHECKED : MFS_UNCHECKED;
-		
-			menu_.SetMenuItemInfo(wID, false, &minfo);
-		*/
 			return 0;
 		}
 
@@ -327,15 +320,6 @@ public:
 		return 0;
 	}
 
-/*	LRESULT OnSortChanged(int, LPNMHDR pnmh, BOOL&)
-	{		
-		hal::try_update_lock<thisClass> lock(*this);
-		
-		if (lock) manager_.sync_list(true, true);
-		
-		return 0;
-	}
-*/
 	LRESULT OnRClick(int i, LPNMHDR pnmh, BOOL&)
 	{
 		LPNMITEMACTIVATE pia = (LPNMITEMACTIVATE)pnmh;
@@ -540,16 +524,16 @@ public:
 		
 		return pT->CustomItemComparision(left, right, iSortCol);
 	}
-	*/
+*/
 	bool AutoSort() { return auto_sort_; }
 	
-	void ConditionallyDoAutoSort()
+/*	void ConditionallyDoAutoSort()
 	{
-/*		int iCol = GetSortColumn();
+		int iCol = GetSortColumn();
 		if (AutoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
-			DoSortItems(iCol, IsSortDescending());	*/
+			DoSortItems(iCol, IsSortDescending());	
 	}
-		
+*/		
 	ColumnAdapter* getColumnAdapter(size_t index)
 	{
 		boost::ptr_map<size_t, ColumnAdapter>::iterator 
@@ -583,7 +567,7 @@ protected:
 		else 
 			return 0;
 	}
-	*/
+*/
 	void regColumnAdapter(size_t key, ColumnAdapter* colAdapter)
 	{
 		assert (colAdapter);
