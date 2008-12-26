@@ -129,7 +129,7 @@ public:
 		manager_(*this),
 		header_(*this),
 		update_lock_(0),
-		autoSort_(false),
+		auto_sort_(false),
 		descending_(false),
 		sortCol_(-1)
 	{		
@@ -186,17 +186,6 @@ public:
 		return true;
 	}		
 	
-/*	template<typename N, typename W, typename O, typename P>
-	void SetDefaults(N nameList, W widthList, O orderList, P visibleList, bool autoSort=false)
-	{
-		listNames_.assign(nameList.begin(), nameList.end());
-		listWidths_.assign(widthList.begin(), widthList.end());
-		listOrder_.assign(orderList.begin(), orderList.end());
-		listVisible_.assign(visibleList.begin(), visibleList.end());
-		
-		autoSort_ = autoSort;
-	}
-*/
 	void SafeLoadFromIni()
 	{
 		std::vector<wstring> listNames;
@@ -204,85 +193,21 @@ public:
 		std::vector<int> listOrder;
 		std::vector<bool> listVisible;
 
-		listNames.assign(listNames_.begin(), listNames_.end());
-		listWidths.assign(listWidths_.begin(), listWidths_.end());
-		listOrder.assign(listOrder_.begin(), listOrder_.end());
-		listVisible.assign(listVisible_.begin(), listVisible_.end());
+		listNames.assign(list_names_.begin(), list_names_.end());
+		listWidths.assign(list_widths_.begin(), list_widths_.end());
+		listOrder.assign(list_order_.begin(), list_order_.end());
+		listVisible.assign(list_visible_.begin(), list_visible_.end());
 
 		TBase* pT = static_cast<TBase*>(this);
-		if (!pT->load_from_ini() || !vectorSizePreConditions())
+		if (!pT->load_from_ini() || !vector_size_pre_conditions())
 		{
-			listNames_.assign(listNames.begin(), listNames.end());
-			listWidths_.assign(listWidths.begin(), listWidths.end());
-			listOrder_.assign(listOrder.begin(), listOrder.end());
-			listVisible_.assign(listVisible.begin(), listVisible.end());
+			list_names_.assign(listNames.begin(), listNames.end());
+			list_widths_.assign(listWidths.begin(), listWidths.end());
+			list_order_.assign(listOrder.begin(), listOrder.end());
+			list_visible_.assign(listVisible.begin(), listVisible.end());
 		}		
 	}
-/*	
-	void ApplyDetails()
-	{
-		vectorSizePreConditions();
-		
-		MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
-		
-		if (!menu_)
-		{
-			menu_.CreatePopupMenu();
-		}
-		else
-		{				
-			minfo.fMask = MIIM_SUBMENU;
-			minfo.fType = MFT_SEPARATOR;
-			
-			menu_.InsertMenuItem(menu_.GetMenuItemCount(), true, &minfo);		
-		}
 
-		minfo.fMask = MIIM_STRING|MIIM_ID|MIIM_FTYPE|MIIM_STATE;
-		minfo.fType = MFT_STRING;
-		minfo.fState = autoSort_ ? MFS_CHECKED : MFS_UNCHECKED;
-		minfo.wID = ID_LVM_AUTOSORT;
-		
-		wstring autoarrange = hal::app().res_wstr(HAL_AUTOSORT);
-		minfo.dwTypeData = (LPWSTR)autoarrange.c_str();
-		
-		menu_.InsertMenuItem(menu_.GetMenuItemCount(), true, &minfo);
-		
-		header_.Attach(this->GetHeader());
-		header_.ModifyStyle(0, HDS_DRAGDROP|HDS_FULLDRAG);
-
-		header_.Menu().CreatePopupMenu();
-
-		for (int i=header_.GetItemCount(), e=int(listNames_.size()); i<e; ++i)
-		{
-			MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
-			minfo.fMask = MIIM_STRING|MIIM_ID|MIIM_FTYPE|MIIM_STATE;
-			minfo.fType = MFT_STRING;
-			minfo.dwTypeData = (LPWSTR)listNames_[i].c_str();
-			minfo.wID = CHaliteHeaderCtrl::COL_MENU_NAMES+i;
-
-			AddColumn(listNames_[i].c_str(), i);
-
-			if (listVisible_[i])
-			{
-				minfo.fState = MFS_CHECKED;			
-				SetColumnWidth(i, listWidths_[i]);
-			}
-			else
-			{
-				minfo.fState = MFS_UNCHECKED;
-				SetColumnWidth(i, 0);
-			}
-
-			header_.Menu().InsertMenuItem(header_.Menu().GetMenuItemCount(), false, &minfo);
-		}
-		
-		SetColumnOrderArray(listNames_.size(), &listOrder_[0]);
-		
-		m_bSortDescending = descending_;
-		if (sortCol_ >= 0 && sortCol_ < m_arrColSortType.GetSize())
-			SetSortColumn(sortCol_);
-	}
-*/
 	void InitialSetup(WTL::CMenuHandle menu=WTL::CMenuHandle())
 	{
 		SetExtendedListViewStyle(LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER);
@@ -306,7 +231,7 @@ public:
 
 		minfo.fMask = MIIM_STRING|MIIM_ID|MIIM_FTYPE|MIIM_STATE;
 		minfo.fType = MFT_STRING;
-		minfo.fState = autoSort_ ? MFS_CHECKED : MFS_UNCHECKED;
+		minfo.fState = auto_sort_ ? MFS_CHECKED : MFS_UNCHECKED;
 		minfo.wID = ID_LVM_AUTOSORT;
 		
 		std::wstring autoarrange = hal::app().res_wstr(HAL_AUTOSORT);
@@ -322,28 +247,28 @@ public:
 	
 	void GetListViewDetails()
 	{
-		vectorSizePreConditions();		
+		vector_size_pre_conditions();		
 		
-		for (size_t i=0; i<listNames_.size(); ++i)
+		for (size_t i=0; i<list_names_.size(); ++i)
 		{
-			if (listVisible_[i])
-				listWidths_[i] = GetColumnWidth(i);
+			if (list_visible_[i])
+				list_widths_[i] = GetColumnWidth(i);
 		}
 		
-		GetColumnOrderArray(listNames_.size(), &listOrder_[0]);
+		GetColumnOrderArray(list_names_.size(), &list_order_[0]);
 		
-/*		sortCol_ = GetSortColumn();
-		descending_ = IsSortDescending();	*/
+		sortCol_ = GetSortColumn();
+		descending_ = IsSortDescending();	
 	}
 	
 	LRESULT OnAutoSort(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 	{
-		autoSort_ = !autoSort_;
+		auto_sort_ = !auto_sort_;
 		
 		MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
 		
 		minfo.fMask = MIIM_STATE;
-		minfo.fState = autoSort_ ? MFS_CHECKED : MFS_UNCHECKED;
+		minfo.fState = auto_sort_ ? MFS_CHECKED : MFS_UNCHECKED;
 		
 		menu_.SetMenuItemInfo(ID_LVM_AUTOSORT, false, &minfo);
 		
@@ -352,40 +277,40 @@ public:
 
 	bool OnNameChecked(int i)
 	{
-		if (!listVisible_[i])
+		if (!list_visible_[i])
 		{		
-			GetColumnOrderArray(listNames_.size(), &listOrder_[0]);
-			SetColumnWidth(i, listWidths_[i]);
+			GetColumnOrderArray(list_names_.size(), &list_order_[0]);
+			SetColumnWidth(i, list_widths_[i]);
 
-			listOrder_.erase(std::find(listOrder_.begin(), listOrder_.end(), i));
+			list_order_.erase(std::find(list_order_.begin(), list_order_.end(), i));
 			
-			int index = i + std::count(listVisible_.begin()+i, listVisible_.end(), false) - 1;
-			listOrder_.insert(listOrder_.begin()+index, i);
+			int index = i + std::count(list_visible_.begin()+i, list_visible_.end(), false) - 1;
+			list_order_.insert(list_order_.begin()+index, i);
 
-			SetColumnOrderArray(listNames_.size(), &listOrder_[0]);
-			listVisible_[i] = true;
+			SetColumnOrderArray(list_names_.size(), &list_order_[0]);
+			list_visible_[i] = true;
 		}
 		else
 		{
-			listWidths_[i] = GetColumnWidth(i);	
-			GetColumnOrderArray(listNames_.size(), &listOrder_[0]);
+			list_widths_[i] = GetColumnWidth(i);	
+			GetColumnOrderArray(list_names_.size(), &list_order_[0]);
 
 			SetColumnWidth(i, 0);
 
-			listOrder_.erase(std::find(listOrder_.begin(), listOrder_.end(), i));
-			listOrder_.insert(listOrder_.begin(), i);
+			list_order_.erase(std::find(list_order_.begin(), list_order_.end(), i));
+			list_order_.insert(list_order_.begin(), i);
 
-			SetColumnOrderArray(listNames_.size(), &listOrder_[0]);
-			listVisible_[i] = false;
+			SetColumnOrderArray(list_names_.size(), &list_order_[0]);
+			list_visible_[i] = false;
 		}
 		
 		MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};	
 		minfo.fMask = MIIM_STATE;
-		minfo.fState = listVisible_[i] ? MFS_CHECKED : MFS_UNCHECKED;	
+		minfo.fState = list_visible_[i] ? MFS_CHECKED : MFS_UNCHECKED;	
 		header_.Menu().SetMenuItemInfo(CHaliteHeaderCtrl::COL_MENU_NAMES+i, false, &minfo);
 	
 		InvalidateRect(NULL, true);
-		return listVisible_[i];
+		return list_visible_[i];
 	}
 
 	LRESULT OnClick(int, LPNMHDR pnmh, BOOL&)
@@ -436,13 +361,21 @@ public:
 		return 0;
 	}
 
-	void SortByColumn(size_t column_index)
+	bool DoSortItemsExternal(int iCol, bool bDescending = false)
 	{
-		/* Overwriteable */
-	}
+		HAL_DEV_MSG(hal::wform(L"sort_once_ = %1%") % sort_once_);
 
-	bool DoSortItems(int iCol, bool bDescending = false)
-	{
+		sort_once_ = true;
+
+		return true;
+	}
+	
+	bool IsSortOnce(bool mod_value =  true) 
+	{ 
+		if (!sort_once_)
+			return false; 
+
+		if (mod_value) sort_once_ = false;
 		return true;
 	}
 
@@ -484,10 +417,10 @@ public:
 
 		int w = GetColumnWidth(i);
 
-		listNames_.push_back(strItem);
-		listVisible_.push_back(visible);
-		listWidths_.push_back(w);
-		listOrder_.push_back(i);
+		list_names_.push_back(strItem);
+		list_visible_.push_back(visible);
+		list_widths_.push_back(w);
+		list_order_.push_back(i);
 
 		menu.InsertMenuItem(menu.GetMenuItemCount(), false, &minfo);
 		return i;
@@ -503,10 +436,10 @@ public:
 
 	void SetColumnOrderState()
 	{
-		while ((int)listOrder_.size() < header_.GetItemCount())
-			listOrder_.push_back(header_.GetItemCount());
+		while ((int)list_order_.size() < header_.GetItemCount())
+			list_order_.push_back(header_.GetItemCount());
 
-		GetColumnOrderArray(listOrder_.size(), &listOrder_[0]);
+		GetColumnOrderArray(list_order_.size(), &list_order_[0]);
 	}
 
 	void SetSortState()
@@ -514,7 +447,7 @@ public:
 		MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
 		
 		minfo.fMask = MIIM_STATE;
-		minfo.fState = autoSort_ ? MFS_CHECKED : MFS_UNCHECKED;
+		minfo.fState = auto_sort_ ? MFS_CHECKED : MFS_UNCHECKED;
 		
 		menu_.SetMenuItemInfo(ID_LVM_AUTOSORT, false, &minfo);
 
@@ -526,22 +459,22 @@ public:
 	template<class Archive>
     void save(Archive & ar, const unsigned int version) const
     {
-		for (size_t i=0; i<listWidths_.size(); ++i)
+		for (size_t i=0; i<list_widths_.size(); ++i)
 		{
-			if (listVisible_[i])
-				listWidths_[i] = GetColumnWidth(i);
+			if (list_visible_[i])
+				list_widths_[i] = GetColumnWidth(i);
 		}
 
-		GetColumnOrderArray(listOrder_.size(), &listOrder_[0]);
-//		sortCol_ = GetSortColumn();
-//		descending_ = IsSortDescending();	
+		GetColumnOrderArray(list_order_.size(), &list_order_[0]);
+		sortCol_ = GetSortColumn();
+		descending_ = IsSortDescending();	
 
 		using boost::serialization::make_nvp;
 
-		ar & make_nvp("width", listWidths_);
-		ar & make_nvp("order", listOrder_);
-		ar & make_nvp("visible", listVisible_);
-		ar & make_nvp("autoSort", autoSort_);
+		ar & make_nvp("width", list_widths_);
+		ar & make_nvp("order", list_order_);
+		ar & make_nvp("visible", list_visible_);
+		ar & make_nvp("autoSort", auto_sort_);
 
 		ar & make_nvp("descending", descending_);
 		ar & make_nvp("sortCol", sortCol_);
@@ -552,45 +485,45 @@ public:
     {
 		using boost::serialization::make_nvp;
 
-		ar & make_nvp("width", listWidths_);
-		ar & make_nvp("order", listOrder_);
-		ar & make_nvp("visible", listVisible_);
-		ar & make_nvp("autoSort", autoSort_);
+		ar & make_nvp("width", list_widths_);
+		ar & make_nvp("order", list_order_);
+		ar & make_nvp("visible", list_visible_);
+		ar & make_nvp("autoSort", auto_sort_);
 
 		ar & make_nvp("descending", descending_);
 		ar & make_nvp("sortCol", sortCol_);
 		
-		SetColumnOrderArray(listOrder_.size(), &listOrder_[0]);
+		SetColumnOrderArray(list_order_.size(), &list_order_[0]);
 
-/*		m_bSortDescending = descending_;
+		m_bSortDescending = descending_;
 		if (sortCol_ >= 0 && sortCol_ < m_arrColSortType.GetSize())
 			SetSortColumn(sortCol_);
-*/
-		for (size_t i=0; i<listWidths_.size(); ++i)
+
+		for (size_t i=0; i<list_widths_.size(); ++i)
 		{
-			SetColumnWidth(i, listWidths_[i]);
-			if (!listVisible_[i])
+			SetColumnWidth(i, list_widths_[i]);
+			if (!list_visible_[i])
 			{
-				listVisible_[i] = true;
+				list_visible_[i] = true;
 				OnNameChecked(i);
 			}
 		}
 
-//		SetColumnOrderState();
-//		SetSortState();
+		SetColumnOrderState();
+		SetSortState();
     }
 
     BOOST_SERIALIZATION_SPLIT_MEMBER()
 
 	const SelectionManager& manager() { return manager_; }
 		
-	std::vector<int>& listColumnWidth() { return listColumnWidth_; }
-	std::vector<int>& listColumnOrder() { return listColumnOrder_; }
+	std::vector<int>& ListColumnWidth() { return listColumnWidth_; }
+	std::vector<int>& ListColumnOrder() { return listColumnOrder_; }
 	
-	const std::vector<int>& listColumnWidth() const { return listColumnWidth_; }
-	const std::vector<int>& listColumnOrder() const { return listColumnOrder_; }
+	const std::vector<int>& ListColumnWidth() const { return listColumnWidth_; }
+	const std::vector<int>& ListColumnOrder() const { return listColumnOrder_; }
 	
-	bool canUpdate() const { return updateLock_ == 0; }
+	bool CanUpdate() const { return updateLock_ == 0; }
 	
 	void clearFocused() { manager_.clear(); }
 	void clearSelected() { manager_.clear_all_selected(); }
@@ -608,21 +541,21 @@ public:
 		return pT->CustomItemComparision(left, right, iSortCol);
 	}
 	*/
-	bool autoSort() { return autoSort_; }
+	bool AutoSort() { return auto_sort_; }
 	
 	void ConditionallyDoAutoSort()
 	{
 /*		int iCol = GetSortColumn();
-		if (autoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
+		if (AutoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
 			DoSortItems(iCol, IsSortDescending());	*/
 	}
 		
 	ColumnAdapter* getColumnAdapter(size_t index)
 	{
 		boost::ptr_map<size_t, ColumnAdapter>::iterator 
-			i = columnAdapters_.find(index);
+			i = column_adapters_.find(index);
 	
-		if (i != columnAdapters_.end())
+		if (i != column_adapters_.end())
 		{
 			return i->second;
 		}		
@@ -654,7 +587,7 @@ protected:
 	void regColumnAdapter(size_t key, ColumnAdapter* colAdapter)
 	{
 		assert (colAdapter);
-		columnAdapters_.insert(key, colAdapter);
+		column_adapters_.insert(key, colAdapter);
 	}
 
 //	AdapterType convert(const LPLVITEM item);
@@ -665,20 +598,22 @@ protected:
 	CHaliteHeaderCtrl header_;	
 	
 private:
-	bool vectorSizePreConditions()
+	bool vector_size_pre_conditions()
 	{
-		bool ret = (listNames_.size() == listWidths_.size()) &&
-			(listNames_.size() == listOrder_.size()) &&
-			(listNames_.size() == listVisible_.size());
+		bool ret = (list_names_.size() == list_widths_.size()) &&
+			(list_names_.size() == list_order_.size()) &&
+			(list_names_.size() == list_visible_.size());
 
 		return ret;
 	}	
 	
-	mutable std::vector<wstring> listNames_;
-	mutable std::vector<int> listWidths_;
-	mutable std::vector<int> listOrder_;
-	mutable std::vector<bool> listVisible_;
-	mutable bool autoSort_;
+	mutable std::vector<wstring> list_names_;
+	mutable std::vector<int> list_widths_;
+	mutable std::vector<int> list_order_;
+	mutable std::vector<bool> list_visible_;
+
+	mutable bool auto_sort_;
+	mutable bool sort_once_;
 	mutable bool descending_;
 	mutable int sortCol_;
 	
@@ -688,9 +623,7 @@ private:
 	friend class hal::mutex_update_lock<thisClass>;	
 	friend class hal::try_update_lock<thisClass>;		
 	
-	boost::ptr_map<size_t, ColumnAdapter> columnAdapters_;
-	
-	WinAPIWaitableTimer syncTimer_;
+	boost::ptr_map<size_t, ColumnAdapter> column_adapters_;
 };
 
 template<>

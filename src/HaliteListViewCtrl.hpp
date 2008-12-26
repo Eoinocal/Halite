@@ -392,11 +392,11 @@ public:
 	size_t sortedColmun() { return sortedColmun_; }
 	sortDirection sortingDirection() { return sortingDirection_; }
 	
-	std::vector<int>& listColumnWidth() { return listColumnWidth_; }
-	std::vector<int>& listColumnOrder() { return listColumnOrder_; }
+	std::vector<int>& ListColumnWidth() { return listColumnWidth_; }
+	std::vector<int>& ListColumnOrder() { return listColumnOrder_; }
 	
-	const std::vector<int>& listColumnWidth() const { return listColumnWidth_; }
-	const std::vector<int>& listColumnOrder() const { return listColumnOrder_; }
+	const std::vector<int>& ListColumnWidth() const { return listColumnWidth_; }
+	const std::vector<int>& ListColumnOrder() const { return listColumnOrder_; }
 	
 private:
 	selection_manager<CHaliteListViewCtrl> manager_;
