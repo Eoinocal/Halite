@@ -21,7 +21,7 @@
 
 
 HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
-	halWindow_(HalWindow),
+	halite_window_(HalWindow),
 	iniClass("listviews/halite", "HaliteListView"),
 	queue_view_(false)
 {		
@@ -53,21 +53,17 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	for (unsigned i=0, e = hal::torrent_details::queue_position_e-hal::torrent_details::name_e; i <= e; ++i)
 		SetColumnSortType(i, i + (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), NULL);
 	
+	SetColumnSortType(0, WTL::LVCOLSORT_TEXTNOCASE, NULL);
+	
 	queue_view_mode();
-}
-
-std::wstring HaliteListViewCtrl::get_string(int index, int subitem)
-{
-	//switch
-	return L"";
 }
 
 void HaliteListViewCtrl::OnDestroy()
 {
-	saveSettings();
+	SaveSettings();
 }
 
-void HaliteListViewCtrl::saveSettings()
+void HaliteListViewCtrl::SaveSettings()
 {
 	GetListViewDetails();
 	save_to_ini();
@@ -94,56 +90,41 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 {
 	hal::try_update_lock<listClass> lock(*this);
 	if (lock) 
-	{
+	{		
+
+	if (GetSortColumn() != -1)
+	{		
+		int index = GetColumnSortType(GetSortColumn());
 		
-		int iCol = GetSortColumn();
-		//HAL_DEV_MSG(hal::wform(L"GetSortColumn with: %1%") % iCol);
-
-		if (iCol != -1)
-		{
-			
-			int index = GetColumnSortType(iCol);
-			
-			if (index > WTL::LVCOLSORT_LAST)
-			{
-			HAL_DEV_MSG(hal::wform(L"Sorting with: %1%, %2%") % index % (index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e)) );
+		if (index > WTL::LVCOLSORT_LAST)
 			tD.sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSortDescending());
-			}
-		}
-
-		if (IsGroupViewEnabled())
-			tD.sort(hal::torrent_details::managed_e);
-
-#	if 0
-	if (GetItemCount() > 0)
-	{
-		LVITEM lvItem = { 0 };
-		lvItem.mask = LVIF_TEXT|LVIF_GROUPID|LVIF_COLUMNS;
-		lvItem.iItem = 0;
-		lvItem.iSubItem = 0;
-
-		hal::win_c_str<std::wstring> str(2048);
-
-		lvItem.pszText = str;
-		lvItem.cchTextMax = str.size();
-
-		GetItem(&lvItem);
-		DeleteItem(lvItem.iItem);
-
-		lvItem.iItem = GetItemCount();
-		InsertItem(&lvItem);
 	}
-#	endif
+
+	if (IsGroupViewEnabled())
+		tD.sort(hal::torrent_details::managed_e);
+
 
 	for (size_t td_index=0, e=tD.torrents().size(); td_index<e; ++td_index)
 	{
 		hal::torrent_details_ptr td = tD.torrents()[td_index];
-		/*LV_FINDINFO findInfo; 
-		findInfo.flags = LVFI_STRING;
-		findInfo.psz = const_cast<LPTSTR>(td->name().c_str());
+	
+		int item_pos = td_index;
+
+		bool a = AutoSort();
+		bool s = IsSortOnce();
 		
-		int itemPos = FindItem(&findInfo, -1);
-		*/
+		HAL_DEV_MSG(hal::wform(L"AutoSort() = %1%, SortOnce() = %2%, !AutoSort() && !SortOnce() = %3%") % a % s % (!a && !s));
+
+		if (!a && !s)
+		{
+			LV_FINDINFO findInfo; 
+			findInfo.flags = LVFI_STRING;
+			findInfo.psz = const_cast<LPTSTR>(td->name().c_str());
+			
+			item_pos = FindItem(&findInfo, -1);
+		}
+		
+		HAL_DEV_MSG(hal::wform(L"Item = %1%, Index = %2%") % td->name() % item_pos);
 
 		LVITEM lvItem = { 0 };
 		lvItem.mask = LVIF_TEXT;
@@ -163,42 +144,33 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 		lvItem.mask |= LVIF_IMAGE;
 		lvItem.iImage = 0;
 
-		if (GetItemCount() <= static_cast<int>(td_index))
+		if (item_pos < 0 || GetItemCount() <= static_cast<int>(item_pos))
 		{
 			lvItem.iItem = GetItemCount();
 			td_index = InsertItem(&lvItem);
 		}
 		else
 		{
-			lvItem.iItem = td_index;
+			lvItem.iItem = item_pos;
 			SetItem(&lvItem);
 		}
 	
 		for (size_t i=1; i<NumberOfColumns_s; ++i)
 		{
-			SetItemText(td_index, i, td->to_wstring(i).c_str());
+			SetItemText(item_pos, i, td->to_wstring(i).c_str());
 		}
 	}
 	
 /*	int iCol = GetSortColumn();
-	if (autoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
+	if (AutoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
 		DoSortItems(iCol, IsSortDescending());
 */	
 	}
 }
 
-bool HaliteListViewCtrl::DoSortItems(int iCol, bool bDescending)
-{	
-	HAL_DEV_MSG(hal::wform(L"DoSortItems(int iCol = %1%, bool bDescending = %2%) - issuing update!") % iCol % bDescending);
-
-	halWindow_.issueUiUpdate();
-
-	return true;
-}
-
 LRESULT HaliteListViewCtrl::OnSortChanged(int, LPNMHDR pnmh, BOOL&)
-{		
-	halWindow_.issueUiUpdate();
+{
+	halite_window_.issueUiUpdate();
 	
 	return 0;
 }
@@ -370,7 +342,7 @@ LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCt
 		hal::bittorrent().get(std::wstring(winstl::c_str_ptr(val))).managed = true;
 	}
 	DeleteAllItems();
-	halWindow_.issueUiUpdate();
+	halite_window_.issueUiUpdate();
 
 	return 0;
 }
@@ -382,7 +354,7 @@ LRESULT HaliteListViewCtrl::OnSetUnmanaged(WORD wNotifyCode, WORD wID, HWND hWnd
 		hal::bittorrent().get(std::wstring(winstl::c_str_ptr(val))).managed = false;
 	}
 	DeleteAllItems();
-	halWindow_.issueUiUpdate();
+	halite_window_.issueUiUpdate();
 
 	return 0;
 }
@@ -410,7 +382,7 @@ LRESULT HaliteListViewCtrl::OnAdjustQueuePosition(WORD wNotifyCode, WORD wID, HW
 		};
 	}
 
-	halWindow_.issueUiUpdate();
+	halite_window_.issueUiUpdate();
 	
 	return 0;
 }
@@ -469,7 +441,7 @@ void HaliteListViewCtrl::queue_view_mode()
 		RemoveAllGroups();
 		int ret = EnableGroupView(false);
 	}
-	halWindow_.issueUiUpdate();
+	halite_window_.issueUiUpdate();
 
 	MENUITEMINFO minfo = {sizeof(MENUITEMINFO)};
 	

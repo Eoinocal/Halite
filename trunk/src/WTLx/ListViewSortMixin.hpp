@@ -199,7 +199,7 @@ protected:
 		if(m_bUseWaitCursor)
 			waitCursor.Set();
 
-		bool bRet = pT->DoSortItems(iCol, bDescending);
+		bool bRet = pT->DoSortItemsExternal(iCol, bDescending);
 
 		if(bRet)
 		{
