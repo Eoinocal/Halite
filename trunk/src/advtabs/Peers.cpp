@@ -8,7 +8,6 @@
 
 #include "../HaliteWindow.hpp"
 #include "../HaliteListView.hpp"
-
 #include "../global/logger.hpp"
 
 #include "Peers.hpp"
@@ -49,6 +48,8 @@ void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 			}
 		}
 		
+		int col_sort_index = GetSortColumn();
+
 		// Add additional details
 		for (hal::PeerDetails::iterator i=peerDetails_.begin(), e=peerDetails_.end();
 			i != e; ++i)
@@ -77,7 +78,11 @@ void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 			SetItemText(itemPos, 6, (*i).status.c_str());
 		}
 		
-		ConditionallyDoAutoSort();
+		if (AutoSort() && col_sort_index >= 0 && col_sort_index < m_arrColSortType.GetSize())
+		{
+			if (GetColumnSortType(col_sort_index) <= WTL::LVCOLSORT_CUSTOM)
+				DoSortItems(col_sort_index, IsSortDescending());
+		}
 	}
 }
 

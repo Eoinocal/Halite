@@ -301,7 +301,7 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 			list_.SetItemText(itemPos, 4, list_.getColumnAdapter(4)->print(fileD).c_str());			
 		}
 
-		list_.ConditionallyDoAutoSort();
+//		list_.ConditionallyDoAutoSort();
 	}
 }
 
