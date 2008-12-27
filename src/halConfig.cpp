@@ -9,11 +9,50 @@
 #include "stdAfx.hpp"
 #include "Halite.hpp"
 
+#include "global/string_conv.hpp"
+#include "global/wtl_app.hpp"
+
+#include "halIni.hpp"
 #include "halConfig.hpp"
 #include "ProgressDialog.hpp"
 
 namespace hal
 {
+
+Config::Config() :
+	hal::IniBase<Config>("globals/bittorrent", "Config"),
+	globals_(),
+	torrent_defaults_(),
+	port_range_(6881,6881),
+	use_port_range_(false),
+	randomize_port_(false),
+	enable_dht_(true),
+	dht_settings_(),
+	dht_random_port_(0),
+	dht_upper_port_(0),
+	dht_radio_(1),
+	enable_ip_filter_(false),
+	enableProxy(false),
+	proxyPort(0),
+	default_save_folder_((hal::app().exe_path().parent_path()/L"incoming").string()),
+	default_move_folder_((hal::app().exe_path().parent_path()/L"completed").string()),
+	use_move_to_(false),
+	save_prompt_(true),
+	enable_pe_(false),
+	pe_settings_(),
+	half_connections_(true),
+	half_connections_limit_(10),
+	mapping_upnp_(false),
+	mapping_nat_pmp_(false),
+	resolve_countries_(false),
+	metadata_plugin_(false),
+	ut_metadata_plugin_(false),
+	ut_pex_plugin_(false),
+	smart_ban_plugin_(false)
+{
+	queue_settings_ = hal::bittorrent().get_queue_settings();
+	timeouts_ = hal::bittorrent().get_timeouts();
+}
 
 bool Config::settingsChanged()
 {

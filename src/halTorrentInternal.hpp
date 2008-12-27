@@ -328,8 +328,8 @@ public:
 		uploads_(-1), \
 		ratio_(0), \
 		resolve_countries_(true), \
-		totalUploaded_(0), \
-		totalBase_(0), \
+		total_uploaded_(0), \
+		total_base_(0), \
 		progress_(0), \
 		managed_(false), \
 		start_time_(boost::posix_time::second_clock::universal_time()), \
@@ -371,8 +371,8 @@ public:
 
 		if (in_session())
 		{
-			statusMemory_ = handle_.status();
-			progress_ = statusMemory_.progress;
+			status_memory_ = handle_.status();
+			progress_ = status_memory_.progress;
 
 			queue_position_ = handle_.queue_position();
 		}
@@ -380,9 +380,9 @@ public:
 		{
 			// Wipe these cause they don't make sense for a non-active torrent.
 			
-			statusMemory_.download_payload_rate = 0;
-			statusMemory_.upload_payload_rate = 0;
-			statusMemory_.next_announce = boost::posix_time::seconds(0);		
+			status_memory_.download_payload_rate = 0;
+			status_memory_.upload_payload_rate = 0;
+			status_memory_.next_announce = boost::posix_time::seconds(0);		
 		}
 		
 		wstring state_str;
@@ -406,7 +406,7 @@ public:
 			break;
 			
 		default:
-			switch (statusMemory_.state)
+			switch (status_memory_.state)
 			{
 			case libt::torrent_status::queued_for_checking:
 				state_str = app().res_wstr(HAL_TORRENT_QUEUED_CHECKING);
@@ -437,25 +437,25 @@ public:
 		
 		pt::time_duration td(pt::pos_infin);
 		
-		if (statusMemory_.download_payload_rate != 0)
+		if (status_memory_.download_payload_rate != 0)
 		{
 			td = boost::posix_time::seconds(	
-				long(float(statusMemory_.total_wanted-statusMemory_.total_wanted_done) / statusMemory_.download_payload_rate));
+				long(float(status_memory_.total_wanted-status_memory_.total_wanted_done) / status_memory_.download_payload_rate));
 		}
 		
-		totalUploaded_ += (statusMemory_.total_payload_upload - totalBase_);
-		totalBase_ = statusMemory_.total_payload_upload;
+		total_uploaded_ += (status_memory_.total_payload_upload - total_base_);
+		total_base_ = status_memory_.total_payload_upload;
 		
-		uploaded_.update(statusMemory_.total_upload);
-		payload_uploaded_.update(statusMemory_.total_payload_upload);
-		downloaded_.update(statusMemory_.total_download);
-		payload_downloaded_.update(statusMemory_.total_payload_download);
+		uploaded_.update(status_memory_.total_upload);
+		payload_uploaded_.update(status_memory_.total_payload_upload);
+		downloaded_.update(status_memory_.total_download);
+		payload_downloaded_.update(status_memory_.total_payload_download);
 		
 		if (is_active())
 		{
 			active_duration_.update();
 			
-			if (libt::torrent_status::seeding == statusMemory_.state)
+			if (libt::torrent_status::seeding == status_memory_.state)
 				seeding_duration_.update();
 		}	
 		
@@ -465,20 +465,20 @@ public:
 			name_, filename_, 
 			save_directory().string(), 
 			state_str, 
-			hal::from_utf8(statusMemory_.current_tracker), 
+			hal::from_utf8(status_memory_.current_tracker), 
 			std::pair<float, float>(
-				statusMemory_.download_payload_rate, 
-				statusMemory_.upload_payload_rate),
+				status_memory_.download_payload_rate, 
+				status_memory_.upload_payload_rate),
 			progress_, 
-			statusMemory_.distributed_copies, 
-			statusMemory_.total_wanted_done, 
-			statusMemory_.total_wanted, 
+			status_memory_.distributed_copies, 
+			status_memory_.total_wanted_done, 
+			status_memory_.total_wanted, 
 			uploaded_, payload_uploaded_,
 			downloaded_, payload_downloaded_, 
 			connections, 
 			ratio_, 
 			td, 
-			statusMemory_.next_announce, 
+			status_memory_.next_announce, 
 			active_duration_, seeding_duration_, 
 			start_time_, finish_time_, 
 			queue_position_,
@@ -959,10 +959,10 @@ public:
 	
 	void set_file_priorities(std::vector<int> fileIndices, int priority)
 	{
-		if (!filePriorities_.empty())
+		if (!file_priorities_.empty())
 		{
 			foreach(int i, fileIndices)
-				filePriorities_[i] = priority;
+				file_priorities_[i] = priority;
 				
 			apply_file_priorities();
 		}
@@ -1003,7 +1003,7 @@ public:
 			ar & make_nvp("uploaded", uploaded_);
 			ar & make_nvp("downloaded", downloaded_);			
 					
-			ar & make_nvp("file_priorities", filePriorities_);
+			ar & make_nvp("file_priorities", file_priorities_);
 			
 			ar & make_nvp("start_time", start_time_);
 			ar & make_nvp("finish_time", finish_time_);
@@ -1044,7 +1044,7 @@ public:
 			
 			ar & make_nvp("resolve_countries", resolve_countries_);
 			
-			ar & make_nvp("file_priorities", filePriorities_);
+			ar & make_nvp("file_priorities", file_priorities_);
 			
 			ar & make_nvp("start_time", start_time_);
 			ar & make_nvp("activeDuration", active_duration_);
@@ -1110,9 +1110,9 @@ public:
 		}
 	}
 
-	void get_file_details(FileDetails& file_details)
+	void get_file_details(file_details_vec& files)
 	{
-		if (file_detailsMemory_.empty())
+		if (file_details_memory_.empty())
 		{
 			boost::intrusive_ptr<libt::torrent_info> info = info_memory();
 			std::vector<libt::file_entry> files;
@@ -1120,10 +1120,10 @@ public:
 			std::copy(info->begin_files(), info->end_files(), 
 				std::back_inserter(files));					
 				
-			if (filePriorities_.size() != files.size())
+			if (file_priorities_.size() != files.size())
 			{
-				filePriorities_.clear();
-				filePriorities_.assign(files.size(), 1);
+				file_priorities_.clear();
+				file_priorities_.assign(files.size(), 1);
 			}
 			
 			for(size_t i=0, e=files.size(); i<e; ++i)
@@ -1131,7 +1131,7 @@ public:
 				wstring fullPath = hal::from_utf8(files[i].path.string());
 				boost::int64_t size = static_cast<boost::int64_t>(files[i].size);
 				
-				file_detailsMemory_.push_back(FileDetail(fullPath, size, 0, filePriorities_[i], i));
+				file_details_memory_.push_back(file_details(fullPath, size, 0, file_priorities_[i], i));
 			}	
 		}		
 		
@@ -1140,14 +1140,14 @@ public:
 			std::vector<libt::size_type> fileProgress;			
 			handle_.file_progress(fileProgress);
 			
-			for(size_t i=0, e=file_detailsMemory_.size(); i<e; ++i)
-				file_detailsMemory_[i].progress =  fileProgress[i];			
+			for(size_t i=0, e=file_details_memory_.size(); i<e; ++i)
+				file_details_memory_[i].progress =  fileProgress[i];			
 		}
 
-		for(size_t i=0, e=file_detailsMemory_.size(); i<e; ++i)
-			file_detailsMemory_[i].priority =  filePriorities_[i];
+		for(size_t i=0, e=file_details_memory_.size(); i<e; ++i)
+			file_details_memory_[i].priority =  file_priorities_[i];
 		
-		file_details = file_detailsMemory_;
+		files = file_details_memory_;
 	}
 	
 	void prepare(wpath filename)
@@ -1317,8 +1317,8 @@ private:
 		mutex_t::scoped_lock l(mutex_);
 		if (in_session()) 
 		{
-			if (!filePriorities_.empty())
-				handle_.prioritize_files(filePriorities_);
+			if (!file_priorities_.empty())
+				handle_.prioritize_files(file_priorities_);
 			
 			HAL_DEV_MSG(L"Applying File Priorities");
 		}
@@ -1442,8 +1442,7 @@ private:
 		return state_; 
 	}
 		
-	static libt::session* the_session_;
-	
+	static libt::session* the_session_;	
 	mutable mutex_t mutex_;
 
 	torrent_state_machine machine_;
@@ -1470,8 +1469,8 @@ private:
 	wstring tracker_username_;	
 	wstring tracker_password_;
 	
-	boost::int64_t totalUploaded_;
-	boost::int64_t totalBase_;
+	boost::int64_t total_uploaded_;
+	boost::int64_t total_base_;
 	
 	transfer_tracker<boost::int64_t> payload_uploaded_;
 	transfer_tracker<boost::int64_t> payload_downloaded_;
@@ -1486,13 +1485,13 @@ private:
 	std::vector<tracker_detail> trackers_;
 	std::vector<libt::announce_entry> torrent_trackers_;
 	std::vector<libt::peer_info> peers_;	
-	std::vector<int> filePriorities_;
+	std::vector<int> file_priorities_;
 	
 	float progress_;
 	
 	boost::intrusive_ptr<libt::torrent_info> info_memory_;
-	libt::torrent_status statusMemory_;
-	FileDetails file_detailsMemory_;
+	libt::torrent_status status_memory_;
+	file_details_vec file_details_memory_;
 	
 	int queue_position_;
 	bool compact_storage_;
@@ -1503,23 +1502,23 @@ private:
 typedef std::map<std::string, TorrentInternalOld> TorrentMap;
 typedef std::pair<std::string, TorrentInternalOld> TorrentPair;
 
-class TorrentManager : 
-	public hal::IniBase<TorrentManager>
+class torrent_manager : 
+	public hal::IniBase<torrent_manager>
 {
-	typedef TorrentManager thisClass;
+	typedef torrent_manager thisClass;
 	typedef hal::IniBase<thisClass> iniClass;
 
-	struct TorrentHolder
+	struct torrent_holder
 	{
 		mutable torrent_internal_ptr torrent;
 		
 		wstring filename;
 		wstring name;		
 		
-		TorrentHolder()
+		torrent_holder()
 		{}
 		
-		explicit TorrentHolder(torrent_internal_ptr t) :
+		explicit torrent_holder(torrent_internal_ptr t) :
 			torrent(t), filename(torrent->filename()), name(torrent->name())
 		{}
 						
@@ -1535,48 +1534,48 @@ class TorrentManager :
 		}
 	};
 	
-	struct byFilename{};
-	struct byName{};
+	struct by_filename{};
+	struct by_name{};
 	
 	typedef boost::multi_index_container<
-		TorrentHolder,
+		torrent_holder,
 		boost::multi_index::indexed_by<
 			boost::multi_index::ordered_unique<
-				boost::multi_index::tag<byFilename>,
+				boost::multi_index::tag<by_filename>,
 				boost::multi_index::member<
-					TorrentHolder, wstring, &TorrentHolder::filename> 
+					torrent_holder, wstring, &torrent_holder::filename> 
 				>,
 			boost::multi_index::ordered_unique<
-				boost::multi_index::tag<byName>,
+				boost::multi_index::tag<by_name>,
 				boost::multi_index::member<
-					TorrentHolder, wstring, &TorrentHolder::name> 
+					torrent_holder, wstring, &torrent_holder::name> 
 				>
 		>
-	> TorrentMultiIndex;
+	> torrent_multi_index;
 	
 public:
-	typedef TorrentMultiIndex::index<byFilename>::type torrentByFilename;
-	typedef TorrentMultiIndex::index<byName>::type torrentByName;
+	typedef torrent_multi_index::index<by_filename>::type torrent_by_filename;
+	typedef torrent_multi_index::index<by_name>::type torrent_by_name;
 	
-	TorrentManager(ini_file& ini) :
-		iniClass("bittorrent", "TorrentManager", ini)
+	torrent_manager(ini_file& ini) :
+		iniClass("bittorrent", "torrent_manager", ini)
 	{}
 
-	std::pair<torrentByName::iterator, bool> insert(const TorrentHolder& h)
+	std::pair<torrent_by_name::iterator, bool> insert(const torrent_holder& h)
 	{
-		return torrents_.get<byName>().insert(h);
+		return torrents_.get<by_name>().insert(h);
 	}
 	
-	std::pair<torrentByName::iterator, bool> insert(torrent_internal_ptr t)
+	std::pair<torrent_by_name::iterator, bool> insert(torrent_internal_ptr t)
 	{
-		return insert(TorrentHolder(t));
+		return insert(torrent_holder(t));
 	}
 
-	torrent_internal_ptr getByFile(const wstring& filename)
+	torrent_internal_ptr get_by_file(const wstring& filename)
 	{
-		torrentByFilename::iterator it = torrents_.get<byFilename>().find(filename);
+		torrent_by_filename::iterator it = torrents_.get<by_filename>().find(filename);
 		
-		if (it != torrents_.get<byFilename>().end() && (*it).torrent)
+		if (it != torrents_.get<by_filename>().end() && (*it).torrent)
 		{
 			return (*it).torrent;
 		}
@@ -1586,9 +1585,9 @@ public:
 	
 	torrent_internal_ptr get(const wstring& name)
 	{
-		torrentByName::iterator it = torrents_.get<byName>().find(name);
+		torrent_by_name::iterator it = torrents_.get<by_name>().find(name);
 		
-		if (it != torrents_.get<byName>().end() && (*it).torrent)
+		if (it != torrents_.get<by_name>().end() && (*it).torrent)
 		{
 			return (*it).torrent;
 		}
@@ -1596,9 +1595,9 @@ public:
 		throw invalidTorrent(name);
 	}
 	
-	torrentByName::iterator erase(torrentByName::iterator where)
+	torrent_by_name::iterator erase(torrent_by_name::iterator where)
 	{
-		return torrents_.get<byName>().erase(where);
+		return torrents_.get<by_name>().erase(where);
 	}
 	
 	size_t size()
@@ -1608,21 +1607,21 @@ public:
 	
 	size_t erase(const wstring& name)
 	{
-		return torrents_.get<byName>().erase(name);
+		return torrents_.get<by_name>().erase(name);
 	}
 	
 	bool exists(const wstring& name)
 	{
-		torrentByName::iterator it = torrents_.get<byName>().find(name);
+		torrent_by_name::iterator it = torrents_.get<by_name>().find(name);
 		
-		if (it != torrents_.get<byName>().end())
+		if (it != torrents_.get<by_name>().end())
 			return true;
 		else
 			return false;
 	}
 	
-	torrentByName::iterator begin() { return torrents_.get<byName>().begin(); }
-	torrentByName::iterator end() { return torrents_.get<byName>().end(); }
+	torrent_by_name::iterator begin() { return torrents_.get<by_name>().begin(); }
+	torrent_by_name::iterator end() { return torrents_.get<by_name>().end(); }
 	
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -1632,9 +1631,9 @@ public:
 	}	
 	
 private:
-	TorrentMultiIndex torrents_;
+	torrent_multi_index torrents_;
 };
 
 } // namespace hal
 
-BOOST_CLASS_VERSION(hal::TorrentManager::TorrentHolder, 1)
+BOOST_CLASS_VERSION(hal::torrent_manager::torrent_holder, 1)

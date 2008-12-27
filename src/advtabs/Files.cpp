@@ -111,11 +111,11 @@ LRESULT FileTreeView::OnRClick(int i, LPNMHDR pnmh, BOOL&)
 
 void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {	
-	hal::FileDetails file_details;
+	hal::file_details_vec file_details;
 	
 	if (hal::torrent_details_ptr torrent = hal::bittorrent().torrentDetails().focusedTorrent())
 	{
-		std::copy(torrent->file_details().begin(), torrent->file_details().end(), 
+		std::copy(torrent->get_file_details().begin(), torrent->get_file_details().end(), 
 			std::back_inserter(file_details));
 	}
 
@@ -137,7 +137,7 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 
 	std::vector<int> indices;
 	
-	for (hal::FileDetails::iterator i=file_details.begin(), e=file_details.end();
+	for (hal::file_details_vec::iterator i=file_details.begin(), e=file_details.end();
 		i != e; ++i)
 	{			
 		if (std::equal(branch.begin(), branch.end(), (*i).branch.begin()))
@@ -249,7 +249,7 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 {
 	list_.setFocused(focusedTorrent());
 	
-	if (fileLinks_.empty() || !(focusedTorrent() && !focusedTorrent()->file_details().empty())) 
+	if (fileLinks_.empty() || !(focusedTorrent() && !focusedTorrent()->get_file_details().empty())) 
 	{
 		list_.DeleteAllItems();
 		return;
@@ -283,7 +283,7 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 		for (std::vector<FileLink>::iterator i=range_.first, e=range_.second;
 			i != e; ++i)
 		{
-			hal::FileDetail fileD = focusedTorrent()->file_details()[(*i).order()];
+			hal::file_details fileD = focusedTorrent()->get_file_details()[(*i).order()];
 			
 			LV_FINDINFO findInfo; 
 			findInfo.flags = LVFI_STRING;
@@ -310,7 +310,7 @@ void AdvFilesDialog::focusChanged(const hal::torrent_details_ptr pT)
 	fileLinks_.clear();
 	if (pT)
 	{
-		std::copy(pT->file_details().begin(), pT->file_details().end(), 
+		std::copy(pT->get_file_details().begin(), pT->get_file_details().end(), 
 			std::back_inserter(fileLinks_));
 	}
 	

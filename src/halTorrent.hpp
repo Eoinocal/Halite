@@ -71,240 +71,6 @@ inline boost::wformat wform(const std::wstring & f_string)
     return fmter;
 }
 
-struct queue_settings
-{
-	friend class boost::serialization::access;
-	template<class Archive>
-	void serialize(Archive& ar, const unsigned int version)
-	{	
-		ar & BOOST_SERIALIZATION_NVP(auto_manage_interval);
-		ar & BOOST_SERIALIZATION_NVP(active_downloads);
-		ar & BOOST_SERIALIZATION_NVP(active_seeds);
-		ar & BOOST_SERIALIZATION_NVP(seeds_hard_limit);
-		ar & BOOST_SERIALIZATION_NVP(seed_ratio_limit);
-		ar & BOOST_SERIALIZATION_NVP(seed_ratio_time_limit);
-		ar & BOOST_SERIALIZATION_NVP(seed_time_limit);
-		ar & BOOST_SERIALIZATION_NVP(dont_count_slow_torrents);
-		ar & BOOST_SERIALIZATION_NVP(auto_scrape_min_interval);
-		ar & BOOST_SERIALIZATION_NVP(auto_scrape_interval);
-		ar & BOOST_SERIALIZATION_NVP(close_redundant_connections);
-	}
-
-	bool operator==(const queue_settings& s) const
-	{
-		return (auto_manage_interval == s.auto_manage_interval &&
-			active_downloads == s.active_downloads &&
-			active_seeds == s.active_seeds &&
-			seeds_hard_limit == s.seeds_hard_limit &&
-			seed_ratio_limit == s.seed_ratio_limit &&
-			seed_ratio_time_limit == s.seed_ratio_time_limit &&
-			seed_time_limit == s.seed_time_limit &&
-			dont_count_slow_torrents == s.dont_count_slow_torrents &&
-			auto_scrape_min_interval == s.auto_scrape_min_interval &&
-			auto_scrape_interval == s.auto_scrape_interval &&
-			close_redundant_connections == s.close_redundant_connections);
-	}
-	
-	bool operator!=(const queue_settings& s) const
-	{
-		return !(*this == s);
-	}
-
-	int auto_manage_interval;
-
-	int active_downloads;
-	int active_seeds;
-	int seeds_hard_limit;
-	float seed_ratio_limit;
-	float seed_ratio_time_limit;
-	int seed_time_limit;
-	bool dont_count_slow_torrents;
-
-	int auto_scrape_min_interval;
-	int auto_scrape_interval;
-	bool close_redundant_connections;
-};
-
-struct timeouts
-{
-	friend class boost::serialization::access;
-	template<class Archive>
-	void serialize(Archive& ar, const unsigned int version)
-	{	
-		ar & BOOST_SERIALIZATION_NVP(tracker_completion_timeout);
-		ar & BOOST_SERIALIZATION_NVP(tracker_receive_timeout);
-		ar & BOOST_SERIALIZATION_NVP(stop_tracker_timeout);
-
-		ar & BOOST_SERIALIZATION_NVP(request_queue_time);
-		ar & BOOST_SERIALIZATION_NVP(piece_timeout);
-		ar & BOOST_SERIALIZATION_NVP(min_reconnect_time);
-
-		ar & BOOST_SERIALIZATION_NVP(peer_timeout);
-		ar & BOOST_SERIALIZATION_NVP(urlseed_timeout);
-		ar & BOOST_SERIALIZATION_NVP(peer_connect_timeout);
-		ar & BOOST_SERIALIZATION_NVP(inactivity_timeout);
-		ar & BOOST_SERIALIZATION_NVP(handshake_timeout);
-	}
-
-	int tracker_completion_timeout;
-	int tracker_receive_timeout;
-	int stop_tracker_timeout;
-
-	float request_queue_time;
-	int piece_timeout;
-	int min_reconnect_time;
-
-	int peer_timeout;
-	int urlseed_timeout;
-	int peer_connect_timeout;
-	int inactivity_timeout;
-	int handshake_timeout;
-};
-
-struct dht_settings
-{
-	dht_settings() :
-		max_peers_reply(50),
-		search_branching(5),
-		service_port(6881),
-		max_fail_count(20)
-	{}
-
-	friend class boost::serialization::access;
-	template<class Archive>
-	void serialize(Archive& ar, const unsigned int version)
-	{	
-		ar & BOOST_SERIALIZATION_NVP(max_peers_reply);
-		ar & BOOST_SERIALIZATION_NVP(search_branching);
-		ar & BOOST_SERIALIZATION_NVP(service_port);
-		ar & BOOST_SERIALIZATION_NVP(max_fail_count);
-	}
-
-	int max_peers_reply;
-	int search_branching;
-	int service_port;
-	int max_fail_count;
-};
-
-struct cache_settings
-{
-	cache_settings() :
-		cache_size(512),
-		cache_expiry(60)
-	{}
-
-	friend class boost::serialization::access;
-	template<class Archive>
-	void serialize(Archive& ar, const unsigned int version)
-	{	
-		ar & BOOST_SERIALIZATION_NVP(cache_size);
-		ar & BOOST_SERIALIZATION_NVP(cache_expiry);
-	}
-
-	int cache_size;
-	int cache_expiry;
-};
-
-struct pe_settings
-{
-	pe_settings() :
-		encrypt_level(0),
-		prefer_rc4(false),
-		conn_in_policy(1),
-		conn_out_policy(1)
-	{}
-
-	friend class boost::serialization::access;
-	template<class Archive>
-	void serialize(Archive& ar, const unsigned int version)
-	{	
-		ar & BOOST_SERIALIZATION_NVP(encrypt_level);
-		ar & BOOST_SERIALIZATION_NVP(prefer_rc4);
-		ar & BOOST_SERIALIZATION_NVP(conn_in_policy);
-		ar & BOOST_SERIALIZATION_NVP(conn_out_policy);
-	}
-
-    int encrypt_level;
-    bool prefer_rc4;
-    int conn_in_policy;
-    int conn_out_policy;
-};
-
-struct connections
-{
-	connections() :
-		total(50),
-		uploads(10),
-		download_rate(-1),
-		upload_rate(-1)
-	{}
-
-	friend class boost::serialization::access;
-	template<class Archive>
-	void serialize(Archive& ar, const unsigned int version)
-	{	
-		ar & BOOST_SERIALIZATION_NVP(total);
-		ar & BOOST_SERIALIZATION_NVP(uploads);
-		ar & BOOST_SERIALIZATION_NVP(download_rate);
-		ar & BOOST_SERIALIZATION_NVP(upload_rate);
-	}
-
-    int total;
-    int uploads;
-    float download_rate;
-    float upload_rate;
-};
-
-struct cache_details
-{
-	cache_details() :
-		blocks_written(-1),
-		writes(-1),
-		blocks_read(-1),
-		blocks_read_hit(-1),
-		reads(-1),
-		cache_size(-1),
-		read_cache_size(-1),
-		write_ratio(-1),
-		read_ratio(-1),
-		write_cache_size(-1)
-	{}
-
-	cache_details(size_type b_w,
-			size_type w,
-			size_type b_r,
-			size_type b_r_h,
-			size_type r,
-			int c_s,
-			int r_c_s) :
-		blocks_written(b_w),
-		writes(w),
-		blocks_read(b_r),
-		blocks_read_hit(b_r_h),
-		reads(r),
-		cache_size(c_s),
-		read_cache_size(r_c_s),
-		write_cache_size(cache_size-read_cache_size)
-	{
-		write_ratio = (blocks_written == 0) ? 0 :
-			static_cast<double>(blocks_written-writes) / blocks_written;
-
-		read_ratio = (blocks_read == 0) ? 0 :
-			static_cast<double>(blocks_read_hit) / blocks_read;}
-
-    size_type blocks_written;
-    size_type writes;
-    size_type blocks_read;
-    size_type blocks_read_hit;
-    size_type reads;
-    int cache_size;
-    int read_cache_size;
-
-	double write_ratio;
-	double read_ratio;
-	int write_cache_size;
-};
-	
 struct torrentBriefDetail 
 {
 	std::wstring filename;
@@ -315,9 +81,23 @@ struct torrentBriefDetail
 	int seeds;
 };
 
-struct FileDetail
+struct queue_settings;
+struct timeouts;
+struct dht_settings;
+struct cache_settings;
+struct pe_settings;
+struct connections;
+struct cache_details;
+
+
+struct file_details
 {
-	FileDetail(boost::filesystem::wpath p, boost::int64_t s=0, boost::int64_t pg=0, int pr=1, size_t o=0, unsigned t=FileDetail::file) :
+	file_details(boost::filesystem::wpath p, 
+			boost::int64_t s=0, 
+			boost::int64_t pg=0, 
+			int pr=1, 
+			size_t o=0, 
+			unsigned t=file_details::file) :
 		branch(p.parent_path()),
 		filename(p.filename()),
 		type(t),
@@ -327,17 +107,17 @@ struct FileDetail
 		order_(o)
 	{}
 	
-	bool operator==(const FileDetail& file) const
+	bool operator==(const file_details& file) const
 	{
 		return (branch == file.branch);
 	}
 	
-	bool operator<(const FileDetail& file) const
+	bool operator<(const file_details& file) const
 	{
 		return (branch < file.branch);
 	}
 	
-	enum FileType
+	enum file_type
 	{
 		folder,
 		file
@@ -356,17 +136,17 @@ private:
 	size_t order_;
 };
 
-inline bool FileDetailNamesEqual(const FileDetail& l, const FileDetail& r)
+inline bool file_details_names_equal(const file_details& l, const file_details& r)
 {
 	return l.filename == r.filename;
 }
 
-inline bool FileDetailNamesLess(const FileDetail& l, const FileDetail& r)
+inline bool file_details_names_less(const file_details& l, const file_details& r)
 {
 	return l.filename < r.filename;
 }
 
-typedef std::vector<FileDetail> FileDetails;
+typedef std::vector<file_details> file_details_vec;
 
 
 class torrent_details 
@@ -402,7 +182,7 @@ public:
 		distributed_copies_(d),
 		total_wanted_done_(tWD),
 		total_wanted_(tW),
-		totalUploaded_(tU),
+		total_uploaded_(tU),
 		total_payload_uploaded_(tpU),
 		total_downloaded_(tD),
 		total_payload_downloaded_(tpD),
@@ -474,7 +254,7 @@ public:
 	const float& completion() const { return completion_; }
 	const float& distributed_copies() const { return distributed_copies_; }
 	
-	size_type total_uploaded() const { return totalUploaded_; }
+	size_type total_uploaded() const { return total_uploaded_; }
 	size_type total_payload_uploaded() const { return total_payload_uploaded_; }
 	size_type total_downloaded() const { return total_downloaded_; }
 	size_type total_payload_downloaded() const { return total_payload_downloaded_; }
@@ -492,7 +272,7 @@ public:
 	const boost::posix_time::time_duration& update_tracker_in() { return update_tracker_in_; }
 	
 	const peer_details_vec& get_peer_details() const;
-	const FileDetails& file_details() const;
+	const file_details_vec& get_file_details() const;
 	
 	const boost::posix_time::time_duration& active() { return active_; }
 	const boost::posix_time::time_duration& seeding() { return seeding_; }
@@ -518,7 +298,7 @@ public:
 	
 	size_type total_wanted_done_;
 	size_type total_wanted_;
-	size_type totalUploaded_;
+	size_type total_uploaded_;
 	size_type total_payload_uploaded_;
 	size_type total_downloaded_;
 	size_type total_payload_downloaded_;
@@ -546,7 +326,7 @@ private:
 	mutable peer_details_vec peer_details_;
 	
 	mutable bool file_details_filled_;
-	mutable FileDetails file_details_;
+	mutable file_details_vec file_details_;
 };
 
 typedef boost::shared_ptr<torrent_details> torrent_details_ptr;
@@ -930,8 +710,8 @@ public:
 	
 	void get_all_peer_details(const std::string& filename, peer_details_vec& peerContainer);
 	void get_all_peer_details(const std::wstring& filename, peer_details_vec& peerContainer);
-	void get_all_file_details(const std::string& filename, FileDetails& file_details);
-	void get_all_file_details(const std::wstring& filename, FileDetails& file_details);
+	void get_all_file_details(const std::string& filename, file_details_vec& file_details);
+	void get_all_file_details(const std::wstring& filename, file_details_vec& file_details);
 	
 	void resume_all();
 	void close_all(boost::optional<report_num_active> fn);
