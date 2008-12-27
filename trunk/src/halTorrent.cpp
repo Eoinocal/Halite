@@ -18,6 +18,7 @@
 
 #include "halTorrentInternal.hpp"
 #include "halSession.hpp"
+#include "halConfig.hpp"
 //#include "halSessionAlert.hpp"
 
 namespace hal 
@@ -45,7 +46,7 @@ const peer_details_vec& torrent_details::get_peer_details() const
 	return peer_details_;
 }
 
-const FileDetails& torrent_details::file_details() const
+const file_details_vec& torrent_details::get_file_details() const
 {
 	if (!file_details_filled_)
 	{
@@ -518,7 +519,7 @@ const torrent_details_manager& bit::updatetorrent_details_manager(const wstring&
 	torrentDetails_.clearAll(l);	
 	torrentDetails_.torrents_.reserve(pimpl()->the_torrents_.size());
 	
-	for (TorrentManager::torrentByName::iterator i=pimpl()->the_torrents_.begin(), e=pimpl()->the_torrents_.end(); i != e; ++i)
+	for (torrent_manager::torrent_by_name::iterator i=pimpl()->the_torrents_.begin(), e=pimpl()->the_torrents_.end(); i != e; ++i)
 	{
 		wstring utf8Name = (*i).torrent->name();
 		torrent_details_ptr pT = (*i).torrent->get_torrent_details_ptr();
@@ -569,12 +570,12 @@ void bit::get_all_peer_details(const std::wstring& filename, peer_details_vec& p
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "get_all_peer_details")
 }
 
-void bit::get_all_file_details(const std::string& filename, FileDetails& file_details)
+void bit::get_all_file_details(const std::string& filename, file_details_vec& file_details)
 {
 	get_all_file_details(from_utf8_safe(filename), file_details);
 }
 
-void bit::get_all_file_details(const std::wstring& filename, FileDetails& file_details)
+void bit::get_all_file_details(const std::wstring& filename, file_details_vec& file_details)
 {
 	try {
 	
@@ -700,7 +701,7 @@ void bit::pause_all_torrents()
 {	
 	try {
 	
-	for (TorrentManager::torrentByName::iterator i=pimpl()->the_torrents_.begin(), e=pimpl()->the_torrents_.end();
+	for (torrent_manager::torrent_by_name::iterator i=pimpl()->the_torrents_.begin(), e=pimpl()->the_torrents_.end();
 		i != e; ++i)
 	{		
 		if ((*i).torrent->in_session())
@@ -714,7 +715,7 @@ void bit::unpause_all_torrents()
 {	
 	try {
 	
-	for (TorrentManager::torrentByName::iterator i=pimpl()->the_torrents_.begin(), e=pimpl()->the_torrents_.end();
+	for (torrent_manager::torrent_by_name::iterator i=pimpl()->the_torrents_.begin(), e=pimpl()->the_torrents_.end();
 		i != e; ++i)
 	{
 		if ((*i).torrent->in_session() && (*i).torrent->get_state() == torrent_details::torrent_paused)

@@ -34,7 +34,7 @@ struct FileLink
 		order_(o)
 	{}
 
-	FileLink(const hal::FileDetail& f) :
+	FileLink(const hal::file_details& f) :
 		branch(f.branch),
 		filename(f.filename),
 		order_(f.order())
@@ -81,13 +81,13 @@ inline bool FileLinkNamesLess(const FileLink& l, const FileLink& r)
 }
 
 class FileListView :
-	public CHaliteSortListViewCtrl<FileListView, const hal::FileDetail>,
+	public CHaliteSortListViewCtrl<FileListView, const hal::file_details>,
 	public hal::IniBase<FileListView>,
 	private boost::noncopyable
 {
 public:
 	typedef FileListView thisClass;
-	typedef const hal::FileDetail dataClass;
+	typedef const hal::file_details dataClass;
 	typedef CHaliteSortListViewCtrl<thisClass, dataClass> listClass;
 	typedef hal::IniBase<thisClass> iniClass;
 
@@ -192,7 +192,7 @@ public:
 	
 /*	dataClass CustomItemConversion(LVCompareParam* param, int iSortCol)
 	{			
-		return focused_->file_details()[param->dwItemData];
+		return focused_->get_file_details()[param->dwItemData];
 	}		*/
 	
 	void setFocused(const hal::torrent_details_ptr& f) { focused_ = f; }
@@ -449,6 +449,6 @@ protected:
 	
 	std::vector<FileLink> fileLinks_;
 	
-	hal::FileDetails file_details_;
+	hal::file_details_vec file_details_;
 	std::pair<std::vector<FileLink>::iterator, std::vector<FileLink>::iterator> range_;
 };

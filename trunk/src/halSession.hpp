@@ -38,6 +38,7 @@
 #include "halIni.hpp"
 #include "halTypes.hpp"
 #include "halEvent.hpp"
+#include "halConfig.hpp"
 #include "halTorrentInternal.hpp"
 #include "halSignaler.hpp"
 
@@ -357,7 +358,7 @@ public:
 
 			return false;
 		}
-		catch(...)
+		catch (...)
 		{
 			return false;
 		}
@@ -752,7 +753,7 @@ public:
 	{		
 		resolve_countries_ = b;
 
-		for (TorrentManager::torrentByName::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
+		for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
 			i != e; ++i)
 		{
 			(*i).torrent->set_resolve_countries(resolve_countries_);
@@ -869,7 +870,7 @@ public:
 			TIp->set_resolve_countries(resolve_countries_);
 		}
 		
-		std::pair<TorrentManager::torrentByName::iterator, bool> p =
+		std::pair<torrent_manager::torrent_by_name::iterator, bool> p =
 			the_torrents_.insert(TIp);
 		
 		if (p.second)
@@ -1025,7 +1026,7 @@ public:
 			
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Resuming torrent.")));
 		
-		for (TorrentManager::torrentByName::iterator i=the_torrents_.begin(), e=the_torrents_.end(); i != e;)
+		for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); i != e;)
 		{
 			wpath file = wpath(hal::app().get_working_directory())/L"torrents"/(*i).torrent->filename();
 			
@@ -1088,7 +1089,7 @@ public:
 
 		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"Stopping all torrents...")));
 		
-		for (TorrentManager::torrentByName::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
+		for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
 			i != e; ++i)
 		{
 			(*i).torrent->stop();
@@ -1099,7 +1100,7 @@ public:
 		{
 			num_active = 0;
 
-			for (TorrentManager::torrentByName::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
+			for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
 					i != e; ++i)
 			{
 				if ((*i).torrent && (*i).torrent->state() != torrent_details::torrent_stopped)
@@ -1155,7 +1156,7 @@ private:
 	bool keepChecking_;
 	
 	ini_file bittorrentIni;
-	TorrentManager the_torrents_;	
+	torrent_manager the_torrents_;	
 	
 	int default_torrent_max_connections_;
 	int default_torrent_max_uploads_;
