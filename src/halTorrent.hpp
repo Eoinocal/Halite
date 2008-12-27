@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <string>
+/*#include <string>
 #include <vector>
 #include <set>
 
@@ -17,7 +17,6 @@
 #include <boost/bind.hpp>
 
 #include <boost/smart_ptr.hpp>
-
 #include <boost/noncopyable.hpp>
 
 #include <boost/signal.hpp>
@@ -25,30 +24,43 @@
 #include <boost/function.hpp>
 
 #include <boost/smart_ptr.hpp>
-#include <boost/algorithm/string.hpp>
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/fstream.hpp>
+*/
+
+#include <boost/algorithm/string.hpp>
 
 #include <stlsoft/properties/method_properties.hpp>
 #include <stlsoft/util/operator_bool_adaptor.hpp>
 
-
-//#if BOOST_VERSION < 103500
-//#include <asio/ip/tcp.hpp>
-//#include <asio/ip/udp.hpp>
-//#else
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ip/udp.hpp>
-//#endif
 
 #include "halTypes.hpp"
-
-namespace libtorrent { struct peer_info; }
+#include "halPeers.hpp"
 
 namespace hal 
 {
+
+template<typename T>
+bool hal_details_ptr_compare(T l, T r, size_t index = 0, bool cmp_less = true)
+{
+	if (cmp_less)
+		return l->less(*r, index);
+	else
+		return r->less(*l, index);
+}
+
+template<typename T>
+bool hal_details_compare(T l, T r, size_t index = 0, bool cmp_less = true)
+{
+	if (cmp_less)
+		return l.less(r, index);
+	else
+		return r.less(l, index);
+}
 
 inline boost::wformat wform(const std::wstring & f_string) 
 {
@@ -303,34 +315,6 @@ struct torrentBriefDetail
 	int seeds;
 };
 
-struct PeerDetail 
-{
-	PeerDetail(const std::wstring& ip_address) :
-		ipAddress(ip_address)
-	{}
-	PeerDetail(libtorrent::peer_info& peerInfo);
-	
-	bool operator==(const PeerDetail& peer) const
-	{
-		return (ipAddress == peer.ipAddress);
-	}
-	
-	bool operator<(const PeerDetail& peer) const
-	{
-		return (ipAddress < peer.ipAddress);
-	}
-	
-	std::wstring ipAddress;
-	std::wstring country;
-	std::pair<float,float> speed;
-	bool seed;
-	std::wstring client;
-	std::wstring status;
-};
-
-typedef boost::shared_ptr<PeerDetail> PeerDetail_ptr;
-typedef std::vector<PeerDetail> PeerDetails;
-
 struct FileDetail
 {
 	FileDetail(boost::filesystem::wpath p, boost::int64_t s=0, boost::int64_t pg=0, int pr=1, size_t o=0, unsigned t=FileDetail::file) :
@@ -384,6 +368,7 @@ inline bool FileDetailNamesLess(const FileDetail& l, const FileDetail& r)
 
 typedef std::vector<FileDetail> FileDetails;
 
+
 class torrent_details 
 {
 public:
@@ -415,32 +400,32 @@ public:
 		speed_(sp),
 		completion_(c),
 		distributed_copies_(d),
-		totalWantedDone_(tWD),
-		totalWanted_(tW),
+		total_wanted_done_(tWD),
+		total_wanted_(tW),
 		totalUploaded_(tU),
-		totalPayloadUploaded_(tpU),
-		totalDownloaded_(tD),
-		totalPayloadDownloaded_(tpD),
+		total_payload_uploaded_(tpU),
+		total_downloaded_(tD),
+		total_payload_downloaded_(tpD),
 		peers_(connections.get<0>()),
-		connectedPeers_(connections.get<1>()),
+		connected_peers_(connections.get<1>()),
 		seeds_(connections.get<2>()),
-		connectedSeeds_(connections.get<3>()),
+		connected_seeds_(connections.get<3>()),
 		ratio_(r),
-		estimatedTimeLeft_(eta),
-		updateTrackerIn_(uIn),
-		peerDetailsFilled_(false),
-		fileDetailsFilled_(false),
+		estimated_time_left_(eta),
+		update_tracker_in_(uIn),
+		peer_details_filled_(false),
+		file_details_filled_(false),
 		active_(actve),
 		seeding_(seding),
-		startTime_(srt),
-		finishTime_(fin),
+		start_time_(srt),
+		finish_time_(fin),
 		queue_position_(q_p),
 		managed_(man)
 	{}
 
 	torrent_details() :	
-		peerDetailsFilled_(false),
-		fileDetailsFilled_(false)
+		peer_details_filled_(false),
+		file_details_filled_(false)
 	{};	
 	
 	enum state
@@ -478,42 +463,41 @@ public:
 		managed_e,
 		queue_position_e
 	};
-
 	
 //	const std::wstring& filename() const { return filename_; }
 	const std::wstring& name() const { return name_; }
 	const std::wstring& save_directory() const { return saveDir_; }
 	const std::wstring& state() const { return state_; }
-	const std::wstring& currentTracker() const { return currentTracker_; }
+	const std::wstring& current_tracker() const { return currentTracker_; }
 	
 	std::pair<float,float> speed() const { return speed_; }
 	const float& completion() const { return completion_; }
-	const float& distributedCopies() const { return distributed_copies_; }
+	const float& distributed_copies() const { return distributed_copies_; }
 	
-	size_type totalUploaded() const { return totalUploaded_; }
-	size_type totalPayloadUploaded() const { return totalPayloadUploaded_; }
-	size_type totalDownloaded() const { return totalDownloaded_; }
-	size_type totalPayloadDownloaded() const { return totalPayloadDownloaded_; }
-	size_type totalWantedDone() const { return totalWantedDone_; }
-	size_type totalWanted() const { return totalWanted_; }
+	size_type total_uploaded() const { return totalUploaded_; }
+	size_type total_payload_uploaded() const { return total_payload_uploaded_; }
+	size_type total_downloaded() const { return total_downloaded_; }
+	size_type total_payload_downloaded() const { return total_payload_downloaded_; }
+	size_type total_wanted_done() const { return total_wanted_done_; }
+	size_type total_wanted() const { return total_wanted_; }
 	
 	size_type peers() const { return peers_; }
-	size_type peersConnected() const { return connectedPeers_; }
+	size_type peers_connected() const { return connected_peers_; }
 	size_type seeds() const { return seeds_; }
-	size_type seedsConnected() const { return connectedSeeds_; }
+	size_type seeds_connected() const { return connected_seeds_; }
 	
 	float ratio() { return ratio_; }
 	
-	const boost::posix_time::time_duration& estimatedTimeLeft() { return estimatedTimeLeft_; }
-	const boost::posix_time::time_duration& updateTrackerIn() { return updateTrackerIn_; }
+	const boost::posix_time::time_duration& estimated_time_left() { return estimated_time_left_; }
+	const boost::posix_time::time_duration& update_tracker_in() { return update_tracker_in_; }
 	
-	const PeerDetails& peerDetails() const;
-	const FileDetails& fileDetails() const;
+	const peer_details_vec& get_peer_details() const;
+	const FileDetails& file_details() const;
 	
 	const boost::posix_time::time_duration& active() { return active_; }
 	const boost::posix_time::time_duration& seeding() { return seeding_; }
-	const boost::posix_time::ptime& startTime() { return startTime_; }
-	const boost::posix_time::ptime& finishTime() { return finishTime_; }
+	const boost::posix_time::ptime& start_time() { return start_time_; }
+	const boost::posix_time::ptime& finish_time() { return finish_time_; }
 
 	int queue_position() const { return queue_position_; }
 	bool managed() const { return managed_; }
@@ -532,37 +516,37 @@ public:
 	float completion_;	
 	float distributed_copies_;
 	
-	size_type totalWantedDone_;
-	size_type totalWanted_;
+	size_type total_wanted_done_;
+	size_type total_wanted_;
 	size_type totalUploaded_;
-	size_type totalPayloadUploaded_;
-	size_type totalDownloaded_;
-	size_type totalPayloadDownloaded_;
+	size_type total_payload_uploaded_;
+	size_type total_downloaded_;
+	size_type total_payload_downloaded_;
 	
 	size_type peers_;
-	size_type connectedPeers_;
+	size_type connected_peers_;
 	size_type seeds_;
-	size_type connectedSeeds_;
+	size_type connected_seeds_;
 	
 	float ratio_;
 	
-	boost::posix_time::time_duration estimatedTimeLeft_;
-	boost::posix_time::time_duration updateTrackerIn_;
+	boost::posix_time::time_duration estimated_time_left_;
+	boost::posix_time::time_duration update_tracker_in_;
 	
 	boost::posix_time::time_duration active_;
 	boost::posix_time::time_duration seeding_;
-	boost::posix_time::ptime startTime_;
-	boost::posix_time::ptime finishTime_;
+	boost::posix_time::ptime start_time_;
+	boost::posix_time::ptime finish_time_;
 
 	int queue_position_;
 	bool managed_;
 	
 private:
-	mutable bool peerDetailsFilled_;
-	mutable PeerDetails peerDetails_;
+	mutable bool peer_details_filled_;
+	mutable peer_details_vec peer_details_;
 	
-	mutable bool fileDetailsFilled_;
-	mutable FileDetails fileDetails_;
+	mutable bool file_details_filled_;
+	mutable FileDetails file_details_;
 };
 
 typedef boost::shared_ptr<torrent_details> torrent_details_ptr;
@@ -944,10 +928,10 @@ public:
 		bool startPaused=false, bool managed=false, allocations alloc=hal::bit::sparse_allocation, 
 		boost::filesystem::wpath moveToDirectory=L"", bool useMoveTo=false);
 	
-	void get_all_peer_details(const std::string& filename, PeerDetails& peerContainer);
-	void get_all_peer_details(const std::wstring& filename, PeerDetails& peerContainer);
-	void get_all_file_details(const std::string& filename, FileDetails& fileDetails);
-	void get_all_file_details(const std::wstring& filename, FileDetails& fileDetails);
+	void get_all_peer_details(const std::string& filename, peer_details_vec& peerContainer);
+	void get_all_peer_details(const std::wstring& filename, peer_details_vec& peerContainer);
+	void get_all_file_details(const std::string& filename, FileDetails& file_details);
+	void get_all_file_details(const std::wstring& filename, FileDetails& file_details);
 	
 	void resume_all();
 	void close_all(boost::optional<report_num_active> fn);

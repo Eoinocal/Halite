@@ -605,6 +605,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\halPeers.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\halSession.cpp"
 				>
 			</File>
@@ -1252,6 +1256,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\HaliteWindow.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\halPeers.hpp"
 				>
 			</File>
 			<File
