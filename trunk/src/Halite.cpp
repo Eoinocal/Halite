@@ -16,8 +16,6 @@
 #include <winstl/registry/reg_key.hpp>
 #include <winstl/registry/reg_value.hpp>
 
-#include <boost/filesystem/convenience.hpp>
-
 #include "WinAPIMutex.hpp"
 
 #include "global/ini.hpp"

@@ -87,6 +87,8 @@ extern WTL::CAppModule _Module;
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/fstream.hpp>
+#include <boost/filesystem/convenience.hpp>
 
 #include <boost/xpressive/xpressive.hpp>
 

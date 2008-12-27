@@ -17,43 +17,17 @@
 #include "../HaliteListManager.hpp"
 
 class PeerListView :
-	public CHaliteSortListViewCtrl<PeerListView, const hal::PeerDetail>,
+	public CHaliteSortListViewCtrl<PeerListView>,
 	public hal::IniBase<PeerListView>,
 	private boost::noncopyable
 {
 protected:
 	typedef PeerListView thisClass;
 	typedef hal::IniBase<thisClass> iniClass;
-	typedef CHaliteSortListViewCtrl<thisClass, const hal::PeerDetail> listClass;
-	typedef const hal::PeerDetail pD;
+	typedef CHaliteSortListViewCtrl<thisClass> listClass;
 
 	friend class listClass;
 	
-	struct ColumnAdapters
-	{
-	
-	typedef listClass::ColumnAdapter ColAdapter_t;
-	
-	struct SpeedDown : public ColAdapter_t
-	{
-		virtual int compare(pD& l, pD& r)	{ return hal::compare(l.speed.first, r.speed.first); }		
-		virtual std::wstring print(pD& p) 
-		{
-			return (hal::wform(L"%1$.2fkb/s") % (p.speed.first/1024)).str(); 
-		}		
-	};
-	
-	struct SpeedUp : public ColAdapter_t
-	{
-		virtual int compare(pD& l, pD& r)	{ return hal::compare(l.speed.second, r.speed.second); }		
-		virtual std::wstring print(pD& p) 
-		{
-			return (hal::wform(L"%1$.2fkb/s") % (p.speed.second/1024)).str(); 
-		}		
-	};
-	
-	};
-
 public:	
 	enum { 
 		LISTVIEW_ID_MENU = 0,
@@ -63,13 +37,15 @@ public:
 	
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_DESTROY(OnDestroy)
+		REFLECTED_NOTIFY_CODE_HANDLER(SLVN_SORTCHANGED, OnSortChanged)
 
 		CHAIN_MSG_MAP(listClass)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 
-	thisClass() :
-		iniClass("listviews/advPeers", "PeerListView")
+	PeerListView(HaliteWindow& halWindow) :
+		iniClass("listviews/advPeers", "PeerListView"),
+		halite_window_(halWindow)
 	{}
 	
 	void saveSettings()
@@ -100,10 +76,10 @@ public:
 			AddColumn(names[i].c_str(), i, visible[i], widths[i]);
 		}	
 					
-		load_from_ini();
+		load_from_ini();		
 		
-		SetColumnSortType(2, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedDown());
-		SetColumnSortType(3, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::SpeedUp());
+		SetColumnSortType(2, hal::peer_detail::speed_down_e + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), NULL);		
+		SetColumnSortType(3, hal::peer_detail::speed_up_e + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), NULL);
 		
 		return true;
 	}
@@ -112,6 +88,8 @@ public:
 	{
 		saveSettings();
 	}
+
+	LRESULT OnSortChanged(int, LPNMHDR pnmh, BOOL&);
 	
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -120,16 +98,12 @@ public:
 		ar & boost::serialization::make_nvp("listview", 
 			boost::serialization::base_object<listClass>(*this));
 	}
-	
-/*	pD CustomItemConversion(LVCompareParam* param, int iSortCol)
-	{			
-		return peerDetails_[param->dwItemData];
-	}		*/
 
 	void uiUpdate(const hal::torrent_details_manager& tD);
 	
 private:
-	hal::PeerDetails peerDetails_;
+	hal::peer_details_vec peer_details_;
+	HaliteWindow& halite_window_;
 };
 
 class AdvPeerDialog :
@@ -147,7 +121,8 @@ public:
 	enum { IDD = HAL_ADVPEER };
 
 	AdvPeerDialog(HaliteWindow& halWindow) :
-		dialogBaseClass(halWindow)
+		dialogBaseClass(halWindow),
+		peerList_(halWindow)
 	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)
@@ -174,7 +149,6 @@ public:
 
 	LRESULT OnInitDialog(HWND, LPARAM);
 	void OnClose();
-	
 	void uiUpdate(const hal::torrent_details_manager& tD);
 
 protected:

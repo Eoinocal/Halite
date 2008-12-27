@@ -34,33 +34,33 @@ bit& bittorrent()
 	return t;
 }
 
-const PeerDetails& torrent_details::peerDetails() const
+const peer_details_vec& torrent_details::get_peer_details() const
 {
-	if (!peerDetailsFilled_)
+	if (!peer_details_filled_)
 	{
-		bittorrent().get_all_peer_details(hal::to_utf8(name_), peerDetails_);
-		peerDetailsFilled_ = true;
+		bittorrent().get_all_peer_details(hal::to_utf8(name_), peer_details_);
+		peer_details_filled_ = true;
 	}
 	
-	return peerDetails_;
+	return peer_details_;
 }
 
-const FileDetails& torrent_details::fileDetails() const
+const FileDetails& torrent_details::file_details() const
 {
-	if (!fileDetailsFilled_)
+	if (!file_details_filled_)
 	{
-		bittorrent().get_all_file_details(hal::to_utf8(name_), fileDetails_);
-		fileDetailsFilled_ = true;
+		bittorrent().get_all_file_details(hal::to_utf8(name_), file_details_);
+		file_details_filled_ = true;
 	}
 	
-	return fileDetails_;
+	return file_details_;
 }
 
-bool nameLess(const torrent_details_ptr& left, const torrent_details_ptr& right)
+/*bool nameLess(const torrent_details_ptr& left, const torrent_details_ptr& right)
 {
 	return left->state() < right->state();
 }
-
+*/
 bool torrent_details::less(const torrent_details& r, size_t index) const
 {
 	switch (index)
@@ -75,44 +75,44 @@ bool torrent_details::less(const torrent_details& r, size_t index) const
 
 	case remaining_e: 
 		{
-		boost::int64_t left = totalWanted_-totalWantedDone_;
-		boost::int64_t right = r.totalWanted_-r.totalWantedDone_;
+		boost::int64_t left = total_wanted_-total_wanted_done_;
+		boost::int64_t right = r.total_wanted_-r.total_wanted_done_;
 
 		return left < right;
 		}
 
-	case total_wanted_e: return totalWanted_ < r.totalWanted_;
-	case completed_e: return totalWantedDone_ < r.totalWantedDone_; 
+	case total_wanted_e: return total_wanted_ < r.total_wanted_;
+	case completed_e: return total_wanted_done_ < r.total_wanted_done_; 
 
-	case uploaded_e: return totalPayloadUploaded_ < r.totalPayloadUploaded_;
-	case downloaded_e: return totalPayloadDownloaded_ < r.totalPayloadDownloaded_;
+	case uploaded_e: return total_payload_uploaded_ < r.total_payload_uploaded_;
+	case downloaded_e: return total_payload_downloaded_ < r.total_payload_downloaded_;
 
 	case peers_e: return peers_ < r.peers_;
 	case seeds_e: return seeds_ < r.seeds_;
 
 	case ratio_e: 
 		{
-		float left = (totalPayloadDownloaded_) 
-				? static_cast<float>(totalPayloadUploaded_)
-					/ static_cast<float>(totalPayloadDownloaded_)
+		float left = (total_payload_downloaded_) 
+				? static_cast<float>(total_payload_uploaded_)
+					/ static_cast<float>(total_payload_downloaded_)
 				: 0;
 		
-		float right = (r.totalPayloadDownloaded_) 
-				? static_cast<float>(r.totalPayloadUploaded_)
-					/ static_cast<float>(r.totalPayloadDownloaded_)
+		float right = (r.total_payload_downloaded_) 
+				? static_cast<float>(r.total_payload_uploaded_)
+					/ static_cast<float>(r.total_payload_downloaded_)
 				: 0;
 		
 		return left < right; 
 		}
 
-	case eta_e: return estimatedTimeLeft_ < r.estimatedTimeLeft_;
+	case eta_e: return estimated_time_left_ < r.estimated_time_left_;
 	case tracker: return currentTracker_ < r.currentTracker_;
-	case update_tracker_in_e: return updateTrackerIn_ < r.updateTrackerIn_;
+	case update_tracker_in_e: return update_tracker_in_ < r.update_tracker_in_;
 
 	case active_time_e: return active_ < r.active_;
 	case seeding_time_e: return seeding_ < r.seeding_;
-	case start_time_e: return startTime_ < r.startTime_;
-	case finish_time_e: return finishTime_ < r.finishTime_;
+	case start_time_e: return start_time_ < r.start_time_;
+	case finish_time_e: return finish_time_ < r.finish_time_;
 
 	case queue_position_e: return queue_position_ < r.queue_position_;
 	case managed_e: return managed_ < r.managed_;
@@ -144,34 +144,34 @@ std::wstring torrent_details::to_wstring(size_t index)
 
 	case remaining_e: 
 		{
-		return (wform(L"%1$.2fMB") % (static_cast<float>(totalWanted_-totalWantedDone_)/(1024*1024))).str(); 
+		return (wform(L"%1$.2fMB") % (static_cast<float>(total_wanted_-total_wanted_done_)/(1024*1024))).str(); 
 		}
 
-	case completed_e: return (wform(L"%1$.2fMB") % (static_cast<float>(totalWantedDone_)/(1024*1024))).str();
+	case completed_e: return (wform(L"%1$.2fMB") % (static_cast<float>(total_wanted_done_)/(1024*1024))).str();
 
 	case total_wanted_e: 
 		{
-		return (wform(L"%1$.2fMB") % (static_cast<float>(totalWanted_-totalWantedDone_)/(1024*1024))).str(); 
+		return (wform(L"%1$.2fMB") % (static_cast<float>(total_wanted_-total_wanted_done_)/(1024*1024))).str(); 
 		}
 
 	case uploaded_e: 
 		{
-		return (wform(L"%1$.2fMB") % (static_cast<float>(totalPayloadUploaded_)/(1024*1024))).str(); 
+		return (wform(L"%1$.2fMB") % (static_cast<float>(total_payload_uploaded_)/(1024*1024))).str(); 
 		}
 
 	case downloaded_e: 
 		{
-		return (wform(L"%1$.2fMB") % (static_cast<float>(totalPayloadDownloaded_)/(1024*1024))).str(); 
+		return (wform(L"%1$.2fMB") % (static_cast<float>(total_payload_downloaded_)/(1024*1024))).str(); 
 		}
 
-	case peers_e: return (wform(L"%1% (%2%)") % connectedPeers_ % peers_).str(); 
-	case seeds_e: return (wform(L"%1% (%2%)") % connectedSeeds_ % seeds_).str(); 
+	case peers_e: return (wform(L"%1% (%2%)") % connected_peers_ % peers_).str(); 
+	case seeds_e: return (wform(L"%1% (%2%)") % connected_seeds_ % seeds_).str(); 
 
 	case ratio_e: 
 		{
-			float ratio = (totalPayloadDownloaded_) 
-				? static_cast<float>(totalPayloadUploaded_)
-					/ static_cast<float>(totalPayloadDownloaded_)
+			float ratio = (total_payload_downloaded_) 
+				? static_cast<float>(total_payload_uploaded_)
+					/ static_cast<float>(total_payload_downloaded_)
 				: 0;
 			
 			return (wform(L"%1$.2f") % ratio).str(); 
@@ -179,9 +179,9 @@ std::wstring torrent_details::to_wstring(size_t index)
 
 	case eta_e: 
 		{ 
-		if (!estimatedTimeLeft_.is_special())
+		if (!estimated_time_left_.is_special())
 			return hal::from_utf8(
-				boost::posix_time::to_simple_string(estimatedTimeLeft_));
+				boost::posix_time::to_simple_string(estimated_time_left_));
 		else
 			return app().res_wstr(HAL_INF);		
 		}	
@@ -190,9 +190,9 @@ std::wstring torrent_details::to_wstring(size_t index)
 
 	case update_tracker_in_e:		
 		{ 
-		if (!updateTrackerIn_.is_special())
+		if (!update_tracker_in_.is_special())
 			return from_utf8(
-				boost::posix_time::to_simple_string(updateTrackerIn_));
+				boost::posix_time::to_simple_string(update_tracker_in_));
 		else
 			return app().res_wstr(HAL_INF);		
 		}	
@@ -217,18 +217,18 @@ std::wstring torrent_details::to_wstring(size_t index)
 
 	case start_time_e: 
 		{ 
-		if (!startTime_.is_special())
+		if (!start_time_.is_special())
 			return from_utf8(
-				boost::posix_time::to_simple_string(startTime_));
+				boost::posix_time::to_simple_string(start_time_));
 		else
 			return app().res_wstr(IDS_NA);
 		}		
 
 	case finish_time_e: 		
 		{ 
-		if (!finishTime_.is_special())
+		if (!finish_time_.is_special())
 			return from_utf8(
-				boost::posix_time::to_simple_string(finishTime_));
+				boost::posix_time::to_simple_string(finish_time_));
 		else
 			return app().res_wstr(IDS_NA);	
 		}		
@@ -241,31 +241,16 @@ std::wstring torrent_details::to_wstring(size_t index)
 				return app().res_wstr(IDS_NA);		
 		}
 
-	case managed_e:
-		{ 
-		if (managed_)
-			return L"Yes";
-		else
-			return L"No"; 	
-		}	
+	case managed_e: return managed_ ?  L"Yes" : L"No";
 
 	default: return L"(Undefined)"; // ???
 	};
 }
 
-template<typename torrent_Tptr>
-bool torrent_details_compare(torrent_Tptr l, torrent_Tptr r, size_t index = 0, bool cmp_less = true)
-{
-	if (cmp_less)
-		return l->less(*r, index);
-	else
-		return r->less(*l, index);
-}
-
 void torrent_details_manager::sort(size_t column_index, bool cmp_less) const
 {
 	std::stable_sort(torrents_.begin(), torrents_.end(), 
-		bind(&torrent_details_compare<torrent_details_ptr>, _1, _2, column_index, cmp_less));
+		bind(&hal_details_ptr_compare<torrent_details_ptr>, _1, _2, column_index, cmp_less));
 }
 
 web_seed_or_dht_node_detail::web_seed_or_dht_node_detail() : 
@@ -565,95 +550,35 @@ void bit::close_all(boost::optional<report_num_active> fn)
 	pimpl()->close_all(fn);
 }
 
-PeerDetail::PeerDetail(libt::peer_info& peerInfo) :
-	ipAddress(hal::from_utf8_safe(peerInfo.ip.address().to_string())),
-	country(L""),
-	speed(std::make_pair(peerInfo.payload_down_speed, peerInfo.payload_up_speed)),
-	client(hal::from_utf8_safe(peerInfo.client))
-{
-	std::vector<wstring> status_vec;
-	
-#ifndef TORRENT_DISABLE_RESOLVE_COUNTRIES
-	if (peerInfo.country[0] != 0 && peerInfo.country[1] != 0)
-		country = (hal::wform(L"(%1%)") % hal::from_utf8_safe(string(peerInfo.country, 2))).str().c_str();
-#endif	
-
-	if (peerInfo.flags & libt::peer_info::handshake)
-	{
-		status_vec.push_back(app().res_wstr(HAL_PEER_HANDSHAKE));
-	}		
-	else if (peerInfo.flags & libt::peer_info::connecting)
-	{
-		status_vec.push_back(app().res_wstr(HAL_PEER_CONNECTING));
-	}
-	else
-	{
-	#ifndef TORRENT_DISABLE_ENCRYPTION		
-		if (peerInfo.flags & libt::peer_info::rc4_encrypted)
-			status_vec.push_back(app().res_wstr(HAL_PEER_RC4_ENCRYPTED));		
-		if (peerInfo.flags & libt::peer_info::plaintext_encrypted)
-			status_vec.push_back(app().res_wstr(HAL_PEER_PLAINTEXT_ENCRYPTED));
-	#endif
-		
-		if (peerInfo.flags & libt::peer_info::interesting)
-			status_vec.push_back(app().res_wstr(HAL_PEER_INTERESTING));	
-		if (peerInfo.flags & libt::peer_info::choked)
-			status_vec.push_back(app().res_wstr(HAL_PEER_CHOKED));	
-		if (peerInfo.flags & libt::peer_info::remote_interested)
-			status_vec.push_back(app().res_wstr(HAL_PEER_REMOTE_INTERESTING));	
-		if (peerInfo.flags & libt::peer_info::remote_choked)
-			status_vec.push_back(app().res_wstr(HAL_PEER_REMOTE_CHOKED));	
-		if (peerInfo.flags & libt::peer_info::supports_extensions)
-			status_vec.push_back(app().res_wstr(HAL_PEER_SUPPORT_EXTENSIONS));	
-	//	if (peerInfo.flags & libt::peer_info::local_connection)						// Not sure whats up here?
-	//		status_vec.push_back(app().res_wstr(HAL_PEER_LOCAL_CONNECTION));			
-		if (peerInfo.flags & libt::peer_info::queued)
-			status_vec.push_back(app().res_wstr(HAL_PEER_QUEUED));
-	}
-	
-	seed = (peerInfo.flags & libt::peer_info::seed) ? true : false;
-	
-	if (!status_vec.empty()) status = status_vec[0];
-	
-	if (status_vec.size() > 1)
-	{
-		for (size_t i=1; i<status_vec.size(); ++i)
-		{
-			status += L"; ";
-			status += status_vec[i];
-		}
-	}	
-}
-
 const cache_details bit::get_cache_details() const
 {
 	return pimpl()->get_cache_details();
 }
 
-void bit::get_all_peer_details(const std::string& filename, PeerDetails& peerContainer)
+void bit::get_all_peer_details(const std::string& filename, peer_details_vec& peer_container)
 {
-	get_all_peer_details(from_utf8_safe(filename), peerContainer);
+	get_all_peer_details(from_utf8_safe(filename), peer_container);
 }
 
-void bit::get_all_peer_details(const std::wstring& filename, PeerDetails& peerContainer)
+void bit::get_all_peer_details(const std::wstring& filename, peer_details_vec& peer_container)
 {
 	try {
 	
-	pimpl()->the_torrents_.get(filename)->get_peer_details(peerContainer);
+	pimpl()->the_torrents_.get(filename)->get_peer_details(peer_container);
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "get_all_peer_details")
 }
 
-void bit::get_all_file_details(const std::string& filename, FileDetails& fileDetails)
+void bit::get_all_file_details(const std::string& filename, FileDetails& file_details)
 {
-	get_all_file_details(from_utf8_safe(filename), fileDetails);
+	get_all_file_details(from_utf8_safe(filename), file_details);
 }
 
-void bit::get_all_file_details(const std::wstring& filename, FileDetails& fileDetails)
+void bit::get_all_file_details(const std::wstring& filename, FileDetails& file_details)
 {
 	try {
 	
-	pimpl()->the_torrents_.get(filename)->get_file_details(fileDetails);
+	pimpl()->the_torrents_.get(filename)->get_file_details(file_details);
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "get_all_file_details")
 }

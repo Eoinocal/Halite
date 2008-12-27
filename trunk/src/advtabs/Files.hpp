@@ -192,7 +192,7 @@ public:
 	
 /*	dataClass CustomItemConversion(LVCompareParam* param, int iSortCol)
 	{			
-		return focused_->fileDetails()[param->dwItemData];
+		return focused_->file_details()[param->dwItemData];
 	}		*/
 	
 	void setFocused(const hal::torrent_details_ptr& f) { focused_ = f; }
@@ -449,6 +449,6 @@ protected:
 	
 	std::vector<FileLink> fileLinks_;
 	
-	hal::FileDetails fileDetails_;
+	hal::FileDetails file_details_;
 	std::pair<std::vector<FileLink>::iterator, std::vector<FileLink>::iterator> range_;
 };

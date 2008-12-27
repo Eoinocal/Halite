@@ -332,7 +332,7 @@ public:
 		totalBase_(0), \
 		progress_(0), \
 		managed_(false), \
-		startTime_(boost::posix_time::second_clock::universal_time()), \
+		start_time_(boost::posix_time::second_clock::universal_time()), \
 		in_session_(false), \
 		queue_position_(0)
 		
@@ -480,7 +480,7 @@ public:
 			td, 
 			statusMemory_.next_announce, 
 			active_duration_, seeding_duration_, 
-			startTime_, finishTime_, 
+			start_time_, finish_time_, 
 			queue_position_,
 			is_managed()));
 
@@ -885,8 +885,8 @@ public:
 	
 	void finished()
 	{
-		if (finishTime_.is_special())
-			finishTime_ = boost::posix_time::second_clock::universal_time();
+		if (finish_time_.is_special())
+			finish_time_ = boost::posix_time::second_clock::universal_time();
 
 		if (is_finished())
 		{
@@ -1005,8 +1005,8 @@ public:
 					
 			ar & make_nvp("file_priorities", filePriorities_);
 			
-			ar & make_nvp("start_time", startTime_);
-			ar & make_nvp("finish_time", finishTime_);
+			ar & make_nvp("start_time", start_time_);
+			ar & make_nvp("finish_time", finish_time_);
 			ar & make_nvp("active_duration", active_duration_);
 			ar & make_nvp("seeding_duration", seeding_duration_);
 			ar & make_nvp("managed", managed_);
@@ -1046,13 +1046,13 @@ public:
 			
 			ar & make_nvp("file_priorities", filePriorities_);
 			
-			ar & make_nvp("startTime", startTime_);
+			ar & make_nvp("start_time", start_time_);
 			ar & make_nvp("activeDuration", active_duration_);
 			ar & make_nvp("seedingDuration", seeding_duration_);
 			
 			ar & make_nvp("name", name_);
 			ar & make_nvp("compactStorage", compact_storage_);
-			ar & make_nvp("finishTime", finishTime_);
+			ar & make_nvp("finish_time", finish_time_);
 			
 			ar & make_nvp("progress", progress_);
 	}
@@ -1099,20 +1099,20 @@ public:
 		return boost::make_tuple(totalPeers, peersConnected, totalSeeds, seedsConnected);
 	}
 	
-	void get_peer_details(PeerDetails& peerDetails) const
+	void get_peer_details(peer_details_vec& peer_details) const
 	{
 		if (in_session())
 		{
 			foreach (libt::peer_info peer, peers_) 
 			{
-				peerDetails.push_back(peer);
+				peer_details.push_back(peer);
 			}	
 		}
 	}
 
-	void get_file_details(FileDetails& fileDetails)
+	void get_file_details(FileDetails& file_details)
 	{
-		if (fileDetailsMemory_.empty())
+		if (file_detailsMemory_.empty())
 		{
 			boost::intrusive_ptr<libt::torrent_info> info = info_memory();
 			std::vector<libt::file_entry> files;
@@ -1131,7 +1131,7 @@ public:
 				wstring fullPath = hal::from_utf8(files[i].path.string());
 				boost::int64_t size = static_cast<boost::int64_t>(files[i].size);
 				
-				fileDetailsMemory_.push_back(FileDetail(fullPath, size, 0, filePriorities_[i], i));
+				file_detailsMemory_.push_back(FileDetail(fullPath, size, 0, filePriorities_[i], i));
 			}	
 		}		
 		
@@ -1140,14 +1140,14 @@ public:
 			std::vector<libt::size_type> fileProgress;			
 			handle_.file_progress(fileProgress);
 			
-			for(size_t i=0, e=fileDetailsMemory_.size(); i<e; ++i)
-				fileDetailsMemory_[i].progress =  fileProgress[i];			
+			for(size_t i=0, e=file_detailsMemory_.size(); i<e; ++i)
+				file_detailsMemory_[i].progress =  fileProgress[i];			
 		}
 
-		for(size_t i=0, e=fileDetailsMemory_.size(); i<e; ++i)
-			fileDetailsMemory_[i].priority =  filePriorities_[i];
+		for(size_t i=0, e=file_detailsMemory_.size(); i<e; ++i)
+			file_detailsMemory_[i].priority =  filePriorities_[i];
 		
-		fileDetails = fileDetailsMemory_;
+		file_details = file_detailsMemory_;
 	}
 	
 	void prepare(wpath filename)
@@ -1478,8 +1478,8 @@ private:
 	transfer_tracker<boost::int64_t> uploaded_;
 	transfer_tracker<boost::int64_t> downloaded_;
 	
-	pt::ptime startTime_;
-	pt::ptime finishTime_;
+	pt::ptime start_time_;
+	pt::ptime finish_time_;
 	duration_tracker active_duration_;
 	duration_tracker seeding_duration_;
 	
@@ -1492,7 +1492,7 @@ private:
 	
 	boost::intrusive_ptr<libt::torrent_info> info_memory_;
 	libt::torrent_status statusMemory_;
-	FileDetails fileDetailsMemory_;
+	FileDetails file_detailsMemory_;
 	
 	int queue_position_;
 	bool compact_storage_;
