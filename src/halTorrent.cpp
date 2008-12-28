@@ -35,6 +35,72 @@ bit& bittorrent()
 	return t;
 }
 
+
+
+bool file_details::less(const file_details& r, size_t index) const
+{	
+	switch (index)
+	{
+	case branch_e: return branch < r.branch;
+	case filename_e: return filename < r.filename;
+
+	case type_e: return type < r.type;
+	case size_e: return size < r.size;
+
+	case progress_e: return progress < r.progress;
+	case priority_e: return priority < r.priority;
+
+	default: return false; // ???
+	};
+}
+
+std::wstring file_details::to_wstring(size_t index)
+{
+	switch (index)
+	{
+	case branch_e: return branch.string();
+	case filename_e: return filename;
+
+	case type_e: return L"(Undefined)"; // ???
+
+	case size_e: return (wform(L"%1$.2fMB") % (static_cast<double>(size)/(1024*1024))).str();
+	case progress_e: return (wform(L"%1$.2f%%") % (static_cast<double>(progress)/size*100)).str(); 
+
+	case priority_e: 		
+		{
+			switch (priority)
+			{
+			case 0:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_0);
+			case 1:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_1);
+			case 2:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_2);
+			case 3:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_3);
+			case 4:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_4);
+			case 5:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_5);
+			case 6:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_6);
+			case 7:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_7);
+			default:
+				return hal::app().res_wstr(HAL_FILE_PRIORITY_0);
+			};
+		} 
+
+	default: return L"(Undefined)"; // ???
+	};
+}
+
+void file_details_sort(file_details_vec& p, size_t index, bool cmp_less)
+{
+	std::stable_sort(p.begin(), p.end(), 
+		bind(&hal_details_compare<const file_details&>, _1, _2, index, cmp_less));
+}
+
 const peer_details_vec& torrent_details::get_peer_details() const
 {
 	if (!peer_details_filled_)

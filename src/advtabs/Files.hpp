@@ -93,7 +93,7 @@ public:
 
 	friend class listClass;
 	
-	struct ColumnAdapters
+/*	struct ColumnAdapters
 	{	
 	typedef listClass::ColumnAdapter ColAdapter_t;	
 	
@@ -147,7 +147,7 @@ public:
 	};
 	
 	};
-
+*/
 public:	
 	enum { 
 		LISTVIEW_ID_MENU = HAL_FILESLISTVIEW_MENU,

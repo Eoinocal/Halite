@@ -92,6 +92,16 @@ struct cache_details;
 
 struct file_details
 {
+	enum details
+	{
+		branch_e = 0,
+		filename_e,
+		type_e,
+		size_e,
+		progress_e,
+		priority_e
+	};
+
 	file_details(boost::filesystem::wpath p, 
 			boost::int64_t s=0, 
 			boost::int64_t pg=0, 
@@ -116,6 +126,9 @@ struct file_details
 	{
 		return (branch < file.branch);
 	}
+	
+	bool less(const file_details& r, size_t index = 0) const;
+	std::wstring to_wstring(size_t index = 0);
 	
 	enum file_type
 	{
@@ -148,6 +161,7 @@ inline bool file_details_names_less(const file_details& l, const file_details& r
 
 typedef std::vector<file_details> file_details_vec;
 
+void file_details_sort(file_details_vec& f, size_t index, bool cmp_less = true);
 
 class torrent_details 
 {
