@@ -23,7 +23,7 @@ HWND FileListView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowNa
 	DWORD dwStyle, DWORD dwExStyle,
 	ATL::_U_MENUorID MenuOrID, LPVOID lpCreateParam)
 {
-	HWND hwnd = listClass::Create(hWndParent, rect.m_lpRect, szWindowName, dwStyle, dwExStyle, MenuOrID.m_hMenu, lpCreateParam);
+	HWND hwnd = listClass::Create(hWndParent, rect.m_lpRect, szWindowName, dwStyle|LVS_OWNERDATA, dwExStyle, MenuOrID.m_hMenu, lpCreateParam);
 	assert(hwnd);
 	
 	WTL::CMenuHandle menu;
@@ -69,6 +69,39 @@ void FileListView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 
 	if (hal::bit::torrent t = hal::bittorrent().get(hal::bittorrent().torrentDetails().focusedTorrent()))
 		t.file_priorities = std::pair<std::vector<int>, int>(indices, priority);
+}
+
+LRESULT FileListView::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
+{	
+	hal::mutex_t::scoped_lock l(mutex_);
+
+	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
+
+	HAL_DEV_MSG(hal::wform(L"OnGetDispInfo() LV Item = %1%, Subitem = %2%") 
+		% pdi->item.iItem % pdi->item.iSubItem);
+
+	if (pdi->item.mask & LVIF_TEXT && pdi->item.iItem < files_.size())
+	{
+		wstring str = files_[pdi->item.iItem].to_wstring(pdi->item.iSubItem);
+		
+		int len = str.copy(pdi->item.pszText, min(pdi->item.cchTextMax - 1, str.size()));
+		pdi->item.pszText[len] = '\0';
+
+		HAL_DEV_MSG(hal::wform(L"OnGetDispInfo() LV String = %1%, length = %2%, max = %3%, len = %4%") 
+			% str % str.size() % pdi->item.cchTextMax % len);
+	}	
+	
+	return 0;
+}
+
+LRESULT AdvFilesDialog::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
+{	
+	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
+
+	HAL_DEV_MSG(hal::wform(L"OnGetDispInfo() Dlg Item = %1%, Subitem = %2%") 
+		% pdi->item.iItem % pdi->item.iSubItem);
+	
+	return 0;
 }
 
 HWND FileTreeView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowName, DWORD dwStyle, DWORD dwExStyle,
@@ -202,6 +235,8 @@ LRESULT AdvFilesDialog::onInitDialog(HWND, LPARAM)
 	list_.Create(splitter_, rc, NULL, 
 		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS,
 		WS_EX_STATICEDGE|LVS_EX_DOUBLEBUFFER);
+
+	list_.SetDlgCtrlID(31415);
 		
 	tree_.Create(splitter_, rc, NULL, 
 		WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|TVS_HASBUTTONS|
@@ -259,15 +294,21 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 	if (lock) 
 	{
 		hal::file_details_vec all_files = focusedTorrent()->get_file_details();
-		hal::file_details_vec files;
+
+		FileListView::scoped_files list_files = list_.files();
+		list_files->clear();
+
 		for (std::vector<FileLink>::iterator i=range_.first, e=range_.second;
 			i != e; ++i)
 		{		
-			files.push_back(all_files[(*i).order()]);
+			list_files->push_back(all_files[(*i).order()]);
 		}
 
+		if (list_files->size() != list_.GetItemCount())
+			list_.SetItemCount(list_files->size());
+
 		// Wipe details not present
-		for(int i = 0; i < list_.GetItemCount(); /*nothing here*/)
+/*		for(int i = 0; i < list_.GetItemCount(); /*nothing here*//*)
 		{
 			boost::array<wchar_t, MAX_PATH> fullPath;
 			list_.GetItemText(i, 0, fullPath.c_array(), MAX_PATH);
@@ -341,7 +382,10 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 			if (list_.GetColumnSortType(col_sort_index) <= WTL::LVCOLSORT_CUSTOM)
 				list_.DoSortItems(col_sort_index, list_.IsSortDescending());
 		}
+		*/
 	}
+
+	list_.InvalidateRect(NULL,true);
 }
 
 void AdvFilesDialog::focusChanged(const hal::torrent_details_ptr pT)

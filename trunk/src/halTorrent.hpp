@@ -94,12 +94,12 @@ struct file_details
 {
 	enum details
 	{
-		branch_e = 0,
-		filename_e,
-		type_e,
+		filename_e = 0,
+		branch_e,
 		size_e,
 		progress_e,
-		priority_e
+		priority_e,
+		type_e
 	};
 
 	file_details(boost::filesystem::wpath p, 
