@@ -577,6 +577,12 @@ protected:
 //	AdapterType convert(const LPLVITEM item);
 //	void convert(LPLVITEM item, AdapterType adapter);
 	
+	mutable int update_lock_;
+	mutable hal::mutex_t mutex_;
+
+	friend class hal::mutex_update_lock<thisClass>;	
+	friend class hal::try_update_lock<thisClass>;	
+
 	SelectionManager manager_;
 	WTL::CMenu menu_;
 	CHaliteHeaderCtrl header_;	
@@ -600,13 +606,7 @@ private:
 	mutable bool sort_once_;
 	mutable bool descending_;
 	mutable int sortCol_;
-	
-	mutable int update_lock_;
-	mutable hal::mutex_t mutex_;
-
-	friend class hal::mutex_update_lock<thisClass>;	
-	friend class hal::try_update_lock<thisClass>;		
-	
+		
 	boost::ptr_map<size_t, ColumnAdapter> column_adapters_;
 };
 

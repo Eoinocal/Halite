@@ -149,6 +149,24 @@ public:
 	};
 */
 public:	
+
+	class scoped_files
+	{
+
+	public:
+		scoped_files(hal::mutex_t& m, hal::file_details_vec* f) :
+			l_(m),
+			f_(f)
+		{}
+
+		hal::file_details_vec* operator->() const { return f_; }
+
+	private:
+		hal::mutex_t::scoped_lock l_;
+		hal::file_details_vec* f_;
+	};
+
+
 	enum { 
 		LISTVIEW_ID_MENU = HAL_FILESLISTVIEW_MENU,
 		LISTVIEW_ID_COLUMNNAMES = HAL_DIALOGFILE_LISTVIEW_ADV,
@@ -158,9 +176,10 @@ public:
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_DESTROY(OnDestroy)
 		COMMAND_RANGE_HANDLER_EX(ID_HAL_FILE_PRIORITY_0, ID_HAL_FILE_PRIORITY_7, OnMenuPriority)
+		REFLECTED_NOTIFY_CODE_HANDLER(LVN_GETDISPINFO, OnGetDispInfo)
 
 		CHAIN_MSG_MAP(listClass)
-		DEFAULT_REFLECTION_HANDLER()
+		FORWARD_NOTIFICATIONS()
 	END_MSG_MAP()
 
 	FileListView();
@@ -198,7 +217,15 @@ public:
 	void setFocused(const hal::torrent_details_ptr& f) { focused_ = f; }
 	const hal::torrent_details_ptr focused() { return focused_; }
 
+	scoped_files files() { return scoped_files(listClass::mutex_, &files_); }
+
+protected:	
+	LRESULT OnGetDispInfo(int, LPNMHDR pnmh, BOOL&);
+
 private:
+	//mutable hal::mutex_t mutex_;
+
+	hal::file_details_vec files_;
 	hal::torrent_details_ptr focused_;
 };
 
@@ -405,6 +432,7 @@ public:
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_CLOSE(onClose)
+		NOTIFY_HANDLER(31415, LVN_GETDISPINFO, OnGetDispInfo)
 		MSG_WM_DESTROY(OnDestroy)
 		
 		if (uMsg == WM_FORWARDMSG)
@@ -429,6 +457,7 @@ public:
 
 	LRESULT onInitDialog(HWND, LPARAM);
 	void onClose();
+	LRESULT OnGetDispInfo(int, LPNMHDR pnmh, BOOL&);
 	
 	void DlgResize_UpdateLayout(int cxWidth, int cyHeight);
 	void doUiUpdate();
