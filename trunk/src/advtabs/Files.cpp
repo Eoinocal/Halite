@@ -15,8 +15,9 @@
 
 #define TVS_EX_DOUBLEBUFFER 0x0004
 
-FileListView::FileListView() :
-	iniClass("listviews/advFiles", "FileListView")
+FileListView::FileListView(do_ui_update_fn uiu) :
+	iniClass("listviews/advFiles", "FileListView"),
+	do_ui_update_(uiu)
 {}
 
 HWND FileListView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowName,
@@ -43,26 +44,26 @@ HWND FileListView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowNa
 	{
 		AddColumn(names[i].c_str(), i, visible[i], widths[i]);
 	}	
+	
+	for (unsigned i=0, e = hal::file_details::priority_e-hal::file_details::filename_e; i <= e; ++i)
+		SetColumnSortType(i, i + (WTL::LVCOLSORT_LAST+1+hal::file_details::filename_e), NULL);
 
 	load_from_ini();
-	
-/*	SetColumnSortType(2, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Size());
-	SetColumnSortType(3, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Progress());
-	SetColumnSortType(4, WTL::LVCOLSORT_CUSTOM, new ColumnAdapters::Priority());
-	*/
+
 	return hwnd;
 }
 
 void FileListView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {	
+	hal::mutex_t::scoped_lock l(mutex_);
+
 	std::vector<int> indices;
 	
-	for (int i=0, e=GetItemCount(); i<e; ++i)
+	foreach(const list_value_type val, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
-		UINT flags = GetItemState(i, LVIS_SELECTED);
-		
-		if (flags & LVIS_SELECTED)
-			indices.push_back(GetItemData(i));
+		HAL_DEV_MSG(hal::wform(L"OnMenuPriority() = %1%, %2%, %3%") 
+				% std::wstring(winstl::c_str_ptr(val)) % val.index() % files_[val.index()].order());
+		indices.push_back(files_[val.index()].order());
 	}
 	
 	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;	
@@ -77,29 +78,31 @@ LRESULT FileListView::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 
 	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
 
-	HAL_DEV_MSG(hal::wform(L"OnGetDispInfo() LV Item = %1%, Subitem = %2%") 
-		% pdi->item.iItem % pdi->item.iSubItem);
-
-	if (pdi->item.mask & LVIF_TEXT && pdi->item.iItem < files_.size())
+	if (pdi->item.iItem < files_.size())
 	{
-		wstring str = files_[pdi->item.iItem].to_wstring(pdi->item.iSubItem);
+		if (pdi->item.mask & LVIF_TEXT)
+		{
+			wstring str = files_[pdi->item.iItem].to_wstring(pdi->item.iSubItem);
+			
+			int len = str.copy(pdi->item.pszText, min(pdi->item.cchTextMax - 1, str.size()));
+			pdi->item.pszText[len] = '\0';
+		}	
 		
-		int len = str.copy(pdi->item.pszText, min(pdi->item.cchTextMax - 1, str.size()));
-		pdi->item.pszText[len] = '\0';
+		if (pdi->item.mask & LVIF_PARAM)
+		{			
+			HAL_DEV_MSG(hal::wform(L"LVIF_PARAM() = %1%, %2%") 
+				% pdi->item.iItem % files_[pdi->item.iItem].order());
 
-		HAL_DEV_MSG(hal::wform(L"OnGetDispInfo() LV String = %1%, length = %2%, max = %3%, len = %4%") 
-			% str % str.size() % pdi->item.cchTextMax % len);
-	}	
+			pdi->item.lParam = files_[pdi->item.iItem].order();
+		}
+	}
 	
 	return 0;
 }
 
-LRESULT AdvFilesDialog::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
-{	
-	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
-
-	HAL_DEV_MSG(hal::wform(L"OnGetDispInfo() Dlg Item = %1%, Subitem = %2%") 
-		% pdi->item.iItem % pdi->item.iSubItem);
+LRESULT FileListView::OnSortChanged(int, LPNMHDR pnmh, BOOL&)
+{
+	do_ui_update_();
 	
 	return 0;
 }
@@ -216,9 +219,18 @@ LRESULT FileTreeView::OnSelChanged(int, LPNMHDR pnmh, BOOL&)
 	{		
 		determineFocused();
 		signal();
-	}
-	
+	}	
 	return 0;
+}
+
+AdvFilesDialog::AdvFilesDialog(HaliteWindow& halWindow) :
+	dialogBaseClass(halWindow),
+	treeManager_(tree_),
+	iniClass("AdvFilesDlg", "settings"),
+	splitterPos(150),
+	list_(boost::bind(&AdvFilesDialog::doUiUpdate, this))
+{
+	load_from_ini();
 }
 
 LRESULT AdvFilesDialog::onInitDialog(HWND, LPARAM)
@@ -235,8 +247,6 @@ LRESULT AdvFilesDialog::onInitDialog(HWND, LPARAM)
 	list_.Create(splitter_, rc, NULL, 
 		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS,
 		WS_EX_STATICEDGE|LVS_EX_DOUBLEBUFFER);
-
-	list_.SetDlgCtrlID(31415);
 		
 	tree_.Create(splitter_, rc, NULL, 
 		WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|TVS_HASBUTTONS|
@@ -276,7 +286,23 @@ void AdvFilesDialog::doUiUpdate()
 		FileLink(tree_.focused()));
 	
 	std::sort(range_.first, range_.second, &FileLinkNamesLess);
-	
+
+	if (focusedTorrent())
+	{
+		hal::file_details_vec all_files = focusedTorrent()->get_file_details();	
+		FileListView::scoped_files list_files = list_.files();
+
+		list_files->clear();
+
+		for (std::vector<FileLink>::iterator i=range_.first, e=range_.second;
+			i != e; ++i)
+		{		
+			list_files->push_back(all_files[(*i).order()]);
+		}
+			
+		list_.SetItemCountEx(list_files->size(),LVSICF_NOSCROLL);
+	}
+
 	requestUiUpdate();
 }
 
@@ -293,96 +319,29 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 	hal::try_update_lock<FileListView::listClass> lock(list_);
 	if (lock) 
 	{
-		hal::file_details_vec all_files = focusedTorrent()->get_file_details();
-
+		hal::file_details_vec all_files = focusedTorrent()->get_file_details();	
 		FileListView::scoped_files list_files = list_.files();
-		list_files->clear();
 
-		for (std::vector<FileLink>::iterator i=range_.first, e=range_.second;
-			i != e; ++i)
-		{		
-			list_files->push_back(all_files[(*i).order()]);
+		foreach (hal::file_details& file, *list_files)
+		{
+			file = all_files[file.order()];
 		}
 
-		if (list_files->size() != list_.GetItemCount())
-			list_.SetItemCount(list_files->size());
-
-		// Wipe details not present
-/*		for(int i = 0; i < list_.GetItemCount(); /*nothing here*//*)
+		if (list_.AutoSort() || list_.IsSortOnce())
 		{
-			boost::array<wchar_t, MAX_PATH> fullPath;
-			list_.GetItemText(i, 0, fullPath.c_array(), MAX_PATH);
-			
-			FileLink file(wstring(fullPath.c_array()));
-			std::vector<FileLink>::iterator iter = 
-				std::lower_bound(range_.first, range_.second, file, &FileLinkNamesLess);
-			
-			if (iter == range_.second || !(FileLinkNamesEqual((*iter), file)))
-			{
-				list_.DeleteItem(i);
-			}
-			else
-			{
-				list_.SetItemData(i, std::distance(range_.first, iter));
-				++i;
-			}
-		}
+			int col_sort_index = list_.GetSortColumn();
 
-		int col_sort_index = list_.GetSortColumn();
-		if (col_sort_index != -1)
-		{		
-			int index = list_.GetColumnSortType(col_sort_index);
-			
-			HAL_DEV_MSG(hal::wform(L"col_sort_index() = %1%, index() = %2%") 
-				% col_sort_index % index);
-
-			if (index > WTL::LVCOLSORT_LAST)
-				hal::file_details_sort(files, index - (WTL::LVCOLSORT_LAST+1+hal::file_details::branch_e), 
-					list_.IsSortDescending());
-		}
-
-		bool sort_once = list_.IsSortOnce();
-
-		if (list_.GetItemCount() < files.size())
-		{
-		// Add additional details
-		for (size_t index = 0, e = files.size(); index < e; ++index)
-		{
-			hal::file_details& fd = files[index];
-			
-			int item_pos = index;
+			if (col_sort_index != -1)
+			{		
+				int index = list_.GetColumnSortType(col_sort_index);
 		
-			HAL_DEV_SORT_MSG(hal::wform(L"AutoSort() = %1%, SortOnce() = %2%, !AutoSort() && !SortOnce() = %3%") 
-				% AutoSort() % sort_once % (!AutoSort() && !sort_once));
-
-			if (!list_.AutoSort() && !sort_once)
-			{
-				LV_FINDINFO findInfo; 
-				findInfo.flags = LVFI_STRING;
-				findInfo.psz = const_cast<LPTSTR>(fd.to_wstring(hal::file_details::filename_e).c_str());
-				
-				item_pos = list_.FindItem(&findInfo, -1);
+				if (index > WTL::LVCOLSORT_LAST)
+				{
+					hal::file_details_sort(*list_files, index - (WTL::LVCOLSORT_LAST+1+hal::file_details::filename_e), 
+						list_.IsSortDescending());
+				}
 			}
-
-			if (item_pos == -1 || item_pos > list_.GetItemCount())
-				item_pos = list_.AddItem(list_.GetItemCount(), 0, fd.to_wstring(hal::file_details::filename_e).c_str(), 0);
-			
-			list_.SetItemData(item_pos, fd.order());
-			
-			list_.SetItemText(item_pos, 0, fd.filename.c_str());		
-			for (size_t i = hal::file_details::filename_e; i <= hal::file_details::priority_e; ++i)
-			{
-				list_.SetItemText(item_pos, i, fd.to_wstring(i).c_str());
-			}	
 		}
-		}
-
-		if (list_.AutoSort() && col_sort_index >= 0 && col_sort_index < list_.m_arrColSortType.GetSize())
-		{
-			if (list_.GetColumnSortType(col_sort_index) <= WTL::LVCOLSORT_CUSTOM)
-				list_.DoSortItems(col_sort_index, list_.IsSortDescending());
-		}
-		*/
 	}
 
 	list_.InvalidateRect(NULL,true);
@@ -398,7 +357,7 @@ void AdvFilesDialog::focusChanged(const hal::torrent_details_ptr pT)
 	}
 	
 	list_.setFocused(pT);
-	
+
 	std::sort(fileLinks_.begin(), fileLinks_.end());
 	
 	{ 	hal::mutex_update_lock<FileTreeView> lock(tree_);

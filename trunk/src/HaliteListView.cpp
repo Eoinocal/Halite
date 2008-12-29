@@ -53,7 +53,7 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	for (unsigned i=0, e = hal::torrent_details::queue_position_e-hal::torrent_details::name_e; i <= e; ++i)
 		SetColumnSortType(i, i + (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), NULL);
 	
-	SetColumnSortType(0, WTL::LVCOLSORT_TEXTNOCASE, NULL);
+//	SetColumnSortType(0, WTL::LVCOLSORT_TEXTNOCASE, NULL);
 	
 	queue_view_mode();
 }
