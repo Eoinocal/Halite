@@ -116,7 +116,7 @@
       <ComponentRef Id="ReadMeText" />
     </Feature>
 
-    <Icon Id="HaliteIcon.exe" SourceFile="WiXIcon.exe" />
+    <Icon Id="HaliteIcon.exe" SourceFile="$(var.ProjectDir)\..\..\$(var.ReleaseFolder)Halite.exe" />
 
     <UIRef Id="WixUI_FeatureTree" />
     

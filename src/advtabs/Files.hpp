@@ -38,10 +38,7 @@ struct FileLink
 		branch(f.branch),
 		filename(f.filename),
 		order_(f.order())
-	{
-//		hal::event_log.post(shared_ptr<hal::EventDetail>(
-//			new hal::EventMsg(hal::wform(L"Con -> %1% - %2%.") % filename % order())));	
-	}
+	{}
 	
 	bool operator==(const FileLink& f) const
 	{
@@ -90,66 +87,12 @@ public:
 	typedef const hal::file_details dataClass;
 	typedef CHaliteSortListViewCtrl<thisClass, dataClass> listClass;
 	typedef hal::IniBase<thisClass> iniClass;
+	
+	typedef boost::function<void ()> do_ui_update_fn;
 
 	friend class listClass;
-	
-/*	struct ColumnAdapters
-	{	
-	typedef listClass::ColumnAdapter ColAdapter_t;	
-	
-	struct Size : public ColAdapter_t
-	{
-		virtual int compare(dataClass& l, dataClass& r) { return hal::compare(l.size, r.size); }		
-		virtual std::wstring print(dataClass& dc) 
-		{
-			return (hal::wform(L"%1$.2fMB") % 
-				(static_cast<double>(dc.size)/(1024*1024))).str(); 
-		}		
-	};
-	
-	struct Progress : public ColAdapter_t
-	{
-		virtual int compare(dataClass& l, dataClass& r) { return hal::compare(static_cast<double>(l.progress)/l.size, 
-			static_cast<double>(r.progress)/r.size); }		
-		virtual std::wstring print(dataClass& t) 
-		{
-			return (hal::wform(L"%1$.2f%%") % (static_cast<double>(t.progress)/t.size*100)).str(); 
-		}		
-	};
-	
-	struct Priority : public ColAdapter_t
-	{
-		virtual int compare(dataClass& l, dataClass& r) { return hal::compare(l.priority, r.priority); }		
-		virtual std::wstring print(dataClass& dc) 
-		{
-			switch (dc.priority)
-			{
-			case 0:
-				return hal::app().res_wstr(HAL_FILE_PRIORITY_0);
-			case 1:
-				return hal::app().res_wstr(HAL_FILE_PRIORITY_1);
-			case 2:
-				return hal::app().res_wstr(HAL_FILE_PRIORITY_2);
-			case 3:
-				return hal::app().res_wstr(HAL_FILE_PRIORITY_3);
-			case 4:
-				return hal::app().res_wstr(HAL_FILE_PRIORITY_4);
-			case 5:
-				return hal::app().res_wstr(HAL_FILE_PRIORITY_5);
-			case 6:
-				return hal::app().res_wstr(HAL_FILE_PRIORITY_6);
-			case 7:
-				return hal::app().res_wstr(HAL_FILE_PRIORITY_7);
-			default:
-				return hal::app().res_wstr(HAL_FILE_PRIORITY_0);
-			}	
-		}		
-	};
-	
-	};
-*/
-public:	
 
+public:	
 	class scoped_files
 	{
 
@@ -160,6 +103,8 @@ public:
 		{}
 
 		hal::file_details_vec* operator->() const { return f_; }
+
+		hal::file_details_vec& operator*() const { return *f_; }
 
 	private:
 		hal::mutex_t::scoped_lock l_;
@@ -175,14 +120,17 @@ public:
 	
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_DESTROY(OnDestroy)
+
 		COMMAND_RANGE_HANDLER_EX(ID_HAL_FILE_PRIORITY_0, ID_HAL_FILE_PRIORITY_7, OnMenuPriority)
+
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_GETDISPINFO, OnGetDispInfo)
+		REFLECTED_NOTIFY_CODE_HANDLER(SLVN_SORTCHANGED, OnSortChanged)
 
 		CHAIN_MSG_MAP(listClass)
-		FORWARD_NOTIFICATIONS()
+		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 
-	FileListView();
+	FileListView(do_ui_update_fn uiu);
 	
 	void saveSettings()
 	{
@@ -208,11 +156,7 @@ public:
 		ar & boost::serialization::make_nvp("listview", 
 			boost::serialization::base_object<listClass>(*this));
 	}
-	
-/*	dataClass CustomItemConversion(LVCompareParam* param, int iSortCol)
-	{			
-		return focused_->get_file_details()[param->dwItemData];
-	}		*/
+
 	
 	void setFocused(const hal::torrent_details_ptr& f) { focused_ = f; }
 	const hal::torrent_details_ptr focused() { return focused_; }
@@ -221,10 +165,12 @@ public:
 
 protected:	
 	LRESULT OnGetDispInfo(int, LPNMHDR pnmh, BOOL&);
+	LRESULT OnSortChanged(int, LPNMHDR pnmh, BOOL&);
 
 private:
 	//mutable hal::mutex_t mutex_;
 
+	do_ui_update_fn do_ui_update_;
 	hal::file_details_vec files_;
 	hal::torrent_details_ptr focused_;
 };
@@ -412,17 +358,9 @@ protected:
 public:
 	enum { IDD = HAL_ADVFILES };
 
-	AdvFilesDialog(HaliteWindow& halWindow) :
-		dialogBaseClass(halWindow),
-		treeManager_(tree_),
-		iniClass("AdvFilesDlg", "settings"),
-		splitterPos(150)
-	{
-		load_from_ini();
-	}
+	AdvFilesDialog(HaliteWindow& halWindow);
 	
-	~AdvFilesDialog() 
-	{}
+	~AdvFilesDialog() {}
 	
 	BOOL PreTranslateMessage(MSG* pMsg)
 	{
@@ -432,7 +370,6 @@ public:
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_CLOSE(onClose)
-		NOTIFY_HANDLER(31415, LVN_GETDISPINFO, OnGetDispInfo)
 		MSG_WM_DESTROY(OnDestroy)
 		
 		if (uMsg == WM_FORWARDMSG)

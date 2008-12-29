@@ -47,7 +47,7 @@ bool file_details::less(const file_details& r, size_t index) const
 	case type_e: return type < r.type;
 	case size_e: return size < r.size;
 
-	case progress_e: return progress < r.progress;
+	case progress_e: return (static_cast<double>(progress)/size) < (static_cast<double>(r.progress)/r.size);
 	case priority_e: return priority < r.priority;
 
 	default: return false; // ???
