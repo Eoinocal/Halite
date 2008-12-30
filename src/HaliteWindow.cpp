@@ -154,7 +154,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 //	::SendMessage(hWndToolBar, TB_SETBUTTONINFO, ID_FILE_NEW, (LPARAM)&tbinfo);
 
 	// Register UIEvents and the timer for the monitoring interval
-	SetTimer(ID_UPDATE_TIMER, 5000);
+	SetTimer(ID_UPDATE_TIMER, 500);
 	SetTimer(ID_SAVE_TIMER, 5000);
 	connectUiUpdate(bind(&HaliteWindow::updateWindow, this));
 	
@@ -336,8 +336,7 @@ LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
 void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 {
 	try
-	{
-	
+	{	
 	wstring default_save_folder = wpath(hal::config().default_save_folder_).native_file_string();
 	wstring default_move_folder = wpath(hal::config().default_move_folder_).native_file_string();
 	bool use_move_to = hal::config().use_move_to_;
