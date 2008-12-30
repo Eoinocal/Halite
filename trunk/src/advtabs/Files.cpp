@@ -70,6 +70,8 @@ void FileListView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 
 	if (hal::bit::torrent t = hal::bittorrent().get(hal::bittorrent().torrentDetails().focusedTorrent()))
 		t.file_priorities = std::pair<std::vector<int>, int>(indices, priority);
+
+	do_ui_update_();
 }
 
 LRESULT FileListView::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
@@ -188,7 +190,7 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 		t.file_priorities = std::pair<std::vector<int>, int>(indices, priority);
 	
 	hal::try_update_lock<thisClass> lock(*this);
-	if (lock) signal();
+	if (lock) do_ui_update_();
 }
 
 void FileTreeView::determineFocused()
@@ -218,7 +220,7 @@ LRESULT FileTreeView::OnSelChanged(int, LPNMHDR pnmh, BOOL&)
 	if (lock)
 	{		
 		determineFocused();
-		signal();
+		do_ui_update_();
 	}	
 	return 0;
 }
@@ -228,6 +230,7 @@ AdvFilesDialog::AdvFilesDialog(HaliteWindow& halWindow) :
 	treeManager_(tree_),
 	iniClass("AdvFilesDlg", "settings"),
 	splitterPos(150),
+	tree_(boost::bind(&AdvFilesDialog::doUiUpdate, this)),
 	list_(boost::bind(&AdvFilesDialog::doUiUpdate, this))
 {
 	load_from_ini();
@@ -252,16 +255,12 @@ LRESULT AdvFilesDialog::onInitDialog(HWND, LPARAM)
 		WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|TVS_HASBUTTONS|
 			TVS_HASLINES|TVS_TRACKSELECT|TVS_SHOWSELALWAYS,
 		TVS_EX_DOUBLEBUFFER|WS_EX_STATICEDGE);
-	
-	tree_.attach(bind(&AdvFilesDialog::doUiUpdate, this));
-	
+		
 	splitter_.SetSplitterPanes(tree_, list_);
 	splitter_.SetSplitterPos(splitterPos);
 	
 	WTL::CTreeItem ti = tree_.InsertItem(hal::app().res_wstr(HAL_TORRENT_ROOT).c_str(), TVI_ROOT, TVI_LAST);
-	
-//	DoDataExchange(false);
-	
+		
 	return 0;
 }
 
@@ -278,8 +277,6 @@ void AdvFilesDialog::DlgResize_UpdateLayout(int cxWidth, int cyHeight)
 
 void AdvFilesDialog::doUiUpdate()
 {
-//	hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, (hal::wform(L"doUiUpdate %1%") % current_torrent_name_).str().c_str())));
-
 	tree_.determineFocused();
 	
 	range_ = std::equal_range(fileLinks_.begin(), fileLinks_.end(),

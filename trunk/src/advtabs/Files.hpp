@@ -111,7 +111,6 @@ public:
 		hal::file_details_vec* f_;
 	};
 
-
 	enum { 
 		LISTVIEW_ID_MENU = HAL_FILESLISTVIEW_MENU,
 		LISTVIEW_ID_COLUMNNAMES = HAL_DIALOGFILE_LISTVIEW_ADV,
@@ -184,13 +183,16 @@ protected:
 	typedef FileTreeView thisClass;
 	typedef ATL::CWindowImpl<thisClass, WTL::CTreeViewCtrlEx> treeClass;
 	typedef hal::IniBase<thisClass> iniClass;
+	
+	typedef boost::function<void ()> do_ui_update_fn;
 
 	friend class treeClass;
 	
 public:	
-	thisClass() :
+	FileTreeView(do_ui_update_fn uiu) :
 		iniClass("treeviews/advFiles", "FileTreeView"),
-		update_lock_(0)
+		update_lock_(0),
+		do_ui_update_(uiu)
 	{}
 	
 	BEGIN_MSG_MAP_EX(thisClass)
@@ -211,11 +213,7 @@ public:
 	void OnMenuPriority(UINT, int, HWND);
 	
 	wpath focused() { return focused_; }
-	
-	void attach(boost::function<void ()> fn) const { selection_.connect(fn); }
-	
-	void signal() { selection_(); }
-	
+		
 	void determineFocused();
 	
 protected:
@@ -232,10 +230,10 @@ protected:
 	friend class hal::mutex_update_lock<thisClass>;	
 	friend class hal::try_update_lock<thisClass>;		
 	
-	mutable boost::signal<void ()> selection_;
 	wpath focused_;
 
 private:
+	do_ui_update_fn do_ui_update_;
 	WTL::CMenu menu_;
 };
 
