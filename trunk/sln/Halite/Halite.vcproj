@@ -17,6 +17,9 @@
 		/>
 	</Platforms>
 	<ToolFiles>
+		<DefaultToolFile
+			FileName="CNC.rules"
+		/>
 	</ToolFiles>
 	<Configurations>
 		<Configuration
@@ -31,6 +34,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="Concurrent Collections Translator"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -112,6 +118,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="Concurrent Collections Translator"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -196,6 +205,9 @@
 				Name="VCCustomBuildTool"
 			/>
 			<Tool
+				Name="Concurrent Collections Translator"
+			/>
+			<Tool
 				Name="VCXMLDataGeneratorTool"
 			/>
 			<Tool
@@ -276,6 +288,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="Concurrent Collections Translator"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -362,6 +377,9 @@
 				Name="VCCustomBuildTool"
 			/>
 			<Tool
+				Name="Concurrent Collections Translator"
+			/>
+			<Tool
 				Name="VCXMLDataGeneratorTool"
 			/>
 			<Tool
@@ -444,6 +462,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="Concurrent Collections Translator"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
