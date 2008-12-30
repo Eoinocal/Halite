@@ -1191,10 +1191,6 @@
 			</Filter>
 		</Filter>
 		<File
-			RelativePath="..\..\lib\libtorrent\Jamfile.v2"
-			>
-		</File>
-		<File
 			RelativePath="..\..\lib\libtorrent\README"
 			>
 		</File>
