@@ -17,10 +17,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientTest", "sln\libtorren
 		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8} = {333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "halTorrent", "sln\halTorrent\halTorrent.vcproj", "{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}"
+EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Halite.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
 		Debug|Win32 = Debug|Win32
@@ -120,6 +119,25 @@ Global
 		{67F0629E-04ED-4CF3-BC02-4A49B4919F05}.Release|Win32.Build.0 = Release|Win32
 		{67F0629E-04ED-4CF3-BC02-4A49B4919F05}.Release|x64.ActiveCfg = Release|Win32
 		{67F0629E-04ED-4CF3-BC02-4A49B4919F05}.Release|x86.ActiveCfg = Release|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Debug|Win32.Build.0 = Debug|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Debug|x64.ActiveCfg = Debug|x64
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Debug|x64.Build.0 = Debug|x64
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Debug|x86.ActiveCfg = Debug|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Release Logging|Mixed Platforms.ActiveCfg = Release|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Release Logging|Mixed Platforms.Build.0 = Release|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Release Logging|Win32.ActiveCfg = Release|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Release Logging|Win32.Build.0 = Release|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Release Logging|x64.ActiveCfg = Release|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Release Logging|x86.ActiveCfg = Release|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Release|Win32.ActiveCfg = Release|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Release|Win32.Build.0 = Release|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Release|x64.ActiveCfg = Release|Win32
+		{E72EBECF-FD09-43AF-8866-E6BF6E4758DA}.Release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
