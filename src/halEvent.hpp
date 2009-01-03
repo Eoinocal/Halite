@@ -92,7 +92,7 @@ public:
 		unclassified = HAL_EVENT_UNCLASSIFIED,
 		debugEvent = HAL_EVENT_DEBUG,
 		devEvent = HAL_EVENT_DEV,
-		invalidTorrent = HAL_EVENT_INVTORRENT,
+		invalid_torrent = HAL_EVENT_INVTORRENT,
 		torrentException = HAL_EVENT_TORRENTEXP,
 		generalException = HAL_EVENT_EXP,
 		xmlException = HAL_EVENT_XML_EXP,
