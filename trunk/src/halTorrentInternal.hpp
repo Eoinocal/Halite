@@ -65,9 +65,7 @@ namespace hal
 namespace libt = libtorrent;
 namespace sc = boost::statechart;
 
-
-inline
-libt::entry haldecode(const wpath &file) 
+inline libt::entry haldecode(const wpath &file) 
 {
 	fs::ifstream ifs(file, fs::ifstream::binary);
 	if (ifs.is_open()) 
@@ -78,8 +76,7 @@ libt::entry haldecode(const wpath &file)
 	else return libt::entry();
 }
 
-inline
-bool halencode(const wpath &file, const libt::entry &e) 
+inline bool halencode(const wpath &file, const libt::entry &e) 
 {
 	fs::ofstream ofs(file, fs::ofstream::binary);
 
@@ -100,8 +97,7 @@ inline wpath path_from_utf8(const path& p)
 	return wpath(from_utf8(p.string()));
 }
 
-inline
-std::pair<std::string, std::string> extract_names(const wpath &file)
+inline std::pair<std::string, std::string> extract_names(const wpath &file)
 {
 	if (fs::exists(file)) 
 	{	
@@ -136,14 +132,14 @@ inline libt::storage_mode_t hal_allocation_to_libt(bit::allocations alloc)
 	}
 }
 
-class invalidTorrent : public std::exception
+class invalid_torrent : public std::exception
 {
 public:
-	invalidTorrent(const wstring& who) :
+	invalid_torrent(const wstring& who) :
 		who_(who)
 	{}
 	
-	virtual ~invalidTorrent() throw () {}
+	virtual ~invalid_torrent() throw () {}
 
 	wstring who() const throw ()
 	{
@@ -488,7 +484,7 @@ public:
 		catch (const libt::invalid_handle&)
 		{
 			event_log.post(shared_ptr<EventDetail>(
-				new EventInvalidTorrent(event_logger::critical, event_logger::invalidTorrent, to_utf8(name_), "get_torrent_details_ptr")));
+				new EventInvalidTorrent(event_logger::critical, event_logger::invalid_torrent, to_utf8(name_), "get_torrent_details_ptr")));
 		}
 		catch (const std::exception& e)
 		{
@@ -1580,7 +1576,7 @@ public:
 			return (*it).torrent;
 		}
 		
-		throw invalidTorrent(filename);
+		throw invalid_torrent(filename);
 	}
 	
 	torrent_internal_ptr get(const wstring& name)
@@ -1592,7 +1588,7 @@ public:
 			return (*it).torrent;
 		}
 		
-		throw invalidTorrent(name);
+		throw invalid_torrent(name);
 	}
 	
 	torrent_by_name::iterator erase(torrent_by_name::iterator where)

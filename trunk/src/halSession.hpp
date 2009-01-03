@@ -226,12 +226,12 @@ static event_logger::eventLevel lbt_category_to_event(int category)
 catch (const libt::invalid_handle&) \
 {\
 	event_log.post(shared_ptr<EventDetail>( \
-		new EventInvalidTorrent(event_logger::critical, event_logger::invalidTorrent, name, std::string(FUNCTION)))); \
+		new EventInvalidTorrent(event_logger::critical, event_logger::invalid_torrent, name, std::string(FUNCTION)))); \
 }\
-catch (const invalidTorrent& t) \
+catch (const invalid_torrent& t) \
 { \
 	event_log.post(shared_ptr<EventDetail>( \
-		new EventInvalidTorrent(event_logger::info, event_logger::invalidTorrent, t.who(), std::string(FUNCTION)))); \
+		new EventInvalidTorrent(event_logger::info, event_logger::invalid_torrent, t.who(), std::string(FUNCTION)))); \
 } \
 catch (const access_violation& e) \
 { \
@@ -261,12 +261,12 @@ catch(...) \
 catch (const libt::invalid_handle&) \
 {\
 	event_log.post(shared_ptr<EventDetail>( \
-		new EventInvalidTorrent(event_logger::critical, event_logger::invalidTorrent, TORRENT, std::string(FUNCTION)))); \
+		new EventInvalidTorrent(event_logger::critical, event_logger::invalid_torrent, TORRENT, std::string(FUNCTION)))); \
 }\
-catch (const invalidTorrent& t) \
+catch (const invalid_torrent& t) \
 {\
 	event_log.post(shared_ptr<EventDetail>( \
-		new EventInvalidTorrent(event_logger::info, event_logger::invalidTorrent, t.who(), std::string(FUNCTION)))); \
+		new EventInvalidTorrent(event_logger::info, event_logger::invalid_torrent, t.who(), std::string(FUNCTION)))); \
 }\
 catch (const access_violation& e) \
 { \
