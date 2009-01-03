@@ -19,15 +19,6 @@ using boost::filesystem::path;
 using boost::filesystem::wpath;
 using boost::noncopyable;
 
-template<class Archive>
-void serialize(Archive& ar, WTL::CRect& rect, const unsigned int version)
-{
-	ar & BOOST_SERIALIZATION_NVP(rect.top);
-	ar & BOOST_SERIALIZATION_NVP(rect.bottom);
-	ar & BOOST_SERIALIZATION_NVP(rect.left);
-	ar & BOOST_SERIALIZATION_NVP(rect.right);
-}
-
 namespace hal
 {	
 	namespace fs = boost::filesystem;

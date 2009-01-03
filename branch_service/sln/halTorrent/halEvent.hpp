@@ -43,6 +43,14 @@
 #	define HAL_DEV_MSG(msg)
 #endif
 
+#ifdef HAL_SORT_LOGGING
+#	define HAL_DEV_SORT_MSG(msg) \
+	hal::event_log.post(boost::shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(msg, hal::event_logger::dev))) 
+#else
+#	define HAL_DEV_SORT_MSG(msg)
+#endif
+
 #define HAL_GENERIC_FN_EXCEPTION_CATCH(FUNCTION) \
 catch (const access_violation& e) \
 { \
@@ -84,7 +92,7 @@ public:
 		unclassified = HAL_EVENT_UNCLASSIFIED,
 		debugEvent = HAL_EVENT_DEBUG,
 		devEvent = HAL_EVENT_DEV,
-		invalidTorrent = HAL_EVENT_INVTORRENT,
+		invalid_torrent = HAL_EVENT_INVTORRENT,
 		torrentException = HAL_EVENT_TORRENTEXP,
 		generalException = HAL_EVENT_EXP,
 		xmlException = HAL_EVENT_XML_EXP,

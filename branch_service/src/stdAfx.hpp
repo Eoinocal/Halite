@@ -113,4 +113,13 @@ extern WTL::CAppModule _Module;
 #	include <boost/serialization/shared_ptr.hpp>
 #pragma warning (pop)
 
+template<class Archive>
+void serialize(Archive& ar, WTL::CRect& rect, const unsigned int version)
+{
+	ar & BOOST_SERIALIZATION_NVP(rect.top);
+	ar & BOOST_SERIALIZATION_NVP(rect.bottom);
+	ar & BOOST_SERIALIZATION_NVP(rect.left);
+	ar & BOOST_SERIALIZATION_NVP(rect.right);
+}
+
 #include <boost/date_time/posix_time/time_serialize.hpp>
