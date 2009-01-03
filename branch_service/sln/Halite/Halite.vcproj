@@ -1123,14 +1123,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\halConfig.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halEvent.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\halIni.hpp"
 				>
 			</File>
@@ -1184,30 +1176,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\HaliteWindow.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halSession.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halSignaler.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrent.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrentDefines.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrentInternal.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTypes.hpp"
 				>
 			</File>
 			<File
