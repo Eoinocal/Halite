@@ -533,62 +533,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\halConfig.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halEvent.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Logging|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Logging|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\src\Halite.cpp"
 				>
 			</File>
@@ -602,18 +546,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\HaliteWindow.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halSession.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrent.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrentIntStates.cpp"
 				>
 			</File>
 			<File
