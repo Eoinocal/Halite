@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+		<Product Id="3c203d40-c34d-485d-a516-75b5d1b595f2" Name="Halite" Language="1033" Version="0.3.2.0" 
+             Manufacturer="BinaryNotions.com" UpgradeCode="8cac0e8f-e307-450f-8aa4-af2bd341c69b">
+
+      <Package InstallerVersion="200" Compressed="yes" Platforms="$(var.Platform)" />
+
+      <Media Id="1" Cabinet="HalWiX.cab" EmbedCab="yes" />
+      
+      <Directory Id="TARGETDIR" Name="SourceDir">
+        <Directory Id="AppDataFolder" />
+        <Directory Id="DesktopFolder" />
+        
+        <Directory Id="ProgramMenuFolder">
+          <Directory Id="HaliteProgramMenuFolder" Name="Halite">
+            <Component Id='HaliteExeStartMenuFolder' Guid='{D6B80025-50FC-4760-89B2-72340616AD19}'>
+              
+              <RegistryKey Root="HKCU" Key="Software\Halite\Uninstall">
+                <RegistryValue Value="HaliteProgramMenuFolder"
+                               Type="string"
+                               KeyPath="yes" />
+              </RegistryKey>   
+              
+              <RemoveFolder Id="RemoveShorcutFolder" On="uninstall" />
+            </Component>
+
+          </Directory>
+        </Directory>
+
+        <Directory Id="$(var.ProgramFilesFolder)">
+          <Directory Id="HALITE_PRODUCTDIR" Name="Halite">
+
+            <Component Id='ReadMeText' Win64='$(var.Win64Ans)' Guid='0E8E2FD3-7658-4429-BBD1-BBDF76E99D71'>
+              <File Id='Readme' Name='readme.txt' DiskId='1' Source='..\..\Readme.txt' />
+            </Component>
+
+            <Component Id='HaliteExe' Win64='$(var.Win64Ans)' Guid='{601CEE5B-5AE0-462f-BB19-A6FDBD520E40}'>
+              <File Id='HaliteFile' Name='Halite.exe' DiskId='1' Source='..\..\$(var.ReleaseFolder)release\Halite.exe'>
+                <Shortcut Id="desktopHaliteFile" Directory="DesktopFolder" Name="Halite"
+                    WorkingDirectory='INSTALLDIR' Advertise="yes" Icon="HaliteIcon.exe" IconIndex="0" />
+                <Shortcut Id="startmenuHaliteFile" Directory="HaliteProgramMenuFolder" Name="Halite"
+                    WorkingDirectory='INSTALLDIR' Advertise="yes" Icon="HaliteIcon.exe" IconIndex="0" />
+              </File>
+
+              <ProgId Id='Halite.torrent' Advertise="no" Description='BitTorrent Torrent File'>
+                <Extension Id='torrent' ContentType='application/torrent'>
+                  <Verb Id='open' Command='Open' TargetFile='HaliteFile' Argument='"%1"' />
+                </Extension>
+              </ProgId>
+              
+            </Component>
+
+            <Component Id='LangDutch' Win64='$(var.Win64Ans)' Guid='{EA0BF907-8BF8-41b2-9014-34DAC36D207F}'>
+              <File Id='LangDutchFile' Name='Dutch.dll' DiskId='1' Source='..\..\lang\bin\$(var.ReleaseFolder)Dutch.dll' />
+            </Component>
+            <Component Id='LangFrench' Win64='$(var.Win64Ans)' Guid='{D3CF978A-780A-43ac-A242-9829EDD29E61}'>
+              <File Id='LangFrenchFile' Name='French.dll' DiskId='1' Source='..\..\lang\bin\$(var.ReleaseFolder)French.dll' />
+            </Component>
+            <Component Id='LangGerman' Win64='$(var.Win64Ans)' Guid='{D2EF1864-BA16-4e36-812D-390B785DB9E4}'>
+              <File Id='LangGermanFile' Name='German.dll' DiskId='1' Source='..\..\lang\bin\$(var.ReleaseFolder)German.dll' />
+            </Component>
+            <Component Id='LangItalian' Win64='$(var.Win64Ans)' Guid='{49AA9062-1A15-418a-B59C-6A773670B170}'>
+              <File Id='LangItalianFile' Name='Italian.dll' DiskId='1' Source='..\..\lang\bin\$(var.ReleaseFolder)Italian.dll' />
+            </Component>
+            <Component Id='LangJapanese' Win64='$(var.Win64Ans)' Guid='{BF6ACE52-5323-4ccc-AF4F-C1F88544B6EC}'>
+              <File Id='LangJapaneseFile' Name='Japanese.dll' DiskId='1' Source='..\..\lang\bin\$(var.ReleaseFolder)Japanese.dll' />
+            </Component>
+            <Component Id='LangNorwegian' Win64='$(var.Win64Ans)' Guid='{5D3DA0B0-F843-4bb4-BA91-38C239CED2E6}'>
+              <File Id='LangNorwegianFile' Name='Norwegian.dll' DiskId='1' Source='..\..\lang\bin\$(var.ReleaseFolder)Norwegian.dll' />
+            </Component>
+            <Component Id='LangPolish' Win64='$(var.Win64Ans)' Guid='{42EF2371-5CA5-4b3a-9379-9605CE8DBD53}'>
+              <File Id='LangPolishFile' Name='Polish.dll' DiskId='1' Source='..\..\lang\bin\$(var.ReleaseFolder)Polish.dll' />
+            </Component>
+            <Component Id='LangPortuguese' Win64='$(var.Win64Ans)' Guid='{A50F41C9-D0F7-4d1e-8F1B-B313DA274959}'>
+              <File Id='LangPortugueseFile' Name='Portuguese.dll' DiskId='1' Source='..\..\lang\bin\$(var.ReleaseFolder)Portuguese.dll' />
+            </Component>
+            <Component Id='LangRussian' Win64='$(var.Win64Ans)' Guid='{A5C00F77-2962-41aa-9D99-7D02E2AB47A7}'>
+              <File Id='LangRussianFile' Name='Russian.dll' DiskId='1' Source='..\..\lang\bin\$(var.ReleaseFolder)Russian.dll' />
+            </Component>
+            <Component Id='LangSerbian' Win64='$(var.Win64Ans)' Guid='{71AC45DA-3100-4afa-81E1-3E2BC13CC527}'>
+              <File Id='LangSerbianFile' Name='Serbian.dll' DiskId='1' Source='..\..\lang\bin\$(var.ReleaseFolder)Serbian.dll' />
+            </Component>
+            <Component Id='LangSerbianCyrillic' Win64='$(var.Win64Ans)' Guid='{0E628306-A9E6-44c8-8965-84CED816A805}'>
+              <File Id='LangSerbianCyrillicFile' Name='Serbian (Cyrillic).dll' DiskId='1' Source='..\..\lang\bin\$(var.ReleaseFolder)Serbian (Cyrillic).dll' />
+            </Component>
+            <Component Id='LangSlovenian' Win64='$(var.Win64Ans)' Guid='{4ADFC8FB-17FE-4b79-99A5-B29AA46EAE0D}'>
+              <File Id='LangSlovenianFile' Name='Slovenian.dll' DiskId='1' Source='..\..\lang\bin\$(var.ReleaseFolder)Slovenian.dll' />
+            </Component>
+            <Component Id='LangSpanish' Win64='$(var.Win64Ans)' Guid='{2BD4FAAF-D480-46d3-8F0F-B3927F8DD148}'>
+              <File Id='LangSpanishFile' Name='Spanish.dll' DiskId='1' Source='..\..\lang\bin\$(var.ReleaseFolder)Spanish.dll' />
+            </Component>
+            <Component Id='LangSwedish' Win64='$(var.Win64Ans)' Guid='{2CA63BAF-667B-478b-8946-34296E671652}'>
+              <File Id='LangSwedishFile' Name='Swedish.dll' DiskId='1' Source='..\..\lang\bin\$(var.ReleaseFolder)Swedish.dll' />
+            </Component>
+            <Component Id='LangTurkish' Win64='$(var.Win64Ans)' Guid='{7CE0EC96-C977-4704-A525-B26B2FAE5A83}'>
+              <File Id='LangTurkishFile' Name='Turkish.dll' DiskId='1' Source='..\..\lang\bin\$(var.ReleaseFolder)Turkish.dll' />
+            </Component>
+
+          </Directory>
+        </Directory>
+<!--
+        <Directory Id="ProgramFiles64Folder">
+          <Directory Id="HALITE_PRODUCTDIR64" Name="Halite">
+            
+            <Component Id='ReadMeText64' Win64='yes' Guid='{5DEB2C02-9FD5-46bb-A6F2-2D97CBE09BD6}'>
+              <File Id='Readme64' Name='readme.txt' DiskId='1' Source='..\..\Readme.txt' />
+            </Component>
+            
+            <Component Id='HaliteExe64' Win64="yes" Guid='{835DF415-07C2-4ac4-90B3-B78CB02594E9}'>
+              <File Id='HaliteFile64' Name='Halite.exe' DiskId='1' Source='..\..\x64\release\Halite.exe'>
+                <Shortcut Id="desktopHaliteFile64" Directory="DesktopFolder" Name="Halite"
+                    WorkingDirectory='INSTALLDIR' Advertise="yes" Icon="HaliteIcon.exe" IconIndex="0" />
+                <Shortcut Id="startmenuHaliteFile64" Directory="HaliteProgramMenuFolder" Name="Halite"
+                    WorkingDirectory='INSTALLDIR' Advertise="yes" Icon="HaliteIcon.exe" IconIndex="0" />
+              </File>
+            </Component>
+
+          </Directory>
+        </Directory>
+-->        
+      </Directory>
+      <Feature Id="x86Components" Title="Halite (Core)" Level="1" Absent="disallow" AllowAdvertise='no'
+               ConfigurableDirectory="HALITE_PRODUCTDIR">
+        <ComponentRef Id="HaliteExe" />
+        <ComponentRef Id="HaliteExeStartMenuFolder" />
+        <ComponentRef Id="ReadMeText" />
+      </Feature>
+
+      <Feature Id="Languages" Title="Languages" Level="1" AllowAdvertise='no'>
+        
+        <Feature Id="FeatLangDutch" Title="Dutch" Level="1" AllowAdvertise='no'>
+          <ComponentRef Id="LangDutch" />
+        </Feature>
+        <Feature Id="FeatLangFrench" Title="French" Level="1" AllowAdvertise='no'>
+          <ComponentRef Id="LangFrench" />
+        </Feature>
+        <Feature Id="FeatLangGerman" Title="German" Level="1" AllowAdvertise='no'>
+          <ComponentRef Id="LangGerman" />
+        </Feature>
+        <Feature Id="FeatLangItalian" Title="Italian" Level="1" AllowAdvertise='no'>
+          <ComponentRef Id="LangItalian" />
+        </Feature>
+        <Feature Id="FeatLangJapanese" Title="Japanese" Level="1" AllowAdvertise='no'>
+          <ComponentRef Id="LangJapanese" />
+        </Feature>
+        <Feature Id="FeatLangNorwegian" Title="Norwegian" Level="1" AllowAdvertise='no'>
+          <ComponentRef Id="LangNorwegian" />
+        </Feature>
+        <Feature Id="FeatLangPolish" Title="Polish" Level="1" AllowAdvertise='no'>
+          <ComponentRef Id="LangPolish" />
+        </Feature>
+        <Feature Id="FeatLangPortuguese" Title="Portuguese" Level="1" AllowAdvertise='no'>
+          <ComponentRef Id="LangPortuguese" />
+        </Feature>
+        <Feature Id="FeatLangRussian" Title="Russian" Level="1" AllowAdvertise='no'>
+          <ComponentRef Id="LangRussian" />
+        </Feature>
+        <Feature Id="FeatLangSerbianCyrillic" Title="Serbian (Cyrillic)" Level="1" AllowAdvertise="no">
+          <ComponentRef Id="LangSerbianCyrillic" />
+        </Feature>
+        <Feature Id="FeatLangSerbian" Title="Serbian" Level="1" AllowAdvertise='no'>
+          <ComponentRef Id="LangSerbian" />
+        </Feature>
+        <Feature Id="FeatLangSlovenian" Title="Slovenian" Level="1" AllowAdvertise='no'>
+          <ComponentRef Id="LangSlovenian" />
+        </Feature>
+        <Feature Id="FeatLangSpanish" Title="Spanish" Level="1" AllowAdvertise='no'>
+          <ComponentRef Id="LangSpanish" />
+        </Feature>
+        <Feature Id="FeatLangSwedish" Title="Swedish" Level="1" AllowAdvertise='no'>
+          <ComponentRef Id="LangSwedish" />
+        </Feature>
+        <Feature Id="FeatLangTurkish" Title="Turkish" Level="1" AllowAdvertise='no'>
+          <ComponentRef Id="LangTurkish" />
+        </Feature>
+      </Feature>
+<!--
+      <Feature Id="x64Components" Title="Halite (Core 64bit)" Level="1" Absent="disallow" 
+               ConfigurableDirectory="HALITE_PRODUCTDIR64">
+        <ComponentRef Id="HaliteExe64" />
+        <ComponentRef Id="HaliteExeStartMenuFolder" />
+        <ComponentRef Id="ReadMeText64" />
+        <Condition Level="0">NOT VersionNT64</Condition>
+      </Feature>
+-->
+      <Icon Id="HaliteIcon.exe" SourceFile="..\..\release\Halite.exe" />
+
+      <UIRef Id="WixUI_FeatureTree" />
+    </Product>
+</Wix>
