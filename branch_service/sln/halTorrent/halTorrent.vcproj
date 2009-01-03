@@ -45,7 +45,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/Zm1000"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)src\&quot;;&quot;$(SolutionDir)lib\STLSoft\include&quot;;&quot;$(SolutionDir)lib\OpenSSL\inc&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\STLSoft\include&quot;;&quot;$(SolutionDir)lib\OpenSSL\inc&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_LOGGING;TORRENT_VERBOSE_LOGGING;TORRENT_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -109,7 +109,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/Zm1000"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)src\&quot;;&quot;$(SolutionDir)lib\STLSoft\include&quot;;&quot;$(SolutionDir)lib\OpenSSL\inc&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\STLSoft\include&quot;;&quot;$(SolutionDir)lib\OpenSSL\inc&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_LOGGING;TORRENT_VERBOSE_LOGGING;TORRENT_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -174,7 +174,7 @@
 				AdditionalOptions="/Zm1000"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)src\&quot;;&quot;$(SolutionDir)lib\STLSoft\include&quot;;&quot;$(SolutionDir)lib\OpenSSL\inc&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\STLSoft\include&quot;;&quot;$(SolutionDir)lib\OpenSSL\inc&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_LOGGING;TORRENT_VERBOSE_LOGGING;TORRENT_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -239,7 +239,7 @@
 				AdditionalOptions="/Zm1000"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)src\&quot;;&quot;$(SolutionDir)lib\STLSoft\include&quot;;&quot;$(SolutionDir)lib\OpenSSL\inc&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)lib\STLSoft\include&quot;;&quot;$(SolutionDir)lib\OpenSSL\inc&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_LOGGING;TORRENT_VERBOSE_LOGGING;TORRENT_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -519,6 +519,38 @@
 			<File
 				RelativePath="..\..\res\Halite.rc"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories="&quot;$(ProjectDir)\..\..\src&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories="&quot;$(ProjectDir)\..\..\src&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories="&quot;$(ProjectDir)\..\..\src&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories="&quot;$(ProjectDir)\..\..\src&quot;"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<File
