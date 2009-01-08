@@ -1088,13 +1088,14 @@ public:
 		save_torrent_data();
 
 		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"Stopping all torrents...")));
+		session_.pause();
 		
-		for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
+/*		for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
 			i != e; ++i)
 		{
 			(*i).torrent->stop();
 		}
-		
+*/		
 		// Ok this polling loop here is a bit curde, but a blocking wait is actually appropiate.
 		for (int num_active = -1; num_active != 0; )
 		{
@@ -1103,7 +1104,8 @@ public:
 			for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
 					i != e; ++i)
 			{
-				if ((*i).torrent && (*i).torrent->state() != torrent_details::torrent_stopped)
+				if ((*i).torrent && (*i).torrent->state() != torrent_details::torrent_stopped 
+						&& (*i).torrent->state() != torrent_details::torrent_paused)
 					++num_active;
 			}
 			

@@ -1304,7 +1304,8 @@ private:
 					hal::to_utf8(tracker_password_));
 			}
 
-			HAL_DEV_MSG(hal::wform(L"Applying Tracker Login User: %1%, Pass: %2%") % tracker_username_ % tracker_password_ );
+			HAL_DEV_MSG(hal::wform(L"Applying Tracker Login User: %1%, Pass: %2%")
+				% tracker_username_ % tracker_password_ );
 		}
 	}
 	
