@@ -653,7 +653,7 @@ public:
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"IP filters off.")));	
 	}
 
-	#ifndef TORRENT_DISABLE_ENCRYPTION	
+#	ifndef TORRENT_DISABLE_ENCRYPTION	
 	void ensure_pe_on(const pe_settings& pe_s)
 	{
 		libt::pe_settings pe;
@@ -747,7 +747,7 @@ public:
 
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Protocol encryption off.")));
 	}
-	#endif
+#	endif
 	
 	void set_resolve_countries(bool b)
 	{		
@@ -891,54 +891,7 @@ public:
 					std::string(e.what()), to_utf8(file.string()), std::string("addTorrent"))));
 		}
 	}
-#if 0
-	std::pair<boost::intrusive_ptr<libt::torrent_info>, libt::entry> prep_torrent(wpath filename, wpath saveDirectory)
-	{
-		libt::torrent_info info(path_to_utf8(filename));
-	 	
-		wstring torrentName = hal::from_utf8_safe(info.name());
-		if (!boost::find_last(torrentName, L".torrent")) 
-			torrentName += L".torrent";
-		
-		wpath torrentFilename = torrentName;
-		const wpath resumeFile = hal::app().get_working_directory()/L"resume"/torrentFilename.filename();
-		
-		//  vvv Handle old naming style!
-		const wpath oldResumeFile = hal::app().get_working_directory()/L"resume"/filename.filename();
-		
-		if (filename.filename() != torrentFilename.filename() && exists(oldResumeFile))
-			fs::rename(oldResumeFile, resumeFile);
-		//  ^^^ Handle old naming style!	
-		
-		libt::entry resumeData;	
-		
-		if (fs::exists(resumeFile)) 
-		{
-			try 
-			{
-				resumeData = haldecode(resumeFile);
-			}
-			catch(std::exception &e) 
-			{		
-				hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-					new hal::EventStdException(event_logger::critical, e, L"prepTorrent, Resume"))); 
-		
-				fs::remove(resumeFile);
-			}
-		}
 
-		if (!fs::exists(hal::app().get_working_directory()/L"torrents"))
-			fs::create_directory(hal::app().get_working_directory()/L"torrents");
-
-		if (!fs::exists(hal::app().get_working_directory()/L"torrents"/torrentFilename.filename()))
-			fs::copy_file(filename.string(), hal::app().get_working_directory()/L"torrents"/torrentFilename.filename());
-
-		if (!fs::exists(saveDirectory))
-			fs::create_directory(saveDirectory);
-		
-		return std::make_pair(info, resumeData);
-	}
-#endif
 	void removal_thread(torrent_internal_ptr pIT, bool wipeFiles)
 	{
 		try {
@@ -1065,7 +1018,7 @@ public:
 				catch(const std::exception& e) 
 				{
 					hal::event_log.post(shared_ptr<hal::EventDetail>(
-						new hal::EventStdException(hal::event_logger::warning, e, L"resumeAll")));
+						new hal::EventStdException(hal::event_logger::warning, e, L"resume_all")));
 					
 					the_torrents_.erase(i++);
 				}			
@@ -1076,49 +1029,61 @@ public:
 			}
 		}
 		
-		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "resume_all")
 	}
 
+	bool close_counter(int* count)
+	{
+		--(*count);
+		return true;
+	}
+	
 	void close_all(boost::optional<report_num_active> fn)
 	{
 		try 
 		{	
+
 		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"Saving torrent data...")));
 
 		save_torrent_data();
 
 		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"Stopping all torrents...")));
-		session_.pause();
-		
-/*		for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
-			i != e; ++i)
-		{
-			(*i).torrent->stop();
-		}
-*/		
-		// Ok this polling loop here is a bit curde, but a blocking wait is actually appropiate.
-		for (int num_active = -1; num_active != 0; )
-		{
-			num_active = 0;
 
-			for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
-					i != e; ++i)
+		int	num_active = 0;
+		for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
+				i != e; ++i)
+		{
+			if ((*i).torrent && (*i).torrent->state() != torrent_details::torrent_stopped 
+					&& (*i).torrent->state() != torrent_details::torrent_paused)
 			{
-				if ((*i).torrent && (*i).torrent->state() != torrent_details::torrent_stopped 
-						&& (*i).torrent->state() != torrent_details::torrent_paused)
-					++num_active;
-			}
-			
-			event_log.post(shared_ptr<EventDetail>(new EventInfo(hal::wform(L"%1% still active") % num_active)));
+				signaler_wrapper<>* sig_pause = new signaler_wrapper<>(bind(&bit_impl::close_counter, this, &num_active));
+				(*i).torrent->signals().torrent_paused.connect(bind(&signaler_wrapper<>::operator(), sig_pause));
 
-			if (fn)	(*fn)(num_active);
+				signaler_wrapper<>* sig_resume = new signaler_wrapper<>(bind(&bit_impl::close_counter, this, &num_active));
+				(*i).torrent->signals().resume_data.connect(bind(&signaler_wrapper<>::operator(), sig_resume));
+
+				num_active += 2; // because two things need to happen!
+
+				(*i).torrent->save_resume_data();
+			}
+		}
+
+		event_log.post(shared_ptr<EventDetail>(new EventInfo(hal::wform(L"%1% active") % (num_active/2))));
+		session_.pause();		
+
+		// Ok this polling loop here is a bit curde, but a blocking wait is actually appropiate.
+		while (num_active > 0)
+		{
+			event_log.post(shared_ptr<EventDetail>(new EventInfo(hal::wform(L"%1% still active") % (num_active/2))));
+
+			if (fn)	(*fn)(num_active/2);
 			boost::this_thread::sleep(pt::milliseconds(500));
 		}
 		
 		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"All torrents stopped.")));		
 		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"Fast-resume data written.")));
 		
-		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "closeAll")
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "close_all()")
 	}
 	
 	void save_torrent_data()
@@ -1139,7 +1104,7 @@ public:
 		catch(std::exception& e)
 		{
 			event_log.post(shared_ptr<EventDetail>(\
-				new EventStdException(event_logger::critical, e, L"saveTorrentData")));
+				new EventStdException(event_logger::critical, e, L"save_torrent_data()")));
 		}
 	}
 	

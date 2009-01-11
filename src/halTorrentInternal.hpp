@@ -660,7 +660,7 @@ public:
 			signaler_wrapper<>* sig = new signaler_wrapper<>(bind(&torrent_internal::remove_from_session, this, false));
 			signals().resume_data.connect(bind(&signaler_wrapper<>::operator(), sig));
 			
-			handle_.save_resume_data();
+			save_resume_data();
 
 			return false;
 		}
@@ -734,7 +734,7 @@ public:
 			signaler_wrapper<>* sig = new signaler_wrapper<>(bind(&torrent_internal::completed_pause, this));
 			signals().torrent_paused.connect(bind(&signaler_wrapper<>::operator(), sig));
 
-			state(torrent_details::torrent_pausing);	
+			state(torrent_details::torrent_pausing);
 		}			
 	}
 	
@@ -815,6 +815,11 @@ public:
 		bencode(std::ostream_iterator<char>(out), ent);
 
 		HAL_DEV_MSG(L"Written!");
+	}
+
+	void save_resume_data()
+	{
+		handle_.save_resume_data();
 	}
 	
 	void clear_resume_data()
@@ -1339,7 +1344,8 @@ private:
 //		assert(handle_.is_paused());	
 
 		HAL_DEV_MSG(L"completed_pause()");
-				
+
+		save_resume_data();				
 		state(torrent_details::torrent_paused);
 
 		return true;
