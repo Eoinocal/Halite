@@ -17,9 +17,7 @@
 		/>
 	</Platforms>
 	<ToolFiles>
-		<DefaultToolFile
-			FileName="CNC.rules"
-		/>
+
 	</ToolFiles>
 	<Configurations>
 		<Configuration

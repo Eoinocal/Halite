@@ -54,7 +54,7 @@ void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 		{		
 			int index = GetColumnSortType(col_sort_index);
 			
-			HAL_DEV_MSG(hal::wform(L"col_sort_index() = %1%, index() = %2%") 
+			HAL_DEV_SORT_MSG(hal::wform(L"col_sort_index() = %1%, index() = %2%") 
 				% col_sort_index % index);
 
 			if (index > WTL::LVCOLSORT_LAST)
