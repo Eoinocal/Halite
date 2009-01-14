@@ -45,6 +45,8 @@
 #include <boost/statechart/event.hpp>
 #include <boost/statechart/state_machine.hpp>
 #include <boost/statechart/simple_state.hpp>
+#include <boost/statechart/transition.hpp>
+#include <boost/mpl/list.hpp>
 
 #include "halIni.hpp"
 #include "halTypes.hpp"
@@ -64,6 +66,7 @@ namespace hal
 
 namespace libt = libtorrent;
 namespace sc = boost::statechart;
+namespace mpl = boost::mpl;
 
 inline libt::entry haldecode(const wpath &file) 
 {
@@ -280,41 +283,28 @@ struct torrent_standalone :
     }
 };
 
+
+struct out_of_session;
+struct in_the_session;
+
+struct ev_add_to_session : sc::event< ev_add_to_session > {};
+struct ev_remove_from_session : sc::event< ev_remove_from_session > {};
+
+struct ev_pause : sc::event< ev_pause > {};
+struct ev_stop : sc::event< ev_stop > {};
+
+
 class torrent_internal :
 	public boost::enable_shared_from_this<torrent_internal>,
-	private boost::noncopyable
+	public sc::state_machine<torrent_internal, out_of_session>
 {
 	friend class bit_impl;	
 	friend class bit::torrent::exec_around_ptr::proxy;
+	friend struct out_of_session;	
+	friend struct in_the_session;
 
 private:
-	struct out_of_session;
-	struct in_the_session;
-
-	struct torrent_state_machine : sc::state_machine<torrent_state_machine, out_of_session> {};
-
-	struct out_of_session : sc::simple_state<out_of_session, torrent_state_machine> {};
-
-	struct paused;
-	struct active;
-
-	struct in_the_session : sc::simple_state<in_the_session, torrent_state_machine, paused> 
-	{
-		in_the_session();
-		~in_the_session();
-	};
-
-	struct paused : sc::simple_state<paused, in_the_session>
-	{
-		paused();
-		~paused();
-	};
-
-	struct active : sc::simple_state<active, in_the_session>
-	{
-		active();
-		~active();
-	};
+//	struct torrent_state_machine : sc::state_machine<torrent_state_machine, out_of_session> {};
 
 public:
 	#define TORRENT_INTERNALS_DEFAULTS \
@@ -338,7 +328,7 @@ public:
 	{
 		state(torrent_details::torrent_stopped);
 		TORRENT_STATE_LOG(L"Torrent state machine initiate");
-		machine_.initiate();
+		initiate();
 	}
 	
 		torrent_internal(wpath filename, wpath saveDirectory, bit::allocations alloc, wpath move_to_directory=L"") :
@@ -351,7 +341,7 @@ public:
 		assert(the_session_);	
 		
 		TORRENT_STATE_LOG(L"Torrent state machine initiate");
-		machine_.initiate();
+		initiate();
 
 		prepare(filename);
 	}
@@ -587,43 +577,13 @@ public:
 	{
 		try
 		{
+		HAL_DEV_MSG(hal::wform(L"add_to_session() paused=%1%") % paused);
 
 		mutex_t::scoped_lock l(mutex_);	
 		assert(the_session_ != 0);
 
-		HAL_DEV_MSG(hal::wform(L"add_to_session() paused=%1%") % paused);
+		process_event( ev_add_to_session() );
 		
-		if (!in_session()) 
-		{	
-			libt::add_torrent_params p;
-
-			string torrent_file = to_utf8((hal::app().get_working_directory()/L"torrents"/filename_).string());
-			info_memory_.reset(new libt::torrent_info(torrent_file.c_str()));
-
-			std::string resume_file = to_utf8((hal::app().get_working_directory()/L"resume" / (name_ + L".fastresume")).string());
-
-			std::vector<char> buf;
-			if (libt::load_file(resume_file.c_str(), buf) == 0)
-			{
-				HAL_DEV_MSG(L"Using resume data");
-				p.resume_data = &buf;
-			}
-
-			p.ti = info_memory_;
-			p.save_path = path_to_utf8(save_directory_);
-			p.storage_mode = hal_allocation_to_libt(allocation_);
-			p.paused = paused;
-			p.duplicate_is_error = false;
-			p.auto_managed = managed_;
-
-			handle_ = the_session_->add_torrent(p);		
-			assert(handle_.is_valid());
-			in_session_ = true;
-			
-		//	clear_resume_data();
-		//	handle_.force_reannounce();
-		}	
-
 		assert(in_session());
 		HAL_DEV_MSG(L"Added to session");
 
@@ -645,6 +605,7 @@ public:
 		HAL_DEV_MSG(hal::wform(L"remove_from_session() write_data=%1%") % write_data);
 
 		mutex_t::scoped_lock l(mutex_);
+
 		if (!in_session())
 		{
 			in_session_ = false;
@@ -665,13 +626,8 @@ public:
 			return false;
 		}
 		else
-		{		
-			HAL_DEV_MSG(L"removing handle from session");
-			the_session_->remove_torrent(handle_);
-			in_session_ = false;
-
-			assert(!in_session());	
-			HAL_DEV_MSG(L"Removed from session!");
+		{				
+			process_event( ev_remove_from_session() );
 
 			return true;
 		}
@@ -1448,7 +1404,7 @@ private:
 	static libt::session* the_session_;	
 	mutable mutex_t mutex_;
 
-	torrent_state_machine machine_;
+//	torrent_state_machine machine_;
 	
 	std::pair<float, float> transfer_limit_;
 	
@@ -1635,6 +1591,45 @@ public:
 	
 private:
 	torrent_multi_index torrents_;
+};
+
+struct out_of_session : sc::simple_state<out_of_session, torrent_internal> 
+{
+	typedef mpl::list<
+		sc::transition< ev_add_to_session, in_the_session >,
+		sc::transition< ev_remove_from_session, out_of_session >
+	> reactions;
+
+	out_of_session();
+	~out_of_session();	
+};
+
+struct paused;
+struct active;
+
+struct in_the_session : sc::simple_state<in_the_session, torrent_internal, paused> 
+{
+	typedef mpl::list<
+		sc::transition< ev_add_to_session, in_the_session >,
+		sc::transition< ev_remove_from_session, out_of_session >
+	> reactions;
+
+	in_the_session();
+	~in_the_session();
+};
+
+struct paused : sc::simple_state<paused, in_the_session>
+{
+	paused();
+	~paused();
+};
+
+struct active : sc::simple_state<active, in_the_session>
+{
+	typedef sc::transition< ev_pause, paused > reactions;
+
+	active();
+	~active();
 };
 
 } // namespace hal
