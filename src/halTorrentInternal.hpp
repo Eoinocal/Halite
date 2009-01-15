@@ -46,6 +46,9 @@
 #include <boost/statechart/state_machine.hpp>
 #include <boost/statechart/simple_state.hpp>
 #include <boost/statechart/transition.hpp>
+#include <boost/statechart/state.hpp>
+#include <boost/statechart/custom_reaction.hpp>
+
 #include <boost/mpl/list.hpp>
 
 #include "halIni.hpp"
@@ -67,6 +70,7 @@ namespace hal
 namespace libt = libtorrent;
 namespace sc = boost::statechart;
 namespace mpl = boost::mpl;
+
 
 inline libt::entry haldecode(const wpath &file) 
 {
@@ -283,12 +287,36 @@ struct torrent_standalone :
     }
 };
 
-
 struct out_of_session;
 struct in_the_session;
 
-struct ev_add_to_session : sc::event< ev_add_to_session > {};
-struct ev_remove_from_session : sc::event< ev_remove_from_session > {};
+struct ev_remove_from_session : boost::statechart::event<ev_remove_from_session>
+{
+public:
+    ev_remove_from_session(bool write_data) :
+		write_data_(write_data)
+    {}
+   
+    const bool& write_data() const { return write_data_; }
+
+private:
+    bool write_data_;
+};
+
+struct ev_add_to_session : boost::statechart::event<ev_add_to_session>
+{
+public:
+    ev_add_to_session(bool pause) :
+		pause_(pause)
+    {}
+   
+    const bool& pause() const { return pause_; }
+
+private:
+    bool pause_;
+};
+
+//struct ev_remove_from_session : sc::event< ev_remove_from_session > {};
 
 struct ev_pause : sc::event< ev_pause > {};
 struct ev_stop : sc::event< ev_stop > {};
@@ -582,7 +610,7 @@ public:
 		mutex_t::scoped_lock l(mutex_);	
 		assert(the_session_ != 0);
 
-		process_event( ev_add_to_session() );
+		process_event( ev_add_to_session(paused) );
 		
 		assert(in_session());
 		HAL_DEV_MSG(L"Added to session");
@@ -627,7 +655,7 @@ public:
 		}
 		else
 		{				
-			process_event( ev_remove_from_session() );
+			process_event( ev_remove_from_session(write_data) );
 
 			return true;
 		}
@@ -1593,29 +1621,35 @@ private:
 	torrent_multi_index torrents_;
 };
 
-struct out_of_session : sc::simple_state<out_of_session, torrent_internal> 
+struct out_of_session : sc::state<out_of_session, torrent_internal> 
 {
+	typedef sc::state<out_of_session, torrent_internal> base_type;
+
 	typedef mpl::list<
-		sc::transition< ev_add_to_session, in_the_session >,
-		sc::transition< ev_remove_from_session, out_of_session >
+		sc::custom_reaction< ev_add_to_session >
 	> reactions;
 
-	out_of_session();
+	out_of_session(base_type::my_context ctx);
 	~out_of_session();	
+
+	sc::result react(const ev_add_to_session& evt);
 };
 
 struct paused;
 struct active;
 
-struct in_the_session : sc::simple_state<in_the_session, torrent_internal, paused> 
+struct in_the_session : sc::state<in_the_session, torrent_internal, mpl::list< paused > > 
 {
+	typedef sc::state<in_the_session, torrent_internal, mpl::list< paused > > base_type;
+
 	typedef mpl::list<
-		sc::transition< ev_add_to_session, in_the_session >,
-		sc::transition< ev_remove_from_session, out_of_session >
+		sc::custom_reaction< ev_remove_from_session >
 	> reactions;
 
-	in_the_session();
+	in_the_session(base_type::my_context ctx);
 	~in_the_session();
+
+	sc::result react(const ev_remove_from_session& evt);
 };
 
 struct paused : sc::simple_state<paused, in_the_session>
