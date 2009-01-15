@@ -572,10 +572,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\sha1.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\..\Libraries\libtorrent\libtorrent-0.14\src\smart_ban.cpp"
 				>
 			</File>
