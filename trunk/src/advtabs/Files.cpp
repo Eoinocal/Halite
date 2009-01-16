@@ -80,13 +80,13 @@ LRESULT FileListView::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 
 	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
 
-	if (pdi->item.iItem < files_.size())
+	if (pdi->item.iItem < static_cast<int>(files_.size()))
 	{
 		if (pdi->item.mask & LVIF_TEXT)
 		{
 			wstring str = files_[pdi->item.iItem].to_wstring(pdi->item.iSubItem);
 			
-			int len = str.copy(pdi->item.pszText, min(pdi->item.cchTextMax - 1, str.size()));
+			size_t len = str.copy(pdi->item.pszText, min(pdi->item.cchTextMax - 1, static_cast<int>(str.size())));
 			pdi->item.pszText[len] = '\0';
 		}	
 		
