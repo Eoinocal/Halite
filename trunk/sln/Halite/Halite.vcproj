@@ -17,7 +17,6 @@
 		/>
 	</Platforms>
 	<ToolFiles>
-
 	</ToolFiles>
 	<Configurations>
 		<Configuration
@@ -32,9 +31,6 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="Concurrent Collections Translator"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -116,9 +112,6 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="Concurrent Collections Translator"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -203,9 +196,6 @@
 				Name="VCCustomBuildTool"
 			/>
 			<Tool
-				Name="Concurrent Collections Translator"
-			/>
-			<Tool
 				Name="VCXMLDataGeneratorTool"
 			/>
 			<Tool
@@ -286,9 +276,6 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="Concurrent Collections Translator"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -375,9 +362,6 @@
 				Name="VCCustomBuildTool"
 			/>
 			<Tool
-				Name="Concurrent Collections Translator"
-			/>
-			<Tool
 				Name="VCXMLDataGeneratorTool"
 			/>
 			<Tool
@@ -460,9 +444,6 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="Concurrent Collections Translator"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -1247,10 +1228,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\HaliteListView.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\HaliteListViewCtrl.hpp"
 				>
 			</File>
 			<File
