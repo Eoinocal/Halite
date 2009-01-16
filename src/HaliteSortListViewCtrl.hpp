@@ -462,6 +462,9 @@ public:
 
 		ar & make_nvp("descending", descending_);
 		ar & make_nvp("sortCol", sortCol_);
+
+		ar & make_nvp("secondary_descending", listClass::bSecondaryDescending);
+		ar & make_nvp("secondary_sort_column", listClass::iSecondarySort);		
     }
 
     template<class Archive>
@@ -476,6 +479,9 @@ public:
 
 		ar & make_nvp("descending", descending_);
 		ar & make_nvp("sortCol", sortCol_);
+
+		ar & make_nvp("secondary_descending", listClass::bSecondaryDescending);
+		ar & make_nvp("secondary_sort_column", listClass::iSecondarySort);		
 		
 		SetColumnOrderArray(list_order_.size(), &list_order_[0]);
 

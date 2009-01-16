@@ -97,6 +97,14 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	// Perform external ListView sort here.
 	if (col_sort_index != -1)
 	{		
+		if (GetSecondarySortColumn() != -1)
+		{
+			int index = GetColumnSortType(GetSecondarySortColumn());
+			
+			if (index > WTL::LVCOLSORT_LAST)
+				tD.sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSecondarySortDescending());
+		}
+
 		int index = GetColumnSortType(col_sort_index);
 		
 		if (index > WTL::LVCOLSORT_LAST)

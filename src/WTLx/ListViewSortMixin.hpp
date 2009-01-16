@@ -10,6 +10,8 @@
 #include <boost/iterator/filter_iterator.hpp>
 #include <winstl/controls/listview_sequence.hpp>
 
+#define SLVN_SECONDSORTCHANGED		SLVN_SORTCHANGED+1
+
 namespace WTLx
 {
 
@@ -61,10 +63,15 @@ protected:
 		LPNMHEADER p = (LPNMHEADER)pnmh;
 		if(p->iButton == 0)
 		{
-			if (GetKeyState(VK_LCONTROL) || GetKeyState(VK_RCONTROL))
+			if (GetKeyState(VK_CONTROL) & 0x8000)
 			{
+				int iOld = iSecondarySort;
+
 				bSecondaryDescending = (iSecondarySort == p->iItem) ? !bSecondaryDescending : false;
 				iSecondarySort = p->iItem;
+
+				if (DoSortItems(p->iItem, m_bSortDescending))
+					NotifyParentSecondarySortChanged(p->iItem, iOld);
 			}
 			else
 			{
@@ -78,6 +85,14 @@ protected:
 
 		bHandled = FALSE;
 		return 0;
+	}
+
+	void NotifyParentSecondarySortChanged(int iNewSortCol, int iOldSortCol)
+	{
+		T* pT = static_cast<T*>(this);
+		int nID = pT->GetDlgCtrlID();
+		WTL::NMSORTLISTVIEW nm = { { pT->m_hWnd, nID, SLVN_SECONDSORTCHANGED }, iNewSortCol, iOldSortCol };
+		::SendMessage(pT->GetParent(), WM_NOTIFY, (WPARAM)nID, (LPARAM)&nm);
 	}
 
 //  Operations
@@ -124,10 +139,9 @@ protected:
 		return bRet;
 	}
 
-	const int GetSecondarySortColumn() { return iSecondarySort; }
-	const bool IsSecondarySortDescending() { return bSecondaryDescending; }
+	const int GetSecondarySortColumn() const { return iSecondarySort; }
+	const bool IsSecondarySortDescending() const { return bSecondaryDescending; }
 
-private:
 	int iSecondarySort;
 	bool bSecondaryDescending;
 };
