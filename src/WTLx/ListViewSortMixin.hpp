@@ -16,8 +16,12 @@ namespace WTLx
 template<typename T>
 class ListViewSortMixin : public WTL::CSortListViewImpl<T>
 {
-
 protected:
+	ListViewSortMixin() :
+		iSecondarySort(-1),
+		bSecondaryDescending(false)
+	{}
+
 	BEGIN_MSG_MAP(ListViewSortMixin)
 		MESSAGE_HANDLER(LVM_INSERTCOLUMN, WTL::CSortListViewImpl<T>::OnInsertColumn)
 		MESSAGE_HANDLER(LVM_DELETECOLUMN, WTL::CSortListViewImpl<T>::OnDeleteColumn)
@@ -57,12 +61,21 @@ protected:
 		LPNMHEADER p = (LPNMHEADER)pnmh;
 		if(p->iButton == 0)
 		{
-			int iOld = m_iSortColumn;
-			bool bDescending = (m_iSortColumn == p->iItem) ? !m_bSortDescending : false;
+			if (GetKeyState(VK_LCONTROL) || GetKeyState(VK_RCONTROL))
+			{
+				bSecondaryDescending = (iSecondarySort == p->iItem) ? !bSecondaryDescending : false;
+				iSecondarySort = p->iItem;
+			}
+			else
+			{
+				int iOld = m_iSortColumn;
+				bool bDescending = (m_iSortColumn == p->iItem) ? !m_bSortDescending : false;
 
-			if (DoSortItems(p->iItem, bDescending))
-				NotifyParentSortChanged(p->iItem, iOld);
+				if (DoSortItems(p->iItem, bDescending))
+					NotifyParentSortChanged(p->iItem, iOld);
+			}
 		}
+
 		bHandled = FALSE;
 		return 0;
 	}
@@ -110,6 +123,13 @@ protected:
 
 		return bRet;
 	}
+
+	const int GetSecondarySortColumn() { return iSecondarySort; }
+	const bool IsSecondarySortDescending() { return bSecondaryDescending; }
+
+private:
+	int iSecondarySort;
+	bool bSecondaryDescending;
 };
 
 }
