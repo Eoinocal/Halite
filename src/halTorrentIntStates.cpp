@@ -70,7 +70,7 @@ sc::result leaving_session::react(const ev_add_to_session& evt)
 	return transit< in_the_session >();
 }
 
-sc::result leaving_session::react(const ev_resume_data_written& evt)
+sc::result leaving_session::react(const ev_resume_data_alert& evt)
 {
 	torrent_internal& t_i = context<torrent_internal>();
 
@@ -137,14 +137,19 @@ active::active(base_type::my_context ctx) :
 
 active::~active()
 {
+	context<torrent_internal>().handle_.pause();
+
 	TORRENT_STATE_LOG(L"Exiting ~active()");
 }
 
 sc::result active::react(const ev_pause& evt)
 {
-	context<torrent_internal>().handle_.pause();
-
 	return transit< pausing >();
+}
+
+sc::result active::react(const ev_stop& evt)
+{
+	return transit< stopping >();
 }
 
 pausing::pausing()
@@ -178,6 +183,13 @@ stopping::~stopping()
 	TORRENT_STATE_LOG(L"Exiting ~stopping()");
 }
 
+/*sc::result stopping::react(const ev_paused_alert& evt)
+{
+	context<torrent_internal>().handle_.save_resume_data();
+
+	return discard_event();
+}*/
+
 stopped::stopped()
 {
 	TORRENT_STATE_LOG(L"Entering stopped()");
@@ -188,9 +200,12 @@ stopped::~stopped()
 	TORRENT_STATE_LOG(L"Exiting ~stopped()");
 }
 
-resume_data_waiting::resume_data_waiting()
+resume_data_waiting::resume_data_waiting(base_type::my_context ctx) :
+	base_type::my_base(ctx)
 {
 	TORRENT_STATE_LOG(L"Entering resume_data_waiting()");
+
+	context<torrent_internal>().handle_.save_resume_data();
 }
 
 resume_data_waiting::~resume_data_waiting()
