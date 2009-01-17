@@ -305,6 +305,7 @@ class torrent_internal :
 	friend struct paused;
 	friend struct stopping;
 	friend struct stopped;
+	friend struct resume_data_waiting;
 	friend struct resume_data_idling;
 
 public:
