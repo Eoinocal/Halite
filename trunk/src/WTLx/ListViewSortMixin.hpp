@@ -70,8 +70,8 @@ protected:
 				bSecondaryDescending = (iSecondarySort == p->iItem) ? !bSecondaryDescending : false;
 				iSecondarySort = p->iItem;
 
-				if (DoSortItems(p->iItem, m_bSortDescending))
-					NotifyParentSecondarySortChanged(p->iItem, iOld);
+				T* pT = static_cast<T*>(this);
+				bool bRet = pT->DoSortItemsExternal(iSecondarySort, bSecondaryDescending);
 			}
 			else
 			{

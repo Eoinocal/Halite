@@ -1279,6 +1279,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\halTorrentIntEvents.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\halTorrentIntStates.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\halTypes.hpp"
 				>
 			</File>

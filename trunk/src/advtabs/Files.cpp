@@ -330,6 +330,17 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 
 			if (col_sort_index != -1)
 			{		
+				if (list_.GetSecondarySortColumn() != -1)
+				{
+					int index = list_.GetColumnSortType(list_.GetSecondarySortColumn());
+					
+					if (index > WTL::LVCOLSORT_LAST)
+					{
+						hal::file_details_sort(*list_files, index - (WTL::LVCOLSORT_LAST+1+hal::file_details::filename_e), 
+							list_.IsSecondarySortDescending());
+					}
+				}
+
 				int index = list_.GetColumnSortType(col_sort_index);
 		
 				if (index > WTL::LVCOLSORT_LAST)
