@@ -54,6 +54,7 @@
 #include "halIni.hpp"
 #include "halTypes.hpp"
 #include "halSignaler.hpp"
+#include "halTorrentIntEvents.hpp"
 
 namespace hal 
 {
@@ -288,39 +289,6 @@ struct torrent_standalone :
 };
 
 struct out_of_session;
-struct in_the_session;
-
-struct ev_remove_from_session : boost::statechart::event<ev_remove_from_session>
-{
-public:
-    ev_remove_from_session(bool write_data) :
-		write_data_(write_data)
-    {}
-   
-    const bool& write_data() const { return write_data_; }
-
-private:
-    bool write_data_;
-};
-
-struct ev_add_to_session : boost::statechart::event<ev_add_to_session>
-{
-public:
-    ev_add_to_session(bool pause) :
-		pause_(pause)
-    {}
-   
-    const bool& pause() const { return pause_; }
-
-private:
-    bool pause_;
-};
-
-//struct ev_remove_from_session : sc::event< ev_remove_from_session > {};
-
-struct ev_pause : sc::event< ev_pause > {};
-struct ev_stop : sc::event< ev_stop > {};
-
 
 class torrent_internal :
 	public boost::enable_shared_from_this<torrent_internal>,
@@ -328,11 +296,16 @@ class torrent_internal :
 {
 	friend class bit_impl;	
 	friend class bit::torrent::exec_around_ptr::proxy;
+
 	friend struct out_of_session;	
 	friend struct in_the_session;
-
-private:
-//	struct torrent_state_machine : sc::state_machine<torrent_state_machine, out_of_session> {};
+	
+	friend struct active;
+	friend struct pausing;
+	friend struct paused;
+	friend struct stopping;
+	friend struct stopped;
+	friend struct resume_data_idling;
 
 public:
 	#define TORRENT_INTERNALS_DEFAULTS \
@@ -642,23 +615,9 @@ public:
 			return false;
 		}
 		
-		if (write_data)
-		{
-			HAL_DEV_MSG(L"requesting resume data");			
-		
-			signaler_wrapper<>* sig = new signaler_wrapper<>(bind(&torrent_internal::remove_from_session, this, false));
-			signals().resume_data.connect(bind(&signaler_wrapper<>::operator(), sig));
-			
-			save_resume_data();
+		process_event( ev_remove_from_session(write_data) );
 
-			return false;
-		}
-		else
-		{				
-			process_event( ev_remove_from_session(write_data) );
-
-			return true;
-		}
+		return true;
 
 		}
 		catch(std::exception& e)
@@ -667,6 +626,14 @@ public:
 				new hal::EventStdException(event_logger::critical, e, L"remove_from_session()"))); 
 			return false;
 		}
+	}
+
+	void remove_torrent()
+	{
+		the_session_->remove_torrent(handle_);
+		in_session_ = false;
+
+		assert(!in_session());	
 	}
 	
 	bool in_session() const
@@ -1621,51 +1588,8 @@ private:
 	torrent_multi_index torrents_;
 };
 
-struct out_of_session : sc::state<out_of_session, torrent_internal> 
-{
-	typedef sc::state<out_of_session, torrent_internal> base_type;
-
-	typedef mpl::list<
-		sc::custom_reaction< ev_add_to_session >
-	> reactions;
-
-	out_of_session(base_type::my_context ctx);
-	~out_of_session();	
-
-	sc::result react(const ev_add_to_session& evt);
-};
-
-struct paused;
-struct active;
-
-struct in_the_session : sc::state<in_the_session, torrent_internal, mpl::list< paused > > 
-{
-	typedef sc::state<in_the_session, torrent_internal, mpl::list< paused > > base_type;
-
-	typedef mpl::list<
-		sc::custom_reaction< ev_remove_from_session >
-	> reactions;
-
-	in_the_session(base_type::my_context ctx);
-	~in_the_session();
-
-	sc::result react(const ev_remove_from_session& evt);
-};
-
-struct paused : sc::simple_state<paused, in_the_session>
-{
-	paused();
-	~paused();
-};
-
-struct active : sc::simple_state<active, in_the_session>
-{
-	typedef sc::transition< ev_pause, paused > reactions;
-
-	active();
-	~active();
-};
-
 } // namespace hal
+
+#include "halTorrentIntStates.hpp"
 
 BOOST_CLASS_VERSION(hal::torrent_manager::torrent_holder, 1)

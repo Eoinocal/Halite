@@ -517,6 +517,8 @@ void bit_impl::alert_handler()
 		if (a.resume_data)
 			get(a.handle)->write_resume_data(*a.resume_data);
 		get(a.handle)->signals().resume_data();
+
+		get(a.handle)->post_event(ev_resume_data_written());
 	}
 	
 	void operator()(libt::peer_error_alert const& a) const

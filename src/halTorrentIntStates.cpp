@@ -6,10 +6,12 @@
 
 #include "stdAfx.hpp"
 
-#include "halTorrentInternal.hpp"
+#include "halTorrentIntStates.hpp"
 
 namespace hal
 {
+
+// -------- in_the_session --------
 
 in_the_session::in_the_session(base_type::my_context ctx) :
 	base_type::my_base(ctx)
@@ -23,20 +25,63 @@ sc::result in_the_session::react(const ev_remove_from_session& evt)
 {
 	torrent_internal& t_i = context<torrent_internal>();
 
-	HAL_DEV_MSG(L"removing handle from session");
-	t_i.the_session_->remove_torrent(t_i.handle_);
-	t_i.in_session_ = false;
+	if (evt.write_data())
+	{
+		HAL_DEV_MSG(L"requesting resume data");
+		t_i.save_resume_data();	
 
-	assert(!t_i.in_session());	
-	HAL_DEV_MSG(L"Removed from session!");
+		return transit< leaving_session >();
+	}
+	else
+	{
+		HAL_DEV_MSG(L"removing handle from session");
+		t_i.remove_torrent();
 
-	return transit< out_of_session >();
+		assert(!t_i.in_session());	
+		HAL_DEV_MSG(L"Removed from session!");
+
+		return transit< out_of_session >();
+	}
 }
 
 in_the_session::~in_the_session()
 {
 	TORRENT_STATE_LOG(L"Exiting ~in_the_session()");
 }
+
+// -------- leaving_session --------
+
+leaving_session::leaving_session(base_type::my_context ctx) :
+	base_type::my_base(ctx)
+{
+	TORRENT_STATE_LOG(L"Entering leaving_session()");
+}
+
+leaving_session::~leaving_session()
+{
+	TORRENT_STATE_LOG(L"Exiting ~leaving_session()");
+}
+
+sc::result leaving_session::react(const ev_add_to_session& evt)
+{
+	torrent_internal& t_i = context<torrent_internal>();
+	assert(t_i.in_session());
+
+	return transit< in_the_session >();
+}
+
+sc::result leaving_session::react(const ev_resume_data_written& evt)
+{
+	torrent_internal& t_i = context<torrent_internal>();
+
+	HAL_DEV_MSG(L"Removing handle from session");
+	t_i.remove_torrent();
+	HAL_DEV_MSG(L"Removed from session!");
+
+	return transit< out_of_session >();
+}
+
+// -------- out_of_session --------
 
 out_of_session::out_of_session(base_type::my_context ctx) :
 	base_type::my_base(ctx)
@@ -80,14 +125,40 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	t_i.handle_ = t_i.the_session_->add_torrent(p);		
 	assert(t_i.handle_.is_valid());
 	t_i.in_session_ = true;
-	
-//	clear_resume_data();
-//	handle_.force_reannounce();
 
 	return transit< in_the_session >();
 }
 
-paused::paused()
+active::active(base_type::my_context ctx) :
+	base_type::my_base(ctx)
+{
+	TORRENT_STATE_LOG(L"Entering active()");
+}
+
+active::~active()
+{
+	TORRENT_STATE_LOG(L"Exiting ~active()");
+}
+
+sc::result active::react(const ev_pause& evt)
+{
+	context<torrent_internal>().handle_.pause();
+
+	return transit< pausing >();
+}
+
+pausing::pausing()
+{
+	TORRENT_STATE_LOG(L"Entering pausing()");
+}
+
+pausing::~pausing()
+{
+	TORRENT_STATE_LOG(L"Exiting ~pausing()");
+}
+
+paused::paused(base_type::my_context ctx) :
+	base_type::my_base(ctx)
 {
 	TORRENT_STATE_LOG(L"Entering paused()");
 }
@@ -97,14 +168,44 @@ paused::~paused()
 	TORRENT_STATE_LOG(L"Exiting ~paused()");
 }
 
-active::active()
+stopping::stopping()
 {
-	TORRENT_STATE_LOG(L"Entering active()");
+	TORRENT_STATE_LOG(L"Entering stopping()");
 }
 
-active::~active()
+stopping::~stopping()
 {
-	TORRENT_STATE_LOG(L"Exiting ~active()");
+	TORRENT_STATE_LOG(L"Exiting ~stopping()");
+}
+
+stopped::stopped()
+{
+	TORRENT_STATE_LOG(L"Entering stopped()");
+}
+
+stopped::~stopped()
+{
+	TORRENT_STATE_LOG(L"Exiting ~stopped()");
+}
+
+resume_data_waiting::resume_data_waiting()
+{
+	TORRENT_STATE_LOG(L"Entering resume_data_waiting()");
+}
+
+resume_data_waiting::~resume_data_waiting()
+{
+	TORRENT_STATE_LOG(L"Exiting ~resume_data_waiting()");
+}
+
+resume_data_idling::resume_data_idling()
+{
+	TORRENT_STATE_LOG(L"Entering resume_data_idling()");
+}
+
+resume_data_idling::~resume_data_idling()
+{
+	TORRENT_STATE_LOG(L"Exiting ~resume_data_idling()");
 }
 
 } // namespace hal
