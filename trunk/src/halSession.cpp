@@ -505,10 +505,14 @@ void bit_impl::alert_handler()
 				event_logger::info, a.timestamp())));
 
 		get(a.handle)->signals().torrent_paused();
+
+		get(a.handle)->post_event(ev_paused_alert());
 	}
 	
 	void operator()(libt::save_resume_data_alert const& a) const
 	{
+		HAL_DEV_MSG(L"save_resume_data_alert");
+
 		event_log.post(shared_ptr<EventDetail>(
 			new EventMsg((hal::wform(hal::app().res_wstr(HAL_WRITE_RESUME_ALERT)) 
 					% get(a.handle)->name()), 

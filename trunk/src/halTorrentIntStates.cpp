@@ -21,56 +21,7 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 	assert(context<torrent_internal>().in_session());
 }
 
-sc::result in_the_session::react(const ev_remove_from_session& evt)
-{
-	torrent_internal& t_i = context<torrent_internal>();
-
-	if (evt.write_data())
-	{
-		HAL_DEV_MSG(L"requesting resume data");
-		t_i.save_resume_data();	
-
-		return transit< leaving_session >();
-	}
-	else
-	{
-		HAL_DEV_MSG(L"removing handle from session");
-		t_i.remove_torrent();
-
-		assert(!t_i.in_session());	
-		HAL_DEV_MSG(L"Removed from session!");
-
-		return transit< out_of_session >();
-	}
-}
-
 in_the_session::~in_the_session()
-{
-	TORRENT_STATE_LOG(L"Exiting ~in_the_session()");
-}
-
-// -------- leaving_session --------
-
-leaving_session::leaving_session(base_type::my_context ctx) :
-	base_type::my_base(ctx)
-{
-	TORRENT_STATE_LOG(L"Entering leaving_session()");
-}
-
-leaving_session::~leaving_session()
-{
-	TORRENT_STATE_LOG(L"Exiting ~leaving_session()");
-}
-
-sc::result leaving_session::react(const ev_add_to_session& evt)
-{
-	torrent_internal& t_i = context<torrent_internal>();
-	assert(t_i.in_session());
-
-	return transit< in_the_session >();
-}
-
-sc::result leaving_session::react(const ev_resume_data_alert& evt)
 {
 	torrent_internal& t_i = context<torrent_internal>();
 
@@ -78,7 +29,7 @@ sc::result leaving_session::react(const ev_resume_data_alert& evt)
 	t_i.remove_torrent();
 	HAL_DEV_MSG(L"Removed from session!");
 
-	return transit< out_of_session >();
+	TORRENT_STATE_LOG(L"Exiting ~in_the_session()");
 }
 
 // -------- out_of_session --------
@@ -120,19 +71,25 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	p.storage_mode = hal_allocation_to_libt(t_i.allocation_);
 	p.paused = evt.pause();
 	p.duplicate_is_error = false;
-	p.auto_managed = t_i.managed_;
+	p.auto_managed = false;//t_i.managed_;
 
 	t_i.handle_ = t_i.the_session_->add_torrent(p);		
 	assert(t_i.handle_.is_valid());
 	t_i.in_session_ = true;
 
-	return transit< in_the_session >();
+	if (evt.pause())
+		return transit< paused >();
+	else
+		return transit< active >();
 }
 
 active::active(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
 	TORRENT_STATE_LOG(L"Entering active()");
+
+	torrent_internal& t_i = context<torrent_internal>();
+	t_i.state(torrent_details::torrent_active);
 }
 
 active::~active()
@@ -152,9 +109,13 @@ sc::result active::react(const ev_stop& evt)
 	return transit< stopping >();
 }
 
-pausing::pausing()
+pausing::pausing(base_type::my_context ctx) :
+	base_type::my_base(ctx)
 {
 	TORRENT_STATE_LOG(L"Entering pausing()");
+
+	torrent_internal& t_i = context<torrent_internal>();
+	t_i.state(torrent_details::torrent_pausing);
 }
 
 pausing::~pausing()
@@ -166,6 +127,9 @@ paused::paused(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
 	TORRENT_STATE_LOG(L"Entering paused()");
+
+	torrent_internal& t_i = context<torrent_internal>();
+	t_i.state(torrent_details::torrent_paused);
 }
 
 paused::~paused()
@@ -173,7 +137,15 @@ paused::~paused()
 	TORRENT_STATE_LOG(L"Exiting ~paused()");
 }
 
-stopping::stopping()
+sc::result paused::react(const ev_resume& evt)
+{
+	context<torrent_internal>().handle_.resume();
+
+	return transit< active >();
+}
+
+stopping::stopping(base_type::my_context ctx) :
+	base_type::my_base(ctx)
 {
 	TORRENT_STATE_LOG(L"Entering stopping()");
 }
@@ -181,6 +153,9 @@ stopping::stopping()
 stopping::~stopping()
 {
 	TORRENT_STATE_LOG(L"Exiting ~stopping()");
+
+	torrent_internal& t_i = context<torrent_internal>();
+	t_i.state(torrent_details::torrent_stopping);
 }
 
 /*sc::result stopping::react(const ev_paused_alert& evt)
@@ -190,14 +165,30 @@ stopping::~stopping()
 	return discard_event();
 }*/
 
-stopped::stopped()
+stopped::stopped(base_type::my_context ctx) :
+	base_type::my_base(ctx)
 {
 	TORRENT_STATE_LOG(L"Entering stopped()");
+
+	torrent_internal& t_i = context<torrent_internal>();
+	t_i.state(torrent_details::torrent_stopped);
 }
 
 stopped::~stopped()
 {
 	TORRENT_STATE_LOG(L"Exiting ~stopped()");
+}
+
+sc::result stopped::react(const ev_resume& evt)
+{
+//	torrent_internal& t_i = context<torrent_internal>();
+//	assert(t_i.in_session());
+
+	post_event(ev_add_to_session(false));
+
+//	context<torrent_internal>().add_to_session(false);
+
+	return discard_event();
 }
 
 resume_data_waiting::resume_data_waiting(base_type::my_context ctx) :

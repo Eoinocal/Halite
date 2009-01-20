@@ -661,7 +661,7 @@ bool bit::is_torrent(const std::wstring& filename)
 	
 	return pimpl()->the_torrents_.exists(filename);
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "isTorrent")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "is_torrent")
 	
 	return false;
 }
@@ -677,7 +677,7 @@ void bit::pause_torrent(const std::wstring& filename)
 	
 	pimpl()->the_torrents_.get(filename)->pause();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "pauseTorrent")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "pause_torrent")
 }
 
 void bit::resume_torrent(const std::string& filename)
@@ -691,7 +691,7 @@ void bit::resume_torrent(const std::wstring& filename)
 	
 	pimpl()->the_torrents_.get(filename)->resume();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "resumeTorrent")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "resume_torrent")
 }
 
 void bit::stop_torrent(const std::string& filename)
@@ -705,7 +705,7 @@ void bit::stop_torrent(const std::wstring& filename)
 	
 	pimpl()->the_torrents_.get(filename)->stop();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "stopTorrent")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "stop_torrent")
 }
 
 bool bit::is_torrent_active(const std::string& filename)
@@ -719,7 +719,7 @@ bool bit::is_torrent_active(const std::wstring& filename)
 	
 	return pimpl()->the_torrents_.get(filename)->is_active();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "isTorrentActive")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "is_torrent_active")
 	
 	return false; // ??? is this correct
 }
@@ -735,7 +735,7 @@ void bit::reannounce_torrent(const std::wstring& filename)
 	
 	pimpl()->the_torrents_.get(filename)->handle().force_reannounce();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "reannounceTorrent")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "reannounce_torrent")
 }
 
 
@@ -750,7 +750,7 @@ void bit::recheck_torrent(const std::wstring& filename)
 	
 	pimpl()->the_torrents_.get(filename)->force_recheck();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "recheckTorrent")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "recheck_torrent")
 }
 
 void bit::remove_torrent_wstr(const std::wstring& filename)
