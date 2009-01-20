@@ -73,7 +73,7 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	p.duplicate_is_error = false;
 	p.auto_managed = false;//t_i.managed_;
 
-	t_i.handle_ = t_i.the_session_->add_torrent(p);		
+	t_i.handle_ = t_i.the_session_->add_torrent(p);
 	assert(t_i.handle_.is_valid());
 	t_i.in_session_ = true;
 
@@ -99,16 +99,6 @@ active::~active()
 	TORRENT_STATE_LOG(L"Exiting ~active()");
 }
 
-sc::result active::react(const ev_pause& evt)
-{
-	return transit< pausing >();
-}
-
-sc::result active::react(const ev_stop& evt)
-{
-	return transit< stopping >();
-}
-
 pausing::pausing(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
@@ -130,11 +120,21 @@ paused::paused(base_type::my_context ctx) :
 
 	torrent_internal& t_i = context<torrent_internal>();
 	t_i.state(torrent_details::torrent_paused);
+
+	post_event(ev_write_resume_data());
 }
 
 paused::~paused()
 {
 	TORRENT_STATE_LOG(L"Exiting ~paused()");
+}
+
+sc::result paused::react(const ev_stop& evt)
+{
+	if (state_downcast<const resume_data_waiting*>() != 0 )
+		return transit< stopping >();
+	else
+		return transit< stopped >();
 }
 
 sc::result paused::react(const ev_resume& evt)
@@ -158,12 +158,14 @@ stopping::~stopping()
 	t_i.state(torrent_details::torrent_stopping);
 }
 
-/*sc::result stopping::react(const ev_paused_alert& evt)
+sc::result stopping::react(const ev_paused_alert& evt)
 {
-	context<torrent_internal>().handle_.save_resume_data();
+	TORRENT_STATE_LOG(L"React stopping::react(const ev_paused_alert& evt)");
+
+	post_event(ev_write_resume_data());
 
 	return discard_event();
-}*/
+}
 
 stopped::stopped(base_type::my_context ctx) :
 	base_type::my_base(ctx)

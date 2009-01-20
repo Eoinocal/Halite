@@ -294,7 +294,7 @@ class torrent_internal :
 	public boost::enable_shared_from_this<torrent_internal>,
 	public sc::state_machine<torrent_internal, out_of_session>
 {
-	friend class bit_impl;	
+//	friend class bit_impl;	
 	friend class bit::torrent::exec_around_ptr::proxy;
 
 	friend struct out_of_session;	
@@ -333,7 +333,7 @@ public:
 		initiate();
 	}
 	
-		torrent_internal(wpath filename, wpath saveDirectory, bit::allocations alloc, wpath move_to_directory=L"") :
+	torrent_internal(wpath filename, wpath saveDirectory, bit::allocations alloc, wpath move_to_directory=L"") :
 		TORRENT_INTERNALS_DEFAULTS,
 		save_directory_(saveDirectory.string()),
 		move_to_directory_(move_to_directory.string()),
@@ -349,6 +349,12 @@ public:
 	}
 
 	#undef TORRENT_INTERNALS_DEFAULTS
+
+	void locked_process_event(const sc::event_base & e)
+	{
+		mutex_t::scoped_lock l(mutex_);
+		process_event(e);
+	}
 
 	~torrent_internal()
 	{
@@ -1189,7 +1195,44 @@ public:
 	{
 		mutex_t::scoped_lock l(mutex_);
 		return signals_;
+	}	
+	
+	unsigned state() const 
+	{ 
+		if (in_session())
+		{
+/*			if (handle_.is_paused())
+			{
+				if (state_ != torrent_details::torrent_paused)
+				{			
+					HAL_DEV_MSG(L"Should really be paused!");
+					state_ = torrent_details::torrent_paused;
+				}
+			}
+			else				
+			{			
+				if (state_ != torrent_details::torrent_active &&
+					state_ != torrent_details::torrent_pausing &&
+					state_ != torrent_details::torrent_stopping)
+				{			
+					HAL_DEV_MSG(L"Should really be active!");
+					state_ = torrent_details::torrent_active;
+				}
+			}			*/		
+		}
+		else
+		{
+			if (state_ != torrent_details::torrent_stopped)
+			{			
+				HAL_DEV_MSG(L"Should really be stopped!");
+				state_ = torrent_details::torrent_stopped;
+			}
+		}
+		
+		return state_; 
 	}
+
+	static libt::session* the_session_;	
 
 private:	
 	signalers signals_;
@@ -1378,44 +1421,8 @@ private:
 			break;
 		};
 		state_ = s;
-	}	
-	
-	unsigned state() const 
-	{ 
-		if (in_session())
-		{
-			if (handle_.is_paused())
-			{
-				if (state_ != torrent_details::torrent_paused)
-				{			
-					HAL_DEV_MSG(L"Should really be paused!");
-					state_ = torrent_details::torrent_paused;
-				}
-			}
-			else				
-			{			
-				if (state_ != torrent_details::torrent_active &&
-					state_ != torrent_details::torrent_pausing &&
-					state_ != torrent_details::torrent_stopping)
-				{			
-					HAL_DEV_MSG(L"Should really be active!");
-					state_ = torrent_details::torrent_active;
-				}
-			}			
-		}
-		else
-		{
-			if (state_ != torrent_details::torrent_stopped)
-			{			
-				HAL_DEV_MSG(L"Should really be stopped!");
-				state_ = torrent_details::torrent_stopped;
-			}
-		}
-		
-		return state_; 
 	}
 		
-	static libt::session* the_session_;	
 	mutable mutex_t mutex_;
 
 //	torrent_state_machine machine_;
