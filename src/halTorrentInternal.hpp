@@ -1,5 +1,5 @@
 
-//         Copyright Eóin O'Callaghan 2006 - 2008.
+//         Copyright Eóin O'Callaghan 2006 - 2009.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -294,7 +294,6 @@ class torrent_internal :
 	public boost::enable_shared_from_this<torrent_internal>,
 	public sc::state_machine<torrent_internal, out_of_session>
 {
-//	friend class bit_impl;	
 	friend class bit::torrent::exec_around_ptr::proxy;
 
 	friend struct out_of_session;	
@@ -315,6 +314,7 @@ public:
 		connections_(-1), \
 		uploads_(-1), \
 		ratio_(0), \
+		awaiting_resume_data_(false), \
 		resolve_countries_(true), \
 		total_uploaded_(0), \
 		total_base_(0), \
@@ -595,15 +595,10 @@ public:
 		mutex_t::scoped_lock l(mutex_);	
 		assert(the_session_ != 0);
 
-		process_event( ev_add_to_session(paused) );
+		process_event(ev_add_to_session(paused));
 		
 		assert(in_session());
 		HAL_DEV_MSG(L"Added to session");
-
-		return;
-
-		if (handle_.is_paused())
-			state(torrent_details::torrent_paused);	
 
 		}
 		catch(std::exception& e)
@@ -620,14 +615,6 @@ public:
 		HAL_DEV_MSG(hal::wform(L"remove_from_session() write_data=%1%") % write_data);
 
 		mutex_t::scoped_lock l(mutex_);
-
-		if (!in_session())
-		{
-			in_session_ = false;
-			HAL_DEV_MSG(L"Was not is session!");
-
-			return false;
-		}
 		
 		process_event(ev_remove_from_session(write_data));
 
@@ -642,14 +629,14 @@ public:
 		}
 	}
 
-	void remove_torrent()
+/*	void remove_torrent()
 	{
 		the_session_->remove_torrent(handle_);
 		in_session_ = false;
 
 		assert(!in_session());	
 	}
-	
+*/	
 	bool in_session() const
 	{ 
 		mutex_t::scoped_lock l(mutex_);
@@ -663,22 +650,6 @@ public:
 		HAL_DEV_MSG(hal::wform(L"resume() - %1%") % name_);
 		
 		process_event(ev_resume());
-
-		return;
-
-		if (state() == torrent_details::torrent_stopped)
-		{	
-			add_to_session(false);
-			assert(in_session());			
-		}
-		else
-		{
-			assert(in_session());
-			handle_.resume();
-		}	
-		
-		state(torrent_details::torrent_active);			
-		//assert(!handle_.is_paused());
 	}
 	
 	void pause()
@@ -686,29 +657,7 @@ public:
 		mutex_t::scoped_lock l(mutex_);
 		HAL_DEV_MSG(hal::wform(L"pause() - %1%") % name_);
 		
-		process_event(ev_pause());
-
-		return;
-
-		if (state() == torrent_details::torrent_stopped)
-		{	
-			add_to_session(true);
-
-			assert(in_session());
-			assert(handle_.is_paused());
-		}
-		else
-		{
-			assert(in_session());
-
-			HAL_DEV_MSG(hal::wform(L"pause() - handle_.pause()"));
-			handle_.pause();
-
-			signaler_wrapper<>* sig = new signaler_wrapper<>(bind(&torrent_internal::completed_pause, this));
-			signals().torrent_paused.connect(bind(&signaler_wrapper<>::operator(), sig));
-
-			state(torrent_details::torrent_pausing);
-		}			
+		process_event(ev_pause());		
 	}
 	
 	void stop()
@@ -717,31 +666,6 @@ public:
 		HAL_DEV_MSG(hal::wform(L"stop() - %1%") % name_);
 		
 		process_event(ev_stop());
-
-	/*	HAL_DEV_MSG(hal::wform(L"stop() requesting"));
-
-		if (state() != torrent_details::torrent_stopped)
-		{
-			if (state() == torrent_details::torrent_active)
-			{
-				assert(in_session());
-				assert(!(handle_.is_paused()));
-
-				signaler_wrapper<>* sig = new signaler_wrapper<>(bind(&torrent_internal::completed_stop, this));
-				signals().torrent_paused.connect(bind(&signaler_wrapper<>::operator(), sig));
-				
-				HAL_DEV_MSG(hal::wform(L"stop() - handle_.pause()"));
-				handle_.pause();
-
-				state(torrent_details::torrent_stopping);
-			}
-			else if (state() == torrent_details::torrent_paused)
-			{			
-				remove_from_session();
-				state(torrent_details::torrent_stopped);				
-			}
-		}
-	*/
 	}
 
 	void set_state_stopped()
@@ -1232,6 +1156,8 @@ public:
 		return state_; 
 	}
 
+	bool awaiting_resume_data() { return awaiting_resume_data_; }
+
 	static libt::session* the_session_;	
 
 private:	
@@ -1430,6 +1356,8 @@ private:
 	std::pair<float, float> transfer_limit_;
 	
 	mutable unsigned state_;
+	bool awaiting_resume_data_;
+
 	int connections_;
 	int uploads_;
 	bool in_session_;

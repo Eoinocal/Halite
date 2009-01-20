@@ -26,8 +26,7 @@ in_the_session::~in_the_session()
 	torrent_internal& t_i = context<torrent_internal>();
 
 	HAL_DEV_MSG(L"Removing handle from session");
-	t_i.remove_torrent();
-	HAL_DEV_MSG(L"Removed from session!");
+	t_i.the_session_->remove_torrent(t_i.handle_);
 
 	TORRENT_STATE_LOG(L"Exiting ~in_the_session()");
 }
@@ -38,6 +37,8 @@ out_of_session::out_of_session(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
 	TORRENT_STATE_LOG(L"Entering out_of_session()");
+
+	context<torrent_internal>().in_session_ = false;
 }
 
 out_of_session::~out_of_session()
@@ -71,9 +72,10 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	p.storage_mode = hal_allocation_to_libt(t_i.allocation_);
 	p.paused = evt.pause();
 	p.duplicate_is_error = false;
-	p.auto_managed = false;//t_i.managed_;
+	p.auto_managed = t_i.managed_;
 
 	t_i.handle_ = t_i.the_session_->add_torrent(p);
+
 	assert(t_i.handle_.is_valid());
 	t_i.in_session_ = true;
 
@@ -198,11 +200,14 @@ resume_data_waiting::resume_data_waiting(base_type::my_context ctx) :
 {
 	TORRENT_STATE_LOG(L"Entering resume_data_waiting()");
 
+	context<torrent_internal>().awaiting_resume_data_ = true;
 	context<torrent_internal>().handle_.save_resume_data();
 }
 
 resume_data_waiting::~resume_data_waiting()
 {
+	context<torrent_internal>().awaiting_resume_data_ = false;
+
 	TORRENT_STATE_LOG(L"Exiting ~resume_data_waiting()");
 }
 
