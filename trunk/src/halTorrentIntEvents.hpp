@@ -51,5 +51,6 @@ struct ev_resume : sc::event< ev_resume > {};
 
 struct ev_write_resume_data : sc::event< ev_write_resume_data > {};
 struct ev_resume_data_alert : sc::event< ev_resume_data_alert > {};
+struct ev_resume_data_failed_alert : sc::event< ev_resume_data_alert > {};
 
 } // namespace hal

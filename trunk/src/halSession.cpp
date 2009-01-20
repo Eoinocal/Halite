@@ -506,7 +506,7 @@ void bit_impl::alert_handler()
 
 		get(a.handle)->signals().torrent_paused();
 
-		get(a.handle)->post_event(ev_paused_alert());
+		get(a.handle)->locked_process_event(ev_paused_alert());
 	}
 	
 	void operator()(libt::save_resume_data_alert const& a) const
@@ -522,7 +522,19 @@ void bit_impl::alert_handler()
 			get(a.handle)->write_resume_data(*a.resume_data);
 		get(a.handle)->signals().resume_data();
 
-		get(a.handle)->post_event(ev_resume_data_alert());
+		get(a.handle)->locked_process_event(ev_resume_data_alert());
+	}
+	
+	void operator()(libt::save_resume_data_failed_alert const& a) const
+	{
+		HAL_DEV_MSG(L"save_resume_failed_data_alert");
+
+/*		event_log.post(shared_ptr<EventDetail>(
+			new EventMsg((hal::wform(hal::app().res_wstr(HAL_WRITE_RESUME_ALERT)) 
+					% get(a.handle)->name()), 
+				event_logger::warning, a.timestamp()))); */
+
+		get(a.handle)->locked_process_event(ev_resume_data_failed_alert());
 	}
 	
 	void operator()(libt::peer_error_alert const& a) const
@@ -716,6 +728,7 @@ void bit_impl::alert_handler()
 		
 		libt::handle_alert<
 			libt::save_resume_data_alert,
+			libt::save_resume_data_failed_alert,
 			libt::external_ip_alert,
 			libt::portmap_error_alert,
 			libt::portmap_alert,
