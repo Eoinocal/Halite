@@ -349,6 +349,11 @@ public:
 	}
 
 	#undef TORRENT_INTERNALS_DEFAULTS
+
+	~torrent_internal()
+	{
+		terminate();
+	}
 	
 	torrent_details_ptr get_torrent_details_ptr()
 	{	
@@ -589,6 +594,8 @@ public:
 		assert(in_session());
 		HAL_DEV_MSG(L"Added to session");
 
+		return;
+
 		if (handle_.is_paused())
 			state(torrent_details::torrent_paused);	
 
@@ -616,7 +623,7 @@ public:
 			return false;
 		}
 		
-		process_event( ev_remove_from_session(write_data) );
+		process_event(ev_remove_from_session(write_data));
 
 		return true;
 
@@ -648,6 +655,10 @@ public:
 	{
 		mutex_t::scoped_lock l(mutex_);
 		HAL_DEV_MSG(hal::wform(L"resume() - %1%") % name_);
+		
+		process_event(ev_resume());
+
+		return;
 
 		if (state() == torrent_details::torrent_stopped)
 		{	
@@ -668,6 +679,10 @@ public:
 	{
 		mutex_t::scoped_lock l(mutex_);
 		HAL_DEV_MSG(hal::wform(L"pause() - %1%") % name_);
+		
+		process_event(ev_pause());
+
+		return;
 
 		if (state() == torrent_details::torrent_stopped)
 		{	
@@ -694,8 +709,10 @@ public:
 	{
 		mutex_t::scoped_lock l(mutex_);
 		HAL_DEV_MSG(hal::wform(L"stop() - %1%") % name_);
+		
+		process_event(ev_stop());
 
-		HAL_DEV_MSG(hal::wform(L"stop() requesting"));
+	/*	HAL_DEV_MSG(hal::wform(L"stop() requesting"));
 
 		if (state() != torrent_details::torrent_stopped)
 		{
@@ -718,6 +735,7 @@ public:
 				state(torrent_details::torrent_stopped);				
 			}
 		}
+	*/
 	}
 
 	void set_state_stopped()

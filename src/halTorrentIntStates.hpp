@@ -45,22 +45,6 @@ struct out_of_session : sc::state<out_of_session, torrent_internal, mpl::list< s
 	sc::result react(const ev_add_to_session& evt);
 };
 
-struct leaving_session : sc::state<leaving_session, torrent_internal> 
-{
-	typedef sc::state<leaving_session, torrent_internal> base_type;
-
-	typedef mpl::list<
-		sc::custom_reaction< ev_add_to_session >,
-		sc::custom_reaction< ev_resume_data_alert >
-	> reactions;
-
-	leaving_session(base_type::my_context ctx);
-	~leaving_session();	
-
-	sc::result react(const ev_resume_data_alert& evt);
-	sc::result react(const ev_add_to_session& evt);
-};
-
 struct active;
 struct pausing;
 struct paused;
@@ -72,20 +56,19 @@ struct in_the_session : sc::state<in_the_session, torrent_internal, mpl::list< r
 {
 	typedef sc::state<in_the_session, torrent_internal, mpl::list< resume_data_idling, paused > > base_type;
 
-	typedef mpl::list<
-		sc::custom_reaction< ev_remove_from_session >
-	> reactions;
+//	typedef mpl::list<
+//		sc::transition< ev_paused_alert, paused >
+//	> reactions;
 
 	in_the_session(base_type::my_context ctx);
 	~in_the_session();
 
-	sc::result react(const ev_remove_from_session& evt);
 };
 
 struct resume_data_idling : sc::simple_state<resume_data_idling, in_the_session::orthogonal< 0 > >
 {
 	typedef mpl::list<
-		sc::transition< ev_paused_alert, resume_data_waiting >
+		sc::transition< ev_write_resume_data, resume_data_waiting >
 	> reactions;
 
 	resume_data_idling();
@@ -110,7 +93,8 @@ struct active : sc::state<active, in_the_session::orthogonal< 1 > >
 
 	typedef mpl::list<
 		sc::custom_reaction< ev_pause >,
-		sc::custom_reaction< ev_stop >
+		sc::custom_reaction< ev_stop >,
+		sc::transition< ev_paused_alert, paused >
 	> reactions;
 
 	active(base_type::my_context ctx);
@@ -120,11 +104,13 @@ struct active : sc::state<active, in_the_session::orthogonal< 1 > >
 	sc::result react(const ev_stop& evt);
 };
 
-struct pausing : sc::simple_state<pausing, in_the_session::orthogonal< 1 > >
+struct pausing : sc::state<pausing, in_the_session::orthogonal< 1 > >
 {
+	typedef sc::state<pausing, in_the_session::orthogonal< 1 > > base_type;
+
 	typedef sc::transition< ev_paused_alert, paused > reactions;
 
-	pausing();
+	pausing(base_type::my_context ctx);
 	~pausing();
 };
 
@@ -132,27 +118,44 @@ struct paused : sc::state<paused, in_the_session::orthogonal< 1 > >
 {
 	typedef sc::state<paused, in_the_session::orthogonal< 1 > > base_type;
 
-	paused(base_type::my_context ctx);
-	~paused();
-};
-
-struct stopping : sc::simple_state<stopping, in_the_session::orthogonal< 1 > >
-{
 	typedef mpl::list<
-	//	sc::custom_reaction< ev_paused_alert >,
-		sc::transition< ev_resume_data_alert, stopped >
+		sc::transition< ev_stop, stopping >,
+		sc::custom_reaction< ev_resume >
 	> reactions;
 
-	stopping();
+	paused(base_type::my_context ctx);
+	~paused();
+
+	sc::result react(const ev_resume& evt);
+};
+
+struct stopping : sc::state<stopping, in_the_session::orthogonal< 1 > >
+{
+	typedef sc::state<stopping, in_the_session::orthogonal< 1 > > base_type;
+
+	typedef mpl::list<
+	//	sc::custom_reaction< ev_paused_alert >,
+		sc::transition< ev_paused_alert, stopped >
+	> reactions;
+
+	stopping(base_type::my_context ctx);
 	~stopping();
 
 	//sc::result react(const ev_paused_alert& evt);
 };
 
-struct stopped : sc::simple_state<stopped, out_of_session>
+struct stopped : sc::state<stopped, out_of_session>
 {
-	stopped();
+	typedef sc::state<stopped, out_of_session> base_type;
+
+	typedef mpl::list<
+		sc::custom_reaction< ev_resume >
+	> reactions;
+
+	stopped(base_type::my_context ctx);
 	~stopped();
+
+	sc::result react(const ev_resume& evt);
 };
 
 }; // namespace hal
