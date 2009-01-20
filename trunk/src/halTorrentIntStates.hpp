@@ -8,15 +8,6 @@
 
 #include "halTorrentInternal.hpp"
 
-#ifndef HAL_TORRENT_STATE_LOGGING
-#	define TORRENT_STATE_LOG(s)
-#else
-#	include "../halEvent.hpp"
-#	define TORRENT_STATE_LOG(msg) \
-	hal::event_log.post(boost::shared_ptr<hal::EventDetail>( \
-			new hal::EventMsg(msg, hal::event_logger::torrent_dev))) 
-#endif
-
 #include <boost/statechart/event.hpp>
 #include <boost/statechart/state_machine.hpp>
 #include <boost/statechart/simple_state.hpp>
@@ -56,13 +47,8 @@ struct in_the_session : sc::state<in_the_session, torrent_internal, mpl::list< r
 {
 	typedef sc::state<in_the_session, torrent_internal, mpl::list< resume_data_idling, paused > > base_type;
 
-//	typedef mpl::list<
-//		sc::transition< ev_paused_alert, paused >
-//	> reactions;
-
 	in_the_session(base_type::my_context ctx);
 	~in_the_session();
-
 };
 
 struct resume_data_idling : sc::simple_state<resume_data_idling, in_the_session::orthogonal< 0 > >
@@ -121,7 +107,8 @@ struct paused : sc::state<paused, in_the_session::orthogonal< 1 > >
 
 	typedef mpl::list<
 		sc::custom_reaction< ev_stop >,
-		sc::custom_reaction< ev_resume >
+		sc::custom_reaction< ev_resume >,
+		sc::transition< ev_resumed_alert, active >
 	> reactions;
 
 	paused(base_type::my_context ctx);

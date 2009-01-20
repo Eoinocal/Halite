@@ -1,5 +1,5 @@
 
-//         Copyright Eóin O'Callaghan 2006 - 2008.
+//         Copyright Eóin O'Callaghan 2006 - 2009.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -955,7 +955,7 @@ public:
 		libt::torrent_handle handle = pTI->handle();
 		the_torrents_.erase(filename);
 		
-		thread_t t(bind(&bit_impl::removal_thread, this, pTI, false));	
+	//	thread_t t(bind(&bit_impl::removal_thread, this, pTI, false));	
 		
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "remove_torrent")
 	}
@@ -1049,39 +1049,37 @@ public:
 
 		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"Stopping all torrents...")));
 
-		int	num_active = 0;
-		for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
-				i != e; ++i)
-		{
-			if ((*i).torrent && (*i).torrent->state() != torrent_details::torrent_stopped 
-					&& (*i).torrent->state() != torrent_details::torrent_paused)
-			{
-				signaler_wrapper<>* sig_pause = new signaler_wrapper<>(bind(&bit_impl::close_counter, this, &num_active));
-				(*i).torrent->signals().torrent_paused.connect(bind(&signaler_wrapper<>::operator(), sig_pause));
-
-				signaler_wrapper<>* sig_resume = new signaler_wrapper<>(bind(&bit_impl::close_counter, this, &num_active));
-				(*i).torrent->signals().resume_data.connect(bind(&signaler_wrapper<>::operator(), sig_resume));
-
-				num_active += 2; // because two things need to happen!
-
-				(*i).torrent->save_resume_data();
-			}
-		}
-
-		event_log.post(shared_ptr<EventDetail>(new EventInfo(hal::wform(L"%1% active") % (num_active/2))));
 		session_.pause();		
 
-		// Ok this polling loop here is a bit curde, but a blocking wait is actually appropiate.
+		// Ok this polling loop here is a bit curde, but a blocking wait is actually appropiate.		
+		{ 
+		int num_active = 1;
+
 		while (num_active > 0)
 		{
-			event_log.post(shared_ptr<EventDetail>(new EventInfo(hal::wform(L"%1% still active") % (num_active/2))));
+			num_active = 0;
+
+			for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
+					i != e; ++i)
+			{
+				if ((*i).torrent && 
+						(((*i).torrent->state() != torrent_details::torrent_stopped 
+							&& (*i).torrent->state() != torrent_details::torrent_paused)
+						|| (*i).torrent->awaiting_resume_data()))
+				{
+					num_active += 1;
+				}
+			}
+
+			event_log.post(shared_ptr<EventDetail>(new EventInfo(hal::wform(L"%1% still active") % (num_active))));
 
 			if (fn)	(*fn)(num_active/2);
 			boost::this_thread::sleep(pt::milliseconds(500));
+		} 
+		
 		}
 		
 		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"All torrents stopped.")));		
-		event_log.post(shared_ptr<EventDetail>(new EventInfo(L"Fast-resume data written.")));
 		
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "close_all()")
 	}

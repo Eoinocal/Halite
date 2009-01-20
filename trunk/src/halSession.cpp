@@ -1,5 +1,5 @@
 
-//         Copyright Eóin O'Callaghan 2006 - 2008.
+//         Copyright Eóin O'Callaghan 2006 - 2009.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -509,6 +509,13 @@ void bit_impl::alert_handler()
 		get(a.handle)->locked_process_event(ev_paused_alert());
 	}
 	
+	void operator()(libt::torrent_resumed_alert const& a) const
+	{
+		HAL_DEV_MSG(L"torrent_resumed_alert");
+
+		get(a.handle)->locked_process_event(ev_resumed_alert());
+	}
+	
 	void operator()(libt::save_resume_data_alert const& a) const
 	{
 		HAL_DEV_MSG(L"save_resume_data_alert");
@@ -735,6 +742,7 @@ void bit_impl::alert_handler()
 			libt::file_error_alert,
 			libt::torrent_finished_alert,
 			libt::torrent_paused_alert,
+			libt::torrent_resumed_alert,
 			libt::peer_error_alert,
 			libt::peer_ban_alert,
 			libt::hash_failed_alert,
