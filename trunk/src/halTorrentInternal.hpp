@@ -1283,6 +1283,9 @@ private:
 		case torrent_details::torrent_paused:
 			HAL_DEV_MSG(L"state() - paused");
 			break;
+		case torrent_details::torrent_in_error:
+			HAL_DEV_MSG(L"state() - in error");
+			break;
 		default:
 			HAL_DEV_MSG(L"state() - unknown");
 			break;

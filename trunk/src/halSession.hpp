@@ -993,6 +993,7 @@ public:
 				switch ((*i).torrent->get_state())
 				{
 					case torrent_details::torrent_stopped:
+					case torrent_details::torrent_in_error:
 						break;
 					case torrent_details::torrent_paused:
 						(*i).torrent->add_to_session(true);
@@ -1064,7 +1065,8 @@ public:
 			{
 				if ((*i).torrent && 
 						(((*i).torrent->state() != torrent_details::torrent_stopped 
-							&& (*i).torrent->state() != torrent_details::torrent_paused)
+							&& (*i).torrent->state() != torrent_details::torrent_paused
+							&& (*i).torrent->state() != torrent_details::torrent_in_error)
 						|| (*i).torrent->awaiting_resume_data()))
 				{
 					num_active += 1;
