@@ -19,7 +19,6 @@
 #include "halTorrentInternal.hpp"
 #include "halSession.hpp"
 #include "halConfig.hpp"
-//#include "halSessionAlert.hpp"
 
 namespace hal 
 {
@@ -34,8 +33,6 @@ bit& bittorrent()
 	static bit t;
 	return t;
 }
-
-
 
 bool file_details::less(const file_details& r, size_t index) const
 {	
@@ -123,11 +120,6 @@ const file_details_vec& torrent_details::get_file_details() const
 	return file_details_;
 }
 
-/*bool nameLess(const torrent_details_ptr& left, const torrent_details_ptr& right)
-{
-	return left->state() < right->state();
-}
-*/
 bool torrent_details::less(const torrent_details& r, size_t index) const
 {
 	switch (index)

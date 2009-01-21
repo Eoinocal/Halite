@@ -43,6 +43,19 @@ private:
     bool pause_;
 };
 
+struct ev_error_alert : sc::event<ev_error_alert>
+{
+public:
+    ev_error_alert(wstring& e) :
+		err_(e)
+    {}
+   
+    const wstring& error() const { return err_; }
+
+private:
+    wstring err_;
+};
+
 struct ev_pause : sc::event< ev_pause > {};
 struct ev_paused_alert : sc::event<ev_paused_alert> {};
 

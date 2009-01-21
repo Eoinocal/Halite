@@ -506,7 +506,13 @@ void bit_impl::alert_handler()
 
 		get(a.handle)->signals().torrent_paused();
 
-		get(a.handle)->locked_process_event(ev_paused_alert());
+		wstring err = get(a.handle)->check_error();
+
+		if (err == L"")
+			get(a.handle)->locked_process_event(ev_paused_alert());
+		else
+			get(a.handle)->locked_process_event(ev_error_alert(err));
+
 	}
 	
 	void operator()(libt::torrent_resumed_alert const& a) const

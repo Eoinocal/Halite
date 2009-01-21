@@ -164,6 +164,21 @@ sc::result paused::react(const ev_force_recheck& evt)
 	return discard_event();
 }
 
+in_error::in_error(base_type::my_context ctx) :
+	base_type::my_base(ctx)
+{
+	torrent_internal& t_i = context<torrent_internal>();
+
+	TORRENT_STATE_LOG(hal::wform(L"Entering in_error()() - %1%") % t_i.check_error());
+
+	t_i.state(torrent_details::torrent_in_error);
+}
+
+in_error::~in_error()
+{
+	TORRENT_STATE_LOG(L"Exiting ~in_error()");
+}
+
 stopping::stopping(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {

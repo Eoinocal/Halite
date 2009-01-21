@@ -304,6 +304,7 @@ class torrent_internal :
 	friend struct paused;
 	friend struct stopping;
 	friend struct stopped;
+	friend struct in_error;
 	friend struct resume_data_waiting;
 	friend struct resume_data_idling;
 
@@ -402,6 +403,10 @@ public:
 			
 		case torrent_details::torrent_stopping:
 			state_str = app().res_wstr(HAL_TORRENT_STOPPING);
+			break;
+			
+		case torrent_details::torrent_in_error:
+			state_str = L"In Error!";
 			break;
 			
 		default:
@@ -1128,6 +1133,17 @@ public:
 		return state_; 
 	}
 
+	wstring check_error() 
+	{		
+		if (in_session())
+		{
+			status_memory_ = handle_.status();
+			return from_utf8(status_memory_.error);
+		}
+		else
+			return L"";
+	}
+
 	bool awaiting_resume_data() { return awaiting_resume_data_; }
 
 	static libt::session* the_session_;	
@@ -1246,53 +1262,6 @@ private:
 			
 			HAL_DEV_MSG(hal::wform(L"Applying Resolve Countries %1%") % resolve_countries_);
 		}
-	}
-	
-/*	bool completed_pause()
-	{
-		mutex_t::scoped_lock l(mutex_);
-		assert(in_session());
-//		assert(handle_.is_paused());	
-
-		HAL_DEV_MSG(L"completed_pause()");
-
-		save_resume_data();				
-		state(torrent_details::torrent_paused);
-
-		return true;
-	}
-
-	bool completed_stop()
-	{
-		mutex_t::scoped_lock l(mutex_);
-		assert(in_session());
-//		assert(handle_.is_paused());			
-		
-		if (remove_from_session())
-		{
-			assert(!in_session());
-			HAL_DEV_MSG(L"completed_stop()");
-		}
-
-		state(torrent_details::torrent_stopped);
-
-		return true;
-	}
-*/
-	void handle_recheck()
-	{
-		mutex_t::scoped_lock l(mutex_);
-		state(torrent_details::torrent_stopped);
-
-		remove_from_session(false);
-		assert(!in_session());
-
-		clear_resume_data();
-
-		resume();
-		assert(in_session());
-
-		HAL_DEV_MSG(L"handle_recheck()");
 	}
 
 	void state(unsigned s)
