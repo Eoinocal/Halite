@@ -101,6 +101,15 @@ active::~active()
 	TORRENT_STATE_LOG(L"Exiting ~active()");
 }
 
+sc::result active::react(const ev_force_recheck& evt)
+{
+	TORRENT_STATE_LOG(L"React active::react(const ev_force_recheck& evt)");
+
+	context<torrent_internal>().handle_.force_recheck();
+
+	return discard_event();
+}
+
 pausing::pausing(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
@@ -146,6 +155,15 @@ sc::result paused::react(const ev_resume& evt)
 	return transit< active >();
 }
 
+sc::result paused::react(const ev_force_recheck& evt)
+{
+	TORRENT_STATE_LOG(L"React paused::react(const ev_force_recheck& evt)");
+
+	context<torrent_internal>().handle_.force_recheck();
+
+	return discard_event();
+}
+
 stopping::stopping(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
@@ -185,12 +203,7 @@ stopped::~stopped()
 
 sc::result stopped::react(const ev_resume& evt)
 {
-//	torrent_internal& t_i = context<torrent_internal>();
-//	assert(t_i.in_session());
-
 	post_event(ev_add_to_session(false));
-
-//	context<torrent_internal>().add_to_session(false);
 
 	return discard_event();
 }

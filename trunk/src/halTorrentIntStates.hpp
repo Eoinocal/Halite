@@ -81,6 +81,7 @@ struct active : sc::state<active, in_the_session::orthogonal< 1 > >
 	typedef mpl::list<
 		sc::transition< ev_stop, stopping >,
 		sc::transition< ev_pause, pausing >,
+		sc::custom_reaction< ev_force_recheck >,
 		sc::transition< ev_paused_alert, paused >
 	> reactions;
 
@@ -89,6 +90,7 @@ struct active : sc::state<active, in_the_session::orthogonal< 1 > >
 
 	sc::result react(const ev_pause& evt);
 	sc::result react(const ev_stop& evt);
+	sc::result react(const ev_force_recheck& evt);
 };
 
 struct pausing : sc::state<pausing, in_the_session::orthogonal< 1 > >
@@ -108,6 +110,7 @@ struct paused : sc::state<paused, in_the_session::orthogonal< 1 > >
 	typedef mpl::list<
 		sc::custom_reaction< ev_stop >,
 		sc::custom_reaction< ev_resume >,
+		sc::custom_reaction< ev_force_recheck >,
 		sc::transition< ev_resumed_alert, active >
 	> reactions;
 
@@ -116,6 +119,7 @@ struct paused : sc::state<paused, in_the_session::orthogonal< 1 > >
 
 	sc::result react(const ev_stop& evt);
 	sc::result react(const ev_resume& evt);
+	sc::result react(const ev_force_recheck& evt);
 };
 
 struct stopping : sc::state<stopping, in_the_session::orthogonal< 1 > >

@@ -1073,7 +1073,7 @@ public:
 
 			event_log.post(shared_ptr<EventDetail>(new EventInfo(hal::wform(L"%1% still active") % (num_active))));
 
-			if (fn)	(*fn)(num_active/2);
+			if (fn)	(*fn)(num_active);
 			boost::this_thread::sleep(pt::milliseconds(500));
 		} 
 		
