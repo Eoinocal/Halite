@@ -39,6 +39,7 @@ struct out_of_session : sc::state<out_of_session, torrent_internal, mpl::list< s
 struct active;
 struct pausing;
 struct paused;
+struct in_error;
 struct stopping;
 struct resume_data_waiting;
 struct resume_data_idling;
@@ -82,7 +83,8 @@ struct active : sc::state<active, in_the_session::orthogonal< 1 > >
 		sc::transition< ev_stop, stopping >,
 		sc::transition< ev_pause, pausing >,
 		sc::custom_reaction< ev_force_recheck >,
-		sc::transition< ev_paused_alert, paused >
+		sc::transition< ev_paused_alert, paused >,
+		sc::transition< ev_error_alert, in_error >
 	> reactions;
 
 	active(base_type::my_context ctx);
@@ -97,7 +99,10 @@ struct pausing : sc::state<pausing, in_the_session::orthogonal< 1 > >
 {
 	typedef sc::state<pausing, in_the_session::orthogonal< 1 > > base_type;
 
-	typedef sc::transition< ev_paused_alert, paused > reactions;
+	typedef mpl::list<
+		sc::transition< ev_paused_alert, paused >,
+		sc::transition< ev_error_alert, in_error >
+	> reactions;
 
 	pausing(base_type::my_context ctx);
 	~pausing();
@@ -111,7 +116,8 @@ struct paused : sc::state<paused, in_the_session::orthogonal< 1 > >
 		sc::custom_reaction< ev_stop >,
 		sc::custom_reaction< ev_resume >,
 		sc::custom_reaction< ev_force_recheck >,
-		sc::transition< ev_resumed_alert, active >
+		sc::transition< ev_resumed_alert, active >,
+		sc::transition< ev_error_alert, in_error >
 	> reactions;
 
 	paused(base_type::my_context ctx);
@@ -122,6 +128,19 @@ struct paused : sc::state<paused, in_the_session::orthogonal< 1 > >
 	sc::result react(const ev_force_recheck& evt);
 };
 
+struct in_error : sc::state<in_error, in_the_session::orthogonal< 1 > >
+{
+	typedef sc::state<in_error, in_the_session::orthogonal< 1 > > base_type;
+
+	typedef mpl::list<
+		sc::transition< ev_stop, stopped >,
+		sc::transition< ev_resumed_alert, active >
+	> reactions;
+
+	in_error(base_type::my_context ctx);
+	~in_error();
+};
+
 struct stopping : sc::state<stopping, in_the_session::orthogonal< 1 > >
 {
 	typedef sc::state<stopping, in_the_session::orthogonal< 1 > > base_type;
@@ -129,7 +148,8 @@ struct stopping : sc::state<stopping, in_the_session::orthogonal< 1 > >
 	typedef mpl::list<
 		sc::custom_reaction< ev_paused_alert >,
 		sc::transition< ev_resume_data_alert, stopped >,
-		sc::transition< ev_resume_data_failed_alert, stopped >
+		sc::transition< ev_resume_data_failed_alert, stopped >,
+		sc::transition< ev_error_alert, in_error >
 	> reactions;
 
 	stopping(base_type::my_context ctx);

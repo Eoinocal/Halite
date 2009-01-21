@@ -228,7 +228,8 @@ public:
 		torrent_paused,
 		torrent_stopped,
 		torrent_pausing,
-		torrent_stopping
+		torrent_stopping,
+		torrent_in_error
 	};
 
 	enum details
