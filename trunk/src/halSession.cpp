@@ -485,8 +485,6 @@ void bit_impl::alert_handler()
 
 	void operator()(libt::torrent_finished_alert const& a) const
 	{
-		HAL_DEV_MSG(L"torrent_finished_alert");
-
 		event_log.post(shared_ptr<EventDetail>(
 			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
 					% get(a.handle)->name()), 
@@ -497,35 +495,44 @@ void bit_impl::alert_handler()
 	
 	void operator()(libt::torrent_paused_alert const& a) const
 	{
-		HAL_DEV_MSG(L"torrent_paused_alert");
-
-		event_log.post(shared_ptr<EventDetail>(
-			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 
-					% get(a.handle)->name()), 
-				event_logger::info, a.timestamp())));
-
 		get(a.handle)->signals().torrent_paused();
 
 		wstring err = get(a.handle)->check_error();
 
 		if (err == L"")
+		{
+			event_log.post(shared_ptr<EventDetail>(
+				new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 
+						% get(a.handle)->name()), 
+					event_logger::debug, a.timestamp())));
+
 			get(a.handle)->locked_process_event(ev_paused_alert());
+		}
 		else
+		{
+			event_log.post(shared_ptr<EventDetail>(
+				new EventMsg((hal::wform(hal::app().res_wstr(HAL_TORRENT_ERROR_PAUSE_ALERT)) 
+						% err 
+						% get(a.handle)->name()), 
+					event_logger::warning, a.timestamp())));
+
 			get(a.handle)->locked_process_event(ev_error_alert(err));
+		}
 
 	}
 	
 	void operator()(libt::torrent_resumed_alert const& a) const
 	{
-		HAL_DEV_MSG(L"torrent_resumed_alert");
+		event_log.post(shared_ptr<EventDetail>(
+			new EventMsg((hal::wform(hal::app().res_wstr(HAL_TORRENT_RESUME_ALERT)) 
+					% get(a.handle)->name()), 
+				event_logger::debug, a.timestamp())));
 
 		get(a.handle)->locked_process_event(ev_resumed_alert());
 	}
 	
 	void operator()(libt::save_resume_data_alert const& a) const
 	{
-		HAL_DEV_MSG(L"save_resume_data_alert");
-
 		event_log.post(shared_ptr<EventDetail>(
 			new EventMsg((hal::wform(hal::app().res_wstr(HAL_WRITE_RESUME_ALERT)) 
 					% get(a.handle)->name()), 
@@ -533,19 +540,17 @@ void bit_impl::alert_handler()
 
 		if (a.resume_data)
 			get(a.handle)->write_resume_data(*a.resume_data);
-		get(a.handle)->signals().resume_data();
 
+		get(a.handle)->signals().resume_data();
 		get(a.handle)->locked_process_event(ev_resume_data_alert());
 	}
 	
 	void operator()(libt::save_resume_data_failed_alert const& a) const
 	{
-		HAL_DEV_MSG(L"save_resume_failed_data_alert");
-
-/*		event_log.post(shared_ptr<EventDetail>(
-			new EventMsg((hal::wform(hal::app().res_wstr(HAL_WRITE_RESUME_ALERT)) 
+		event_log.post(shared_ptr<EventDetail>(
+			new EventMsg((hal::wform(hal::app().res_wstr(HAL_WRITE_RESUME_FAIL_ALERT)) 
 					% get(a.handle)->name()), 
-				event_logger::warning, a.timestamp()))); */
+				event_logger::warning, a.timestamp())));
 
 		get(a.handle)->locked_process_event(ev_resume_data_failed_alert());
 	}

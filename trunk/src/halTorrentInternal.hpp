@@ -406,7 +406,7 @@ public:
 			break;
 			
 		case torrent_details::torrent_in_error:
-			state_str = L"In Error!";
+			state_str = app().res_wstr(HAL_TORRENT_IN_ERROR);
 			break;
 			
 		default:
