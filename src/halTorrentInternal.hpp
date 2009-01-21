@@ -629,14 +629,6 @@ public:
 		}
 	}
 
-/*	void remove_torrent()
-	{
-		the_session_->remove_torrent(handle_);
-		in_session_ = false;
-
-		assert(!in_session());	
-	}
-*/	
 	bool in_session() const
 	{ 
 		mutex_t::scoped_lock l(mutex_);
@@ -675,30 +667,10 @@ public:
 
 	void force_recheck()
 	{
-		mutex_t::scoped_lock l(mutex_);		
-		HAL_DEV_MSG(L"force_recheck()");
-
-		switch (state())
-		{
-		case torrent_details::torrent_stopped:
-			clear_resume_data();
-			resume();
-			break;
-
-		case torrent_details::torrent_stopping:
-		case torrent_details::torrent_pausing:
-//			signals().torrent_paused.disconnect_all_once();
-
-		case torrent_details::torrent_active:
-//			signals().torrent_paused.disconnect_all_once();
-//			signals().torrent_paused.connect_once(bind(&torrent_internal::handle_recheck, this));
-			handle_.pause();
-			state(torrent_details::torrent_pausing);
-			break;
-
-		default:
-			assert(false);
-		};
+		mutex_t::scoped_lock l(mutex_);
+		HAL_DEV_MSG(hal::wform(L"force_recheck() - %1%") % name_);
+		
+		process_event(ev_force_recheck());	
 	}
 	
 	void write_resume_data(const libt::entry& ent)
@@ -1276,7 +1248,7 @@ private:
 		}
 	}
 	
-	bool completed_pause()
+/*	bool completed_pause()
 	{
 		mutex_t::scoped_lock l(mutex_);
 		assert(in_session());
@@ -1306,7 +1278,7 @@ private:
 
 		return true;
 	}
-
+*/
 	void handle_recheck()
 	{
 		mutex_t::scoped_lock l(mutex_);
@@ -1350,8 +1322,6 @@ private:
 	}
 		
 	mutable mutex_t mutex_;
-
-//	torrent_state_machine machine_;
 	
 	std::pair<float, float> transfer_limit_;
 	

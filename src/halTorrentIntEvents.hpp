@@ -50,6 +50,8 @@ struct ev_stop : sc::event< ev_stop > {};
 struct ev_resume : sc::event< ev_resume > {};
 struct ev_resumed_alert : sc::event<ev_paused_alert> {};
 
+struct ev_force_recheck : sc::event< ev_force_recheck > {};
+
 struct ev_write_resume_data : sc::event< ev_write_resume_data > {};
 struct ev_resume_data_alert : sc::event< ev_resume_data_alert > {};
 struct ev_resume_data_failed_alert : sc::event< ev_resume_data_alert > {};
