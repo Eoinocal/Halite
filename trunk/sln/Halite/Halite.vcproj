@@ -617,6 +617,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\halTorrentInternal.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\halTorrentIntStates.cpp"
 				>
 			</File>

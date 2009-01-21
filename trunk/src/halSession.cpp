@@ -33,8 +33,8 @@ namespace hal
 bit_impl::bit_impl() :
 	session_(libt::fingerprint(HALITE_FINGERPRINT)),
 	keepChecking_(false),
-	bittorrentIni(L"BitTorrent.xml"),
-	the_torrents_(bittorrentIni),
+	bittorrent_ini_(L"BitTorrent.xml"),
+	the_torrents_(bittorrent_ini_),
 	default_torrent_max_connections_(-1),
 	default_torrent_max_uploads_(-1),
 	default_torrent_download_(-1),
@@ -58,19 +58,19 @@ bit_impl::bit_impl() :
 	
 	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading BitTorrent.xml.", hal::event_logger::info)));		
-	bittorrentIni.load_data();
+	bittorrent_ini_.load_data();
 	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading torrent parameters.", hal::event_logger::info)));	
 	the_torrents_.load_from_ini();
 	hal::event_log.post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading done!", hal::event_logger::info)));
 	
+#	if 0
 	try
 	{						
 	if (fs::exists(hal::app().get_working_directory()/L"Torrents.xml"))
 	{
 		assert(false);
-#if 0
 		{
 		fs::wifstream ifs(hal::app().get_working_directory()/L"Torrents.xml");
 	
@@ -87,7 +87,7 @@ bit_impl::bit_impl() :
 			hal::wform(L"Total %1%.") % the_torrents_.size())));				
 		
 		fs::rename(hal::app().get_working_directory()/L"Torrents.xml", hal::app().get_working_directory()/L"Torrents.xml.safe.to.delete");
-#endif
+
 	}			
 	}
 	catch(const std::exception& e)
@@ -95,7 +95,8 @@ bit_impl::bit_impl() :
 		event_log.post(shared_ptr<EventDetail>(
 			new EventStdException(event_logger::fatal, e, L"Loading Old Torrents.xml")));
 	}		
-			
+#	endif
+
 	if (exists(hal::app().get_working_directory()/L"DHTState.bin"))
 	{
 		try
@@ -187,7 +188,7 @@ void bit_impl::ip_filter_load(progress_callback fn)
 	}	
 }
 
-void  bit_impl::ip_filter_import(std::vector<libt::ip_range<boost::asio::ip::address_v4> >& v4,
+void bit_impl::ip_filter_import(std::vector<libt::ip_range<boost::asio::ip::address_v4> >& v4,
 	std::vector<libt::ip_range<boost::asio::ip::address_v6> >& v6)
 {
 	for(std::vector<libt::ip_range<boost::asio::ip::address_v4> >::iterator i=v4.begin();
@@ -259,8 +260,8 @@ bool bit_impl::ip_filter_import_dat(boost::filesystem::path file, progress_callb
 				
 				try
 				{			
-				ip_filter_.add_rule(boost::asio::ip::address_v4::from_string(first),
-					boost::asio::ip::address_v4::from_string(last), libt::ip_filter::blocked);	
+					ip_filter_.add_rule(boost::asio::ip::address_v4::from_string(first),
+						boost::asio::ip::address_v4::from_string(last), libt::ip_filter::blocked);	
 				}
 				catch(...)
 				{
@@ -518,7 +519,6 @@ void bit_impl::alert_handler()
 
 			get(a.handle)->locked_process_event(ev_error_alert(err));
 		}
-
 	}
 	
 	void operator()(libt::torrent_resumed_alert const& a) const
@@ -608,8 +608,6 @@ void bit_impl::alert_handler()
 	
 	void operator()(libt::tracker_announce_alert const& a) const
 	{
-		HAL_DEV_MSG(hal::wform(L"HAL_TRACKER_ANNOUNCE_ALERT"));
-
 		event_log.post(shared_ptr<EventDetail>(
 			new EventMsg((hal::wform(hal::app().res_wstr(HAL_TRACKER_ANNOUNCE_ALERT)) 
 					% get(a.handle)->name()), 
