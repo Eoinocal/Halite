@@ -157,7 +157,7 @@ Changes:
 Subversion: svn://svn.geekisp.com/halite
 
 In addition you can check out the Trac site (trac.geekisp.com/halite)
-but I haven't really done much with it ... yet.
+but I haven't really done much with it ...yet.
 
 Thanks:
 
