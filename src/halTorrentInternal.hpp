@@ -362,172 +362,9 @@ public:
 		terminate();
 	}
 	
-	torrent_details_ptr get_torrent_details_ptr()
-	{	
-		mutex_t::scoped_lock l(mutex_);
+	torrent_details_ptr get_torrent_details_ptr();
 
-		try
-		{
-
-		if (in_session())
-		{
-			status_memory_ = handle_.status();
-			progress_ = status_memory_.progress;
-
-			queue_position_ = handle_.queue_position();
-		}
-		else
-		{
-			// Wipe these cause they don't make sense for a non-active torrent.
-			
-			status_memory_.download_payload_rate = 0;
-			status_memory_.upload_payload_rate = 0;
-			status_memory_.next_announce = boost::posix_time::seconds(0);		
-		}
-		
-		wstring state_str;
-		
-		switch (state())
-		{
-		case torrent_details::torrent_paused:
-			state_str = app().res_wstr(HAL_TORRENT_PAUSED);
-			break;
-			
-		case torrent_details::torrent_pausing:
-			state_str = app().res_wstr(HAL_TORRENT_PAUSING);
-			break;
-			
-		case torrent_details::torrent_stopped:
-			state_str = app().res_wstr(HAL_TORRENT_STOPPED);
-			break;
-			
-		case torrent_details::torrent_stopping:
-			state_str = app().res_wstr(HAL_TORRENT_STOPPING);
-			break;
-			
-		case torrent_details::torrent_in_error:
-			state_str = app().res_wstr(HAL_TORRENT_IN_ERROR);
-			break;
-			
-		default:
-			switch (status_memory_.state)
-			{
-			case libt::torrent_status::queued_for_checking:
-				state_str = app().res_wstr(HAL_TORRENT_QUEUED_CHECKING);
-				break;
-			case libt::torrent_status::checking_files:
-				state_str = app().res_wstr(HAL_TORRENT_CHECKING_FILES);
-				break;
-//			case libt::torrent_status::connecting_to_tracker:
-//				state = app().res_wstr(HAL_TORRENT_CONNECTING);
-//				break;
-			case libt::torrent_status::downloading_metadata:
-				state_str = app().res_wstr(HAL_TORRENT_METADATA);
-				break;
-			case libt::torrent_status::downloading:
-				state_str = app().res_wstr(HAL_TORRENT_DOWNLOADING);
-				break;
-			case libt::torrent_status::finished:
-				state_str = app().res_wstr(HAL_TORRENT_FINISHED);
-				break;
-			case libt::torrent_status::seeding:
-				state_str = app().res_wstr(HAL_TORRENT_SEEDING);
-				break;
-			case libt::torrent_status::allocating:
-				state_str = app().res_wstr(HAL_TORRENT_ALLOCATING);
-				break;
-			}	
-		}
-		
-		pt::time_duration td(pt::pos_infin);
-		
-		if (status_memory_.download_payload_rate != 0)
-		{
-			td = boost::posix_time::seconds(	
-				long(float(status_memory_.total_wanted-status_memory_.total_wanted_done) / status_memory_.download_payload_rate));
-		}
-		
-		total_uploaded_ += (status_memory_.total_payload_upload - total_base_);
-		total_base_ = status_memory_.total_payload_upload;
-		
-		uploaded_.update(status_memory_.total_upload);
-		payload_uploaded_.update(status_memory_.total_payload_upload);
-		downloaded_.update(status_memory_.total_download);
-		payload_downloaded_.update(status_memory_.total_payload_download);
-		
-		if (is_active())
-		{
-			active_duration_.update();
-			
-			if (libt::torrent_status::seeding == status_memory_.state)
-				seeding_duration_.update();
-		}	
-		
-		boost::tuple<size_t, size_t, size_t, size_t> connections = update_peers();	
-
-		return torrent_details_ptr(new torrent_details(
-			name_, filename_, 
-			save_directory().string(), 
-			state_str, 
-			hal::from_utf8(status_memory_.current_tracker), 
-			std::pair<float, float>(
-				status_memory_.download_payload_rate, 
-				status_memory_.upload_payload_rate),
-			progress_, 
-			status_memory_.distributed_copies, 
-			status_memory_.total_wanted_done, 
-			status_memory_.total_wanted, 
-			uploaded_, payload_uploaded_,
-			downloaded_, payload_downloaded_, 
-			connections, 
-			ratio_, 
-			td, 
-			status_memory_.next_announce, 
-			active_duration_, seeding_duration_, 
-			start_time_, finish_time_, 
-			queue_position_,
-			is_managed()));
-
-		}
-		catch (const libt::invalid_handle&)
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventInvalidTorrent(event_logger::critical, event_logger::invalid_torrent, to_utf8(name_), "get_torrent_details_ptr")));
-		}
-		catch (const std::exception& e)
-		{
-			event_log.post(shared_ptr<EventDetail>(
-				new EventTorrentException(event_logger::critical, event_logger::torrentException, e.what(), to_utf8(name_), "get_torrent_details_ptr")));
-		}
-		
-		return torrent_details_ptr(new torrent_details(
-			name_, filename_, 
-			save_directory().string(), 
-			app().res_wstr(HAL_TORRENT_STOPPED), 
-			app().res_wstr(HAL_NA)));
-	}
-
-	void adjust_queue_position(bit::queue_adjustments adjust)
-	{
-		if (in_session() && is_managed())
-		{
-			switch (adjust)
-			{
-			case bit::move_up:
-				handle_.queue_position_up();
-				break;
-			case bit::move_down:
-				handle_.queue_position_down();
-				break;
-			case bit::move_to_top:
-				handle_.queue_position_top();
-				break;
-			case bit::move_to_bottom:
-				handle_.queue_position_bottom();
-				break;
-			};
-		}
-	}
+	void adjust_queue_position(bit::queue_adjustments adjust);
 
 	void set_transfer_speed(float down, float up)
 	{	
@@ -591,48 +428,9 @@ public:
 		return managed_;
 	}
 	
-	void add_to_session(bool paused = false)
-	{
-		try
-		{
-		HAL_DEV_MSG(hal::wform(L"add_to_session() paused=%1%") % paused);
-
-		mutex_t::scoped_lock l(mutex_);	
-		assert(the_session_ != 0);
-
-		process_event(ev_add_to_session(paused));
-		
-		assert(in_session());
-		HAL_DEV_MSG(L"Added to session");
-
-		}
-		catch(std::exception& e)
-		{
-			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(event_logger::critical, e, L"add_to_session"))); 
-		}
-	}
+	void add_to_session(bool paused = false);
 	
-	bool remove_from_session(bool write_data=true)
-	{
-		try
-		{
-		HAL_DEV_MSG(hal::wform(L"remove_from_session() write_data=%1%") % write_data);
-
-		mutex_t::scoped_lock l(mutex_);
-		
-		process_event(ev_remove_from_session(write_data));
-
-		return true;
-
-		}
-		catch(std::exception& e)
-		{
-			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(event_logger::critical, e, L"remove_from_session()"))); 
-			return false;
-		}
-	}
+	bool remove_from_session(bool write_data=true);
 
 	bool in_session() const
 	{ 
@@ -705,8 +503,6 @@ public:
 		
 		if (exists(resume_file))
 			remove(resume_file);
-
-//		resumedata_ = libt::entry();
 	}
 
 	const wpath get_save_directory()
@@ -758,7 +554,8 @@ public:
 			return (s == libt::torrent_status::seeding ||
 						s == libt::torrent_status::finished);
 		}
-		else return false;
+		else 
+			return false;
 	}
 	
 	void finished()
@@ -851,7 +648,7 @@ public:
     friend class boost::serialization::access;
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
-    {
+	{
 		using boost::serialization::make_nvp;
 
 		if (version > 1) {
@@ -865,7 +662,7 @@ public:
 			ar & make_nvp("ratio", ratio_);	
 			ar & make_nvp("progress", progress_);
 			ar & make_nvp("state", state_);
-//			ar & make_nvp("compact_storage", compact_storage_);	
+	//			ar & make_nvp("compact_storage", compact_storage_);	
 			ar & make_nvp("allocation_type", allocation_);	
 			ar & make_nvp("resolve_countries", resolve_countries_);	
 
@@ -887,12 +684,11 @@ public:
 			ar & make_nvp("finish_time", finish_time_);
 			ar & make_nvp("active_duration", active_duration_);
 			ar & make_nvp("seeding_duration", seeding_duration_);
-			ar & make_nvp("managed", managed_);
-					
+			ar & make_nvp("managed", managed_);				
 		} 
 		else 
 		{
-		    ar & make_nvp("transferLimit", transfer_limit_);
+			ar & make_nvp("transferLimit", transfer_limit_);
 			ar & make_nvp("connections", connections_);
 			ar & make_nvp("uploads", uploads_);			
 			ar & make_nvp("filename", filename_);	
@@ -933,49 +729,17 @@ public:
 			ar & make_nvp("finish_time", finish_time_);
 			
 			ar & make_nvp("progress", progress_);
+		}
 	}
-    }
 
 	void set_entry_data(boost::intrusive_ptr<libt::torrent_info> metadata, libtorrent::entry resumedata)
 	{		
 		info_memory_ = metadata;
-//		resumedata_ = resumedata;
 	}
 
 	std::vector<libt::peer_info>& peers() { return peers_; }
 	
-	boost::tuple<size_t, size_t, size_t, size_t> update_peers()
-	{
-		if (in_session())
-			handle_.get_peer_info(peers_);
-		
-		size_t totalPeers = 0;
-		size_t peersConnected = 0;
-		size_t totalSeeds = 0;
-		size_t seedsConnected = 0;
-		
-		foreach (libt::peer_info& peer, peers_) 
-		{
-			float speedSum = peer.down_speed + peer.up_speed;
-			
-			if (!(peer.flags & libt::peer_info::seed))
-			{
-				++totalPeers;
-				
-				if (speedSum > 0)
-					++peersConnected;
-			}
-			else
-			{
-				++totalSeeds;
-				
-				if (speedSum > 0)
-					++seedsConnected;
-			}
-		}	
-		
-		return boost::make_tuple(totalPeers, peersConnected, totalSeeds, seedsConnected);
-	}
+	boost::tuple<size_t, size_t, size_t, size_t> update_peers();
 	
 	void get_peer_details(peer_details_vec& peer_details) const
 	{
@@ -988,80 +752,9 @@ public:
 		}
 	}
 
-	void get_file_details(file_details_vec& files)
-	{
-		if (file_details_memory_.empty())
-		{
-			boost::intrusive_ptr<libt::torrent_info> info = info_memory();
-			std::vector<libt::file_entry> files;
-			
-			std::copy(info->begin_files(), info->end_files(), 
-				std::back_inserter(files));					
-				
-			if (file_priorities_.size() != files.size())
-			{
-				file_priorities_.clear();
-				file_priorities_.assign(files.size(), 1);
-			}
-			
-			for(size_t i=0, e=files.size(); i<e; ++i)
-			{
-				wstring fullPath = hal::from_utf8(files[i].path.string());
-				boost::int64_t size = static_cast<boost::int64_t>(files[i].size);
-				
-				file_details_memory_.push_back(file_details(fullPath, size, 0, file_priorities_[i], i));
-			}	
-		}		
-		
-		if (in_session())
-		{			
-			std::vector<libt::size_type> fileProgress;			
-			handle_.file_progress(fileProgress);
-			
-			for(size_t i=0, e=file_details_memory_.size(); i<e; ++i)
-				file_details_memory_[i].progress =  fileProgress[i];			
-		}
-
-		for(size_t i=0, e=file_details_memory_.size(); i<e; ++i)
-			file_details_memory_[i].priority =  file_priorities_[i];
-		
-		files = file_details_memory_;
-	}
+	void get_file_details(file_details_vec& files);
 	
-	void prepare(wpath filename)
-	{
-		mutex_t::scoped_lock l(mutex_);
-		
-		if (fs::exists(filename)) 
-			info_memory_ = new libt::torrent_info(path_to_utf8(filename));
-		
-		extract_names(info_memory());			
-		
-		const wpath resumeFile = hal::app().get_working_directory()/L"resume"/filename_;
-		const wpath torrentFile = hal::app().get_working_directory()/L"torrents"/filename_;
-		
-		event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			hal::wform(L"File: %1%, %2%.") % resumeFile % torrentFile)));
-		
-	//	if (exists(resumeFile)) 
-	//		resumedata_ = haldecode(resumeFile);
-
-		if (!exists(hal::app().get_working_directory()/L"torrents"))
-			create_directory(hal::app().get_working_directory()/L"torrents");
-
-		if (!exists(torrentFile))
-			copy_file(filename.string(), torrentFile);
-
-		if (!fs::exists(save_directory_))
-			fs::create_directory(save_directory_);
-
-		// These here should not make state changes based on torrent 
-		// session status since it has not been initialized yet.
-		if (state_ == torrent_details::torrent_stopping)
-			state(torrent_details::torrent_stopped);
-		else if (state_ == torrent_details::torrent_pausing)
-			state(torrent_details::torrent_paused);
-	}
+	void prepare(wpath filename);
 
 	void set_resolve_countries(bool b)
 	{
@@ -1069,25 +762,13 @@ public:
 		apply_resolve_countries();
 	}
 	
-	void extract_names(boost::intrusive_ptr<libt::torrent_info> metadata)
-	{
-		mutex_t::scoped_lock l(mutex_);
-				
-		name_ = hal::from_utf8_safe(metadata->name());
-		
-		filename_ = name_;
-		if (!boost::find_last(filename_, L".torrent")) 
-				filename_ += L".torrent";
-		
-		event_log.post(shared_ptr<EventDetail>(new EventMsg(
-			hal::wform(L"Loaded names: %1%, %2%") % name_ % filename_)));
-	}
+	void extract_names(boost::intrusive_ptr<libt::torrent_info> metadata);
 	
 	boost::intrusive_ptr<libt::torrent_info> info_memory()
 	{
 		if (!info_memory_) 
-			info_memory_ = 
-				boost::intrusive_ptr<libt::torrent_info>(new libt::torrent_info(path_to_utf8(filename())));
+			info_memory_ = boost::intrusive_ptr<libt::torrent_info>
+				(new libt::torrent_info(path_to_utf8(filename())));
 		
 		return info_memory_;
 	}
@@ -1100,28 +781,7 @@ public:
 	
 	unsigned state() const 
 	{ 
-		if (in_session())
-		{
-/*			if (handle_.is_paused())
-			{
-				if (state_ != torrent_details::torrent_paused)
-				{			
-					HAL_DEV_MSG(L"Should really be paused!");
-					state_ = torrent_details::torrent_paused;
-				}
-			}
-			else				
-			{			
-				if (state_ != torrent_details::torrent_active &&
-					state_ != torrent_details::torrent_pausing &&
-					state_ != torrent_details::torrent_stopping)
-				{			
-					HAL_DEV_MSG(L"Should really be active!");
-					state_ = torrent_details::torrent_active;
-				}
-			}			*/		
-		}
-		else
+		if (!in_session())
 		{
 			if (state_ != torrent_details::torrent_stopped)
 			{			
@@ -1148,158 +808,24 @@ public:
 
 	static libt::session* the_session_;	
 
-private:	
-	signalers signals_;
+private:
+	void apply_settings();	
+	void apply_transfer_speed();
+	void apply_connection_limit();	
+	void apply_ratio();	
+	void apply_trackers();	
+	void apply_tracker_login();	
+	void apply_file_priorities();	
+	void apply_resolve_countries();
+	void state(unsigned s);
 
-	void apply_settings()
-	{		
-		apply_transfer_speed();
-		apply_connection_limit();
-		apply_ratio();
-		apply_trackers();
-		apply_tracker_login();
-		apply_file_priorities();
-		apply_resolve_countries();
-	}
-	
-	void apply_transfer_speed()
-	{
-		mutex_t::scoped_lock l(mutex_);
-		if (in_session())
-		{
-			int down = (transfer_limit_.first > 0) ? static_cast<int>(transfer_limit_.first*1024) : -1;
-			handle_.set_download_limit(down);
-			
-			int up = (transfer_limit_.second > 0) ? static_cast<int>(transfer_limit_.second*1024) : -1;
-			handle_.set_upload_limit(up);
-
-			HAL_DEV_MSG(hal::wform(L"Applying Transfer Speed %1% - %2%") % down % up);
-		}
-	}
-
-	void apply_connection_limit()
-	{
-		mutex_t::scoped_lock l(mutex_);
-		if (in_session())
-		{
-			handle_.set_max_connections(connections_);
-			handle_.set_max_uploads(uploads_);
-
-			HAL_DEV_MSG(hal::wform(L"Applying Connection Limit %1% - %2%") % connections_ % uploads_);
-		}
-	}
-	
-	void apply_ratio()
-	{ 
-		mutex_t::scoped_lock l(mutex_);
-		if (in_session())
-		{
-			handle_.set_ratio(ratio_);
-
-			HAL_DEV_MSG(hal::wform(L"Applying Ratio %1%") % ratio_);
-		}
-	}
-	
-	void apply_trackers()
-	{
-		mutex_t::scoped_lock l(mutex_);
-		if (in_session())
-		{
-			if (torrent_trackers_.empty())
-				torrent_trackers_ = handle_.trackers();
-			
-			if (!trackers_.empty())
-			{
-				std::vector<libt::announce_entry> trackers;
-				
-				foreach (const tracker_detail& tracker, trackers_)
-				{
-					trackers.push_back(
-						libt::announce_entry(hal::to_utf8(tracker.url)));
-					trackers.back().tier = tracker.tier;
-				}
-				handle_.replace_trackers(trackers);
-			}
-			
-			HAL_DEV_MSG(L"Applying Trackers");
-		}
-	}
-	
-	void apply_tracker_login()
-	{
-		mutex_t::scoped_lock l(mutex_);
-		if (in_session())
-		{
-			if (tracker_username_ != L"")
-			{
-				handle_.set_tracker_login(hal::to_utf8(tracker_username_),
-					hal::to_utf8(tracker_password_));
-			}
-
-			HAL_DEV_MSG(hal::wform(L"Applying Tracker Login User: %1%, Pass: %2%")
-				% tracker_username_ % tracker_password_ );
-		}
-	}
-	
-	void apply_file_priorities()
-	{		
-		mutex_t::scoped_lock l(mutex_);
-		if (in_session()) 
-		{
-			if (!file_priorities_.empty())
-				handle_.prioritize_files(file_priorities_);
-			
-			HAL_DEV_MSG(L"Applying File Priorities");
-		}
-	}	
-	
-	void apply_resolve_countries()
-	{
-		mutex_t::scoped_lock l(mutex_);
-		if (in_session())
-		{
-			handle_.resolve_countries(resolve_countries_);
-			
-			HAL_DEV_MSG(hal::wform(L"Applying Resolve Countries %1%") % resolve_countries_);
-		}
-	}
-
-	void state(unsigned s)
-	{
-		switch (s)
-		{
-		case torrent_details::torrent_stopped:
-			HAL_DEV_MSG(L"state() - stopped");
-			break;
-		case torrent_details::torrent_stopping:
-			HAL_DEV_MSG(L"state() - stopping");
-			break;
-		case torrent_details::torrent_pausing:
-			HAL_DEV_MSG(L"state() - pausing");
-			break;
-		case torrent_details::torrent_active:
-			HAL_DEV_MSG(L"state() - active");
-			break;
-		case torrent_details::torrent_paused:
-			HAL_DEV_MSG(L"state() - paused");
-			break;
-		case torrent_details::torrent_in_error:
-			HAL_DEV_MSG(L"state() - in error");
-			break;
-		default:
-			HAL_DEV_MSG(L"state() - unknown");
-			break;
-		};
-		state_ = s;
-	}
-		
 	mutable mutex_t mutex_;
+	signalers signals_;
 	
 	std::pair<float, float> transfer_limit_;
 	
 	mutable unsigned state_;
 	bool awaiting_resume_data_;
-
 	int connections_;
 	int uploads_;
 	bool in_session_;
@@ -1312,10 +838,6 @@ private:
 	wpath move_to_directory_;
 	wstring original_filename_;
 	libt::torrent_handle handle_;	
-	
-//	boost::intrusive_ptr<libt::torrent_info> metadata_;
-//	boost::shared_ptr<libt::entry> resumedata_;
-	
 	wstring tracker_username_;	
 	wstring tracker_password_;
 	
@@ -1337,16 +859,15 @@ private:
 	std::vector<libt::peer_info> peers_;	
 	std::vector<int> file_priorities_;
 	
-	float progress_;
-	
-	boost::intrusive_ptr<libt::torrent_info> info_memory_;
-	libt::torrent_status status_memory_;
-	file_details_vec file_details_memory_;
-	
+	float progress_;	
 	int queue_position_;
 	bool compact_storage_;
 	bool managed_;
 	bit::allocations allocation_;
+	
+	boost::intrusive_ptr<libt::torrent_info> info_memory_;
+	libt::torrent_status status_memory_;
+	file_details_vec file_details_memory_;
 };
 
 typedef std::map<std::string, TorrentInternalOld> TorrentMap;

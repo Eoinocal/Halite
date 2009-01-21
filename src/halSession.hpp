@@ -1093,7 +1093,7 @@ public:
 		{
 		
 		the_torrents_.save_to_ini();
-		bittorrentIni.save_data();
+		bittorrent_ini_.save_data();
 			
 		if (dht_on_) 
 		{	
@@ -1122,7 +1122,7 @@ private:
 	boost::optional<thread_t> alert_checker_;
 	bool keepChecking_;
 	
-	ini_file bittorrentIni;
+	ini_file bittorrent_ini_;
 	torrent_manager the_torrents_;	
 	
 	int default_torrent_max_connections_;
