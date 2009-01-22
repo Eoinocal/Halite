@@ -24,7 +24,7 @@
 class HaliteSaveAndMoveToDlg :
 	public ATL::CDialogImpl<HaliteSaveAndMoveToDlg>,
 	public ATL::CAutoSizeWindow<HaliteSaveAndMoveToDlg, true>,
-	public CWinDataExchangeEx<HaliteSaveAndMoveToDlg>
+	public WTLx::WinDataExchangeEx<HaliteSaveAndMoveToDlg>
 {
 public:
 	typedef HaliteSaveAndMoveToDlg thisClass;
