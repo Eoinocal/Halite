@@ -204,7 +204,7 @@ class AdvDebugDialog :
 	public CHalTabPageImpl<AdvDebugDialog>,
 	public WTL::CDialogResize<AdvDebugDialog>,
 	public CHaliteDialogBase<AdvDebugDialog>,
-	public CWinDataExchangeEx<AdvDebugDialog>,
+	public WTLx::WinDataExchangeEx<AdvDebugDialog>,
 	private boost::noncopyable
 {
 protected:

@@ -342,7 +342,7 @@ class AdvFilesDialog :
 	public CHalTabPageImpl<AdvFilesDialog>,
 	public WTL::CDialogResize<AdvFilesDialog>,
 	public CHaliteDialogBase<AdvFilesDialog>,
-	public CWinDataExchangeEx<AdvFilesDialog>,
+	public WTLx::WinDataExchangeEx<AdvFilesDialog>,
 	public hal::IniBase<AdvFilesDialog>,
 	private boost::noncopyable
 {

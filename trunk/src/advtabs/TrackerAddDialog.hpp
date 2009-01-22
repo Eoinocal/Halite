@@ -20,7 +20,7 @@ class TrackerAddDialog :
 	public ATL::CDialogImpl<TrackerAddDialog>,
 	public WTLx::GenericAddDialog<TrackerAddDialog, HAL_TRACKEDIT>,
 	public WTL::CDialogResize<TrackerAddDialog>,
-	public CWinDataExchangeEx<TrackerAddDialog>
+	public WTLx::WinDataExchangeEx<TrackerAddDialog>
 {
 public:
 	typedef TrackerAddDialog thisClass;

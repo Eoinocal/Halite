@@ -36,7 +36,7 @@ class NewTorrent_TrackerAddDialog :
 	public ATL::CDialogImpl<NewTorrent_TrackerAddDialog>,
 	public WTLx::GenericAddDialog<NewTorrent_TrackerAddDialog, HAL_TRACKEDIT>,
 	public WTL::CDialogResize<NewTorrent_TrackerAddDialog>,
-	public CWinDataExchangeEx<NewTorrent_TrackerAddDialog>
+	public WTLx::WinDataExchangeEx<NewTorrent_TrackerAddDialog>
 {
 public:
 	typedef NewTorrent_TrackerAddDialog thisClass;

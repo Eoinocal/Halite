@@ -98,7 +98,7 @@ typedef FilesListViewCtrl::SelectionManager FilesListViewManager;
 
 class DetailsSheet :
 	public WTL::CPropertyPageImpl<DetailsSheet>,
-	public CWinDataExchangeEx<DetailsSheet>,
+	public WTLx::WinDataExchangeEx<DetailsSheet>,
 	public ATL::CAutoSizeWindow<DetailsSheet, false>
 {
 protected:
