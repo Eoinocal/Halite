@@ -334,6 +334,11 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 		t.add_node(hal::make_pair(to_utf8((*i).url), (*i).port));
 	}
 
+	HAL_DEV_MSG(hal::wform(L"root_path: %1%") % params.root_path.string());
+
+	set_piece_hashes(t, to_utf8(params.root_path.string())
+			, boost::bind(fn, _1, L"Eoin"));
+/*
 	boost::scoped_ptr<libt::storage_interface> store(
 		default_storage_constructor(const_cast<libt::file_storage&>(t.files()), to_utf8(params.root_path.string()),
 			f_pool));
@@ -359,7 +364,7 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 			return true;
 		}
 	}
-
+*/
 	t.set_creator(to_utf8(params.creator).c_str());
 	t.set_comment(to_utf8(params.comment).c_str());
 	
@@ -369,7 +374,8 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 	libt::entry e = t.generate();
 	
 	HAL_DEV_MSG(hal::wform(L"Writing to: %1%") % out_file);
-	halencode(out_file, e);
+	fs::ofstream out(out_file, std::ios_base::binary);
+	libt::bencode(std::ostream_iterator<char>(out), t.generate());
 
 	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::create_torrent()")
 	
