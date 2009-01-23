@@ -319,6 +319,20 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 		hal::file_details_vec all_files = focusedTorrent()->get_file_details();	
 		FileListView::scoped_files list_files = list_.files();
 
+		if (focusedTorrent() && all_files.size() != list_files->size())
+		{
+			list_files->clear();
+
+			for (std::vector<FileLink>::iterator i=range_.first, e=range_.second;
+				i != e; ++i)
+			{		
+				list_files->push_back(all_files[(*i).order()]);
+			}
+				
+			list_.SetItemCountEx(list_files->size(),LVSICF_NOSCROLL);
+		}
+
+
 		foreach (hal::file_details& file, *list_files)
 		{
 			file = all_files[file.order()];
@@ -388,6 +402,21 @@ void AdvFilesDialog::focusChanged(const hal::torrent_details_ptr pT)
 	std::sort(range_.first, range_.second, &FileLinkNamesLess);
 	
 	splitterPos = splitter_.GetSplitterPos();
+
+	if (focusedTorrent())
+	{
+		hal::file_details_vec all_files = focusedTorrent()->get_file_details();	
+		FileListView::scoped_files list_files = list_.files();
+		list_files->clear();
+
+		for (std::vector<FileLink>::iterator i=range_.first, e=range_.second;
+			i != e; ++i)
+		{		
+			list_files->push_back(all_files[(*i).order()]);
+		}
+			
+		list_.SetItemCountEx(list_files->size(),LVSICF_NOSCROLL);
+	}
 }
 
 void AdvFilesDialog::onClose()

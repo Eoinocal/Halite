@@ -109,7 +109,7 @@ void recurseDirectory(std::vector<wpath>& files, wpath baseDir, wpath relDir)
     }
     else
     {
-		files.push_back(relDir);		
+		files.push_back(baseDir.filename()/relDir);		
     }
 }
 
@@ -148,11 +148,11 @@ void FilesSheet::OnDirBrowse(UINT, int, HWND hWnd)
 	{
 		files_.clear();
 
-		fileRoot_ = wpath(fldDlg.m_szFolderPath);
+		fileRoot_ = wpath(fldDlg.m_szFolderPath).parent_path();
 		recurseDirectory(files_, wpath(fldDlg.m_szFolderPath), L"");
 
 		UpdateFileList();		
-		SetDlgItemText(HAL_NEWT_FILE_NAME_EDIT, fileRoot_.filename().c_str());
+		SetDlgItemText(HAL_NEWT_FILE_NAME_EDIT, wpath(fldDlg.m_szFolderPath).filename().c_str());
 	}
 
 	}

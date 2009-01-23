@@ -365,10 +365,10 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 		}
 	}
 */
-	t.set_creator(to_utf8(params.creator).c_str());
-	t.set_comment(to_utf8(params.comment).c_str());
+//	t.set_creator(to_utf8(params.creator).c_str());
+//	t.set_comment(to_utf8(params.comment).c_str());
 	
-	t.set_priv(params.private_torrent);
+//	t.set_priv(params.private_torrent);
 
 	// create the torrent and print it to out
 	libt::entry e = t.generate();
