@@ -61,7 +61,7 @@ public:
 		try
 		{
 
-		int err_code = (fn_(bind(&ProgressDialog::Callback, this, _1, _2)) ? 1 : 0);
+		int err_code = (fn_(bind(&ProgressDialog::Callback, this, _1, _2, _3)) ? 1 : 0);
 		
 		EndDialog(err_code);
 
@@ -77,10 +77,10 @@ public:
 		}
 	}
 	
-	bool Callback(size_t progress, wstring description)
+	bool Callback(size_t progress, size_t total, wstring description)
 	{
 		SetDlgItemText(HAL_PROG_DESCP, description.c_str());
-		prog_.SetPos(progress);
+		prog_.SetPos((100*progress)/total);
 		
 		return stop_;
 	}

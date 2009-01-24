@@ -180,7 +180,7 @@ void bit_impl::ip_filter_load(progress_callback fn)
 			{
 				previous = i;
 
-				if (fn) if (fn(size_t(i/total), hal::app().res_wstr(HAL_TORRENT_LOAD_FILTERS))) break;
+				if (fn) if (fn(i, v4_size, hal::app().res_wstr(HAL_TORRENT_LOAD_FILTERS))) break;
 			}
 			
 			read_range_to_filter<boost::asio::ip::address_v4>(ifs, ip_filter_);
@@ -213,7 +213,7 @@ bool bit_impl::ip_filter_import_dat(boost::filesystem::path file, progress_callb
 	fs::ifstream ifs(file);	
 	if (ifs)
 	{
-		boost::uintmax_t total = fs::file_size(file)/100;
+		boost::uintmax_t total = fs::file_size(file);
 		boost::uintmax_t progress = 0;
 		boost::uintmax_t previous = 0;
 		
@@ -230,7 +230,7 @@ bool bit_impl::ip_filter_import_dat(boost::filesystem::path file, progress_callb
 				previous = progress;
 				if (fn)
 				{
-					if (fn(size_t(progress/total), hal::app().res_wstr(HAL_TORRENT_IMPORT_FILTERS))) 
+					if (fn(progress, total, hal::app().res_wstr(HAL_TORRENT_IMPORT_FILTERS))) 
 						break;
 				}
 			}
@@ -336,8 +336,8 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 
 	HAL_DEV_MSG(hal::wform(L"root_path: %1%") % params.root_path.string());
 
-	set_piece_hashes(t, to_utf8(params.root_path.string())
-			, boost::bind(fn, _1, L"Eoin"));
+	set_piece_hashes(t, to_utf8(params.root_path.string()),
+		boost::bind(fn, _1, t.num_pieces(), hal::app().res_wstr(HAL_NEWT_HASHING_PIECES)));
 /*
 	boost::scoped_ptr<libt::storage_interface> store(
 		default_storage_constructor(const_cast<libt::file_storage&>(t.files()), to_utf8(params.root_path.string()),
@@ -365,10 +365,10 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 		}
 	}
 */
-//	t.set_creator(to_utf8(params.creator).c_str());
-//	t.set_comment(to_utf8(params.comment).c_str());
+	t.set_creator(to_utf8(params.creator).c_str());
+	t.set_comment(to_utf8(params.comment).c_str());
 	
-//	t.set_priv(params.private_torrent);
+	t.set_priv(params.private_torrent);
 
 	// create the torrent and print it to out
 	libt::entry e = t.generate();

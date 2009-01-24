@@ -492,7 +492,7 @@ struct SessionDetail
 };
 
 typedef boost::function<bool (size_t, size_t, size_t)> filterCallback;
-typedef boost::function<bool (size_t, std::wstring)> progress_callback;
+typedef boost::function<bool (size_t, size_t, std::wstring)> progress_callback;
 typedef boost::function<void (int)> report_num_active;
 typedef std::pair<wstring, wstring> wstring_pair;
 typedef std::pair<float, float> float_pair;
