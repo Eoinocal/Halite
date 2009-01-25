@@ -64,7 +64,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="&quot;$(SolutionDir)lib\openssl\bin\debug\link-static\runtime-link-static\threading-multi\libeay32.lib&quot; &quot;$(SolutionDir)lib\openssl\bin\debug\link-static\runtime-link-static\threading-multi\ssleay32.lib&quot;"
+				AdditionalDependencies="&quot;$(SolutionDir)lib\openssl\bin\x86\MTd\libeay32.lib&quot; &quot;$(SolutionDir)lib\openssl\bin\x86\MTd\ssleay32.lib&quot;"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"

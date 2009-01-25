@@ -83,6 +83,8 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 		return transit< paused >();
 	else
 		return transit< active >();
+
+	t_i.apply_settings();
 }
 
 active::active(base_type::my_context ctx) :
