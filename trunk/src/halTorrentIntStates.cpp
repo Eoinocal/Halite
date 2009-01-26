@@ -19,6 +19,7 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 	TORRENT_STATE_LOG(L"Entering in_the_session()");
 
 	assert(context<torrent_internal>().in_session());
+	context<torrent_internal>().apply_settings();
 }
 
 in_the_session::~in_the_session()
@@ -84,7 +85,6 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	else
 		return transit< active >();
 
-	t_i.apply_settings();
 }
 
 active::active(base_type::my_context ctx) :
