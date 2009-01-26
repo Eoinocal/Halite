@@ -286,4 +286,4 @@
 "Xml Exception (%1%) with %2%." ---> "XML Greška (%1%) kod (%2%)"
 "libTorrrent based client." ---> "Na libTorrent-u baziran klijent"
 "to" ---> "Do"
-"∞" ---> ".-.-."
+"∞" ---> "- -"
