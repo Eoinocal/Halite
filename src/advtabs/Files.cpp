@@ -141,7 +141,7 @@ LRESULT FileTreeView::OnRClick(int i, LPNMHDR pnmh, BOOL&)
 
 		WTL::CTreeItem ti = HitTest(pt, 0);
 
-		menu_.TrackPopupMenu(0, pt.x, pt.y, m_hWnd);
+		menu_.TrackPopupMenu(0, cur_pt.x, cur_pt.y, m_hWnd);
 	}
 
 	return 0;
