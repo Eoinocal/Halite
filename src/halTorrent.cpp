@@ -740,6 +740,8 @@ void bit::recheck_torrent(const std::wstring& filename)
 {
 	try {
 	
+//	pimpl()->the_torrents_.get(filename)->output_torrent_debug_details();
+
 	pimpl()->the_torrents_.get(filename)->force_recheck();
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "recheck_torrent")

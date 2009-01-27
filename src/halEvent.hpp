@@ -35,7 +35,7 @@
 
 #include "halTorrent.hpp"
 
-#ifdef TORRENT_LOGGING
+#ifdef HAL_TORRENT_DEV_MSGES
 #	define HAL_DEV_MSG(msg) \
 	hal::event_log.post(boost::shared_ptr<hal::EventDetail>( \
 			new hal::EventMsg(msg, hal::event_logger::dev))) 

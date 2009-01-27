@@ -136,7 +136,7 @@ LRESULT FileTreeView::OnRClick(int i, LPNMHDR pnmh, BOOL&)
 		WTL::CPoint cur_pt;
 		GetCursorPos(&cur_pt);
 
-		WTL::CPoint pt = cur_pt;			
+		WTL::CPoint pt = cur_pt;
 		ScreenToClient(&pt);
 
 		WTL::CTreeItem ti = HitTest(pt, 0);
