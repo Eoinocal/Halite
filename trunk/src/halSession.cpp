@@ -512,11 +512,15 @@ void bit_impl::alert_handler()
 				new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 
 						% get(a.handle)->name()), 
 					event_logger::debug, a.timestamp())));
+			
+			HAL_DEV_MSG(hal::wform(L"Torrent Paused alert, %1%.") % get(a.handle)->name());
 
 			get(a.handle)->locked_process_event(ev_paused_alert());
 		}
 		else
 		{
+			HAL_DEV_MSG(hal::wform(L"Torrent Error alert %2%, %1%.") % get(a.handle)->name() % err);
+
 			event_log.post(shared_ptr<EventDetail>(
 				new EventMsg((hal::wform(hal::app().res_wstr(HAL_TORRENT_ERROR_PAUSE_ALERT)) 
 						% err 

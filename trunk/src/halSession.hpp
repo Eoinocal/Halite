@@ -1069,6 +1069,9 @@ public:
 							&& (*i).torrent->state() != torrent_details::torrent_in_error)
 						|| (*i).torrent->awaiting_resume_data()))
 				{
+#					ifdef HAL_TORRENT_DEV_MSGES
+						(*i).torrent->output_torrent_debug_details();
+#					endif
 					num_active += 1;
 				}
 			}

@@ -806,6 +806,50 @@ public:
 
 	bool awaiting_resume_data() { return awaiting_resume_data_; }
 
+	void output_torrent_debug_details()
+	{
+		HAL_DEV_MSG(wform(L"Name %1%") % name_);
+		HAL_DEV_MSG(wform(L" >> In session       %1%") % in_session());
+
+		if (in_session())
+		{
+
+		wstring state_str;
+
+		switch (state())
+		{
+		case torrent_details::torrent_active:
+			state_str = L"Active";
+			break;
+
+		case torrent_details::torrent_paused:
+			state_str = app().res_wstr(HAL_TORRENT_PAUSED);
+			break;
+			
+		case torrent_details::torrent_pausing:
+			state_str = app().res_wstr(HAL_TORRENT_PAUSING);
+			break;
+			
+		case torrent_details::torrent_stopped:
+			state_str = app().res_wstr(HAL_TORRENT_STOPPED);
+			break;
+			
+		case torrent_details::torrent_stopping:
+			state_str = app().res_wstr(HAL_TORRENT_STOPPING);
+			break;
+			
+		case torrent_details::torrent_in_error:
+			state_str = app().res_wstr(HAL_TORRENT_IN_ERROR);
+			break;
+		};
+		
+		HAL_DEV_MSG(wform(L" >> State            %1%") % state_str);
+		HAL_DEV_MSG(wform(L" >> Session Paused   %1%") % handle_.is_paused());
+		HAL_DEV_MSG(wform(L" >> Error state      %1%") % check_error());
+
+		}
+	}
+
 	static libt::session* the_session_;	
 
 private:

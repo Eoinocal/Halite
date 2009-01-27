@@ -185,14 +185,14 @@ stopping::stopping(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
 	TORRENT_STATE_LOG(L"Entering stopping()");
+
+	torrent_internal& t_i = context<torrent_internal>();
+	t_i.state(torrent_details::torrent_stopping);
 }
 
 stopping::~stopping()
 {
 	TORRENT_STATE_LOG(L"Exiting ~stopping()");
-
-	torrent_internal& t_i = context<torrent_internal>();
-	t_i.state(torrent_details::torrent_stopping);
 }
 
 sc::result stopping::react(const ev_paused_alert& evt)

@@ -61,7 +61,7 @@ struct ev_paused_alert : sc::event<ev_paused_alert> {};
 
 struct ev_stop : sc::event< ev_stop > {};
 struct ev_resume : sc::event< ev_resume > {};
-struct ev_resumed_alert : sc::event<ev_paused_alert> {};
+struct ev_resumed_alert : sc::event<ev_resumed_alert> {};
 
 struct ev_force_recheck : sc::event< ev_force_recheck > {};
 
