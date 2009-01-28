@@ -13,6 +13,7 @@
 
 #pragma warning (push)
 #pragma warning (disable : 4099)
+#pragma warning (disable : 4267)
 #	include <boost/serialization/version.hpp>
 #	include <boost/serialization/vector.hpp>
 #	include <boost/serialization/map.hpp>

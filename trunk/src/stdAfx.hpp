@@ -95,6 +95,7 @@ extern WTL::CAppModule _Module;
 
 #pragma warning (push)
 #pragma warning (disable : 4099)
+#pragma warning (disable : 4267)
 #	include <boost/archive/text_woarchive.hpp>
 #	include <boost/archive/text_wiarchive.hpp>
 #	include <boost/archive/binary_woarchive.hpp>

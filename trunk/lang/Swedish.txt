@@ -15,18 +15,22 @@
 "&Resume All" ---> "Åte&ruppta alla"
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
-"(DHT will not apply to private torrents)" --->  ??? 
 "About" ---> "Om"
 "Above Normal" ---> "Över medel"
+"Active downloads :" --->  ??? 
+"Active seeds :" --->  ??? 
+"Active seeds hard limit:" --->  ??? 
 "Active" --->  ??? 
 "Add New Peer" --->  ??? 
 "Add New Tracker" ---> "Lägg till ny tracker"
 "Add New Web Seed or DHT Node" --->  ??? 
 "Add Torrent" --->  ??? 
 "Add" ---> "Lägg till"
+"Adjust Queue Position" --->  ??? 
 "Advanced GUI" ---> "Avancerad GUI"
 "Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
 "Allocating" ---> "Allokerar utrymme"
+"Allocation Mode:" --->  ??? 
 "Allow only one instance to run" --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
@@ -34,11 +38,14 @@
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
 "Are you sure you wish to delete all downloaded data?" --->  ??? 
 "Auto Sort" --->  ??? 
+"Auto-managed" --->  ??? 
 "BitTorrent" --->  ??? 
 "Bittorrent Event: %1%." --->  ??? 
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Block %2% of piece %3% finished. (%1%)" --->  ??? 
 "Both" ---> "Båda"
+"Cache Status, Current Total Size : %1.2f MiB" --->  ??? 
+"Cache Write Size :" --->  ??? 
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" ---> "Avbryt"
 "Checking Files" ---> "Granskar filer"
@@ -60,6 +67,7 @@
 "Creating a New Torrent File" --->  ??? 
 "Creator" --->  ??? 
 "Critical" ---> "Viktig"
+"Current Cache Status" --->  ??? 
 "DHT Node" --->  ??? 
 "DHT disabled" ---> "DHT av"
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT-sessionen kunde inte starta. Pröva en annan port i inställningarna."
@@ -73,6 +81,8 @@
 "Dir." --->  ??? 
 "Disabled" ---> "Deaktiverade"
 "Distributed Hash Tables" ---> "DHT (publika söknycklar)"
+"Don't Manage Torrent(s)" --->  ??? 
+"Don't count slow torrents." --->  ??? 
 "Don't download" ---> "Ladda inte ned"
 "Down" ---> "Ned"
 "Download Rate (KB/s) :" ---> "Nedladdningshastighet (KB/s"
@@ -89,14 +99,16 @@
 "Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Ändra"
-"Enable DHT" ---> "Aktivera DHT"
+"Enable DHT (will not apply to private torrents)" --->  ??? 
 "Enable IP filtering." ---> "Använd IP-filtrering"
+"Enable Options or libtorrent Plugins" --->  ??? 
 "Enable Protocol Encryption." ---> "Aktivera Protokollkryptering"
 "Enable Remote Control" ---> "Aktivera fjärrstyrning"
 "Enabled" ---> "Aktiverade"
 "Encoding Level" ---> "Nivå av kodning"
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Skriv in URL för torrent."
+"Error!" --->  ??? 
 "Exception caught: %1%, from %2%." --->  ??? 
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
@@ -112,6 +124,7 @@
 "General" ---> "Allmänt"
 "Generated Torrent Name (Cannot change)" --->  ??? 
 "Global Limits" ---> "Globala begränsningar"
+"Globals" --->  ??? 
 "Halite BitTorrent Client" --->  ??? 
 "Halite Debug Dialog" --->  ??? 
 "Halite importing IP ranges..." ---> "Halite importerar IP-områden..."
@@ -141,18 +154,30 @@
 "Log debug events." --->  ??? 
 "Log to file." ---> "Loggning till fil."
 "Logging" ---> "Loggning"
+"Manage Torrent(s)" --->  ??? 
+"Managed Downloading" --->  ??? 
+"Managed Seeding" --->  ??? 
+"Managed Torrent" --->  ??? 
+"Managed" --->  ??? 
+"Match the listen port number (recommended)." --->  ??? 
+"Max Size (MiB) :" --->  ??? 
+"Max failures : " --->  ??? 
+"Max replies : " --->  ??? 
 "Maximum" ---> "Max"
 "Message" ---> "Meddelande"
+"Metadata Plugin" --->  ??? 
 "Minimize to tray." ---> "Minimera till meddelandefältet."
+"Move Down" --->  ??? 
+"Move To Bottom" --->  ??? 
+"Move To Top" --->  ??? 
+"Move Up" --->  ??? 
 "Move finished torrents to :" --->  ??? 
 "Move the completed torrent to:" --->  ??? 
 "N/A" ---> "Ej applicerbart"
-"NAT-PMG" --->  ??? 
 "NAT-PMP" --->  ??? 
 "Name" --->  ??? 
 "Name:" ---> "Namn:"
 "New" ---> "Ny"
-"None (Managed Externally)" --->  ??? 
 "None" --->  ??? 
 "Normal" ---> "Medel"
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
@@ -177,15 +202,17 @@
 "Peers" ---> "Användare"
 "Peers:" ---> "Klienter:"
 "Piece %2% finished. (%1%)" --->  ??? 
+"Piece Expiry (sec) :" --->  ??? 
 "Piece Size (KBs)" --->  ??? 
 "Plaintext Encrypted" ---> "klartextkryptering"
 "Plaintext" --->  ??? 
 "Port %1% open" ---> "Port %1% öppen"
-"Port (UDP) : " --->  ??? 
+"Port (UDP)" --->  ??? 
 "Port : " --->  ??? 
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Port att lyssna på: "
 "Port" --->  ??? 
+"Ports" --->  ??? 
 "Prefer RC4" ---> "Föredra RC4"
 "Priority" ---> "Prioritet"
 "Private" --->  ??? 
@@ -194,6 +221,9 @@
 "Proxies" ---> "Proxys"
 "Proxy Host/IP : " --->  ??? 
 "Proxy Settings" ---> "Proxy-inställningar"
+"Queue Position" --->  ??? 
+"Queue System" --->  ??? 
+"Queue View" --->  ??? 
 "Queued for Checking" ---> "Köar för granskning"
 "Queued" ---> "Köad"
 "RC4 Encrypted" ---> "RC4-kryptering"
@@ -202,6 +232,8 @@
 "Ratio (this session):" ---> "Ratio (denna session):"
 "Ratio" --->  ??? 
 "Ratio:" --->  ??? 
+"Read Cache Hit Ratio :" --->  ??? 
+"Read Size :" --->  ??? 
 "Reannounce" --->  ??? 
 "Recheck Files" --->  ??? 
 "Remaining" --->  ??? 
@@ -210,25 +242,34 @@
 "Remote Control" ---> "Fjärrstyrning"
 "Remove" ---> "Ta bort"
 "Reset" ---> "Återställ"
+"Resolve Countries from IP" --->  ??? 
+"Resume data generated. (%1%)" --->  ??? 
+"Resume data generation failed. (%1%)" --->  ??? 
 "Resume" ---> "Fortsätt"
+"Resuming torrent. (%1%)" --->  ??? 
 "Review settings when adding torrent." --->  ??? 
 "Save" ---> "Spara"
 "Saving Torrent" --->  ??? 
+"Search banching : " --->  ??? 
 "Security" ---> "Säkerhet"
+"Seeding Limits" --->  ??? 
 "Seeding" ---> "Skickar"
 "Seeds" --->  ??? 
 "Seeds:" ---> "Källor:"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Välj en plats att spara i. Välj avbryt för att spara till förvald plats."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Välj en plats att spara filerna på eller avbryt för att inte ladda ned denna torrent."
 "Select a file or directory from which to construct the torrent." --->  ??? 
+"Select a random port within this range." --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." --->  ??? 
 "Send login info to trackers." ---> "Skicka inloggningsuppgifter till trackers."
 "Set Priority" ---> "Ange prioritet"
 "Set as Primary" --->  ??? 
 "Severity" ---> "Nivå"
+"Share ratio limit:" --->  ??? 
 "Show this message in future" ---> "Visa alltid detta meddelande."
 "Shutting down session" --->  ??? 
 "Size" ---> "Storlek"
+"Smart Ban Plugin" --->  ??? 
 "Standard exception (%1%) thrown from %2%." --->  ??? 
 "Start Time" --->  ??? 
 "Status" ---> "Status"
@@ -248,7 +289,10 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Denna session laddade ned  %1$.2fMB och laddade upp %2$.2fMB, Ratio: %3$.2f."
 "Tier" ---> "Rang"
 "Time left:" ---> "Tid kvar:"
+"Time limit (sec):" --->  ??? 
+"Time ratio limit:" --->  ??? 
 "Time" ---> "Tid"
+"Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
 "Torrent (%1%) exception caught: %2% from %3%." --->  ??? 
@@ -257,6 +301,7 @@
 "Torrent Root" --->  ??? 
 "Torrent and Data" ---> "Torrent och data"
 "Torrent connection limits:" ---> "Anslutningsbegränsningar:"
+"Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" --->  ??? 
 "Torrent transfer rates (KB/s):" ---> "Total överföringshastighet (KB/s):"
 "Torrent" --->  ??? 
@@ -274,26 +319,31 @@
 "Trackers" --->  ??? 
 "Transferred:" ---> "Överfört:"
 "Type" ---> "Typ"
+"UPnP router model (if recognised)." --->  ??? 
 "UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." --->  ??? 
+"Unmanaged" --->  ??? 
 "Up" ---> "Upp"
 "Update in:" ---> "Uppdatera om:"
 "Upload Rate (KB/s) :" ---> "Uppladningshastighet (KB/s)"
 "Upload" ---> "Uppladdning"
 "Uploaded" --->  ??? 
-"Use Compact Allocation." --->  ??? 
 "Use a proxy." ---> "Använd en proxy."
 "User canceled Torrent file creation" --->  ??? 
 "Username : " ---> "Användarnamn :"
 "Warning" --->  ??? 
 "Web Seed" ---> "Webb källa"
 "Web Seeds and DHT Nodes" --->  ??? 
+"Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml undantag (%1%) med %2%"
 "\r\0" --->  ??? 
 "libTorrrent based client." ---> "libTorrent-baserad klient"
+"random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "till"
+"uTorrent Metadata Plugin" --->  ??? 
+"uTorrent Peer Exchange Plugin" --->  ??? 
 "∞" --->  ??? 

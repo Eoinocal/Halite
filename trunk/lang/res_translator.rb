@@ -24,7 +24,7 @@ def compile_dlls(arg)
 
 	puts " - Cleaning temp files\n\n"
 	
-	system "del \"..\\res\\"+arg+".rc\""
+#	system "del \"..\\res\\"+arg+".rc\""
 	system "del \"..\\res\\"+arg+".res\""
 	system "del \"..\\res\\"+arg+".obj\""
 	
