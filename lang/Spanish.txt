@@ -15,18 +15,22 @@
 "&Resume All" ---> "&Reanudar todo"
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(D-S) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(D-S) 0000.000KB/s - 0000.000KB/s"
-"(DHT will not apply to private torrents)" ---> "(DHT no se aplicará a torrents privados)"
 "About" ---> "Acerca de"
 "Above Normal" ---> "Mayor de lo normal"
-"Active" --->  ??? 
+"Active downloads :" --->  ??? 
+"Active seeds :" --->  ??? 
+"Active seeds hard limit:" --->  ??? 
+"Active" ---> "Activo"
 "Add New Peer" --->  ??? 
 "Add New Tracker" ---> "Añadir nuevo Tracker"
 "Add New Web Seed or DHT Node" --->  ??? 
-"Add Torrent" --->  ??? 
+"Add Torrent" ---> "Añadir Torrent"
 "Add" ---> "Añadir"
+"Adjust Queue Position" --->  ??? 
 "Advanced GUI" ---> "GUI avanzada"
 "Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
 "Allocating" ---> "Asignando espacio"
+"Allocation Mode:" --->  ??? 
 "Allow only one instance to run" --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
@@ -34,11 +38,14 @@
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
 "Are you sure you wish to delete all downloaded data?" --->  ??? 
 "Auto Sort" ---> "Auto ordenar"
+"Auto-managed" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." ---> "Evento de Bittorrent: %1%."
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Block %2% of piece %3% finished. (%1%)" --->  ??? 
 "Both" ---> "Ambos"
+"Cache Status, Current Total Size : %1.2f MiB" --->  ??? 
+"Cache Write Size :" --->  ??? 
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" ---> "Cancelar"
 "Checking Files" ---> "Comprobando archivos"
@@ -60,6 +67,7 @@
 "Creating a New Torrent File" --->  ??? 
 "Creator" --->  ??? 
 "Critical" --->  ??? 
+"Current Cache Status" --->  ??? 
 "DHT Node" --->  ??? 
 "DHT disabled" ---> "DHT desactivado"
 "DHT session could not start. Try selecting another port in the settings." ---> "No se pudo iniciar la sesión DHT. Prueba a seleccionar otro puerto en las opciones."
@@ -73,12 +81,14 @@
 "Dir." --->  ??? 
 "Disabled" ---> "Desactivado"
 "Distributed Hash Tables" --->  ??? 
+"Don't Manage Torrent(s)" --->  ??? 
+"Don't count slow torrents." --->  ??? 
 "Don't download" ---> "No descargar"
 "Down" --->  ??? 
 "Download Rate (KB/s) :" ---> "Tasa de bajada (KB/s) :"
 "Download" ---> "Descarga"
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Descargado %1$.2fMB, subido %2$.2fMB, ratio %3$.2f."
-"Downloaded" --->  ??? 
+"Downloaded" ---> "Descargado"
 "Downloading Metadata" ---> "Descargando Metadata"
 "Downloading" ---> "Descargando"
 "E&xit" ---> "&Salir"
@@ -89,18 +99,20 @@
 "Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Editar"
-"Enable DHT" ---> "Activar DHT"
+"Enable DHT (will not apply to private torrents)" --->  ??? 
 "Enable IP filtering." ---> "Activar el filtrado de IPs."
+"Enable Options or libtorrent Plugins" --->  ??? 
 "Enable Protocol Encryption." ---> "Activar codificación de protocolo."
 "Enable Remote Control" ---> "Activar control remoto"
 "Enabled" ---> "Activado"
 "Encoding Level" ---> "Nivel de codificación"
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Introduce las URLs de los trackers del torrent."
+"Error!" --->  ??? 
 "Exception caught: %1%, from %2%." ---> "Excepción atrapada: %1%, de %2%."
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
-"File" --->  ??? 
+"File" ---> "Archivo"
 "Filename" ---> "Nombre de archivo"
 "Files" ---> "Archivos"
 "Filtering %1% range(s)" ---> "Filtrando %1% rango(s)"
@@ -112,6 +124,7 @@
 "General" ---> "General"
 "Generated Torrent Name (Cannot change)" --->  ??? 
 "Global Limits" ---> "Límites globales"
+"Globals" --->  ??? 
 "Halite BitTorrent Client" --->  ??? 
 "Halite Debug Dialog" ---> "Diálogo de depuración de Halite"
 "Halite importing IP ranges..." --->  ??? 
@@ -141,24 +154,36 @@
 "Log debug events." --->  ??? 
 "Log to file." --->  ??? 
 "Logging" --->  ??? 
+"Manage Torrent(s)" --->  ??? 
+"Managed Downloading" --->  ??? 
+"Managed Seeding" --->  ??? 
+"Managed Torrent" --->  ??? 
+"Managed" --->  ??? 
+"Match the listen port number (recommended)." --->  ??? 
+"Max Size (MiB) :" --->  ??? 
+"Max failures : " --->  ??? 
+"Max replies : " --->  ??? 
 "Maximum" ---> "Máximo"
 "Message" --->  ??? 
+"Metadata Plugin" --->  ??? 
 "Minimize to tray." ---> "Minimizar a la bandeja."
+"Move Down" --->  ??? 
+"Move To Bottom" --->  ??? 
+"Move To Top" --->  ??? 
+"Move Up" --->  ??? 
 "Move finished torrents to :" --->  ??? 
 "Move the completed torrent to:" --->  ??? 
 "N/A" --->  ??? 
-"NAT-PMG" --->  ??? 
 "NAT-PMP" --->  ??? 
-"Name" --->  ??? 
+"Name" ---> "Nombre"
 "Name:" ---> "Nombre:"
 "New" ---> "Nuevo"
-"None (Managed Externally)" --->  ??? 
 "None" --->  ??? 
 "Normal" ---> "Normal"
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" ---> "Aceptar"
 "OS reported error for file '%1%'" --->  ??? 
-"Ok" --->  ??? 
+"Ok" ---> "Aceptar"
 "Open &Halite" ---> "Abrir &Halite"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "Abrir un (único) puerto entre :"
@@ -177,15 +202,17 @@
 "Peers" ---> "Pares"
 "Peers:" ---> "Pares:"
 "Piece %2% finished. (%1%)" --->  ??? 
+"Piece Expiry (sec) :" --->  ??? 
 "Piece Size (KBs)" --->  ??? 
 "Plaintext Encrypted" --->  ??? 
 "Plaintext" --->  ??? 
 "Port %1% open" ---> "Puerto %1% abierto"
-"Port (UDP) : " ---> "Puerto (UDP) : "
+"Port (UDP)" --->  ??? 
 "Port : " ---> "Puerto : "
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Puerto a escuchar en : "
-"Port" --->  ??? 
+"Port" ---> "Puerto"
+"Ports" --->  ??? 
 "Prefer RC4" ---> "Preferir RC4"
 "Priority" ---> "Prioridad"
 "Private" --->  ??? 
@@ -194,41 +221,55 @@
 "Proxies" ---> "Proxies"
 "Proxy Host/IP : " --->  ??? 
 "Proxy Settings" ---> "Opciones del proxy"
+"Queue Position" --->  ??? 
+"Queue System" --->  ??? 
+"Queue View" --->  ??? 
 "Queued for Checking" ---> "En cola para comprobación"
 "Queued" ---> "En cola"
 "RC4 Encrypted" ---> "Codificado en RC4"
 "RC4" ---> "RC4"
 "Rates:" --->  ??? 
 "Ratio (this session):" ---> "Ratio (esta sesión):"
-"Ratio" --->  ??? 
+"Ratio" ---> "Ratio"
 "Ratio:" ---> "Ratio:"
+"Read Cache Hit Ratio :" --->  ??? 
+"Read Size :" --->  ??? 
 "Reannounce" --->  ??? 
 "Recheck Files" --->  ??? 
-"Remaining" --->  ??? 
+"Remaining" ---> "Restante"
 "Remaining:" ---> "Restante:"
 "Remote Control Options" ---> "Opciones del control remoto"
 "Remote Control" ---> "Control remoto"
 "Remove" ---> "Borrar"
 "Reset" ---> "Resetear"
+"Resolve Countries from IP" --->  ??? 
+"Resume data generated. (%1%)" --->  ??? 
+"Resume data generation failed. (%1%)" --->  ??? 
 "Resume" ---> "Reanudar"
+"Resuming torrent. (%1%)" --->  ??? 
 "Review settings when adding torrent." --->  ??? 
 "Save" ---> "Guardar"
 "Saving Torrent" --->  ??? 
+"Search banching : " --->  ??? 
 "Security" ---> "Seguridad"
+"Seeding Limits" --->  ??? 
 "Seeding" --->  ??? 
-"Seeds" --->  ??? 
+"Seeds" ---> "Semillas"
 "Seeds:" ---> "Semillas:"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Selecciona un directorio donde guardar las descargas. Pulsa Cancelar para aceptar el directorio por defecto."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Elige el directorio donde guardar los archivos o pulsa Cancelar para no descargar el torrent."
 "Select a file or directory from which to construct the torrent." --->  ??? 
+"Select a random port within this range." --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." --->  ??? 
 "Send login info to trackers." --->  ??? 
 "Set Priority" ---> "Ajustar prioridad"
 "Set as Primary" --->  ??? 
 "Severity" --->  ??? 
+"Share ratio limit:" --->  ??? 
 "Show this message in future" ---> "Mostrar este mensaje en el futuro"
 "Shutting down session" --->  ??? 
 "Size" ---> "Tamaño"
+"Smart Ban Plugin" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Excepción estándar (%1%) lanzada desde %2%."
 "Start Time" --->  ??? 
 "Status" ---> "Estado"
@@ -237,7 +278,7 @@
 "Stopped initially (Allows changing advanced setting)" --->  ??? 
 "Stopped" ---> "Detenido"
 "Stopping Torrents" --->  ??? 
-"Stopping" --->  ??? 
+"Stopping" ---> "Detenando"
 "Successfully %1%." --->  ??? 
 "Supports extensions" ---> "Soporta extensiones"
 "Test" --->  ??? 
@@ -248,7 +289,10 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "En esta sesión se han descargado %1$.2fMB y subido %2$.2fMB. Ratio %3$.2f."
 "Tier" --->  ??? 
 "Time left:" ---> "Tiempo restante:"
-"Time" --->  ??? 
+"Time limit (sec):" --->  ??? 
+"Time ratio limit:" --->  ??? 
+"Time" ---> "Tiempo"
+"Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Se capturó una excepción del torrent (%1%): %2% de %3%."
@@ -257,6 +301,7 @@
 "Torrent Root" ---> "Raíz del torrent"
 "Torrent and Data" ---> "Torrend y datos"
 "Torrent connection limits:" ---> "Límites de conexión del torrent:"
+"Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" --->  ??? 
 "Torrent transfer rates (KB/s):" ---> "Tasas de transferencias del torrent (KB/s):"
 "Torrent" ---> "Torrent"
@@ -274,26 +319,31 @@
 "Trackers" --->  ??? 
 "Transferred:" ---> "Transferido:"
 "Type" ---> "Tipo"
+"UPnP router model (if recognised)." --->  ??? 
 "UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." ---> "Excepción unicode: %1%."
+"Unmanaged" --->  ??? 
 "Up" --->  ??? 
 "Update in:" ---> "Actualización en:"
 "Upload Rate (KB/s) :" ---> "Tasa de subida (KB/s) :"
 "Upload" ---> "Subida"
-"Uploaded" --->  ??? 
-"Use Compact Allocation." --->  ??? 
+"Uploaded" ---> "Subido"
 "Use a proxy." ---> "Usar proxy."
 "User canceled Torrent file creation" --->  ??? 
 "Username : " ---> "Nombre de usuario : "
 "Warning" --->  ??? 
 "Web Seed" ---> "Semilla web"
 "Web Seeds and DHT Nodes" --->  ??? 
+"Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Excepción Xml (%1%) con %2%."
 "\r\0" --->  ??? 
 "libTorrrent based client." ---> "Cliente basado en libTorrent."
+"random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "a"
+"uTorrent Metadata Plugin" --->  ??? 
+"uTorrent Peer Exchange Plugin" --->  ??? 
 "∞" --->  ??? 

@@ -1,299 +1,349 @@
-"English" ---> "French"
+"English" ---> "Français"
 "English.rtf" ---> "French.rtf"
 " %2%" --->  ??? 
-"%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s R - %2$.2fKB/s E"
-"%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB R - %2$.2fMB E"
-"%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB de %2$.2fMB"
-"%1% DHT node(s)" ---> "%1% node(s) DHT"
+"%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKo/s R - %2$.2fKo/s E"
+"%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMo Récep. - %2$.2fMo Envoi"
+"%1$.2fMB of %2$.2fMB" ---> "%1$.2fMo sur %2$.2fMo"
+"%1% DHT node(s)" ---> "%1% Noeud(s) DHT"
 "%1% active torrent(s)" ---> "%1% torrent(s) actif(s)"
 "%1% peers from DHT." --->  ??? 
 "%1% port %2% mapping succeeded." --->  ??? 
 "%1% port mapping request failed." --->  ??? 
 "%1%, %2%." ---> "%1%, %2%."
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Peers. (%1%)"
-"&Pause All" ---> "&Tout suspendre"
-"&Resume All" ---> "&Tout reprendre"
-"(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(R-E) %1$.2fKB/s - %2$.2fKB/s"
-"(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(R-E) 0000.000KB/s - 0000.000KB/s"
-"(DHT will not apply to private torrents)" ---> "(DHT est inapplicable aux torrents privés)"
+"&Pause All" ---> "&Tout Suspendre"
+"&Resume All" ---> "&Tout Reprendre"
+"(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(R-E) %1$.2fKo/s - %2$.2fKo/s"
+"(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(R-E) 0000.000Ko/s - 0000.000Ko/s"
 "About" ---> "A propos"
-"Above Normal" ---> "Au dessus de la normale"
+"Above Normal" ---> "Supérieure à la normale"
+"Active downloads :" --->  ??? 
+"Active seeds :" --->  ??? 
+"Active seeds hard limit:" --->  ??? 
 "Active" ---> "Actif"
 "Add New Peer" ---> "Ajouter un nouveau Peer"
 "Add New Tracker" ---> "Ajouter un nouveau tracker"
-"Add New Web Seed or DHT Node" ---> "Ajouter un nouveau Peer Web ou Node DHT"
+"Add New Web Seed or DHT Node" ---> "Ajouter une nouvelle Source Web ou Noeud DHT"
 "Add Torrent" ---> "Ajouter un Torrent"
 "Add" ---> "Ajouter"
+"Adjust Queue Position" --->  ??? 
 "Advanced GUI" ---> "Interface avancée"
-"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
-"Allocating" --->  ??? 
-"Allow only one instance to run" ---> "N'autoriser qu'une instance"
-"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
-"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
-"Apply" ---> "OK"
-"Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Voulez-vous fermer Halite? Ceci stoppera tous les torrents actifs"
-"Are you sure you wish to delete all downloaded data?" --->  ??? 
-"Auto Sort" --->  ??? 
+"Alert %2%, Status code: %4%, Times %3%. (%1%)" ---> "Alerte %2%, Code : %4%, Horaires %3%. (%1%)"
+"Allocating" ---> "Allocation en cours"
+"Allocation Mode:" --->  ??? 
+"Allow only one instance to run" ---> "N'autoriser qu'une instance du programme"
+"An invalid connection policy, %1%, was passed as an encryption setting." ---> "Une règle de connexion invalide (%1%), a été passé en paramètre de chiffrement."
+"An invalid encoding level, %1%, was passed as an encryption setting." ---> "Un niveau d'encodage invalide (%1%) a été passé en paramètre de chiffrement."
+"Apply" ---> "Appliquer"
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Etes vous sûr de vouloir fermer Halite ? Ceci stoppera tous les torrents actifs."
+"Are you sure you wish to delete all downloaded data?" ---> "Etes vous sûr de vouloir effacer toutes les données téléchargées ?"
+"Auto Sort" ---> "Tri Automatique"
+"Auto-managed" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
-"Bittorrent Event: %1%." --->  ??? 
-"Block %2% of piece %3% downloading. (%1%)" --->  ??? 
-"Block %2% of piece %3% finished. (%1%)" --->  ??? 
-"Both" --->  ??? 
-"Calculating Piece Hashes..." --->  ??? 
+"Bittorrent Event: %1%." ---> "Evènement Bitorrent: %1%."
+"Block %2% of piece %3% downloading. (%1%)" ---> "Téléchargement du bloc %2% de la pièce %3%. (%1%)"
+"Block %2% of piece %3% finished. (%1%)" ---> "Téléchargement du bloc %2% de la pièce %3% terminé. (%1%)"
+"Both" ---> "Les deux"
+"Cache Status, Current Total Size : %1.2f MiB" --->  ??? 
+"Cache Write Size :" --->  ??? 
+"Calculating Piece Hashes..." ---> "Calcul du Hash de la Pièce..."
 "Cancel" ---> "Annuler"
-"Checking Files" ---> "Vérification"
-"Choked" --->  ??? 
-"Clear IP database" ---> "Vider IPfilter.dat"
-"Client" --->  ??? 
-"Close to tray" --->  ??? 
-"Comment" --->  ??? 
+"Checking Files" ---> "Vérification des fichiers"
+"Choked" ---> "Refusé"
+"Clear IP database" ---> "Nettoyer la base de données des IP"
+"Client" ---> "Client"
+"Close to tray" ---> "Fermer dans la barre de notifications"
+"Comment" ---> "Commentaire"
 "Completed" ---> "Complété"
-"Completed:" ---> "Complété :"
-"Confirm on close" ---> "Confirmation en quittant"
-"Connecting to Tracker" ---> "Connexion au tracker"
+"Completed:" ---> "Complété:"
+"Confirm on close" ---> "Confirmer en quittant"
+"Connecting to Tracker" ---> "Connexion au Tracker"
 "Connecting" ---> "Connexion"
-"Connection Policies" --->  ??? 
-"Construct a New Torrent" --->  ??? 
-"Copies" --->  ??? 
+"Connection Policies" ---> "Règles de connexion"
+"Construct a New Torrent" ---> "Créer un nouveau Torrent"
+"Copies" ---> "Copies"
 "Country" ---> "Pays"
-"Creating Torrent..." --->  ??? 
-"Creating a New Torrent File" --->  ??? 
-"Creator" --->  ??? 
-"Critical" --->  ??? 
+"Creating Torrent..." ---> "Création du Torrent..."
+"Creating a New Torrent File" ---> "Création d'un Nouveau Fichier Torrent"
+"Creator" ---> "Créateur"
+"Critical" ---> "Critique"
+"Current Cache Status" --->  ??? 
 "DHT Node" ---> "Node DHT"
 "DHT disabled" ---> "DHT désactivé"
-"DHT session could not start. Try selecting another port in the settings." ---> "La session DHT ne peut pas démarer. Sélectionner un port différent dans les options."
+"DHT session could not start. Try selecting another port in the settings." ---> "La session DHT ne peut pas démarer. Sélectionnez un port différent dans les options."
 "DHT" ---> "DHT"
-"Debug Event: %1%." --->  ??? 
+"Debug Event: %1%." ---> "Evènement Debug: %1%."
 "Debug" ---> "Debug"
 "Default save folder :" ---> "Dossier de sauvegarde par defaut:"
-"Delete" --->  ??? 
-"Details" --->  ??? 
-"Dev Msg: %1%." --->  ??? 
-"Dir." --->  ??? 
+"Delete" ---> "Supprimer"
+"Details" ---> "Details"
+"Dev Msg: %1%." ---> "Msg dev: %1%."
+"Dir." ---> "Doss."
 "Disabled" ---> "Désactivé"
-"Distributed Hash Tables" --->  ??? 
-"Don't download" --->  ??? 
-"Down" ---> "R :"
-"Download Rate (KB/s) :" ---> "Réception (KB/s) :"
-"Download" --->  ??? 
-"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Reçus %1$.2fMB, Envoyés %2$.2fMB, Ratio %3$.2f"
-"Downloaded" --->  ??? 
-"Downloading Metadata" --->  ??? 
-"Downloading" ---> "En téléchargement"
+"Distributed Hash Tables" ---> "Tables de Hachage Distribuées"
+"Don't Manage Torrent(s)" --->  ??? 
+"Don't count slow torrents." --->  ??? 
+"Don't download" ---> "Ne pas télécharger"
+"Down" ---> "Recep."
+"Download Rate (KB/s) :" ---> "Réception (Ko/s):"
+"Download" ---> "Réception"
+"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Reçus %1$.2fMo, Envoyés %2$.2fMo, Ratio %3$.2f"
+"Downloaded" ---> "Reçus"
+"Downloading Metadata" ---> "Réception des Meta-données"
+"Downloading" ---> "En cours de réception"
 "E&xit" ---> "Q&uitter"
-"ETA" --->  ??? 
-"ETA:" --->  ??? 
-"Edit Download Folders" --->  ??? 
-"Edit Peer" --->  ??? 
-"Edit Torrent Save Folders" --->  ??? 
-"Edit Tracker" --->  ??? 
-"Edit" --->  ??? 
-"Enable DHT" --->  ??? 
+"ETA" ---> "Temps restant"
+"ETA:" ---> "Temps restant:"
+"Edit Download Folders" ---> "Modifier les dossiers de réception"
+"Edit Peer" ---> "Modifier le Peer"
+"Edit Torrent Save Folders" ---> "Modifier les dossiers des Torrent"
+"Edit Tracker" ---> "Modifier le Tracker"
+"Edit" ---> "Modifier"
+"Enable DHT (will not apply to private torrents)" --->  ??? 
 "Enable IP filtering." ---> "Activer le filtrage des IP"
-"Enable Protocol Encryption." --->  ??? 
-"Enable Remote Control" --->  ??? 
-"Enabled" --->  ??? 
-"Encoding Level" --->  ??? 
-"Enter any Web Seed URLs and DHT Nodes." --->  ??? 
-"Enter the tracker URLs for the torrent." ---> "Entrer l'URL du tracker pour le torrent."
-"Exception caught: %1%, from %2%." --->  ??? 
-"Failed, %1%" --->  ??? 
-"Fast resume failed: %2%. (%1%)" --->  ??? 
-"File" --->  ??? 
-"Filename" --->  ??? 
-"Files" --->  ??? 
+"Enable Options or libtorrent Plugins" --->  ??? 
+"Enable Protocol Encryption." ---> "Activer le Chiffrement du Protocole"
+"Enable Remote Control" ---> "Activer l'accès à distance"
+"Enabled" ---> "Activé"
+"Encoding Level" ---> "Niveau de Chiffrement"
+"Enter any Web Seed URLs and DHT Nodes." ---> "Entrez les Sources Web et Noeuds DHT."
+"Enter the tracker URLs for the torrent." ---> "Entrez les URLs des trackers pour le torrent."
+"Error!" --->  ??? 
+"Exception caught: %1%, from %2%." ---> "Levée d'exception: %1%, dans %2%."
+"Failed, %1%" ---> "Echec, %1%"
+"Fast resume failed: %2%. (%1%)" ---> "Echec de la relance rapide: %2%. (%1%)"
+"File" ---> "Fichier"
+"Filename" ---> "Nom de Fichier"
+"Files" ---> "Fichiers"
 "Filtering %1% range(s)" ---> "Filtre %1% IP(s)"
-"Finish Time" --->  ??? 
+"Finish Time" ---> "Heure de fin"
 "Finished" ---> "Terminé"
-"Force Close" --->  ??? 
-"Forced" --->  ??? 
+"Force Close" ---> "Forcer la Fermeture"
+"Forced" ---> "Forcé"
 "General Settings" ---> "Paramètres généraux"
 "General" ---> "Général"
-"Generated Torrent Name (Cannot change)" --->  ??? 
-"Global Limits" ---> "Limites générales"
-"Halite BitTorrent Client" --->  ??? 
-"Halite Debug Dialog" --->  ??? 
-"Halite importing IP ranges..." --->  ??? 
-"Halite not listening!" --->  ??? 
+"Generated Torrent Name (Cannot change)" ---> "Nom généré pour le torrent (non editable)"
+"Global Limits" ---> "Limites globales"
+"Globals" --->  ??? 
+"Halite BitTorrent Client" ---> "Client BitTorrent Halite"
+"Halite Debug Dialog" ---> "Boîte de Dialogue de Debug"
+"Halite importing IP ranges..." ---> "Halite importe une plage d'IP..."
+"Halite not listening!" ---> "Halite n'écoute pas !"
 "Halite shutting down..." ---> "Halite est en cours de fermeture..."
-"Handshake" --->  ??? 
-"Has choked us" --->  ??? 
-"Hash failed for piece %2% of %1%." --->  ??? 
-"IP Filter blocked %1%, %2%." --->  ??? 
-"IP Filtering" --->  ??? 
-"IP filter disabled" --->  ??? 
-"IP version 6 listen attempt failed. Not serious." --->  ??? 
-"Import ipfilter.dat" ---> "Importer IPfilter.dat"
-"Importing IP Filters..." --->  ??? 
-"Incoming" --->  ??? 
-"Info" --->  ??? 
+"Handshake" ---> "Etablissement de connexion"
+"Has choked us" ---> "Nous refuse la connexion"
+"Hash failed for piece %2% of %1%." ---> "Echec du Hachage pour la pièce %2% sur %1%."
+"IP Filter blocked %1%, %2%." ---> "IP bloquée par le filtre %1%, %2%."
+"IP Filtering" ---> "Filtrage des IP"
+"IP filter disabled" ---> "Filtre IP désactivé"
+"IP version 6 listen attempt failed. Not serious." ---> "Echec de la tentative d'écoute IPv6. Pas sérieux."
+"Import ipfilter.dat" ---> "Importer ipfilter.dat"
+"Importing IP Filters..." ---> "Importer des Filtres IP"
+"Incoming" ---> "Entrant"
+"Info" ---> "Info"
 "Informed of external IP address: %1%." --->  ??? 
-"Interested in us" --->  ??? 
-"Interesting" --->  ??? 
-"Invalid torrent (%1%) from %2%." --->  ??? 
-"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Cela prend un moment pour que la session soit fermée proprement. Quand ce message disparaîtra, le programme se fermera."
+"Interested in us" ---> "S'intéresse à nous"
+"Interesting" ---> "Intéressant"
+"Invalid torrent (%1%) from %2%." ---> "Torrent invalide (%1%) de %2%."
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Cela prendra un moment pour que la session BitTorrent se ferme proprement. Quand ce message disparaîtra, le programme se fermera."
 "Language (requires restart)" ---> "Langage (redémarrage nécessaire)"
-"Limit the no. of half-open connections" --->  ??? 
+"Limit the no. of half-open connections" ---> "Limiter le nb. de connexion à moitié ouvertes"
 "List of Trackers." ---> "Liste des trackers"
-"Loading IP filters..." --->  ??? 
-"Local connection" --->  ??? 
-"Log debug events." ---> "Debug"
-"Log to file." ---> "Log"
-"Logging" --->  ??? 
-"Maximum" --->  ??? 
+"Loading IP filters..." ---> "Chargement des filtres IP..."
+"Local connection" ---> "Connexion locale"
+"Log debug events." ---> "Logguer en niveau Debug"
+"Log to file." ---> "Logguer dans un fichier"
+"Logging" ---> "Log"
+"Manage Torrent(s)" --->  ??? 
+"Managed Downloading" --->  ??? 
+"Managed Seeding" --->  ??? 
+"Managed Torrent" --->  ??? 
+"Managed" --->  ??? 
+"Match the listen port number (recommended)." --->  ??? 
+"Max Size (MiB) :" --->  ??? 
+"Max failures : " --->  ??? 
+"Max replies : " --->  ??? 
+"Maximum" ---> "Maximum"
 "Message" ---> "Message"
-"Minimize to tray." ---> "Minimiser en icône"
-"Move finished torrents to :" --->  ??? 
-"Move the completed torrent to:" --->  ??? 
-"N/A" --->  ??? 
-"NAT-PMG" --->  ??? 
+"Metadata Plugin" --->  ??? 
+"Minimize to tray." ---> "Réduire dans la barre de notifications"
+"Move Down" --->  ??? 
+"Move To Bottom" --->  ??? 
+"Move To Top" --->  ??? 
+"Move Up" --->  ??? 
+"Move finished torrents to :" ---> "Déplacer les torrents terminés vers:"
+"Move the completed torrent to:" ---> "Déplacer le torrent complété vers:"
+"N/A" ---> "Indisp."
 "NAT-PMP" --->  ??? 
-"Name" --->  ??? 
+"Name" ---> "Nom"
 "Name:" ---> "Nom :"
-"New" --->  ??? 
-"None (Managed Externally)" --->  ??? 
-"None" --->  ??? 
-"Normal" --->  ??? 
-"Note. Compact Allocation is incompatible with File Selection" --->  ??? 
-"OK" --->  ??? 
+"New" ---> "Nouveau"
+"None" ---> "Aucun"
+"Normal" ---> "Normal"
+"Note. Compact Allocation is incompatible with File Selection" ---> "Note: L'allocation compacte est incompatible avec la Sélection des Fichiers"
+"OK" ---> "OK"
 "OS reported error for file '%1%'" --->  ??? 
-"Ok" --->  ??? 
-"Open &Halite" ---> "Ouvrir Halite"
-"Open Download Folder" --->  ??? 
+"Ok" ---> "Ok"
+"Open &Halite" ---> "Ouvrir &Halite"
+"Open Download Folder" ---> "Ouvrir le Dossier de Téléchargement"
 "Open a (single) port between : " ---> "Ouvrir un (seul) port entre:"
-"Outgoing" --->  ??? 
-"Output File" --->  ??? 
-"Overhead:" --->  ??? 
-"Password : " ---> "MDP :"
-"Path" --->  ??? 
-"Pause" --->  ??? 
+"Outgoing" ---> "Sortant"
+"Output File" ---> "Fichier de Sortie"
+"Overhead:" ---> "Octets de Protocole:"
+"Password : " ---> "Mot de passe :"
+"Path" ---> "Chemin"
+"Pause" ---> "Pause"
 "Paused" ---> "En pause"
-"Pausing" --->  ??? 
-"Peer %2%: %1%." --->  ??? 
-"Peer Event: %1%." --->  ??? 
-"Peer banned %2%. (%1%)" --->  ??? 
-"Peer" --->  ??? 
-"Peers" --->  ??? 
-"Peers:" --->  ??? 
+"Pausing" ---> "En pause"
+"Peer %2%: %1%." ---> "Peer %2%: %1%."
+"Peer Event: %1%." ---> "Evènement Peer: %1%."
+"Peer banned %2%. (%1%)" ---> "Peer banni %2%. (%1%)"
+"Peer" ---> "Peer"
+"Peers" ---> "Peers"
+"Peers:" ---> "Peers:"
 "Piece %2% finished. (%1%)" --->  ??? 
-"Piece Size (KBs)" --->  ??? 
-"Plaintext Encrypted" --->  ??? 
-"Plaintext" --->  ??? 
+"Piece Expiry (sec) :" --->  ??? 
+"Piece Size (KBs)" ---> "Taille de la Pièce (Ko)"
+"Plaintext Encrypted" ---> "Texte brut chiffré"
+"Plaintext" ---> "Texte brut"
 "Port %1% open" ---> "Port %1% ouvert"
-"Port (UDP) : " --->  ??? 
-"Port : " --->  ??? 
-"Port Forwarding" --->  ??? 
-"Port to listen on : " --->  ??? 
-"Port" --->  ??? 
-"Prefer RC4" --->  ??? 
-"Priority" --->  ??? 
-"Private" --->  ??? 
-"Progress" --->  ??? 
-"Protocol Encryption" --->  ??? 
-"Proxies" --->  ??? 
-"Proxy Host/IP : " --->  ??? 
-"Proxy Settings" --->  ??? 
+"Port (UDP)" --->  ??? 
+"Port : " ---> "Port :"
+"Port Forwarding" ---> "Redirection de Port"
+"Port to listen on : " ---> "Port d'écoute : "
+"Port" ---> "Port"
+"Ports" --->  ??? 
+"Prefer RC4" ---> "Privilégier RC4"
+"Priority" ---> "Priorité"
+"Private" ---> "Privé"
+"Progress" ---> "Progression"
+"Protocol Encryption" ---> "Chiffrement du Protocole"
+"Proxies" ---> "Proxies"
+"Proxy Host/IP : " ---> "Adresse du Proxy :"
+"Proxy Settings" ---> "Paramètres du Proxy"
+"Queue Position" --->  ??? 
+"Queue System" --->  ??? 
+"Queue View" --->  ??? 
 "Queued for Checking" ---> "En attente de vérification"
 "Queued" ---> "En attente"
-"RC4 Encrypted" --->  ??? 
-"RC4" --->  ??? 
-"Rates:" --->  ??? 
+"RC4 Encrypted" ---> "Chiffré RC4"
+"RC4" ---> "RC4"
+"Rates:" ---> "Taux :"
 "Ratio (this session):" ---> "Ratio de la session :"
-"Ratio" --->  ??? 
-"Ratio:" --->  ??? 
-"Reannounce" --->  ??? 
-"Recheck Files" --->  ??? 
-"Remaining" --->  ??? 
-"Remaining:" --->  ??? 
-"Remote Control Options" --->  ??? 
-"Remote Control" --->  ??? 
+"Ratio" ---> "Ratio"
+"Ratio:" ---> "Ratio :"
+"Read Cache Hit Ratio :" --->  ??? 
+"Read Size :" --->  ??? 
+"Reannounce" ---> "Refaire l'Annonce"
+"Recheck Files" ---> "Vérifier à nouveau les fichiers"
+"Remaining" ---> "Restant"
+"Remaining:" ---> "Restant :"
+"Remote Control Options" ---> "Options de la télécommande"
+"Remote Control" ---> "Télécommande"
 "Remove" ---> "Supprimer"
-"Reset" ---> "RAZ"
+"Reset" ---> "Remettre à Zéro"
+"Resolve Countries from IP" --->  ??? 
+"Resume data generated. (%1%)" --->  ??? 
+"Resume data generation failed. (%1%)" --->  ??? 
 "Resume" ---> "Reprendre"
-"Review settings when adding torrent." --->  ??? 
+"Resuming torrent. (%1%)" --->  ??? 
+"Review settings when adding torrent." ---> "Vérifier les options à l'ajout d'un torrent."
 "Save" ---> "Enregister"
-"Saving Torrent" --->  ??? 
-"Security" --->  ??? 
-"Seeding" --->  ??? 
-"Seeds" --->  ??? 
-"Seeds:" --->  ??? 
-"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
-"Select a directory to save the files to or cancel to not download torrent at all." ---> "Sélectionner un dossier où sauvegarder ou ne pas télécharger de toorent."
-"Select a file or directory from which to construct the torrent." --->  ??? 
-"Select the (TCP) port (or range) on which to listen for incoming connections." --->  ??? 
-"Send login info to trackers." ---> "Utiliser des identifiants"
-"Set Priority" --->  ??? 
-"Set as Primary" --->  ??? 
+"Saving Torrent" ---> "Enregistrement du Torrent"
+"Search banching : " --->  ??? 
+"Security" ---> "Sécurité"
+"Seeding Limits" --->  ??? 
+"Seeding" ---> "Envoi"
+"Seeds" ---> "Sources"
+"Seeds:" ---> "Sources :"
+"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Sélectionnez un dossier dans lequel sauvegarder les téléchargements. Selectionnez Annuler pour accepter l'emplacement par défaut."
+"Select a directory to save the files to or cancel to not download torrent at all." ---> "Sélectionnez un dossier où sauvegarder le torrent, ou annuler pour ne pas télécharger."
+"Select a file or directory from which to construct the torrent." ---> "Sélectionnez un fichier ou un dossier à partir duquel construire le torrent."
+"Select a random port within this range." --->  ??? 
+"Select the (TCP) port (or range) on which to listen for incoming connections." ---> "Sélectionnez le port (ou la plage) TCP sur lequel écouter les connexions entrantes."
+"Send login info to trackers." ---> "Envoyer les identifiants au trackers"
+"Set Priority" ---> "Paramétrer la priorité"
+"Set as Primary" ---> "Placer comme Primaire"
 "Severity" ---> "Niveau"
-"Show this message in future" ---> "Afficher ce message"
-"Shutting down session" --->  ??? 
-"Size" --->  ??? 
-"Standard exception (%1%) thrown from %2%." --->  ??? 
-"Start Time" --->  ??? 
-"Status" --->  ??? 
+"Share ratio limit:" --->  ??? 
+"Show this message in future" ---> "Toujours afficher ce message"
+"Shutting down session" ---> "Fermeture de la session"
+"Size" ---> "Taille"
+"Smart Ban Plugin" --->  ??? 
+"Standard exception (%1%) thrown from %2%." ---> "Levée d'exception standard (%1%) dans (%2%)."
+"Start Time" ---> "Heure Démarr."
+"Status" ---> "Statut"
 "Status:" ---> "Statut :"
 "Stop" ---> "Stopper"
-"Stopped initially (Allows changing advanced setting)" --->  ??? 
+"Stopped initially (Allows changing advanced setting)" ---> "Ne pas lancer automatiquement (Permet de configurer les options avancées)"
 "Stopped" ---> "Stoppé"
-"Stopping Torrents" --->  ??? 
-"Stopping" --->  ??? 
-"Successfully %1%." --->  ??? 
-"Supports extensions" --->  ??? 
-"Test" --->  ??? 
-"The BitTorrent session could not start. Try selecting another port in the settings." ---> "La session de BiTorrent ne peut pas démarer. Séléctionner un port différent dans les options."
-"The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
-"These options set global maximums which will always be honoured." ---> "Ces options fixent les maximums qui seront respectés"
+"Stopping Torrents" ---> "Arrêt des Torrents"
+"Stopping" ---> "En cours d'arrêt"
+"Successfully %1%." ---> "Réussi %1%."
+"Supports extensions" ---> "Extensions supportées"
+"Test" ---> "Test"
+"The BitTorrent session could not start. Try selecting another port in the settings." ---> "La session BiTorrent ne peut pas démarer. Essayez de sélectionner un port différent dans les options."
+"The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." ---> "La configuration du réseau à échoué, Halite est forcé de se fermer. Veuillez vous assurer qu'aucun programme ne bloque l'accès réseau à Halite."
+"These options set global maximums which will always be honoured." ---> "Ces options fixent les maximums qui seront toujours respectés"
 "These options specify the default limits applied to new torrents." ---> "Ces options spécifient les limites par défaut appliqués aux nouveaux torrents"
-"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
-"Tier" --->  ??? 
-"Time left:" ---> "Durée :"
+"This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Au cours de cette session, Téléchargé %1$.2fMo, Emis %2$.2fMo, Ratio %3$.2f."
+"Tier" ---> "Rang"
+"Time left:" ---> "Durée restante :"
+"Time limit (sec):" --->  ??? 
+"Time ratio limit:" --->  ??? 
 "Time" ---> "Temps"
-"Torrent %1% finished." --->  ??? 
-"Torrent %1% paused." --->  ??? 
-"Torrent (%1%) exception caught: %2% from %3%." --->  ??? 
+"Toolbar2k.bmp" --->  ??? 
+"Torrent %1% finished." ---> "Torrent %1% terminé."
+"Torrent %1% paused." ---> "Torrent %1% en pause."
+"Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent %1%, levée d'exception : %2% dans %3%."
 "Torrent Defaults" ---> "Torrent par défaut"
 "Torrent File" ---> "Fichier Torrent"
-"Torrent Root" --->  ??? 
-"Torrent and Data" ---> "Torrent et données"
+"Torrent Root" ---> "Racine du Torrent"
+"Torrent and Data" ---> "Torrent et Données"
 "Torrent connection limits:" ---> "Limites de connexion du torrent"
-"Torrent save folder:" --->  ??? 
-"Torrent transfer rates (KB/s):" ---> "Taux de transfert du torrent (KB/s)"
-"Torrent" --->  ??? 
-"Torrent:" --->  ??? 
-"Torrents" --->  ??? 
+"Torrent error: %1% (%2%)" --->  ??? 
+"Torrent save folder:" ---> "Dossier de sauvegarde du Torrent:"
+"Torrent transfer rates (KB/s):" ---> "Taux de transfert du torrent (Ko/s)"
+"Torrent" ---> "Torrent"
+"Torrent:" ---> "Torrent:"
+"Torrents" ---> "Torrents"
 "Total max connections :" ---> "Total des connexions :"
-"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." ---> "Total du traffic (octets de protocole inclus) : %1$.2fMo recep. et %2$.2fMo envoi."
 "Total upload slots :" ---> "Slots d'émission :"
-"Total" --->  ??? 
-"Tracker Announce. (%1%)" --->  ??? 
-"Tracker Event: %1%." --->  ??? 
-"Tracker warning: %2%! (%1%)" --->  ??? 
-"Tracker" --->  ??? 
+"Total" ---> "Total"
+"Tracker Announce. (%1%)" ---> "Annonce du Tracker. (%1%)"
+"Tracker Event: %1%." ---> "Evènement Tracker: %1%."
+"Tracker warning: %2%! (%1%)" ---> "Alerte du Tracker : %2%! (%1%)"
+"Tracker" ---> "Tracker"
 "Tracker:" ---> "Tracker :"
-"Trackers" --->  ??? 
-"Transferred:" --->  ??? 
-"Type" --->  ??? 
+"Trackers" ---> "Trackers"
+"Transferred:" ---> "Transférré"
+"Type" ---> "Type"
+"UPnP router model (if recognised)." --->  ??? 
 "UPnP" --->  ??? 
-"URL Seed %2%, %3%. (%1%)" --->  ??? 
-"URL" --->  ??? 
-"UnPlug and Play" --->  ??? 
-"Unicode exception: %1%." --->  ??? 
-"Up" ---> "E :"
+"URL Seed %2%, %3%. (%1%)" ---> "Url de la Source %2%, %3%. (%1%)"
+"URL" ---> "Url"
+"UnPlug and Play" ---> "UPnP"
+"Unicode exception: %1%." ---> "Exception unicode: %1%."
+"Unmanaged" --->  ??? 
+"Up" ---> "envoi"
 "Update in:" ---> "Actu. dans"
-"Upload Rate (KB/s) :" ---> "Emission (KB/s) :"
-"Upload" --->  ??? 
-"Uploaded" --->  ??? 
-"Use Compact Allocation." --->  ??? 
-"Use a proxy." ---> "Util. un proxy"
-"User canceled Torrent file creation" --->  ??? 
+"Upload Rate (KB/s) :" ---> "Emission (Ko/s) :"
+"Upload" ---> "Upload"
+"Uploaded" ---> "Uploadé"
+"Use a proxy." ---> "Utiliser un proxy"
+"User canceled Torrent file creation" ---> "Création du fichier torrent annulée par l'utilisateur"
 "Username : " ---> "Identifiant :"
-"Warning" --->  ??? 
-"Web Seed" --->  ??? 
-"Web Seeds and DHT Nodes" --->  ??? 
-"Xml Exception (%1%) with %2%." --->  ??? 
+"Warning" ---> "Alerte"
+"Web Seed" ---> "Source Web"
+"Web Seeds and DHT Nodes" ---> "Source Web et Noeuds DHT"
+"Write Cache Hit Ratio :" --->  ??? 
+"Xml Exception (%1%) with %2%." ---> "Exception XML (%1%) dans %2%."
 "\r\0" --->  ??? 
-"libTorrrent based client." --->  ??? 
+"libTorrrent based client." ---> "Client basé sur libTorrent."
+"random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "à"
-"∞" --->  ??? 
+"uTorrent Metadata Plugin" --->  ??? 
+"uTorrent Peer Exchange Plugin" --->  ??? 
+"∞" ---> "∞"

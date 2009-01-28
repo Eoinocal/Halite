@@ -15,18 +15,22 @@
 "&Resume All" ---> "&Herstart alles"
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
-"(DHT will not apply to private torrents)" ---> "(DHT zal niet gebruikt worden voor Private Trackers)"
 "About" ---> "Over Halite"
 "Above Normal" ---> "Boven Normaal"
+"Active downloads :" --->  ??? 
+"Active seeds :" --->  ??? 
+"Active seeds hard limit:" --->  ??? 
 "Active" ---> "Actief"
 "Add New Peer" ---> "Voeg nieuwe Peer toe"
 "Add New Tracker" ---> "Voeg nieuwe Tracker toe"
 "Add New Web Seed or DHT Node" ---> "Voeg nieuwe Webseed of DHT knoop toe"
 "Add Torrent" ---> "Torrent toevoegen"
 "Add" ---> "Voeg toe"
+"Adjust Queue Position" --->  ??? 
 "Advanced GUI" ---> "Geavanceerde GUI"
-"Alert %2%, Status code: %4%, Times %3%. (%1%)" ---> "Alert %2%, Status code: %4%, Aantal keer %3%. (%1%)"
+"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
 "Allocating" ---> "Bezig met Alloceren"
+"Allocation Mode:" --->  ??? 
 "Allow only one instance to run" ---> "Sta maar één draaiende instantie toe"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Een ongeldig verbindings regeling, %1%, is doorgegaan als encryptie instelling."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Een ongeldig encoderings niveau, %1%, is doorgegaan als encryptie instelling."
@@ -34,11 +38,14 @@
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Weet je zeker dat je Halite wilt sluiten? Dit zal alle actieve taken stoppen"
 "Are you sure you wish to delete all downloaded data?" --->  ??? 
 "Auto Sort" ---> "Auto Sorteren"
+"Auto-managed" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
-"Bittorrent Event: %1%." ---> "Bittorrent Gebeurtenis: %1%."
+"Bittorrent Event: %1%." --->  ??? 
 "Block %2% of piece %3% downloading. (%1%)" ---> "Blok %2% van deel %3% aan het downloaden. (%1%)"
 "Block %2% of piece %3% finished. (%1%)" ---> "Blok %2% van deel %3% voltooid. (%1%)"
 "Both" ---> "Beide"
+"Cache Status, Current Total Size : %1.2f MiB" --->  ??? 
+"Cache Write Size :" --->  ??? 
 "Calculating Piece Hashes..." ---> "Pakket hashes berekenen..."
 "Cancel" ---> "Annuleren"
 "Checking Files" ---> "Bestanden controleren"
@@ -54,12 +61,13 @@
 "Connecting" ---> "Maakt verbinding"
 "Connection Policies" ---> "Verbindings Regels"
 "Construct a New Torrent" ---> "Maak een nieuwe torrent"
-"Copies" ---> "Kopieen"
+"Copies" ---> "Kopieën"
 "Country" ---> "Land"
 "Creating Torrent..." ---> "Torrent maken..."
 "Creating a New Torrent File" ---> "Een nieuw torrent bestand maken"
 "Creator" ---> "Maker"
 "Critical" ---> "Kritiek"
+"Current Cache Status" --->  ??? 
 "DHT Node" ---> "DHT knoop"
 "DHT disabled" ---> "DHT uitgeschakeld"
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT Sessie kon niet worden gestart. Probeer een andere poort te selecteren bij de Opties."
@@ -73,8 +81,10 @@
 "Dir." ---> "Map..."
 "Disabled" ---> "Uitschakelen"
 "Distributed Hash Tables" --->  ??? 
+"Don't Manage Torrent(s)" --->  ??? 
+"Don't count slow torrents." --->  ??? 
 "Don't download" ---> "Niet Downloaden"
-"Down" ---> "Down"
+"Down" --->  ??? 
 "Download Rate (KB/s) :" ---> "Download Snelheid (KB/s) :"
 "Download" ---> "Download"
 "Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Gedownload %1$.2fMB, Geupload %2$.2fMB, Ratio %3$.2f."
@@ -84,19 +94,21 @@
 "E&xit" ---> "&Afsluiten"
 "ETA" --->  ??? 
 "ETA:" --->  ??? 
-"Edit Download Folders" ---> "Wijzig download mappen"
+"Edit Download Folders" ---> "Wijzig Download Map"
 "Edit Peer" ---> "Wijzig peer"
 "Edit Torrent Save Folders" ---> "Wijzig Torrent Opslaan Map"
 "Edit Tracker" ---> "Wijzig Tracker"
 "Edit" ---> "Bewerken"
-"Enable DHT" ---> "DHT ingeschakelen"
+"Enable DHT (will not apply to private torrents)" --->  ??? 
 "Enable IP filtering." ---> "Schakel IP filtering in."
+"Enable Options or libtorrent Plugins" --->  ??? 
 "Enable Protocol Encryption." ---> "Protocol Encryptie inschakelen"
 "Enable Remote Control" ---> "Beheer op afstand inschakelen"
 "Enabled" ---> "Inschakelen"
 "Encoding Level" ---> "Encryptie niveau"
-"Enter any Web Seed URLs and DHT Nodes." --->  ??? 
+"Enter any Web Seed URLs and DHT Nodes." ---> "Vul een Web Seed URL of DHT knoop in."
 "Enter the tracker URLs for the torrent." ---> "Vul de tracker URLs in voor de torrent."
+"Error!" --->  ??? 
 "Exception caught: %1%, from %2%." ---> "Exceptie gevangen: %1%, van %2%."
 "Failed, %1%" ---> "Mislukt, %1%"
 "Fast resume failed: %2%. (%1%)" ---> "Snelle hervatting mislukt: %2%. (%1%)"
@@ -110,8 +122,9 @@
 "Forced" ---> "Forceren"
 "General Settings" ---> "Algemene Opties"
 "General" ---> "Algemeen"
-"Generated Torrent Name (Cannot change)" --->  ??? 
+"Generated Torrent Name (Cannot change)" ---> "Gegenereerde Torrent naam (Kan niet veranderen)"
 "Global Limits" ---> "Globale Limieten"
+"Globals" --->  ??? 
 "Halite BitTorrent Client" --->  ??? 
 "Halite Debug Dialog" ---> "Halite Debug Venster"
 "Halite importing IP ranges..." ---> "Halite importeert IP bereiken..."
@@ -123,7 +136,7 @@
 "IP Filter blocked %1%, %2%." ---> "IP Filter blokkeerde %1%, %2%."
 "IP Filtering" ---> "IP Filtering"
 "IP filter disabled" ---> "IP filter uitgeschakeld"
-"IP version 6 listen attempt failed. Not serious." ---> "IPv6 listen poging mislukt. Niet ernstig."
+"IP version 6 listen attempt failed. Not serious." ---> "IPv6 listen attempt failed. Not serious."
 "Import ipfilter.dat" ---> "Importeer ipfilter.dat"
 "Importing IP Filters..." ---> "Bezig met importeren..."
 "Incoming" ---> "Inkomend"
@@ -141,18 +154,30 @@
 "Log debug events." ---> "Log debug gebeurtenissen"
 "Log to file." ---> "Log naar bestand."
 "Logging" --->  ??? 
+"Manage Torrent(s)" --->  ??? 
+"Managed Downloading" --->  ??? 
+"Managed Seeding" --->  ??? 
+"Managed Torrent" --->  ??? 
+"Managed" --->  ??? 
+"Match the listen port number (recommended)." --->  ??? 
+"Max Size (MiB) :" --->  ??? 
+"Max failures : " --->  ??? 
+"Max replies : " --->  ??? 
 "Maximum" ---> "Maximaal"
 "Message" ---> "Bericht"
+"Metadata Plugin" --->  ??? 
 "Minimize to tray." ---> "Minimaliseer naar systeemvak."
+"Move Down" --->  ??? 
+"Move To Bottom" --->  ??? 
+"Move To Top" --->  ??? 
+"Move Up" --->  ??? 
 "Move finished torrents to :" ---> "Verplaats voltooide torrents naar :"
 "Move the completed torrent to:" ---> "Verplaats de complete torrent naar:"
 "N/A" ---> "N/A"
-"NAT-PMG" --->  ??? 
 "NAT-PMP" --->  ??? 
 "Name" ---> "Naam"
 "Name:" ---> "Naam:"
 "New" ---> "Nieuw"
-"None (Managed Externally)" ---> "Geen (Extern )"
 "None" ---> "Geen"
 "Normal" ---> "Normaal"
 "Note. Compact Allocation is incompatible with File Selection" ---> "nb. Compacte allocatie is niet compatible met Bestands Selectie"
@@ -171,29 +196,34 @@
 "Paused" ---> "Gepauzeerd"
 "Pausing" ---> "Pauzeert"
 "Peer %2%: %1%." --->  ??? 
-"Peer Event: %1%." ---> "Peer Gebeurtenis: %1%."
-"Peer banned %2%. (%1%)" ---> "Peer verbannen %2%. (%1%)"
+"Peer Event: %1%." --->  ??? 
+"Peer banned %2%. (%1%)" --->  ??? 
 "Peer" ---> "Peer"
 "Peers" --->  ??? 
 "Peers:" --->  ??? 
-"Piece %2% finished. (%1%)" ---> "Deel %2% voltooid. (%1%)"
+"Piece %2% finished. (%1%)" --->  ??? 
+"Piece Expiry (sec) :" --->  ??? 
 "Piece Size (KBs)" --->  ??? 
 "Plaintext Encrypted" ---> "Gewone text encryptie"
 "Plaintext" ---> "Platte Tekst"
 "Port %1% open" ---> "Poort %1% open"
-"Port (UDP) : " ---> "Poort (UDP) : "
+"Port (UDP)" --->  ??? 
 "Port : " ---> "Poort :"
 "Port Forwarding" --->  ??? 
 "Port to listen on : " ---> "Poort om op the luisteren : "
 "Port" ---> "Poort"
+"Ports" --->  ??? 
 "Prefer RC4" ---> "Prefereer RC4"
 "Priority" ---> "Prioriteit"
 "Private" --->  ??? 
-"Progress" ---> "Progressie"
+"Progress" ---> "Voortgang"
 "Protocol Encryption" ---> "Protocol Encryptie"
 "Proxies" --->  ??? 
 "Proxy Host/IP : " --->  ??? 
 "Proxy Settings" ---> "Proxy instellingen"
+"Queue Position" --->  ??? 
+"Queue System" --->  ??? 
+"Queue View" --->  ??? 
 "Queued for Checking" ---> "In wachtrij voor controle"
 "Queued" ---> "In wachtrij"
 "RC4 Encrypted" ---> "RC4 Encryptie"
@@ -202,6 +232,8 @@
 "Ratio (this session):" ---> "Ratio (deze sessie):"
 "Ratio" --->  ??? 
 "Ratio:" --->  ??? 
+"Read Cache Hit Ratio :" --->  ??? 
+"Read Size :" --->  ??? 
 "Reannounce" --->  ??? 
 "Recheck Files" ---> "Hercheck Bestanden"
 "Remaining" ---> "Overgebleven"
@@ -210,26 +242,35 @@
 "Remote Control" ---> "Beheer op afstand"
 "Remove" ---> "Verwijder"
 "Reset" ---> "Reset"
+"Resolve Countries from IP" --->  ??? 
+"Resume data generated. (%1%)" --->  ??? 
+"Resume data generation failed. (%1%)" --->  ??? 
 "Resume" ---> "Herstart"
+"Resuming torrent. (%1%)" --->  ??? 
 "Review settings when adding torrent." ---> "Toon opties bij toevoegen torrent."
 "Save" ---> "Opslaan"
 "Saving Torrent" ---> "Torrent opslaan"
+"Search banching : " --->  ??? 
 "Security" ---> "Beveiliging"
+"Seeding Limits" --->  ??? 
 "Seeding" ---> "Bezig met Seeden"
 "Seeds" --->  ??? 
 "Seeds:" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Kies een map om de download op te slaan. Kies cancel om de standaard map te gebruiken."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Selecteer een folder om de bestanden op te slaan of Afbreken om de torrent niet te downloaden."
 "Select a file or directory from which to construct the torrent." ---> "Selecteer een bestand of map waar en torrent van moet worden gemaakt."
+"Select a random port within this range." --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." ---> "Kies een (TCP) poort waarop moet worden geluisted voor binnenkomende verbindingen."
 "Send login info to trackers." ---> "Stuur login gegevens naar Tracker."
 "Set Priority" ---> "Verander Prioriteit"
 "Set as Primary" ---> "Zet als Primair"
-"Severity" ---> "Ernst"
+"Severity" ---> "Type"
+"Share ratio limit:" --->  ??? 
 "Show this message in future" ---> "Toon dit bericht in de toekomst"
 "Shutting down session" ---> "Sessie wordt afgesloten"
-"Size" ---> "Grootte in Bytes"
-"Standard exception (%1%) thrown from %2%." ---> "Standard exceptie (%1%) geworpen van %2%."
+"Size" ---> "Grootte"
+"Smart Ban Plugin" --->  ??? 
+"Standard exception (%1%) thrown from %2%." --->  ??? 
 "Start Time" ---> "Start Tijd"
 "Status" ---> "Status"
 "Status:" ---> "Status:"
@@ -248,15 +289,19 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Deze sessie gedownload %1$.2fMB, geupload %2$.2fMB, Verhouding %3$.2f."
 "Tier" ---> "Laag"
 "Time left:" ---> "Overgebleven tijd:"
+"Time limit (sec):" --->  ??? 
+"Time ratio limit:" --->  ??? 
 "Time" ---> "Tijd"
+"Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% voltooid."
 "Torrent %1% paused." ---> "Torrent %1% gepauzeerd."
-"Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) exceptie gevangen: %2% van %3%."
+"Torrent (%1%) exception caught: %2% from %3%." --->  ??? 
 "Torrent Defaults" ---> "Torrent Standaard"
 "Torrent File" ---> "Torrent Bestand"
 "Torrent Root" ---> "Torrent Hoofdmap"
 "Torrent and Data" ---> "Torrent en Data"
 "Torrent connection limits:" ---> "Torrent verbindings limiet"
+"Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" ---> "Torrent opslag map"
 "Torrent transfer rates (KB/s):" ---> "Torrent snelheden (KB/s)"
 "Torrent" --->  ??? 
@@ -267,33 +312,38 @@
 "Total upload slots :" ---> "Totaal aantal upload slots :"
 "Total" ---> "Totaal"
 "Tracker Announce. (%1%)" --->  ??? 
-"Tracker Event: %1%." ---> "Tracker Gebeurtenis: %1%."
-"Tracker warning: %2%! (%1%)" ---> "Tracker waarschuwing: %2%! (%1%)"
+"Tracker Event: %1%." --->  ??? 
+"Tracker warning: %2%! (%1%)" --->  ??? 
 "Tracker" --->  ??? 
 "Tracker:" --->  ??? 
 "Trackers" --->  ??? 
 "Transferred:" ---> "Overgestuurd"
 "Type" ---> "Type"
+"UPnP router model (if recognised)." --->  ??? 
 "UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
 "UnPlug and Play" --->  ??? 
-"Unicode exception: %1%." ---> "Unicode exceptie: %1%."
+"Unicode exception: %1%." --->  ??? 
+"Unmanaged" --->  ??? 
 "Up" ---> "Up"
 "Update in:" ---> "Update over:"
 "Upload Rate (KB/s) :" ---> "Upload snelheid (KB/s) :"
 "Upload" ---> "Upload"
 "Uploaded" --->  ??? 
-"Use Compact Allocation." ---> "Gebruik compacte allocatie."
 "Use a proxy." ---> "Gebruik een proxy."
 "User canceled Torrent file creation" ---> "Gebruiker annuleerde Torrent creatie"
 "Username : " ---> "Gebruikersnaam : "
 "Warning" ---> "Waarschuwing"
 "Web Seed" --->  ??? 
 "Web Seeds and DHT Nodes" ---> "Web Seeds en DHT Knopen"
-"Xml Exception (%1%) with %2%." ---> "Xml Exceptie (%1%) met %2%."
+"Write Cache Hit Ratio :" --->  ??? 
+"Xml Exception (%1%) with %2%." --->  ??? 
 "\r\0" --->  ??? 
 "libTorrrent based client." ---> "op libTorrrent gebaseerde client."
+"random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "tot"
+"uTorrent Metadata Plugin" --->  ??? 
+"uTorrent Peer Exchange Plugin" --->  ??? 
 "∞" --->  ??? 
