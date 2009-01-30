@@ -219,6 +219,7 @@ protected:
 
 private:
 	void ShutdownThread();
+	void TryToCloseWithConfirmation();
 
 	// These two gotta be first!!!
 	boost::signal<void (const hal::torrent_details_manager& tD)> ui_update_signal_;

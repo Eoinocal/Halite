@@ -785,6 +785,27 @@ void bit::unpause_all_torrents()
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "unpauseAllTorrents")
 }
 
+bool bit::is_any_torrent_active()
+{
+	bool result = false;
+	
+	try {
+	
+	for (torrent_manager::torrent_by_name::iterator i=pimpl()->the_torrents_.begin(), e=pimpl()->the_torrents_.end();
+		i != e; ++i)
+	{
+		if ((*i).torrent->is_active())
+		{
+			result = true;
+			break;
+		}
+	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "unpauseAllTorrents")
+	
+	return result;
+}
+
 bit::torrent::torrent()
 {}
 

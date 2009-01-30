@@ -749,6 +749,7 @@ public:
 	
 	void pause_all_torrents();
 	void unpause_all_torrents();
+	bool is_any_torrent_active();
 
 	template<typename S>
 	void remove_torrent(S filename)

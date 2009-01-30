@@ -378,12 +378,7 @@ void HaliteWindow::OnClose()
 	}
 	else
 	{
-		if (!confirmClose || (confirmClose && 
-			MessageBox(hal::app().res_wstr(HAL_WINDOW_CLOSECONFRIM).c_str(), 
-				hal::app().res_wstr(HAL_HALITE).c_str(), MB_YESNO) == IDYES))
-		{
-			DestroyWindow();
-		}
+		TryToCloseWithConfirmation();
 	}
 }
 
@@ -402,7 +397,19 @@ void HaliteWindow::ShutdownThread()
 
 	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::ShutdownThread()")
 }
- 
+
+void HaliteWindow::TryToCloseWithConfirmation()
+{
+	bool noTorrentsAreActive = !hal::bittorrent().is_any_torrent_active();
+	
+	if (noTorrentsAreActive || !confirmClose || (confirmClose && 
+		MessageBox(hal::app().res_wstr(HAL_WINDOW_CLOSECONFRIM).c_str(), 
+			hal::app().res_wstr(HAL_HALITE).c_str(), MB_YESNO) == IDYES))
+	{
+		DestroyWindow();
+	}
+}
+
 void HaliteWindow::OnDestroy()
 {	
 	try
@@ -560,12 +567,7 @@ LRESULT HaliteWindow::OnHelp(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHa
 
 LRESULT HaliteWindow::OnToolbarExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	if (!confirmClose || (confirmClose && 
-		MessageBox(hal::app().res_wstr(HAL_WINDOW_CLOSECONFRIM).c_str(), 
-			hal::app().res_wstr(HAL_HALITE).c_str(), MB_YESNO) == IDYES))
-	{
-		DestroyWindow();
-	}
+	TryToCloseWithConfirmation();
 	
 	return 0;
 }
