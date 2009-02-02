@@ -372,6 +372,8 @@ public:
 		mutex_t::scoped_lock l(mutex_);	
 		return selectedTorrent_; 
 	}
+
+	const std::set<wstring>& selected_names() const { return selected_names_; }
 	
 	const torrent_details_ptr get(std::wstring filename) const
 	{
@@ -404,6 +406,7 @@ private:
 	torrent_details_map torrentMap_;
 	torrent_details_vec selectedTorrents_;
 	torrent_details_ptr selectedTorrent_;
+	std::set<wstring> selected_names_;
 	
 	mutable mutex_t mutex_;
 };

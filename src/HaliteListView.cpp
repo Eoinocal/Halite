@@ -137,9 +137,14 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 		HAL_DEV_SORT_MSG(hal::wform(L"Item = %1%, Index = %2%") % td->name() % item_pos);
 
 		LVITEM lvItem = { 0 };
-		lvItem.mask = LVIF_TEXT;
+		lvItem.mask = LVIF_TEXT|LVIF_STATE;
+		lvItem.stateMask = LVIS_SELECTED;
+		lvItem.state = 0;
 		lvItem.iSubItem = 0;
 		lvItem.pszText = (LPTSTR)td->name().c_str();
+
+		if (tD.selected_names().find(td->name()) != tD.selected_names().end())
+			lvItem.state = LVIS_SELECTED;
 
 		if (IsGroupViewEnabled())
 		{

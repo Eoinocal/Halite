@@ -575,6 +575,7 @@ const torrent_details_manager& bit::updatetorrent_details_manager(const wstring&
 	mutex_t::scoped_lock l(torrentDetails_.mutex_);	
 	
 	torrentDetails_.clearAll(l);	
+	torrentDetails_.selected_names_ = selected;
 	torrentDetails_.torrents_.reserve(pimpl()->the_torrents_.size());
 	
 	for (torrent_manager::torrent_by_name::iterator i=pimpl()->the_torrents_.begin(), e=pimpl()->the_torrents_.end(); i != e; ++i)
