@@ -85,9 +85,10 @@ DWORD HaliteListViewCtrl::OnItemPrePaint(int idCtrl, LPNMCUSTOMDRAW lpNMCD)
 	return CDRF_DODEFAULT;
 }
 
-bool HaliteListViewCtrl::less( std::wstring l,  std::wstring r, size_t index)
+bool HaliteListViewCtrl::sort_list_comparison(std::wstring l, std::wstring r, size_t index, bool ascending)
 {
-	return l < r;
+	return hal::hal_details_ptr_compare(
+		hal::bittorrent().torrentDetails().get(l), hal::bittorrent().torrentDetails().get(r), index, ascending);
 }
 
 void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
@@ -106,17 +107,17 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 			int index = GetColumnSortType(GetSecondarySortColumn());
 			
 			if (index > WTL::LVCOLSORT_LAST)
-				tD.sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSecondarySortDescending());
+				sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSecondarySortDescending());
 		}
 
 		int index = GetColumnSortType(col_sort_index);
 		
 		if (index > WTL::LVCOLSORT_LAST)
-			tD.sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSortDescending());
+			sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSortDescending());
 	}
 
-	if (IsGroupViewEnabled())
-		sort(hal::torrent_details::managed_e);
+//	if (IsGroupViewEnabled())
+//		sort(hal::torrent_details::managed_e, IsSortDescending());
 
 	bool sort_once = IsSortOnce();
 

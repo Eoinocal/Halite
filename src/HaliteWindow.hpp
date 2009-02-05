@@ -6,11 +6,11 @@
 
 #pragma once
 
-#define ID_WINDOW_BEGIN	 			13000
+#define ID_WINDOW_BEGIN	 				13000
 #define HAL_WINDOW_CLOSECONFRIM		ID_WINDOW_BEGIN + 1
 #define HAL_WINDOW_SOCKETS_FAILED	ID_WINDOW_BEGIN + 2
 #define HAL_WINDOW_AUTOSHUTDOWN		ID_WINDOW_BEGIN + 3
-#define HAL_WINDOW_EXIT				ID_WINDOW_BEGIN + 4
+#define HAL_WINDOW_EXIT					ID_WINDOW_BEGIN + 4
 
 #ifndef RC_INVOKED
 
@@ -106,10 +106,10 @@ public:
 		UPDATE_ELEMENT(HAL_TRAY_MENU, UPDUI_MENUPOPUP)
 
 		UPDATE_ELEMENT(ID_VIEW_STATUS_BAR, UPDUI_MENUPOPUP)
-        UPDATE_ELEMENT(0, UPDUI_STATUSBAR)
+		UPDATE_ELEMENT(0, UPDUI_STATUSBAR)
 		UPDATE_ELEMENT(1, UPDUI_STATUSBAR)
-        UPDATE_ELEMENT(2, UPDUI_STATUSBAR)
-        UPDATE_ELEMENT(3, UPDUI_STATUSBAR)
+		UPDATE_ELEMENT(2, UPDUI_STATUSBAR)
+		UPDATE_ELEMENT(3, UPDUI_STATUSBAR)
 	END_UPDATE_UI_MAP()
 
 	void ProcessFile(LPCTSTR lpszPath);
@@ -155,7 +155,7 @@ protected:
 	LRESULT OnUpdateUIInfo(UINT, WPARAM, LPARAM, BOOL&);
 	LRESULT HaliteWindow::OnNotify(int wParam, LPNMHDR lParam);
 	LRESULT OnCreate(LPCREATESTRUCT lpcs);
-    void OnTimer(UINT uTimerID);
+	void OnTimer(UINT uTimerID);
 	void OnClose();
 	void OnDestroy();
 	void OnSize(UINT, WTL::CSize);
@@ -184,9 +184,9 @@ protected:
 	void updateWindow();
 	void setCorrectDialog();
 
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
 	{		
 		using boost::serialization::make_nvp;
 
@@ -227,7 +227,7 @@ private:
 	
 	WTL::CCommandBarCtrl m_CmdBar;
 	WTL::CHorSplitterWindow m_Split;
-    WTL::CMultiPaneStatusBarCtrl m_StatusBar;
+	WTL::CMultiPaneStatusBarCtrl m_StatusBar;
 	CTrayNotifyIcon trayIcon_;
 
 	HaliteListViewCtrl haliteList;
