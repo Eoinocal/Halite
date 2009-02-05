@@ -164,8 +164,8 @@ public:
 	}
 
 	HWND Create(HWND hWndParent, ATL::_U_RECT rect = NULL, LPCTSTR szWindowName = NULL,
-			DWORD dwStyle = 0, DWORD dwExStyle = 0,
-			ATL::_U_MENUorID MenuOrID = 0U, LPVOID lpCreateParam = NULL)
+		DWORD dwStyle = 0, DWORD dwExStyle = 0,
+		ATL::_U_MENUorID MenuOrID = 0U, LPVOID lpCreateParam = NULL)
 	{
 		HWND hwnd = parentClass::Create(hWndParent, 
 			(RECT &)rect.m_lpRect, szWindowName, dwStyle, dwExStyle, (UINT)MenuOrID.m_hMenu, lpCreateParam);
@@ -379,8 +379,8 @@ public:
 	}
 
 	int AddColumn(LPCTSTR strItem, int nItem, int nSubItem = -1,
-			int nMask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM,
-			int nFmt = LVCFMT_LEFT, bool visible=true, int width=-1)
+		int nMask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM,
+		int nFmt = LVCFMT_LEFT, bool visible=true, int width=-1)
 	{
 		int i = parentClass::AddColumn(strItem, nItem, nSubItem, nMask, nFmt);
 
@@ -449,8 +449,8 @@ public:
 
 	friend class boost::serialization::access;
 	template<class Archive>
-    void save(Archive & ar, const unsigned int version) const
-    {
+	void save(Archive & ar, const unsigned int version) const
+	{
 		for (size_t i=0; i<list_widths_.size(); ++i)
 		{
 			if (list_visible_[i])
@@ -473,11 +473,11 @@ public:
 
 		ar & make_nvp("secondary_descending", listClass::bSecondaryDescending);
 		ar & make_nvp("secondary_sort_column", listClass::iSecondarySort);		
-    }
+	}
 
-    template<class Archive>
-    void load(Archive & ar, const unsigned int version)
-    {
+	template<class Archive>
+	void load(Archive & ar, const unsigned int version)
+	{
 		using boost::serialization::make_nvp;
 
 		ar & make_nvp("width", list_widths_);
@@ -509,7 +509,7 @@ public:
 
 		SetColumnOrderState();
 		SetSortState();
-    }
+	}
 
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 
@@ -612,12 +612,11 @@ protected:
 	};
 
 	template <typename T>
-	bool imp_less(const implicit_reference_wrapper<T>& l, const implicit_reference_wrapper<T>& r, size_t index) 
+	bool implicit_comparison(const implicit_reference_wrapper<T>& l, const implicit_reference_wrapper<T>& r, size_t index, bool ascending) 
 	{
 		TBase* pT = static_cast<TBase*>(this);
 
-		return pT->less(static_cast<T>(l).second, static_cast<T>(r).second, index);
-	//	return static_cast<T>(l) < static_cast<T>(r);
+		return pT->less(static_cast<T>(l).second, static_cast<T>(r).second, index, ascending);
 	}
 
 	struct by_key {};
@@ -633,57 +632,75 @@ protected:
 		>
 	> pair_container;
 
-	typedef typename boost::multi_index::nth_index<pair_container, 0>::type ordered_text;
+	typedef typename pair_container::index_iterator<by_key>::type key_iterator;
 
 	int InsertKeyItem(DataType key, LVITEM* pItem)
 	{
-		list_pair_t lp = std::make_pair(false, key);
-
-		pair_container::index_iterator<by_key>::type i = pair_container_.get<by_key>().find(key);
+		key_iterator i = pair_container_.get<by_key>().find(key);
 		pair_container::iterator i_pos = pair_container_.project<0>(i);
+
+		int list_item_index = -1;
 
 		if (i != pair_container_.get<by_key>().end())
 		{
-			pItem->iItem = std::distance(pair_container_.begin(), i_pos);
+			list_item_index = std::distance(pair_container_.begin(), i_pos);
+
+			pItem->iItem = list_item_index;
+
+			if ((*i).first)
+			{
+				pItem->stateMask |= LVIS_SELECTED;
+				pItem->state |= LVIS_SELECTED;
+			}
+
 			SetItem(pItem);
 		}
 		else
 		{
-			pItem->iItem = GetItemCount();
+			list_item_index = pair_container_.size();
 
-			int list_pos = InsertItem(pItem);
+			bool selected = (pItem->stateMask & LVIS_SELECTED) && (pItem->state & LVIS_SELECTED);
+			list_pair_t lp = std::make_pair(selected, key);
+
 			pair_container_.push_back(lp);
 
-		//	assert(list_pos == i_pos);
+			pItem->iItem = list_item_index;
+			int list_pos = InsertItem(pItem);
 		}
 
 		ATLASSERT(::IsWindow(m_hWnd));
-		return 8;
+		return list_item_index;
 	}
 
-	void insert_key(DataType key)
-	{
-		pair_container_.insert(std::make_pair(false, key));
-	}
-
-	bool data_type_less(list_pair_t r, list_pair_t l, size_t index)
+	bool data_type_comparison(list_pair_t r, list_pair_t l, size_t index, bool ascending)
 	{
 		TBase* pT = static_cast<TBase*>(this);
 
-		return pT->less((l).second, (r).second, index);
+		return pT->sort_list_comparison((l).second, (r).second, index, ascending);
 	}
 
-	void sort(size_t index)
+	void selection_from_listview()
 	{
+		foreach(const list_value_type val, std::make_pair(const_begin(), const_end()))
+		{
+			list_pair_t pi = pair_container_[val.index()];
+
+			if (val.state() & LVIS_SELECTED)
+				pi.first = true;
+			else
+				pi.first = false;
+		}
+	}
+
+	void sort(size_t index, bool ascending)
+	{	
+		selection_from_listview();
 		std::vector<implicit_reference_wrapper<const list_pair_t> > sv;
 
 		std::copy(pair_container_.begin(), pair_container_.end(), std::back_inserter(sv));
 
-//		ordered_text& ot=boost::multi_index::get<0>(pair_container_);
-
-		std::stable_sort(sv.begin(), 
-			sv.end(), 
-			bind(&thisClass::data_type_less, this, _1, _2, index));
+		std::stable_sort(sv.begin(), sv.end(), 
+			bind(&thisClass::data_type_comparison, this, _1, _2, index, ascending));
 
 		pair_container_.rearrange(sv.begin());
 	}
