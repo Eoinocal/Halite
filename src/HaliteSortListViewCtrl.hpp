@@ -15,6 +15,13 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/ptr_container/ptr_map.hpp>
 
+#include <boost/detail/iterator.hpp>
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/identity.hpp>
+#include <boost/multi_index/ordered_index.hpp>
+#include <boost/multi_index/member.hpp>
+#include <boost/multi_index/random_access_index.hpp>
+
 #include <winstl/controls/listview_sequence.hpp>
 
 #include "Halite.hpp"
@@ -33,7 +40,7 @@
 
 namespace hal
 {
-
+/*
 template<typename T>
 int compare(const T& l, const T& r)
 {
@@ -44,17 +51,17 @@ int compare(const T& l, const T& r)
 	else 
 		return -1;
 }
+*/
 
 }
-
-template <class TBase, typename AdapterType=void*>
+template <class TBase, typename DataType=void*>
 class CHaliteSortListViewCtrl : 
 	public ATL::CWindowImpl<TBase, WTL::CListViewCtrl>,
-	public WTLx::ListViewIterators<CHaliteSortListViewCtrl<TBase, AdapterType> >,
-	public WTLx::ListViewSortMixin<CHaliteSortListViewCtrl<TBase, AdapterType> >
+	public WTLx::ListViewIterators<CHaliteSortListViewCtrl<TBase, DataType> >,
+	public WTLx::ListViewSortMixin<CHaliteSortListViewCtrl<TBase, DataType> >
 {
 public:
-	typedef CHaliteSortListViewCtrl<TBase, AdapterType> thisClass;
+	typedef CHaliteSortListViewCtrl<TBase, DataType> thisClass;
 	typedef ATL::CWindowImpl<TBase, WTL::CListViewCtrl> parentClass;
 	typedef WTLx::ListViewSortMixin<thisClass> listClass;
 	
@@ -108,11 +115,12 @@ public:
 		thisClass& listView_;
 	};
 	
-	struct ColumnAdapter
+/*	struct ColumnAdapter
 	{
 		virtual int compare(AdapterType& l, AdapterType& r) = 0;
 		virtual std::wstring print(AdapterType& t) = 0;
 	};
+*/
 
 public:
 	typedef WTLx::selection_manager<thisClass, std::wstring> SelectionManager;
@@ -149,7 +157,7 @@ public:
 	void Attach(HWND hWndNew)
 	{
 		ATLASSERT(::IsWindow(hWndNew));
-        parentClass::SubclassWindow(hWndNew);
+		parentClass::SubclassWindow(hWndNew);
 
 		TBase* pT = static_cast<TBase*>(this);
 		pT->OnAttach();
@@ -360,7 +368,7 @@ public:
 			return false; 
 
 		if (mod_value) sort_once_ = false;
-		return true;
+			return true;
 	}
 
 	int AddColumn(LPCTSTR strItem, int nItem, bool visible, int width=-1)
@@ -410,12 +418,12 @@ public:
 		return i;
 	}
 
-	void SetColumnSortType(int iCol, WORD wType, ColumnAdapter* colAdapter=NULL)
+	void SetColumnSortType(int iCol, WORD wType, void* colAdapter=NULL)
 	{
 		listClass::SetColumnSortType(iCol, wType);
 		
-		if (WTL::LVCOLSORT_CUSTOM == wType)
-			regColumnAdapter(iCol, colAdapter);
+	//	if (WTL::LVCOLSORT_CUSTOM == wType)
+	//		regColumnAdapter(iCol, colAdapter);
 	}
 
 	void SetColumnOrderState()
@@ -503,7 +511,7 @@ public:
 		SetSortState();
     }
 
-    BOOST_SERIALIZATION_SPLIT_MEMBER()
+	BOOST_SERIALIZATION_SPLIT_MEMBER()
 
 	const SelectionManager& manager() { return manager_; }
 		
@@ -540,7 +548,7 @@ public:
 			DoSortItems(iCol, IsSortDescending());	
 	}
 */		
-	ColumnAdapter* getColumnAdapter(size_t index)
+/*	ColumnAdapter* getColumnAdapter(size_t index)
 	{
 		boost::ptr_map<size_t, ColumnAdapter>::iterator 
 			i = column_adapters_.find(index);
@@ -551,7 +559,7 @@ public:
 		}		
 		return NULL;
 	}
-
+*/
 	static bool is_selected (const winstl::listview_sequence::sequence_value_type& v) 
 	{ 
 		return (v.state() & LVIS_SELECTED) != 0; 
@@ -574,12 +582,12 @@ protected:
 			return 0;
 	}
 */
-	void regColumnAdapter(size_t key, ColumnAdapter* colAdapter)
+/*	void regColumnAdapter(size_t key, ColumnAdapter* colAdapter)
 	{
 		assert (colAdapter);
 		column_adapters_.insert(key, colAdapter);
 	}
-
+*/
 //	AdapterType convert(const LPLVITEM item);
 //	void convert(LPLVITEM item, AdapterType adapter);
 	
@@ -592,8 +600,97 @@ protected:
 	SelectionManager manager_;
 	WTL::CMenu menu_;
 	CHaliteHeaderCtrl header_;	
+
+	template<typename T>
+	class implicit_reference_wrapper : public boost::reference_wrapper<T>
+	{
+	private:
+		typedef boost::reference_wrapper<T> super;
+
+	public:
+		implicit_reference_wrapper(T& t) : super(t) {}
+	};
+
+	template <typename T>
+	bool imp_less(const implicit_reference_wrapper<T>& l, const implicit_reference_wrapper<T>& r, size_t index) 
+	{
+		TBase* pT = static_cast<TBase*>(this);
+
+		return pT->less(static_cast<T>(l).second, static_cast<T>(r).second, index);
+	//	return static_cast<T>(l) < static_cast<T>(r);
+	}
+
+	struct by_key {};
+	typedef std::pair<bool, DataType> list_pair_t;
+
+	typedef boost::multi_index_container<
+		list_pair_t,
+		boost::multi_index::indexed_by<
+			boost::multi_index::random_access<>,
+			boost::multi_index::ordered_unique<
+				boost::multi_index::tag<by_key>,  
+				boost::multi_index::member<list_pair_t, DataType, &list_pair_t::second> >
+		>
+	> pair_container;
+
+	typedef typename boost::multi_index::nth_index<pair_container, 0>::type ordered_text;
+
+	int InsertKeyItem(DataType key, LVITEM* pItem)
+	{
+		list_pair_t lp = std::make_pair(false, key);
+
+		pair_container::index_iterator<by_key>::type i = pair_container_.get<by_key>().find(key);
+		pair_container::iterator i_pos = pair_container_.project<0>(i);
+
+		if (i != pair_container_.get<by_key>().end())
+		{
+			pItem->iItem = std::distance(pair_container_.begin(), i_pos);
+			SetItem(pItem);
+		}
+		else
+		{
+			pItem->iItem = GetItemCount();
+
+			int list_pos = InsertItem(pItem);
+			pair_container_.push_back(lp);
+
+		//	assert(list_pos == i_pos);
+		}
+
+		ATLASSERT(::IsWindow(m_hWnd));
+		return 8;
+	}
+
+	void insert_key(DataType key)
+	{
+		pair_container_.insert(std::make_pair(false, key));
+	}
+
+	bool data_type_less(list_pair_t r, list_pair_t l, size_t index)
+	{
+		TBase* pT = static_cast<TBase*>(this);
+
+		return pT->less((l).second, (r).second, index);
+	}
+
+	void sort(size_t index)
+	{
+		std::vector<implicit_reference_wrapper<const list_pair_t> > sv;
+
+		std::copy(pair_container_.begin(), pair_container_.end(), std::back_inserter(sv));
+
+//		ordered_text& ot=boost::multi_index::get<0>(pair_container_);
+
+		std::stable_sort(sv.begin(), 
+			sv.end(), 
+			bind(&thisClass::data_type_less, this, _1, _2, index));
+
+		pair_container_.rearrange(sv.begin());
+	}
 	
 private:
+	mutable pair_container pair_container_;
+
 	bool vector_size_pre_conditions()
 	{
 		bool ret = (list_names_.size() == list_widths_.size()) &&
@@ -613,7 +710,7 @@ private:
 	mutable bool descending_;
 	mutable int sortCol_;
 		
-	boost::ptr_map<size_t, ColumnAdapter> column_adapters_;
+//	boost::ptr_map<size_t, ColumnAdapter> column_adapters_;
 };
 
 template<>
@@ -625,8 +722,8 @@ inline const std::wstring hal::to_wstr_shim<const winstl::listview_sequence::seq
 
 namespace boost {
 namespace serialization {
-	template <class TBase, typename AdapterType>
-	struct version< CHaliteSortListViewCtrl<TBase, AdapterType> >
+	template <class TBase, typename AdapterTypeI>
+	struct version< CHaliteSortListViewCtrl<TBase, AdapterTypeI> >
 	{
 		typedef mpl::int_<2> type;
 		typedef mpl::integral_c_tag tag;

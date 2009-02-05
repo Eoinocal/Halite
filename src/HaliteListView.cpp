@@ -11,11 +11,11 @@
 
 #include "Halite.hpp"
 
+#include "halTorrent.hpp"
+
 #include "HaliteListView.hpp"
 #include "HaliteWindow.hpp"
 #include "HaliteListViewDlg.hpp"
-
-#include "halTorrent.hpp"
 
 #define HAL_CUSTOMDRAW_TITLEDATA 1000000000
 
@@ -85,6 +85,11 @@ DWORD HaliteListViewCtrl::OnItemPrePaint(int idCtrl, LPNMCUSTOMDRAW lpNMCD)
 	return CDRF_DODEFAULT;
 }
 
+bool HaliteListViewCtrl::less( std::wstring l,  std::wstring r, size_t index)
+{
+	return l < r;
+}
+
 void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 {
 	hal::try_update_lock<listClass> lock(*this);
@@ -111,7 +116,7 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	}
 
 	if (IsGroupViewEnabled())
-		tD.sort(hal::torrent_details::managed_e);
+		sort(hal::torrent_details::managed_e);
 
 	bool sort_once = IsSortOnce();
 
@@ -159,7 +164,9 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 		lvItem.mask |= LVIF_IMAGE;
 		lvItem.iImage = 0;
 
-		if (item_pos < 0 || GetItemCount() <= static_cast<int>(item_pos))
+		item_pos = InsertKeyItem(td->name(), &lvItem);
+
+/*		if (item_pos < 0 || GetItemCount() <= static_cast<int>(item_pos))
 		{
 			lvItem.iItem = GetItemCount();
 			td_index = InsertItem(&lvItem);
@@ -169,7 +176,7 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 			lvItem.iItem = item_pos;
 			SetItem(&lvItem);
 		}
-	
+*/	
 		for (size_t i=1; i<NumberOfColumns_s; ++i)
 		{
 			SetItemText(item_pos, i, td->to_wstring(i).c_str());
