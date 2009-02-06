@@ -184,7 +184,7 @@ void AdvTrackerDialog::onReset(UINT, int, HWND)
 		t.reset_trackers();
 		
 		std::vector<hal::tracker_detail> trackers =t.trackers;
-		m_list.clearAll();
+		m_list.DeleteAllItems();
 		
 		foreach (const hal::tracker_detail& tracker, trackers)
 		{

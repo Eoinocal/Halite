@@ -127,7 +127,7 @@ public:
 	typedef SelectionManager selection_manage_class;
 	
 	thisClass() :
-		manager_(*this),
+	//	manager_(*this),
 		header_(*this),
 		update_lock_(0),
 		auto_sort_(false),
@@ -323,7 +323,7 @@ public:
 	{		
 		hal::try_update_lock<thisClass> lock(*this);
 		
-		if (lock) manager_.sync_list(true, true);
+//		if (lock) manager_.sync_list(true, true);
 		
 		return 0;
 	}
@@ -331,7 +331,7 @@ public:
 	LRESULT OnRClick(int i, LPNMHDR pnmh, BOOL&)
 	{
 		LPNMITEMACTIVATE pia = (LPNMITEMACTIVATE)pnmh;
-		manager_.sync_list(true);
+	//	manager_.sync_list(true);
 		
 		if (menu_)
 		{
@@ -513,7 +513,7 @@ public:
 
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 
-	const SelectionManager& manager() { return manager_; }
+//	const SelectionManager& manager() { return manager_; }
 		
 	std::vector<int>& ListColumnWidth() { return listColumnWidth_; }
 	std::vector<int>& ListColumnOrder() { return listColumnOrder_; }
@@ -523,9 +523,9 @@ public:
 	
 	bool CanUpdate() const { return updateLock_ == 0; }
 	
-	void clearFocused() { manager_.clear(); }
-	void clearSelected() { manager_.clear_all_selected(); }
-	void clearAll() { manager_.clear_all(); }
+//	void clearFocused() { manager_.clear(); }
+//	void clearSelected() { manager_.clear_all_selected(); }
+//	void clearAll() { manager_.clear_all(); }
 	
 /*	int CompareItemsCustom(LVCompareParam* pItem1, LVCompareParam* pItem2, int iSortCol)
 	{
@@ -597,7 +597,7 @@ protected:
 	friend class hal::mutex_update_lock<thisClass>;	
 	friend class hal::try_update_lock<thisClass>;	
 
-	SelectionManager manager_;
+//	SelectionManager manager_;
 	WTL::CMenu menu_;
 	CHaliteHeaderCtrl header_;	
 
@@ -704,6 +704,29 @@ protected:
 
 		pair_container_.rearrange(sv.begin());
 	}
+
+	void erase_from_list(const list_value_type& val)
+	{
+		erase_from_list(val.index());
+	}
+
+	void erase_from_list(size_t index)
+	{
+		pair_container_.erase(pair_container_.begin() + index);
+		DeleteItem(index);
+	}
+	
+	void erase_from_list(const DataType& str)
+	{
+		key_iterator i = pair_container_.get<by_key>().find(str);
+		pair_container::iterator i_pos = pair_container_.project<0>(i);
+
+		if (i != pair_container_.get<by_key>().end())
+		{
+			DeleteItem(std::distance(pair_container_.begin(), i_pos));
+			pair_container_.erase(i_pos);
+		}
+	}
 	
 private:
 	mutable pair_container pair_container_;
@@ -726,15 +749,20 @@ private:
 	mutable bool sort_once_;
 	mutable bool descending_;
 	mutable int sortCol_;
-		
-//	boost::ptr_map<size_t, ColumnAdapter> column_adapters_;
 };
 
 template<>
 inline const std::wstring hal::to_wstr_shim<const winstl::listview_sequence::sequence_value_type>
 	(const winstl::listview_sequence::sequence_value_type& v)
 {
-	return std::wstring(winstl::c_str_ptr(v));
+	return std::wstring(v.text().c_str());
+}
+
+template<>
+inline const std::wstring hal::to_wstr_shim<winstl::listview_sequence::sequence_value_type>
+	(winstl::listview_sequence::sequence_value_type& v)
+{
+	return std::wstring(v.text().c_str());
 }
 
 namespace boost {

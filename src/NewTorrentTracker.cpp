@@ -54,7 +54,7 @@ void NewTorrent_TrackerListViewCtrl::uiUpdate(const hal::torrent_details_ptr pT)
 		if (lock) 
 		{			
 			std::vector<hal::tracker_detail> trackers =	t.trackers;
-			clearAll();
+			DeleteAllItems();
 			
 			foreach (const hal::tracker_detail& tracker, trackers)
 			{
@@ -65,7 +65,7 @@ void NewTorrent_TrackerListViewCtrl::uiUpdate(const hal::torrent_details_ptr pT)
 	}
 	else
 	{		
-		clearAll();
+		DeleteAllItems();
 	}
 }
 

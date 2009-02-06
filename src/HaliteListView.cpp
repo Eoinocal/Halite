@@ -106,8 +106,8 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 		{
 			int index = GetColumnSortType(GetSecondarySortColumn());
 			
-			if (index > WTL::LVCOLSORT_LAST)
-				sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSecondarySortDescending());
+		//	if (index > WTL::LVCOLSORT_LAST)
+		//		sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSecondarySortDescending());
 		}
 
 		int index = GetColumnSortType(col_sort_index);
@@ -117,7 +117,7 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	}
 
 //	if (IsGroupViewEnabled())
-//		sort(hal::torrent_details::managed_e, IsSortDescending());
+//		sort(hal::torrent_details::managed_e, true);
 
 	bool sort_once = IsSortOnce();
 
@@ -130,15 +130,6 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 		
 		HAL_DEV_SORT_MSG(hal::wform(L"AutoSort() = %1%, SortOnce() = %2%, !AutoSort() && !SortOnce() = %3%") 
 			% AutoSort() % sort_once % (!AutoSort() && !sort_once));
-
-		if (!AutoSort() && !sort_once)
-		{
-			LV_FINDINFO findInfo; 
-			findInfo.flags = LVFI_STRING;
-			findInfo.psz = const_cast<LPTSTR>(td->name().c_str());
-			
-			item_pos = FindItem(&findInfo, -1);
-		}
 		
 		HAL_DEV_SORT_MSG(hal::wform(L"Item = %1%, Index = %2%") % td->name() % item_pos);
 
@@ -167,17 +158,6 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 
 		item_pos = InsertKeyItem(td->name(), &lvItem);
 
-/*		if (item_pos < 0 || GetItemCount() <= static_cast<int>(item_pos))
-		{
-			lvItem.iItem = GetItemCount();
-			td_index = InsertItem(&lvItem);
-		}
-		else
-		{
-			lvItem.iItem = item_pos;
-			SetItem(&lvItem);
-		}
-*/	
 		for (size_t i=1; i<NumberOfColumns_s; ++i)
 		{
 			SetItemText(item_pos, i, td->to_wstring(i).c_str());
@@ -185,12 +165,12 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	}
 	
 	// Perform internal ListView sort here.
-	if (AutoSort() && col_sort_index >= 0 && col_sort_index < m_arrColSortType.GetSize())
+/*	if (AutoSort() && col_sort_index >= 0 && col_sort_index < m_arrColSortType.GetSize())
 	{
 		if (GetColumnSortType(col_sort_index) <= WTL::LVCOLSORT_CUSTOM)
 			DoSortItems(col_sort_index, IsSortDescending());
 	}
-	
+*/	
 	}
 }
 
@@ -227,55 +207,59 @@ void HaliteListViewCtrl::convert(LPLVITEM item, const HaliteListViewCtrl::Adapte
 */
 LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::resume_torrent, 
-			&hal::bittorrent(), _1));
+	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	{
+		hal::bittorrent().resume_torrent(val.text().c_str());
+	}
 	
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {	
-	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::pause_torrent, 
-			&hal::bittorrent(), _1));
+	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	{
+		hal::bittorrent().pause_torrent(val.text().c_str());
+	}
 	
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::stop_torrent, 
-			&hal::bittorrent(), _1));
+	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	{
+		hal::bittorrent().stop_torrent(val.text().c_str());
+	}
 
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	hal::bittorrent().remove_torrent(hal::to_utf8(manager_.selected()));
+	hal::bittorrent().remove_torrent(hal::to_utf8(is_selected_begin()->text().c_str()));
+	erase_from_list(*is_selected_begin());
 
-	clearFocused();	
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	foreach(const list_value_type& v, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
-		hal::bittorrent().remove_torrent(val.text().c_str());
+		hal::bittorrent().remove_torrent(v.text().c_str());
+		erase_from_list(v);
 	}
-	clearSelected();
 
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-		bind((void (hal::bit::*)(const std::wstring&))&hal::bit::recheck_torrent, 
-			&hal::bittorrent(), _1));	
+	foreach(const list_value_type& v, std::make_pair(is_selected_begin(), is_selected_end()))
+	{
+		hal::bittorrent().recheck_torrent(v.text().c_str());
+	}
 
 	return 0;
 }
@@ -285,12 +269,18 @@ LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND h
 	if(MessageBox(hal::app().res_wstr(HAL_LISTVIEW_CONFIRMDELETE).c_str(), 
 				hal::app().res_wstr(HAL_HALITE).c_str(), MB_YESNO) == IDYES)
 	{
-		std::for_each(manager().allSelected().begin(), manager().allSelected().end(),
-			bind((void (hal::bit::*)(const std::wstring&))&hal::bit::remove_torrent_wipe_files, 
-				&hal::bittorrent(), _1));
-		
-		clearSelected();
+		is_selected_iterator i=is_selected_end();
+		if (i != is_selected_begin())
+		{
+			--i;
+			while (i != is_selected_begin())
+			{
+				hal::bittorrent().remove_torrent_wipe_files(i->text().c_str());
+				erase_from_list(*i);
+			} 
+		}
 	}
+
 	return 0;
 }
 
@@ -300,11 +290,12 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 
 	std::set<wpath> uniquePaths;
 
-	for(std::set<wstring>::const_iterator i=manager().allSelected().begin(), e=manager().allSelected().end();
-		i != e; ++i)
+//	for(std::set<wstring>::const_iterator i=manager().allSelected().begin(), e=manager().allSelected().end();
+//		i != e; ++i)
+	foreach(const list_value_type& v, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
-		wpath saveDir = hal::bittorrent().get(*i).save_directory;		
-		HAL_DEV_MSG(hal::wform(L"Name %1%, Save dir: %2%.") % *i % saveDir);
+		wpath saveDir = hal::bittorrent().get(v).save_directory;		
+		HAL_DEV_MSG(hal::wform(L"Name %1%, Save dir: %2%.") % v.text() % saveDir);
 
 		uniquePaths.insert(saveDir);
 	}
@@ -336,7 +327,7 @@ LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndC
 {
 	HAL_DEV_MSG(L"OnEditFolders");
 
-	if (hal::bit::torrent t = hal::bittorrent().get(manager_.selected()))
+	if (hal::bit::torrent t = hal::bittorrent().get(*is_selected_begin()))
 	{
 		wstring saveDirectory = static_cast<wpath>(t.save_directory).native_file_string();
 		wstring moveToDirectory = static_cast<wpath>(t.move_to_directory).native_file_string();
@@ -363,11 +354,14 @@ LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndC
 
 LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	foreach(const list_value_type val, std::make_pair(is_selected_begin(), is_selected_end()))
+	for (is_selected_iterator i = is_selected_end(); 
+			i != is_selected_begin() &&  is_selected_begin() != is_selected_end(); /**/)
 	{
-		hal::bittorrent().get(std::wstring(winstl::c_str_ptr(val))).managed = true;
+		--i;
+		hal::bittorrent().get(*i).managed = true;
+		erase_from_list(*i);
 	}
-	DeleteAllItems();
+
 	halite_window_.issueUiUpdate();
 
 	return 0;
@@ -375,11 +369,14 @@ LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCt
 
 LRESULT HaliteListViewCtrl::OnSetUnmanaged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	foreach(const list_value_type val, std::make_pair(is_selected_begin(), is_selected_end()))
+	for (is_selected_iterator i = is_selected_end(); 
+			i != is_selected_begin() &&  is_selected_begin() != is_selected_end(); /**/)
 	{
-		hal::bittorrent().get(std::wstring(winstl::c_str_ptr(val))).managed = false;
+		--i;
+		hal::bittorrent().get(*i).managed = false;
+		erase_from_list(*i);
 	}
-	DeleteAllItems();
+
 	halite_window_.issueUiUpdate();
 
 	return 0;
@@ -387,9 +384,9 @@ LRESULT HaliteListViewCtrl::OnSetUnmanaged(WORD wNotifyCode, WORD wID, HWND hWnd
 
 LRESULT HaliteListViewCtrl::OnAdjustQueuePosition(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	foreach(const list_value_type val, std::make_pair(is_selected_begin(), is_selected_end()))
+	foreach(const list_value_type v, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
-		hal::bit::torrent t = hal::bittorrent().get(std::wstring(winstl::c_str_ptr(val)));
+		hal::bit::torrent t = hal::bittorrent().get(v);
 
 		switch (wID)
 		{

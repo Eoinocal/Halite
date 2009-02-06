@@ -90,7 +90,7 @@ public:
 	LRESULT OnEdit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 	{
 		ListClass* pT = static_cast<ListClass*>(this);
-		pT->editItem(pT->manager().selectedIndex());
+		pT->editItem(pT->is_selected_begin()->index());
 
 		return 0;
 	}
@@ -98,7 +98,7 @@ public:
 	LRESULT OnDelete(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 	{
 		ListClass* pT = static_cast<ListClass*>(this);		
-		pT->deleteItem(pT->manager().selectedIndex());
+		pT->deleteItem(pT->is_selected_begin()->index());
 
 		return 0;
 	}
