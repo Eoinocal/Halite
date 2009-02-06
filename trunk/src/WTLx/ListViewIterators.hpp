@@ -16,7 +16,7 @@ namespace WTLx
 template<typename List>
 class ListViewIterators
 {
-protected:
+public:
 	winstl::listview_sequence::const_iterator const_begin()
 	{
 		winstl::listview_sequence lv_seq(*(static_cast<List*>(this)));

@@ -117,7 +117,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	// Create ListView and Dialog
 	haliteList.Create(m_Split.m_hWnd, rc, NULL, 
 		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS);
-	haliteList.manager().attach(bind(&HaliteWindow::issueUiUpdate, this));
+//	haliteList.manager().attach(bind(&HaliteWindow::issueUiUpdate, this));
 
 
 	hal::event_log.post(shared_ptr<hal::EventDetail>(
@@ -286,8 +286,8 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 		try
 		{
 
-		hal::ini().save_data();
-		hal::bittorrent().save_torrent_data();	
+//		hal::ini().save_data();
+//		hal::bittorrent().save_torrent_data();	
 	
 		} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::OnTimer(ID_SAVE_TIMER)")
 	}
@@ -301,9 +301,16 @@ void HaliteWindow::issueUiUpdate()
 {	
 	try
 	{
+
+		std::set<wstring> s;
+
+		foreach(const HaliteListViewCtrl::listClass::list_value_type val, std::make_pair(haliteList.is_selected_begin(), haliteList.is_selected_end()))
+	{
+		s.insert(val.text().c_str());
+	}
 	
 	const hal::torrent_details_manager& torrents = hal::bittorrent().updatetorrent_details_manager(
-		haliteList.manager().selected(), haliteList.manager().allSelected());
+		haliteList.is_selected_begin()->text().c_str(), s);
 
 	ui_update_signal_(torrents);
 

@@ -56,7 +56,7 @@ void TrackerListViewCtrl::uiUpdate(const hal::torrent_details_ptr pT)
 		if (lock) 
 		{			
 			std::vector<hal::tracker_detail> trackers = t.trackers;				
-			clearAll();
+			DeleteAllItems();
 			
 			foreach (const hal::tracker_detail& tracker, trackers)
 			{
@@ -67,7 +67,7 @@ void TrackerListViewCtrl::uiUpdate(const hal::torrent_details_ptr pT)
 	}
 	else
 	{		
-		clearAll();
+		DeleteAllItems();
 	}
 }
 
@@ -133,7 +133,7 @@ LRESULT TrackerListViewCtrl::OnPrimary(WORD wNotifyCode, WORD wID, HWND hWndCtl,
 			SetItemText(i, 1, L"1");
 	}
 	
-	SetItemText(manager().selectedIndex(), 1, L"0");
+//	SetItemText(manager().selectedIndex(), 1, L"0");
 	
 	listEdited_();
 	
