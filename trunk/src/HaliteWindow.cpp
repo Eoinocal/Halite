@@ -301,7 +301,6 @@ void HaliteWindow::issueUiUpdate()
 {	
 	try
 	{
-
 		std::set<wstring> s;
 
 		foreach(const HaliteListViewCtrl::listClass::list_value_type val, std::make_pair(haliteList.is_selected_begin(), haliteList.is_selected_end()))
@@ -393,12 +392,12 @@ void HaliteWindow::ShutdownThread()
 {
 	try
 	{
-
 	win32_exception::install_handler();
+
 	hal::bittorrent().close_all(0);
 
 	hal::bittorrent().stop_event_receiver();
-	Sleep(3000);
+	Sleep(500);
 
 	hal::bittorrent().shutdown_session();
 
