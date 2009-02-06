@@ -106,8 +106,8 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 		{
 			int index = GetColumnSortType(GetSecondarySortColumn());
 			
-		//	if (index > WTL::LVCOLSORT_LAST)
-		//		sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSecondarySortDescending());
+			if (index > WTL::LVCOLSORT_LAST)
+				sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSecondarySortDescending());
 		}
 
 		int index = GetColumnSortType(col_sort_index);
@@ -117,9 +117,13 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	}
 
 //	if (IsGroupViewEnabled())
-//		sort(hal::torrent_details::managed_e, true);
+		sort(hal::torrent_details::managed_e, false);
 
 	bool sort_once = IsSortOnce();
+
+			hal::win_c_str<std::wstring> str(MAX_PATH);
+			GetItemText(4, 0, str, str.size());
+			HAL_DEV_MSG(hal::wform(L" >> set name %1%") % str.str());
 
 	// Update details here.
 	for (size_t td_index=0, e=tD.torrents().size(); td_index<e; ++td_index)
@@ -163,14 +167,7 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 			SetItemText(item_pos, i, td->to_wstring(i).c_str());
 		}
 	}
-	
-	// Perform internal ListView sort here.
-/*	if (AutoSort() && col_sort_index >= 0 && col_sort_index < m_arrColSortType.GetSize())
-	{
-		if (GetColumnSortType(col_sort_index) <= WTL::LVCOLSORT_CUSTOM)
-			DoSortItems(col_sort_index, IsSortDescending());
-	}
-*/	
+
 	}
 }
 
@@ -181,30 +178,6 @@ LRESULT HaliteListViewCtrl::OnSortChanged(int, LPNMHDR pnmh, BOOL&)
 	return 0;
 }
 
-/*HaliteListViewCtrl::tD HaliteListViewCtrl::CustomItemConversion(LVCompareParam* param, int iSortCol)
-{
-	boost::array<wchar_t, MAX_PATH> buffer;
-	GetItemText(param->iItem, 0, buffer.c_array(), buffer.size());		
-	wstring torrent = buffer.data();
-	
-	return hal::bittorrent().torrentDetails().get(torrent);
-}*/
-/*
-HaliteListViewCtrl::tD HaliteListViewCtrl::convert(const LPLVITEM item)
-{	
-	win_c_str<std::wstring> str(MAX_PATH);
-	GetItemText(item->iItem, 0, str, str.size());
-
-	return hal::bittorrent().torrentDetails().get(str);
-}
-
-void HaliteListViewCtrl::convert(LPLVITEM item, const HaliteListViewCtrl::AdapterType tD)
-{
-	win_c_str<std::wstring> str(MAX_PATH);
-
-	GetItemText(item);
-}
-*/
 LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
@@ -245,10 +218,15 @@ LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWn
 
 LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	foreach(const list_value_type& v, std::make_pair(is_selected_begin(), is_selected_end()))
+	is_selected_iterator i=is_selected_end();
+	if (i != is_selected_begin())
 	{
-		hal::bittorrent().remove_torrent(v.text().c_str());
-		erase_from_list(v);
+		--i;
+		while (i != is_selected_begin())
+		{
+			hal::bittorrent().remove_torrent(i->text().c_str());
+			erase_from_list(*i);
+		} 
 	}
 
 	return 0;
@@ -290,8 +268,6 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 
 	std::set<wpath> uniquePaths;
 
-//	for(std::set<wstring>::const_iterator i=manager().allSelected().begin(), e=manager().allSelected().end();
-//		i != e; ++i)
 	foreach(const list_value_type& v, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
 		wpath saveDir = hal::bittorrent().get(v).save_directory;		
@@ -412,7 +388,8 @@ LRESULT HaliteListViewCtrl::OnAdjustQueuePosition(WORD wNotifyCode, WORD wID, HW
 
 LRESULT HaliteListViewCtrl::OnQueueView(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	queue_view_ ^= true;
+//	queue_view_ ^= true;
+	queue_view_ = false;
 
 	queue_view_mode();
 	
@@ -421,7 +398,7 @@ LRESULT HaliteListViewCtrl::OnQueueView(WORD wNotifyCode, WORD wID, HWND hWndCtl
 
 void HaliteListViewCtrl::queue_view_mode()
 {
-	DeleteAllItems();
+	erase_all_from_list();
 
 	if (queue_view_)
 	{
