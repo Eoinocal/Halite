@@ -645,6 +645,9 @@ protected:
 		{
 			list_item_index = std::distance(pair_container_.begin(), i_pos);
 
+			
+			HAL_DEV_MSG(hal::wform(L"Found, name %1%, list position: %2%.") % pItem->pszText % list_item_index);
+
 			pItem->iItem = list_item_index;
 
 			if ((*i).first)
@@ -654,6 +657,10 @@ protected:
 			}
 
 			SetItem(pItem);
+
+			hal::win_c_str<std::wstring> str(MAX_PATH);
+			GetItemText(4, 0, str, str.size());
+			HAL_DEV_MSG(hal::wform(L" >> set name %1%") % str.str());
 		}
 		else
 		{
@@ -726,6 +733,12 @@ protected:
 			DeleteItem(std::distance(pair_container_.begin(), i_pos));
 			pair_container_.erase(i_pos);
 		}
+	}
+
+	void erase_all_from_list()
+	{
+		pair_container_.clear();
+		DeleteAllItems();
 	}
 	
 private:

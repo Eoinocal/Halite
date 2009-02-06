@@ -155,7 +155,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 
 	// Register UIEvents and the timer for the monitoring interval
 	SetTimer(ID_UPDATE_TIMER, 500);
-	SetTimer(ID_SAVE_TIMER, 5000);
+	SetTimer(ID_SAVE_TIMER, 300000);
 	connectUiUpdate(bind(&HaliteWindow::updateWindow, this));
 	
 	hal::event_log.post(shared_ptr<hal::EventDetail>(
@@ -286,8 +286,8 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 		try
 		{
 
-//		hal::ini().save_data();
-//		hal::bittorrent().save_torrent_data();	
+		hal::ini().save_data();
+		hal::bittorrent().save_torrent_data();	
 	
 		} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::OnTimer(ID_SAVE_TIMER)")
 	}
