@@ -17,14 +17,14 @@
 #include "../HaliteListManager.hpp"
 
 class PeerListView :
-	public CHaliteSortListViewCtrl<PeerListView>,
+	public CHaliteSortListViewCtrl<PeerListView, size_t>,
 	public hal::IniBase<PeerListView>,
 	private boost::noncopyable
 {
 protected:
 	typedef PeerListView thisClass;
 	typedef hal::IniBase<thisClass> iniClass;
-	typedef CHaliteSortListViewCtrl<thisClass> listClass;
+	typedef CHaliteSortListViewCtrl<thisClass, size_t> listClass;
 
 	friend class listClass;
 	
@@ -37,7 +37,9 @@ public:
 	
 	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_DESTROY(OnDestroy)
+
 		REFLECTED_NOTIFY_CODE_HANDLER(SLVN_SORTCHANGED, OnSortChanged)
+		REFLECTED_NOTIFY_CODE_HANDLER(LVN_GETDISPINFO, OnGetDispInfo)
 
 		CHAIN_MSG_MAP(listClass)
 		DEFAULT_REFLECTION_HANDLER()
@@ -77,9 +79,12 @@ public:
 		}	
 					
 		load_from_ini();		
-		
-		SetColumnSortType(2, hal::peer_detail::speed_down_e + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), NULL);		
-		SetColumnSortType(3, hal::peer_detail::speed_up_e + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), NULL);
+
+	for (unsigned i=0, e = hal::peer_detail::status_e-hal::peer_detail::ip_address_e; i <= e; ++i)
+		SetColumnSortType(i, i + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), NULL);		
+
+	//	SetColumnSortType(2, hal::peer_detail::speed_down_e + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), NULL);		
+	//	SetColumnSortType(3, hal::peer_detail::speed_up_e + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), NULL);
 		
 		return true;
 	}
@@ -89,7 +94,10 @@ public:
 		saveSettings();
 	}
 
+	LRESULT OnGetDispInfo(int, LPNMHDR pnmh, BOOL&);
 	LRESULT OnSortChanged(int, LPNMHDR pnmh, BOOL&);
+
+	bool sort_list_comparison(size_t l,  size_t r, size_t index, bool ascending);
 	
 	friend class boost::serialization::access;
 	template<class Archive>

@@ -91,6 +91,28 @@ bool HaliteListViewCtrl::sort_list_comparison(std::wstring l, std::wstring r, si
 		hal::bittorrent().torrentDetails().get(l), hal::bittorrent().torrentDetails().get(r), index, ascending);
 }
 
+LRESULT HaliteListViewCtrl::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
+{	
+	hal::try_update_lock<listClass> lock(*this);
+	if (lock) 
+	{	
+
+	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
+	hal::torrent_details_ptr td = hal::bittorrent().torrentDetails().get(key_from_index(pdi->item.iItem));
+
+	if (td && pdi->item.mask & LVIF_TEXT)
+	{
+		wstring str = td->to_wstring(pdi->item.iSubItem);
+		
+		size_t len = str.copy(pdi->item.pszText, min(pdi->item.cchTextMax - 1, static_cast<int>(str.size())));
+		pdi->item.pszText[len] = '\0';
+	}
+
+	}
+	
+	return 0;
+}
+
 void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 {
 	hal::try_update_lock<listClass> lock(*this);
@@ -116,14 +138,14 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 			sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSortDescending());
 	}
 
-//	if (IsGroupViewEnabled())
+	if (queue_view_)
 		sort(hal::torrent_details::managed_e, false);
 
 	bool sort_once = IsSortOnce();
 
-			hal::win_c_str<std::wstring> str(MAX_PATH);
-			GetItemText(4, 0, str, str.size());
-			HAL_DEV_MSG(hal::wform(L" >> set name %1%") % str.str());
+	hal::win_c_str<std::wstring> str(MAX_PATH);
+	GetItemText(4, 0, str, str.size());
+	HAL_DEV_MSG(hal::wform(L" >> set name %1%") % str.str());
 
 	// Update details here.
 	for (size_t td_index=0, e=tD.torrents().size(); td_index<e; ++td_index)
@@ -159,13 +181,9 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 
 		lvItem.mask |= LVIF_IMAGE;
 		lvItem.iImage = 0;
-
 		item_pos = InsertKeyItem(td->name(), &lvItem);
 
-		for (size_t i=1; i<NumberOfColumns_s; ++i)
-		{
-			SetItemText(item_pos, i, td->to_wstring(i).c_str());
-		}
+		InvalidateRect(NULL,true);
 	}
 
 	}
