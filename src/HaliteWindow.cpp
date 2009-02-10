@@ -116,7 +116,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 		new hal::EventMsg(L"Creating main listview...")));	
 	// Create ListView and Dialog
 	haliteList.Create(m_Split.m_hWnd, rc, NULL, 
-		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS);
+		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS|LVS_OWNERDATA);
 //	haliteList.manager().attach(bind(&HaliteWindow::issueUiUpdate, this));
 
 
@@ -301,9 +301,9 @@ void HaliteWindow::issueUiUpdate()
 {	
 	try
 	{
-		std::set<wstring> s;
+	std::set<wstring> s;
 
-		foreach(const HaliteListViewCtrl::listClass::list_value_type val, std::make_pair(haliteList.is_selected_begin(), haliteList.is_selected_end()))
+	foreach(const HaliteListViewCtrl::listClass::list_value_type val, std::make_pair(haliteList.is_selected_begin(), haliteList.is_selected_end()))
 	{
 		s.insert(val.text().c_str());
 	}
@@ -529,7 +529,7 @@ LRESULT HaliteWindow::OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& 
 	wstring title = hal::app().res_wstr(HAL_NEWT_DIALOG_TITLE);
 
 	NewTorrentDialog newTorrent(title.c_str());	
-    newTorrent.DoModal();
+	newTorrent.DoModal();
 	
 	return 0;
 }
@@ -537,7 +537,7 @@ LRESULT HaliteWindow::OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& 
 LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	ConfigOptionsProp sheet(this, L"Settings");	
-    sheet.DoModal();
+	sheet.DoModal();
 	
 	hal::config().settingsChanged();
 	setCorrectDialog();
@@ -564,7 +564,7 @@ LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL
 LRESULT HaliteWindow::OnHelp(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	ConfigOptionsProp sheet(this, L"Settings", 4);	
-    sheet.DoModal();
+	sheet.DoModal();
 	
 	hal::config().settingsChanged();
 	
@@ -579,8 +579,7 @@ LRESULT HaliteWindow::OnToolbarExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BO
 }
 
 LRESULT HaliteWindow::OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-{
-	
+{	
 	return 0;
 }
 

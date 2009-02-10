@@ -634,6 +634,17 @@ protected:
 
 	typedef typename pair_container::index_iterator<by_key>::type key_iterator;
 
+	int InsertKeyItem(DataType key)
+	{
+		LVITEM lvItem = { 0 };
+		lvItem.mask = LVIF_STATE;
+		lvItem.stateMask = LVIS_SELECTED;
+		lvItem.state = 0;
+		lvItem.iSubItem = 0;
+
+		return InsertKeyItem(key, &lvItem);
+	}
+
 	int InsertKeyItem(DataType key, LVITEM* pItem)
 	{
 		key_iterator i = pair_container_.get<by_key>().find(key);
@@ -644,10 +655,6 @@ protected:
 		if (i != pair_container_.get<by_key>().end())
 		{
 			list_item_index = std::distance(pair_container_.begin(), i_pos);
-
-			
-			HAL_DEV_MSG(hal::wform(L"Found, name %1%, list position: %2%.") % pItem->pszText % list_item_index);
-
 			pItem->iItem = list_item_index;
 
 			if ((*i).first)
@@ -660,7 +667,6 @@ protected:
 
 			hal::win_c_str<std::wstring> str(MAX_PATH);
 			GetItemText(4, 0, str, str.size());
-			HAL_DEV_MSG(hal::wform(L" >> set name %1%") % str.str());
 		}
 		else
 		{
@@ -710,6 +716,13 @@ protected:
 			bind(&thisClass::data_type_comparison, this, _1, _2, index, ascending));
 
 		pair_container_.rearrange(sv.begin());
+	}
+
+	DataType key_from_index(size_t index)
+	{
+		list_pair_t pi = pair_container_[index];
+
+		return pi.second;
 	}
 
 	void erase_from_list(const list_value_type& val)
