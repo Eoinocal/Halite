@@ -23,11 +23,14 @@ bool PeerListView::sort_list_comparison(size_t l, size_t r, size_t index, bool a
 
 LRESULT PeerListView::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 {	
+	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
+
+	HAL_DEV_MSG(hal::wform(L"OnGetDispInfo index = %1% size = %2%") % pdi->item.iItem % peer_details_.size());
+
 	hal::try_update_lock<listClass> lock(*this);
-	if (lock) 
+	if (lock && peer_details_.size() >= pdi->item.iItem) 
 	{	
 
-	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
 	hal::peer_detail& pd = peer_details_[pdi->item.iItem];
 
 	if (pdi->item.mask & LVIF_TEXT)
@@ -87,22 +90,23 @@ void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 			{
 				int index = GetColumnSortType(GetSecondarySortColumn());
 				
-				if (index > WTL::LVCOLSORT_LAST)
-					sort(index - (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), IsSecondarySortDescending());
+				if (index > WTL::LVCOLSORT_LAST);
+			//		sort(index - (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), IsSecondarySortDescending());
 			}
 
 			int index = GetColumnSortType(col_sort_index);
 			
-			if (index > WTL::LVCOLSORT_LAST)
-				sort(index - (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), IsSortDescending());
+			if (index > WTL::LVCOLSORT_LAST);
+		//		sort(index - (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), IsSortDescending());
 		}
 
 		bool sort_once = IsSortOnce();
 		
-		SetItemCountEx(peer_details_.size(), LVSICF_NOSCROLL);
-		InvalidateRect(NULL,true);
+	//	SetItemCountEx(peer_details_.size(), LVSICF_NOSCROLL);
+	//	InvalidateRect(NULL,true);
 
-		return;
+	//	return;
+		erase_all_from_list();
 
 		// Add additional details	
 		for (size_t index = 0, e = peer_details_.size(); index < e; ++index)
@@ -114,7 +118,7 @@ void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 			HAL_DEV_SORT_MSG(hal::wform(L"AutoSort() = %1%, SortOnce() = %2%, !AutoSort() && !SortOnce() = %3%") 
 				% AutoSort() % sort_once % (!AutoSort() && !sort_once));
 
-			if (!AutoSort() && !sort_once)
+	/*		if (!AutoSort() && !sort_once)
 			{
 				LV_FINDINFO findInfo; 
 				findInfo.flags = LVFI_STRING;
@@ -126,11 +130,11 @@ void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 			if (item_pos == -1 || item_pos > GetItemCount())
 				item_pos = AddItem(GetItemCount(), 0, pd.to_wstring(hal::peer_detail::ip_address_e).c_str(), 0);
 			
-			
+	*/		
 			HAL_DEV_SORT_MSG(hal::wform(L"item_pos = %1%") % item_pos);
-			item_pos = InsertKeyItem(index);
+			item_pos = set_key(index);
 
-			InvalidateRect(NULL,true);
+			InvalidateRect(NULL, true);
 
 	/*		SetItemData(item_pos, index);			
 

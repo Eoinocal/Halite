@@ -128,18 +128,18 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 		{
 			int index = GetColumnSortType(GetSecondarySortColumn());
 			
-			if (index > WTL::LVCOLSORT_LAST)
+			if (index > WTL::LVCOLSORT_LAST);
 				sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSecondarySortDescending());
 		}
 
 		int index = GetColumnSortType(col_sort_index);
 		
-		if (index > WTL::LVCOLSORT_LAST)
+		if (index > WTL::LVCOLSORT_LAST);
 			sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSortDescending());
 	}
 
-	if (queue_view_)
-		sort(hal::torrent_details::managed_e, false);
+	if (queue_view_);
+//		sort(hal::torrent_details::managed_e, false);
 
 	bool sort_once = IsSortOnce();
 
@@ -147,6 +147,8 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	GetItemText(4, 0, str, str.size());
 	HAL_DEV_MSG(hal::wform(L" >> set name %1%") % str.str());
 
+	selection_from_listview();
+	
 	// Update details here.
 	for (size_t td_index=0, e=tD.torrents().size(); td_index<e; ++td_index)
 	{
@@ -181,7 +183,7 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 
 		lvItem.mask |= LVIF_IMAGE;
 		lvItem.iImage = 0;
-		item_pos = InsertKeyItem(td->name(), &lvItem);
+		item_pos = set_key_item(td->name(), &lvItem);
 
 		InvalidateRect(NULL,true);
 	}
