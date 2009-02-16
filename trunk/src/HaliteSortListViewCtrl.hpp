@@ -778,6 +778,15 @@ protected:
 		}
 	}
 
+	void erase_not_within_set(std::set<DataType> s)
+	{
+		for (pair_container::iterator i=pair_container_.begin(), e = pair_container_.end(); i!=e; ++i)
+		{
+			if (s.find((*i).second) == s.end())
+				erase_from_list((*i).second);
+		}
+	}
+
 	void erase_all_from_list()
 	{
 		pair_container_.clear();

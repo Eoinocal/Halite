@@ -17,14 +17,14 @@
 #include "../HaliteListManager.hpp"
 
 class PeerListView :
-	public CHaliteSortListViewCtrl<PeerListView, size_t>,
+	public CHaliteSortListViewCtrl<PeerListView, std::wstring>,
 	public hal::IniBase<PeerListView>,
 	private boost::noncopyable
 {
 protected:
 	typedef PeerListView thisClass;
 	typedef hal::IniBase<thisClass> iniClass;
-	typedef CHaliteSortListViewCtrl<thisClass, size_t> listClass;
+	typedef CHaliteSortListViewCtrl<thisClass, std::wstring> listClass;
 
 	friend class listClass;
 	
@@ -97,7 +97,7 @@ public:
 	LRESULT OnGetDispInfo(int, LPNMHDR pnmh, BOOL&);
 	LRESULT OnSortChanged(int, LPNMHDR pnmh, BOOL&);
 
-	bool sort_list_comparison(size_t l,  size_t r, size_t index, bool ascending);
+	bool sort_list_comparison(std::wstring l,  std::wstring r, size_t index, bool ascending);
 	
 	friend class boost::serialization::access;
 	template<class Archive>
