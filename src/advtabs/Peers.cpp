@@ -12,12 +12,14 @@
 
 #include "Peers.hpp"
 
-bool PeerListView::sort_list_comparison(size_t l, size_t r, size_t index, bool ascending)
+bool PeerListView::sort_list_comparison(std::wstring l, std::wstring r, size_t index, bool ascending)
 {
-	hal::try_update_lock<listClass> lock(*this);
+/*	hal::try_update_lock<listClass> lock(*this);
 
 	return hal::hal_details_compare(
 		peer_details_[l], peer_details_[r], index, ascending);
+		*/
+	return true;
 }
 
 
@@ -97,7 +99,7 @@ void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 			int index = GetColumnSortType(col_sort_index);
 			
 			if (index > WTL::LVCOLSORT_LAST);
-		//		sort(index - (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), IsSortDescending());
+				sort(index - (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), IsSortDescending());
 		}
 
 		bool sort_once = IsSortOnce();
@@ -132,7 +134,7 @@ void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 			
 	*/		
 			HAL_DEV_SORT_MSG(hal::wform(L"item_pos = %1%") % item_pos);
-			item_pos = set_key(index);
+			item_pos = set_key(pd.ip_address);
 
 			InvalidateRect(NULL, true);
 
