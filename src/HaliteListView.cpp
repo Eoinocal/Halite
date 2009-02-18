@@ -147,7 +147,7 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	GetItemText(4, 0, str, str.size());
 	HAL_DEV_MSG(hal::wform(L" >> set name %1%") % str.str());
 
-	selection_from_listview();
+	//selection_from_listview();
 	
 	// Update details here.
 	for (size_t td_index=0, e=tD.torrents().size(); td_index<e; ++td_index)

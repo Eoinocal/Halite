@@ -48,7 +48,7 @@ struct peer_detail
 	}
 	
 	bool less(const peer_detail& r, size_t index = 0) const;
-	std::wstring to_wstring(size_t index = 0);
+	std::wstring to_wstring(size_t index = 0) const;
 	
 	std::wstring ip_address;
 	std::wstring country;
@@ -58,9 +58,30 @@ struct peer_detail
 	std::wstring status;
 };
 
-typedef boost::shared_ptr<peer_detail> peer_detail_ptr;
-typedef std::vector<peer_detail> peer_details_vec;
+class peer_details_vec : public std::set<peer_detail>
+{
+public:
+	typedef boost::optional<const peer_detail&> optional_type;
 
-void peer_details_sort(peer_details_vec& p, size_t index, bool cmp_less = true);
+	optional_type find_peer(const std::wstring& ip_address)
+	{
+		return find_peer(peer_detail(ip_address));
+	}
+
+	optional_type find_peer(const peer_detail& pd)
+	{
+		std::set<peer_detail>::const_iterator i = find(pd);
+
+		if (i != end())
+			return optional_type(*i);
+		else
+			return optional_type();
+	}
+
+private:
+	//std::set<peer_detail> details_;
+};
+
+//void peer_details_sort(peer_details_vec& p, size_t index, bool cmp_less = true);
 
 };

@@ -657,32 +657,36 @@ protected:
 		return set_key_item(key, &lvItem);
 	}
 
+	template<typename T>
+	void set_keys(T s)
+	{
+		foreach (const DataType& key, s)
+		{
+			set_key(key);
+		}
+	}
+
 	int set_key_item(DataType key, LVITEM* pItem)
 	{
+		ATLASSERT(::IsWindow(m_hWnd));
+
 		key_iterator i = pair_container_.get<by_key>().find(key);
-		pair_container::iterator i_pos = pair_container_.project<0>(i);
+		boost::optional<size_t> index = index_from_key(key);
 
-		int list_item_index = -1;
-
-		if (i != pair_container_.get<by_key>().end())
+		if (index)
 		{
-			list_item_index = std::distance(pair_container_.begin(), i_pos);
-			pItem->iItem = list_item_index;
-
-			HAL_DEV_SORT_MSG(hal::wform(L" index %1%, selected %2%") % list_item_index % (*i).first);
+			HAL_DEV_MSG(hal::wform(L"Existing index %1%, key %3%, selected %2%") % *index % (*i).first % key);
 
 			if ((*i).first)
-			{
-				SetItemState(list_item_index, LVIS_SELECTED, LVIS_SELECTED);
-			//	pItem->stateMask |= LVIS_SELECTED;
-			//	pItem->state |= LVIS_SELECTED;
-			}
+				SetItemState(*index, LVIS_SELECTED, LVIS_SELECTED);
 			else
-				SetItemState(list_item_index, 0, LVIS_SELECTED);
+				SetItemState(*index, 0, LVIS_SELECTED);
+
+			return *index;
 		}
 		else
 		{
-			list_item_index = pair_container_.size();
+			int list_item_index = pair_container_.size();
 
 			bool selected = (pItem->stateMask & LVIS_SELECTED) && (pItem->state & LVIS_SELECTED);
 			list_pair_t lp = list_pair_t(selected, key);
@@ -691,10 +695,11 @@ protected:
 
 			SetItemCountEx(pair_container_.size(), LVSICF_NOSCROLL);
 			SetItemState(list_item_index, 0, LVIS_SELECTED);
-		}
 
-		ATLASSERT(::IsWindow(m_hWnd));
-		return list_item_index;
+			HAL_DEV_MSG(hal::wform(L"New index %1%, key %3%, selected %2%") % list_item_index % false % key);
+
+			return list_item_index;
+		}
 	}
 
 	bool data_type_comparison(list_pair_t r, list_pair_t l, size_t index, bool ascending)
@@ -716,10 +721,10 @@ protected:
 				i_pos.first = false;
 
 			
-			HAL_DEV_SORT_MSG(hal::wform(L" Name %1%, index %2%, selected %3%") % val.text() % val.index() % i_pos.first);
+			HAL_DEV_MSG(hal::wform(L" Name %1%, index %2%, selected %3%") % val.text() % val.index() % i_pos.first);
 		}
 		
-		HAL_DEV_SORT_MSG(hal::wform(L" -----"));
+		HAL_DEV_MSG(hal::wform(L" -----"));
 	}
 
 	void sort(size_t index, bool ascending)
@@ -749,7 +754,7 @@ protected:
 		if (i != pair_container_.get<by_key>().end())
 		{
 			pair_container::iterator i_pos = pair_container_.project<0>(i);	
-			return = std::distance(pair_container_.begin(), i_pos);
+			return std::distance(pair_container_.begin(), i_pos);
 		}
 		else
 			return boost::optional<size_t>();
@@ -778,12 +783,23 @@ protected:
 		}
 	}
 
-	void erase_not_within_set(std::set<DataType> s)
+	void erase_based_on_set(std::set<DataType> s, bool within=true)
 	{
-		for (pair_container::iterator i=pair_container_.begin(), e = pair_container_.end(); i!=e; ++i)
-		{
-			if (s.find((*i).second) == s.end())
-				erase_from_list((*i).second);
+		for (pair_container::iterator i=pair_container_.begin(), e=pair_container_.end(); i!=e; /**/)
+		{			
+			HAL_DEV_SORT_MSG(hal::wform(L" Checking %1%,") % (*i).second);
+
+			if ((s.find((*i).second) != s.end()) ^ within)
+			{				
+				HAL_DEV_SORT_MSG(hal::wform(L" Erasing,"));
+				
+				DeleteItem(std::distance(pair_container_.begin(), i));
+				i  = pair_container_.erase(i);
+			}
+			else
+			{
+				++i;
+			}
 		}
 	}
 

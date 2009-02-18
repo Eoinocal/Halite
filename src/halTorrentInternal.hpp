@@ -747,7 +747,7 @@ public:
 		{
 			foreach (libt::peer_info peer, peers_) 
 			{
-				peer_details.push_back(peer);
+				peer_details.insert(peer);
 			}	
 		}
 	}
