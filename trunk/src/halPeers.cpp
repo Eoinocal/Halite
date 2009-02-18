@@ -100,7 +100,7 @@ bool peer_detail::less(const peer_detail& r, size_t index) const
 	};
 }
 
-std::wstring peer_detail::to_wstring(size_t index)
+std::wstring peer_detail::to_wstring(size_t index) const
 {
 	switch (index)
 	{
@@ -118,10 +118,11 @@ std::wstring peer_detail::to_wstring(size_t index)
 	};
 }
 
+/*
 void peer_details_sort(peer_details_vec& p, size_t index, bool cmp_less)
 {
 	std::stable_sort(p.begin(), p.end(), 
 		bind(&hal_details_compare<const peer_detail&>, _1, _2, index, cmp_less));
 }
-
+*/
 };
