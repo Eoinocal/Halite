@@ -23,12 +23,11 @@ bool PeerListView::sort_list_comparison(std::wstring l, std::wstring r, size_t i
 		return false;
 }
 
-
 LRESULT PeerListView::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 {	
 	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
 
-//	HAL_DEV_MSG(hal::wform(L"OnGetDispInfo index = %1% size = %2%") % pdi->item.iItem % peer_details_.size());
+	HAL_DEV_SORT_MSG(hal::wform(L"OnGetDispInfo index = %1% size = %2%") % pdi->item.iItem % peer_details_.size());
 
 	hal::try_update_lock<listClass> lock(*this);
 	if (lock && peer_details_.size() >= pdi->item.iItem) 
@@ -70,37 +69,25 @@ void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 		
 		erase_based_on_set(ip_set, true);
 
-		int col_sort_index = GetSortColumn();
-
-		if (col_sort_index != -1)
-		{		
+		if (IsSortOnce() || AutoSort())
+		{
 			if (GetSecondarySortColumn() != -1)
 			{
-				int index = GetColumnSortType(GetSecondarySortColumn());
-				
-				if (index > WTL::LVCOLSORT_LAST);
-			//		sort(index - (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), IsSecondarySortDescending());
+				int index = GetColumnSortType(GetSecondarySortColumn());					
+				if (index > WTL::LVCOLSORT_LAST)
+					sort(index - (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), IsSecondarySortDescending());
 			}
 
-			int index = GetColumnSortType(col_sort_index);
-			
-			if (index > WTL::LVCOLSORT_LAST);
-				sort(index - (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), IsSortDescending());
+			if (GetSortColumn() != -1)
+			{		
+				int index = GetColumnSortType(GetSortColumn());				
+				if (index > WTL::LVCOLSORT_LAST)
+					sort(index - (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), IsSortDescending());
+			}
 		}
-
-		bool sort_once = IsSortOnce();
 		
-		set_keys(ip_set);
-		
-	//	SetItemCountEx(peer_details_.size(), LVSICF_NOSCROLL);
+		set_keys(ip_set);		
 		InvalidateRect(NULL,true);
-
-
-	/*	if (AutoSort() && col_sort_index >= 0 && col_sort_index < m_arrColSortType.GetSize())
-		{
-			if (GetColumnSortType(col_sort_index) <= WTL::LVCOLSORT_CUSTOM)
-				DoSortItems(col_sort_index, IsSortDescending());
-		}*/
 	}
 }
 

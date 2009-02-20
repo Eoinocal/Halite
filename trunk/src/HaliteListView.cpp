@@ -118,38 +118,42 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	hal::try_update_lock<listClass> lock(*this);
 	if (lock) 
 	{		
-	
-	int col_sort_index = GetSortColumn();
 
-	// Perform external ListView sort here.
-	if (col_sort_index != -1)
-	{		
+	selection_from_listview();
+		
+	std::set<std::wstring> torrent_set;
+	for (size_t td_index=0, e=tD.torrents().size(); td_index<e; ++td_index)
+	{
+		hal::torrent_details_ptr td = tD.torrents()[td_index];
+		torrent_set.insert(td->name());
+	}
+	
+	erase_based_on_set(torrent_set, true);	
+
+	if (IsSortOnce() || AutoSort())
+	{
 		if (GetSecondarySortColumn() != -1)
 		{
-			int index = GetColumnSortType(GetSecondarySortColumn());
-			
-			if (index > WTL::LVCOLSORT_LAST);
+			int index = GetColumnSortType(GetSecondarySortColumn());					
+			if (index > WTL::LVCOLSORT_LAST)
 				sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSecondarySortDescending());
 		}
 
-		int index = GetColumnSortType(col_sort_index);
-		
-		if (index > WTL::LVCOLSORT_LAST);
-			sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSortDescending());
+		if (GetSortColumn() != -1)
+		{		
+			int index = GetColumnSortType(GetSortColumn());				
+			if (index > WTL::LVCOLSORT_LAST)
+				sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSortDescending());
+		}
 	}
-
-	if (queue_view_);
-//		sort(hal::torrent_details::managed_e, false);
-
-	bool sort_once = IsSortOnce();
-
-	hal::win_c_str<std::wstring> str(MAX_PATH);
-	GetItemText(4, 0, str, str.size());
-	HAL_DEV_MSG(hal::wform(L" >> set name %1%") % str.str());
-
-	//selection_from_listview();
 	
-	// Update details here.
+	if (queue_view_)
+		sort(hal::torrent_details::managed_e, false);
+
+	set_keys(torrent_set);	
+	InvalidateRect(NULL,true);
+
+/*	// Update details here.
 	for (size_t td_index=0, e=tD.torrents().size(); td_index<e; ++td_index)
 	{
 		hal::torrent_details_ptr td = tD.torrents()[td_index];
@@ -187,7 +191,7 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 
 		InvalidateRect(NULL,true);
 	}
-
+*/
 	}
 }
 
