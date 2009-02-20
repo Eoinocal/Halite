@@ -38,22 +38,6 @@
 #include "WTLx/ListViewSortMixin.hpp"
 #include "HaliteUpdateLock.hpp"
 
-namespace hal
-{
-/*
-template<typename T>
-int compare(const T& l, const T& r)
-{
-	if (l == r) 
-		return 0;
-	else if (l > r) 
-		return 1;
-	else 
-		return -1;
-}
-*/
-
-}
 template <class TBase, typename DataType=void*>
 class CHaliteSortListViewCtrl : 
 	public ATL::CWindowImpl<TBase, WTL::CListViewCtrl>,
@@ -115,19 +99,11 @@ public:
 		thisClass& listView_;
 	};
 	
-/*	struct ColumnAdapter
-	{
-		virtual int compare(AdapterType& l, AdapterType& r) = 0;
-		virtual std::wstring print(AdapterType& t) = 0;
-	};
-*/
-
 public:
 	typedef WTLx::selection_manager<thisClass, std::wstring> SelectionManager;
 	typedef SelectionManager selection_manage_class;
 	
 	thisClass() :
-	//	manager_(*this),
 		header_(*this),
 		update_lock_(0),
 		auto_sort_(false),
@@ -355,7 +331,7 @@ public:
 
 	bool DoSortItemsExternal(int iCol, bool bDescending = false)
 	{
-		HAL_DEV_MSG(hal::wform(L"sort_once_ = %1%") % sort_once_);
+		HAL_DEV_SORT_MSG(hal::wform(L"sort_once_ = %1%") % sort_once_);
 
 		sort_once_ = true;
 
@@ -512,8 +488,6 @@ public:
 	}
 
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
-
-//	const SelectionManager& manager() { return manager_; }
 		
 	std::vector<int>& ListColumnWidth() { return listColumnWidth_; }
 	std::vector<int>& ListColumnOrder() { return listColumnOrder_; }
@@ -523,81 +497,20 @@ public:
 	
 	bool CanUpdate() const { return updateLock_ == 0; }
 	
-//	void clearFocused() { manager_.clear(); }
-//	void clearSelected() { manager_.clear_all_selected(); }
-//	void clearAll() { manager_.clear_all(); }
-	
-/*	int CompareItemsCustom(LVCompareParam* pItem1, LVCompareParam* pItem2, int iSortCol)
-	{
-		hal::mutex_update_lock<thisClass> lock(*this);
-		
-		TBase* pT = static_cast<TBase*>(this);
-		
-		AdapterType left = pT->CustomItemConversion(pItem1, iSortCol);
-		AdapterType right = pT->CustomItemConversion(pItem2, iSortCol);
-		
-		return pT->CustomItemComparision(left, right, iSortCol);
-	}
-*/
 	bool AutoSort() { return auto_sort_; }
 	
-/*	void ConditionallyDoAutoSort()
-	{
-		int iCol = GetSortColumn();
-		if (AutoSort() && iCol >= 0 && iCol < m_arrColSortType.GetSize())
-			DoSortItems(iCol, IsSortDescending());	
-	}
-*/		
-/*	ColumnAdapter* getColumnAdapter(size_t index)
-	{
-		boost::ptr_map<size_t, ColumnAdapter>::iterator 
-			i = column_adapters_.find(index);
-	
-		if (i != column_adapters_.end())
-		{
-			return i->second;
-		}		
-		return NULL;
-	}
-*/
 	static bool is_selected (const winstl::listview_sequence::sequence_value_type& v) 
 	{ 
 		return (v.state() & LVIS_SELECTED) != 0; 
 	}
 
-protected:	
-/*	inline void* CustomItemConversion(LVCompareParam* param, int iSortCol)
-	{
-		assert(false);
-		return NULL;
-	}
-	
-	int CustomItemComparision(AdapterType left, AdapterType right, int iSortCol)
-	{
-		ColumnAdapter* pCA = getColumnAdapter(iSortCol);
-		
-		if (pCA)
-			return pCA->compare(left, right);
-		else 
-			return 0;
-	}
-*/
-/*	void regColumnAdapter(size_t key, ColumnAdapter* colAdapter)
-	{
-		assert (colAdapter);
-		column_adapters_.insert(key, colAdapter);
-	}
-*/
-//	AdapterType convert(const LPLVITEM item);
-//	void convert(LPLVITEM item, AdapterType adapter);
-	
+protected:		
 	mutable int update_lock_;
 	mutable hal::mutex_t mutex_;
 
 	friend class hal::mutex_update_lock<thisClass>;	
 	friend class hal::try_update_lock<thisClass>;	
 
-//	SelectionManager manager_;
 	WTL::CMenu menu_;
 	CHaliteHeaderCtrl header_;	
 
@@ -675,7 +588,7 @@ protected:
 
 		if (index)
 		{
-			HAL_DEV_MSG(hal::wform(L"Existing index %1%, key %3%, selected %2%") % *index % (*i).first % key);
+			HAL_DEV_SORT_MSG(hal::wform(L"Existing index %1%, key %3%, selected %2%") % *index % (*i).first % key);
 
 			if ((*i).first)
 				SetItemState(*index, LVIS_SELECTED, LVIS_SELECTED);
@@ -696,7 +609,7 @@ protected:
 			SetItemCountEx(pair_container_.size(), LVSICF_NOSCROLL);
 			SetItemState(list_item_index, 0, LVIS_SELECTED);
 
-			HAL_DEV_MSG(hal::wform(L"New index %1%, key %3%, selected %2%") % list_item_index % false % key);
+			HAL_DEV_SORT_MSG(hal::wform(L"New index %1%, key %3%, selected %2%") % list_item_index % false % key);
 
 			return list_item_index;
 		}
@@ -721,15 +634,14 @@ protected:
 				i_pos.first = false;
 
 			
-			HAL_DEV_MSG(hal::wform(L" Name %1%, index %2%, selected %3%") % val.text() % val.index() % i_pos.first);
+			HAL_DEV_SORT_MSG(hal::wform(L" Name %1%, index %2%, selected %3%") % key_from_index(val.index()) % val.index() % i_pos.first);
 		}
 		
-		HAL_DEV_MSG(hal::wform(L" -----"));
+		HAL_DEV_SORT_MSG(hal::wform(L" -----"));
 	}
 
 	void sort(size_t index, bool ascending)
 	{	
-		selection_from_listview();
 		std::vector<implicit_reference_wrapper<const list_pair_t> > sv;
 
 		std::copy(pair_container_.begin(), pair_container_.end(), std::back_inserter(sv));

@@ -81,7 +81,7 @@ public:
 		load_from_ini();		
 
 		for (unsigned i=0, e = hal::peer_detail::status_e-hal::peer_detail::ip_address_e; i <= e; ++i)
-			SetColumnSortType(i, i + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), NULL);		
+			SetColumnSortType(i, i + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e));		
 
 	//	SetColumnSortType(2, hal::peer_detail::speed_down_e + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), NULL);		
 	//	SetColumnSortType(3, hal::peer_detail::speed_up_e + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), NULL);
