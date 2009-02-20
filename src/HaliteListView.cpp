@@ -50,9 +50,7 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	SafeLoadFromIni();
 
 	for (unsigned i=0, e = hal::torrent_details::queue_position_e-hal::torrent_details::name_e; i <= e; ++i)
-		SetColumnSortType(i, i + (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), NULL);
-	
-//	SetColumnSortType(0, WTL::LVCOLSORT_TEXTNOCASE, NULL);
+		SetColumnSortType(i, i + (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e));
 	
 	queue_view_mode();
 }
@@ -153,45 +151,6 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	set_keys(torrent_set);	
 	InvalidateRect(NULL,true);
 
-/*	// Update details here.
-	for (size_t td_index=0, e=tD.torrents().size(); td_index<e; ++td_index)
-	{
-		hal::torrent_details_ptr td = tD.torrents()[td_index];
-	
-		int item_pos = td_index;
-		
-		HAL_DEV_SORT_MSG(hal::wform(L"AutoSort() = %1%, SortOnce() = %2%, !AutoSort() && !SortOnce() = %3%") 
-			% AutoSort() % sort_once % (!AutoSort() && !sort_once));
-		
-		HAL_DEV_SORT_MSG(hal::wform(L"Item = %1%, Index = %2%") % td->name() % item_pos);
-
-		LVITEM lvItem = { 0 };
-		lvItem.mask = LVIF_TEXT|LVIF_STATE;
-		lvItem.stateMask = LVIS_SELECTED;
-		lvItem.state = 0;
-		lvItem.iSubItem = 0;
-		lvItem.pszText = (LPTSTR)td->name().c_str();
-
-		if (tD.selected_names().find(td->name()) != tD.selected_names().end())
-			lvItem.state = LVIS_SELECTED;
-
-		if (IsGroupViewEnabled())
-		{
-			lvItem.mask |= LVIF_GROUPID|LVIF_COLUMNS;
-
-			if (td->managed())
-				lvItem.iGroupId = HAL_AUTO_MANAGED;
-			else
-				lvItem.iGroupId = HAL_UNMANAGED;
-		}
-
-		lvItem.mask |= LVIF_IMAGE;
-		lvItem.iImage = 0;
-		item_pos = set_key_item(td->name(), &lvItem);
-
-		InvalidateRect(NULL,true);
-	}
-*/
 	}
 }
 
