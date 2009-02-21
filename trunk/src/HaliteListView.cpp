@@ -379,6 +379,11 @@ LRESULT HaliteListViewCtrl::OnQueueView(WORD wNotifyCode, WORD wID, HWND hWndCtl
 	return 0;
 }
 
+void HaliteListViewCtrl::erase_torrent_name(wstring name)
+{
+	erase_from_list(name);
+}
+
 void HaliteListViewCtrl::queue_view_mode()
 {
 	erase_all_from_list();

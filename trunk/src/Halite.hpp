@@ -10,6 +10,7 @@ using std::string;
 using std::wstring;
 
 using boost::lexical_cast;
+using boost::numeric_cast;
 using boost::array;
 using boost::bind;
 using boost::thread;

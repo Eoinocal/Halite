@@ -79,6 +79,7 @@ extern WTL::CAppModule _Module;
 #include <boost/format.hpp>
 #include <boost/array.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/numeric/conversion/cast.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread/thread.hpp>
 #include <boost/thread/recursive_mutex.hpp>

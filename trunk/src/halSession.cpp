@@ -230,7 +230,8 @@ bool bit_impl::ip_filter_import_dat(boost::filesystem::path file, progress_callb
 				previous = progress;
 				if (fn)
 				{
-					if (fn(progress, total, hal::app().res_wstr(HAL_TORRENT_IMPORT_FILTERS))) 
+					if (fn(boost::numeric_cast<size_t>(progress), boost::numeric_cast<size_t>(total), 
+							hal::app().res_wstr(HAL_TORRENT_IMPORT_FILTERS))) 
 						break;
 				}
 			}
@@ -338,33 +339,7 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 
 	set_piece_hashes(t, to_utf8(params.root_path.string()),
 		boost::bind(fn, _1, t.num_pieces(), hal::app().res_wstr(HAL_NEWT_HASHING_PIECES)));
-/*
-	boost::scoped_ptr<libt::storage_interface> store(
-		default_storage_constructor(const_cast<libt::file_storage&>(t.files()), to_utf8(params.root_path.string()),
-			f_pool));
 
-	// calculate the hash for all pieces
-	int num = t.num_pieces();
-	std::vector<char> piece_buf(t.piece_length());
-
-	for (int i = 0; i < num; ++i)
-	{
-		store->read(&piece_buf[0], i, 0, t.piece_size(i));
-
-		libt::hasher h(&piece_buf[0], t.piece_size(i));
-		t.set_hash(i, h.final());
-
-		if (((i*37) % num == 0) && fn(100*i / num, hal::app().res_wstr(HAL_NEWT_HASHING_PIECES)))
-		{
-			// User canceled torrent creation.
-
-			hal::event_log.post(shared_ptr<hal::EventDetail>(
-				new hal::EventMsg(hal::app().res_wstr(HAL_NEWT_CREATION_CANCELED), hal::event_logger::info)));
-
-			return true;
-		}
-	}
-*/
 	t.set_creator(to_utf8(params.creator).c_str());
 	t.set_comment(to_utf8(params.comment).c_str());
 	
