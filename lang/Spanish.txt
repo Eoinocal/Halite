@@ -223,7 +223,7 @@
 "Shutting down session" --->  "Cerrando sesión"
 "Size" ---> "Tamaño"
 "Standard exception (%1%) thrown from %2%." ---> "Excepción estándar (%1%) lanzada desde %2%."
-"Start Time" --->  ??? 
+"Start Time" --->  "Tiempo de inicio"
 "Status" ---> "Estado"
 "Status:" ---> "Estado:"
 "Stop" ---> "Detener"
@@ -233,7 +233,7 @@
 "Stopping" ---> "Deteniendo"
 "Successfully %1%." --->  "%1% satisfactoriamente."
 "Supports extensions" ---> "Soporta extensiones"
-"Test" --->  ??? 
+"Test" --->  "Prueba"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "No se pudo iniciar la sesión BitTorrent. Prueba a seleccionar otro puerto en las opciones."
 "The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
 "These options set global maximums which will always be honoured." ---> "Estas opciones ajustan los máximos globales y siempre serán respetados."
@@ -248,7 +248,7 @@
 "Torrent Defaults" --->  ??? 
 "Torrent File" ---> "Archivo Torrent"
 "Torrent Root" ---> "Raíz del torrent"
-"Torrent and Data" ---> "Torrend y datos"
+"Torrent and Data" ---> "Torrent y datos"
 "Torrent connection limits:" ---> "Límites de conexión del torrent:"
 "Torrent save folder:" --->  "Directorio de guardado de torrents:"
 "Torrent transfer rates (KB/s):" ---> "Tasas de transferencias del torrent (KB/s):"
@@ -271,7 +271,7 @@
 "URL" --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." ---> "Excepción unicode: %1%."
-"Up" --->  ??? 
+"Up" --->  "Arriba"
 "Update in:" ---> "Actualización en:"
 "Upload Rate (KB/s) :" ---> "Tasa de subida (KB/s) :"
 "Upload" ---> "Subida"
