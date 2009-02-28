@@ -461,7 +461,8 @@ void bit_impl::alert_handler()
 		event_log.post(shared_ptr<EventDetail>(
 			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_DHT_REPLY_ALERT))
-					% a.num_peers)
+					% a.num_peers
+					% get(a.handle)->name())
 		)	);				
 	}
 

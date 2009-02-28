@@ -950,12 +950,13 @@ public:
 	void remove_torrent(const wstring& filename)
 	{
 		try {
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Removing Torrent.")));
 		
 		torrent_internal_ptr pTI = the_torrents_.get(filename);
 		libt::torrent_handle handle = pTI->handle();
 		the_torrents_.erase(filename);
 		
-	//	thread_t t(bind(&bit_impl::removal_thread, this, pTI, false));	
+		thread_t t(bind(&bit_impl::removal_thread, this, pTI, false));	
 		
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "remove_torrent")
 	}
@@ -963,6 +964,7 @@ public:
 	void remove_torrent_wipe_files(const std::wstring& filename)
 	{
 		try {
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Removing Torrent and files.")));
 		
 		torrent_internal_ptr pTI = the_torrents_.get(filename);
 		libt::torrent_handle handle = pTI->handle();
