@@ -201,16 +201,15 @@ LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWn
 
 LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	is_selected_iterator i=is_selected_end();
-	if (i != is_selected_begin())
-	{
-		--i;
-		while (i != is_selected_begin())
-		{
-			hal::bittorrent().remove_torrent(i->text().c_str());
-			erase_from_list(*i);
-		} 
-	}
+	std::set<wstring>  torrent_names;
+
+	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+		torrent_names.insert(hal::to_wstr_shim(val));
+	
+	erase_based_on_set(torrent_names, false);
+
+	foreach(wstring name, torrent_names)
+		hal::bittorrent().remove_torrent(name);
 
 	return 0;
 }
@@ -227,20 +226,15 @@ LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 
 LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	if(MessageBox(hal::app().res_wstr(HAL_LISTVIEW_CONFIRMDELETE).c_str(), 
-				hal::app().res_wstr(HAL_HALITE).c_str(), MB_YESNO) == IDYES)
-	{
-		is_selected_iterator i=is_selected_end();
-		if (i != is_selected_begin())
-		{
-			--i;
-			while (i != is_selected_begin())
-			{
-				hal::bittorrent().remove_torrent_wipe_files(i->text().c_str());
-				erase_from_list(*i);
-			} 
-		}
-	}
+	std::set<wstring>  torrent_names;
+
+	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+		torrent_names.insert(hal::to_wstr_shim(val));
+	
+	erase_based_on_set(torrent_names, false);
+
+	foreach(wstring name, torrent_names)
+		hal::bittorrent().remove_torrent_wipe_files(name);
 
 	return 0;
 }

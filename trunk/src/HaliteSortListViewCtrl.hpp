@@ -695,9 +695,9 @@ protected:
 		}
 	}
 
-	void erase_based_on_set(std::set<DataType> s, bool within=true)
+	void erase_based_on_set(const std::set<DataType>& s, bool within=true)
 	{
-		for (pair_container::iterator i=pair_container_.begin(), e=pair_container_.end(); i!=e; /**/)
+		for (pair_container::const_iterator i=pair_container_.begin(), e=pair_container_.end(); i!=e; /**/)
 		{			
 			HAL_DEV_SORT_MSG(hal::wform(L" Checking %1%,") % (*i).second);
 
