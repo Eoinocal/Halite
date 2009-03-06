@@ -3,8 +3,8 @@
 <?define VerGeneration = "0" ?>
 <?define VerMajor = "3" ?>
 <?define VerMinor = "1" ?>
-<?define VerUpdate = "5" ?>
-<?define VerBuild = "0550" ?>
+<?define VerUpdate = "6" ?>
+<?define VerBuild = "0735" ?>
 
 <?define FullGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor).$(var.VerUpdate) Build $(var.VerBuild)" ?>
 <?define ShortGMmbVersion = "$(var.VerMajor).$(var.VerMinor).$(var.VerUpdate)" ?>
@@ -31,7 +31,7 @@
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product
-      Id="9A922120-7458-4C6D-9DA9-512923EAD311"
+      Id="{A57126CE-C58C-4adf-A951-12A63559CB94}"
       UpgradeCode="45A10CBE-B399-48E5-865E-DBCE99A411E5"
       Name="$(var.ProductName)"
       Language="1033"

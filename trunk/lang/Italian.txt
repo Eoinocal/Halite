@@ -6,7 +6,7 @@
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB su %2$.2fMB"
 "%1% DHT node(s)" --->  ??? 
 "%1% active torrent(s)" ---> "%1% torrent attivi"
-"%1% peers from DHT." --->  ??? 
+"%1% peers from DHT for %2%." --->  ??? 
 "%1% port %2% mapping succeeded." --->  ??? 
 "%1% port mapping request failed." --->  ??? 
 "%1%, %2%." --->  ??? 
