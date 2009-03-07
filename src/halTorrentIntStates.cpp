@@ -80,10 +80,10 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	assert(t_i.handle_.is_valid());
 	t_i.in_session_ = true;
 
-	if (evt.pause())
+//	if (evt.pause())
 		return transit< paused >();
-	else
-		return transit< active >();
+//	else
+//		return transit< active >();
 
 }
 
