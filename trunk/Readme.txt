@@ -1,6 +1,6 @@
 ﻿Halite: A Free Open-Source BitTorrent client
 
-Version: 0.3.1.6 dev 638 released 29th November 2008
+Version: 0.3.1.7 dev 734 released 06th March 2009
 
 WWW:   http://www.binarynotions.com/halite-bittorrent-client 
 Forum: http://www.binarynotions.com/forum.php
@@ -60,14 +60,12 @@ information will be saved alongside the executable simply delete that
 registry key (HKEY_CURRENT_USER\Software\Halite\path). If you only
 ever used the standalone download release this will not be necessary.
 
-Big Known Issues
-
-  + 'Queue View' mode is not supported on Windows 2000.
-  + Sorting in 'Queue View' mode is currently not functional under XP.
-  + CPU usage spikes if the file tab is left open for a torrent with a 
-    large number of separate files.
-
 Changes:
+
+ + from v 0.3.1 to 0.3.1.6:
+   1) Queue View Fixed
+   2) Sorting fixed.
+   3) libtorrent 0.14 integration finished.
 
  + from v 0.3.1 to 0.3.1.6:
    1) Based on libtorrent 0.14 which brings with it:

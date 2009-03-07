@@ -307,13 +307,15 @@ LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndC
 
 LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	for (is_selected_iterator i = is_selected_end(); 
-			i != is_selected_begin() &&  is_selected_begin() != is_selected_end(); /**/)
-	{
-		--i;
-		hal::bittorrent().get(*i).managed = true;
-		erase_from_list(*i);
-	}
+	std::set<wstring>  torrent_names;
+
+	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+		torrent_names.insert(hal::to_wstr_shim(val));
+	
+	erase_based_on_set(torrent_names, false);
+
+	foreach(wstring name, torrent_names)
+		hal::bittorrent().get(name).managed = true;
 
 	halite_window_.issueUiUpdate();
 
@@ -322,13 +324,17 @@ LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCt
 
 LRESULT HaliteListViewCtrl::OnSetUnmanaged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	for (is_selected_iterator i = is_selected_end(); 
-			i != is_selected_begin() &&  is_selected_begin() != is_selected_end(); /**/)
-	{
-		--i;
-		hal::bittorrent().get(*i).managed = false;
-		erase_from_list(*i);
-	}
+	std::set<wstring>  torrent_names;
+
+	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+		torrent_names.insert(hal::to_wstr_shim(val));
+	
+	erase_based_on_set(torrent_names, false);
+
+	foreach(wstring name, torrent_names)
+		hal::bittorrent().get(name).managed = false;
+
+	halite_window_.issueUiUpdate();
 
 	halite_window_.issueUiUpdate();
 

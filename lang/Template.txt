@@ -1,28 +1,36 @@
 "English" ---> "ЏиϊсoδΣ"
 "English.rtf" ---> "../lang/Template.rtf"
+" %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
 "%1$.2fMB of %2$.2fMB" --->  ??? 
 "%1% DHT node(s)" --->  ??? 
 "%1% active torrent(s)" --->  ??? 
+"%1% peers from DHT for %2%." --->  ??? 
+"%1% port %2% mapping succeeded." --->  ??? 
+"%1% port mapping request failed." --->  ??? 
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" --->  ??? 
 "&Resume All" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
-"(DHT will not apply to private torrents)" --->  ??? 
 "About" --->  ??? 
 "Above Normal" --->  ??? 
+"Active downloads :" --->  ??? 
+"Active seeds :" --->  ??? 
+"Active seeds hard limit:" --->  ??? 
 "Active" --->  ??? 
 "Add New Peer" --->  ??? 
 "Add New Tracker" --->  ??? 
 "Add New Web Seed or DHT Node" --->  ??? 
 "Add Torrent" --->  ??? 
 "Add" --->  ??? 
+"Adjust Queue Position" --->  ??? 
 "Advanced GUI" --->  ??? 
 "Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
 "Allocating" --->  ??? 
+"Allocation Mode:" --->  ??? 
 "Allow only one instance to run" --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
@@ -30,11 +38,14 @@
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
 "Are you sure you wish to delete all downloaded data?" --->  ??? 
 "Auto Sort" --->  ??? 
+"Auto-managed" --->  ??? 
 "BitTorrent" --->  ??? 
 "Bittorrent Event: %1%." --->  ??? 
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Block %2% of piece %3% finished. (%1%)" --->  ??? 
 "Both" --->  ??? 
+"Cache Status, Current Total Size : %1.2f MiB" --->  ??? 
+"Cache Write Size :" --->  ??? 
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" --->  ??? 
 "Checking Files" --->  ??? 
@@ -56,6 +67,7 @@
 "Creating a New Torrent File" --->  ??? 
 "Creator" --->  ??? 
 "Critical" --->  ??? 
+"Current Cache Status" --->  ??? 
 "DHT Node" --->  ??? 
 "DHT disabled" --->  ??? 
 "DHT session could not start. Try selecting another port in the settings." --->  ??? 
@@ -69,6 +81,8 @@
 "Dir." --->  ??? 
 "Disabled" --->  ??? 
 "Distributed Hash Tables" --->  ??? 
+"Don't Manage Torrent(s)" --->  ??? 
+"Don't count slow torrents." --->  ??? 
 "Don't download" --->  ??? 
 "Down" --->  ??? 
 "Download Rate (KB/s) :" --->  ??? 
@@ -85,14 +99,16 @@
 "Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" --->  ??? 
-"Enable DHT" --->  ??? 
+"Enable DHT (will not apply to private torrents)" --->  ??? 
 "Enable IP filtering." --->  ??? 
+"Enable Options or libtorrent Plugins" --->  ??? 
 "Enable Protocol Encryption." --->  ??? 
 "Enable Remote Control" --->  ??? 
 "Enabled" --->  ??? 
 "Encoding Level" --->  ??? 
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." --->  ??? 
+"Error!" --->  ??? 
 "Exception caught: %1%, from %2%." --->  ??? 
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
@@ -108,6 +124,7 @@
 "General" --->  ??? 
 "Generated Torrent Name (Cannot change)" --->  ??? 
 "Global Limits" --->  ??? 
+"Globals" --->  ??? 
 "Halite BitTorrent Client" --->  ??? 
 "Halite Debug Dialog" --->  ??? 
 "Halite importing IP ranges..." --->  ??? 
@@ -124,6 +141,7 @@
 "Importing IP Filters..." --->  ??? 
 "Incoming" --->  ??? 
 "Info" --->  ??? 
+"Informed of external IP address: %1%." --->  ??? 
 "Interested in us" --->  ??? 
 "Interesting" --->  ??? 
 "Invalid torrent (%1%) from %2%." --->  ??? 
@@ -136,21 +154,35 @@
 "Log debug events." --->  ??? 
 "Log to file." --->  ??? 
 "Logging" --->  ??? 
+"Manage Torrent(s)" --->  ??? 
+"Managed Downloading" --->  ??? 
+"Managed Seeding" --->  ??? 
+"Managed Torrent" --->  ??? 
+"Managed" --->  ??? 
+"Match the listen port number (recommended)." --->  ??? 
+"Max Size (MiB) :" --->  ??? 
+"Max failures : " --->  ??? 
+"Max replies : " --->  ??? 
 "Maximum" --->  ??? 
 "Message" --->  ??? 
+"Metadata Plugin" --->  ??? 
 "Minimize to tray." --->  ??? 
+"Move Down" --->  ??? 
+"Move To Bottom" --->  ??? 
+"Move To Top" --->  ??? 
+"Move Up" --->  ??? 
 "Move finished torrents to :" --->  ??? 
 "Move the completed torrent to:" --->  ??? 
 "N/A" --->  ??? 
-"NAT-PMG" --->  ??? 
+"NAT-PMP" --->  ??? 
 "Name" --->  ??? 
 "Name:" --->  ??? 
 "New" --->  ??? 
-"None (Managed Externally)" --->  ??? 
 "None" --->  ??? 
 "Normal" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" --->  ??? 
+"OS reported error for file '%1%'" --->  ??? 
 "Ok" --->  ??? 
 "Open &Halite" --->  ??? 
 "Open Download Folder" --->  ??? 
@@ -170,15 +202,17 @@
 "Peers" --->  ??? 
 "Peers:" --->  ??? 
 "Piece %2% finished. (%1%)" --->  ??? 
+"Piece Expiry (sec) :" --->  ??? 
 "Piece Size (KBs)" --->  ??? 
 "Plaintext Encrypted" --->  ??? 
 "Plaintext" --->  ??? 
 "Port %1% open" --->  ??? 
-"Port (UDP) : " --->  ??? 
+"Port (UDP)" --->  ??? 
 "Port : " --->  ??? 
 "Port Forwarding" --->  ??? 
 "Port to listen on : " --->  ??? 
 "Port" --->  ??? 
+"Ports" --->  ??? 
 "Prefer RC4" --->  ??? 
 "Priority" --->  ??? 
 "Private" --->  ??? 
@@ -187,6 +221,9 @@
 "Proxies" --->  ??? 
 "Proxy Host/IP : " --->  ??? 
 "Proxy Settings" --->  ??? 
+"Queue Position" --->  ??? 
+"Queue System" --->  ??? 
+"Queue View" --->  ??? 
 "Queued for Checking" --->  ??? 
 "Queued" --->  ??? 
 "RC4 Encrypted" --->  ??? 
@@ -195,6 +232,8 @@
 "Ratio (this session):" --->  ??? 
 "Ratio" --->  ??? 
 "Ratio:" --->  ??? 
+"Read Cache Hit Ratio :" --->  ??? 
+"Read Size :" --->  ??? 
 "Reannounce" ---> "Reannounce"
 "Recheck Files" --->  ??? 
 "Remaining" --->  ??? 
@@ -203,25 +242,34 @@
 "Remote Control" --->  ??? 
 "Remove" --->  ??? 
 "Reset" --->  ??? 
+"Resolve Countries from IP" --->  ??? 
+"Resume data generated. (%1%)" --->  ??? 
+"Resume data generation failed. (%1%)" --->  ??? 
 "Resume" --->  ??? 
+"Resuming torrent. (%1%)" --->  ??? 
 "Review settings when adding torrent." --->  ??? 
 "Save" --->  ??? 
 "Saving Torrent" --->  ??? 
+"Search banching : " --->  ??? 
 "Security" --->  ??? 
+"Seeding Limits" --->  ??? 
 "Seeding" --->  ??? 
 "Seeds" --->  ??? 
 "Seeds:" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Select a directory to save the files to or cancel to not download torrent at all." --->  ??? 
 "Select a file or directory from which to construct the torrent." --->  ??? 
+"Select a random port within this range." --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." --->  ??? 
 "Send login info to trackers." --->  ??? 
 "Set Priority" --->  ??? 
 "Set as Primary" --->  ??? 
 "Severity" --->  ??? 
+"Share ratio limit:" --->  ??? 
 "Show this message in future" --->  ??? 
 "Shutting down session" --->  ??? 
 "Size" --->  ??? 
+"Smart Ban Plugin" --->  ??? 
 "Standard exception (%1%) thrown from %2%." --->  ??? 
 "Start Time" --->  ??? 
 "Status" --->  ??? 
@@ -241,7 +289,10 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Tier" --->  ??? 
 "Time left:" --->  ??? 
+"Time limit (sec):" --->  ??? 
+"Time ratio limit:" --->  ??? 
 "Time" --->  ??? 
+"Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
 "Torrent (%1%) exception caught: %2% from %3%." --->  ??? 
@@ -250,6 +301,7 @@
 "Torrent Root" --->  ??? 
 "Torrent and Data" --->  ??? 
 "Torrent connection limits:" --->  ??? 
+"Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" --->  ??? 
 "Torrent transfer rates (KB/s):" --->  ??? 
 "Torrent" --->  ??? 
@@ -267,23 +319,31 @@
 "Trackers" --->  ??? 
 "Transferred:" --->  ??? 
 "Type" --->  ??? 
+"UPnP router model (if recognised)." --->  ??? 
+"UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." --->  ??? 
+"Unmanaged" --->  ??? 
 "Up" --->  ??? 
 "Update in:" --->  ??? 
 "Upload Rate (KB/s) :" --->  ??? 
 "Upload" --->  ??? 
 "Uploaded" --->  ??? 
-"Use Compact Allocation." --->  ??? 
 "Use a proxy." --->  ??? 
 "User canceled Torrent file creation" --->  ??? 
 "Username : " --->  ??? 
 "Warning" --->  ??? 
 "Web Seed" --->  ??? 
 "Web Seeds and DHT Nodes" --->  ??? 
+"Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." --->  ??? 
+"\r\0" --->  ??? 
 "libTorrrent based client." --->  ??? 
+"random up to" --->  ??? 
+"resource.h\0" --->  ??? 
 "to" --->  ??? 
+"uTorrent Metadata Plugin" --->  ??? 
+"uTorrent Peer Exchange Plugin" --->  ??? 
 "∞" --->  ??? 

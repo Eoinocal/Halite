@@ -1,28 +1,36 @@
-﻿"English" ---> "Türkçe"
+"English" ---> "Türkçe"
 "English.rtf" ---> "../lang/Turkish.rtf"
+" %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s indir. - %2$.2fKB/s gönd."
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB indir. - %2$.2fMB gönd."
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB, toplam %2$.2fMB"
 "%1% DHT node(s)" ---> "%1% DHT nodu"
 "%1% active torrent(s)" ---> "%1% aktif torrent"
+"%1% peers from DHT for %2%." --->  ??? 
+"%1% port %2% mapping succeeded." --->  ??? 
+"%1% port mapping request failed." --->  ??? 
 "%1%, %2%." ---> "%1%, %2%."
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Eş. (%1%)"
 "&Pause All" ---> "Hepsini &Duraklat"
 "&Resume All" ---> "Hepsine D&evam Et"
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(İ-G) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(İ-G) 0000.000KB/s - 0000.000KB/s"
-"(DHT will not apply to private torrents)" ---> "(DHT özel torrentlere uygulanmayacak)"
 "About" ---> "Hakkında"
 "Above Normal" ---> "Normalin Üstünde"
+"Active downloads :" --->  ??? 
+"Active seeds :" --->  ??? 
+"Active seeds hard limit:" --->  ??? 
 "Active" ---> "Etkin"
 "Add New Peer" ---> "Yeni Eş Ekle"
 "Add New Tracker" ---> "Yeni İzleyici Ekle"
 "Add New Web Seed or DHT Node" ---> "Yeni Web Kaynağı ya da DHT Nod Ekle"
 "Add Torrent" ---> "Torrent Ekle"
 "Add" ---> "Ekle"
+"Adjust Queue Position" --->  ??? 
 "Advanced GUI" ---> "Gelişmiş GUI"
 "Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
 "Allocating" ---> "Yer Hesaplanıyor"
+"Allocation Mode:" --->  ??? 
 "Allow only one instance to run" ---> "Sadece bir tane Halite'in aynı anda çalışmasına izin ver"
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
@@ -30,11 +38,14 @@
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
 "Are you sure you wish to delete all downloaded data?" --->  ??? 
 "Auto Sort" ---> "Otomatik Sırala"
+"Auto-managed" --->  ??? 
 "BitTorrent" ---> "Bittorrent"
 "Bittorrent Event: %1%." ---> "Bittorrent ile İlgili Durum: %1%."
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
 "Block %2% of piece %3% finished. (%1%)" --->  ??? 
 "Both" ---> "Her İki"
+"Cache Status, Current Total Size : %1.2f MiB" --->  ??? 
+"Cache Write Size :" --->  ??? 
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" ---> "İptal"
 "Checking Files" ---> "Dosyalar Kontrol Ediliyor"
@@ -56,6 +67,7 @@
 "Creating a New Torrent File" ---> "Yeni Torrent Dosyası Oluşturuluyor"
 "Creator" ---> "Oluşturan"
 "Critical" ---> "Kritik"
+"Current Cache Status" --->  ??? 
 "DHT Node" ---> "DHT Nodu"
 "DHT disabled" ---> "DHT Etkisiz"
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT oturumu başlatılamadı. Ayarlardan başka bir port seçin."
@@ -69,6 +81,8 @@
 "Dir." ---> "Dir."
 "Disabled" ---> "Etkisiz"
 "Distributed Hash Tables" --->  ??? 
+"Don't Manage Torrent(s)" --->  ??? 
+"Don't count slow torrents." --->  ??? 
 "Don't download" ---> "İndirme"
 "Down" ---> "İnd."
 "Download Rate (KB/s) :" ---> "İndirme Hızı (KB/s) :"
@@ -85,14 +99,16 @@
 "Edit Torrent Save Folders" --->  ??? 
 "Edit Tracker" --->  ??? 
 "Edit" ---> "Düzenle"
-"Enable DHT" ---> "DHT Etkin"
+"Enable DHT (will not apply to private torrents)" --->  ??? 
 "Enable IP filtering." ---> "IP süzgeci etkin"
+"Enable Options or libtorrent Plugins" --->  ??? 
 "Enable Protocol Encryption." ---> "Protokol Şifreleme Etkin"
 "Enable Remote Control" ---> "Uzak Kontrol Etkin"
 "Enabled" ---> "Etkin"
 "Encoding Level" ---> "Şifreleme Seviyesi"
 "Enter any Web Seed URLs and DHT Nodes." --->  ??? 
 "Enter the tracker URLs for the torrent." ---> "Torrent için izleyici URL'lerini girin"
+"Error!" --->  ??? 
 "Exception caught: %1%, from %2%." ---> "Yakalanan istisna: %1%, %2%'den."
 "Failed, %1%" ---> "Başarısız, %1%"
 "Fast resume failed: %2%. (%1%)" --->  ??? 
@@ -108,6 +124,7 @@
 "General" ---> "Genel"
 "Generated Torrent Name (Cannot change)" --->  ??? 
 "Global Limits" ---> "Genel Sınırlar"
+"Globals" --->  ??? 
 "Halite BitTorrent Client" --->  ??? 
 "Halite Debug Dialog" ---> "Halite Hata Ayıklama Penceresi"
 "Halite importing IP ranges..." ---> "Halite IP aralığını içeri aktarıyor..."
@@ -124,6 +141,7 @@
 "Importing IP Filters..." ---> "IP Süzgeçleri İçeri Aktarılıyor..."
 "Incoming" ---> "Gelen"
 "Info" ---> "Bilgi"
+"Informed of external IP address: %1%." --->  ??? 
 "Interested in us" ---> "Bizle ilgilendi"
 "Interesting" ---> "İlgileniyor"
 "Invalid torrent (%1%) from %2%." ---> "Geçersiz torrent (%1%) 'den %2%'ye."
@@ -136,21 +154,35 @@
 "Log debug events." ---> "Hata Ayıklama olaylarını kaydet"
 "Log to file." ---> "Günlüğü dosyaya kaydet"
 "Logging" ---> "Kaydediliyor"
+"Manage Torrent(s)" --->  ??? 
+"Managed Downloading" --->  ??? 
+"Managed Seeding" --->  ??? 
+"Managed Torrent" --->  ??? 
+"Managed" --->  ??? 
+"Match the listen port number (recommended)." --->  ??? 
+"Max Size (MiB) :" --->  ??? 
+"Max failures : " --->  ??? 
+"Max replies : " --->  ??? 
 "Maximum" ---> "Maksimum"
 "Message" ---> "Mesaj"
+"Metadata Plugin" --->  ??? 
 "Minimize to tray." ---> "Simge Durumuna Küçült"
+"Move Down" --->  ??? 
+"Move To Bottom" --->  ??? 
+"Move To Top" --->  ??? 
+"Move Up" --->  ??? 
 "Move finished torrents to :" ---> "Biten torrentleri buraya taşı :"
 "Move the completed torrent to:" ---> "Biten torrenti buraya taşı :"
 "N/A" ---> "N/A"
-"NAT-PMG" ---> "NAT-PMG"
+"NAT-PMP" --->  ??? 
 "Name" ---> "İsim"
 "Name:" ---> "İsim:"
 "New" ---> "Yeni"
-"None (Managed Externally)" --->  ??? 
 "None" ---> "Hiçbiri"
 "Normal" ---> "Normal"
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" ---> "Tamam"
+"OS reported error for file '%1%'" --->  ??? 
 "Ok" ---> "Tamam"
 "Open &Halite" ---> "&Halite Göster"
 "Open Download Folder" ---> "İndirme Klasörünü Aç"
@@ -170,15 +202,17 @@
 "Peers" ---> "Eşler"
 "Peers:" ---> "Eşler:"
 "Piece %2% finished. (%1%)" ---> "%2% parça bitti. (%1%)"
+"Piece Expiry (sec) :" --->  ??? 
 "Piece Size (KBs)" --->  ??? 
 "Plaintext Encrypted" ---> "Plaintext Şifrelenmiş"
 "Plaintext" ---> "Plaintext"
 "Port %1% open" ---> "%1% portu açık"
-"Port (UDP) : " ---> "Port (UDP) : "
+"Port (UDP)" --->  ??? 
 "Port : " ---> "Port"
 "Port Forwarding" ---> "Port Yönlendirme"
 "Port to listen on : " ---> "Dinleme Portu"
 "Port" ---> "Port"
+"Ports" --->  ??? 
 "Prefer RC4" ---> "RC4 Tercih Et"
 "Priority" ---> "Öncelik"
 "Private" ---> "Özel"
@@ -187,6 +221,9 @@
 "Proxies" ---> "Vekil Sunucular"
 "Proxy Host/IP : " ---> "Proxy Host/IP"
 "Proxy Settings" ---> "Vekil Sunucu Ayarları"
+"Queue Position" --->  ??? 
+"Queue System" --->  ??? 
+"Queue View" --->  ??? 
 "Queued for Checking" ---> "Kontrol için Sırada"
 "Queued" ---> "Sırada"
 "RC4 Encrypted" ---> "RC4 Şifrelenmiş"
@@ -195,6 +232,8 @@
 "Ratio (this session):" ---> "Oran (bu oturum):"
 "Ratio" ---> "Oran"
 "Ratio:" ---> "Oran:"
+"Read Cache Hit Ratio :" --->  ??? 
+"Read Size :" --->  ??? 
 "Reannounce" ---> "Tekrar Duyur"
 "Recheck Files" ---> "Tekrar Kontrol Et"
 "Remaining" ---> "Kalan"
@@ -203,25 +242,34 @@
 "Remote Control" ---> "Uzak Kontrol"
 "Remove" ---> "Kaldır"
 "Reset" ---> "Sıfırla"
+"Resolve Countries from IP" --->  ??? 
+"Resume data generated. (%1%)" --->  ??? 
+"Resume data generation failed. (%1%)" --->  ??? 
 "Resume" ---> "Devam Et"
+"Resuming torrent. (%1%)" --->  ??? 
 "Review settings when adding torrent." --->  ??? 
 "Save" ---> "Kaydet"
 "Saving Torrent" ---> "Torrent Kaydediliyor"
+"Search banching : " --->  ??? 
 "Security" ---> "Güvenlik"
+"Seeding Limits" --->  ??? 
 "Seeding" ---> "Gönderiliyor"
 "Seeds" ---> "Kaynaklar:"
 "Seeds:" ---> "Kaynaklar"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Dosyaları kaydetmek için bir dizin seçin veya torrenti indirmemek için iptal edin."
 "Select a file or directory from which to construct the torrent." --->  ??? 
+"Select a random port within this range." --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." --->  ??? 
 "Send login info to trackers." ---> "İzleyicilere giriş bilgisi gönder."
 "Set Priority" ---> "Öncelik Ayarla"
 "Set as Primary" --->  ??? 
 "Severity" ---> "Öncelik"
+"Share ratio limit:" --->  ??? 
 "Show this message in future" ---> "Bu mesajı ilerde de göster"
 "Shutting down session" ---> "Oturum kapatılıyor"
 "Size" ---> "Boyut"
+"Smart Ban Plugin" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Standart istisna (%1%) , %2% 'den."
 "Start Time" ---> "Başlangıç Zamanı"
 "Status" ---> "Durum"
@@ -241,7 +289,10 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
 "Tier" ---> "Sıra"
 "Time left:" ---> "Kalan süre:"
+"Time limit (sec):" --->  ??? 
+"Time ratio limit:" --->  ??? 
 "Time" ---> "Süre"
+"Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) istisnası yakalandı: %2% 'den %3% 'e."
@@ -250,6 +301,7 @@
 "Torrent Root" ---> "Torrent İçeriği"
 "Torrent and Data" ---> "Torrent ve Veri"
 "Torrent connection limits:" ---> "Torrent bağlantı sınırları:"
+"Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" ---> "Torrent kaydetme klasörü:"
 "Torrent transfer rates (KB/s):" ---> "Torrent aktarım hızları (KB/s):"
 "Torrent" ---> "Torrent"
@@ -267,23 +319,31 @@
 "Trackers" ---> "İzleyiciler"
 "Transferred:" ---> "Aktarılan"
 "Type" --->  ??? 
+"UPnP router model (if recognised)." --->  ??? 
+"UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" ---> "URL"
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." ---> "Unicode istisnası: %1%."
+"Unmanaged" --->  ??? 
 "Up" ---> "Gönd."
 "Update in:" ---> "Güncelleme:"
 "Upload Rate (KB/s) :" ---> "Gönderme Hızı (KB/s) :"
 "Upload" ---> "Gönder"
 "Uploaded" ---> "Gönderilen"
-"Use Compact Allocation." --->  ??? 
 "Use a proxy." ---> "Vekil sunucu kullan"
 "User canceled Torrent file creation" ---> "Torrent oluşturma kullanıcı tarafından iptal edildi"
 "Username : " ---> "Kullanıcı Adı"
 "Warning" ---> "Uyarı"
 "Web Seed" ---> "Web Kaynağı"
 "Web Seeds and DHT Nodes" ---> "Web Kaynakları ve DHT Nodları"
+"Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml İstisnası (%1%) ile %2%."
+"\r\0" --->  ??? 
 "libTorrrent based client." ---> "libTorrent tabanlı program."
+"random up to" --->  ??? 
+"resource.h\0" --->  ??? 
 "to" ---> "-"
+"uTorrent Metadata Plugin" --->  ??? 
+"uTorrent Peer Exchange Plugin" --->  ??? 
 "∞" ---> "∞"
