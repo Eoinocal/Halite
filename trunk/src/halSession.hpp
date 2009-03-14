@@ -898,7 +898,8 @@ public:
 
 		if (!wipeFiles)
 		{
-			session_.remove_torrent(pIT->handle());
+			if (pIT->in_session())
+				session_.remove_torrent(pIT->handle());
 		}
 		else
 		{
@@ -956,7 +957,7 @@ public:
 		libt::torrent_handle handle = pTI->handle();
 		the_torrents_.erase(filename);
 		
-		thread_t t(bind(&bit_impl::removal_thread, this, pTI, false));	
+	//	thread_t t(bind(&bit_impl::removal_thread, this, pTI, false));	
 		
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "remove_torrent")
 	}
@@ -970,7 +971,7 @@ public:
 		libt::torrent_handle handle = pTI->handle();
 		the_torrents_.erase(filename);
 		
-		thread_t t(bind(&bit_impl::removal_thread, this, pTI, true));	
+	//	thread_t t(bind(&bit_impl::removal_thread, this, pTI, true));	
 		
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "remove_torrent_wipe_files")
 	}
