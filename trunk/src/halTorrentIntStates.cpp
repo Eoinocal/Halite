@@ -18,8 +18,12 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 {
 	TORRENT_STATE_LOG(L"Entering in_the_session()");
 
-	assert(context<torrent_internal>().in_session());
-	context<torrent_internal>().apply_settings();
+	torrent_internal& t_i = context<torrent_internal>();
+//	preserve_me_ = t_i.own_weak_ptr_.lock();
+
+	assert(t_i.in_session());
+
+	t_i.apply_settings();
 }
 
 in_the_session::~in_the_session()
@@ -230,14 +234,11 @@ resume_data_waiting::resume_data_waiting(base_type::my_context ctx) :
 {
 	TORRENT_STATE_LOG(L"Entering resume_data_waiting()");
 
-	context<torrent_internal>().awaiting_resume_data_ = true;
 	context<torrent_internal>().handle_.save_resume_data();
 }
 
 resume_data_waiting::~resume_data_waiting()
 {
-	context<torrent_internal>().awaiting_resume_data_ = false;
-
 	TORRENT_STATE_LOG(L"Exiting ~resume_data_waiting()");
 }
 

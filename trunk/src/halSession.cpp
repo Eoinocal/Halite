@@ -717,7 +717,12 @@ void bit_impl::alert_handler()
 		
 		torrent_internal_ptr get(libt::torrent_handle h) const 
 		{ 
-			return bit_impl_.the_torrents_.get(from_utf8_safe(h.get_torrent_info().name())); 
+			torrent_internal_ptr p = bit_impl_.the_torrents_.get(from_utf8_safe(h.get_torrent_info().name())); 
+
+			if (p)
+				return p;
+			else
+				throw bit::null_torrent();
 		}
 	
 	} handler(*this);
@@ -760,6 +765,12 @@ void bit_impl::alert_handler()
 		catch(libt::unhandled_alert&)
 		{
 //			handler(*p_alert);
+		}
+		catch(bit::null_torrent& e)
+		{
+			// These are logged as debug because they are rarely important to act on!
+			event_log.post(shared_ptr<EventDetail>(\
+				new EventMsg(L"null_torrent exception", event_logger::info)));
 		}
 		catch(std::exception& e)
 		{

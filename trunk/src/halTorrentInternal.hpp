@@ -316,7 +316,6 @@ public:
 		connections_(-1), \
 		uploads_(-1), \
 		ratio_(0), \
-		awaiting_resume_data_(false), \
 		resolve_countries_(true), \
 		total_uploaded_(0), \
 		total_base_(0), \
@@ -358,6 +357,7 @@ public:
 	~torrent_internal()
 	{
 		terminate();
+		TORRENT_STATE_LOG(L"Torrent state machine terminate");
 	}
 	
 	torrent_details_ptr get_torrent_details_ptr();
@@ -811,7 +811,7 @@ public:
 			return L"";
 	}
 
-	bool awaiting_resume_data() { return awaiting_resume_data_; }
+	bool awaiting_resume_data() { return (state_downcast<const resume_data_waiting*>() != 0); }
 
 	void output_torrent_debug_details()
 	{
@@ -888,7 +888,6 @@ private:
 	std::pair<float, float> transfer_limit_;
 	
 	mutable unsigned state_;
-	bool awaiting_resume_data_;
 	int connections_;
 	int uploads_;
 	bool in_session_;
@@ -933,8 +932,6 @@ private:
 	file_details_vec file_details_memory_;
 };
 
-//typedef std::map<std::string, TorrentInternalOld> TorrentMap;
-//typedef std::pair<std::string, TorrentInternalOld> TorrentPair;
 
 class torrent_manager : 
 	public hal::IniBase<torrent_manager>
@@ -1008,6 +1005,15 @@ public:
 	torrent_manager(ini_file& ini) :
 		iniClass("bittorrent", "torrent_manager", ini)
 	{}
+
+	~torrent_manager()
+	{
+		for (torrent_by_name::iterator i= torrents_.get<by_name>().begin(), 
+			e = torrents_.get<by_name>().end(); i!=e; ++i)
+		{
+			(*i).torrent->stop();
+		}
+	}
 	
 /*	std::pair<torrent_by_name::iterator, bool> insert(torrent_internal_ptr t)
 	{
@@ -1019,18 +1025,14 @@ public:
 	{
 		torrent_internal_ptr t = torrent_internal_ptr(new torrent_internal(filename, saveDirectory, alloc, move_to_directory));
 
-		std::pair<torrent_by_name::iterator, bool> p = insert(torrent_holder(t));
+		std::pair<torrent_by_name::iterator, bool> p = torrents_.get<by_name>().insert(torrent_holder(t));
 
-		if (!p.second) t.reset();
+		if (!p.second) 
+			t.reset();
+		else
+			t->initialize_state_machine(t);
 
 		return t;			
-	}
-
-	std::pair<torrent_by_name::iterator, bool> insert(const torrent_holder& h)
-	{
-	//	torrent->initialize_state_machine(torrent);
-
-		return torrents_.get<by_name>().insert(h);
 	}
 
 	torrent_internal_ptr get_by_file(const wstring& filename)
@@ -1071,9 +1073,14 @@ public:
 	{
 		torrent_by_name::iterator it = torrents_.get<by_name>().find(name);
 		
-		if (it != torrents_.get<by_name>().end())
-			(*it).torrent->stop();
+		TORRENT_STATE_LOG(L"Torrent manager erasing");
 
+	/*	if (it != torrents_.get<by_name>().end())
+		{
+			TORRENT_STATE_LOG(L"Torrent manager requesting stop");
+			(*it).torrent->stop();
+		}
+	*/
 		return torrents_.get<by_name>().erase(name);
 	}
 	
