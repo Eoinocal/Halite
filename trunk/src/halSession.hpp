@@ -40,6 +40,7 @@
 #include "halEvent.hpp"
 #include "halConfig.hpp"
 #include "halTorrentInternal.hpp"
+#include "halTorrentManager.hpp"
 #include "halSignaler.hpp"
 
 namespace boost {
@@ -950,32 +951,32 @@ public:
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "removalThread")
 	}
 
-	void remove_torrent(const wstring& filename)
+	void remove_torrent(const wstring& name)
 	{
 		try {
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Removing Torrent.")));
 
 		boost::shared_ptr<file_details_vec> files = boost::shared_ptr<file_details_vec>(new file_details_vec());		
-		torrent_internal_ptr pTI = the_torrents_.get(filename);
+		torrent_internal_ptr pTI = the_torrents_.get(name);
 
 	//	pTI->get_file_details(*files);		
 	//	thread_t t(bind(&bit_impl::remove_to_bin, this, files, pTI->get_save_directory()));
 
 		libt::torrent_handle handle = pTI->handle();
-		the_torrents_.erase(filename);
+		the_torrents_.remove_torrent(name);
 		
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Removed, started thread.")));
 		
-		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "remove_torrent")
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(name, "remove_torrent")
 	}
 
-	void remove_torrent_wipe_files(const std::wstring& filename, remove_files fn)
+	void remove_torrent_wipe_files(const std::wstring& name, remove_files fn)
 	{
 		try {
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Removing Torrent and files.")));
 
 		boost::shared_ptr<file_details_vec> files = boost::shared_ptr<file_details_vec>(new file_details_vec());		
-		torrent_internal_ptr pTI = the_torrents_.get(filename);
+		torrent_internal_ptr pTI = the_torrents_.get(name);
 
 		pTI->get_file_details(*files);
 		thread_t t(bind(fn, pTI->get_save_directory(), files));
@@ -983,11 +984,11 @@ public:
 		pTI->clear_resume_data();
 		pTI->delete_torrent_file();
 
-		the_torrents_.erase(filename);
+		the_torrents_.remove_torrent(name);
 		
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Removed, started thread.")));
 		
-		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "remove_torrent_wipe_files")
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(name, "remove_torrent_wipe_files")
 	}
 
 	void resume_all()
