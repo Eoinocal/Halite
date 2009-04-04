@@ -1629,6 +1629,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\halTorrentManager.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\halTypes.hpp"
 				>
 			</File>

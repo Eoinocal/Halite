@@ -17,6 +17,7 @@
 #include "halSignaler.hpp"
 
 #include "halTorrentInternal.hpp"
+#include "halTorrentManager.hpp"
 #include "halSession.hpp"
 
 namespace hal 

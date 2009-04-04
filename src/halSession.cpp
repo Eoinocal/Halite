@@ -762,17 +762,17 @@ void bit_impl::alert_handler()
 		>::handle_alert(p_alert, handler);			
 		
 		}
-		catch(libt::unhandled_alert&)
+		catch(const libt::unhandled_alert&)
 		{
 //			handler(*p_alert);
 		}
-		catch(bit::null_torrent& e)
+		catch(const bit::null_torrent&)
 		{
 			// These are logged as debug because they are rarely important to act on!
 			event_log.post(shared_ptr<EventDetail>(\
 				new EventMsg(L"null_torrent exception", event_logger::info)));
 		}
-		catch(std::exception& e)
+		catch(const std::exception& e)
 		{
 			// These are logged as debug because they are rarely important to act on!
 			event_log.post(shared_ptr<EventDetail>(\
