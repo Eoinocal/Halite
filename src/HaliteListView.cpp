@@ -224,6 +224,36 @@ LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 	return 0;
 }
 
+void HaliteListViewCtrl::remove_to_bin(hal::fs::wpath root, boost::shared_ptr<hal::file_details_vec> files)
+{
+	std::vector<wchar_t> file_names_buffer;
+
+	foreach(hal::file_details file, *files)
+	{
+		std::wstring file_location = (hal::wform(L"File %1%\\%2%\\%3%") 
+			% root.file_string() % file.branch % file.filename).str();
+
+		wstring full_file = hal::fs::wpath(root / file.branch / file.filename).file_string();
+		 
+		HAL_DEV_MSG(hal::wform(L"File %1%") % full_file);
+
+		std::copy(full_file.begin(), full_file.end(), 
+			std::back_inserter(file_names_buffer));
+		file_names_buffer.push_back(L'\0');
+	}
+	file_names_buffer.push_back(L'\0');
+
+	SHFILEOPSTRUCT shf;
+
+	shf.hwnd = *this;
+	shf.wFunc = FO_DELETE;
+	shf.pFrom = &file_names_buffer[0];
+	shf.pTo = 0;
+	shf.fFlags = FOF_ALLOWUNDO;
+
+	SHFileOperation(&shf);
+}
+
 LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::set<wstring>  torrent_names;
@@ -234,7 +264,7 @@ LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND h
 	erase_based_on_set(torrent_names, false);
 
 	foreach(wstring name, torrent_names)
-		hal::bittorrent().remove_torrent_wipe_files(name);
+		hal::bittorrent().remove_torrent_wipe_files(name, bind(&HaliteListViewCtrl::remove_to_bin, this, _1, _2));
 
 	return 0;
 }

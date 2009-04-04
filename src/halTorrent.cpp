@@ -558,9 +558,9 @@ void bit::set_torrent_defaults(const connections& defaults)
 }
 
 void bit::add_torrent(wpath file, wpath saveDirectory, bool startStopped, bool managed, allocations alloc, 
-		boost::filesystem::wpath moveToDirectory, bool useMoveTo) 
+		boost::filesystem::wpath moveToDirectory) 
 {
-	pimpl()->add_torrent(file, saveDirectory, startStopped, managed, alloc, moveToDirectory, useMoveTo);
+	pimpl()->add_torrent(file, saveDirectory, startStopped, managed, alloc, moveToDirectory);
 }
 
 const torrent_details_manager& bit::torrentDetails()
@@ -753,9 +753,9 @@ void bit::remove_torrent_wstr(const std::wstring& filename)
 	pimpl()->remove_torrent(filename);
 }
 
-void bit::remove_torrent_wipe_files_wstr(const std::wstring& filename)
+void bit::remove_torrent_wipe_files_wstr(const std::wstring& filename, remove_files f)
 {
-	pimpl()->remove_torrent_wipe_files(hal::to_wstr_shim(filename));
+	pimpl()->remove_torrent_wipe_files(hal::to_wstr_shim(filename), f);
 }
 
 void bit::pause_all_torrents()

@@ -362,8 +362,12 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	}
 	
 	wpath file(lpszPath, boost::filesystem::native);	
-	hal::bittorrent().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type, 
-		wpath(default_move_folder), use_move_to);
+
+	if (use_move_to)
+		hal::bittorrent().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type, 
+			wpath(default_move_folder));
+	else
+		hal::bittorrent().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type);
 
 	issueUiUpdate();
 
