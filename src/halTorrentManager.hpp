@@ -15,22 +15,6 @@
 			new hal::EventMsg(msg, hal::event_logger::torrent_dev))) 
 #endif
 
-#pragma warning (push, 1)
-#	include <libtorrent/file.hpp>
-#	include <libtorrent/hasher.hpp>
-#	include <libtorrent/storage.hpp>
-#	include <libtorrent/file_pool.hpp>
-#	include <libtorrent/alert_types.hpp>
-#	include <libtorrent/entry.hpp>
-#	include <libtorrent/bencode.hpp>
-#	include <libtorrent/session.hpp>
-#	include <libtorrent/ip_filter.hpp>
-#	include <libtorrent/torrent_handle.hpp>
-#	include <libtorrent/peer_connection.hpp>
-#	include <libtorrent/extensions/metadata_transfer.hpp>
-#	include <libtorrent/extensions/ut_pex.hpp>
-#pragma warning (pop) 
-
 #include <boost/tuple/tuple.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/multi_index_container.hpp>
@@ -40,15 +24,11 @@
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/tag.hpp>
 
-#include <boost/mpl/list.hpp>
-
 #include "halIni.hpp"
 #include "halTorrentInternal.hpp"
 
-
 namespace hal 
 {
-
 
 class torrent_manager : 
 	public hal::IniBase<torrent_manager>
