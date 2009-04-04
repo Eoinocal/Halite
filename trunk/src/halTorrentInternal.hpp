@@ -60,6 +60,7 @@ namespace hal
 {
 class TorrentInternalOld;
 class torrent_internal;
+class torrent_manager;
 }
 
 BOOST_CLASS_VERSION(hal::TorrentInternalOld, 9)
@@ -330,10 +331,9 @@ public:
 		allocation_(bit::sparse_allocation)
 	{
 		state(torrent_details::torrent_stopped);
-		TORRENT_STATE_LOG(L"Torrent state machine initiate");
-		initiate();
 	}
-	
+
+private:
 	torrent_internal(wpath filename, wpath saveDirectory, bit::allocations alloc, wpath move_to_directory=L"") :
 		TORRENT_INTERNALS_DEFAULTS,
 		save_directory_(saveDirectory.string()),
@@ -341,16 +341,14 @@ public:
 		allocation_(alloc)
 	{
 		state(torrent_details::torrent_stopped);
-		assert(the_session_);	
-		
-		TORRENT_STATE_LOG(L"Torrent state machine initiate");
-		initiate();
+		assert(the_session_);
 
 		prepare(filename);
 	}
 
 	#undef TORRENT_INTERNALS_DEFAULTS
 
+public:
 	void locked_process_event(const sc::event_base & e)
 	{
 		mutex_t::scoped_lock l(mutex_);
@@ -499,10 +497,18 @@ public:
 	
 	void clear_resume_data()
 	{
-		wpath resume_file = hal::app().get_working_directory()/L"resume"/filename_;
+		wpath resume_file = hal::app().get_working_directory() / L"resume" / (name_ + L".fastresume");
 		
 		if (exists(resume_file))
 			remove(resume_file);
+	}
+
+	void delete_torrent_file()
+	{		
+		wpath torrent_file = hal::app().get_working_directory() / L"torrents" / filename_;
+		
+		if (exists(torrent_file))
+			remove(torrent_file);
 	}
 
 	const wpath get_save_directory()
@@ -753,6 +759,7 @@ public:
 	}
 
 	void get_file_details(file_details_vec& files);
+	file_details_vec get_file_details();
 	
 	void prepare(wpath filename);
 
@@ -852,6 +859,8 @@ public:
 
 	static libt::session* the_session_;	
 
+	friend class torrent_manager;
+
 private:
 	void apply_settings();	
 	void apply_transfer_speed();
@@ -863,8 +872,18 @@ private:
 	void apply_resolve_countries();
 	void state(unsigned s);
 
+	void initialize_state_machine(torrent_internal_ptr p)
+	{
+		own_weak_ptr_ = boost::weak_ptr<torrent_internal>(p);
+
+		TORRENT_STATE_LOG(L"Torrent state machine initiate");
+		initiate();
+	}
+
 	mutable mutex_t mutex_;
 	signalers signals_;
+
+	boost::weak_ptr<torrent_internal> own_weak_ptr_;
 	
 	std::pair<float, float> transfer_limit_;
 	
@@ -914,8 +933,8 @@ private:
 	file_details_vec file_details_memory_;
 };
 
-typedef std::map<std::string, TorrentInternalOld> TorrentMap;
-typedef std::pair<std::string, TorrentInternalOld> TorrentPair;
+//typedef std::map<std::string, TorrentInternalOld> TorrentMap;
+//typedef std::pair<std::string, TorrentInternalOld> TorrentPair;
 
 class torrent_manager : 
 	public hal::IniBase<torrent_manager>
@@ -935,11 +954,23 @@ class torrent_manager :
 		
 		explicit torrent_holder(torrent_internal_ptr t) :
 			torrent(t), filename(torrent->filename()), name(torrent->name())
-		{}
-						
+		{}				
+
 		friend class boost::serialization::access;
 		template<class Archive>
-		void serialize(Archive& ar, const unsigned int version)
+		void load(Archive& ar, const unsigned int version)
+		{
+			using boost::serialization::make_nvp;
+
+			ar & make_nvp("torrent", torrent);
+			ar & make_nvp("filename", filename);
+			ar & make_nvp("name", name);
+
+			torrent->initialize_state_machine(torrent);
+		}
+
+		template<class Archive>
+		void save(Archive& ar, const unsigned int version) const
 		{
 			using boost::serialization::make_nvp;
 
@@ -947,6 +978,8 @@ class torrent_manager :
 			ar & make_nvp("filename", filename);
 			ar & make_nvp("name", name);
 		}
+
+		BOOST_SERIALIZATION_SPLIT_MEMBER()
 	};
 	
 	struct by_filename{};
@@ -975,15 +1008,29 @@ public:
 	torrent_manager(ini_file& ini) :
 		iniClass("bittorrent", "torrent_manager", ini)
 	{}
+	
+/*	std::pair<torrent_by_name::iterator, bool> insert(torrent_internal_ptr t)
+	{
+		return insert(torrent_holder(t));
+	}
+*/
+
+	torrent_internal_ptr create_torrent(wpath filename, wpath saveDirectory, bit::allocations alloc, wpath move_to_directory=L"")
+	{
+		torrent_internal_ptr t = torrent_internal_ptr(new torrent_internal(filename, saveDirectory, alloc, move_to_directory));
+
+		std::pair<torrent_by_name::iterator, bool> p = insert(torrent_holder(t));
+
+		if (!p.second) t.reset();
+
+		return t;			
+	}
 
 	std::pair<torrent_by_name::iterator, bool> insert(const torrent_holder& h)
 	{
+	//	torrent->initialize_state_machine(torrent);
+
 		return torrents_.get<by_name>().insert(h);
-	}
-	
-	std::pair<torrent_by_name::iterator, bool> insert(torrent_internal_ptr t)
-	{
-		return insert(torrent_holder(t));
 	}
 
 	torrent_internal_ptr get_by_file(const wstring& filename)
@@ -1022,6 +1069,11 @@ public:
 	
 	size_t erase(const wstring& name)
 	{
+		torrent_by_name::iterator it = torrents_.get<by_name>().find(name);
+		
+		if (it != torrents_.get<by_name>().end())
+			(*it).torrent->stop();
+
 		return torrents_.get<by_name>().erase(name);
 	}
 	

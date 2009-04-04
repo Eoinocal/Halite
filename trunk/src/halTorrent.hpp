@@ -497,6 +497,7 @@ struct SessionDetail
 typedef boost::function<bool (size_t, size_t, size_t)> filterCallback;
 typedef boost::function<bool (size_t, size_t, std::wstring)> progress_callback;
 typedef boost::function<void (int)> report_num_active;
+typedef boost::function<void (wpath path, boost::shared_ptr<file_details_vec> files)> remove_files;
 typedef std::pair<wstring, wstring> wstring_pair;
 typedef std::pair<float, float> float_pair;
 typedef std::pair<int, int> int_pair;
@@ -724,7 +725,7 @@ public:
 	void set_torrent_defaults(const connections& defaults);	
 	void add_torrent(boost::filesystem::wpath file, boost::filesystem::wpath saveDirectory, 
 		bool startPaused=false, bool managed=false, allocations alloc=hal::bit::sparse_allocation, 
-		boost::filesystem::wpath moveToDirectory=L"", bool useMoveTo=false);
+		boost::filesystem::wpath moveToDirectory=L"");
 	
 	void get_all_peer_details(const std::string& filename, peer_details_vec& peerContainer);
 	void get_all_peer_details(const std::wstring& filename, peer_details_vec& peerContainer);
@@ -761,9 +762,9 @@ public:
 	}	
 
 	template<typename S>
-	void remove_torrent_wipe_files(S filename)
+	void remove_torrent_wipe_files(S filename, remove_files fn)
 	{ 
-		remove_torrent_wipe_files_wstr(to_wstr_shim(filename)); 
+		remove_torrent_wipe_files_wstr(to_wstr_shim(filename), fn); 
 	}	
 
 	void start_event_receiver();
@@ -787,7 +788,7 @@ private:
 	boost::scoped_ptr<bit_impl> pimpl_;
 	
 	void remove_torrent_wstr(const std::wstring& filename);
-	void remove_torrent_wipe_files_wstr(const std::wstring&  filename);
+	void remove_torrent_wipe_files_wstr(const std::wstring&  filename, remove_files fn);
 	
 	torrent_details_manager torrentDetails_;
 };

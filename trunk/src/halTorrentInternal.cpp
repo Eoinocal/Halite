@@ -221,6 +221,14 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr()
 		app().res_wstr(HAL_NA)));
 }
 
+file_details_vec torrent_internal::get_file_details()
+{
+	file_details_vec files;
+	get_file_details(files);
+
+	return files;
+}
+
 void torrent_internal::get_file_details(file_details_vec& files)
 {
 	if (file_details_memory_.empty())

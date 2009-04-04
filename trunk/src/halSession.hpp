@@ -832,16 +832,16 @@ public:
 	void alert_handler();
 
 	void add_torrent(wpath file, wpath saveDirectory, bool startStopped, bool managed, bit::allocations alloc, 
-			boost::filesystem::wpath moveToDirectory, bool useMoveTo) 
+			boost::filesystem::wpath moveToDirectory) 
 	{
 		try 
 		{	
-		torrent_internal_ptr TIp;
+//		torrent_internal_ptr TIp;
 
 		std::pair<std::string, std::string> names = extract_names(file);
 		wstring xml_name = from_utf8(names.first) + L".xml";
 
-		if (false && fs::exists(file.parent_path()/xml_name))
+/*		if (false && fs::exists(file.parent_path()/xml_name))
 		{
 			torrent_standalone tsa;
 			
@@ -856,31 +856,22 @@ public:
 				TIp->prepare(file);
 			}
 		}
+*/
+		torrent_internal_ptr TIp =
+			the_torrents_.create_torrent(file, saveDirectory, alloc, moveToDirectory);
 
-		if (!TIp)
+		if(TIp)
 		{
-			if (useMoveTo)
-				TIp.reset(new torrent_internal(file, saveDirectory, alloc, moveToDirectory));		
-			else
-				TIp.reset(new torrent_internal(file, saveDirectory, alloc));
-
 			TIp->set_managed(managed);
 			TIp->set_transfer_speed(bittorrent().default_torrent_download(), bittorrent().default_torrent_upload());
 			TIp->set_connection_limit(bittorrent().default_torrent_max_connections(), bittorrent().default_torrent_max_uploads());
 			TIp->set_resolve_countries(resolve_countries_);
-		}
-		
-		std::pair<torrent_manager::torrent_by_name::iterator, bool> p =
-			the_torrents_.insert(TIp);
-		
-		if (p.second)
-		{
-			torrent_internal_ptr me = the_torrents_.get(TIp->name());		
-			
+
+
 			if (!startStopped) 
-				me->add_to_session();
+				TIp->add_to_session();
 			else
-				me->set_state_stopped();
+				TIp->set_state_stopped();
 		}
 		
 		}
@@ -889,6 +880,17 @@ public:
 			event_log.post(shared_ptr<EventDetail>(
 				new EventTorrentException(event_logger::critical, event_logger::torrentException, 
 					std::string(e.what()), to_utf8(file.string()), std::string("addTorrent"))));
+		}
+	}
+
+	void remove_to_bin(boost::shared_ptr<file_details_vec> files, wpath path)
+	{
+		foreach(file_details file, *files)
+		{
+			std::wstring file_location = (wform(L"File %1%\\%2%\\%3%") 
+				% path.file_string() % file.branch % file.filename).str();
+
+			HAL_DEV_MSG(wform(L"File %1%\\%2%\\%3%") % path.file_string() % file.branch % file.filename);
 		}
 	}
 
@@ -952,26 +954,38 @@ public:
 	{
 		try {
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Removing Torrent.")));
-		
+
+		boost::shared_ptr<file_details_vec> files = boost::shared_ptr<file_details_vec>(new file_details_vec());		
 		torrent_internal_ptr pTI = the_torrents_.get(filename);
+
+	//	pTI->get_file_details(*files);		
+	//	thread_t t(bind(&bit_impl::remove_to_bin, this, files, pTI->get_save_directory()));
+
 		libt::torrent_handle handle = pTI->handle();
 		the_torrents_.erase(filename);
 		
-	//	thread_t t(bind(&bit_impl::removal_thread, this, pTI, false));	
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Removed, started thread.")));
 		
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "remove_torrent")
 	}
 
-	void remove_torrent_wipe_files(const std::wstring& filename)
+	void remove_torrent_wipe_files(const std::wstring& filename, remove_files fn)
 	{
 		try {
 		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Removing Torrent and files.")));
-		
+
+		boost::shared_ptr<file_details_vec> files = boost::shared_ptr<file_details_vec>(new file_details_vec());		
 		torrent_internal_ptr pTI = the_torrents_.get(filename);
-		libt::torrent_handle handle = pTI->handle();
+
+		pTI->get_file_details(*files);
+		thread_t t(bind(fn, pTI->get_save_directory(), files));
+
+		pTI->clear_resume_data();
+		pTI->delete_torrent_file();
+
 		the_torrents_.erase(filename);
 		
-	//	thread_t t(bind(&bit_impl::removal_thread, this, pTI, true));	
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Removed, started thread.")));
 		
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "remove_torrent_wipe_files")
 	}
