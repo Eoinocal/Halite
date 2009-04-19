@@ -884,73 +884,6 @@ public:
 		}
 	}
 
-	void remove_to_bin(boost::shared_ptr<file_details_vec> files, wpath path)
-	{
-		foreach(file_details file, *files)
-		{
-			std::wstring file_location = (wform(L"File %1%\\%2%\\%3%") 
-				% path.file_string() % file.branch % file.filename).str();
-
-			HAL_DEV_MSG(wform(L"File %1%\\%2%\\%3%") % path.file_string() % file.branch % file.filename);
-		}
-	}
-
-	void removal_thread(torrent_internal_ptr pIT, bool wipeFiles)
-	{
-		try {
-
-		if (!wipeFiles)
-		{
-			if (pIT->in_session())
-				session_.remove_torrent(pIT->handle());
-		}
-		else
-		{
-			if (pIT->in_session())
-			{
-				session_.remove_torrent(pIT->handle(), libt::session::delete_files);
-			}
-			else
-			{
-				//libt::torrent_info m_info = pIT->infoMemory();
-				
-/*				// delete the files from disk
-				std::string error;
-				std::set<std::string> directories;
-				
-				for (libt::torrent_info::file_iterator i = m_info.begin_files(true)
-					, end(m_info.end_files(true)); i != end; ++i)
-				{
-					std::string p = (hal::path_to_utf8(pIT->save_directory()) / i->path).string();
-					fs::path bp = i->path.parent_path();
-					
-					std::pair<std::set<std::string>::iterator, bool> ret;
-					ret.second = true;
-					while (ret.second && !bp.empty())
-					{
-						std::pair<std::set<std::string>::iterator, bool> ret = 
-							directories.insert((hal::path_to_utf8(pIT->save_directory()) / bp).string());
-						bp = bp.parent_path();
-					}
-					if (!fs::remove(hal::from_utf8(p).c_str()) && errno != ENOENT)
-						error = std::strerror(errno);
-				}
-
-				// remove the directories. Reverse order to delete subdirectories first
-
-				for (std::set<std::string>::reverse_iterator i = directories.rbegin()
-					, end(directories.rend()); i != end; ++i)
-				{
-					if (!fs::remove(hal::from_utf8(*i).c_str()) && errno != ENOENT)
-						error = std::strerror(errno);
-				}
-				*/
-			}
-		}
-
-		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "removalThread")
-	}
-
 	void remove_torrent(const wstring& name)
 	{
 		try {
@@ -959,13 +892,9 @@ public:
 		boost::shared_ptr<file_details_vec> files = boost::shared_ptr<file_details_vec>(new file_details_vec());		
 		torrent_internal_ptr pTI = the_torrents_.get(name);
 
-	//	pTI->get_file_details(*files);		
-	//	thread_t t(bind(&bit_impl::remove_to_bin, this, files, pTI->get_save_directory()));
-
-		libt::torrent_handle handle = pTI->handle();
 		the_torrents_.remove_torrent(name);
 		
-		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Removed, started thread.")));
+		event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Removed")));
 		
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(name, "remove_torrent")
 	}
