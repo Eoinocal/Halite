@@ -31,7 +31,6 @@ namespace hal
 {
 
 bit_impl::bit_impl() :
-	session_(libt::fingerprint(HALITE_FINGERPRINT)),
 	keepChecking_(false),
 	bittorrent_ini_(L"BitTorrent.xml"),
 	the_torrents_(bittorrent_ini_),
@@ -46,15 +45,17 @@ bit_impl::bit_impl() :
 	ip_filter_count_(0),
 	dht_on_(false)
 {
+	session_ = boost::in_place(libt::fingerprint(HALITE_FINGERPRINT));
+
 	try
 	{
 
 	torrent_internal::the_session_ = &session_;
 
-	session_.session::set_alert_mask(libt::alert::all_categories);		
-	session_.add_extension(&libt::create_metadata_plugin);
-	session_.add_extension(&libt::create_ut_pex_plugin);
-	session_.set_max_half_open_connections(10);
+	session_->session::set_alert_mask(libt::alert::all_categories);		
+	session_->add_extension(&libt::create_metadata_plugin);
+	session_->add_extension(&libt::create_ut_pex_plugin);
+	session_->set_max_half_open_connections(10);
 	
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading BitTorrent.xml.", hal::event_logger::info)));		
@@ -110,9 +111,9 @@ bit_impl::bit_impl() :
 		}
 	}
 	
-	{	libt::session_settings settings = session_.settings();
+	{	libt::session_settings settings = session_->settings();
 		settings.user_agent = string("Halite ") + HALITE_VERSION_STRING;
-		session_.set_settings(settings);
+		session_->set_settings(settings);
 	}
 	
 	start_alert_handler();
@@ -404,7 +405,7 @@ void bit_impl::alert_handler()
 	while (keepChecking_)
 	{
 	
-	std::auto_ptr<libt::alert> p_alert = session_.pop_alert();
+	std::auto_ptr<libt::alert> p_alert = session_->pop_alert();
 	
 	class AlertHandler
 	{
@@ -779,7 +780,7 @@ void bit_impl::alert_handler()
 				new EventStdException(event_logger::debug, e, L"bit_impl::alert_handler()")));
 		}
 		
-		p_alert = session_.pop_alert();
+		p_alert = session_->pop_alert();
 
 		boost::this_thread::interruption_point();
 	}	

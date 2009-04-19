@@ -23,7 +23,7 @@
 
 namespace hal 
 {
-	libtorrent::session* torrent_internal::the_session_ = 0;
+	boost::optional<libt::session>* torrent_internal::the_session_ = 0;
 }
 
 namespace hal 
@@ -520,9 +520,9 @@ const SessionDetail bit::get_session_details()
 {
 	SessionDetail details;
 	
-	details.port = pimpl()->session_.is_listening() ? pimpl()->session_.listen_port() : -1;
+	details.port = pimpl()->session_->is_listening() ? pimpl()->session_->listen_port() : -1;
 	
-	libt::session_status status = pimpl()->session_.status();
+	libt::session_status status = pimpl()->session_->status();
 	
 	details.speed = std::pair<double, double>(status.download_rate, status.upload_rate);
 	
@@ -538,10 +538,10 @@ const SessionDetail bit::get_session_details()
 
 void bit::set_session_half_open_limit(int halfConn)
 {
-	pimpl()->session_.set_max_half_open_connections(halfConn);
+	pimpl()->session_->set_max_half_open_connections(halfConn);
 
 	event_log().post(shared_ptr<EventDetail>(new EventMsg(
-		hal::wform(L"Set half-open connections limit to %1%.") % pimpl()->session_.max_half_open_connections())));
+		hal::wform(L"Set half-open connections limit to %1%.") % pimpl()->session_->max_half_open_connections())));
 }
 
 void bit::set_torrent_defaults(const connections& defaults)
