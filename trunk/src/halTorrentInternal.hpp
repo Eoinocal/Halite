@@ -641,9 +641,9 @@ public:
 
 	const wpath& save_directory() { return save_directory_; }
 	
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
 	{
 		using boost::serialization::make_nvp;
 
