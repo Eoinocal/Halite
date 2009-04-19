@@ -424,7 +424,7 @@ public:
 	{ 
 		mutex_t::scoped_lock l(mutex_);
 
-		return (in_session_ && the_session_ != 0 && handle_.is_valid());
+		return (in_session_ && the_session_ && handle_.is_valid());
 	}
 
 	void resume()
@@ -847,7 +847,7 @@ public:
 		}
 	}
 
-	static libt::session* the_session_;	
+	static boost::optional<libt::session>* the_session_;	
 
 	friend class torrent_manager;
 
