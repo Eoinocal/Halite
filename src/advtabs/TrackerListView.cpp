@@ -50,7 +50,7 @@ void TrackerListViewCtrl::saveSettings()
 
 void TrackerListViewCtrl::uiUpdate(const hal::torrent_details_ptr pT)
 {
-	if (hal::bit::torrent t = hal::bittorrent().get(pT))
+	if (hal::bit::torrent t = hal::bittorrent::Instance().get(pT))
 	{			
 		hal::try_update_lock<listClass> lock(*this);
 		if (lock) 

@@ -29,12 +29,12 @@ namespace hal
 namespace hal 
 {
 
-bit& bittorrent()
+/*bit& bittorrent()
 {
 	static bit t;
 	return t;
 }
-
+*/
 bool file_details::less(const file_details& r, size_t index) const
 {	
 	switch (index)
@@ -103,7 +103,7 @@ const peer_details_vec& torrent_details::get_peer_details() const
 {
 	if (!peer_details_filled_)
 	{
-		bittorrent().get_all_peer_details(hal::to_utf8(name_), peer_details_);
+		bittorrent::Instance().get_all_peer_details(hal::to_utf8(name_), peer_details_);
 		peer_details_filled_ = true;
 	}
 	
@@ -114,7 +114,7 @@ const file_details_vec& torrent_details::get_file_details() const
 {
 	if (!file_details_filled_)
 	{
-		bittorrent().get_all_file_details(hal::to_utf8(name_), file_details_);
+		bittorrent::Instance().get_all_file_details(hal::to_utf8(name_), file_details_);
 		file_details_filled_ = true;
 	}
 	
@@ -335,6 +335,9 @@ bit::bit() :
 	pimpl_(new bit_impl())
 {}
 
+bit::~bit()
+{}
+
 bit_impl* bit::pimpl()
 {
 	if (!pimpl_) throw std::runtime_error("bittorrent() accessed after destructer");
@@ -537,7 +540,7 @@ void bit::set_session_half_open_limit(int halfConn)
 {
 	pimpl()->session_.set_max_half_open_connections(halfConn);
 
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(
 		hal::wform(L"Set half-open connections limit to %1%.") % pimpl()->session_.max_half_open_connections())));
 }
 
@@ -546,14 +549,14 @@ void bit::set_torrent_defaults(const connections& defaults)
 	pimpl()->default_torrent_max_connections_ = defaults.total;
 	pimpl()->default_torrent_max_uploads_ = defaults.uploads;
 
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(
 		hal::wform(L"Set torrent connections total %1% and uploads %2%.") 
 			% defaults.total % defaults.uploads)));
 
 	pimpl()->default_torrent_download_ = defaults.download_rate;
 	pimpl()->default_torrent_upload_ = defaults.upload_rate;
 
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(
 		hal::wform(L"Set torrent default rates at %1$.2fkb/s down and %2$.2fkb/s upload.") 
 			% defaults.download_rate % defaults.upload_rate)));
 }
@@ -1056,7 +1059,7 @@ void bit::start_event_receiver()
 {
 	try {
 
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Starting event handler.")));
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Starting event handler.")));
 
 	pimpl()->start_alert_handler();
 	
@@ -1067,7 +1070,7 @@ void bit::stop_event_receiver()
 {
 	try {
 
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(L"Stopping event handler.")));
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Stopping event handler.")));
 
 	pimpl()->stop_alert_handler();
 	

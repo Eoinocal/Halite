@@ -73,7 +73,7 @@ public:
 		}
 		catch (const std::exception& e)
 		{			
-			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+			hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
 				new hal::EventXmlException(hal::from_utf8(e.what()), L"load_standalone"))); 
 
 			return false;
@@ -96,7 +96,7 @@ public:
 		}
 		catch (const std::exception& e)
 		{			
-			hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+			hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
 				new hal::EventXmlException(hal::from_utf8(e.what()), hal::from_utf8(name_)))); 
 
 			return false;

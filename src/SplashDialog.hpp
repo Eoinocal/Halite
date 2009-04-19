@@ -108,10 +108,10 @@ public:
 	{
 		SetDlgItemText(HAL_CSPLASH_NUM_ACT, hal::app().res_wstr(HAL_CSPLASH_SHUTDOWN_MSG).c_str());
 
-		HAL_DEV_MSG(L"SplashThread() calling hal::bittorrent().stop_event_receiver()");
-		hal::bittorrent().stop_event_receiver();
-		HAL_DEV_MSG(L"SplashThread() calling hal::bittorrent().shutdown_session()");
-		hal::bittorrent().shutdown_session();
+		HAL_DEV_MSG(L"SplashThread() calling hal::bittorrent::Instance().stop_event_receiver()");
+		hal::bittorrent::Instance().stop_event_receiver();
+		HAL_DEV_MSG(L"SplashThread() calling hal::bittorrent::Instance().shutdown_session()");
+		hal::bittorrent::Instance().shutdown_session();
 		HAL_DEV_MSG(L"SplashThread() Session shutdown");
 
 		DoDataExchange(true);
@@ -132,9 +132,9 @@ public:
 		try
 		{
 
-		HAL_DEV_MSG(L"SplashThread() calling hal::bittorrent().close_all()");
+		HAL_DEV_MSG(L"SplashThread() calling hal::bittorrent::Instance().close_all()");
 
-		hal::bittorrent().close_all(boost::optional<boost::function<void (int)> >
+		hal::bittorrent::Instance().close_all(boost::optional<boost::function<void (int)> >
 			(bind(&SplashDialog::ReportNumActive, this, _1)));
 		
 		RequiredToEnd();		

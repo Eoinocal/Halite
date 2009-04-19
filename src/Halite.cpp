@@ -44,7 +44,7 @@ Halite::Halite() :
 		logListLen_(128),
 		dll_(L"")
 {
-	hal::event_log.init();
+	hal::event_log().init();
 	load_from_ini();
 }
 
@@ -71,8 +71,8 @@ public:
 	
 	void connect() 
 	{ 
-		hal::event_log.init();
-		conn_ = hal::event_log.attach(bind(&halite_log_file::operator(), this, _1)); 
+		hal::event_log().init();
+		conn_ = hal::event_log().attach(bind(&halite_log_file::operator(), this, _1)); 
 		assert(conn_.connected());
 	}
 	
@@ -120,15 +120,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	try
 	{
-		winstl::reg_key_w reg_path(HKEY_CURRENT_USER, L"SOFTWARE\\Halite");
-		winstl::reg_value_w reg_path_value = reg_path.get_value(L"path");
+	winstl::reg_key_w reg_path(HKEY_CURRENT_USER, L"SOFTWARE\\Halite");
+	winstl::reg_value_w reg_path_value = reg_path.get_value(L"path");
 
-		if (hal::app().get_local_appdata())
-			hal::app().working_directory = hal::app().get_local_appdata().get()/L"Halite";
+	if (hal::app().get_local_appdata())
+		hal::app().working_directory = hal::app().get_local_appdata().get()/L"Halite";
 	}
 	catch(...)
 	{
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
+		hal::event_log().post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(L"No registry entry found, using portable mode", hal::event_logger::info)));		
 	}
 	
@@ -176,16 +176,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	}
 	else
 	{
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
+		hal::event_log().post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(hal::wform(L"App Data Path: %1%.") % hal::app().local_appdata)));		
 
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
+		hal::event_log().post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(hal::wform(L"Exe Path: %1%.") % hal::app().exe_path())));		
 		
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
+		hal::event_log().post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(hal::wform(L"Initial Path: %1%.") % hal::app().initial_path())));		
 		
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
+		hal::event_log().post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg((hal::wform(L"Working Directory: %1%.") % hal::app().working_directory), hal::event_logger::info)));		
 		
 		WTL::CMessageLoop theLoop;

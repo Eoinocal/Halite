@@ -106,7 +106,7 @@ void NewTorrent_PeersListViewCtrl::editItem(int index)
 	}
 	catch(const std::exception& e)
 	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+		hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
 			new hal::EventStdException(hal::event_logger::critical, e, 
 				L"NewTorrent_PeersListViewCtrl::editItem")));
 	}

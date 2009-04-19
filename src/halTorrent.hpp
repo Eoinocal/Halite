@@ -35,6 +35,8 @@
 #include <stlsoft/properties/method_properties.hpp>
 #include <stlsoft/util/operator_bool_adaptor.hpp>
 
+#include <loki/Singleton.h>
+
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ip/udp.hpp>
 
@@ -770,7 +772,7 @@ public:
 	void start_event_receiver();
 	void stop_event_receiver();
 	
-	friend bit& bittorrent();
+//	friend bit& bittorrent();
 	
 	int default_torrent_max_connections();
 	int default_torrent_max_uploads();
@@ -780,9 +782,10 @@ public:
 	const torrent_details_manager& torrentDetails();
 	const torrent_details_manager& updatetorrent_details_manager(const std::wstring& focused, const std::set<std::wstring>& selected);
 	
-private:
 	bit();
+	~bit();
 
+private:
 	bit_impl* pimpl();
 	const bit_impl* pimpl() const;
 	boost::scoped_ptr<bit_impl> pimpl_;
@@ -793,6 +796,6 @@ private:
 	torrent_details_manager torrentDetails_;
 };
 
-bit& bittorrent();
+typedef Loki::SingletonHolder<bit, Loki::CreateUsingNew, Loki::PhoenixSingleton> bittorrent;
 
 };
