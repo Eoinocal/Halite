@@ -11,7 +11,7 @@
 #else
 #	include "../halEvent.hpp"
 #	define TORRENT_STATE_LOG(msg) \
-	hal::event_log.post(boost::shared_ptr<hal::EventDetail>( \
+	hal::event_log().post(boost::shared_ptr<hal::EventDetail>( \
 			new hal::EventMsg(msg, hal::event_logger::torrent_dev))) 
 #endif
 

@@ -184,7 +184,7 @@ private:
 	
 		load_from_ini();
 		
-		conn_ = hal::event_log.attach(bind(&LogListViewCtrl::operator(), this, _1));
+		conn_ = hal::event_log().attach(bind(&LogListViewCtrl::operator(), this, _1));
 	}
 
 	void OnDestroy()

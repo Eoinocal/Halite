@@ -13,7 +13,7 @@
 #else
 #	include "../halEvent.hpp"
 #	define TORRENT_STATE_LOG(msg) \
-	hal::event_log.post(boost::shared_ptr<hal::EventDetail>( \
+	hal::event_log().post(boost::shared_ptr<hal::EventDetail>( \
 			new hal::EventMsg(msg, hal::event_logger::torrent_dev))) 
 #endif
 
@@ -109,7 +109,7 @@ inline std::pair<std::string, std::string> extract_names(const wpath &file)
 		if (!boost::find_last(filename, ".torrent")) 
 				filename += ".torrent";
 		
-		event_log.post(shared_ptr<EventDetail>(new EventMsg(
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(
 			hal::wform(L"Loaded names: %1%, %2%") % from_utf8(name) % from_utf8(filename))));
 
 		return std::make_pair(name, filename);

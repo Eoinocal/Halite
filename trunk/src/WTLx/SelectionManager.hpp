@@ -155,7 +155,7 @@ public:
 	
 	void setSelected(int itemPos)
 	{		
-		hal::event_log.post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, (hal::wform(L"Set Selected %1%") % itemPos).str().c_str())));
+		hal::event_log().post(shared_ptr<hal::EventDetail>(new hal::EventDebug(hal::event_logger::info, (hal::wform(L"Set Selected %1%") % itemPos).str().c_str())));
 
 		LVITEM lvi = { LVIF_STATE };
 		lvi.state = LVIS_SELECTED|LVIS_FOCUSED;

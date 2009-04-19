@@ -47,7 +47,7 @@ void torrent_internal::add_to_session(bool paused)
 	}
 	catch(std::exception& e)
 	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+		hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
 			new hal::EventStdException(event_logger::critical, e, L"add_to_session"))); 
 	}
 }
@@ -66,7 +66,7 @@ bool torrent_internal::remove_from_session(bool write_data)
 	}
 	catch(std::exception& e)
 	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+		hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
 			new hal::EventStdException(event_logger::critical, e, L"remove_from_session()"))); 
 		return false;
 	}
@@ -203,13 +203,13 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr()
 	}
 	catch (const libt::invalid_handle&)
 	{
-		event_log.post(shared_ptr<EventDetail>(
+		event_log().post(shared_ptr<EventDetail>(
 			new EventInvalidTorrent(event_logger::critical, 
 				event_logger::invalid_torrent, to_utf8(name_), "get_torrent_details_ptr")));
 	}
 	catch (const std::exception& e)
 	{
-		event_log.post(shared_ptr<EventDetail>(
+		event_log().post(shared_ptr<EventDetail>(
 			new EventTorrentException(event_logger::critical, 
 				event_logger::torrentException, e.what(), to_utf8(name_), "get_torrent_details_ptr")));
 	}
@@ -281,7 +281,7 @@ void torrent_internal::prepare(wpath filename)
 	const wpath resumeFile = hal::app().get_working_directory()/L"resume"/filename_;
 	const wpath torrentFile = hal::app().get_working_directory()/L"torrents"/filename_;
 	
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(
 		hal::wform(L"File: %1%, %2%.") % resumeFile % torrentFile)));
 	
 //	if (exists(resumeFile)) 
@@ -314,7 +314,7 @@ void torrent_internal::extract_names(boost::intrusive_ptr<libt::torrent_info> me
 	if (!boost::find_last(filename_, L".torrent")) 
 			filename_ += L".torrent";
 	
-	event_log.post(shared_ptr<EventDetail>(new EventMsg(
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(
 		hal::wform(L"Loaded names: %1%, %2%") % name_ % filename_)));
 }
 

@@ -97,7 +97,7 @@ void FilesListViewCtrl::saveSettings()
 
 void recurseDirectory(std::vector<wpath>& files, wpath baseDir, wpath relDir)
 {	
-	hal::event_log.post(shared_ptr<hal::EventDetail>(
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(hal::wform(L"recursing %1%  /  %2%") % baseDir.file_string() % relDir.file_string())));		
 
 	wpath currentDir(baseDir / relDir);
@@ -158,7 +158,7 @@ void FilesSheet::OnDirBrowse(UINT, int, HWND hWnd)
 	}
 	catch(const std::exception& e)
 	{
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
+		hal::event_log().post(shared_ptr<hal::EventDetail>(
 			new hal::EventStdException(hal::event_logger::fatal, e, L"DetailsSheet::OnDirBrowse")));
 	}
 }
@@ -205,7 +205,7 @@ hal::file_size_pairs_t FilesSheet::FileSizePairs() const
 	}
 	catch(const std::exception& e)
 	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+		hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
 			new hal::EventStdException(hal::event_logger::critical, e, 
 				L"DetailsSheet::FileSizePairs")));
 	}
@@ -376,12 +376,12 @@ void NewTorrentDialog::OnShowWindow(BOOL bShow, UINT nStatus)
 {
     resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 
-	hal::event_log.post(shared_ptr<hal::EventDetail>(
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"NewTorrentDialog::OnShowWindow()")));
 
     if (bShow && !inited_)
     {
-		WTL::CMenuHandle pSysMenu = GetSystemMenu(FALSE);
+	WTL::CMenuHandle pSysMenu = GetSystemMenu(FALSE);
 
     	if (pSysMenu != NULL)
             pSysMenu.InsertMenu(-1, MF_BYPOSITION|MF_STRING, SC_SIZE, L"&Size");
@@ -415,7 +415,7 @@ LRESULT NewTorrentDialog::OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	try
 	{
 
-	hal::event_log.post(shared_ptr<hal::EventDetail>(
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"NewTorrentDialog::OnSave()")));
 
 	hal::create_torrent_params params;
@@ -434,7 +434,7 @@ LRESULT NewTorrentDialog::OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	params.web_seeds = detailsSheet_.WebSeeds();
 
 	ProgressDialog progDlg(hal::app().res_wstr(HAL_NEWT_SAVING_TORRENT), bind(
-		&hal::bit::create_torrent, &hal::bittorrent(), params, fileSheet_.OutputFile(), _1));
+		&hal::bit::create_torrent, &hal::bittorrent::Instance(), params, fileSheet_.OutputFile(), _1));
 
 	int err_code = progDlg.DoModal();
 
@@ -445,7 +445,7 @@ LRESULT NewTorrentDialog::OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	}
 	catch(const std::exception& e)
 	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+		hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
 			new hal::EventStdException(hal::event_logger::critical, e, 
 				L"NewTorrentDialog::OnSave")));
 	}

@@ -68,15 +68,15 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 //		MARGINS m = {20, 20, 0, 100};
 //		SetMargins(m);
 
-	hal::event_log.post(shared_ptr<hal::EventDetail>(
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading Halite config...")));
 	hal::config().load_from_ini();
 	
-	hal::event_log.post(shared_ptr<hal::EventDetail>(
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Applying setting...")));
 	if (!hal::config().settingsChanged())
 	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+		hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
 			new hal::EventDebug(hal::event_logger::critical, hal::app().res_wstr(HAL_WINDOW_SOCKETS_FAILED))));
 			
 		MessageBox(hal::app().res_wstr(HAL_WINDOW_SOCKETS_FAILED).c_str(), 0, 0);
@@ -85,7 +85,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 		return 0;
 	}
 	
-	hal::event_log.post(shared_ptr<hal::EventDetail>(
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Starting GUI...")));
 	
 	RECT rc; GetClientRect(&rc);
@@ -112,7 +112,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	
 	m_hWndClient = m_Split.m_hWnd;
 
-	hal::event_log.post(shared_ptr<hal::EventDetail>(
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Creating main listview...")));	
 	// Create ListView and Dialog
 	haliteList.Create(m_Split.m_hWnd, rc, NULL, 
@@ -120,14 +120,14 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 //	haliteList.manager().attach(bind(&HaliteWindow::issueUiUpdate, this));
 
 
-	hal::event_log.post(shared_ptr<hal::EventDetail>(
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Creating classic dialog...")));		
 	mp_dlg.reset(new HaliteDialog(*this)),
 	mp_dlg->Create(m_Split.m_hWnd);
 //	mp_dlg->ShowWindow(true);
 	
 
-	hal::event_log.post(shared_ptr<hal::EventDetail>(
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Creating advanced dialog...")));
 	mp_advDlg.reset(new AdvHaliteDialog(*this));
 	mp_advDlg->Create(m_Split.m_hWnd);
@@ -135,7 +135,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	
 //	m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
 	
-	hal::event_log.post(shared_ptr<hal::EventDetail>(
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Creating tray icon...")));	
 	// Create the tray icon.
 	trayIcon_.Create(this, HAL_TRAY_MENU, L"Halite", 
@@ -158,7 +158,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	SetTimer(ID_SAVE_TIMER, 300000);
 	connectUiUpdate(bind(&HaliteWindow::updateWindow, this));
 	
-	hal::event_log.post(shared_ptr<hal::EventDetail>(
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Registering drop target...")));	
 	RegisterDropTarget();
 	
@@ -171,10 +171,10 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 //	haliteList.manager().setSelected(0);
 	setCorrectDialog();
 	
-	hal::event_log.post(shared_ptr<hal::EventDetail>(
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Starting event reciever...")));
-	hal::bittorrent().start_event_receiver();
-	hal::event_log.post(shared_ptr<hal::EventDetail>(
+	hal::bittorrent::Instance().start_event_receiver();
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Initial setup complete!")));
 
 	UpdateLayout();
@@ -184,7 +184,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	}
 	catch(const std::exception& e)
 	{
-		hal::event_log.post(boost::shared_ptr<hal::EventDetail>(
+		hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
 			new hal::EventStdException(hal::event_logger::critical, e, L"HaliteWindow::OnCreate"))); 
 
 		DestroyWindow();
@@ -231,7 +231,7 @@ void HaliteWindow::updateWindow()
 	try
 	{
 	
-	hal::SessionDetail details = hal::bittorrent().get_session_details();
+	hal::SessionDetail details = hal::bittorrent::Instance().get_session_details();
 	
 	if (details.port > -1)
 		UISetText(0, 
@@ -287,7 +287,7 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 		{
 
 		hal::ini().save_data();
-		hal::bittorrent().save_torrent_data();	
+		hal::bittorrent::Instance().save_torrent_data();	
 	
 		} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::OnTimer(ID_SAVE_TIMER)")
 	}
@@ -308,7 +308,7 @@ void HaliteWindow::issueUiUpdate()
 		s.insert(val.text().c_str());
 	}
 	
-	const hal::torrent_details_manager& torrents = hal::bittorrent().updatetorrent_details_manager(
+	const hal::torrent_details_manager& torrents = hal::bittorrent::Instance().updatetorrent_details_manager(
 		haliteList.is_selected_begin()->text().c_str(), s);
 
 	ui_update_signal_(torrents);
@@ -318,7 +318,7 @@ void HaliteWindow::issueUiUpdate()
 
 LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
 {
-	hal::event_log.post(shared_ptr<hal::EventDetail>(
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"I recieved data.")));
 		
 	switch (pCSD->dwData)
@@ -327,7 +327,7 @@ LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
 		{	
 			wstring filename(static_cast<wchar_t*>(pCSD->lpData), pCSD->cbData/sizeof(wchar_t));
 			
-			hal::event_log.post(shared_ptr<hal::EventDetail>(
+			hal::event_log().post(shared_ptr<hal::EventDetail>(
 				new hal::EventMsg((hal::wform(L"Recieved data: %1%.") % filename), hal::event_logger::info)));
 		
 			ProcessFile(filename.c_str());
@@ -364,17 +364,17 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	wpath file(lpszPath, boost::filesystem::native);	
 
 	if (use_move_to)
-		hal::bittorrent().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type, 
+		hal::bittorrent::Instance().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type, 
 			wpath(default_move_folder));
 	else
-		hal::bittorrent().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type);
+		hal::bittorrent::Instance().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type);
 
 	issueUiUpdate();
 
 	}
 	catch(const boost::filesystem::filesystem_error&)
 	{
-		hal::event_log.post(shared_ptr<hal::EventDetail>(
+		hal::event_log().post(shared_ptr<hal::EventDetail>(
 			new hal::EventDebug(hal::event_logger::warning, L"filesystem error")));
 	}
 }
@@ -398,19 +398,19 @@ void HaliteWindow::ShutdownThread()
 	{
 	win32_exception::install_handler();
 
-	hal::bittorrent().close_all(0);
+	hal::bittorrent::Instance().close_all(0);
 
-	hal::bittorrent().stop_event_receiver();
+	hal::bittorrent::Instance().stop_event_receiver();
 	Sleep(500);
 
-	hal::bittorrent().shutdown_session();
+	hal::bittorrent::Instance().shutdown_session();
 
 	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::ShutdownThread()")
 }
 
 void HaliteWindow::TryToCloseWithConfirmation()
 {
-	bool noTorrentsAreActive = !hal::bittorrent().is_any_torrent_active();
+	bool noTorrentsAreActive = !hal::bittorrent::Instance().is_any_torrent_active();
 	
 	if (noTorrentsAreActive || !confirmClose || (confirmClose && 
 		MessageBox(hal::app().res_wstr(HAL_WINDOW_CLOSECONFRIM).c_str(), 
@@ -551,7 +551,7 @@ LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	hal::bittorrent().pause_all_torrents();
+	hal::bittorrent::Instance().pause_all_torrents();
 	
 	issueUiUpdate();
 	return 0;
@@ -559,7 +559,7 @@ LRESULT HaliteWindow::OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	hal::bittorrent().unpause_all_torrents();
+	hal::bittorrent::Instance().unpause_all_torrents();
 	
 	issueUiUpdate();
 	return 0;
@@ -610,7 +610,7 @@ LRESULT HaliteWindow::OnPaint(HDC dc)
 
 LRESULT HaliteWindow::OnAreYouMe(UINT, WPARAM, LPARAM, BOOL&) 
 {
-	hal::event_log.post(shared_ptr<hal::EventDetail>(
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"I tried to contact me.")));		
 
 	return WM_AreYouMe_; 
