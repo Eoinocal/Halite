@@ -321,6 +321,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="&quot;$(SolutionDir)lib\openssl\bin\x64\MT\libeay32.lib&quot; &quot;$(SolutionDir)lib\openssl\bin\x64\MT\ssleay32.lib&quot;"
+				ShowProgress="2"
 				LinkIncremental="1"
 				DelayLoadDLLs="uxtheme.dll; dwmapi.dll"
 				GenerateDebugInformation="true"
