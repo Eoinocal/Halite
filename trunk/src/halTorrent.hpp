@@ -231,7 +231,8 @@ public:
 		torrent_stopped,
 		torrent_pausing,
 		torrent_stopping,
-		torrent_in_error
+		torrent_in_error,
+		torrent_not_started
 	};
 
 	enum details

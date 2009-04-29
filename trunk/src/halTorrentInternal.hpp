@@ -297,6 +297,7 @@ class torrent_internal :
 	friend struct stopping;
 	friend struct stopped;
 	friend struct in_error;
+	friend struct not_started;
 	friend struct resume_data_waiting;
 	friend struct resume_data_idling;
 
@@ -823,6 +824,10 @@ public:
 			state_str = L"Active";
 			break;
 
+		case torrent_details::torrent_not_started:
+			state_str = L"Not Started!";
+			break;
+
 		case torrent_details::torrent_paused:
 			state_str = app().res_wstr(HAL_TORRENT_PAUSED);
 			break;
@@ -842,11 +847,15 @@ public:
 		case torrent_details::torrent_in_error:
 			state_str = app().res_wstr(HAL_TORRENT_IN_ERROR);
 			break;
+			
+		default:
+			state_str = L"Bad State!";
+			break;
 		};
 		
-		HAL_DEV_MSG(wform(L" >> State            %1%") % state_str);
-		HAL_DEV_MSG(wform(L" >> Session Paused   %1%") % handle_.is_paused());
-		HAL_DEV_MSG(wform(L" >> Error state      %1%") % check_error());
+		HAL_DEV_MSG(wform(L" >> State			%1%") % state_str);
+		HAL_DEV_MSG(wform(L" >> Paused in session	%1%") % handle_.is_paused());
+		HAL_DEV_MSG(wform(L" >> Error state		%1%") % check_error());
 
 		}
 	}
