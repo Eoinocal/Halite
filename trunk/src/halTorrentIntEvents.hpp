@@ -20,40 +20,42 @@ namespace sc = boost::statechart;
 struct ev_remove_from_session : sc::event<ev_remove_from_session>
 {
 public:
-    ev_remove_from_session(bool write_data) :
+	ev_remove_from_session(bool write_data) :
 		write_data_(write_data)
-    {}
-   
-    const bool& write_data() const { return write_data_; }
+	{}
+
+const bool& write_data() const { return write_data_; }
 
 private:
-    bool write_data_;
+	bool write_data_;
 };
 
 struct ev_add_to_session : sc::event<ev_add_to_session>
 {
 public:
-    ev_add_to_session(bool pause) :
+	ev_add_to_session(bool pause) :
 		pause_(pause)
-    {}
-   
-    const bool& pause() const { return pause_; }
+	{}
+
+	const bool& pause() const { return pause_; }
 
 private:
-    bool pause_;
+	bool pause_;
 };
+
+struct ev_start : sc::event<ev_start> {};
 
 struct ev_error_alert : sc::event<ev_error_alert>
 {
 public:
-    ev_error_alert(wstring& e) :
+	ev_error_alert(wstring& e) :
 		err_(e)
-    {}
-   
-    const wstring& error() const { return err_; }
+	{}
+
+	const wstring& error() const { return err_; }
 
 private:
-    wstring err_;
+	wstring err_;
 };
 
 struct ev_pause : sc::event< ev_pause > {};

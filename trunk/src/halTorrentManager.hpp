@@ -112,6 +112,15 @@ public:
 		}
 	}
 
+	void start_all()
+	{
+		for (torrent_by_name::iterator i= torrents_.get<by_name>().begin(), 
+			e = torrents_.get<by_name>().end(); i!=e; ++i)
+		{
+			(*i).torrent->start();
+		}
+	}
+
 	torrent_internal_ptr create_torrent(wpath filename, wpath saveDirectory, bit::allocations alloc, wpath move_to_directory=L"")
 	{
 		torrent_internal_ptr t = torrent_internal_ptr(new torrent_internal(filename, saveDirectory, alloc, move_to_directory));

@@ -771,15 +771,13 @@ public:
 		if(TIp)
 		{
 			TIp->set_managed(managed);
-			TIp->set_transfer_speed(bittorrent::Instance().default_torrent_download(), bittorrent::Instance().default_torrent_upload());
-			TIp->set_connection_limit(bittorrent::Instance().default_torrent_max_connections(), bittorrent::Instance().default_torrent_max_uploads());
+			TIp->set_transfer_speed(bittorrent::Instance().default_torrent_download(), 
+				bittorrent::Instance().default_torrent_upload());
+			TIp->set_connection_limit(bittorrent::Instance().default_torrent_max_connections(), 
+				bittorrent::Instance().default_torrent_max_uploads());
 			TIp->set_resolve_countries(resolve_countries_);
 
-
-			if (!startStopped) 
-				TIp->add_to_session();
-			else
-				TIp->set_state_stopped();
+			TIp->start();
 		}
 		
 		}
@@ -917,11 +915,18 @@ public:
 			for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
 					i != e; ++i)
 			{
-				if ((*i).torrent && 
-						(((*i).torrent->state() != torrent_details::torrent_stopped 
-							&& (*i).torrent->state() != torrent_details::torrent_paused
-							&& (*i).torrent->state() != torrent_details::torrent_in_error)
-						|| (*i).torrent->awaiting_resume_data()))
+				if (	(*i).torrent 
+					&& 
+					(*i).torrent->state() != torrent_details::torrent_in_error
+					&& 
+					(	(	(*i).torrent->state() != torrent_details::torrent_stopped 
+							&& 
+							(*i).torrent->state() != torrent_details::torrent_paused
+						)
+						|| 
+						(*i).torrent->awaiting_resume_data()
+					)
+				)
 				{
 #					ifdef HAL_TORRENT_DEV_MSGES
 						(*i).torrent->output_torrent_debug_details();

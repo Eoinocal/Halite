@@ -61,7 +61,7 @@ public:
 		{
 			if (!wofs.is_open()) wofs.open(hal::app().get_working_directory()/L"HaliteLog.txt");
 			
-			wofs << (hal::wform(L"%1% %2%, %3%\r\n") 
+			wofs << (hal::wform(L"%1% %2%, %3%\n") 
 				% event->timeStamp() % hal::event_logger::eventLevelToStr(event->level()) 
 				% event->msg()).str();
 			
