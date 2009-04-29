@@ -53,7 +53,7 @@ out_of_session::~out_of_session()
 
 sc::result out_of_session::react(const ev_add_to_session& evt)
 {
-	TORRENT_STATE_LOG(L"Entering in_the_session()");
+	TORRENT_STATE_LOG(hal::wform(L"Adding to session, paused - %1%") % evt.pause());
 	torrent_internal& t_i = context<torrent_internal>();
 
 	assert(!t_i.in_session());
@@ -105,6 +105,9 @@ active::active(base_type::my_context ctx) :
 
 	torrent_internal& t_i = context<torrent_internal>();
 	t_i.state(torrent_details::torrent_active);
+
+	if (t_i.handle_.is_paused())
+		t_i.handle_.resume();
 }
 
 active::~active()
@@ -234,6 +237,7 @@ not_started::not_started(base_type::my_context ctx) :
 {
 	torrent_internal& t_i = context<torrent_internal>();
 	stored_state_ = t_i.state();
+	t_i.state(torrent_details::torrent_not_started);
 
 	TORRENT_STATE_LOG(hal::wform(L"Entering not_started() - %1%") % stored_state_);
 }

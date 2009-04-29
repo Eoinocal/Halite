@@ -69,11 +69,13 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 //		SetMargins(m);
 
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"Loading Halite config...")));
+		new hal::EventMsg(L"Loading Halite configuration ...")));
 	hal::config().load_from_ini();
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"	... Done")));
 	
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"Applying setting...")));
+		new hal::EventMsg(L"Applying BitTorrent settings ...")));
 	if (!hal::config().settingsChanged())
 	{
 		hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
@@ -84,9 +86,11 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 		DestroyWindow();
 		return 0;
 	}
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"	... Done")));
 	
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"Starting GUI...")));
+		new hal::EventMsg(L"Starting Halite GUI ...")));
 	
 	RECT rc; GetClientRect(&rc);
 	SetMenu(0);
@@ -113,7 +117,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	m_hWndClient = m_Split.m_hWnd;
 
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"Creating main listview...")));	
+		new hal::EventMsg(L"	... Creating main listview")));	
 	// Create ListView and Dialog
 	haliteList.Create(m_Split.m_hWnd, rc, NULL, 
 		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS|LVS_OWNERDATA);
@@ -121,14 +125,14 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 
 
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"Creating classic dialog...")));		
+		new hal::EventMsg(L"	... Creating classic dialog...")));		
 	mp_dlg.reset(new HaliteDialog(*this)),
 	mp_dlg->Create(m_Split.m_hWnd);
 //	mp_dlg->ShowWindow(true);
 	
 
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"Creating advanced dialog...")));
+		new hal::EventMsg(L"	... Creating advanced dialog")));
 	mp_advDlg.reset(new AdvHaliteDialog(*this));
 	mp_advDlg->Create(m_Split.m_hWnd);
 //	mp_advDlg->ShowWindow(true);
@@ -136,7 +140,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 //	m_Split.SetSplitterPanes(*mp_list, *mp_dlg);
 	
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"Creating tray icon...")));	
+		new hal::EventMsg(L"	... Creating tray icon...")));	
 	// Create the tray icon.
 	trayIcon_.Create(this, HAL_TRAY_MENU, L"Halite", 
 		CTrayNotifyIcon::LoadIconResource(HAL_APP_ICON), WM_TRAYNOTIFY, HAL_TRAY_MENU);
@@ -159,7 +163,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	connectUiUpdate(bind(&HaliteWindow::updateWindow, this));
 	
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"Registering drop target...")));	
+		new hal::EventMsg(L"	... Registering drop target")));	
 	RegisterDropTarget();
 	
 	// Register object for message filtering and idle updates
@@ -168,12 +172,16 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	pLoop->AddMessageFilter(this);
 	pLoop->AddIdleHandler(this);
 	
-//	haliteList.manager().setSelected(0);
 	setCorrectDialog();
 	
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"Starting event reciever...")));
+		new hal::EventMsg(L"Starting BitTorrent event reciever ...")));
 	hal::bittorrent::Instance().start_event_receiver();
+
+	hal::event_log().post(shared_ptr<hal::EventDetail>(
+		new hal::EventMsg(L"Restoring torrent states ...")));
+	hal::bittorrent::Instance().resume_all();
+
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Initial setup complete!")));
 

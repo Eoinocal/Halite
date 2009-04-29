@@ -773,7 +773,7 @@ void bit::pause_all_torrents()
 			(*i).torrent->pause();
 	}
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "pauseAllTorrents")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "pause_all_torrents")
 }
 
 void bit::unpause_all_torrents()
@@ -787,7 +787,7 @@ void bit::unpause_all_torrents()
 			(*i).torrent->resume();
 	}
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "unpauseAllTorrents")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "unpause_all_torrents")
 }
 
 bool bit::is_any_torrent_active()
@@ -806,7 +806,7 @@ bool bit::is_any_torrent_active()
 		}
 	}
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "unpauseAllTorrents")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "is_any_torrent_active")
 	
 	return result;
 }
@@ -1059,9 +1059,9 @@ void bit::start_event_receiver()
 {
 	try {
 
-	event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Starting event handler.")));
-
 	pimpl()->start_alert_handler();
+
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(L"	... started handler")));
 	
 	} HAL_GENERIC_PIMPL_EXCEPTION_CATCH("bit::start_event_receiver()")
 }
@@ -1070,7 +1070,7 @@ void bit::stop_event_receiver()
 {
 	try {
 
-	event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Stopping event handler.")));
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Stopping event handler")));
 
 	pimpl()->stop_alert_handler();
 	

@@ -151,9 +151,7 @@ bool Config::settingsThread()
 			new hal::EventStdException(event_logger::critical, e, L"settingsThread, Protocol Encryption"))); 
 	}
 	
-	bittorrent::Instance().set_session_half_open_limit(half_connections_limit_);
-	
-	bittorrent::Instance().resume_all();	
+	bittorrent::Instance().set_session_half_open_limit(half_connections_limit_);	
 	
 	bittorrent::Instance().set_session_limits(globals_.total, globals_.uploads);
 	bittorrent::Instance().set_session_speed(globals_.download_rate, globals_.upload_rate);
@@ -201,6 +199,7 @@ bool Config::settingsThread()
 		bittorrent::Instance().ensure_dht_off();
 		
 	// Settings seem to have applied ok!
+	
 	save_to_ini();	
 	return true;
 

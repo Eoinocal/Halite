@@ -829,7 +829,7 @@ public:
 	{
 		try {
 			
-		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Resuming torrent.")));
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Resuming all torrents.")));
 		
 		for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); i != e;)
 		{
@@ -841,22 +841,7 @@ public:
 				{
 					
 				(*i).torrent->prepare(file);	
-
-				switch ((*i).torrent->get_state())
-				{
-					case torrent_details::torrent_stopped:
-					case torrent_details::torrent_in_error:
-						break;
-					case torrent_details::torrent_paused:
-						(*i).torrent->add_to_session(true);
-						break;
-					case torrent_details::torrent_active:
-						(*i).torrent->add_to_session(false);
-						(*i).torrent->resume();
-						break;
-					default:
-						assert(false);
-				};
+				(*i).torrent->start();	
 				
 				++i;
 				
