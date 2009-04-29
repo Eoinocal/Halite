@@ -84,11 +84,18 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	assert(t_i.handle_.is_valid());
 	t_i.in_session_ = true;
 
-//	if (evt.pause())
+	if (evt.pause())
 		return transit< paused >();
-//	else
-//		return transit< active >();
+	else
+		return transit< active >();
 
+}
+
+sc::result out_of_session::react(const ev_resume& evt)
+{
+	post_event(ev_add_to_session(false));
+
+	return discard_event();
 }
 
 active::active(base_type::my_context ctx) :
@@ -222,9 +229,38 @@ stopped::~stopped()
 	TORRENT_STATE_LOG(L"Exiting ~stopped()");
 }
 
-sc::result stopped::react(const ev_resume& evt)
+not_started::not_started(base_type::my_context ctx) :
+	base_type::my_base(ctx)
 {
-	post_event(ev_add_to_session(false));
+	torrent_internal& t_i = context<torrent_internal>();
+	stored_state_ = t_i.state();
+
+	TORRENT_STATE_LOG(hal::wform(L"Entering not_started() - %1%") % stored_state_);
+}
+
+not_started::~not_started()
+{
+	TORRENT_STATE_LOG(L"Exiting ~not_started()");
+}
+
+sc::result not_started::react(const ev_start& evt)
+{
+	switch (stored_state_)
+	{
+	case torrent_details::torrent_active:
+		post_event(ev_add_to_session(false));
+		break;
+
+	case torrent_details::torrent_paused:
+	case torrent_details::torrent_pausing:
+		post_event(ev_add_to_session(true));
+		break;
+		
+	case torrent_details::torrent_stopped:
+	case torrent_details::torrent_stopping:		
+	case torrent_details::torrent_in_error:
+		return transit< stopped >();
+	};
 
 	return discard_event();
 }

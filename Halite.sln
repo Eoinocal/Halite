@@ -17,11 +17,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientTest", "sln\libtorren
 		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8} = {333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MakeTorrent", "sln\libtorrent\MakeTorrent\MakeTorrent.vcproj", "{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}"
-	ProjectSection(ProjectDependencies) = postProject
-		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8} = {333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -146,27 +141,6 @@ Global
 		{67F0629E-04ED-4CF3-BC02-4A49B4919F05}.Release|Win32.ActiveCfg = Release|Win32
 		{67F0629E-04ED-4CF3-BC02-4A49B4919F05}.Release|x64.ActiveCfg = Release|Win32
 		{67F0629E-04ED-4CF3-BC02-4A49B4919F05}.Release|x86.ActiveCfg = Release|Win32
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Debug|Win32.ActiveCfg = Debug|Win32
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Debug|x64.ActiveCfg = Debug|Win32
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Debug|x86.ActiveCfg = Debug|Win32
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release Logging|Mixed Platforms.ActiveCfg = Release|Win32
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release Logging|Mixed Platforms.Build.0 = Release|Win32
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release Logging|Win32.ActiveCfg = Release|Win32
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release Logging|x64.ActiveCfg = Release|Win32
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release Logging|x86.ActiveCfg = Release|Win32
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release Small|Mixed Platforms.ActiveCfg = Release Small|x64
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release Small|Mixed Platforms.Build.0 = Release Small|x64
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release Small|Win32.ActiveCfg = Release Small|Win32
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release Small|x64.ActiveCfg = Release Small|x64
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release Small|x86.ActiveCfg = Release Small|x64
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release|Mixed Platforms.ActiveCfg = Release|x64
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release|Mixed Platforms.Build.0 = Release|x64
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release|Win32.ActiveCfg = Release|Win32
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release|x64.ActiveCfg = Release|x64
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release|x64.Build.0 = Release|x64
-		{95A9F4A0-8CEF-4A1B-AA6B-94B7E0178253}.Release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

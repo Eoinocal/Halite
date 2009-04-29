@@ -429,26 +429,30 @@ public:
 
 	void resume()
 	{
-		mutex_t::scoped_lock l(mutex_);
 		HAL_DEV_MSG(hal::wform(L"resume() - %1%") % name_);
 		
-		process_event(ev_resume());
+		locked_process_event(ev_resume());
 	}
 	
 	void pause()
 	{
-		mutex_t::scoped_lock l(mutex_);
 		HAL_DEV_MSG(hal::wform(L"pause() - %1%") % name_);
 		
-		process_event(ev_pause());		
+		locked_process_event(ev_pause());		
 	}
 	
 	void stop()
 	{
-		mutex_t::scoped_lock l(mutex_);
 		HAL_DEV_MSG(hal::wform(L"stop() - %1%") % name_);
 		
-		process_event(ev_stop());
+		locked_process_event(ev_stop());
+	}
+	
+	void start()
+	{
+		HAL_DEV_MSG(hal::wform(L"stop() - %1%") % name_);
+		
+		locked_process_event(ev_start());
 	}
 
 	void set_state_stopped()
@@ -778,7 +782,7 @@ public:
 	
 	unsigned state() const 
 	{ 
-		if (!in_session())
+/*		if (!in_session())
 		{
 			if (state_ != torrent_details::torrent_stopped)
 			{			
@@ -786,7 +790,7 @@ public:
 				state_ = torrent_details::torrent_stopped;
 			}
 		}
-		
+*/		
 		return state_; 
 	}
 

@@ -20,20 +20,22 @@ namespace hal
 
 namespace sc = boost::statechart;
 
-struct stopped;
+struct not_started;
 
-struct out_of_session : sc::state<out_of_session, torrent_internal, mpl::list< stopped > > 
+struct out_of_session : sc::state<out_of_session, torrent_internal, mpl::list< not_started > > 
 {
-	typedef sc::state<out_of_session, torrent_internal, mpl::list< stopped > > base_type;
+	typedef sc::state<out_of_session, torrent_internal, mpl::list< not_started > > base_type;
 
 	typedef mpl::list<
-		sc::custom_reaction< ev_add_to_session >
+		sc::custom_reaction< ev_add_to_session >,
+		sc::custom_reaction< ev_resume >
 	> reactions;
 
 	out_of_session(base_type::my_context ctx);
 	~out_of_session();	
 
 	sc::result react(const ev_add_to_session& evt);
+	sc::result react(const ev_resume& evt);
 };
 
 struct active;
@@ -158,18 +160,29 @@ struct stopping : sc::state<stopping, in_the_session::orthogonal< 1 > >
 	sc::result react(const ev_paused_alert& evt);
 };
 
+struct not_started : sc::state<not_started, out_of_session>
+{
+	typedef sc::state<not_started, out_of_session> base_type;
+
+	typedef mpl::list<
+		sc::custom_reaction< ev_start >
+	> reactions;
+
+	not_started(base_type::my_context ctx);
+	~not_started();
+
+	sc::result react(const ev_start& evt);
+
+private:
+	unsigned stored_state_;
+};
+
 struct stopped : sc::state<stopped, out_of_session>
 {
 	typedef sc::state<stopped, out_of_session> base_type;
 
-	typedef mpl::list<
-		sc::custom_reaction< ev_resume >
-	> reactions;
-
 	stopped(base_type::my_context ctx);
 	~stopped();
-
-	sc::result react(const ev_resume& evt);
 };
 
 }; // namespace hal
