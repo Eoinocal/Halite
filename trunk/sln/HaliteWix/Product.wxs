@@ -27,7 +27,7 @@
 <?define ProductName = "Halite" ?>
 <?define ProductFullName = "$(var.ProductName) $(var.FullGMmbVersion)$(var.CpuPostfix)" ?>
 
-<?define RootDirectory = "$(var.ProjectDir)\..\..\" ?>
+<?define RootDirectory = "$(var.ProjectDir)..\..\" ?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	
@@ -139,18 +139,74 @@
 					</Component>
 					
 					<Component Id="Empty" Guid="" KeyPath="yes" />
-					
-					<Component Id='LanguageFiles.Polish' Guid='*'>
-						<File Id='Polish' KeyPath="yes" Name='Polish.dll' DiskId='1' 
-						      Source='$(var.RootDirectory)lang\bin\Polish.dll' />
+
+					<Component Id='LanguageFiles.Dutch' Guid='*'>
+						<File Id='Dutch' KeyPath="yes" Name='Dutch.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Dutch.dll' />
+					</Component>
+					<Component Id='LanguageFiles.French' Guid='*'>
+						<File Id='French' KeyPath="yes"  Name='French.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\French.dll' />
+					</Component>
+					<Component Id='LanguageFiles.German' Guid='*'>
+						<File Id='German' KeyPath="yes"  Name='German.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\German.dll' />
 					</Component>
 					<Component Id='LanguageFiles.Greek' Guid='*'>
-						<File Id='Greek' KeyPath="yes"  Name='Greek.dll' DiskId='1' 
+						<File Id='Greek' KeyPath="yes" Name='Greek.dll' DiskId='1'
 						      Source='$(var.RootDirectory)lang\bin\Greek.dll' />
 					</Component>
-					<Component Id='LanguageFiles.Dutch' Guid='*'>
-						<File Id='Dutch' KeyPath="yes"  Name='Dutch.dll' DiskId='1' 
-						      Source='$(var.RootDirectory)lang\bin\Dutch.dll' />
+					<Component Id='LanguageFiles.Hungarian' Guid='*'>
+						<File Id='Hungarian' KeyPath="yes"  Name='Hungarian.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Hungarian.dll' />
+					</Component>
+					<Component Id='LanguageFiles.Italian' Guid='*'>
+						<File Id='Italian' KeyPath="yes"  Name='Italian.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Italian.dll' />
+					</Component>
+					<Component Id='LanguageFiles.Japanese' Guid='*'>
+						<File Id='Japanese' KeyPath="yes" Name='Japanese.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Japanese.dll' />
+					</Component>
+					<Component Id='LanguageFiles.Norwegian' Guid='*'>
+						<File Id='Norwegian' KeyPath="yes"  Name='Norwegian.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Norwegian.dll' />
+					</Component>
+					<Component Id='LanguageFiles.Polish' Guid='*'>
+						<File Id='Polish' KeyPath="yes"  Name='Polish.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Polish.dll' />
+					</Component>
+					<Component Id='LanguageFiles.Portuguese' Guid='*'>
+						<File Id='Portuguese' KeyPath="yes" Name='Portuguese.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Portuguese.dll' />
+					</Component>
+					<Component Id='LanguageFiles.Russian' Guid='*'>
+						<File Id='Russian' KeyPath="yes"  Name='Russian.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Russian.dll' />
+					</Component>
+					<Component Id='LanguageFiles.Serbian' Guid='*'>
+						<File Id='Serbian' KeyPath="yes"  Name='Serbian.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Serbian.dll' />
+					</Component>
+					<Component Id='LanguageFiles.Serbian.Cyrillic' Guid='*'>
+						<File Id='Serbian.Cyrillic' KeyPath="yes" Name='Serbian.Cyrillic.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Serbian (Cyrillic).dll' />
+					</Component>
+					<Component Id='LanguageFiles.Slovenian' Guid='*'>
+						<File Id='Slovenian' KeyPath="yes"  Name='Slovenian.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Slovenian.dll' />
+					</Component>
+					<Component Id='LanguageFiles.Spanish' Guid='*'>
+						<File Id='Spanish' KeyPath="yes"  Name='Spanish.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Spanish.dll' />
+					</Component>
+					<Component Id='LanguageFiles.Swedish' Guid='*'>
+						<File Id='Swedish' KeyPath="yes"  Name='Swedish.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Swedish.dll' />
+					</Component>
+					<Component Id='LanguageFiles.Turkish' Guid='*'>
+						<File Id='Turkish' KeyPath="yes"  Name='Turkish.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Turkish.dll' />
 					</Component>
 
 				</Directory>
@@ -175,24 +231,91 @@
 			Id="HaliteLanguages" Title="Languages" Level="1"	AllowAdvertise='no'
 		>
 			<ComponentRef Id="Empty" />
-			
-			<Feature Id="HaliteLanguages.Dutch"
-				Title="Dutch"
+
+			<Feature Id="HaliteLanguages.Dutch" Title="Dutch"
 				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
 			>
 				<ComponentRef Id="LanguageFiles.Dutch" />
 			</Feature>
-			<Feature Id="HaliteLanguages.Greek"
-				Title="Greek"
+			<Feature Id="HaliteLanguages.French" Title="French"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.French" />
+			</Feature>
+			<Feature Id="HaliteLanguages.German" Title="German"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.German" />
+			</Feature>
+			<Feature Id="HaliteLanguages.Greek" Title="Greek"
 				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
 			>
 				<ComponentRef Id="LanguageFiles.Greek" />
 			</Feature>
-			<Feature Id="HaliteLanguages.Polish"
-				Title="Polish"
+			<Feature Id="HaliteLanguages.Hungarian" Title="Hungarian"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.Hungarian" />
+			</Feature>
+			<Feature Id="HaliteLanguages.Italian" Title="Italian"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.Italian" />
+			</Feature>
+			<Feature Id="HaliteLanguages.Japanese" Title="Japanese"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.Japanese" />
+			</Feature>
+			<Feature Id="HaliteLanguages.Norwegian" Title="Norwegian"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.Norwegian" />
+			</Feature>
+			<Feature Id="HaliteLanguages.Polish" Title="Polish"
 				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
 			>
 				<ComponentRef Id="LanguageFiles.Polish" />
+			</Feature>
+			<Feature Id="HaliteLanguages.Portuguese"	 Title="Portuguese"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.Portuguese" />
+			</Feature>
+			<Feature Id="HaliteLanguages.Russian" Title="Russian"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.Russian" />
+			</Feature>
+			<Feature Id="HaliteLanguages.Serbian" Title="Serbian"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.Serbian" />
+			</Feature>
+			<Feature Id="HaliteLanguages.Serbian.Cyrillic"	 Title="Serbian (Cyrillic)"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.Serbian.Cyrillic" />
+			</Feature>
+			<Feature Id="HaliteLanguages.Slovenian" Title="Slovenian"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.Slovenian" />
+			</Feature>
+			<Feature Id="HaliteLanguages.Spanish" Title="Spanish"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.Spanish" />
+			</Feature>
+			<Feature Id="HaliteLanguages.Swedish" Title="Swedish"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.Swedish" />
+			</Feature>
+			<Feature Id="HaliteLanguages.Turkish" Title="Turkish"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.Turkish" />
 			</Feature>
 		</Feature>
 
