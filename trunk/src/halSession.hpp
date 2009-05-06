@@ -262,7 +262,7 @@ public:
 		catch (const std::exception& e)
 		{
 			event_log().post(shared_ptr<EventDetail>(
-				new EventStdException(event_logger::fatal, e, L"From bit::listenOn.")));
+				new EventStdException(event_logger::fatal, e, L"From bit::listen_on.")));
 
 			return false;
 		}
@@ -543,7 +543,7 @@ public:
 		catch(const std::exception& e)
 		{		
 			hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventStdException(event_logger::critical, e, L"ensureIpFilterOn"))); 
+				new hal::EventStdException(event_logger::critical, e, L"ensure_ip_filter_on"))); 
 
 			ensure_ip_filter_off();
 		}
@@ -634,7 +634,7 @@ public:
 		catch(const std::exception& e)
 		{
 			hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
-					new hal::EventStdException(event_logger::critical, e, L"ensurePeOn"))); 
+					new hal::EventStdException(event_logger::critical, e, L"ensure_pe_on"))); 
 					
 			ensure_pe_off();		
 		}
@@ -881,11 +881,11 @@ public:
 		try 
 		{	
 
-		event_log().post(shared_ptr<EventDetail>(new EventInfo(L"Saving torrent data...")));
+		event_log().post(shared_ptr<EventDetail>(new EventInfo(L"Saving torrent data ...")));
 
 		save_torrent_data();
 
-		event_log().post(shared_ptr<EventDetail>(new EventInfo(L"Stopping all torrents...")));
+		event_log().post(shared_ptr<EventDetail>(new EventInfo(L"	... stopping all torrents")));
 
 		session_->pause();		
 
@@ -920,7 +920,7 @@ public:
 				}
 			}
 
-			event_log().post(shared_ptr<EventDetail>(new EventInfo(hal::wform(L"%1% still active") % (num_active))));
+			event_log().post(shared_ptr<EventDetail>(new EventInfo(hal::wform(L"	... %1% still active") % (num_active))));
 
 			if (fn)	(*fn)(num_active);
 			boost::this_thread::sleep(pt::milliseconds(500));
@@ -928,7 +928,7 @@ public:
 		
 		}
 		
-		event_log().post(shared_ptr<EventDetail>(new EventInfo(L"All torrents stopped.")));		
+		event_log().post(shared_ptr<EventDetail>(new EventInfo(L"	... all torrents stopped.")));		
 		
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "close_all()")
 	}
