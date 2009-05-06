@@ -5,7 +5,7 @@
     <ProductVersion>3.0</ProductVersion>
     <ProjectGuid>{96b9f803-98bb-4398-a0b6-77ab9143222f}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>HaliteWix</OutputName>
+    <OutputName>Halite</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.0\Wix.targets</WixTargetsPath>
   </PropertyGroup>
