@@ -319,7 +319,7 @@
 "Trackers" --->  ??? 
 "Transferred:" ---> "Trasferiti"
 "Type" ---> "Tipo"
-"UPnP router model (if recognised)." --->  "Modello router updn (se conosciuto)." 
+"UPnP router model (if recognised)." --->  "Modello router UPnP (se conosciuto)." 
 "UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL" --->  ??? 
