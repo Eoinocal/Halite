@@ -69,7 +69,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="&quot;$(SolutionDir)lib\openssl\bin\x86\MTd\libeay32.lib&quot; &quot;$(SolutionDir)lib\openssl\bin\x86\MTd\ssleay32.lib&quot;"
+				AdditionalDependencies="&quot;$(ProjectDir)..\..\lib\openssl\bin\x86\MTd\libeay32.lib&quot; &quot;$(ProjectDir)..\..\lib\openssl\bin\x86\MTd\ssleay32.lib&quot;"
 				LinkIncremental="2"
 				DelayLoadDLLs="uxtheme.dll; dwmapi.dll; ws2_32.dll"
 				GenerateDebugInformation="true"
@@ -150,7 +150,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="&quot;$(SolutionDir)lib\openssl\bin\x64\MTd\libeay32.lib&quot; &quot;$(SolutionDir)lib\openssl\bin\x64\MTd\ssleay32.lib&quot;"
+				AdditionalDependencies="&quot;$(ProjectDir)..\..\lib\openssl\bin\x64\MTd\libeay32.lib&quot; &quot;$(SolutionDir)lib\openssl\bin\x64\MTd\ssleay32.lib&quot;"
 				LinkIncremental="2"
 				DelayLoadDLLs="uxtheme.dll; dwmapi.dll"
 				GenerateDebugInformation="true"
