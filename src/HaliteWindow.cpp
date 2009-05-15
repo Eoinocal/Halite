@@ -592,6 +592,17 @@ LRESULT HaliteWindow::OnToolbarExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BO
 
 LRESULT HaliteWindow::OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {	
+	WTL::CMenuHandle m;
+	WTL::CMenu menu;
+	
+
+	m.LoadMenu(HAL_SHUTDOWN_MENU);
+	menu.Attach(m.GetSubMenu(0));
+
+			POINT ptPoint;
+			GetCursorPos(&ptPoint);
+			menu.TrackPopupMenu(0, ptPoint.x, ptPoint.y, m_hWnd);
+
 	return 0;
 }
 
