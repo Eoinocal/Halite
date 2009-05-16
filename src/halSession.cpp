@@ -31,7 +31,7 @@ namespace hal
 {
 
 bit_impl::bit_impl() :
-	keepChecking_(false),
+	keep_checking_(false),
 	bittorrent_ini_(L"BitTorrent.xml"),
 	the_torrents_(bittorrent_ini_),
 	default_torrent_max_connections_(-1),
@@ -116,6 +116,11 @@ bit_impl::bit_impl() :
 		session_->set_settings(settings);
 	}
 	
+	acquire_work_object();
+
+	service_threads_.push_back(shared_thread_ptr(new 
+		thread_t(bind(&bit_impl::service_thread, this, service_threads_.size()))));
+
 	start_alert_handler();
 
 	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::bit_impl()")
@@ -127,7 +132,13 @@ bit_impl::~bit_impl()
 	{
 	HAL_DEV_MSG(L"Commence ~BitTorrent_impl"); 
 
-	stop_alert_handler();	
+	discard_work_object();
+
+	stop_alert_handler();
+
+	for (std::vector<shared_thread_ptr>::iterator i=service_threads_.begin(), e=service_threads_.end(); i != e; ++i)
+		(*i)->join();
+
 	//save_torrent_data();
 	
 	HAL_DEV_MSG(L"Handler stopped!"); 
@@ -364,7 +375,19 @@ void bit_impl::start_alert_handler()
 {
 	mutex_t::scoped_lock l(mutex_);
 
-	if (alert_checker_ == boost::none)
+	if (!keep_checking_)
+	{
+		keep_checking_ = true;
+
+		boost::asio::deadline_timer t(io_service_, pt::milliseconds(100));
+		io_service_.post(bind(&bit_impl::alert_handler, this));
+	}
+	else
+	{
+		HAL_DEV_MSG(hal::wform(L"Alert handler already active"));
+	}
+
+/*	if (alert_checker_ == boost::none)
 	{	
 		HAL_DEV_MSG(hal::wform(L"start_alert_handler"));
 
@@ -372,22 +395,18 @@ void bit_impl::start_alert_handler()
 
 		keepChecking_ = true;
 		alert_checker_ = boost::in_place<boost::function<void (void)> >(bind(&bit_impl::alert_handler, this));
-	}
+	}	*/
 }
 	
 void bit_impl::stop_alert_handler()
 {
 	mutex_t::scoped_lock l(mutex_);
 
-	keepChecking_ = false;
-
-	if (alert_checker_)
+	if (keep_checking_)
 	{
-		HAL_DEV_MSG(hal::wform(L"Interrupting alert handler"));
+		HAL_DEV_MSG(hal::wform(L"Stopping alert handler..."));		
 
-		alert_checker_->interrupt();
-		alert_checker_->join();
-		alert_checker_ = boost::none;
+		keep_checking_ = false;
 	}
 	else
 	{
@@ -395,14 +414,37 @@ void bit_impl::stop_alert_handler()
 	}
 }
 	
-void bit_impl::alert_handler()
+void bit_impl::service_thread(size_t id)
 {
 	win32_exception::install_handler();
 
-	try
-	{
+	HAL_DEV_MSG(hal::wform(L"Begining a service thread, id %1%") % id);
 
-	while (keepChecking_)
+	for ( ; ; )
+	{
+		try
+		{
+			io_service_.run();
+
+			// run exited normally
+			break; 
+
+		} 
+		HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::service_thread()")
+	}
+
+	HAL_DEV_MSG(hal::wform(L"Service thread id %1% exiting normally") % id);
+}
+
+void bit_impl::alert_handler_wait(const boost::system::error_code& /*e*/)
+{
+	if (keep_checking_)
+		alert_handler();
+}
+
+void bit_impl::alert_handler()
+{
+	try
 	{
 	
 	std::auto_ptr<libt::alert> p_alert = session_->pop_alert();
@@ -732,7 +774,7 @@ void bit_impl::alert_handler()
 	{	
 		try
 		{
-		mutex_t::scoped_lock l(mutex_);
+		//mutex_t::scoped_lock l(mutex_);
 		
 		libt::handle_alert<
 			libt::save_resume_data_alert,
@@ -784,15 +826,12 @@ void bit_impl::alert_handler()
 
 		boost::this_thread::interruption_point();
 	}	
-		
-	boost::this_thread::sleep(pt::milliseconds(100));
 	
-	}
+	boost::asio::deadline_timer t(io_service_, pt::milliseconds(100));
+	t.async_wait(bind(&bit_impl::alert_handler_wait, this, _1));
 	
-	boost::this_thread::interruption_point();
-
 	} 
-	catch(boost::thread_interrupted&)
+/*	catch(boost::thread_interrupted&)
 	{
 		// Not an error!
 
@@ -800,7 +839,7 @@ void bit_impl::alert_handler()
 			new EventMsg(L"thread_interrupted exception", event_logger::info)));
 
 		return;
-	}
+	}*/
 	HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::alert_handler()")
 }
 

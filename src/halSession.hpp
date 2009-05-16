@@ -962,12 +962,34 @@ public:
 	
 private:
 	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn);
+
+	void service_thread(size_t);
+	void alert_handler_wait(const boost::system::error_code& /*e*/);
+
+	boost::asio::io_service io_service_;
+	std::auto_ptr<boost::asio::io_service::work> work_;
+
+	void acquire_work_object()
+	{
+		HAL_DEV_MSG(hal::wform(L"Acquiring service work object."));
+
+		work_.reset(new boost::asio::io_service::work(io_service_));
+	}
+
+	void discard_work_object()
+	{
+		work_.reset();
+
+		HAL_DEV_MSG(hal::wform(L"Discarded service work object"));
+	}
 	
 	boost::optional<libt::session> session_;	
 	mutable mutex_t mutex_;
 
-	boost::optional<thread_t> alert_checker_;
-	bool keepChecking_;
+	typedef boost::shared_ptr<thread_t> shared_thread_ptr;
+
+	std::vector<shared_thread_ptr> service_threads_;
+	bool keep_checking_;
 	
 	ini_file bittorrent_ini_;
 	torrent_manager the_torrents_;	
@@ -995,8 +1017,6 @@ private:
 
 	libt::upnp* upnp_;
 	libt::natpmp* natpmp_;
-
-	boost::asio::io_service io;
 };
 
 }
