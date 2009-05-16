@@ -995,6 +995,8 @@ private:
 
 	libt::upnp* upnp_;
 	libt::natpmp* natpmp_;
+
+	boost::asio::io_service io;
 };
 
 }
