@@ -817,6 +817,26 @@ bool bit::is_any_torrent_active()
 	return result;
 }
 
+void bit::schedual_action(boost::posix_time::ptime time, timeout_actions action)
+{
+	return pimpl()->schedual_action(time, action);
+}
+
+void bit::schedual_action(boost::posix_time::time_duration duration, timeout_actions action)
+{
+	return pimpl()->schedual_action(duration, action);
+}
+
+void bit::schedual_callback(boost::posix_time::ptime time, action_callback_t action)
+{
+	return pimpl()->schedual_callback(time, action);
+}
+
+void bit::schedual_callback(boost::posix_time::time_duration duration, action_callback_t action)
+{
+	return pimpl()->schedual_callback(duration, action);
+}
+
 bit::torrent::torrent()
 {}
 

@@ -966,8 +966,8 @@ private:
 	void service_thread(size_t);
 	void alert_handler_wait(const boost::system::error_code& /*e*/);
 
-	boost::asio::io_service io_service_;
-	std::auto_ptr<boost::asio::io_service::work> work_;
+	void execute_action(const boost::system::error_code&, bit::timeout_actions action);
+	void execute_callback(const boost::system::error_code&, action_callback_t action);
 
 	void acquire_work_object()
 	{
@@ -982,17 +982,27 @@ private:
 
 		HAL_DEV_MSG(hal::wform(L"Discarded service work object"));
 	}
+
+	void schedual_action(boost::posix_time::ptime time, bit::timeout_actions action);
+	void schedual_action(boost::posix_time::time_duration duration, bit::timeout_actions action);
+	void schedual_callback(boost::posix_time::ptime time, action_callback_t action);
+	void schedual_callback(boost::posix_time::time_duration duration, action_callback_t action);	
 	
 	boost::optional<libt::session> session_;	
 	mutable mutex_t mutex_;
+	
+	ini_file bittorrent_ini_;
+	torrent_manager the_torrents_;	
+
+	boost::asio::io_service io_service_;
+	std::auto_ptr<boost::asio::io_service::work> work_;
+
+	boost::asio::deadline_timer action_timer_;
 
 	typedef boost::shared_ptr<thread_t> shared_thread_ptr;
 
 	std::vector<shared_thread_ptr> service_threads_;
 	bool keep_checking_;
-	
-	ini_file bittorrent_ini_;
-	torrent_manager the_torrents_;	
 	
 	int default_torrent_max_connections_;
 	int default_torrent_max_uploads_;
