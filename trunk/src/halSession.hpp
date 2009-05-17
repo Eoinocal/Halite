@@ -999,10 +999,12 @@ private:
 
 	boost::asio::deadline_timer action_timer_;
 
+	boost::asio::deadline_timer alert_timer_;
+	bool keep_checking_;
+
 	typedef boost::shared_ptr<thread_t> shared_thread_ptr;
 
 	std::vector<shared_thread_ptr> service_threads_;
-	bool keep_checking_;
 	
 	int default_torrent_max_connections_;
 	int default_torrent_max_uploads_;
