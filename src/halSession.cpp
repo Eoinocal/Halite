@@ -31,10 +31,11 @@ namespace hal
 {
 
 bit_impl::bit_impl() :
-	keep_checking_(false),
 	bittorrent_ini_(L"BitTorrent.xml"),
 	the_torrents_(bittorrent_ini_),
 	action_timer_(io_service_),
+	alert_timer_(io_service_),
+	keep_checking_(false),
 	default_torrent_max_connections_(-1),
 	default_torrent_max_uploads_(-1),
 	default_torrent_download_(-1),
@@ -118,11 +119,11 @@ bit_impl::bit_impl() :
 	}
 	
 	acquire_work_object();
+	start_alert_handler();
 
 	service_threads_.push_back(shared_thread_ptr(new 
 		thread_t(bind(&bit_impl::service_thread, this, service_threads_.size()))));
 
-	start_alert_handler();
 
 	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::bit_impl()")
 }
@@ -452,17 +453,23 @@ void bit_impl::start_alert_handler()
 {
 	mutex_t::scoped_lock l(mutex_);
 
-	if (!keep_checking_)
-	{
-		keep_checking_ = true;
+	keep_checking_ = true;
 
-		boost::asio::deadline_timer t(io_service_, pt::milliseconds(100));
-		io_service_.post(bind(&bit_impl::alert_handler, this));
+	if (!alert_timer_.expires_at().is_special())
+	{
+		HAL_DEV_MSG(hal::wform(L"Alert handler already active"));
+
+		return;
 	}
 	else
 	{
-		HAL_DEV_MSG(hal::wform(L"Alert handler already active"));
+		alert_timer_.expires_from_now(pt::milliseconds(100));
+
+		HAL_DEV_MSG(L"Beginning timer async_wait");
+		alert_timer_.async_wait(bind(&bit_impl::alert_handler_wait, this, _1));
 	}
+
+
 
 /*	if (alert_checker_ == boost::none)
 	{	
@@ -479,11 +486,9 @@ void bit_impl::stop_alert_handler()
 {
 	mutex_t::scoped_lock l(mutex_);
 
-	if (keep_checking_)
+	if (keep_checking_ = false)
 	{
-		HAL_DEV_MSG(hal::wform(L"Stopping alert handler..."));		
-
-		keep_checking_ = false;
+		HAL_DEV_MSG(hal::wform(L"Stopped alert handler..."));
 	}
 	else
 	{
@@ -513,10 +518,22 @@ void bit_impl::service_thread(size_t id)
 	HAL_DEV_MSG(hal::wform(L"Service thread id %1% exiting normally") % id);
 }
 
-void bit_impl::alert_handler_wait(const boost::system::error_code& /*e*/)
-{
-	if (keep_checking_)
+void bit_impl::alert_handler_wait(const boost::system::error_code& e)
+{	
+	if (e != boost::asio::error::operation_aborted)
+	{		
+		if (keep_checking_)
+		{
+			alert_timer_.expires_from_now(pt::seconds(2));
+			alert_timer_.async_wait(bind(&bit_impl::alert_handler_wait, this, _1));			
+		}
+
 		alert_handler();
+	}
+	else
+	{
+		HAL_DEV_MSG(L"Alert deadline canceled");
+	}
 }
 
 void bit_impl::alert_handler()
@@ -900,23 +917,9 @@ void bit_impl::alert_handler()
 		}
 		
 		p_alert = session_->pop_alert();
-
-		boost::this_thread::interruption_point();
 	}	
-	
-	boost::asio::deadline_timer t(io_service_, pt::milliseconds(100));
-	t.async_wait(bind(&bit_impl::alert_handler_wait, this, _1));
-	
+			
 	} 
-/*	catch(boost::thread_interrupted&)
-	{
-		// Not an error!
-
-		event_log().post(shared_ptr<EventDetail>(
-			new EventMsg(L"thread_interrupted exception", event_logger::info)));
-
-		return;
-	}*/
 	HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::alert_handler()")
 }
 
