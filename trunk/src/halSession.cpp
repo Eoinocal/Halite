@@ -34,6 +34,7 @@ bit_impl::bit_impl() :
 	keep_checking_(false),
 	bittorrent_ini_(L"BitTorrent.xml"),
 	the_torrents_(bittorrent_ini_),
+	action_timer_(io_service_),
 	default_torrent_max_connections_(-1),
 	default_torrent_max_uploads_(-1),
 	default_torrent_download_(-1),
@@ -370,6 +371,82 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 
 	return false;
 }
+
+void bit_impl::execute_action(const boost::system::error_code& e, bit::timeout_actions action)
+{
+	if (e != boost::asio::error::operation_aborted)
+	{
+		HAL_DEV_MSG(hal::wform(L"Doing action %1%") % action);
+
+		switch(action)
+		{
+		case bit::action_pause:
+			session_->pause();
+			break;
+		case bit::action_resume:
+			session_->resume();
+			break;
+		default:
+			break;
+		};
+	}
+	else
+	{
+		HAL_DEV_MSG(hal::wform(L"Action %1% aborted") % action);
+	}
+}
+
+void bit_impl::execute_callback(const boost::system::error_code& e, action_callback_t action)
+{
+	if (e != boost::asio::error::operation_aborted)
+	{
+		HAL_DEV_MSG(L"Doing callback");
+
+		action();
+	}
+	else
+	{
+		HAL_DEV_MSG(L"Callback aborted");
+	}
+}
+
+void bit_impl::schedual_action(boost::posix_time::ptime time, bit::timeout_actions action)
+{
+	HAL_DEV_MSG(hal::wform(L"Schedual absolute action %1% at %2%") % action % time);
+
+	action_timer_.cancel();
+
+	action_timer_.expires_at(time);
+	action_timer_.async_wait(bind(&bit_impl::execute_action, this, _1, action));
+}
+void bit_impl::schedual_action(boost::posix_time::time_duration duration, bit::timeout_actions action)
+{
+	HAL_DEV_MSG(hal::wform(L"Schedual relative action %1% in %2%") % action % duration);
+
+	action_timer_.cancel();
+
+	action_timer_.expires_from_now(duration);
+	action_timer_.async_wait(bind(&bit_impl::execute_action, this, _1, action));
+}
+
+void bit_impl::schedual_callback(boost::posix_time::ptime time, action_callback_t action)
+{
+	HAL_DEV_MSG(hal::wform(L"Schedual absolute callback %1%") % time);
+
+	action_timer_.cancel();
+
+	action_timer_.expires_at(time);
+	action_timer_.async_wait(bind(&bit_impl::execute_callback, this, _1, action));
+}
+void bit_impl::schedual_callback(boost::posix_time::time_duration duration, action_callback_t action)
+{
+	HAL_DEV_MSG(hal::wform(L"Schedual relative callback %1%") % duration);
+
+	action_timer_.cancel();
+
+	action_timer_.expires_from_now(duration);
+	action_timer_.async_wait(bind(&bit_impl::execute_callback, this, _1, action));
+}	
 
 void bit_impl::start_alert_handler()
 {

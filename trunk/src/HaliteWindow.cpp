@@ -590,9 +590,27 @@ LRESULT HaliteWindow::OnToolbarExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BO
 	return 0;
 }
 
+
+
+LRESULT HaliteWindow::OnUnconditionalShutdown(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam)
+{
+	HAL_DEV_MSG(L"In OnUnconditionalShutdown");
+
+	DestroyWindow();
+
+	return 0;
+}
+
+void HaliteWindow::exitCallback()
+{
+	HAL_DEV_MSG(L"In callback");
+
+	PostMessage(WM_HALITE_UNCONDITIONAL_SHUTDOWN, 0, 0);
+}
+
 LRESULT HaliteWindow::OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {	
-	WTL::CMenuHandle m;
+/*	WTL::CMenuHandle m;
 	WTL::CMenu menu;	
 
 	m.LoadMenu(HAL_SHUTDOWN_MENU);
@@ -600,7 +618,10 @@ LRESULT HaliteWindow::OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 
 	POINT ptPoint;
 	GetCursorPos(&ptPoint);
-	menu.TrackPopupMenu(0, ptPoint.x, ptPoint.y, m_hWnd);
+	menu.TrackPopupMenu(0, ptPoint.x, ptPoint.y, m_hWnd);*/
+
+	hal::bittorrent::Instance().schedual_callback(
+		boost::posix_time::hours(5), bind(&HaliteWindow::exitCallback, this));
 
 	return 0;
 }

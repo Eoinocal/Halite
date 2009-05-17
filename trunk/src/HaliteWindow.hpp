@@ -20,6 +20,9 @@
 #define HAL_SHUTDOWN_EXIT			ID_WINDOW_BEGIN + 9
 #define HAL_DATETIME_DEFFLD_TEXT			ID_WINDOW_BEGIN + 12
 
+
+#define WM_HALITE_UNCONDITIONAL_SHUTDOWN	WM_USER + 321
+
 #ifndef RC_INVOKED
 
 #include "stdAfx.hpp"
@@ -81,6 +84,7 @@ public:
 		MSG_WM_TIMER(OnTimer)
 		MSG_WM_COPYDATA(OnCopyData);
 		MESSAGE_HANDLER(WM_AreYouMe_, OnAreYouMe)
+		MESSAGE_HANDLER_EX(WM_HALITE_UNCONDITIONAL_SHUTDOWN, OnUnconditionalShutdown)
 		MESSAGE_HANDLER_EX(WM_TRAYNOTIFY, OnTrayNotification)	
 		
 		MSG_WM_ERASEBKGND(OnEraseBkgnd)
@@ -168,8 +172,9 @@ protected:
 	void OnDestroy();
 	void OnSize(UINT, WTL::CSize);
 	void OnMove(WTL::CSize);
-	void OnShowWindow(BOOL bShow, UINT nStatus);
+	void OnShowWindow(BOOL bShow, UINT nStatus);	
 	LRESULT OnTrayNotification(UINT, WPARAM wParam, LPARAM lParam);
+	LRESULT OnUnconditionalShutdown(UINT, WPARAM wParam, LPARAM lParam);
 	LRESULT OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnTrayOpenHalite(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
@@ -191,6 +196,7 @@ protected:
 
 	void updateWindow();
 	void setCorrectDialog();
+	void exitCallback();
 
 	friend class boost::serialization::access;
 	template<class Archive>

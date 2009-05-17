@@ -139,7 +139,7 @@ public:
 	
 	enum { IDD = HAL_GENERIC_HOLDER };
 
-    BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_CLOSE(OnClose)	
 
@@ -147,7 +147,7 @@ public:
 		COMMAND_ID_HANDLER_EX(IDCANCEL, OnCancel)
 
 		CHAIN_MSG_MAP(resizeClass)
-    END_MSG_MAP()
+	END_MSG_MAP()
 
 	BEGIN_DLGRESIZE_MAP(thisClass)
 		DLGRESIZE_CONTROL(dialogIDD, DLSZ_SIZE_X|DLSZ_SIZE_Y)

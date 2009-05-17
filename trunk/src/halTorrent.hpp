@@ -40,6 +40,9 @@
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ip/udp.hpp>
 
+#include <boost/asio/deadline_timer.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+
 #include "halTypes.hpp"
 #include "halPeers.hpp"
 
@@ -222,7 +225,7 @@ public:
 	torrent_details() :	
 		peer_details_filled_(false),
 		file_details_filled_(false)
-	{};	
+	{};
 	
 	enum state
 	{
@@ -499,6 +502,7 @@ struct SessionDetail
 
 typedef boost::function<bool (size_t, size_t, size_t)> filterCallback;
 typedef boost::function<bool (size_t, size_t, std::wstring)> progress_callback;
+typedef boost::function<void ()> action_callback_t;
 typedef boost::function<void (int)> report_num_active;
 typedef boost::function<void (wpath path, boost::shared_ptr<file_details_vec> files)> remove_files;
 typedef std::pair<wstring, wstring> wstring_pair;
@@ -533,6 +537,13 @@ public:
 		move_down,
 		move_to_top,
 		move_to_bottom
+	};
+	
+	enum timeout_actions
+	{
+		action_pause = 0,
+		action_resume,
+		action_callback
 	};
 
 	class null_torrent : public std::exception
@@ -772,6 +783,12 @@ public:
 
 	void start_event_receiver();
 	void stop_event_receiver();
+
+	void schedual_action(boost::posix_time::ptime time, timeout_actions action);
+	void schedual_action(boost::posix_time::time_duration duration, timeout_actions action);
+
+	void schedual_callback(boost::posix_time::ptime time, action_callback_t);
+	void schedual_callback(boost::posix_time::time_duration duration, action_callback_t);
 	
 //	friend bit& bittorrent();
 	
