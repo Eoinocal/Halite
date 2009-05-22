@@ -114,7 +114,7 @@ public:
 	
 	enum { IDD = HAL_NEWTORRENT };
 
-    BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_DESTROY(OnDestroy)
 
@@ -123,15 +123,15 @@ public:
 		CHAIN_MSG_MAP(autosizeClass)
 		CHAIN_MSG_MAP(sheetClass)
 		REFLECT_NOTIFICATIONS()
-    END_MSG_MAP()
-	
-    BEGIN_DDX_MAP(thisClass)
+	END_MSG_MAP()
+
+	BEGIN_DDX_MAP(thisClass)
 		DDX_EX_STDWSTRING(HAL_NEWTORRENT_CREATOR, creator_);
 		DDX_EX_STDWSTRING(HAL_NEWTORRENT_COMMENT, comment_);
 		DDX_EX_STDWSTRING(HAL_NEWT_FILE, outFile_);
 		DDX_INT(HAL_NEWT_PIECESIZE, pieceSize_);
-        DDX_CHECK(HAL_NEWTORRENT_PRIVATE, private_)
-    END_DDX_MAP()
+		DDX_CHECK(HAL_NEWTORRENT_PRIVATE, private_)
+	END_DDX_MAP()
 
 	static CWindowMapStruct* GetWindowMap();
 	
@@ -173,7 +173,7 @@ protected:
 public:	
 	enum { IDD = HAL_NEWT_FILES };
 
-    BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_DESTROY(OnDestroy)
 
@@ -183,7 +183,7 @@ public:
 		CHAIN_MSG_MAP(autosizeClass)
 		CHAIN_MSG_MAP(sheetClass)
 		REFLECT_NOTIFICATIONS()
-    END_MSG_MAP()
+	END_MSG_MAP()
 	
 	LRESULT onInitDialog(HWND, LPARAM)
 	{	
@@ -228,14 +228,14 @@ protected:
 public:	
 	enum { IDD = HAL_NEWT_TRACKERS };
 
-    BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_DESTROY(OnDestroy)
 
 		CHAIN_MSG_MAP(autosizeClass)
 		CHAIN_MSG_MAP(sheetClass)
 		REFLECT_NOTIFICATIONS()
-    END_MSG_MAP()
+	END_MSG_MAP()
 
 	static CWindowMapStruct* GetWindowMap();
 	
@@ -271,14 +271,14 @@ protected:
 public:	
 	enum { IDD = HAL_NEWT_PEERS };
 
-    BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_DESTROY(OnDestroy)
 
 		CHAIN_MSG_MAP(autosizeClass)
 		CHAIN_MSG_MAP(sheetClass)
 		REFLECT_NOTIFICATIONS()
-    END_MSG_MAP()
+	END_MSG_MAP()
 
 	static CWindowMapStruct* GetWindowMap();
 	
@@ -320,7 +320,7 @@ public:
 		inited_(false),
 		rect_(0,0,0,0),
 		fileSheet_(bind(&NewTorrentDialog::EnableSave, this, _1))
-    {
+	{
 		load_from_ini();
 
 		AddPage(fileSheet_);
@@ -329,19 +329,19 @@ public:
 		AddPage(detailsSheet_);		
 	}
 
-    BEGIN_MSG_MAP_EX(thisClass)
-        MSG_WM_SHOWWINDOW(OnShowWindow)
+	BEGIN_MSG_MAP_EX(thisClass)
+		MSG_WM_SHOWWINDOW(OnShowWindow)
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_CLOSE(OnClose)	
 		MSG_WM_DESTROY(OnDestroy)
-		
+
 		COMMAND_ID_HANDLER(0x1, OnSave)
 
 		CHAIN_MSG_MAP(resizeClass)
-        CHAIN_MSG_MAP(CPropertySheet)
-    END_MSG_MAP()
+		CHAIN_MSG_MAP(CPropertySheet)
+	END_MSG_MAP()
 
-    BEGIN_DLGRESIZE_MAP(thisClass)
+	BEGIN_DLGRESIZE_MAP(thisClass)
 		DLGRESIZE_CONTROL(0x3020, DLSZ_SIZE_X|DLSZ_SIZE_Y)
 
 		DLGRESIZE_CONTROL(0x1, DLSZ_MOVE_X|DLSZ_MOVE_Y)
@@ -349,11 +349,11 @@ public:
 		DLGRESIZE_CONTROL(0x3021, DLSZ_MOVE_X|DLSZ_MOVE_Y)
 	END_DLGRESIZE_MAP()
 
-    void OnShowWindow(BOOL bShow, UINT nStatus);
+	void OnShowWindow(BOOL bShow, UINT nStatus);
 
 	void OnSize(UINT, WTL::CSize)
 	{
-        SetMsgHandled(false);
+		SetMsgHandled(false);
 
 		resizeActiveSheet();
 	}
@@ -381,8 +381,8 @@ public:
 	LRESULT OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
 	friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
 	{
 		ar & BOOST_SERIALIZATION_NVP(rect_);
 	}
@@ -393,7 +393,7 @@ private:
 
 	void resizeActiveSheet()
 	{
-        HWND propTabs = GetDlgItem(0x3020);
+		HWND propTabs = GetDlgItem(0x3020);
 
 		RECT rect;
 		::GetWindowRect(propTabs, &rect);
@@ -402,7 +402,7 @@ private:
 		::SendMessage(propTabs, TCM_ADJUSTRECT, false, (LPARAM)&rect);
 
 		::MoveWindow(GetActivePage(), rect.left, rect.top,
-            rect.right-rect.left, rect.bottom-rect.top, true);
+		rect.right-rect.left, rect.bottom-rect.top, true);
 	}
 
 	DetailsSheet fileSheet_;

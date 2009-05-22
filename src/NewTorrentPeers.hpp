@@ -55,19 +55,19 @@ public:
 		peer_(peer)
 	{}
 
-    BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_WM_INITDIALOG(onInitDialog)
 		COMMAND_HANDLER_EX(HAL_NEWT_ADD_PEERS_TYP_CBOX, CBN_SELCHANGE, OnTypeChanged)
 
 		CHAIN_MSG_MAP(resizeClass)
 		CHAIN_MSG_MAP(genericBaseClass)
-    END_MSG_MAP()
+	END_MSG_MAP()
 
-    BEGIN_DDX_MAP(thisClass)
+	BEGIN_DDX_MAP(thisClass)
 		DDX_EX_STDWSTRING(HAL_NEWT_ADD_PEERS_URL_EDIT, peer_.url);
-        DDX_INT(HAL_NEWT_ADD_DHT_PORT, peer_.port)
-        DDX_EX_STDWSTRING(HAL_NEWT_ADD_PEERS_TYP_CBOX, peer_.type)
-    END_DDX_MAP()	
+		DDX_INT(HAL_NEWT_ADD_DHT_PORT, peer_.port)
+		DDX_EX_STDWSTRING(HAL_NEWT_ADD_PEERS_TYP_CBOX, peer_.type)
+	END_DDX_MAP()	
 
 	BEGIN_DLGRESIZE_MAP(thisClass)
 		DLGRESIZE_CONTROL(HAL_NEWT_ADD_PEERS_URL_EDIT, DLSZ_SIZE_X)
@@ -161,12 +161,12 @@ public:
 	void uiUpdate(const hal::torrent_details_ptr pT);
 	void saveSettings();
 
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
-    {
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
 		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
-    }
+	}
 
 	void newItem();
 	void editItem(int);
