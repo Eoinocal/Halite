@@ -16,6 +16,7 @@
 #include "AddTorrentDialog.hpp"
 #include "NewTorrentDialog.hpp"
 #include "SplashDialog.hpp"
+#include "TimePickerDlg.hpp"
 
 #include "ConfigOptions.hpp"
 #include "halConfig.hpp"
@@ -590,8 +591,6 @@ LRESULT HaliteWindow::OnToolbarExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BO
 	return 0;
 }
 
-
-
 LRESULT HaliteWindow::OnUnconditionalShutdown(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam)
 {
 	HAL_DEV_MSG(L"In OnUnconditionalShutdown");
@@ -620,8 +619,47 @@ LRESULT HaliteWindow::OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 	GetCursorPos(&ptPoint);
 	menu.TrackPopupMenu(0, ptPoint.x, ptPoint.y, m_hWnd);*/
 
-	hal::bittorrent::Instance().schedual_callback(
-		boost::posix_time::hours(5), bind(&HaliteWindow::exitCallback, this));
+//	typedef ATL::CWinTraits<WS_VISIBLE | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER, WS_EX_DLGMODALFRAME> ;
+	typedef ATL::CWinTraits<WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | DTS_UPDOWN | DTS_TIMEFORMAT , 0>					CDateTimePickerCtrlTraits;
+	typedef WTL::CControlDialog<1598426, WTL::CDateTimePickerCtrl, CDateTimePickerCtrlTraits> CDateDialog;
+
+	boost::posix_time::time_duration time;
+	unsigned action;
+
+	TimePickerDlg dd(time, action);
+	dd.DoModal();
+
+	if (!time.is_not_a_date_time())
+	{
+		
+		hal::event_log().post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(hal::wform(L"OnAutoShutdown %1% %2%") % hal::from_utf8(to_simple_string(time)) % action)));
+
+		switch(action)
+		{
+		case TimePickerDlg::action_pause:
+			hal::bittorrent::Instance().schedual_action(time, hal::bit::action_pause);
+			break;
+		case TimePickerDlg::action_exit:
+			hal::bittorrent::Instance().schedual_callback(
+				time, bind(&HaliteWindow::exitCallback, this));
+			break;
+		case TimePickerDlg::action_logoff:
+			break;
+		case TimePickerDlg::action_shutdown:
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{		
+		hal::event_log().post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(L"Not a date_time")));
+	}
+
+//	hal::bittorrent::Instance().schedual_callback(
+//		boost::posix_time::hours(5), bind(&HaliteWindow::exitCallback, this));
 
 	return 0;
 }

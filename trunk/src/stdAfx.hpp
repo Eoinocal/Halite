@@ -120,3 +120,5 @@ extern WTL::CAppModule _Module;
 #pragma warning (pop)
 
 #include <boost/date_time/posix_time/time_serialize.hpp>
+#include <boost/date_time/gregorian/gregorian_types.hpp>
+#include <boost/date_time/posix_time/posix_time_types.hpp>

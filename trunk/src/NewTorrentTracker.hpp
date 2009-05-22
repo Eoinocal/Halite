@@ -11,13 +11,13 @@
 #define ID_NTTLVM_EDIT 				ID_NTTLVM_BEGIN + 2
 #define ID_NTTLVM_DELETE			ID_NTTLVM_BEGIN + 3
 #define HAL_NEWT_EDIT_TRACKER		ID_NTTLVM_BEGIN + 4
-#define HAL_NEWT_ADD_NEW_TRACKER	ID_NTTLVM_BEGIN + 5
+#define HAL_NEWT_ADD_NEW_TRACKER		ID_NTTLVM_BEGIN + 5
 
 #define HAL_TRACKER_ADD_BEGIN	 	15500
-#define IDC_TRACKER_EDIT_URL        HAL_TRACKER_ADD_BEGIN + 1
-#define IDC_TRACKER_EDIT_TIER       HAL_TRACKER_ADD_BEGIN + 2
-#define IDC_TRACKER_TEXT_URL        HAL_TRACKER_ADD_BEGIN + 3
-#define IDC_TRACKER_TEXT_TIER       HAL_TRACKER_ADD_BEGIN + 4
+#define IDC_TRACKER_EDIT_URL			HAL_TRACKER_ADD_BEGIN + 1
+#define IDC_TRACKER_EDIT_TIER		HAL_TRACKER_ADD_BEGIN + 2
+#define IDC_TRACKER_TEXT_URL			HAL_TRACKER_ADD_BEGIN + 3
+#define IDC_TRACKER_TEXT_TIER		HAL_TRACKER_ADD_BEGIN + 4
 
 #ifndef RC_INVOKED
 
@@ -49,15 +49,15 @@ public:
 		tracker_(tracker)
 	{}
 
-    BEGIN_MSG_MAP_EX(TrackerAddDialog)
+	BEGIN_MSG_MAP_EX(TrackerAddDialog)
 		CHAIN_MSG_MAP(resizeClass)
 		CHAIN_MSG_MAP(genericBaseClass)
-    END_MSG_MAP()
+	END_MSG_MAP()
 
-    BEGIN_DDX_MAP(TrackerAddDialog)
+	BEGIN_DDX_MAP(TrackerAddDialog)
 		DDX_EX_STDWSTRING(IDC_TRACKER_EDIT_URL, tracker_.url);
-        DDX_INT(IDC_TRACKER_EDIT_TIER, tracker_.tier)
-    END_DDX_MAP()	
+		DDX_INT(IDC_TRACKER_EDIT_TIER, tracker_.tier)
+	END_DDX_MAP()	
 
 	BEGIN_DLGRESIZE_MAP(thisClass)
 		DLGRESIZE_CONTROL(IDC_TRACKER_EDIT_URL, DLSZ_SIZE_X)
@@ -76,13 +76,13 @@ private:
 class NewTorrent_TrackerListViewCtrl :
 	public CHaliteSortListViewCtrl<NewTorrent_TrackerListViewCtrl>,
 	public hal::IniBase<NewTorrent_TrackerListViewCtrl>,
-	public WTLx::GenericAddListView<NewTorrent_TrackerListViewCtrl, true, ID_NTTLVM_NEW, ID_NTTLVM_EDIT, ID_NTTLVM_DELETE>,
+	public WTLx::GenericAddListView<NewTorrent_TrackerListViewCtrl, true>,
 	private boost::noncopyable
 {
 	typedef NewTorrent_TrackerListViewCtrl thisClass;
 	typedef hal::IniBase<thisClass> iniClass;
 	typedef CHaliteSortListViewCtrl<thisClass> listClass;
-	typedef WTLx::GenericAddListView<thisClass, true, ID_NTTLVM_NEW, ID_NTTLVM_EDIT, ID_NTTLVM_DELETE> genericAddlistClass;
+	typedef WTLx::GenericAddListView<thisClass, true> genericAddlistClass;
 
 	friend class listClass;
 	
@@ -108,12 +108,12 @@ public:
 	void uiUpdate(const hal::torrent_details_ptr pT);
 	void saveSettings();
 
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
-    {
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
 		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
-    }
+	}
 
 	void newItem();
 	void editItem(int);
@@ -127,4 +127,3 @@ private:
 typedef NewTorrent_TrackerListViewCtrl::SelectionManager NewTorrent_TrackerListViewManager;
 
 #endif
-

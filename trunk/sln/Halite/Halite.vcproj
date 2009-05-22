@@ -1670,6 +1670,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\TimePickerDlg.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\UxthemeWrapper.hpp"
 				>
 			</File>
