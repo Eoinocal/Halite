@@ -238,6 +238,8 @@ private:
 	// These two gotta be first!!!
 	boost::signal<void (const hal::torrent_details_manager& tD)> ui_update_signal_;
 	boost::signal<void ()> save_state_signal_;	
+
+	boost::function<void ()> post_halite_function_;
 	
 	WTL::CCommandBarCtrl m_CmdBar;
 	WTL::CHorSplitterWindow m_Split;
