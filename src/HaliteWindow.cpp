@@ -465,6 +465,8 @@ void HaliteWindow::OnDestroy()
 	save_to_ini();
 	halite().save_to_ini();
 	hal::ini().save_data();
+
+	if (post_halite_function_) post_halite_function_();
 		
 	HAL_DEV_MSG(L"Posting Quit Message");
 	PostQuitMessage(0);	
@@ -630,8 +632,7 @@ LRESULT HaliteWindow::OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 	dd.DoModal();
 
 	if (!time.is_not_a_date_time())
-	{
-		
+	{		
 		hal::event_log().post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(hal::wform(L"OnAutoShutdown %1% %2%") % hal::from_utf8(to_simple_string(time)) % action)));
 
@@ -645,8 +646,18 @@ LRESULT HaliteWindow::OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 				time, bind(&HaliteWindow::exitCallback, this));
 			break;
 		case TimePickerDlg::action_logoff:
+			post_halite_function_ = bind(boost::function<BOOL (UINT, DWORD)>(ExitWindowsEx), 
+				EWX_LOGOFF, SHTDN_REASON_MAJOR_OTHER | SHTDN_REASON_MINOR_OTHER | SHTDN_REASON_FLAG_PLANNED);
+
+			hal::bittorrent::Instance().schedual_callback(
+				time, bind(&HaliteWindow::exitCallback, this));
 			break;
 		case TimePickerDlg::action_shutdown:
+			post_halite_function_ = bind(boost::function<BOOL (UINT, DWORD)>(ExitWindowsEx), 
+				EWX_SHUTDOWN, SHTDN_REASON_MAJOR_OTHER | SHTDN_REASON_MINOR_OTHER | SHTDN_REASON_FLAG_PLANNED);
+
+			hal::bittorrent::Instance().schedual_callback(
+				time, bind(&HaliteWindow::exitCallback, this));
 			break;
 		default:
 			break;
