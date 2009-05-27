@@ -197,6 +197,8 @@ protected:
 	void updateWindow();
 	void setCorrectDialog();
 	void exitCallback();
+	void logoffCallback();
+	void shutdownCallback();
 
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -264,6 +266,9 @@ private:
 	bool closeToTray;
 	bool confirmClose;
 	int activeTab;
+
+	boost::posix_time::ptime action_time_;
+	unsigned action_action_;
 };
 
 BOOST_CLASS_VERSION(HaliteWindow, 2)

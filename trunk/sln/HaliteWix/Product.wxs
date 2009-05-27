@@ -2,8 +2,8 @@
 
 <?define VerGeneration = "0" ?>
 <?define VerMajor = "3" ?>
-<?define VerMinor = "1" ?>
-<?define VerBuild = "0745" ?>
+<?define VerMinor = "2" ?>
+<?define VerBuild = "0760" ?>
 
 <?define FullGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor) Build $(var.VerBuild)" ?>
 <?define ShortGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor)" ?>
@@ -52,7 +52,7 @@
 		
 		<Upgrade Id="$(var.UpgradeCode)">
 			<UpgradeVersion 
-				Minimum="0.3.0"
+				Minimum="0.3.1"
 				IncludeMinimum="yes"
 				Maximum="$(var.ShortGMmbVersion)"
 				IncludeMaximum="no"

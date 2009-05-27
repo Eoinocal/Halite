@@ -30,7 +30,9 @@ HaliteWindow::HaliteWindow(unsigned areYouMe = 0) :
 	advancedUI(false),
 	closeToTray(false),
 	confirmClose(true),
-	activeTab(0)
+	activeTab(0),
+	action_time_(boost::posix_time::not_a_date_time),
+	action_action_(TimePickerDlg::action_na)
 {
 	rect.top = 10;
 	rect.left = 10;
@@ -604,73 +606,89 @@ LRESULT HaliteWindow::OnUnconditionalShutdown(UINT /*uMsg*/, WPARAM wParam, LPAR
 
 void HaliteWindow::exitCallback()
 {
-	HAL_DEV_MSG(L"In callback");
+	HAL_DEV_MSG(L"In exit callback");
+
+	PostMessage(WM_HALITE_UNCONDITIONAL_SHUTDOWN, 0, 0);
+}
+
+void HaliteWindow::logoffCallback()
+{
+	HAL_DEV_MSG(L"In logoff callback");
+
+	post_halite_function_ = bind(boost::function<BOOL (UINT, DWORD)>(ExitWindowsEx), 
+		EWX_LOGOFF, SHTDN_REASON_MAJOR_OTHER | SHTDN_REASON_MINOR_OTHER | SHTDN_REASON_FLAG_PLANNED);
+
+	PostMessage(WM_HALITE_UNCONDITIONAL_SHUTDOWN, 0, 0);
+}
+
+void HaliteWindow::shutdownCallback()
+{
+	HAL_DEV_MSG(L"In shutdown callback");
+
+	post_halite_function_ = bind(boost::function<BOOL (UINT, DWORD)>(ExitWindowsEx), 
+		EWX_SHUTDOWN, SHTDN_REASON_MAJOR_OTHER | SHTDN_REASON_MINOR_OTHER | SHTDN_REASON_FLAG_PLANNED);
 
 	PostMessage(WM_HALITE_UNCONDITIONAL_SHUTDOWN, 0, 0);
 }
 
 LRESULT HaliteWindow::OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {	
-/*	WTL::CMenuHandle m;
-	WTL::CMenu menu;	
-
-	m.LoadMenu(HAL_SHUTDOWN_MENU);
-	menu.Attach(m.GetSubMenu(0));
-
-	POINT ptPoint;
-	GetCursorPos(&ptPoint);
-	menu.TrackPopupMenu(0, ptPoint.x, ptPoint.y, m_hWnd);*/
-
-//	typedef ATL::CWinTraits<WS_VISIBLE | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER, WS_EX_DLGMODALFRAME> ;
-	typedef ATL::CWinTraits<WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | DTS_UPDOWN | DTS_TIMEFORMAT , 0>					CDateTimePickerCtrlTraits;
-	typedef WTL::CControlDialog<1598426, WTL::CDateTimePickerCtrl, CDateTimePickerCtrlTraits> CDateDialog;
-
-	boost::posix_time::time_duration time;
-	unsigned action;
+	boost::posix_time::ptime time = action_time_;
+	unsigned action = action_action_;
 
 	TimePickerDlg dd(time, action);
-	dd.DoModal();
 
-	if (!time.is_not_a_date_time())
+	if (dd.DoModal() == 1)
 	{		
-		hal::event_log().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(hal::wform(L"OnAutoShutdown %1% %2%") % hal::from_utf8(to_simple_string(time)) % action)));
-
-		switch(action)
+		if (!time.is_not_a_date_time())
 		{
-		case TimePickerDlg::action_pause:
-			hal::bittorrent::Instance().schedual_action(time, hal::bit::action_pause);
-			break;
-		case TimePickerDlg::action_exit:
-			hal::bittorrent::Instance().schedual_callback(
-				time, bind(&HaliteWindow::exitCallback, this));
-			break;
-		case TimePickerDlg::action_logoff:
-			post_halite_function_ = bind(boost::function<BOOL (UINT, DWORD)>(ExitWindowsEx), 
-				EWX_LOGOFF, SHTDN_REASON_MAJOR_OTHER | SHTDN_REASON_MINOR_OTHER | SHTDN_REASON_FLAG_PLANNED);
+			hal::event_log().post(shared_ptr<hal::EventDetail>(
+				new hal::EventMsg(hal::wform(L"OnAutoShutdown %1% %2%") 
+					% hal::from_utf8(to_simple_string(time)) % action)));
 
-			hal::bittorrent::Instance().schedual_callback(
-				time, bind(&HaliteWindow::exitCallback, this));
-			break;
-		case TimePickerDlg::action_shutdown:
-			post_halite_function_ = bind(boost::function<BOOL (UINT, DWORD)>(ExitWindowsEx), 
-				EWX_SHUTDOWN, SHTDN_REASON_MAJOR_OTHER | SHTDN_REASON_MINOR_OTHER | SHTDN_REASON_FLAG_PLANNED);
+			switch(action)
+			{
+			case TimePickerDlg::action_pause:
+				hal::bittorrent::Instance().schedual_action(time, hal::bit::action_pause);
+				break;
 
-			hal::bittorrent::Instance().schedual_callback(
-				time, bind(&HaliteWindow::exitCallback, this));
-			break;
-		default:
-			break;
+			case TimePickerDlg::action_exit:
+				hal::bittorrent::Instance().schedual_callback(
+					time, bind(&HaliteWindow::exitCallback, this));
+				break;
+
+			case TimePickerDlg::action_logoff:
+
+				hal::bittorrent::Instance().schedual_callback(
+					time, bind(&HaliteWindow::logoffCallback, this));
+				break;
+
+			case TimePickerDlg::action_shutdown:
+
+				hal::bittorrent::Instance().schedual_callback(
+					time, bind(&HaliteWindow::shutdownCallback, this));
+				break;
+
+			case TimePickerDlg::action_na:
+			default:
+				action_time_ = boost::posix_time::not_a_date_time;
+				hal::bittorrent::Instance().schedual_cancel();
+				return 0;
+			}
+
+			action_time_ = time;
+			action_action_ = action;
+		}
+		else
+		{
+			action_time_ = boost::posix_time::not_a_date_time;
+			hal::bittorrent::Instance().schedual_cancel();
 		}
 	}
 	else
 	{		
-		hal::event_log().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(L"Not a date_time")));
+		hal::event_log().post(shared_ptr<hal::EventDetail>(new hal::EventMsg(L"Not a date_time")));
 	}
-
-//	hal::bittorrent::Instance().schedual_callback(
-//		boost::posix_time::hours(5), bind(&HaliteWindow::exitCallback, this));
 
 	return 0;
 }

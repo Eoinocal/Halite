@@ -20,7 +20,10 @@
 #define HAL_TIME_ACTION_LOGOFF		ID_TIME_DLG_BEGIN + 10
 #define HAL_TIME_ACTION_SHUTDOWN		ID_TIME_DLG_BEGIN + 11
 #define HAL_TIME_SETTEXT			ID_TIME_DLG_BEGIN + 12
-
+#define HAL_TIME_ACTION_SET			ID_TIME_DLG_BEGIN + 13
+#define HAL_TIME_ACTION_NO_ACTION		ID_TIME_DLG_BEGIN + 14
+#define HAL_TIME_ACTION_NOT_SET		ID_TIME_DLG_BEGIN + 15
+#define HAL_TIME_LABEL_SET_ACTION		ID_TIME_DLG_BEGIN + 16
 
 #ifndef RC_INVOKED
 
@@ -85,13 +88,14 @@ public:
 
 	enum timeout_actions
 	{
-		action_pause = 0,
+		action_na = 0,
+		action_pause,
 		action_exit,
 		action_logoff,
 		action_shutdown
 	};
 
-	TimePickerDlg(boost::posix_time::time_duration& time, unsigned& action) :
+	TimePickerDlg(boost::posix_time::ptime& time, unsigned& action) :
 		time_ctrl_(bind(&TimePickerDlg::updateTimeoutDisplay, this)),
 		date_ctrl_(bind(&TimePickerDlg::updateTimeoutDisplay, this)),
 		action_time_(time),
@@ -126,6 +130,7 @@ public:
 
 	BEGIN_WINDOW_MAP(thisClass, 6, 6, 3, 3)
 		WMB_HEAD(WMB_COL(80), WMB_COL(_exp), WMB_COL(_exp)),
+			WMB_ROW(_auto, HAL_TIME_LABEL_SET_ACTION, _r, _r), 
 			WMB_ROW(_auto, HAL_TIME_EDITABOUT, HAL_TIME_ACTIONS), 
 			WMB_ROW(_auto, HAL_TIME_SETTEXT, HAL_TIME_PICKER, HAL_TIME_DATE_PICKER), 
 			WMB_ROW(_auto, HAL_TIME_TIMEOUT_DISPLAY, _r, _r), 
@@ -143,10 +148,41 @@ public:
 		action_types.AddString(hal::app().res_wstr(HAL_TIME_ACTION_EXIT).c_str());
 		action_types.AddString(hal::app().res_wstr(HAL_TIME_ACTION_LOGOFF).c_str());
 		action_types.AddString(hal::app().res_wstr(HAL_TIME_ACTION_SHUTDOWN).c_str());
+		action_types.AddString(hal::app().res_wstr(HAL_TIME_ACTION_NO_ACTION).c_str());
 		
 		action_types.SetCurSel(0);
 		OnActionChanged(0, HAL_TIME_ACTIONS, action_types);
-		//action_ = 0;
+
+		if (!action_time_.is_not_a_date_time())
+		{
+			std::wstring action_str;
+
+			switch (action_)
+			{
+			case TimePickerDlg::action_pause:
+				action_str = hal::app().res_wstr(HAL_TIME_ACTION_PAUSEALL);
+				break;
+			case TimePickerDlg::action_exit:
+				action_str = hal::app().res_wstr(HAL_TIME_ACTION_EXIT);
+				break;
+			case TimePickerDlg::action_logoff:
+				action_str = hal::app().res_wstr(HAL_TIME_ACTION_LOGOFF);
+				break;
+			case TimePickerDlg::action_shutdown:
+				action_str = hal::app().res_wstr(HAL_TIME_ACTION_SHUTDOWN);
+				break;
+
+			default:
+				action_str = hal::app().res_wstr(IDS_NA);
+			}
+
+			SetDlgItemText(HAL_TIME_LABEL_SET_ACTION, (hal::wform(hal::app().res_wstr(HAL_TIME_ACTION_SET)) 
+				% action_str % hal::from_utf8(to_simple_string(action_time_))).str().c_str());
+		}
+		else
+		{
+			SetDlgItemText(HAL_TIME_LABEL_SET_ACTION, hal::app().res_wstr(HAL_TIME_ACTION_NOT_SET).c_str());
+		}
 
 		time_ctrl_.Attach(GetDlgItem(HAL_TIME_PICKER));
 		date_ctrl_.Attach(GetDlgItem(HAL_TIME_DATE_PICKER));
@@ -179,6 +215,10 @@ public:
 		else if (str_buf.str() == hal::app().res_wstr(HAL_TIME_ACTION_SHUTDOWN))
 		{
 			action_ = action_shutdown;
+		}	
+		else if (str_buf.str() == hal::app().res_wstr(HAL_TIME_ACTION_NO_ACTION))
+		{
+			action_ = action_na;
 		}		
 	}
 	
@@ -218,10 +258,6 @@ private:
 		ptime time(date, duration);
 		ptime now = second_clock::local_time();
 		
-
-		SetDlgItemText(HAL_TIME_TIMEOUT_DISPLAY, hal::from_utf8(to_simple_string(time)).c_str());
-		SetDlgItemText(HAL_TIME_EDITABOUT, hal::from_utf8(to_simple_string(time)).c_str());
-
 		if (time > now)
 		{
 			time_duration time_left = time - now;
@@ -229,20 +265,24 @@ private:
 			SetDlgItemText(HAL_TIME_TIMEOUT_DISPLAY, (hal::wform(hal::app().res_wstr(HAL_TIME_TIME_REMAINING)) 
 				% time_left.hours() % time_left.minutes() % time_left.seconds()).str().c_str());
 
-			action_time_ = time_left;
+			hal::event_log().post(shared_ptr<hal::EventDetail>(
+				new hal::EventMsg(hal::wform(L"updateTimeoutDisplay %1%") 
+					% hal::from_utf8(to_simple_string(time_left)))));
+
+			action_time_ = time;
 		}
 		else
+		{
 			action_time_ = not_a_date_time;
-
-		hal::event_log().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(hal::wform(L"updateTimeoutDisplay %1%") % hal::from_utf8(to_simple_string(action_time_)))));
+			action_ = action_na;
+		}
 	}
 
 	DateTimePicker time_ctrl_;
 	DateTimePicker date_ctrl_;
 
 	unsigned& action_;
-	boost::posix_time::time_duration& action_time_;
+	boost::posix_time::ptime& action_time_;
 };
 
 #endif // RC_INVOKED
