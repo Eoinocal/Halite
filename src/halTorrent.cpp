@@ -837,6 +837,11 @@ void bit::schedual_callback(boost::posix_time::time_duration duration, action_ca
 	return pimpl()->schedual_callback(duration, action);
 }
 
+void bit::schedual_cancel()
+{
+	return pimpl()->schedual_cancel();
+}
+
 bit::torrent::torrent()
 {}
 

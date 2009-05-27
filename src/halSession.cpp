@@ -415,16 +415,17 @@ void bit_impl::schedual_action(boost::posix_time::ptime time, bit::timeout_actio
 {
 	HAL_DEV_MSG(hal::wform(L"Schedual absolute action %1% at %2%") % action % time);
 
-	action_timer_.cancel();
+	boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
+	assert(time > now);
 
-	action_timer_.expires_at(time);
-	action_timer_.async_wait(bind(&bit_impl::execute_action, this, _1, action));
+	schedual_action(time - now, action);
 }
+
 void bit_impl::schedual_action(boost::posix_time::time_duration duration, bit::timeout_actions action)
 {
 	HAL_DEV_MSG(hal::wform(L"Schedual relative action %1% in %2%") % action % duration);
 
-	action_timer_.cancel();
+	schedual_cancel();
 
 	action_timer_.expires_from_now(duration);
 	action_timer_.async_wait(bind(&bit_impl::execute_action, this, _1, action));
@@ -434,20 +435,27 @@ void bit_impl::schedual_callback(boost::posix_time::ptime time, action_callback_
 {
 	HAL_DEV_MSG(hal::wform(L"Schedual absolute callback %1%") % time);
 
-	action_timer_.cancel();
+	boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
+	assert(time > now);
 
-	action_timer_.expires_at(time);
-	action_timer_.async_wait(bind(&bit_impl::execute_callback, this, _1, action));
+	schedual_callback(time - now, action);
 }
+
 void bit_impl::schedual_callback(boost::posix_time::time_duration duration, action_callback_t action)
 {
 	HAL_DEV_MSG(hal::wform(L"Schedual relative callback %1%") % duration);
 
-	action_timer_.cancel();
+	schedual_cancel();
 
 	action_timer_.expires_from_now(duration);
 	action_timer_.async_wait(bind(&bit_impl::execute_callback, this, _1, action));
 }	
+
+void bit_impl::schedual_cancel()
+{
+	if (action_timer_.cancel() > 0)
+		HAL_DEV_MSG(L"Schedualed action canceled");
+}
 
 void bit_impl::start_alert_handler()
 {

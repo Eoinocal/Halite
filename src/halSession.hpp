@@ -739,7 +739,7 @@ public:
 	void stop_alert_handler();
 	void alert_handler();
 
-	void add_torrent(wpath file, wpath saveDirectory, bool startStopped, bool managed, bit::allocations alloc, 
+	void add_torrent(wpath file, wpath saveDirectory, bool start_stopped, bool managed, bit::allocations alloc, 
 			boost::filesystem::wpath moveToDirectory) 
 	{
 		try 
@@ -778,6 +778,8 @@ public:
 			TIp->set_resolve_countries(resolve_countries_);
 
 			TIp->start();
+
+			if (!start_stopped) TIp->resume();
 		}
 		
 		}
@@ -964,7 +966,7 @@ private:
 	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn);
 
 	void service_thread(size_t);
-	void alert_handler_wait(const boost::system::error_code& /*e*/);
+	void alert_handler_wait(const boost::system::error_code&);
 
 	void execute_action(const boost::system::error_code&, bit::timeout_actions action);
 	void execute_callback(const boost::system::error_code&, action_callback_t action);
@@ -987,6 +989,7 @@ private:
 	void schedual_action(boost::posix_time::time_duration duration, bit::timeout_actions action);
 	void schedual_callback(boost::posix_time::ptime time, action_callback_t action);
 	void schedual_callback(boost::posix_time::time_duration duration, action_callback_t action);	
+	void schedual_cancel();
 	
 	boost::optional<libt::session> session_;	
 	mutable mutex_t mutex_;

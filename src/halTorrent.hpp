@@ -789,6 +789,8 @@ public:
 
 	void schedual_callback(boost::posix_time::ptime time, action_callback_t);
 	void schedual_callback(boost::posix_time::time_duration duration, action_callback_t);
+
+	void schedual_cancel();
 	
 //	friend bit& bittorrent();
 	
