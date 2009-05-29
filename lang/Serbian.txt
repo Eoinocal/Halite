@@ -1,14 +1,14 @@
-"English" ---> "Srpski (Latinica)"
+﻿"English" ---> "Srpski (Latinica)"
 "English.rtf" ---> "../lang/Serbian.rtf"
-" %2%" --->  ??? 
+" %2%" ---> " %2%"
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s ulazni - %2$.2fKB/s izlazni"
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB ulazni - %2$.2fMB izlazni"
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB od %2$.2fMB"
 "%1% DHT node(s)" ---> "%1% DHT-čvora"
 "%1% active torrent(s)" ---> "Aktivni torenti"
-"%1% peers from DHT for %2%." --->  ??? 
-"%1% port %2% mapping succeeded." --->  ??? 
-"%1% port mapping request failed." --->  ??? 
+"%1% peers from DHT for %2%." ---> "%1% mušterije iz DHT-a za %2%."
+"%1% port %2% mapping succeeded." ---> "%1% port %2% uspešno otvoren."
+"%1% port mapping request failed." ---> "%1% port nije otvoren."
 "%1%, %2%." ---> "%1%, %2%."
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Mušterije. (%1%)"
 "&Pause All" ---> "Sve pauzirati"
@@ -17,20 +17,20 @@
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(U-I) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "O nama"
 "Above Normal" ---> "Preko normalnog"
-"Active downloads :" --->  ??? 
-"Active seeds :" --->  ??? 
-"Active seeds hard limit:" --->  ??? 
+"Active downloads :" ---> "Trenutno preuzimaš" 
+"Active seeds :" ---> "Trenutno nudiš"
+"Active seeds hard limit:" ---> "Najgornja granica izvora"
 "Active" ---> "Aktivan"
 "Add New Peer" ---> "Dodaj novog mušteriju"
 "Add New Tracker" ---> "Unesi novog trekera"
 "Add New Web Seed or DHT Node" ---> "Dodaj novi 'webseed' ili DHT-čvor"
 "Add Torrent" ---> "Dodaj torent"
 "Add" ---> "Dodaj"
-"Adjust Queue Position" --->  ??? 
+"Adjust Queue Position" ---> "Obradi svoje mesto u redu"
 "Advanced GUI" ---> "Produženi"
 "Alert %2%, Status code: %4%, Times %3%. (%1%)" ---> "Upozorenje %2%, statusni kod: %4%, vremena %3%. (%1%)"
 "Allocating" ---> "Dodeljeno"
-"Allocation Mode:" --->  ??? 
+"Allocation Mode:" ---> "Modus dodeljenja"
 "Allow only one instance to run" ---> "Dozvoli samu jednu instancu"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Nekorektni način poveza, %1%, je upotrebljen."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Nekorektna stepenica šifracije, %1%, je upotrebljena."
@@ -38,15 +38,15 @@
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Jeste li sigurni da želite zatvoriti halite?"
 "Are you sure you wish to delete all downloaded data?" ---> "Jeste li sigurni, da želite sve preuzeto izbrisati?"
 "Auto Sort" ---> "Automatsko sortiranje"
-"Auto-managed" --->  ??? 
+"Auto-managed" ---> "Automatsko uređivanje"
 "BitTorrent" ---> "BitTorent"
 "Bittorrent Event: %1%." ---> "Bittorent događaj: %1%."
 "Block %2% of piece %3% downloading. (%1%)" ---> "Sekcija %2% od dela %3% se trenutno preuzima. (%1%)"
 "Block %2% of piece %3% finished. (%1%)" ---> "Sekcija %2% od dela %3% završena. (%1%)"
 "Both" ---> "Oba"
-"Cache Status, Current Total Size : %1.2f MiB" --->  ??? 
-"Cache Write Size :" --->  ??? 
-"Calculating Piece Hashes..." ---> "Proračunaj delove haša"
+"Cache Status, Current Total Size : %1.2f MiB" ---> "Trenutna veličina 'Cache'-a : %1.2f MiB"
+"Cache Write Size :" ---> "Veličina 'cache' upisa"
+"Calculating Piece Hashes..." ---> "Proračunaj delove 'hash'-a"
 "Cancel" ---> "Prekini"
 "Checking Files" ---> "Provera fajlova"
 "Choked" ---> "Usporeni"
@@ -67,7 +67,7 @@
 "Creating a New Torrent File" ---> "Napravi novi torent fajl"
 "Creator" ---> "Napravi torent fajl"
 "Critical" ---> "Kritično"
-"Current Cache Status" --->  ??? 
+"Current Cache Status" ---> "Trenutni stanje 'cache'-a"
 "DHT Node" ---> "DHT-čvor"
 "DHT disabled" ---> "DHT isključen"
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT akcija nije mogla početi, izaberi drugi port."
@@ -81,8 +81,8 @@
 "Dir." ---> "Mapa"
 "Disabled" ---> "Isključen"
 "Distributed Hash Tables" ---> "DHT (podela Haš-tabele)"
-"Don't Manage Torrent(s)" --->  ??? 
-"Don't count slow torrents." --->  ??? 
+"Don't Manage Torrent(s)" ---> "Neuređuju se torenti automatski" 
+"Don't count slow torrents." ---> "Nebroji spore torente"
 "Don't download" ---> "Ne preuzimaj"
 "Down" ---> "Ulazna"
 "Download Rate (KB/s) :" ---> "Brzina ulaznog protoka (KB/s):"
@@ -99,16 +99,16 @@
 "Edit Torrent Save Folders" ---> "Promeni ulaznu mapu za torent fajlove"
 "Edit Tracker" ---> "Preobradi trekera"
 "Edit" ---> "Preobradi"
-"Enable DHT (will not apply to private torrents)" --->  ??? 
+"Enable DHT (will not apply to private torrents)" ---> "Aktiviraj DHT (neće se na privatnim torentima uključivati)"
 "Enable IP filtering." ---> "Aktiviraj IP-filtraciju"
-"Enable Options or libtorrent Plugins" --->  ??? 
+"Enable Options or libtorrent Plugins" ---> "Aktiviraj opcije ili 'libtorrent' dodatke"
 "Enable Protocol Encryption." ---> "Aktiviraj šifraciju za protokol"
 "Enable Remote Control" ---> "Aktiviraj daljinski"
 "Enabled" ---> "Aktiviran"
 "Encoding Level" ---> "Stepen šifracije"
 "Enter any Web Seed URLs and DHT Nodes." ---> "Unesi željenu 'webseed'-URL adresu ili DHT-čvor"
 "Enter the tracker URLs for the torrent." ---> "Unesi URL-adrese od trekera"
-"Error!" --->  ??? 
+"Error!" ---> "Greška!"
 "Exception caught: %1%, from %2%." ---> "Izuzetna greška: %1%, u %2%."
 "Failed, %1%" ---> "Neuspešno, %1%"
 "Fast resume failed: %2%. (%1%)" ---> "Brzi nastavak neuspešam: %2%. (%1%)"
@@ -124,7 +124,7 @@
 "General" ---> "Opšte"
 "Generated Torrent Name (Cannot change)" ---> "Generirano ime torenta (nepromenljivo)"
 "Global Limits" ---> "Globalno limitiranje"
-"Globals" --->  ??? 
+"Globals" ---> "Uređaj vezan za sve" 
 "Halite BitTorrent Client" ---> "Halite bittorent klijent"
 "Halite Debug Dialog" ---> "Halite, dialog 'debug'-a"
 "Halite importing IP ranges..." ---> "Halite importira delove IP-a"
@@ -141,7 +141,7 @@
 "Importing IP Filters..." ---> "Importiraj IP-filter"
 "Incoming" ---> "Ulazno"
 "Info" ---> "Informacija"
-"Informed of external IP address: %1%." --->  ??? 
+"Informed of external IP address: %1%." ---> "Informisan preko eksterne IP-adrese: %1%."
 "Interested in us" ---> "Interesuje se za nas"
 "Interesting" ---> "Interesiran"
 "Invalid torrent (%1%) from %2%." ---> "Neispravan torent (%1%) od (%2%)"
@@ -154,27 +154,27 @@
 "Log debug events." ---> "Upisuj debug rezultate"
 "Log to file." ---> "Arhiviraj dešavanje"
 "Logging" ---> "Protokol"
-"Manage Torrent(s)" --->  ??? 
-"Managed Downloading" --->  ??? 
-"Managed Seeding" --->  ??? 
-"Managed Torrent" --->  ??? 
-"Managed" --->  ??? 
-"Match the listen port number (recommended)." --->  ??? 
-"Max Size (MiB) :" --->  ??? 
-"Max failures : " --->  ??? 
-"Max replies : " --->  ??? 
+"Manage Torrent(s)" ---> "Uređivaj torente" 
+"Managed Downloading" ---> "Preuzmi uređene torente"
+"Managed Seeding" ---> "Nudi uređene torente" 
+"Managed Torrent" ---> "Uređen torent"
+"Managed" ---> "Uređen" 
+"Match the listen port number (recommended)." ---> "Koristi standartni port (prepostavljeno)
+"Max Size (MiB) :" ---> "Maksimalna veličina (MiB)" 
+"Max failures : " ---> "Maksimalno grešaka" 
+"Max replies : " ---> "Maksimalnih odgovora" 
 "Maximum" ---> "Maksimalno"
 "Message" ---> "Poruka"
-"Metadata Plugin" --->  ??? 
+"Metadata Plugin" ---> "'Metadata' dodatak"
 "Minimize to tray." ---> "Smanji = prebaci u 'tray'."
-"Move Down" --->  ??? 
-"Move To Bottom" --->  ??? 
-"Move To Top" --->  ??? 
-"Move Up" --->  ??? 
+"Move Down" ---> "Spusti"
+"Move To Bottom" ---> "Prema dole" 
+"Move To Top" ---> "Prema gore"
+"Move Up" ---> "Digni" 
 "Move finished torrents to :" ---> "Prebaci preuzete fajlove u:"
 "Move the completed torrent to:" ---> "Prebaci ovaj preuzeti fajl u:"
 "N/A" ---> "N/D"
-"NAT-PMP" --->  ??? 
+"NAT-PMP" ---> "'NAT-PMP'"
 "Name" ---> "Ime"
 "Name:" ---> "Ime:"
 "New" ---> "Novi"
@@ -182,7 +182,7 @@
 "Normal" ---> "Normalno"
 "Note. Compact Allocation is incompatible with File Selection" ---> "Informacija: kompaktno dodavanje ne ide sa svakoj akciji"
 "OK" ---> "U redu"
-"OS reported error for file '%1%'" --->  ??? 
+"OS reported error for file '%1%'" ---> "Operativni sistem javlja grešku kod '%1%'"
 "Ok" ---> "U redu"
 "Open &Halite" ---> "Uvećaj halite"
 "Open Download Folder" ---> "Otvori ulaznu mapu"
@@ -202,17 +202,17 @@
 "Peers" ---> "Mušterije"
 "Peers:" ---> "Mušterije:"
 "Piece %2% finished. (%1%)" ---> "Deo %2% završen. (%1%)"
-"Piece Expiry (sec) :" --->  ??? 
+"Piece Expiry (sec) :" ---> "Raspored delova (sek):"
 "Piece Size (KBs)" ---> "Većina dela (KB)"
 "Plaintext Encrypted" ---> "Jasno šifrirano"
 "Plaintext" ---> "Jasno"
 "Port %1% open" ---> "Port %1% otvoren"
-"Port (UDP)" --->  ??? 
+"Port (UDP)" ---> "Port (UDP)"
 "Port : " ---> "Port:"
 "Port Forwarding" ---> "Port produženje"
 "Port to listen on : " ---> "Port:"
 "Port" ---> "Port"
-"Ports" --->  ??? 
+"Ports" ---> "Portovi" 
 "Prefer RC4" ---> "Privilegiraj RC4"
 "Priority" ---> "Važnosti"
 "Private" ---> "Privatno"
@@ -221,9 +221,9 @@
 "Proxies" ---> "Proksi-server"
 "Proxy Host/IP : " ---> "Ime host-a/IP"
 "Proxy Settings" ---> "Uređaji"
-"Queue Position" --->  ??? 
-"Queue System" --->  ??? 
-"Queue View" --->  ??? 
+"Queue Position" ---> "Mesto u redu"
+"Queue System" ---> "'Queue system'"
+"Queue View" ---> "Vidi mesto u redu"
 "Queued for Checking" ---> "Zapamćen u vezi provere"
 "Queued" ---> "Čeka"
 "RC4 Encrypted" ---> "Šifrirano sa RC4"
@@ -232,8 +232,8 @@
 "Ratio (this session):" ---> "Odnos (ova sednica):"
 "Ratio" ---> "Odnos"
 "Ratio:" ---> "Odnos:"
-"Read Cache Hit Ratio :" --->  ??? 
-"Read Size :" --->  ??? 
+"Read Cache Hit Ratio :" ---> "Učitava sa 'cache'-a" 
+"Read Size :" ---> "Veličina učitavanja" 
 "Reannounce" ---> "Osveži"
 "Recheck Files" ---> "Proveri opet fajlove"
 "Remaining" ---> "Još ostaje"
@@ -242,34 +242,34 @@
 "Remote Control" ---> "Daljinsko upravljanje"
 "Remove" ---> "Skloni"
 "Reset" ---> "Povrati"
-"Resolve Countries from IP" --->  ??? 
-"Resume data generated. (%1%)" --->  ??? 
-"Resume data generation failed. (%1%)" --->  ??? 
+"Resolve Countries from IP" ---> "Pronađi državu uz pomoć IP-adrese"
+"Resume data generated. (%1%)" ---> "Podatki za nastavak uspešno stvoreni. (%1%)"
+"Resume data generation failed. (%1%)" ---> "Podatki za nastavak nisu uspešno stvoreni. (%1%)"
 "Resume" ---> "Nastavi"
-"Resuming torrent. (%1%)" --->  ??? 
+"Resuming torrent. (%1%)" ---> "Nastavlja se. (%1%)"
 "Review settings when adding torrent." ---> "Pitaj me uvek dali želim ulaznu mapu promenuti kad unosim nove torente"
 "Save" ---> "Arhiviraj"
 "Saving Torrent" ---> "Arhiviraj fajl"
-"Search banching : " --->  ??? 
+"Search banching : " ---> "Podelena pretraga DHT-a : "
 "Security" ---> "Sigurnosti"
-"Seeding Limits" --->  ??? 
+"Seeding Limits" ---> "Granica nuđenja"
 "Seeding" ---> "Nudiš"
 "Seeds" ---> "Izvori"
 "Seeds:" ---> "Izvori:"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Izaberi mapu u kojoj želiš da ti budu preuzeti fajlovi."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Izaberi mapu u kojoj želiš imati skinute torente ili da prekineš da ti se torent nepreuzima do kraja."
 "Select a file or directory from which to construct the torrent." ---> "Izaberi fajl ili mapu, od kojih želiš napraviti torent"
-"Select a random port within this range." --->  ??? 
+"Select a random port within this range." ---> "Bira se slučajni port iz ove sekcije"
 "Select the (TCP) port (or range) on which to listen for incoming connections." ---> "Izaberi jedan TCP-port ili više, preko kojih da halite prima ulazni protok"
 "Send login info to trackers." ---> "Prijavi se na trekeru"
 "Set Priority" ---> "Odredi prioritete"
 "Set as Primary" ---> "Odredi kao glavni"
 "Severity" ---> "Važnosti"
-"Share ratio limit:" --->  ??? 
+"Share ratio limit:" ---> "Granica odnosa"
 "Show this message in future" ---> "Pokazuj mi ovu poruku"
 "Shutting down session" ---> "Prekida se sednica"
 "Size" ---> "Veličina"
-"Smart Ban Plugin" --->  ??? 
+"Smart Ban Plugin" ---> "Opšireno kažnavanje"
 "Standard exception (%1%) thrown from %2%." ---> "Standardni izuzetak (%1%) desio se kod (%2%)"
 "Start Time" ---> "Početo preuzimanje"
 "Status" ---> "Akcija"
@@ -289,10 +289,10 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "U ovoj sednici preuzeo si: %1$.2fMB, podelio: %2$.2fMB, Odnos: %3$.2f."
 "Tier" ---> "Mesto"
 "Time left:" ---> "Preostalo:"
-"Time limit (sec):" --->  ??? 
-"Time ratio limit:" --->  ??? 
+"Time limit (sec):" ---> "Vremenska granica (sek):"
+"Time ratio limit:" ---> "Vremensko odnosna granica:"
 "Time" ---> "Vreme"
-"Toolbar2k.bmp" --->  ??? 
+"Toolbar2k.bmp" ---> "Toolbar2k.bmp"
 "Torrent %1% finished." ---> "Torent %1% završen."
 "Torrent %1% paused." ---> "Torent %1% pauzira."
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torent (%1%) izuzetak uspešno popravljen: (%2%) u (%3%)."
@@ -301,7 +301,7 @@
 "Torrent Root" ---> "Put torenta"
 "Torrent and Data" ---> "Torent i datoteku"
 "Torrent connection limits:" ---> "Ograničenje poveza:"
-"Torrent error: %1% (%2%)" --->  ??? 
+"Torrent error: %1% (%2%)" ---> "Greška torenta: %1% (%2%)"
 "Torrent save folder:" ---> "Ulazna mapa za torente"
 "Torrent transfer rates (KB/s):" ---> "Ograničenje brzine (KB/s):"
 "Torrent" ---> "Torent"
@@ -319,13 +319,13 @@
 "Trackers" ---> "Trekeri"
 "Transferred:" ---> "Prenešeno:"
 "Type" ---> "Tip"
-"UPnP router model (if recognised)." --->  ??? 
-"UPnP" --->  ??? 
+"UPnP router model (if recognised)." ---> "Model UPnP-routera (ako poznato)."
+"UPnP" ---> "UPnP"
 "URL Seed %2%, %3%. (%1%)" ---> "URL izvor %2%, %3%. (%1%)"
 "URL" ---> "URL"
 "UnPlug and Play" ---> "Izdvoji i pokaži"
 "Unicode exception: %1%." ---> "Unicode izuzetak: %1%."
-"Unmanaged" --->  ??? 
+"Unmanaged" ---> "Neuređivano"
 "Up" ---> "Izlazna"
 "Update in:" ---> "Obnova za:"
 "Upload Rate (KB/s) :" ---> "Brzina izlaznog protoka (KB/s):"
@@ -337,13 +337,13 @@
 "Warning" ---> "Upozorenje"
 "Web Seed" ---> "'Webseed'"
 "Web Seeds and DHT Nodes" ---> "'Weebseed' i DHT-čvori"
-"Write Cache Hit Ratio :" --->  ??? 
+"Write Cache Hit Ratio :" ---> "Rad pisanja u 'cache'-u"
 "Xml Exception (%1%) with %2%." ---> "XML Greška (%1%) kod (%2%)"
-"\r\0" --->  ??? 
+"\r\0" ---> "\r\0"
 "libTorrrent based client." ---> "Na libTorrent-u baziran klijent"
-"random up to" --->  ??? 
-"resource.h\0" --->  ??? 
+"random up to" ---> "Slučajno do"
+"resource.h\0" ---> "resource.h\0"
 "to" ---> "Do"
-"uTorrent Metadata Plugin" --->  ??? 
-"uTorrent Peer Exchange Plugin" --->  ??? 
+"uTorrent Metadata Plugin" ---> ""μTorrent-dodatak za 'meta'-fajlovi"
+"uTorrent Peer Exchange Plugin" ---> "'μTorrent'-dodatak za bolje cirkuliranja izvora"
 "∞" ---> "- -"
