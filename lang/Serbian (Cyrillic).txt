@@ -242,7 +242,7 @@
 "Remote Control" ---> "Даљинско управљање"
 "Remove" ---> "Склони"
 "Reset" ---> "Поврати"
-"Resolve Countries from IP" ---> "Пронађи државууз помоћ ИП-адресе"
+"Resolve Countries from IP" ---> "Пронађи државу уз помоћ ИП-адресе"
 "Resume data generated. (%1%)" ---> "Податки за наставак успешно створени. (%1%)"
 "Resume data generation failed. (%1%)" ---> "Податки за наставак нису успешно створени. (%1%)"
 "Resume" ---> "Настави"
