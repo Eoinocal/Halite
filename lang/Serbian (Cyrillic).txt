@@ -240,7 +240,7 @@
 "Remaining:" ---> "Преостало:"
 "Remote Control Options" ---> "Опције даљинскога управљања"
 "Remote Control" ---> "Даљинско управљање"
-"Remove" ---> "Склони"
+"Remove" ---> "Уклони"
 "Reset" ---> "Поврати"
 "Resolve Countries from IP" ---> "Пронађи државу уз помоћ ИП-адресе"
 "Resume data generated. (%1%)" ---> "Податки за наставак успешно створени. (%1%)"
