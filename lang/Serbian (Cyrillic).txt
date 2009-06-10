@@ -319,7 +319,7 @@
 "Trackers" ---> "Трeкереи"
 "Transferred:" ---> "Пренешено:"
 "Type" ---> "Тип"
-"UPnP router model (if recognised)." ---> "Модел УПнП-роутера (ако познато)."
+"UPnP router model (if recognised)." ---> "Модел УПнП-роутера (ако је познато)."
 "UPnP" ---> "УПнП"
 "URL Seed %2%, %3%. (%1%)" ---> "УРЛ извор %2%, %3%. (%1%)"
 "URL" ---> "УРЛ"
