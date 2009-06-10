@@ -438,8 +438,8 @@ void torrent_internal::apply_tracker_login()
 				hal::to_utf8(tracker_password_));
 		}
 
-		HAL_DEV_MSG(hal::wform(L"Applying Tracker Login User: %1%, Pass: %2%")
-			% tracker_username_ % tracker_password_ );
+		HAL_DEV_MSG(hal::wform(L"Applying Tracker Login User: %1% with password")
+			% tracker_username_ );
 	}
 }
 

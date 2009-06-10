@@ -1,5 +1,5 @@
 "English" ---> "Français"
-"English.rtf" ---> "French.rtf"
+"English.rtf" ---> "../lang/French.rtf"
 " %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKo/s R - %2$.2fKo/s E"
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMo Récep. - %2$.2fMo Envoi"
@@ -13,6 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Peers. (%1%)"
 "&Pause All" ---> "&Tout Suspendre"
 "&Resume All" ---> "&Tout Reprendre"
+"(C) Eoin O'Callaghan 2009" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(R-E) %1$.2fKo/s - %2$.2fKo/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(R-E) 0000.000Ko/s - 0000.000Ko/s"
 "About" ---> "A propos"
@@ -68,6 +69,7 @@
 "Creator" ---> "Créateur"
 "Critical" ---> "Critique"
 "Current Cache Status" --->  ??? 
+"Currently set to '%1%' at %2%" --->  ??? 
 "DHT Node" ---> "Node DHT"
 "DHT disabled" ---> "DHT désactivé"
 "DHT session could not start. Try selecting another port in the settings." ---> "La session DHT ne peut pas démarer. Sélectionnez un port différent dans les options."
@@ -110,6 +112,7 @@
 "Enter the tracker URLs for the torrent." ---> "Entrez les URLs des trackers pour le torrent."
 "Error!" --->  ??? 
 "Exception caught: %1%, from %2%." ---> "Levée d'exception: %1%, dans %2%."
+"Exit Halite" --->  ??? 
 "Failed, %1%" ---> "Echec, %1%"
 "Fast resume failed: %2%. (%1%)" ---> "Echec de la relance rapide: %2%. (%1%)"
 "File" ---> "Fichier"
@@ -152,6 +155,7 @@
 "Loading IP filters..." ---> "Chargement des filtres IP..."
 "Local connection" ---> "Connexion locale"
 "Log debug events." ---> "Logguer en niveau Debug"
+"Log off Windows" --->  ??? 
 "Log to file." ---> "Logguer dans un fichier"
 "Logging" ---> "Log"
 "Manage Torrent(s)" --->  ??? 
@@ -180,6 +184,7 @@
 "New" ---> "Nouveau"
 "None" ---> "Aucun"
 "Normal" ---> "Normal"
+"Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Note: L'allocation compacte est incompatible avec la Sélection des Fichiers"
 "OK" ---> "OK"
 "OS reported error for file '%1%'" --->  ??? 
@@ -192,6 +197,7 @@
 "Overhead:" ---> "Octets de Protocole:"
 "Password : " ---> "Mot de passe :"
 "Path" ---> "Chemin"
+"Pause all torrents" --->  ??? 
 "Pause" ---> "Pause"
 "Paused" ---> "En pause"
 "Pausing" ---> "En pause"
@@ -256,17 +262,21 @@
 "Seeding" ---> "Envoi"
 "Seeds" ---> "Sources"
 "Seeds:" ---> "Sources :"
+"Select Timed Action" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Sélectionnez un dossier dans lequel sauvegarder les téléchargements. Selectionnez Annuler pour accepter l'emplacement par défaut."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Sélectionnez un dossier où sauvegarder le torrent, ou annuler pour ne pas télécharger."
 "Select a file or directory from which to construct the torrent." ---> "Sélectionnez un fichier ou un dossier à partir duquel construire le torrent."
 "Select a random port within this range." --->  ??? 
+"Select action to take :" --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." ---> "Sélectionnez le port (ou la plage) TCP sur lequel écouter les connexions entrantes."
 "Send login info to trackers." ---> "Envoyer les identifiants au trackers"
 "Set Priority" ---> "Paramétrer la priorité"
 "Set as Primary" ---> "Placer comme Primaire"
+"Set time :" --->  ??? 
 "Severity" ---> "Niveau"
 "Share ratio limit:" --->  ??? 
 "Show this message in future" ---> "Toujours afficher ce message"
+"Shutdown Windows" --->  ??? 
 "Shutting down session" ---> "Fermeture de la session"
 "Size" ---> "Taille"
 "Smart Ban Plugin" --->  ??? 
@@ -281,6 +291,8 @@
 "Stopping" ---> "En cours d'arrêt"
 "Successfully %1%." ---> "Réussi %1%."
 "Supports extensions" ---> "Extensions supportées"
+"SysDateTimePick32" --->  ??? 
+"Take no action" --->  ??? 
 "Test" ---> "Test"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "La session BiTorrent ne peut pas démarer. Essayez de sélectionner un port différent dans les options."
 "The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." ---> "La configuration du réseau à échoué, Halite est forcé de se fermer. Veuillez vous assurer qu'aucun programme ne bloque l'accès réseau à Halite."
@@ -291,6 +303,7 @@
 "Time left:" ---> "Durée restante :"
 "Time limit (sec):" --->  ??? 
 "Time ratio limit:" --->  ??? 
+"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Temps"
 "Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% terminé."
@@ -340,7 +353,7 @@
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Exception XML (%1%) dans %2%."
 "\r\0" --->  ??? 
-"libTorrrent based client." ---> "Client basé sur libTorrent."
+"libTorrrent based client" --->  ??? 
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "à"

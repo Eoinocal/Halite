@@ -1,6 +1,6 @@
 ﻿Halite: A Free Open-Source BitTorrent client
 
-Version: 0.3.1.7 dev 765 released 06th March 2009
+Version: 0.3.1.8 dev 766 released 10th June 2009
 
 WWW:   http://www.binarynotions.com/halite-bittorrent-client 
 Forum: http://www.binarynotions.com/forum.php
@@ -36,8 +36,9 @@ That said, it supports:
   + Torrent file creation.
   + Port randomisation and forwarding (UnPlug and Play or NAT-PMP)
   + Compatible with UAC.
+  + Shutdown scheduler.
 
-Requirements: Windows 2000, XP, Server 2003, Vista or Server 2008.
+Requirements: Windows 2000, XP, Server 2003, Vista, Server 2008 or Win7.
 
 Important note for people upgrading!
 
@@ -61,6 +62,12 @@ registry key (HKEY_CURRENT_USER\Software\Halite\path). If you only
 ever used the standalone download release this will not be necessary.
 
 Changes:
+
+ + from v 0.3.1 to 0.3.1.8:
+   1) Shutdown Dialog added.
+   2) Updated to libtorrent 0.14.4
+      - Potential libtorrent vulnerability fixed.
+   3) Numerous small bug fixes and improvements.
 
  + from v 0.3.1 to 0.3.1.6:
    1) Queue View Fixed

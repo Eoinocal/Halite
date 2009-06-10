@@ -42,7 +42,7 @@ Config::Config() :
 	pe_settings_(),
 	half_connections_(true),
 	half_connections_limit_(10),
-	mapping_upnp_(false),
+	mapping_upnp_(true),
 	mapping_nat_pmp_(false),
 	resolve_countries_(false),
 	metadata_plugin_(false),
@@ -72,52 +72,7 @@ bool Config::settingsThread()
 	unsigned listen_port = port_range_.first;
 	int current_port = bittorrent::Instance().is_listening_on();
 
-	bittorrent::Instance().set_mapping(mapping_upnp_, mapping_nat_pmp_);
-
-	try
-	{		
-
-	if (randomize_port_ && (current_port < port_range_.first || current_port > port_range_.second))
-	{
-		for (int i=0, e=10; i!=e; ++i)
-		{
-			unsigned range = port_range_.second - port_range_.first;
-			listen_port = port_range_.first + (range * std::rand())/RAND_MAX;
-
-			event_log().post(shared_ptr<EventDetail>(new EventMsg(
-					hal::wform(L"Attempting port %1%.") % listen_port)));
-
-			bool success = bittorrent::Instance().listen_on(std::make_pair(listen_port, listen_port));
-			if (success) break;
-		}
-	}
-	else
-	{
-		event_log().post(shared_ptr<EventDetail>(new EventMsg(
-				hal::wform(L"Trying port in range %1% - %2%.") % port_range_.first % port_range_.second)));
-
-		bool success = bittorrent::Instance().listen_on(port_range_);
-		if (!success)
-		{
-			hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventDebug(event_logger::critical, L"settingsThread, Listen")));
-			
-			return false;
-		}
-	}
-
-	}
-	catch(const std::exception& e)
-	{
-		hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(event_logger::critical, e, L"settingsThread, Listen"))); 
-		
-		return false;
-	}
-
-
-	event_log().post(shared_ptr<EventDetail>(
-		new EventMsg(hal::wform(L"Opened listen port; %1%.") % bittorrent::Instance().is_listening_on())));
+	bittorrent::Instance().set_mapping(false, false);
 	
 	try
 	{
@@ -170,6 +125,53 @@ bool Config::settingsThread()
 		bittorrent::Instance().start_ut_pex_plugin();
 	if (smart_ban_plugin_)
 		bittorrent::Instance().start_smart_ban_plugin();
+
+	try
+	{		
+
+	if (randomize_port_ && (current_port < port_range_.first || current_port > port_range_.second))
+	{
+		for (int i=0, e=10; i!=e; ++i)
+		{
+			unsigned range = port_range_.second - port_range_.first;
+			listen_port = port_range_.first + (range * std::rand())/RAND_MAX;
+
+			event_log().post(shared_ptr<EventDetail>(new EventMsg(
+					hal::wform(L"Attempting port %1%.") % listen_port)));
+
+			bool success = bittorrent::Instance().listen_on(std::make_pair(listen_port, listen_port));
+			if (success) break;
+		}
+	}
+	else
+	{
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(
+				hal::wform(L"Trying port in range %1% - %2%.") % port_range_.first % port_range_.second)));
+
+		bool success = bittorrent::Instance().listen_on(port_range_);
+		if (!success)
+		{
+			hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventDebug(event_logger::critical, L"settingsThread, Listen")));
+			
+			return false;
+		}
+	}
+
+	}
+	catch(const std::exception& e)
+	{
+		hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(event_logger::critical, e, L"settingsThread, Listen"))); 
+		
+		return false;
+	}
+
+
+	event_log().post(shared_ptr<EventDetail>(
+		new EventMsg(hal::wform(L"Opened listen port; %1%.") % bittorrent::Instance().is_listening_on())));
+
+
 	
 	if (enable_dht_)
 	{
@@ -197,6 +199,10 @@ bool Config::settingsThread()
 	}
 	else
 		bittorrent::Instance().ensure_dht_off();
+
+	
+	bittorrent::Instance().set_mapping(mapping_upnp_, mapping_nat_pmp_);
+
 		
 	// Settings seem to have applied ok!
 	

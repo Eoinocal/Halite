@@ -1,4 +1,4 @@
-﻿"English" ---> "Engleză"
+﻿"English" ---> "Romanian"
 "English.rtf" ---> "../lang/Romanian.rtf"
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  "%1$.2fKB/s jos - %2$.2fKB/s sus"
 "%1$.2fMB down - %2$.2fMB up" --->  "%1$.2fMB jos - %2$.2fMB sus"

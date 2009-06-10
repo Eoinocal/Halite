@@ -13,6 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Eş. (%1%)"
 "&Pause All" ---> "Hepsini &Duraklat"
 "&Resume All" ---> "Hepsine D&evam Et"
+"(C) Eoin O'Callaghan 2009" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(İ-G) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(İ-G) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "Hakkında"
@@ -68,6 +69,7 @@
 "Creator" ---> "Oluşturan"
 "Critical" ---> "Kritik"
 "Current Cache Status" --->  ??? 
+"Currently set to '%1%' at %2%" --->  ??? 
 "DHT Node" ---> "DHT Nodu"
 "DHT disabled" ---> "DHT Etkisiz"
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT oturumu başlatılamadı. Ayarlardan başka bir port seçin."
@@ -110,6 +112,7 @@
 "Enter the tracker URLs for the torrent." ---> "Torrent için izleyici URL'lerini girin"
 "Error!" --->  ??? 
 "Exception caught: %1%, from %2%." ---> "Yakalanan istisna: %1%, %2%'den."
+"Exit Halite" --->  ??? 
 "Failed, %1%" ---> "Başarısız, %1%"
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" ---> "Dosya"
@@ -152,6 +155,7 @@
 "Loading IP filters..." ---> "IP Süzgeçleri yükleniyor..."
 "Local connection" ---> "Yerel bağlantı"
 "Log debug events." ---> "Hata Ayıklama olaylarını kaydet"
+"Log off Windows" --->  ??? 
 "Log to file." ---> "Günlüğü dosyaya kaydet"
 "Logging" ---> "Kaydediliyor"
 "Manage Torrent(s)" --->  ??? 
@@ -180,6 +184,7 @@
 "New" ---> "Yeni"
 "None" ---> "Hiçbiri"
 "Normal" ---> "Normal"
+"Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" ---> "Tamam"
 "OS reported error for file '%1%'" --->  ??? 
@@ -192,6 +197,7 @@
 "Overhead:" --->  ??? 
 "Password : " ---> "Parola"
 "Path" ---> "Dizin"
+"Pause all torrents" --->  ??? 
 "Pause" ---> "Duraklat"
 "Paused" ---> "Duraklatıldı"
 "Pausing" ---> "Duraklatılmış"
@@ -256,17 +262,21 @@
 "Seeding" ---> "Gönderiliyor"
 "Seeds" ---> "Kaynaklar:"
 "Seeds:" ---> "Kaynaklar"
+"Select Timed Action" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Dosyaları kaydetmek için bir dizin seçin veya torrenti indirmemek için iptal edin."
 "Select a file or directory from which to construct the torrent." --->  ??? 
 "Select a random port within this range." --->  ??? 
+"Select action to take :" --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." --->  ??? 
 "Send login info to trackers." ---> "İzleyicilere giriş bilgisi gönder."
 "Set Priority" ---> "Öncelik Ayarla"
 "Set as Primary" --->  ??? 
+"Set time :" --->  ??? 
 "Severity" ---> "Öncelik"
 "Share ratio limit:" --->  ??? 
 "Show this message in future" ---> "Bu mesajı ilerde de göster"
+"Shutdown Windows" --->  ??? 
 "Shutting down session" ---> "Oturum kapatılıyor"
 "Size" ---> "Boyut"
 "Smart Ban Plugin" --->  ??? 
@@ -281,6 +291,8 @@
 "Stopping" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Supports extensions" ---> "Uzantıları destekler"
+"SysDateTimePick32" --->  ??? 
+"Take no action" --->  ??? 
 "Test" --->  ??? 
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Bittorent oturumu başlatılamadı. Ayarlardan başka bir port seçin."
 "The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
@@ -291,6 +303,7 @@
 "Time left:" ---> "Kalan süre:"
 "Time limit (sec):" --->  ??? 
 "Time ratio limit:" --->  ??? 
+"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Süre"
 "Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." --->  ??? 
@@ -340,7 +353,7 @@
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml İstisnası (%1%) ile %2%."
 "\r\0" --->  ??? 
-"libTorrrent based client." ---> "libTorrent tabanlı program."
+"libTorrrent based client" --->  ??? 
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "-"

@@ -1,28 +1,36 @@
-"English" ---> "Magyar"
-"English.rtf" ---> "Hungarian.rtf"
+﻿"English" ---> "Magyar"
+"English.rtf" ---> "../lang/Hungarian.rtf"
+" %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s le - %2$.2fKB/s fel"
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB le - %2$.2fMB fel"
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB a %2$.2fMB-ból"
 "%1% DHT node(s)" ---> "%1% DHT csomópont"
 "%1% active torrent(s)" ---> "%1% aktív torrent"
+"%1% peers from DHT for %2%." --->  ??? 
+"%1% port %2% mapping succeeded." --->  ??? 
+"%1% port mapping request failed." --->  ??? 
 "%1%, %2%." ---> "%1%, %2%."
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Peerek. (%1%)"
 "&Pause All" ---> "Összes &Leállítása"
 "&Resume All" ---> "Összes &Folytatása"
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(L-F) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(L-F) 0000.000KB/s - 0000.000KB/s"
-"(DHT will not apply to private torrents)" ---> "(DHT ki lesz kapcsolva a privát torrenteknél)"
 "About" ---> "Névjegy"
 "Above Normal" ---> "Normál Feletti"
+"Active downloads :" --->  ??? 
+"Active seeds :" --->  ??? 
+"Active seeds hard limit:" --->  ??? 
 "Active" ---> "Aktív"
 "Add New Peer" ---> "Új Peer"
 "Add New Tracker" ---> "Új Tracker"
 "Add New Web Seed or DHT Node" ---> "Új Web Seed vagy DHT Csomópont"
 "Add Torrent" ---> "Új Torrent"
 "Add" ---> "Új"
+"Adjust Queue Position" --->  ??? 
 "Advanced GUI" ---> "Haladó GUI"
 "Alert %2%, Status code: %4%, Times %3%. (%1%)" ---> "Alert %2%, Status code: %4%, Times %3%. (%1%)"
 "Allocating" ---> "Lefoglalás"
+"Allocation Mode:" --->  ??? 
 "Allow only one instance to run" ---> "Csak egy példány futása engedélyezett"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "An invalid connection policy, %1%, was passed as an encryption setting."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "An invalid encoding level, %1%, was passed as an encryption setting."
@@ -30,11 +38,14 @@
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Biztosan leállítod a Halite-ot? Ezzel minden aktív torrent is le fog állni."
 "Are you sure you wish to delete all downloaded data?" ---> "Biztosan törölni akarsz minden letöltött adatot?"
 "Auto Sort" ---> "Automatikus rendezés"
+"Auto-managed" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." ---> "Bittorrent Event: %1%."
 "Block %2% of piece %3% downloading. (%1%)" ---> "Block %2% of piece %3% downloading. (%1%)"
 "Block %2% of piece %3% finished. (%1%)" ---> "Block %2% of piece %3% finished. (%1%)"
 "Both" ---> "Mindkettő"
+"Cache Status, Current Total Size : %1.2f MiB" --->  ??? 
+"Cache Write Size :" --->  ??? 
 "Calculating Piece Hashes..." ---> "Hash érték számolása..."
 "Cancel" ---> "Mégse"
 "Checking Files" ---> "Fájlok Ellenőrzése"
@@ -56,6 +67,7 @@
 "Creating a New Torrent File" ---> "Új Torrent Fájl Létrehozása"
 "Creator" ---> "Készítő"
 "Critical" ---> "Kritikus"
+"Current Cache Status" --->  ??? 
 "DHT Node" ---> "DHT Csomópont"
 "DHT disabled" ---> "DHT letiltva"
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT folyamat nem tud elindulni. Próbálj meg másik portot választani."
@@ -69,6 +81,8 @@
 "Dir." ---> "Mappa"
 "Disabled" ---> "Letiltva"
 "Distributed Hash Tables" ---> "Elosztott Hash Táblák (DHT)"
+"Don't Manage Torrent(s)" --->  ??? 
+"Don't count slow torrents." --->  ??? 
 "Don't download" ---> "Ne töltse le"
 "Down" ---> "Le"
 "Download Rate (KB/s) :" ---> "Letöltési sebesség (KB/s):"
@@ -85,14 +99,16 @@
 "Edit Torrent Save Folders" ---> "Torrent Könyvtárának Módosítása"
 "Edit Tracker" ---> "Tracker Módosítása"
 "Edit" ---> "Szerkesztés"
-"Enable DHT" ---> "DHT Engedélyezése"
+"Enable DHT (will not apply to private torrents)" --->  ??? 
 "Enable IP filtering." ---> "IP Szűrés Engedélyezése"
+"Enable Options or libtorrent Plugins" --->  ??? 
 "Enable Protocol Encryption." ---> "Protokolltitkosítás Engedélyezése"
 "Enable Remote Control" ---> "Távoli Elérés Engedélyezése"
 "Enabled" ---> "Engedélyezve"
 "Encoding Level" ---> "Kódolási Szint"
 "Enter any Web Seed URLs and DHT Nodes." ---> "Adj meg egy WebSeed URL-t vagy DHT csomópontot!"
 "Enter the tracker URLs for the torrent." ---> "Add meg a tracker URL-eket!"
+"Error!" --->  ??? 
 "Exception caught: %1%, from %2%." ---> "Exception caught: %1%, from %2%."
 "Failed, %1%" ---> "Failed, %1%"
 "Fast resume failed: %2%. (%1%)" ---> "Fast resume failed: %2%. (%1%)"
@@ -108,6 +124,7 @@
 "General" ---> "Általános"
 "Generated Torrent Name (Cannot change)" ---> "Generált Torrent Név (Nem módosítható)"
 "Global Limits" ---> "Globális Korlátok"
+"Globals" --->  ??? 
 "Halite BitTorrent Client" ---> "Halite BitTorrent Kliens"
 "Halite Debug Dialog" ---> "Halite Debug Üzenet"
 "Halite importing IP ranges..." ---> "IP tartományok betöltése..."
@@ -124,6 +141,7 @@
 "Importing IP Filters..." ---> "IP Szűrők Betöltése..."
 "Incoming" ---> "Bejövő"
 "Info" ---> "Infó"
+"Informed of external IP address: %1%." --->  ??? 
 "Interested in us" ---> "Érdekeljük"
 "Interesting" ---> "Érdekes"
 "Invalid torrent (%1%) from %2%." ---> "Invalid torrent (%1%) from %2%."
@@ -136,21 +154,35 @@
 "Log debug events." ---> "Debug események naplózása."
 "Log to file." ---> "Napló fájlba írása."
 "Logging" ---> "Naplózás"
+"Manage Torrent(s)" --->  ??? 
+"Managed Downloading" --->  ??? 
+"Managed Seeding" --->  ??? 
+"Managed Torrent" --->  ??? 
+"Managed" --->  ??? 
+"Match the listen port number (recommended)." --->  ??? 
+"Max Size (MiB) :" --->  ??? 
+"Max failures : " --->  ??? 
+"Max replies : " --->  ??? 
 "Maximum" ---> "Maximum"
 "Message" ---> "Üzenet"
+"Metadata Plugin" --->  ??? 
 "Minimize to tray." ---> "Minimalizálás a tálcára."
+"Move Down" --->  ??? 
+"Move To Bottom" --->  ??? 
+"Move To Top" --->  ??? 
+"Move Up" --->  ??? 
 "Move finished torrents to :" ---> "Befejezett torrent áthelyezése:"
 "Move the completed torrent to:" ---> "Kész torrent áthelyezése:"
 "N/A" ---> "N/A"
-"NAT-PMG" ---> "NAT-PMG"
+"NAT-PMP" --->  ??? 
 "Name" ---> "Név"
 "Name:" ---> "Név:"
 "New" ---> "Új"
-"None (Managed Externally)" ---> "Nincs (Manuális beállítás)"
 "None" ---> "Nincs"
 "Normal" ---> "Normál"
 "Note. Compact Allocation is incompatible with File Selection" ---> "Figyelem! A Tömörített Foglalás nem kompatibilis a Fájl Kiválasztással."
 "OK" ---> "OK"
+"OS reported error for file '%1%'" --->  ??? 
 "Ok" ---> "Ok"
 "Open &Halite" ---> "&Halite Megnyitása"
 "Open Download Folder" ---> "Letöltési Könyvtár Megnyitása"
@@ -170,15 +202,17 @@
 "Peers" ---> "Peerek"
 "Peers:" ---> "Peerek:"
 "Piece %2% finished. (%1%)" ---> "Piece %2% finished. (%1%)"
+"Piece Expiry (sec) :" --->  ??? 
 "Piece Size (KBs)" ---> "Piece Size (KBs)"
 "Plaintext Encrypted" ---> "Nincs Titkosítva"
 "Plaintext" ---> "Nyílt"
 "Port %1% open" ---> "Port %1% nyitva"
-"Port (UDP) : " ---> "Port (UDP) : "
+"Port (UDP)" --->  ??? 
 "Port : " ---> "Port : "
 "Port Forwarding" ---> "Port Átirányítás"
 "Port to listen on : " ---> "Nyitott port: "
 "Port" ---> "Port"
+"Ports" --->  ??? 
 "Prefer RC4" ---> "Lehetőleg RC4"
 "Priority" ---> "Prioritás"
 "Private" ---> "Privát"
@@ -187,6 +221,9 @@
 "Proxies" ---> "Proxyk"
 "Proxy Host/IP : " ---> "Proxy Host/IP: "
 "Proxy Settings" ---> "Proxy Beállítások"
+"Queue Position" --->  ??? 
+"Queue System" --->  ??? 
+"Queue View" --->  ??? 
 "Queued for Checking" ---> "Beállítva ellenőrzésre"
 "Queued" ---> "Sorba állítva"
 "RC4 Encrypted" ---> "Titkosítva (RC4)"
@@ -195,6 +232,8 @@
 "Ratio (this session):" ---> "Arány (ez a folyamat):"
 "Ratio" ---> "Arány"
 "Ratio:" ---> "Arány:"
+"Read Cache Hit Ratio :" --->  ??? 
+"Read Size :" --->  ??? 
 "Reannounce" ---> "Tracker frissítése "
 "Recheck Files" ---> "Újraellenőrzés"
 "Remaining" ---> "Hátralévő"
@@ -203,25 +242,34 @@
 "Remote Control" ---> "Távoli Elérés"
 "Remove" ---> "Eltávolítás"
 "Reset" ---> "Újraindítás"
+"Resolve Countries from IP" --->  ??? 
+"Resume data generated. (%1%)" --->  ??? 
+"Resume data generation failed. (%1%)" --->  ??? 
 "Resume" ---> "Folytatás"
+"Resuming torrent. (%1%)" --->  ??? 
 "Review settings when adding torrent." ---> "Beállítások megadása hozzáadásnál."
 "Save" ---> "Mentés"
 "Saving Torrent" ---> "Torrent Mentése"
+"Search banching : " --->  ??? 
 "Security" ---> "Biztonság"
+"Seeding Limits" --->  ??? 
 "Seeding" ---> "Seed"
 "Seeds" ---> "Seedek"
 "Seeds:" ---> "Seedek:"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Válaszd ki a letöltési könyvtárat, vagy Mégse az alapértelmezett hely használatához."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Válassz ki egy könyvtárat a fájlok letöltéséhez, vagy Mégse, hogy egyetlen torrent se töltődjön le."
 "Select a file or directory from which to construct the torrent." ---> "Válaszd ki a fájlt vagy könyvtárat, amiből a torrent készüljön."
+"Select a random port within this range." --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." ---> "Válaszd ki a (TCP) portot (vagy tartományt) a bejövő kapcsolatok számára."
 "Send login info to trackers." ---> "Bejelentkezési információk küldése."
 "Set Priority" ---> "Prioritás beállítása"
 "Set as Primary" ---> "Elsődlegesnek jelöl"
 "Severity" ---> "Szigor"
+"Share ratio limit:" --->  ??? 
 "Show this message in future" ---> "Mutassa máskor is ezt az üzenetet"
 "Shutting down session" ---> "Munkamenet leállítása"
 "Size" ---> "Méret"
+"Smart Ban Plugin" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Standard exception (%1%) thrown from %2%."
 "Start Time" ---> "Kezdési Idő"
 "Status" ---> "Állapot"
@@ -241,7 +289,10 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f."
 "Tier" ---> "Sor"
 "Time left:" ---> "Hátralévő idő:"
+"Time limit (sec):" --->  ??? 
+"Time ratio limit:" --->  ??? 
 "Time" ---> "Idő"
+"Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% finished."
 "Torrent %1% paused." ---> "Torrent %1% paused."
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) exception caught: %2% from %3%."
@@ -250,6 +301,7 @@
 "Torrent Root" ---> "Torrent Gyökér"
 "Torrent and Data" ---> "Torrent és Adat"
 "Torrent connection limits:" ---> "Torrent kapcsolódási limitek:"
+"Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" ---> "Torrent mentési könyvtár:"
 "Torrent transfer rates (KB/s):" ---> "Torrent átviteli sebességek (KB/s):"
 "Torrent" ---> "Torrent"
@@ -267,23 +319,31 @@
 "Trackers" ---> "Trackerek"
 "Transferred:" ---> "Átvitel:"
 "Type" ---> "Típus"
+"UPnP router model (if recognised)." --->  ??? 
+"UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" ---> "URL Seed %2%, %3%. (%1%)"
 "URL" ---> "URL"
 "UnPlug and Play" ---> "UnPlug and Play"
 "Unicode exception: %1%." ---> "Unicode exception: %1%."
+"Unmanaged" --->  ??? 
 "Up" ---> "Fel"
 "Update in:" ---> "Frissítés:"
 "Upload Rate (KB/s) :" ---> "Feltöltési Sebesség (KB/s):"
 "Upload" ---> "Feltöltés"
 "Uploaded" ---> "Feltöltve"
-"Use Compact Allocation." ---> "Tömörített Lefoglalás"
 "Use a proxy." ---> "Proxy használata."
 "User canceled Torrent file creation" ---> "User canceled Torrent file creation"
 "Username : " ---> "Felhasználónév:"
 "Warning" ---> "Figyelmeztetés"
 "Web Seed" ---> "Web Seed"
 "Web Seeds and DHT Nodes" ---> "Web Seeds és DHT Csomópontok"
+"Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml Exception (%1%) with %2%."
+"\r\0" --->  ??? 
 "libTorrrent based client." ---> "libTorrrent alapú kliens."
+"random up to" --->  ??? 
+"resource.h\0" --->  ??? 
 "to" ---> "-tól"
+"uTorrent Metadata Plugin" --->  ??? 
+"uTorrent Peer Exchange Plugin" --->  ??? 
 "∞" ---> "∞"

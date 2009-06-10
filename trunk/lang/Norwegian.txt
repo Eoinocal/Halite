@@ -13,6 +13,7 @@
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Pause Alle"
 "&Resume All" ---> "&Fortsett Alle"
+"(C) Eoin O'Callaghan 2009" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(N-O) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "About" ---> "Om"
@@ -68,6 +69,7 @@
 "Creator" --->  ??? 
 "Critical" ---> "Kritisk"
 "Current Cache Status" --->  ??? 
+"Currently set to '%1%' at %2%" --->  ??? 
 "DHT Node" --->  ??? 
 "DHT disabled" ---> "DHT ikke aktivert"
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT sesjonen kunne ikke starte. Prøv en annen port i instillingene."
@@ -110,6 +112,7 @@
 "Enter the tracker URLs for the torrent." ---> "Legg til tracker URL'er for torrenten."
 "Error!" --->  ??? 
 "Exception caught: %1%, from %2%." ---> "Exception fanget: %1%, fra %2%."
+"Exit Halite" --->  ??? 
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
@@ -152,6 +155,7 @@
 "Loading IP filters..." --->  ??? 
 "Local connection" ---> "Lokal tilkobling"
 "Log debug events." ---> "Logg debug-hendelser"
+"Log off Windows" --->  ??? 
 "Log to file." ---> "Logg til fil."
 "Logging" --->  ??? 
 "Manage Torrent(s)" --->  ??? 
@@ -180,6 +184,7 @@
 "New" ---> "Ny"
 "None" ---> "Ingen"
 "Normal" --->  ??? 
+"Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" --->  ??? 
 "OS reported error for file '%1%'" --->  ??? 
@@ -192,6 +197,7 @@
 "Overhead:" --->  ??? 
 "Password : " ---> "Passord : "
 "Path" --->  ??? 
+"Pause all torrents" --->  ??? 
 "Pause" --->  ??? 
 "Paused" ---> "Pauset"
 "Pausing" --->  ??? 
@@ -256,17 +262,21 @@
 "Seeding" --->  ??? 
 "Seeds" --->  ??? 
 "Seeds:" --->  ??? 
+"Select Timed Action" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Velg en mappe for lagring av filene eller avbryt for ikke å laste ned torrenten."
 "Select a file or directory from which to construct the torrent." --->  ??? 
 "Select a random port within this range." --->  ??? 
+"Select action to take :" --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." --->  ??? 
 "Send login info to trackers." ---> "Send login info til trackere"
 "Set Priority" --->  ??? 
 "Set as Primary" --->  ??? 
+"Set time :" --->  ??? 
 "Severity" ---> "Alvorlighetsgrad"
 "Share ratio limit:" --->  ??? 
 "Show this message in future" ---> "Vis denne meldingen i fremtiden"
+"Shutdown Windows" --->  ??? 
 "Shutting down session" --->  ??? 
 "Size" --->  ??? 
 "Smart Ban Plugin" --->  ??? 
@@ -281,6 +291,8 @@
 "Stopping" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Supports extensions" ---> "Supporterer utvidelser"
+"SysDateTimePick32" --->  ??? 
+"Take no action" --->  ??? 
 "Test" --->  ??? 
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "BitTorrent sesjonen kunne ikke starte. Prøv en annen port i instillingene."
 "The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
@@ -291,6 +303,7 @@
 "Time left:" ---> "Tid gjenstår:"
 "Time limit (sec):" --->  ??? 
 "Time ratio limit:" --->  ??? 
+"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Tid"
 "Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." --->  ??? 
@@ -340,7 +353,7 @@
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml unntak (%1%) med %2%."
 "\r\0" --->  ??? 
-"libTorrrent based client." ---> "libTorrrent basert klient."
+"libTorrrent based client" --->  ??? 
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "til"

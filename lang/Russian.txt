@@ -1,5 +1,5 @@
-"English" ---> "Русский"
-"English.rtf" ---> "Russian.rtf"
+﻿"English" ---> "Русский"
+"English.rtf" ---> "../lang/Russian.rtf"
 " %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s приёма - %2$.2fKB/s отдачи"
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB приёма - %2$.2fMB отдачи"

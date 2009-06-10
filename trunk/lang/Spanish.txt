@@ -13,6 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% pares. (%1%)"
 "&Pause All" ---> "&Pausar todo"
 "&Resume All" ---> "&Reanudar todo"
+"(C) Eoin O'Callaghan 2009" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(D-S) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(D-S) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "Acerca de"
@@ -68,6 +69,7 @@
 "Creator" ---> "Creador"
 "Critical" ---> "Crítico"
 "Current Cache Status" --->  ??? 
+"Currently set to '%1%' at %2%" --->  ??? 
 "DHT Node" ---> "Nodo DHT"
 "DHT disabled" ---> "DHT desactivado"
 "DHT session could not start. Try selecting another port in the settings." ---> "No se pudo iniciar la sesión DHT. Prueba a seleccionar otro puerto en las opciones."
@@ -110,6 +112,7 @@
 "Enter the tracker URLs for the torrent." ---> "Introduce las URLs de los trackers del torrent."
 "Error!" --->  ??? 
 "Exception caught: %1%, from %2%." ---> "Excepción atrapada: %1%, de %2%."
+"Exit Halite" --->  ??? 
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" ---> "Archivo"
@@ -152,6 +155,7 @@
 "Loading IP filters..." ---> "Cargando filtros IP..."
 "Local connection" ---> "Conexión local"
 "Log debug events." --->  ??? 
+"Log off Windows" --->  ??? 
 "Log to file." --->  ??? 
 "Logging" --->  ??? 
 "Manage Torrent(s)" --->  ??? 
@@ -180,6 +184,7 @@
 "New" ---> "Nuevo"
 "None" ---> "Ninguno"
 "Normal" ---> "Normal"
+"Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Nota: la asignación compacta no es compatible con la selección de archivos"
 "OK" ---> "Aceptar"
 "OS reported error for file '%1%'" --->  ??? 
@@ -192,6 +197,7 @@
 "Overhead:" --->  ??? 
 "Password : " ---> "Contraseña : "
 "Path" ---> "Ruta"
+"Pause all torrents" --->  ??? 
 "Pause" ---> "Pausa"
 "Paused" ---> "En pausa"
 "Pausing" ---> "Pausando"
@@ -256,17 +262,21 @@
 "Seeding" --->  ??? 
 "Seeds" ---> "Semillas"
 "Seeds:" ---> "Semillas:"
+"Select Timed Action" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Selecciona un directorio donde guardar las descargas. Pulsa Cancelar para aceptar el directorio por defecto."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Elige el directorio donde guardar los archivos o pulsa Cancelar para no descargar el torrent."
 "Select a file or directory from which to construct the torrent." ---> "Elige un archivo o directorio con el que construir torrent."
 "Select a random port within this range." --->  ??? 
+"Select action to take :" --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." ---> "Elige el puerto o rango de puertos TCP en los cuales escuchar las conexiones entrantes."
 "Send login info to trackers." --->  ??? 
 "Set Priority" ---> "Ajustar prioridad"
 "Set as Primary" ---> "Ajustar como primaria"
+"Set time :" --->  ??? 
 "Severity" --->  ??? 
 "Share ratio limit:" --->  ??? 
 "Show this message in future" ---> "Mostrar este mensaje en el futuro"
+"Shutdown Windows" --->  ??? 
 "Shutting down session" ---> "Cerrando sesión"
 "Size" ---> "Tamaño"
 "Smart Ban Plugin" --->  ??? 
@@ -281,6 +291,8 @@
 "Stopping" ---> "Deteniendo"
 "Successfully %1%." ---> "%1% satisfactoriamente."
 "Supports extensions" ---> "Soporta extensiones"
+"SysDateTimePick32" --->  ??? 
+"Take no action" --->  ??? 
 "Test" ---> "Prueba"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "No se pudo iniciar la sesión BitTorrent. Prueba a seleccionar otro puerto en las opciones."
 "The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
@@ -291,6 +303,7 @@
 "Time left:" ---> "Tiempo restante:"
 "Time limit (sec):" --->  ??? 
 "Time ratio limit:" --->  ??? 
+"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Tiempo"
 "Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% completado."
@@ -340,7 +353,7 @@
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Excepción Xml (%1%) con %2%."
 "\r\0" --->  ??? 
-"libTorrrent based client." ---> "Cliente basado en libTorrent."
+"libTorrrent based client" --->  ??? 
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "a"
