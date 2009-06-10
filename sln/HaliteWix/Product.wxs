@@ -3,7 +3,7 @@
 <?define VerGeneration = "0" ?>
 <?define VerMajor = "3" ?>
 <?define VerMinor = "2" ?>
-<?define VerBuild = "0760" ?>
+<?define VerBuild = "0765" ?>
 
 <?define FullGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor) Build $(var.VerBuild)" ?>
 <?define ShortGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor)" ?>
@@ -58,13 +58,22 @@
 				IncludeMaximum="no"
 				Language="1033"
 				Property="OLDERVERSIONBEINGUPGRADED"
-			/>		
-			<UpgradeVersion 
+			/>
+			<UpgradeVersion
 				Minimum="$(var.ShortGMmbVersion)"
 				IncludeMinimum="no"
 				OnlyDetect="yes"
 				Language="1033"
-				Property="NEWPRODUCTFOUND" 
+				Property="NEWPRODUCTFOUND"
+			/>
+			<UpgradeVersion
+				Minimum="$(var.ShortGMmbVersion)"
+				IncludeMinimum="yes"
+				Maximum="$(var.ShortGMmbVersion)"
+				IncludeMaximum="yes"
+				OnlyDetect="yes"
+				Language="1033"
+				Property="SAMEVERDIFFBUILDPRODUCTFOUND"
 			/>
 		</Upgrade>
 
@@ -320,13 +329,17 @@
 		</Feature>
 
 		<CustomAction Id="PreventDowngrading" Error="A more recent version of Halite is already installed." />
+		
+		<Condition Message="A later version of [ProductName] is already installed. Setup will now exit.">
+			NOT SAMEVERDIFFBUILDPRODUCTFOUND OR Installed
+		</Condition>
 
 		<InstallExecuteSequence>
 			<Custom Action="PreventDowngrading" After="FindRelatedProducts">
 				NEWPRODUCTFOUND
 			</Custom>
 
-			<RemoveExistingProducts After="InstallFinalize" />
+			<RemoveExistingProducts After="InstallInitialize" />
 		</InstallExecuteSequence>
 
 		<InstallUISequence>

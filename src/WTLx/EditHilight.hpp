@@ -63,8 +63,8 @@ public:
 	{
 		if (unapplied_)
 		{
-			SetTextColor(dc, RGB(0,0,255));
-			return GetSysColorBrush(COLOR_3DHILIGHT);
+			SetTextColor(dc, GetSysColor(COLOR_HOTLIGHT));
+			return GetSysColorBrush(COLOR_WINDOW);
 		}
 		else
 		{
