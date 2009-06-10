@@ -580,7 +580,7 @@ LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL
 
 LRESULT HaliteWindow::OnHelp(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	ConfigOptionsProp sheet(this, L"Settings", 4);	
+	ConfigOptionsProp sheet(this, L"Settings", 6);	
 	sheet.DoModal();
 	
 	hal::config().settingsChanged();

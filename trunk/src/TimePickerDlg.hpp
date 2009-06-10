@@ -130,7 +130,7 @@ public:
 
 	BEGIN_WINDOW_MAP(thisClass, 6, 6, 3, 3)
 		WMB_HEAD(WMB_COL(80), WMB_COL(_exp), WMB_COL(_exp)),
-			WMB_ROW(_auto, HAL_TIME_LABEL_SET_ACTION, _r, _r), 
+		//	WMB_ROW(_auto, HAL_TIME_LABEL_SET_ACTION, _r, _r), 
 			WMB_ROW(_auto, HAL_TIME_EDITABOUT, HAL_TIME_ACTIONS), 
 			WMB_ROW(_auto, HAL_TIME_SETTEXT, HAL_TIME_PICKER, HAL_TIME_DATE_PICKER), 
 			WMB_ROW(_auto, HAL_TIME_TIMEOUT_DISPLAY, _r, _r), 
@@ -176,18 +176,19 @@ public:
 				action_str = hal::app().res_wstr(IDS_NA);
 			}
 
-			SetDlgItemText(HAL_TIME_LABEL_SET_ACTION, (hal::wform(hal::app().res_wstr(HAL_TIME_ACTION_SET)) 
+			//SetDlgItemText(HAL_TIME_LABEL_SET_ACTION,
+			SetWindowText((hal::wform(hal::app().res_wstr(HAL_TIME_ACTION_SET)) 
 				% action_str % hal::from_utf8(to_simple_string(action_time_))).str().c_str());
 		}
 		else
 		{
-			SetDlgItemText(HAL_TIME_LABEL_SET_ACTION, hal::app().res_wstr(HAL_TIME_ACTION_NOT_SET).c_str());
+			SetWindowText(hal::app().res_wstr(HAL_TIME_ACTION_NOT_SET).c_str());
 		}
 
 		time_ctrl_.Attach(GetDlgItem(HAL_TIME_PICKER));
 		date_ctrl_.Attach(GetDlgItem(HAL_TIME_DATE_PICKER));
 
-		WTL::CRect rect_;;
+		WTL::CRect rect_;
 		CenterWindow();
 		GetWindowRect(rect_);
 		MoveWindow(rect_.left, rect_.top, rect_.right-rect_.left, rect_.bottom-rect_.top, true);
