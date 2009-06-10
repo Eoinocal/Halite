@@ -2,8 +2,8 @@
 
 <?define VerGeneration = "0" ?>
 <?define VerMajor = "3" ?>
-<?define VerMinor = "2" ?>
-<?define VerBuild = "0765" ?>
+<?define VerMinor = "1" ?>
+<?define VerBuild = "0766" ?>
 
 <?define FullGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor) Build $(var.VerBuild)" ?>
 <?define ShortGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor)" ?>
@@ -52,7 +52,7 @@
 		
 		<Upgrade Id="$(var.UpgradeCode)">
 			<UpgradeVersion 
-				Minimum="0.3.1"
+				Minimum="0.3.0"
 				IncludeMinimum="yes"
 				Maximum="$(var.ShortGMmbVersion)"
 				IncludeMaximum="no"
@@ -149,6 +149,10 @@
 					
 					<Component Id="Empty" Guid="" KeyPath="yes" />
 
+					<Component Id='LanguageFiles.Czech' Guid='*'>
+						<File Id='Czech' KeyPath="yes" Name='Czech.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Czech.dll' />
+					</Component>
 					<Component Id='LanguageFiles.Dutch' Guid='*'>
 						<File Id='Dutch' KeyPath="yes" Name='Dutch.dll' DiskId='1'
 						      Source='$(var.RootDirectory)lang\bin\Dutch.dll' />
@@ -188,6 +192,10 @@
 					<Component Id='LanguageFiles.Portuguese' Guid='*'>
 						<File Id='Portuguese' KeyPath="yes" Name='Portuguese.dll' DiskId='1'
 						      Source='$(var.RootDirectory)lang\bin\Portuguese.dll' />
+					</Component>
+					<Component Id='LanguageFiles.Romanian' Guid='*'>
+						<File Id='Romanian' KeyPath="yes"  Name='Romanian.dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Romanian.dll' />
 					</Component>
 					<Component Id='LanguageFiles.Russian' Guid='*'>
 						<File Id='Russian' KeyPath="yes"  Name='Russian.dll' DiskId='1'
@@ -241,6 +249,11 @@
 		>
 			<ComponentRef Id="Empty" />
 
+			<Feature Id="HaliteLanguages.Czech" Title="Czech"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.Czech" />
+			</Feature>
 			<Feature Id="HaliteLanguages.Dutch" Title="Dutch"
 				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
 			>
@@ -291,6 +304,11 @@
 			>
 				<ComponentRef Id="LanguageFiles.Portuguese" />
 			</Feature>
+			<Feature Id="HaliteLanguages.Romanian" Title="Romanian"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+				<ComponentRef Id="LanguageFiles.Romanian" />
+			</Feature>
 			<Feature Id="HaliteLanguages.Russian" Title="Russian"
 				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
 			>
@@ -330,7 +348,7 @@
 
 		<CustomAction Id="PreventDowngrading" Error="A more recent version of Halite is already installed." />
 		
-		<Condition Message="A later version of [ProductName] is already installed. Setup will now exit.">
+		<Condition Message="Uninstall any previous version of Halite first please.">
 			NOT SAMEVERDIFFBUILDPRODUCTFOUND OR Installed
 		</Condition>
 

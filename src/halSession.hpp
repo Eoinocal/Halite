@@ -326,6 +326,8 @@ public:
 
 	void set_mapping(bool upnp, bool nat_pmp)
 	{
+		upnp = true;
+
 		if (upnp)
 		{
 			event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Starting UPnP mapping.")));
