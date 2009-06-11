@@ -344,6 +344,6 @@
 "random up to" ---> "Slučajno do"
 "resource.h\0" ---> "resource.h\0"
 "to" ---> "Do"
-"uTorrent Metadata Plugin" ---> ""μTorrent-dodatak za 'meta'-fajlovi"
+"uTorrent Metadata Plugin" ---> "μTorrent-dodatak za 'meta'-fajlovi"
 "uTorrent Peer Exchange Plugin" ---> "'μTorrent'-dodatak za bolje cirkuliranja izvora"
 "∞" ---> "- -"
