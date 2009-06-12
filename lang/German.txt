@@ -250,7 +250,7 @@
 "Review settings when adding torrent." ---> "Einstellungen beim Hzfg. von Torrents revidieren."
 "Save" ---> "Speichern"
 "Saving Torrent" ---> "Speichere Torrent"
-"Search banching : " --->  ??? 
+"Search banching : " --->  "Parallele Suchanfr.:" 
 "Security" ---> "Sicherheit"
 "Seeding Limits" ---> "Uploadgrenzen"
 "Seeding" ---> "Verteile"
