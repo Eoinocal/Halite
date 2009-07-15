@@ -77,7 +77,7 @@
 			/>
 		</Upgrade>
 
-		<Media Id="1" Cabinet="Halite.cab" EmbedCab="yes" />
+		<Media Id="1" Cabinet="Halite.cab" CompressionLevel="high" EmbedCab="yes" />
 		<WixVariable Id="WixUILicenseRtf" Value="$(var.RootDirectory)LICENSE_1_0.rtf"  />
     
 		<Property Id="INSTALLDIR">
@@ -348,7 +348,7 @@
 
 		<CustomAction Id="PreventDowngrading" Error="A more recent version of Halite is already installed." />
 		
-		<Condition Message="Uninstall any previous version of Halite first please.">
+		<Condition Message="The same version but a different build has been detected. Uninstall it first.">
 			NOT SAMEVERDIFFBUILDPRODUCTFOUND OR Installed
 		</Condition>
 
