@@ -256,7 +256,7 @@
 "Review settings when adding torrent." --->  ??? 
 "Save" ---> "Spara"
 "Saving Torrent" --->  ??? 
-"Search banching : " --->  ??? 
+"Search branching : " --->  ??? 
 "Security" ---> "Säkerhet"
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Skickar"
@@ -345,7 +345,7 @@
 "Upload" ---> "Uppladdning"
 "Uploaded" --->  ??? 
 "Use a proxy." ---> "Använd en proxy."
-"User canceled Torrent file creation" --->  ??? 
+"User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "Användarnamn :"
 "Warning" --->  ??? 
 "Web Seed" ---> "Webb källa"

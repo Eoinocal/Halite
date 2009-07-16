@@ -256,7 +256,7 @@
 "Review settings when adding torrent." ---> "Preveri nastavitve ob dodajanju torrenta"
 "Save" ---> "Shrani"
 "Saving Torrent" ---> "Shranjujem torrent"
-"Search banching : " --->  ??? 
+"Search branching : " --->  ??? 
 "Security" ---> "Varnost"
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Sejem"
@@ -345,7 +345,7 @@
 "Upload" ---> "Gor"
 "Uploaded" ---> "Prenos gor"
 "Use a proxy." ---> "Uporabi proxy."
-"User canceled Torrent file creation" ---> "Uporabnik je preklcal ustvarjanje torrent datoteke"
+"User cancelled Torrent file creation" ---> "Uporabnik je preklcal ustvarjanje torrent datoteke"
 "Username : " ---> "Uporabnik : "
 "Warning" ---> "Opozorilo"
 "Web Seed" ---> "Spletni sejalec"

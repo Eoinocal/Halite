@@ -256,7 +256,7 @@
 "Review settings when adding torrent." --->  ??? 
 "Save" ---> ""
 "Saving Torrent" --->  ??? 
-"Search banching : " --->  ??? 
+"Search branching : " --->  ??? 
 "Security" ---> "セキュリティ"
 "Seeding Limits" --->  ??? 
 "Seeding" --->  ??? 
@@ -345,7 +345,7 @@
 "Upload" ---> "アップロード"
 "Uploaded" --->  ??? 
 "Use a proxy." ---> "プロクシを使用"
-"User canceled Torrent file creation" --->  ??? 
+"User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "ユーザ名"
 "Warning" --->  ??? 
 "Web Seed" ---> "ウェブシード"

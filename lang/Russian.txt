@@ -256,7 +256,7 @@
 "Review settings when adding torrent." ---> "Переглядывать настройки при добавления торрента"
 "Save" ---> "Сохранить"
 "Saving Torrent" ---> "Сохранение торрента"
-"Search banching : " --->  ??? 
+"Search branching : " --->  ??? 
 "Security" ---> "Безопасность"
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Сидовать"
@@ -345,7 +345,7 @@
 "Upload" ---> "Выкачать"
 "Uploaded" ---> "Выкачано"
 "Use a proxy." ---> "Использовать прокси."
-"User canceled Torrent file creation" ---> "Пользователь отменил создание торрент файла"
+"User cancelled Torrent file creation" ---> "Пользователь отменил создание торрент файла"
 "Username : " ---> "Имя пользователя : "
 "Warning" ---> "Предупреждение"
 "Web Seed" ---> "Сид"
