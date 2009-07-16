@@ -256,7 +256,7 @@
 "Review settings when adding torrent." ---> "Einstellungen beim Hzfg. von Torrents revidieren."
 "Save" ---> "Speichern"
 "Saving Torrent" ---> "Speichere Torrent"
-"Search banching : " --->  ??? 
+"Search branching : " ---> "Parallele Suchanfr.:"
 "Security" ---> "Sicherheit"
 "Seeding Limits" ---> "Uploadgrenzen"
 "Seeding" ---> "Verteile"
@@ -345,7 +345,7 @@
 "Upload" ---> "Upload"
 "Uploaded" ---> "Hinaufgeladen"
 "Use a proxy." ---> "Proxy verwenden"
-"User canceled Torrent file creation" ---> "Benutzer hat Torrenterstellung abgebrochen"
+"User cancelled Torrent file creation" ---> "Benutzer hat Torrenterstellung abgebrochen"
 "Username : " ---> "Benutzer:"
 "Warning" ---> "Warnung"
 "Web Seed" ---> "Webseed"

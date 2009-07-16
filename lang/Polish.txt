@@ -13,6 +13,7 @@
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> ""
 "&Resume All" ---> "&Wznów wszytsko"
+"(C) Eoin O'Callaghan 2009" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "About" ---> "O programie..."
@@ -68,6 +69,7 @@
 "Creator" --->  ??? 
 "Critical" --->  ??? 
 "Current Cache Status" --->  ??? 
+"Currently set to '%1%' at %2%" --->  ??? 
 "DHT Node" --->  ??? 
 "DHT disabled" --->  ??? 
 "DHT session could not start. Try selecting another port in the settings." --->  ??? 
@@ -110,6 +112,7 @@
 "Enter the tracker URLs for the torrent." ---> "URL trackera."
 "Error!" --->  ??? 
 "Exception caught: %1%, from %2%." --->  ??? 
+"Exit Halite" --->  ??? 
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
@@ -152,6 +155,7 @@
 "Loading IP filters..." --->  ??? 
 "Local connection" --->  ??? 
 "Log debug events." ---> "Loguj błędy."
+"Log off Windows" --->  ??? 
 "Log to file." ---> "Loguj do pliku."
 "Logging" --->  ??? 
 "Manage Torrent(s)" --->  ??? 
@@ -180,6 +184,7 @@
 "New" ---> "Nowy"
 "None" --->  ??? 
 "Normal" --->  ??? 
+"Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" --->  ??? 
 "OS reported error for file '%1%'" --->  ??? 
@@ -192,6 +197,7 @@
 "Overhead:" --->  ??? 
 "Password : " ---> "Hasło:"
 "Path" --->  ??? 
+"Pause all torrents" --->  ??? 
 "Pause" ---> "Pauza"
 "Paused" --->  ??? 
 "Pausing" --->  ??? 
@@ -250,23 +256,27 @@
 "Review settings when adding torrent." --->  ??? 
 "Save" ---> "Zapisz"
 "Saving Torrent" --->  ??? 
-"Search banching : " --->  ??? 
+"Search branching : " --->  ??? 
 "Security" --->  ??? 
 "Seeding Limits" --->  ??? 
 "Seeding" --->  ??? 
 "Seeds" --->  ??? 
 "Seeds:" --->  ??? 
+"Select Timed Action" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
 "Select a directory to save the files to or cancel to not download torrent at all." --->  ??? 
 "Select a file or directory from which to construct the torrent." --->  ??? 
 "Select a random port within this range." --->  ??? 
+"Select action to take :" --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." --->  ??? 
 "Send login info to trackers." ---> "Wyślij dane do trackera."
 "Set Priority" --->  ??? 
 "Set as Primary" --->  ??? 
+"Set time :" --->  ??? 
 "Severity" --->  ??? 
 "Share ratio limit:" --->  ??? 
 "Show this message in future" ---> "Pokazuj tą wiadomość w przyszłości"
+"Shutdown Windows" --->  ??? 
 "Shutting down session" --->  ??? 
 "Size" --->  ??? 
 "Smart Ban Plugin" --->  ??? 
@@ -281,6 +291,8 @@
 "Stopping" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Supports extensions" --->  ??? 
+"SysDateTimePick32" --->  ??? 
+"Take no action" --->  ??? 
 "Test" --->  ??? 
 "The BitTorrent session could not start. Try selecting another port in the settings." --->  ??? 
 "The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
@@ -291,6 +303,7 @@
 "Time left:" ---> "Pozostało:"
 "Time limit (sec):" --->  ??? 
 "Time ratio limit:" --->  ??? 
+"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" --->  ??? 
 "Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." --->  ??? 
@@ -332,7 +345,7 @@
 "Upload" --->  ??? 
 "Uploaded" --->  ??? 
 "Use a proxy." ---> "Użyj proxy."
-"User canceled Torrent file creation" --->  ??? 
+"User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "Użytkownik :"
 "Warning" --->  ??? 
 "Web Seed" --->  ??? 
@@ -340,7 +353,7 @@
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." --->  ??? 
 "\r\0" --->  ??? 
-"libTorrrent based client." --->  ??? 
+"libTorrrent based client" --->  ??? 
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "do"

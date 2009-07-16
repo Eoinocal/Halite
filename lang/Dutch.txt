@@ -13,6 +13,7 @@
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Pauzeer alles"
 "&Resume All" ---> "&Herstart alles"
+"(C) Eoin O'Callaghan 2009" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "About" ---> "Over Halite"
@@ -68,6 +69,7 @@
 "Creator" ---> "Maker"
 "Critical" ---> "Kritiek"
 "Current Cache Status" --->  ??? 
+"Currently set to '%1%' at %2%" --->  ??? 
 "DHT Node" ---> "DHT knoop"
 "DHT disabled" ---> "DHT uitgeschakeld"
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT Sessie kon niet worden gestart. Probeer een andere poort te selecteren bij de Opties."
@@ -110,6 +112,7 @@
 "Enter the tracker URLs for the torrent." ---> "Vul de tracker URLs in voor de torrent."
 "Error!" --->  ??? 
 "Exception caught: %1%, from %2%." ---> "Exceptie gevangen: %1%, van %2%."
+"Exit Halite" --->  ??? 
 "Failed, %1%" ---> "Mislukt, %1%"
 "Fast resume failed: %2%. (%1%)" ---> "Snelle hervatting mislukt: %2%. (%1%)"
 "File" ---> "Bestand..."
@@ -152,6 +155,7 @@
 "Loading IP filters..." --->  ??? 
 "Local connection" ---> "Lokale verbinding"
 "Log debug events." ---> "Log debug gebeurtenissen"
+"Log off Windows" --->  ??? 
 "Log to file." ---> "Log naar bestand."
 "Logging" --->  ??? 
 "Manage Torrent(s)" --->  ??? 
@@ -180,6 +184,7 @@
 "New" ---> "Nieuw"
 "None" ---> "Geen"
 "Normal" ---> "Normaal"
+"Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "nb. Compacte allocatie is niet compatible met Bestands Selectie"
 "OK" --->  ??? 
 "OS reported error for file '%1%'" --->  ??? 
@@ -192,6 +197,7 @@
 "Overhead:" --->  ??? 
 "Password : " ---> "Wachtwoord : "
 "Path" ---> "Pad"
+"Pause all torrents" --->  ??? 
 "Pause" ---> "Pauzeer"
 "Paused" ---> "Gepauzeerd"
 "Pausing" ---> "Pauzeert"
@@ -250,23 +256,27 @@
 "Review settings when adding torrent." ---> "Toon opties bij toevoegen torrent."
 "Save" ---> "Opslaan"
 "Saving Torrent" ---> "Torrent opslaan"
-"Search banching : " --->  ??? 
+"Search branching : " --->  ??? 
 "Security" ---> "Beveiliging"
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Bezig met Seeden"
 "Seeds" --->  ??? 
 "Seeds:" --->  ??? 
+"Select Timed Action" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Kies een map om de download op te slaan. Kies cancel om de standaard map te gebruiken."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Selecteer een folder om de bestanden op te slaan of Afbreken om de torrent niet te downloaden."
 "Select a file or directory from which to construct the torrent." ---> "Selecteer een bestand of map waar en torrent van moet worden gemaakt."
 "Select a random port within this range." --->  ??? 
+"Select action to take :" --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." ---> "Kies een (TCP) poort waarop moet worden geluisted voor binnenkomende verbindingen."
 "Send login info to trackers." ---> "Stuur login gegevens naar Tracker."
 "Set Priority" ---> "Verander Prioriteit"
 "Set as Primary" ---> "Zet als Primair"
+"Set time :" --->  ??? 
 "Severity" ---> "Type"
 "Share ratio limit:" --->  ??? 
 "Show this message in future" ---> "Toon dit bericht in de toekomst"
+"Shutdown Windows" --->  ??? 
 "Shutting down session" ---> "Sessie wordt afgesloten"
 "Size" ---> "Grootte"
 "Smart Ban Plugin" --->  ??? 
@@ -281,6 +291,8 @@
 "Stopping" ---> "Stopt"
 "Successfully %1%." ---> "Succesvol %1%."
 "Supports extensions" ---> "Ondersteund extensies"
+"SysDateTimePick32" --->  ??? 
+"Take no action" --->  ??? 
 "Test" --->  ??? 
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "De Bittorrent sessie kan niet worden gestart. Probeer een andere poort te selecteren bij de Opties."
 "The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
@@ -291,6 +303,7 @@
 "Time left:" ---> "Overgebleven tijd:"
 "Time limit (sec):" --->  ??? 
 "Time ratio limit:" --->  ??? 
+"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Tijd"
 "Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% voltooid."
@@ -332,7 +345,7 @@
 "Upload" ---> "Upload"
 "Uploaded" --->  ??? 
 "Use a proxy." ---> "Gebruik een proxy."
-"User canceled Torrent file creation" ---> "Gebruiker annuleerde Torrent creatie"
+"User cancelled Torrent file creation" ---> "Gebruiker annuleerde Torrent creatie"
 "Username : " ---> "Gebruikersnaam : "
 "Warning" ---> "Waarschuwing"
 "Web Seed" --->  ??? 
@@ -340,7 +353,7 @@
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." --->  ??? 
 "\r\0" --->  ??? 
-"libTorrrent based client." ---> "op libTorrrent gebaseerde client."
+"libTorrrent based client" --->  ??? 
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "tot"

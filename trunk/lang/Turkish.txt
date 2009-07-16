@@ -256,7 +256,7 @@
 "Review settings when adding torrent." --->  ??? 
 "Save" ---> "Kaydet"
 "Saving Torrent" ---> "Torrent Kaydediliyor"
-"Search banching : " --->  ??? 
+"Search branching : " --->  ??? 
 "Security" ---> "Güvenlik"
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Gönderiliyor"
@@ -345,7 +345,7 @@
 "Upload" ---> "Gönder"
 "Uploaded" ---> "Gönderilen"
 "Use a proxy." ---> "Vekil sunucu kullan"
-"User canceled Torrent file creation" ---> "Torrent oluşturma kullanıcı tarafından iptal edildi"
+"User cancelled Torrent file creation" ---> "Torrent oluşturma kullanıcı tarafından iptal edildi"
 "Username : " ---> "Kullanıcı Adı"
 "Warning" ---> "Uyarı"
 "Web Seed" ---> "Web Kaynağı"

@@ -256,7 +256,7 @@
 "Review settings when adding torrent." ---> "Toon opties bij toevoegen torrent."
 "Save" ---> "Opslaan"
 "Saving Torrent" ---> "Torrent opslaan"
-"Search banching : " --->  ??? 
+"Search branching : " --->  ??? 
 "Security" ---> "Beveiliging"
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Bezig met Seeden"
@@ -345,7 +345,7 @@
 "Upload" ---> "Upload"
 "Uploaded" --->  ??? 
 "Use a proxy." ---> "Gebruik een proxy."
-"User canceled Torrent file creation" ---> "Gebruiker annuleerde Torrent creatie"
+"User cancelled Torrent file creation" ---> "Gebruiker annuleerde Torrent creatie"
 "Username : " ---> "Gebruikersnaam : "
 "Warning" ---> "Waarschuwing"
 "Web Seed" --->  ??? 

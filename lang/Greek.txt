@@ -13,6 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Peers. (%1%)"
 "&Pause All" ---> "Παύση όλων"
 "&Resume All" ---> "Συνέχιση όλων"
+"(C) Eoin O'Callaghan 2009" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(Λ-Α) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(Λ-Α) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "Περί"
@@ -68,6 +69,7 @@
 "Creator" ---> "Κατασκευαστής"
 "Critical" ---> "Κρίσιμο"
 "Current Cache Status" --->  ??? 
+"Currently set to '%1%' at %2%" --->  ??? 
 "DHT Node" ---> "DHT Κόμβος"
 "DHT disabled" ---> "DHT απενεργοποιημένο"
 "DHT session could not start. Try selecting another port in the settings." ---> "Αδυναμία έναρξης του DHT. Δοκιμάστε να επιλέξετε μία άλλη θύρα στις ρυθμίσεις."
@@ -110,6 +112,7 @@
 "Enter the tracker URLs for the torrent." ---> "Εισαγωγή διευθύνσεων tracker για το torrent."
 "Error!" --->  ??? 
 "Exception caught: %1%, from %2%." ---> "Εξαίρεση πιάστηκε: %1%, απο %2%."
+"Exit Halite" --->  ??? 
 "Failed, %1%" ---> "Αποτυχία, %1%"
 "Fast resume failed: %2%. (%1%)" ---> "Γρήγορη επαναφορά απέτυχε: %2%. (%1%)"
 "File" ---> "Αρχείο"
@@ -152,6 +155,7 @@
 "Loading IP filters..." ---> "Φόρτωση IP φίλτρων..."
 "Local connection" ---> "Τοπική Σύνδεση"
 "Log debug events." ---> "Καταγραφή συμβάντων debug(διαδικασία εξουδετέρωσης σφαλμάτων)."
+"Log off Windows" --->  ??? 
 "Log to file." ---> "Καταγραφή σε αρχείο."
 "Logging" ---> "Καταγραφή"
 "Manage Torrent(s)" --->  ??? 
@@ -180,6 +184,7 @@
 "New" ---> "Νέο"
 "None" ---> "Κανένα"
 "Normal" ---> "Κανονικό"
+"Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Σημείωση. Η συμπίεση κατανομών είναι ασυμβίβαστη με την επιλογή αρχείου"
 "OK" ---> "Εντάξει"
 "OS reported error for file '%1%'" --->  ??? 
@@ -192,6 +197,7 @@
 "Overhead:" ---> "Overhead:"
 "Password : " ---> "Κωδικός : "
 "Path" ---> "Διαδρομή"
+"Pause all torrents" --->  ??? 
 "Pause" ---> "Παύση"
 "Paused" ---> "Σε παύση"
 "Pausing" ---> "Παύση"
@@ -250,23 +256,27 @@
 "Review settings when adding torrent." ---> "Ανασκόπιση ρυθμίσεων όταν προστίθεται torrent"
 "Save" ---> "Αποθήκευση"
 "Saving Torrent" ---> "Αποθήκευση Torrent"
-"Search banching : " --->  ??? 
+"Search branching : " --->  ??? 
 "Security" ---> "Ασφάλεια"
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Τροφοδοσία"
 "Seeds" ---> "Τροφοδότες"
 "Seeds:" ---> "Τροφοδότες:"
+"Select Timed Action" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Επιλέξτε έναν κατάλογο για την αποθήκευση των ληφθέντων. Επιλέξτε 'άκυρο' για να αποθηκευτούν στην προεπιλεγμένη θέση."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Επιλέξτε φάκελο για την αποθήκευση των αρχείων ή άκυρο για να μην ληφθεί το torrent καθόλου."
 "Select a file or directory from which to construct the torrent." ---> "Eπιλέξτε αρχείου ή καταλόγου απο τα οποία να δημιουργηθεί το torrent"
 "Select a random port within this range." --->  ??? 
+"Select action to take :" --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." ---> "Επιλέξτε (TCP) θύρα (ή αλληλουχία) απο την οποία να δέχεται εισερχόμενες συνδέσεις"
 "Send login info to trackers." ---> "Αποστολή του Login στους trackers."
 "Set Priority" ---> "Όρισμός προτεραιότητας"
 "Set as Primary" --->  ??? 
+"Set time :" --->  ??? 
 "Severity" ---> "Σοβαρότητα"
 "Share ratio limit:" --->  ??? 
 "Show this message in future" ---> "Προβολή αυτού του μηνύματος στο μέλλον"
+"Shutdown Windows" --->  ??? 
 "Shutting down session" ---> "Κλείσιμο σύνδεσης"
 "Size" ---> "Μέγεθος"
 "Smart Ban Plugin" --->  ??? 
@@ -281,6 +291,8 @@
 "Stopping" ---> "Σταμάτημα"
 "Successfully %1%." ---> "Επιτυχία %1%."
 "Supports extensions" ---> "Υποστηρίζει επέκταση"
+"SysDateTimePick32" --->  ??? 
+"Take no action" --->  ??? 
 "Test" ---> "Δοκιμή"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Δεν ήταν δυνατή η έναρξη του BitTorrent πρωτοκόλλου. Επιλέξετ άλλη θύρα στις ρυθμίσεις."
 "The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." ---> "Η υποδομή της υποδοχής απέτυχε να ξεκινήσει έτσι ώστε το Halite εξαναγκάστηκε να κλείσει. Παρακαλώ βεβαιωθείται ότι δεν εμποδίζεται η πρόσβαση στο δίκτυο για το Halite απο κάνενα πρόγραμμα."
@@ -291,6 +303,7 @@
 "Time left:" ---> "Χρόνος που απομένει:"
 "Time limit (sec):" --->  ??? 
 "Time ratio limit:" --->  ??? 
+"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Χρόνος"
 "Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% ολοκληρώθηκε."
@@ -332,7 +345,7 @@
 "Upload" ---> "Αποστολή"
 "Uploaded" ---> "Στάλθηκαν"
 "Use a proxy." ---> "Χρηση proxy."
-"User canceled Torrent file creation" ---> "Χρήστης ακύρωσε την δημιουργία αρχείου torrent"
+"User cancelled Torrent file creation" ---> "Χρήστης ακύρωσε την δημιουργία αρχείου torrent"
 "Username : " ---> "Όνομα χρήστη : "
 "Warning" ---> "Προειδοπείηση"
 "Web Seed" ---> "Web Seed"
@@ -340,7 +353,7 @@
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml εξεραίσεις (%1%) με %2%."
 "\r\0" --->  ??? 
-"libTorrrent based client." ---> "libTorrent βασισμένος client"
+"libTorrrent based client" --->  ??? 
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "μέχρι"

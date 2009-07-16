@@ -13,6 +13,7 @@
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Pausa alla"
 "&Resume All" ---> "Åte&ruppta alla"
+"(C) Eoin O'Callaghan 2009" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "About" ---> "Om"
@@ -68,6 +69,7 @@
 "Creator" --->  ??? 
 "Critical" ---> "Viktig"
 "Current Cache Status" --->  ??? 
+"Currently set to '%1%' at %2%" --->  ??? 
 "DHT Node" --->  ??? 
 "DHT disabled" ---> "DHT av"
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT-sessionen kunde inte starta. Pröva en annan port i inställningarna."
@@ -110,6 +112,7 @@
 "Enter the tracker URLs for the torrent." ---> "Skriv in URL för torrent."
 "Error!" --->  ??? 
 "Exception caught: %1%, from %2%." --->  ??? 
+"Exit Halite" --->  ??? 
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" --->  ??? 
@@ -152,6 +155,7 @@
 "Loading IP filters..." --->  ??? 
 "Local connection" ---> "Lokal anslutning"
 "Log debug events." --->  ??? 
+"Log off Windows" --->  ??? 
 "Log to file." ---> "Loggning till fil."
 "Logging" ---> "Loggning"
 "Manage Torrent(s)" --->  ??? 
@@ -180,6 +184,7 @@
 "New" ---> "Ny"
 "None" --->  ??? 
 "Normal" ---> "Medel"
+"Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" --->  ??? 
 "OS reported error for file '%1%'" --->  ??? 
@@ -192,6 +197,7 @@
 "Overhead:" ---> "Obrukbart:"
 "Password : " ---> "Lösenord :"
 "Path" ---> "Sökväg"
+"Pause all torrents" --->  ??? 
 "Pause" ---> "Pausa"
 "Paused" ---> "Pausad"
 "Pausing" --->  ??? 
@@ -250,23 +256,27 @@
 "Review settings when adding torrent." --->  ??? 
 "Save" ---> "Spara"
 "Saving Torrent" --->  ??? 
-"Search banching : " --->  ??? 
+"Search branching : " --->  ??? 
 "Security" ---> "Säkerhet"
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Skickar"
 "Seeds" --->  ??? 
 "Seeds:" ---> "Källor:"
+"Select Timed Action" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Välj en plats att spara i. Välj avbryt för att spara till förvald plats."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Välj en plats att spara filerna på eller avbryt för att inte ladda ned denna torrent."
 "Select a file or directory from which to construct the torrent." --->  ??? 
 "Select a random port within this range." --->  ??? 
+"Select action to take :" --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." --->  ??? 
 "Send login info to trackers." ---> "Skicka inloggningsuppgifter till trackers."
 "Set Priority" ---> "Ange prioritet"
 "Set as Primary" --->  ??? 
+"Set time :" --->  ??? 
 "Severity" ---> "Nivå"
 "Share ratio limit:" --->  ??? 
 "Show this message in future" ---> "Visa alltid detta meddelande."
+"Shutdown Windows" --->  ??? 
 "Shutting down session" --->  ??? 
 "Size" ---> "Storlek"
 "Smart Ban Plugin" --->  ??? 
@@ -281,6 +291,8 @@
 "Stopping" --->  ??? 
 "Successfully %1%." --->  ??? 
 "Supports extensions" ---> "Stöder tillägg"
+"SysDateTimePick32" --->  ??? 
+"Take no action" --->  ??? 
 "Test" --->  ??? 
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "BitTorrent-sessionen kunde inte starta. Pröva en annan port i inställningarna."
 "The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." --->  ??? 
@@ -291,6 +303,7 @@
 "Time left:" ---> "Tid kvar:"
 "Time limit (sec):" --->  ??? 
 "Time ratio limit:" --->  ??? 
+"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Tid"
 "Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." --->  ??? 
@@ -332,7 +345,7 @@
 "Upload" ---> "Uppladdning"
 "Uploaded" --->  ??? 
 "Use a proxy." ---> "Använd en proxy."
-"User canceled Torrent file creation" --->  ??? 
+"User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "Användarnamn :"
 "Warning" --->  ??? 
 "Web Seed" ---> "Webb källa"
@@ -340,7 +353,7 @@
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml undantag (%1%) med %2%"
 "\r\0" --->  ??? 
-"libTorrrent based client." ---> "libTorrent-baserad klient"
+"libTorrrent based client" --->  ??? 
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "till"

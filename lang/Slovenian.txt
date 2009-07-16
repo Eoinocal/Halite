@@ -13,6 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Soležnikov. (%1%)"
 "&Pause All" ---> "Premor vseh"
 "&Resume All" ---> "Nadaljuj vse"
+"(C) Eoin O'Callaghan 2009" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(D-G) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(D-U) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "O programu"
@@ -68,6 +69,7 @@
 "Creator" ---> "Ustvarjalnik"
 "Critical" ---> "Kritično"
 "Current Cache Status" --->  ??? 
+"Currently set to '%1%' at %2%" --->  ??? 
 "DHT Node" ---> "DHT Node"
 "DHT disabled" ---> "DHT onemogočen"
 "DHT session could not start. Try selecting another port in the settings." ---> "Napaka DHT vtičnika, prosimo spremenite port."
@@ -110,6 +112,7 @@
 "Enter the tracker URLs for the torrent." ---> "Vpiši sledilnikov (announce) URL."
 "Error!" --->  ??? 
 "Exception caught: %1%, from %2%." ---> "Izjema ujeta: %1%, od %2%."
+"Exit Halite" --->  ??? 
 "Failed, %1%" ---> "Napaka, %1%"
 "Fast resume failed: %2%. (%1%)" ---> "Hitro nadaljevanje ni uspelo: %2%. (%1%)"
 "File" ---> "Datoteka"
@@ -152,6 +155,7 @@
 "Loading IP filters..." ---> "Nalagam IP filtre..."
 "Local connection" ---> "Lokalne povezave"
 "Log debug events." ---> "Shranjuj debug log."
+"Log off Windows" --->  ??? 
 "Log to file." ---> "Shrani log v datoteko."
 "Logging" ---> "Shranjevanje"
 "Manage Torrent(s)" --->  ??? 
@@ -180,6 +184,7 @@
 "New" ---> "Novo"
 "None" ---> "Nobeno"
 "Normal" ---> "Navadna"
+"Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Opozorilo: Kompaktna alokacija je nekompatibilna s prenašanjem posameznih datotek."
 "OK" ---> "V redu"
 "OS reported error for file '%1%'" --->  ??? 
@@ -192,6 +197,7 @@
 "Overhead:" ---> "Presežek:"
 "Password : " ---> "Geslo : "
 "Path" ---> "Pot"
+"Pause all torrents" --->  ??? 
 "Pause" ---> "Premor"
 "Paused" ---> "Na pavzi"
 "Pausing" ---> "Dodajam na pavzo"
@@ -250,23 +256,27 @@
 "Review settings when adding torrent." ---> "Preveri nastavitve ob dodajanju torrenta"
 "Save" ---> "Shrani"
 "Saving Torrent" ---> "Shranjujem torrent"
-"Search banching : " --->  ??? 
+"Search branching : " --->  ??? 
 "Security" ---> "Varnost"
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Sejem"
 "Seeds" ---> "Sejalcev"
 "Seeds:" ---> "Sejalcev:"
+"Select Timed Action" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Izberite mapo, kjer se bodo shranjevali preosi. Kliknite prekliči, če ste zadovoljni z privzeto nastavitvijo."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Izberite mapo za shrambo datotek."
 "Select a file or directory from which to construct the torrent." ---> "Izberite datoteko / mapo iz katere bo ustvarjena .torrent datoteka."
 "Select a random port within this range." --->  ??? 
+"Select action to take :" --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." ---> "Določite (TCP) vrata ali rang, na katerem bo Halite sprejemal vhodne povezave."
 "Send login info to trackers." ---> "Pošlji podatke o prijavi trackerjem."
 "Set Priority" ---> "Nastavi prioriteto"
 "Set as Primary" ---> "Nastavi kot primarnega"
+"Set time :" --->  ??? 
 "Severity" ---> "Kritičnost"
 "Share ratio limit:" --->  ??? 
 "Show this message in future" ---> "V prihodnosti mi prikaži to sporočilo"
+"Shutdown Windows" --->  ??? 
 "Shutting down session" ---> "Ustavljam sejo"
 "Size" ---> "Velikost"
 "Smart Ban Plugin" --->  ??? 
@@ -281,6 +291,8 @@
 "Stopping" ---> "Ustavljam"
 "Successfully %1%." ---> "Uspešno %1%."
 "Supports extensions" ---> "Podpira vtičnike"
+"SysDateTimePick32" --->  ??? 
+"Take no action" --->  ??? 
 "Test" ---> "Test"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Prišlo je do napake, prosimo spremenite port."
 "The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." ---> "Programu je bil onemogočen dostop do omrežja, zato se je zaprl."
@@ -291,6 +303,7 @@
 "Time left:" ---> "Čas do konca:"
 "Time limit (sec):" --->  ??? 
 "Time ratio limit:" --->  ??? 
+"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Čas"
 "Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% se je prenesel."
@@ -332,7 +345,7 @@
 "Upload" ---> "Gor"
 "Uploaded" ---> "Prenos gor"
 "Use a proxy." ---> "Uporabi proxy."
-"User canceled Torrent file creation" ---> "Uporabnik je preklcal ustvarjanje torrent datoteke"
+"User cancelled Torrent file creation" ---> "Uporabnik je preklcal ustvarjanje torrent datoteke"
 "Username : " ---> "Uporabnik : "
 "Warning" ---> "Opozorilo"
 "Web Seed" ---> "Spletni sejalec"
@@ -340,7 +353,7 @@
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml izjema (%1%) pri %2%."
 "\r\0" --->  ??? 
-"libTorrrent based client." ---> "libTorrrent based client."
+"libTorrrent based client" --->  ??? 
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "v"

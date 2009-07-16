@@ -1,4 +1,4 @@
-﻿"English" ---> "Русский"
+"English" ---> "Русский"
 "English.rtf" ---> "../lang/Russian.rtf"
 " %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s приёма - %2$.2fKB/s отдачи"
@@ -13,6 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% пиров. (%1%)"
 "&Pause All" ---> "&Приостановить все"
 "&Resume All" ---> "&Запустить все"
+"(C) Eoin O'Callaghan 2009" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(З-В) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(З-В) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "Информация"
@@ -68,6 +69,7 @@
 "Creator" ---> "Создатель"
 "Critical" ---> "Критическая"
 "Current Cache Status" --->  ??? 
+"Currently set to '%1%' at %2%" --->  ??? 
 "DHT Node" ---> "DHT узол"
 "DHT disabled" ---> "DHT отключён"
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT сессия не смогла запуститься. Попробуйте выбрать другой порт в установках."
@@ -110,6 +112,7 @@
 "Enter the tracker URLs for the torrent." ---> "Ввести адрес трэкера для торрента."
 "Error!" --->  ??? 
 "Exception caught: %1%, from %2%." ---> "Исключение поймано: %1%, от %2%."
+"Exit Halite" --->  ??? 
 "Failed, %1%" ---> "Неудача, %1%"
 "Fast resume failed: %2%. (%1%)" ---> "Быстрое возобновление потерпело неудачу: %2%. (%1%)"
 "File" ---> "Файл"
@@ -152,6 +155,7 @@
 "Loading IP filters..." ---> "Загрузка IP фильтров..."
 "Local connection" ---> "Локальное соединение"
 "Log debug events." ---> "Вести журнал сообщений отладки."
+"Log off Windows" --->  ??? 
 "Log to file." ---> "Вести журнал в файл."
 "Logging" ---> "Лог"
 "Manage Torrent(s)" --->  ??? 
@@ -180,6 +184,7 @@
 "New" ---> "Новый"
 "None" ---> "Никакой"
 "Normal" ---> "Нормальный"
+"Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Note. Compact Allocation is incompatible with File Selection"
 "OK" ---> "ОК"
 "OS reported error for file '%1%'" --->  ??? 
@@ -192,6 +197,7 @@
 "Overhead:" ---> "Накладный"
 "Password : " ---> "Пароль : "
 "Path" ---> "Путь"
+"Pause all torrents" --->  ??? 
 "Pause" ---> "Пауза"
 "Paused" ---> "В паузе"
 "Pausing" ---> "Переход в состояние паузы"
@@ -250,23 +256,27 @@
 "Review settings when adding torrent." ---> "Переглядывать настройки при добавления торрента"
 "Save" ---> "Сохранить"
 "Saving Torrent" ---> "Сохранение торрента"
-"Search banching : " --->  ??? 
+"Search branching : " --->  ??? 
 "Security" ---> "Безопасность"
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Сидовать"
 "Seeds" ---> "Сиды"
 "Seeds:" ---> "Сиды:"
+"Select Timed Action" --->  ??? 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Выберите папку для сохранения закачек. Выберите отменить, чтобы принят размещение по умолчанию."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Выберите папку для сохранения файлов или отмените, чтобы вообще не загружать торрент."
 "Select a file or directory from which to construct the torrent." ---> "Выберите файл или папку с которых конструировать торрент."
 "Select a random port within this range." --->  ??? 
+"Select action to take :" --->  ??? 
 "Select the (TCP) port (or range) on which to listen for incoming connections." --->  ??? 
 "Send login info to trackers." ---> "Послать информацию связи трэкерам"
 "Set Priority" ---> "Установить приоритет"
 "Set as Primary" ---> "Установить первым"
+"Set time :" --->  ??? 
 "Severity" ---> "Важность"
 "Share ratio limit:" --->  ??? 
 "Show this message in future" ---> "Показывать это сообщение вдальнейшем"
+"Shutdown Windows" --->  ??? 
 "Shutting down session" ---> "Закрытие сесии"
 "Size" ---> "Размер"
 "Smart Ban Plugin" --->  ??? 
@@ -281,6 +291,8 @@
 "Stopping" ---> "Остановление"
 "Successfully %1%." ---> "Успешно %1%."
 "Supports extensions" ---> "Поддерживает расширения"
+"SysDateTimePick32" --->  ??? 
+"Take no action" --->  ??? 
 "Test" ---> "Тест"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Сессия БитТоррента не смогла запуститься. Попробуйте выбрать другой порт в установках."
 "The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." ---> "Инфраструктура сокетов отказалась стартовать потому Халит вынужден закрытся. Пожалуйста, проверте не блокирует ли Халит какаято прорамма."
@@ -291,6 +303,7 @@
 "Time left:" ---> "Осталось времени:"
 "Time limit (sec):" --->  ??? 
 "Time ratio limit:" --->  ??? 
+"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Время"
 "Toolbar2k.bmp" --->  ??? 
 "Torrent %1% finished." ---> "Торрент %1% завершен."
@@ -332,7 +345,7 @@
 "Upload" ---> "Выкачать"
 "Uploaded" ---> "Выкачано"
 "Use a proxy." ---> "Использовать прокси."
-"User canceled Torrent file creation" ---> "Пользователь отменил создание торрент файла"
+"User cancelled Torrent file creation" ---> "Пользователь отменил создание торрент файла"
 "Username : " ---> "Имя пользователя : "
 "Warning" ---> "Предупреждение"
 "Web Seed" ---> "Сид"
@@ -340,7 +353,7 @@
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "XML исключение (%1%) с %2%."
 "\r\0" --->  ??? 
-"libTorrrent based client." ---> "Клиент, базирующийся на libTorrent"
+"libTorrrent based client" --->  ??? 
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "в"

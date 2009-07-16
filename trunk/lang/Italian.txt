@@ -256,7 +256,7 @@
 "Review settings when adding torrent." ---> "Consenti scelta quando aggiungi un torrent."
 "Save" ---> "Salva"
 "Saving Torrent" ---> "Salvando Torrent"
-"Search banching : " --->  ??? 
+"Search branching : " --->  ??? 
 "Security" ---> "Sicurezza"
 "Seeding Limits" ---> "Limiti Seeding"
 "Seeding" --->  ??? 
@@ -345,7 +345,7 @@
 "Upload" --->  ??? 
 "Uploaded" ---> "Inviati"
 "Use a proxy." ---> "Usa un proxy."
-"User canceled Torrent file creation" ---> "L'utente ha cancellato la creazione del file torrent"
+"User cancelled Torrent file creation" ---> "L'utente ha cancellato la creazione del file torrent"
 "Username : " ---> "Nome Utente :"
 "Warning" --->  ??? 
 "Web Seed" --->  ??? 
