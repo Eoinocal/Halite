@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Peers. (%1%)"
 "&Pause All" ---> "Alle &pausieren"
 "&Resume All" ---> "Alle fo&rtsetzen"
-"(C) Eoin O'Callaghan 2009" --->  ??? 
+"(C) Eoin O'Callaghan 2009" ---> "© Eoin O'Callaghan 2009"
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(D-U) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(D-U) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "Über"
@@ -69,7 +69,7 @@
 "Creator" ---> "Ersteller"
 "Critical" ---> "Kritisch"
 "Current Cache Status" ---> "derz. Cachestatus"
-"Currently set to '%1%' at %2%" --->  ??? 
+"Currently set to '%1%' at %2%" ---> "Derzeit auf '%1%' bei '%2%' gesetzt"
 "DHT Node" ---> "DHT-Node"
 "DHT disabled" ---> "DHT deaktiviert"
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT-Sitzung konnte nicht gestartet werden. Verwende einen anderen Port."
@@ -112,7 +112,7 @@
 "Enter the tracker URLs for the torrent." ---> "Tracker-URL eingeben:"
 "Error!" ---> "Fehler!"
 "Exception caught: %1%, from %2%." ---> "Ausnahmefehler: %1%, in %2%."
-"Exit Halite" --->  ??? 
+"Exit Halite" ---> "Halite beenden"
 "Failed, %1%" ---> "nicht erfolgreich: %1%"
 "Fast resume failed: %2%. (%1%)" ---> "Schnelles Fortsetzen fehlgeschlagen: %2%. (%1%)"
 "File" ---> "Datei"
@@ -155,7 +155,7 @@
 "Loading IP filters..." ---> "Lade IP-Filter..."
 "Local connection" ---> "Lokalverbindung"
 "Log debug events." ---> "Debugereignisse protokollieren."
-"Log off Windows" --->  ??? 
+"Log off Windows" ---> "Benutzer abmelden"
 "Log to file." ---> "Protokoll in Datei speichern."
 "Logging" ---> "Protokoll"
 "Manage Torrent(s)" ---> "Verwalte Torrent(s)"
@@ -169,7 +169,7 @@
 "Max replies : " ---> "Max. Antworten:"
 "Maximum" ---> "Maximum"
 "Message" ---> "Meldung"
-"Metadata Plugin" --->  ??? 
+"Metadata Plugin" ---> "Metadaten-Plugin"
 "Minimize to tray." ---> "Ins Tray minimieren"
 "Move Down" ---> "Abwärts"
 "Move To Bottom" ---> "Nach unten"
@@ -184,7 +184,7 @@
 "New" ---> "Neu"
 "None" ---> "Keine"
 "Normal" ---> "Normal"
-"Not currently set to take any action" --->  ??? 
+"Not currently set to take any action" ---> "Derzeit ist keine Aktion festgelegt"
 "Note. Compact Allocation is incompatible with File Selection" ---> "Info: kompakte Zuweisung ist mit der Dateiauswahl nicht möglich"
 "OK" ---> "OK"
 "OS reported error for file '%1%'" ---> "BS meldete Fehler für Datei '%1%'"
@@ -197,7 +197,7 @@
 "Overhead:" ---> "Unbrauchbar:"
 "Password : " ---> "Passwort:"
 "Path" ---> "Pfad"
-"Pause all torrents" --->  ??? 
+"Pause all torrents" ---> "Alle Torrents pausieren"
 "Pause" ---> "Pause"
 "Paused" ---> "Pausiert"
 "Pausing" ---> "Pausieren"
@@ -262,21 +262,21 @@
 "Seeding" ---> "Verteile"
 "Seeds" ---> "Seeds"
 "Seeds:" ---> "Seeds:"
-"Select Timed Action" --->  ??? 
+"Select Timed Action" ---> "Zeitgesteuerte Aktion"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Verzeichnis auswählen, in dem die Downloads gespeichert werden. Abbrechen auswählen, damit das Standard-Downloadverzeichnis verwendet wird."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Verzeichnis zum Speichern der Dateien auswählen oder abbrechen, um das Torrent nicht komplett zu laden."
 "Select a file or directory from which to construct the torrent." ---> "Wählen Sie eine Datei oder ein Verzeichnis aus, aus der/dem Sie das Torrent erstellen wollen."
 "Select a random port within this range." ---> "Wähle einen zufälligen Port in diesem Bereich"
-"Select action to take :" --->  ??? 
+"Select action to take :" ---> "Wählen Sie eine Aktion aus:"
 "Select the (TCP) port (or range) on which to listen for incoming connections." ---> "Wählen Sie den (TCP-)Port oder Bereich aus, auf dem Halite auf eingehende Verbindungen warten soll."
 "Send login info to trackers." ---> "Auf Trackern einloggen"
 "Set Priority" ---> "Priorität festlegen"
 "Set as Primary" ---> "Setze als primär"
-"Set time :" --->  ??? 
+"Set time :" ---> "Legen Sie die Zeit fest:"
 "Severity" ---> "Relevanz"
 "Share ratio limit:" ---> "Freigabegrenze:"
 "Show this message in future" ---> "Diese Meldung in Zukunft anzeigen"
-"Shutdown Windows" --->  ??? 
+"Shutdown Windows" ---> "System herunterfahren"
 "Shutting down session" ---> "Beende Sitzung"
 "Size" ---> "Größe"
 "Smart Ban Plugin" ---> "Erweitertes Bannen"
@@ -291,8 +291,8 @@
 "Stopping" ---> "Anhalten"
 "Successfully %1%." ---> "%1% erfolgreich."
 "Supports extensions" ---> "unterstützt Erweiterungen"
-"SysDateTimePick32" --->  ??? 
-"Take no action" --->  ??? 
+"SysDateTimePick32" ---> "SysDateTimePick32"
+"Take no action" ---> "Keine Aktion"
 "Test" ---> "Test"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Die BT-Sitzung konnte nicht gestartet werden. Verwenden Sie einen anderen Port."
 "The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." ---> "Die Socketinfrastruktur konnte nicht gestartet werden, so dass Halite beendet werden muss. Bitte stellen Sie sicher, dass kein Programm Halites Netzwerkzugriff blockiert."
@@ -303,7 +303,7 @@
 "Time left:" ---> "Zeit übrig:"
 "Time limit (sec):" ---> "Zeitgrenze (Sek.):"
 "Time ratio limit:" ---> "Zeit-Ratio-Grenze:"
-"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
+"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" ---> "Restzeit: %1% Stunde(n), %2% Minute(n) und %3% Sekunde(n)"
 "Time" ---> "Zeit"
 "Toolbar2k.bmp" ---> "Toolbar2k.bmp"
 "Torrent %1% finished." ---> "Torrent %1% fertiggestellt."
@@ -353,7 +353,7 @@
 "Write Cache Hit Ratio :" ---> "Schreibzugriffe:"
 "Xml Exception (%1%) with %2%." ---> "XML-Fehler (%1%) bei %2%."
 "\r\0" ---> "\r\0"
-"libTorrrent based client" --->  ??? 
+"libTorrrent based client" ---> "libTorrent-basierter Client"
 "random up to" ---> "zufällig bis"
 "resource.h\0" ---> "resource.h\0"
 "to" ---> "bis"
