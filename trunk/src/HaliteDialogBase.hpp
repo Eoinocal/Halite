@@ -70,7 +70,7 @@ public:
 
 		TBase* pT = static_cast<TBase*>(this);
 		
-		hal::torrent_details_ptr focused = tD.focusedTorrent();
+		hal::torrent_details_ptr focused = tD.focused_torrent();
 		
 		if ((focusedTorrent_ logical_xor focused) ||
 				(focused && focusedTorrent_->name() != focused->name()))
@@ -97,7 +97,7 @@ public:
 	void focusChanged(const hal::torrent_details_ptr pT)
 	{}
 	
-	const hal::torrent_details_ptr focusedTorrent() { return focusedTorrent_; }
+	const hal::torrent_details_ptr focused_torrent() { return focusedTorrent_; }
 	
 	template<typename T>
 	BOOL SetDlgItemInfo(int nID, T info)

@@ -68,7 +68,7 @@ void FileListView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	
 	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;	
 
-	if (hal::bit::torrent t = hal::bittorrent::Instance().get(hal::bittorrent::Instance().torrentDetails().focusedTorrent()))
+	if (hal::bit::torrent t = hal::bittorrent::Instance().get(hal::bittorrent::Instance().torrentDetails().focused_torrent()))
 		t.file_priorities = std::pair<std::vector<int>, int>(indices, priority);
 
 	do_ui_update_();
@@ -151,7 +151,7 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 {	
 	hal::file_details_vec file_details;
 	
-	if (hal::torrent_details_ptr torrent = hal::bittorrent::Instance().torrentDetails().focusedTorrent())
+	if (hal::torrent_details_ptr torrent = hal::bittorrent::Instance().torrentDetails().focused_torrent())
 	{
 		std::copy(torrent->get_file_details().begin(), torrent->get_file_details().end(), 
 			std::back_inserter(file_details));
@@ -186,7 +186,7 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	
 	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;
 	
-	if (hal::bit::torrent t = hal::bittorrent::Instance().get(hal::bittorrent::Instance().torrentDetails().focusedTorrent()))
+	if (hal::bit::torrent t = hal::bittorrent::Instance().get(hal::bittorrent::Instance().torrentDetails().focused_torrent()))
 		t.file_priorities = std::pair<std::vector<int>, int>(indices, priority);
 	
 	hal::try_update_lock<thisClass> lock(*this);
@@ -284,9 +284,9 @@ void AdvFilesDialog::doUiUpdate()
 	
 	std::sort(range_.first, range_.second, &FileLinkNamesLess);
 
-	if (focusedTorrent())
+	if (focused_torrent())
 	{
-		hal::file_details_vec all_files = focusedTorrent()->get_file_details();	
+		hal::file_details_vec all_files = focused_torrent()->get_file_details();	
 		FileListView::scoped_files list_files = list_.files();
 
 		list_files->clear();
@@ -305,9 +305,9 @@ void AdvFilesDialog::doUiUpdate()
 
 void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 {
-	list_.setFocused(focusedTorrent());
+	list_.setFocused(focused_torrent());
 	
-	if (fileLinks_.empty() || !(focusedTorrent() && !focusedTorrent()->get_file_details().empty())) 
+	if (fileLinks_.empty() || !(focused_torrent() && !focused_torrent()->get_file_details().empty())) 
 	{
 		list_.DeleteAllItems();
 		return;
@@ -316,10 +316,10 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 	hal::try_update_lock<FileListView::listClass> lock(list_);
 	if (lock) 
 	{
-		hal::file_details_vec all_files = focusedTorrent()->get_file_details();	
+		hal::file_details_vec all_files = focused_torrent()->get_file_details();	
 		FileListView::scoped_files list_files = list_.files();
 
-		if (focusedTorrent() && all_files.size() != list_files->size())
+		if (focused_torrent() && all_files.size() != list_files->size())
 		{
 			list_files->clear();
 
@@ -403,9 +403,9 @@ void AdvFilesDialog::focusChanged(const hal::torrent_details_ptr pT)
 	
 	splitterPos = splitter_.GetSplitterPos();
 
-	if (focusedTorrent())
+	if (focused_torrent())
 	{
-		hal::file_details_vec all_files = focusedTorrent()->get_file_details();	
+		hal::file_details_vec all_files = focused_torrent()->get_file_details();	
 		FileListView::scoped_files list_files = list_.files();
 		list_files->clear();
 

@@ -319,8 +319,10 @@ void HaliteWindow::issueUiUpdate()
 		s.insert(val.text().c_str());
 	}
 	
-	const hal::torrent_details_manager& torrents = hal::bittorrent::Instance().updatetorrent_details_manager(
+	const hal::torrent_details_manager& torrents = hal::bittorrent::Instance().update_torrent_details_manager(
 		haliteList.is_selected_begin()->text().c_str(), s);
+
+	Sleep(1);
 
 	ui_update_signal_(torrents);
 

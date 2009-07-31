@@ -307,11 +307,11 @@ std::wstring torrent_details::to_wstring(size_t index)
 	};
 }
 
-void torrent_details_manager::sort(size_t column_index, bool cmp_less) const
+/*void torrent_details_manager::sort(size_t column_index, bool cmp_less) const
 {
 	std::stable_sort(torrents_.begin(), torrents_.end(), 
 		bind(&hal_details_ptr_compare<torrent_details_ptr>, _1, _2, column_index, cmp_less));
-}
+}*/
 
 web_seed_or_dht_node_detail::web_seed_or_dht_node_detail() : 
 	url(L""), 
@@ -572,36 +572,42 @@ const torrent_details_manager& bit::torrentDetails()
 	return torrentDetails_;
 }
 
-const torrent_details_manager& bit::updatetorrent_details_manager(const wstring& focused, const std::set<wstring>& selected)
+const torrent_details_manager& bit::update_torrent_details_manager(const wstring& focused, const std::set<wstring>& selected)
 {
 	try {
-	
-	mutex_t::scoped_lock l(torrentDetails_.mutex_);	
-	
-	torrentDetails_.clearAll(l);	
-	torrentDetails_.selected_names_ = selected;
-	torrentDetails_.torrents_.reserve(pimpl()->the_torrents_.size());
-	
-	for (torrent_manager::torrent_by_name::iterator i=pimpl()->the_torrents_.begin(), e=pimpl()->the_torrents_.end(); i != e; ++i)
-	{
-		wstring utf8Name = (*i).torrent->name();
-		torrent_details_ptr pT = (*i).torrent->get_torrent_details_ptr();
-		
-		if (selected.find(utf8Name) != selected.end())
-		{
-			torrentDetails_.selectedTorrents_.push_back(pT);
-		}
-		
-		if (focused == utf8Name)
-			torrentDetails_.selectedTorrent_ = pT;
-		
-		torrentDetails_.torrentMap_[(*i).torrent->name()] = pT;
-		torrentDetails_.torrents_.push_back(pT);
-	}
+
+	boost::thread(bind(&bit::update_torrent_details_manager_thread, this, focused, selected));
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "updatetorrent_details_manager")
 	
 	return torrentDetails_;
+}
+
+void bit::update_torrent_details_manager_thread(const wstring& focused, const std::set<wstring>& selected)
+{
+	try {	
+
+	torrent_details_map tmp_map;
+	
+	for (torrent_manager::torrent_by_name::iterator i=pimpl()->the_torrents_.begin(), e=pimpl()->the_torrents_.end(); i != e; ++i)
+	{
+		torrent_details_ptr pT = (*i).torrent->get_torrent_details_ptr();				
+		tmp_map[(*i).torrent->name()] = pT;
+	}
+
+	{
+		
+	mutex_t::scoped_lock l(torrentDetails_.mutex_);
+
+	torrentDetails_.clear_all(l);	
+	torrentDetails_.focused_ = focused;
+	torrentDetails_.selected_names_ = selected;
+
+	std::swap(tmp_map, torrentDetails_.torrent_map_);
+
+	}
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "updatetorrent_details_manager")
 }
 
 void bit::resume_all()

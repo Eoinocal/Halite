@@ -57,9 +57,10 @@ void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 		
 		peer_details_.clear();
 		
-		foreach (const hal::torrent_details_ptr torrent, tD.selectedTorrents())
+		foreach (const std::wstring filename, tD.selected_names())
 		{
-			std::copy(torrent->get_peer_details().begin(), torrent->get_peer_details().end(), 
+			const hal::torrent_details_ptr t = tD.get(filename);
+			std::copy(t->get_peer_details().begin(), t->get_peer_details().end(), 
 				std::inserter(peer_details_, peer_details_.begin()));
 		}
 		

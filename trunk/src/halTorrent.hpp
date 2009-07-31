@@ -354,6 +354,7 @@ typedef boost::shared_ptr<torrent_details> torrent_details_ptr;
 typedef boost::scoped_ptr<torrent_details> torrent_details_sptr;
 typedef boost::weak_ptr<torrent_details> torrent_details_wptr;
 typedef std::vector<torrent_details_ptr> torrent_details_vec;
+typedef std::set<torrent_details_ptr> torrent_details_set;
 typedef std::map<std::wstring, torrent_details_ptr> torrent_details_map;
 
 class torrent_details_manager
@@ -361,22 +362,22 @@ class torrent_details_manager
 public:	
 	void sort(size_t index, bool cmp_less = true) const;
 	
-	const torrent_details_vec torrents() const 
+	const torrent_details_set torrents() const 
 	{
 		mutex_t::scoped_lock l(mutex_);	
-		return torrents_; 
+
+		torrent_details_set torrents;
+
+		for (torrent_details_map::const_iterator i = torrent_map_.begin(), e = torrent_map_.end();
+				i != e; ++i)
+			torrents.insert(i->second);
+
+		return torrents; 
 	}
-	
-	const torrent_details_vec selectedTorrents() const 
-	{ 
-		mutex_t::scoped_lock l(mutex_);	
-		return selectedTorrents_; 
-	}
-	
-	const torrent_details_ptr focusedTorrent() const 
+
+	const torrent_details_ptr focused_torrent() const 
 	{
-		mutex_t::scoped_lock l(mutex_);	
-		return selectedTorrent_; 
+		return get(focused_); 
 	}
 
 	const std::set<wstring>& selected_names() const { return selected_names_; }
@@ -385,9 +386,9 @@ public:
 	{
 		mutex_t::scoped_lock l(mutex_);	
 		
-		torrent_details_map::const_iterator i = torrentMap_.find(filename);
+		torrent_details_map::const_iterator i = torrent_map_.find(filename);
 		
-		if (i != torrentMap_.end())
+		if (i != torrent_map_.end())
 			return i->second;
 		else
 			return torrent_details_ptr();
@@ -396,23 +397,18 @@ public:
 	friend class bit;
 
 private:
-	void clearAll(const mutex_t::scoped_lock&)
+	void clear_all(const mutex_t::scoped_lock&)
 	{
 		// !! No mutex lock, it should only be called from functions which 
 		// have the lock themselves, hence the unused function param
 		
-		torrents_.clear();
-		torrentMap_.clear();
-		selectedTorrents_.clear();
-		selectedTorrent_.reset();
+		torrent_map_.clear();
 	}
 
-	mutable torrent_details_vec torrents_;
-	
-	torrent_details_map torrentMap_;
-	torrent_details_vec selectedTorrents_;
-	torrent_details_ptr selectedTorrent_;
 	std::set<wstring> selected_names_;
+	torrent_details_map torrent_map_;
+
+	wstring focused_;
 	
 	mutable mutex_t mutex_;
 };
@@ -800,7 +796,8 @@ public:
 	float default_torrent_upload();	
 
 	const torrent_details_manager& torrentDetails();
-	const torrent_details_manager& updatetorrent_details_manager(const std::wstring& focused, const std::set<std::wstring>& selected);
+	const torrent_details_manager& update_torrent_details_manager(
+		const std::wstring& focused, const std::set<std::wstring>& selected);
 	
 	bit();
 	~bit();
@@ -812,6 +809,9 @@ private:
 	
 	void remove_torrent_wstr(const std::wstring& filename);
 	void remove_torrent_wipe_files_wstr(const std::wstring&  filename, remove_files fn);
+
+	void update_torrent_details_manager_thread(
+		const wstring& focused, const std::set<wstring>& selected);
 	
 	torrent_details_manager torrentDetails_;
 };
