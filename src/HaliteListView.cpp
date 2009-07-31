@@ -120,10 +120,9 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	selection_from_listview();
 		
 	std::set<std::wstring> torrent_set;
-	for (size_t td_index=0, e=tD.torrents().size(); td_index<e; ++td_index)
+	foreach (hal::torrent_details_ptr t,  tD.torrents())
 	{
-		hal::torrent_details_ptr td = tD.torrents()[td_index];
-		torrent_set.insert(td->name());
+		torrent_set.insert(t->name());
 	}
 	
 	erase_based_on_set(torrent_set, true);	
