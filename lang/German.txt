@@ -285,7 +285,7 @@
 "Status" ---> "Status"
 "Status:" ---> "Status:"
 "Stop" ---> "Stopp"
-"Stopped initially (Allows changing advanced setting)" ---> "Anfangs gestoppt (erlaubt das Ändern erw. Einstellungen)"
+"Stopped initially (Allows changing advanced setting)" ---> "Anfangs pausiert (erlaubt das Ändern erw. Einstellungen)"
 "Stopped" ---> "Angehalten"
 "Stopping Torrents" ---> "Stoppe Torrents"
 "Stopping" ---> "Anhalten"
