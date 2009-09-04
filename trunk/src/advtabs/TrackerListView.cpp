@@ -89,10 +89,10 @@ void TrackerListViewCtrl::editItem(int index)
 {
 	array<wchar_t, MAX_PATH> buffer;
 
-	GetItemText(index, 0, buffer.elems, buffer.size());
+	GetItemText(index, 0, buffer.elems, static_cast<int>(buffer.size()));
 	hal::tracker_detail tracker(wstring(buffer.elems), 0);
 	
-	GetItemText(index, 1, buffer.elems, buffer.size());
+	GetItemText(index, 1, buffer.elems, static_cast<int>(buffer.size()));
 	tracker.tier = lexical_cast<int>(wstring(buffer.elems));
 
 	TrackerAddDialog trackDlg(L"Edit Tracker", tracker);
@@ -127,7 +127,7 @@ LRESULT TrackerListViewCtrl::OnPrimary(WORD wNotifyCode, WORD wID, HWND hWndCtl,
 	for (int i=0, e=GetItemCount(); i<e; ++i)
 	{
 		array<wchar_t, MAX_PATH> buffer;		
-		GetItemText(i, 1, buffer.elems, buffer.size());
+		GetItemText(i, 1, buffer.elems, static_cast<int>(buffer.size()));
 		
 		if (wstring(buffer.elems) == L"0")
 			SetItemText(i, 1, L"1");

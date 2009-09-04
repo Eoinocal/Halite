@@ -118,7 +118,7 @@ public:
 	bool logToFile() { return logToFile_; }
 	bool logDebug() { return logDebug_; }
 	const std::wstring& dll() { return dll_; }
-	const int logListLen() { return logListLen_; }
+	const int logListLen() { return static_cast<int>(logListLen_); }
 	bool showMessage() { return showMessage_; }
 	
 	friend class GeneralOptions;

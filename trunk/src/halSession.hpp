@@ -994,6 +994,8 @@ private:
 	void schedual_cancel();
 	
 	boost::optional<libt::session> session_;	
+	SessionDetail session_details_;
+
 	mutable mutex_t mutex_;
 	
 	ini_file bittorrent_ini_;

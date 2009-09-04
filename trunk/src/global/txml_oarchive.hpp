@@ -21,7 +21,6 @@
 #	include <boost/archive/impl/basic_text_oprimitive.ipp>
 #	include <boost/archive/impl/xml_oarchive_impl.ipp>
 #	include <boost/archive/impl/basic_xml_oarchive.ipp>
-#	include <boost/archive/impl/archive_pointer_oserializer.ipp>
 #pragma warning (pop)
 
 #include "global/string_conv.hpp"

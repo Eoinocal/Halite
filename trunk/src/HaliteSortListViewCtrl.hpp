@@ -229,10 +229,10 @@ public:
 		for (size_t i=0; i<list_names_.size(); ++i)
 		{
 			if (list_visible_[i])
-				list_widths_[i] = GetColumnWidth(i);
+				list_widths_[i] = GetColumnWidth(static_cast<int>(i));
 		}
 		
-		GetColumnOrderArray(list_names_.size(), &list_order_[0]);
+		GetColumnOrderArray(static_cast<int>(list_names_.size()), &list_order_[0]);
 		
 		sortCol_ = GetSortColumn();
 		descending_ = IsSortDescending();	
@@ -256,28 +256,28 @@ public:
 	{
 		if (!list_visible_[i])
 		{		
-			GetColumnOrderArray(list_names_.size(), &list_order_[0]);
+			GetColumnOrderArray(static_cast<int>(list_names_.size()), &list_order_[0]);
 			SetColumnWidth(i, list_widths_[i]);
 
 			list_order_.erase(std::find(list_order_.begin(), list_order_.end(), i));
 			
-			int index = i + std::count(list_visible_.begin()+i, list_visible_.end(), false) - 1;
+			int index = static_cast<int>(i + std::count(list_visible_.begin()+i, list_visible_.end(), false) - 1);
 			list_order_.insert(list_order_.begin()+index, i);
 
-			SetColumnOrderArray(list_names_.size(), &list_order_[0]);
+			SetColumnOrderArray(static_cast<int>(list_names_.size()), &list_order_[0]);
 			list_visible_[i] = true;
 		}
 		else
 		{
 			list_widths_[i] = GetColumnWidth(i);	
-			GetColumnOrderArray(list_names_.size(), &list_order_[0]);
+			GetColumnOrderArray(static_cast<int>(list_names_.size()), &list_order_[0]);
 
 			SetColumnWidth(i, 0);
 
 			list_order_.erase(std::find(list_order_.begin(), list_order_.end(), i));
 			list_order_.insert(list_order_.begin(), i);
 
-			SetColumnOrderArray(list_names_.size(), &list_order_[0]);
+			SetColumnOrderArray(static_cast<int>(list_names_.size()), &list_order_[0]);
 			list_visible_[i] = false;
 		}
 		
@@ -407,7 +407,7 @@ public:
 		while ((int)list_order_.size() < header_.GetItemCount())
 			list_order_.push_back(header_.GetItemCount());
 
-		GetColumnOrderArray(list_order_.size(), &list_order_[0]);
+		GetColumnOrderArray(static_cast<int>(list_order_.size()), &list_order_[0]);
 	}
 
 	void SetSortState()
@@ -433,7 +433,7 @@ public:
 				list_widths_[i] = GetColumnWidth(i);
 		}
 
-		GetColumnOrderArray(list_order_.size(), &list_order_[0]);
+		GetColumnOrderArray(static_cast<int>(list_order_.size()), &list_order_[0]);
 		sortCol_ = GetSortColumn();
 		descending_ = IsSortDescending();	
 
