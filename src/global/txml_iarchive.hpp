@@ -22,7 +22,7 @@
 #	include <boost/archive/impl/basic_text_iprimitive.ipp>
 #	include <boost/archive/impl/xml_iarchive_impl.ipp>
 //#	include <boost/archive/impl/basic_xml_iarchive.ipp>
-#	include <boost/archive/impl/archive_pointer_iserializer.ipp>
+#	include <boost/archive/impl/archive_serializer_map.ipp>
 #	include <boost/archive/shared_ptr_helper.hpp>
 #pragma warning (pop)
 
