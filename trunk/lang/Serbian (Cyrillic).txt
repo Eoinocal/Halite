@@ -256,7 +256,7 @@
 "Review settings when adding torrent." ---> "Питај ме увек дали желим улазну мапу променути кад уносим нове торенте"
 "Save" ---> "Архивирај"
 "Saving Torrent" ---> "Апхивирај фајл"
-"Search branching : " --->"Поделена претраг ДХТ-а : "
+"Search branching : " ---> "Поделена претраг ДХТ-а : "
 "Security" ---> "Сигурности"
 "Seeding Limits" ---> "Граница нушења"
 "Seeding" ---> "Нудиш"

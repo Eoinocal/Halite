@@ -3,7 +3,7 @@
 <?define VerGeneration = "0" ?>
 <?define VerMajor = "3" ?>
 <?define VerMinor = "1" ?>
-<?define VerBuild = "0766" ?>
+<?define VerBuild = "0780" ?>
 
 <?define FullGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor) Build $(var.VerBuild)" ?>
 <?define ShortGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor)" ?>
@@ -89,6 +89,12 @@
 				<FileSearch Name="Halite.exe"/>
 			</ComponentSearch>
 		</Property>
+		
+		<!-- 
+		<Property Id="INSTALLDESKTOPSHORTCUT" Value="1" />
+		
+		<Property Id="REGISTERMAGNETPROTOCOL" Value="1" /> 
+		-->
 
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="AppDataFolder" />
@@ -134,8 +140,6 @@
 							Source='$(var.RootDirectory)$(var.ReleaseFolder)Halite.exe'
 							KeyPath="yes" 
 						>
-							<Shortcut Id="desktopHaliteFile" Directory="DesktopFolder" Name="Halite"
-								WorkingDirectory='INSTALLDIR' Advertise="yes" Icon="HaliteIcon.exe" IconIndex="0" />
 							<Shortcut Id="startmenuHaliteFile" Directory="HaliteProgramMenuFolder" Name="Halite"
 								WorkingDirectory='INSTALLDIR' Advertise="yes" Icon="HaliteIcon.exe" IconIndex="0" />
 						</File>
@@ -147,6 +151,38 @@
 						</ProgId>
 					</Component>
 					
+					<Component Id="DesktopShortcut" Guid="*">
+						<Condition>INSTALLDESKTOPSHORTCUT</Condition>
+						<CreateFolder/>
+						<RegistryKey Root="HKCU" Key="Software\Llamagraphics\Life Balance \Install"
+							   Action="createAndRemoveOnUninstall">
+							<RegistryValue Name="DTSC" Value="1" Type="integer" KeyPath="yes"/>
+						</RegistryKey>
+						<Shortcut Id="DesktopShortcut" Directory="DesktopFolder"
+							Name="Halite" WorkingDirectory="INSTALLDIR"
+							Icon="HaliteIcon.exe" Target="[#Halite.exe]"/>
+					</Component>
+
+					<Component Id="MagnetProtocol" Guid="*">
+						<Condition>REGISTERMAGNETPROTOCOL</Condition>
+						<CreateFolder/>
+						<RegistryKey Id="regCaseFlowKey" Action="createAndRemoveOnUninstall" Key="magnet" Root="HKCR">
+							<RegistryValue Id="DefaultValue" Action="write" Value="URL:Magnet" Type="string" />
+							<RegistryValue Id="uriProtocol" Action="write" Name="URL Protocol" Value="" Type="string" />
+							<RegistryKey Id="DefaultIcon" Action="createAndRemoveOnUninstall" Key="DefaultIcon" >
+								<RegistryValue Id="DefaultIconValue" Action="write" Value="Halite.exe" Type="string" />
+							</RegistryKey>
+							<RegistryKey Id="regShell" Action="createAndRemoveOnUninstall" Key="shell" >
+								<RegistryKey Id="regShellOpen" Action="createAndRemoveOnUninstall" Key="open" >
+									<RegistryKey Id="regShellOpenCommand" Action="createAndRemoveOnUninstall" Key="command">
+										<RegistryValue Id="DefaultPathValue" Action="write" Value='"[INSTALLDIR]Halite.exe" "%1"' Type="string" />
+									</RegistryKey>
+								</RegistryKey>
+							</RegistryKey>
+						</RegistryKey>
+					</Component>
+
+
 					<Component Id="Empty" Guid="" KeyPath="yes" />
 
 					<Component Id='LanguageFiles.Czech' Guid='*'>
@@ -242,6 +278,9 @@
 			<ComponentRef Id="HaliteExeStartMenuFolder" />
 			<ComponentRef Id="InstallRegCU" />
 			<ComponentRef Id="ReadMeText" />
+			<ComponentRef Id="DesktopShortcut" />
+			<ComponentRef Id="MagnetProtocol" />
+			
 		</Feature>
 		
 		<Feature
