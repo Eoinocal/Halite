@@ -305,6 +305,9 @@ void AdvFilesDialog::doUiUpdate()
 
 void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 {
+	try
+	{
+
 	list_.setFocused(focused_torrent());
 	
 	if (fileLinks_.empty() || !(focused_torrent() && !focused_torrent()->get_file_details().empty())) 
@@ -366,7 +369,9 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 		}
 	}
 
-	list_.InvalidateRect(NULL,true);
+	list_.InvalidateRect(NULL,true);	
+
+	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"AdvFilesDialog::handleUiUpdate()")
 }
 
 void AdvFilesDialog::focusChanged(const hal::torrent_details_ptr pT)

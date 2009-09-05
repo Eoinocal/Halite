@@ -50,6 +50,9 @@ LRESULT PeerListView::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 
 void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 {
+	try
+	{
+
 	hal::try_update_lock<listClass> lock(*this);
 	if (lock) 
 	{		
@@ -90,6 +93,8 @@ void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 		set_keys(ip_set);		
 		InvalidateRect(NULL,true);
 	}
+
+	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"PeerListView::handleUiUpdate()")
 }
 
 LRESULT PeerListView::OnSortChanged(int, LPNMHDR pnmh, BOOL&)

@@ -140,9 +140,6 @@ void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
 		username_ = L"";	
 		password_ = L"";
 		
-		if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused_torrent()))
-			t.tracker_login = make_pair(username_, password_);
-		
 		DoDataExchange(false);		
 	}
 }

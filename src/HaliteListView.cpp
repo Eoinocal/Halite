@@ -224,7 +224,9 @@ LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 }
 
 void HaliteListViewCtrl::remove_to_bin(hal::fs::wpath root, boost::shared_ptr<hal::file_details_vec> files)
-{
+{	
+	HAL_DEV_MSG(L"Removing to Recycle Bin");
+
 	std::vector<wchar_t> file_names_buffer;
 
 	foreach(hal::file_details file, *files)

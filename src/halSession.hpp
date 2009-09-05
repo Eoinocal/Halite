@@ -815,14 +815,18 @@ public:
 
 		boost::shared_ptr<file_details_vec> files = boost::shared_ptr<file_details_vec>(new file_details_vec());		
 		torrent_internal_ptr pTI = the_torrents_.get(name);
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Removing Torrent and files 1.")));
 
 		pTI->get_file_details(*files);
 		thread_t t(bind(fn, pTI->get_save_directory(), files));
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Removing Torrent and files 2.")));
+
+		the_torrents_.remove_torrent(name);
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Removing Torrent and files 3.")));
 
 		pTI->clear_resume_data();
 		pTI->delete_torrent_file();
-
-		the_torrents_.remove_torrent(name);
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Removing Torrent and files 4.")));
 		
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Removed, started thread.")));
 		

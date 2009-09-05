@@ -125,10 +125,16 @@ public:
 	{
 		torrent_internal_ptr t = torrent_internal_ptr(new torrent_internal(filename, saveDirectory, alloc, move_to_directory));
 
+
 		std::pair<torrent_by_name::iterator, bool> p = torrents_.get<by_name>().insert(torrent_holder(t));
 
 		if (!p.second) 
+		{
+			event_log().post(shared_ptr<EventDetail>(
+				new EventDebug(event_logger::warning, hal::app().res_wstr(HAL_TORRENT_PRESENT_ALREADY))));
+
 			t.reset();
+		}
 		else
 			t->initialize_state_machine(t);
 
