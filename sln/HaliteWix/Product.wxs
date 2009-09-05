@@ -40,7 +40,7 @@
 		Language="1033"
 		Codepage='1252'
 		Version="$(var.ShortGMmbVersion)"
-		Manufacturer="BinaryNotions.com">
+		Manufacturer="BinaryNotions">
 
 		<Package
 			Description="$(var.ProductFullName) Package"
@@ -55,7 +55,7 @@
 				Minimum="0.3.0"
 				IncludeMinimum="yes"
 				Maximum="$(var.ShortGMmbVersion)"
-				IncludeMaximum="no"
+				IncludeMaximum="yes"
 				Language="1033"
 				Property="OLDERVERSIONBEINGUPGRADED"
 			/>
@@ -66,6 +66,7 @@
 				Language="1033"
 				Property="NEWPRODUCTFOUND"
 			/>
+			<!-- 
 			<UpgradeVersion
 				Minimum="$(var.ShortGMmbVersion)"
 				IncludeMinimum="yes"
@@ -75,6 +76,7 @@
 				Language="1033"
 				Property="SAMEVERDIFFBUILDPRODUCTFOUND"
 			/>
+			-->
 		</Upgrade>
 
 		<Media Id="1" Cabinet="Halite.cab" CompressionLevel="high" EmbedCab="yes" />
