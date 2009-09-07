@@ -66,7 +66,7 @@ std::wstring file_details::to_wstring(size_t index)
 
 	case priority_e: 		
 		{
-			switch (priority)
+		switch (priority)
 			{
 			case 0:
 				return hal::app().res_wstr(HAL_FILE_PRIORITY_0);

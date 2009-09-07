@@ -8,10 +8,10 @@
 
 #define HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH(FUNCTION) \
 catch (const libt::invalid_handle&) \
-{\
+{ \
 	event_log().post(shared_ptr<EventDetail>( \
 		new EventInvalidTorrent(event_logger::info, event_logger::invalid_torrent, name, std::string(FUNCTION)))); \
-}\
+} \
 catch (const invalid_torrent& t) \
 { \
 	event_log().post(shared_ptr<EventDetail>( \
@@ -43,15 +43,15 @@ catch(...) \
 
 #define HAL_GENERIC_TORRENT_EXCEPTION_CATCH(TORRENT, FUNCTION) \
 catch (const libt::invalid_handle&) \
-{\
+{ \
 	event_log().post(shared_ptr<EventDetail>( \
 		new EventInvalidTorrent(event_logger::info, event_logger::invalid_torrent, TORRENT, std::string(FUNCTION)))); \
-}\
+} \
 catch (const invalid_torrent& t) \
-{\
+{ \
 	event_log().post(shared_ptr<EventDetail>( \
 		new EventInvalidTorrent(event_logger::info, event_logger::invalid_torrent, t.who(), std::string(FUNCTION)))); \
-}\
+} \
 catch (const access_violation& e) \
 { \
 	hal::event_log().post(shared_ptr<hal::EventDetail>( \
