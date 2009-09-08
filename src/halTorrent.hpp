@@ -6,30 +6,6 @@
 
 #pragma once
 
-/*#include <string>
-#include <vector>
-#include <set>
-
-#include <boost/foreach.hpp>
-#include <boost/format.hpp>
-#include <boost/array.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/bind.hpp>
-
-#include <boost/smart_ptr.hpp>
-#include <boost/noncopyable.hpp>
-
-#include <boost/signal.hpp>
-#include <boost/optional.hpp>
-#include <boost/function.hpp>
-
-#include <boost/smart_ptr.hpp>
-
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/fstream.hpp>
-*/
-
 #include <boost/algorithm/string.hpp>
 
 #include <stlsoft/properties/method_properties.hpp>
@@ -69,11 +45,11 @@ bool hal_details_compare(T l, T r, size_t index = 0, bool cmp_less = true)
 
 inline boost::wformat wform(const std::wstring & f_string) 
 {
-    using namespace boost::io;
+	using namespace boost::io;
 
 	boost::wformat fmter(f_string);
-    fmter.exceptions( no_error_bits  );
-    return fmter;
+	fmter.exceptions(no_error_bits);
+	return fmter;
 }
 
 struct torrentBriefDetail 
@@ -93,7 +69,6 @@ struct cache_settings;
 struct pe_settings;
 struct connections;
 struct cache_details;
-
 
 struct file_details
 {

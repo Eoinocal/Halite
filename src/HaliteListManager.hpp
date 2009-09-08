@@ -8,5 +8,3 @@
 
 #include <vector>
 #include <boost/signal.hpp>
-
-

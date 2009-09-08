@@ -808,6 +808,8 @@ public:
 
 	bool awaiting_resume_data() { return (state_downcast<const resume_data_waiting*>() != 0); }
 
+	bool resume_from_saved_data();
+
 	void output_torrent_debug_details()
 	{
 		HAL_DEV_MSG(wform(L"Name %1%") % name_);

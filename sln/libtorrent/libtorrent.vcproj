@@ -562,6 +562,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\allocator.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\assert.cpp"
 				>
 			</File>
@@ -575,6 +579,10 @@
 			</File>
 			<File
 				RelativePath="..\..\lib\libtorrent\src\connection_queue.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\ConvertUTF.cpp"
 				>
 			</File>
 			<File
@@ -634,6 +642,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\http_seed_connection.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\http_stream.cpp"
 				>
 			</File>
@@ -663,6 +675,10 @@
 			</File>
 			<File
 				RelativePath="..\..\lib\libtorrent\src\lsd.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\lt_trackers.cpp"
 				>
 			</File>
 			<File
@@ -715,10 +731,6 @@
 			</File>
 			<File
 				RelativePath="..\..\lib\libtorrent\src\smart_ban.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\lib\libtorrent\src\socks4_stream.cpp"
 				>
 			</File>
 			<File
@@ -883,6 +895,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\lib\libtorrent\include\libtorrent\alloca.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\lib\libtorrent\include\libtorrent\allocator.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\lib\libtorrent\include\libtorrent\assert.hpp"
 					>
 				</File>
@@ -928,6 +948,10 @@
 				</File>
 				<File
 					RelativePath="..\..\lib\libtorrent\include\libtorrent\connection_queue.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\lib\libtorrent\include\libtorrent\ConvertUTF.h"
 					>
 				</File>
 				<File
@@ -1000,6 +1024,10 @@
 				</File>
 				<File
 					RelativePath="..\..\lib\libtorrent\include\libtorrent\http_parser.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\lib\libtorrent\include\libtorrent\http_seed_connection.hpp"
 					>
 				</File>
 				<File
@@ -1267,6 +1295,10 @@
 					>
 					<File
 						RelativePath="..\..\lib\libtorrent\include\libtorrent\extensions\logger.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\lib\libtorrent\include\libtorrent\extensions\lt_trackers.hpp"
 						>
 					</File>
 					<File

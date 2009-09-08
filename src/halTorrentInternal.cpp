@@ -52,6 +52,42 @@ void torrent_internal::add_to_session(bool paused)
 	}
 }
 
+bool torrent_internal::resume_from_saved_data()
+{			
+	wpath file = wpath(hal::app().get_working_directory())/L"torrents"/filename();
+			
+	if (exists(file))
+	{		
+		try 
+		{
+			
+		prepare(file);	
+		start();
+		
+		}
+		catch(const libt::duplicate_torrent&)
+		{
+			hal::event_log().post(shared_ptr<hal::EventDetail>(
+				new hal::EventDebug(hal::event_logger::debug, L"Encountered duplicate torrent")));
+			
+			// Harmless, don't worry about it.
+		}
+		catch(const std::exception& e) 
+		{
+			hal::event_log().post(shared_ptr<hal::EventDetail>(
+				new hal::EventStdException(hal::event_logger::warning, e, L"resume_all")));
+			
+			return false;
+		}			
+	}
+	else
+	{
+		return false;
+	}
+	
+	return true;
+}
+
 bool torrent_internal::remove_from_session(bool write_data)
 {
 	try
