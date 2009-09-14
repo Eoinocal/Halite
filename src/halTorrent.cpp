@@ -40,7 +40,7 @@ bool file_details::less(const file_details& r, size_t index) const
 	switch (index)
 	{
 	case branch_e: return branch < r.branch;
-	case filename_e: return filename < r.filename;
+	case filename_e: return boost::to_upper(filename) < boost::to_upper(r.filename);
 
 	case type_e: return type < r.type;
 	case size_e: return size < r.size;
