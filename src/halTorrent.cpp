@@ -40,7 +40,9 @@ bool file_details::less(const file_details& r, size_t index) const
 	switch (index)
 	{
 	case branch_e: return branch < r.branch;
-	case filename_e: return boost::to_upper(filename) < boost::to_upper(r.filename);
+	case filename_e: 
+		return (boost::algorithm::to_upper_copy(filename) 
+			< boost::algorithm::to_upper_copy(r.filename));
 
 	case type_e: return type < r.type;
 	case size_e: return size < r.size;
@@ -125,7 +127,9 @@ bool torrent_details::less(const torrent_details& r, size_t index) const
 {
 	switch (index)
 	{
-	case name_e: return name_ < r.name_;
+	case name_e: 
+		return (boost::algorithm::to_upper_copy(name_) 
+			< boost::algorithm::to_upper_copy(r.name_));
 	case state_e: return state_ < r.state_;
 
 	case speed_down_e: return speed_.first < r.speed_.first;

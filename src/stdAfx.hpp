@@ -74,6 +74,7 @@ extern WTL::CAppModule _Module;
 #include <boost/regex.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/algorithm/string/find.hpp>
+#include <boost/algorithm/string/case_conv.hpp>
 
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
