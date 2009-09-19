@@ -2,8 +2,8 @@
 
 <?define VerGeneration = "0" ?>
 <?define VerMajor = "3" ?>
-<?define VerMinor = "1" ?>
-<?define VerBuild = "0780" ?>
+<?define VerMinor = "2" ?>
+<?define VerBuild = "1067" ?>
 
 <?define FullGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor) Build $(var.VerBuild)" ?>
 <?define ShortGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor)" ?>
@@ -55,7 +55,7 @@
 				Minimum="0.3.0"
 				IncludeMinimum="yes"
 				Maximum="$(var.ShortGMmbVersion)"
-				IncludeMaximum="no"
+				IncludeMaximum="yes"
 				Language="1033"
 				Property="OLDERVERSIONBEINGUPGRADED"
 			/>
@@ -387,9 +387,11 @@
 
 		<CustomAction Id="PreventDowngrading" Error="A more recent version of Halite is already installed." />
 		
+		<!--
 		<Condition Message="The same version but a different build has been detected. Uninstall it first.">
 			NOT SAMEVERDIFFBUILDPRODUCTFOUND OR Installed
 		</Condition>
+		-->
 
 		<InstallExecuteSequence>
 			<Custom Action="PreventDowngrading" After="FindRelatedProducts">

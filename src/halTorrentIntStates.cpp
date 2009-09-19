@@ -30,7 +30,7 @@ in_the_session::~in_the_session()
 {
 	torrent_internal& t_i = context<torrent_internal>();
 
-	HAL_DEV_MSG(L"Removing handle from session");
+	TORRENT_STATE_LOG(L"Removing handle from session");
 	(*t_i.the_session_)->remove_torrent(t_i.handle_);
 
 	TORRENT_STATE_LOG(L"Exiting ~in_the_session()");

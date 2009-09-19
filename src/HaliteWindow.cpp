@@ -120,19 +120,18 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	m_hWndClient = m_Split.m_hWnd;
 
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"	... Creating main listview")));	
+		new hal::EventMsg(L"	... Creating main listview")));
+
 	// Create ListView and Dialog
 	haliteList.Create(m_Split.m_hWnd, rc, NULL, 
 		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS|LVS_OWNERDATA);
 //	haliteList.manager().attach(bind(&HaliteWindow::issueUiUpdate, this));
 
-
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"	... Creating classic dialog...")));		
 	mp_dlg.reset(new HaliteDialog(*this)),
 	mp_dlg->Create(m_Split.m_hWnd);
-//	mp_dlg->ShowWindow(true);
-	
+//	mp_dlg->ShowWindow(true);	
 
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"	... Creating advanced dialog")));
