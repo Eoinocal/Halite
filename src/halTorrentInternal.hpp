@@ -738,12 +738,14 @@ public:
 		info_memory_ = metadata;
 	}
 
-	std::vector<libt::peer_info>& peers() { return peers_; }
+	const std::vector<libt::peer_info>& peers() { return peers_; }
 	
 	boost::tuple<size_t, size_t, size_t, size_t> update_peers();
 	
 	void get_peer_details(peer_details_vec& peer_details) const
-	{
+	{		
+		mutex_t::scoped_lock l(mutex_);
+
 		if (in_session())
 		{
 			foreach (libt::peer_info peer, peers_) 

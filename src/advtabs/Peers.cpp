@@ -60,8 +60,11 @@ void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 		foreach (const std::wstring filename, tD.selected_names())
 		{
 			const hal::torrent_details_ptr t = tD.get(filename);
+			if (t)
+			{
 			std::copy(t->get_peer_details().begin(), t->get_peer_details().end(), 
 				std::inserter(peer_details_, peer_details_.begin()));
+			}
 		}
 		
 		std::set<std::wstring> ip_set;

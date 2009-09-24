@@ -380,7 +380,7 @@ public:
 		return get(focused_); 
 	}
 
-	const std::set<wstring>& selected_names() const { return selected_names_; }
+	const std::set<wstring> selected_names() const { return selected_names_; }
 	
 	const torrent_details_ptr get(std::wstring filename) const
 	{

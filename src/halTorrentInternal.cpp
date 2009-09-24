@@ -320,6 +320,8 @@ void torrent_internal::extract_names(boost::intrusive_ptr<libt::torrent_info> me
 
 boost::tuple<size_t, size_t, size_t, size_t> torrent_internal::update_peers()
 {
+	mutex_t::scoped_lock l(mutex_);
+
 	if (in_session())
 		handle_.get_peer_info(peers_);
 	
