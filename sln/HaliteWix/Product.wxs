@@ -89,16 +89,16 @@
 				<FileSearch Name="Halite.exe"/>
 			</ComponentSearch>
 		</Property>
-		
-		<!-- 
+
+
 		<Property Id="INSTALLDESKTOPSHORTCUT" Value="1" />
-		
+		<Property Id="ASSOCIATETORRENTFILES" Value="1" />
+		<!-- 
 		<Property Id="REGISTERMAGNETPROTOCOL" Value="1" /> 
 		-->
 
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="AppDataFolder" />
-			<Directory Id="DesktopFolder" />
 
 			<Directory Id="ProgramMenuFolder">        
 				<Directory Id="HaliteProgramMenuFolder" Name="Halite">
@@ -134,7 +134,7 @@
 
 					<Component Id='HaliteExe' Win64='$(var.Is64)' Guid='*'>
 						<File 
-							Id='Halite.exe' 
+							Id='HaliteDotExe' 
 							Name='Halite.exe' 
 							DiskId='1' 
 							Source='$(var.RootDirectory)$(var.ReleaseFolder)Halite.exe'
@@ -142,26 +142,31 @@
 						>
 							<Shortcut Id="startmenuHaliteFile" Directory="HaliteProgramMenuFolder" Name="Halite"
 								WorkingDirectory='INSTALLDIR' Advertise="yes" Icon="HaliteIcon.exe" IconIndex="0" />
-						</File>
-
+						</File>						
+					</Component>
+					
+					<Component Id="AssociateTorrentFiles" Guid='*'>
+						<Condition>ASSOCIATETORRENTFILES</Condition>
+						<RegistryKey Root="HKCU" Key="Software\Halite" Action="createAndRemoveOnUninstall">
+							<RegistryValue Name="AssociateTorrentFiles" Value="1" Type="integer" KeyPath="yes"/>
+						</RegistryKey>
 						<ProgId Id='Halite.torrent' Advertise="no" Description='BitTorrent Torrent File'>
 							<Extension Id='torrent' ContentType='application/torrent'>
-								<Verb Id='open' Command='Open' TargetFile="Halite.exe" Argument='"%1"' />
+								<Verb Id='open' Command='Open' TargetFile="HaliteDotExe" Argument='"%1"' />
 							</Extension>
 						</ProgId>
 					</Component>
-					
-					<Component Id="DesktopShortcut" Guid="*">
-						<Condition>INSTALLDESKTOPSHORTCUT</Condition>
-						<CreateFolder/>
-						<RegistryKey Root="HKCU" Key="Software\Llamagraphics\Life Balance \Install"
-							   Action="createAndRemoveOnUninstall">
-							<RegistryValue Name="DTSC" Value="1" Type="integer" KeyPath="yes"/>
-						</RegistryKey>
-						<Shortcut Id="DesktopShortcut" Directory="DesktopFolder"
-							Name="Halite" WorkingDirectory="INSTALLDIR"
-							Icon="HaliteIcon.exe" Target="[#Halite.exe]"/>
-					</Component>
+
+					<Directory Id="DesktopFolder" Name="Desktop">
+						<Component Id="DesktopShortcut" Guid='*'>
+							<Condition>INSTALLDESKTOPSHORTCUT</Condition>
+							<RegistryKey Root="HKCU" Key="Software\Halite" Action="createAndRemoveOnUninstall">
+								<RegistryValue Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes"/>
+							</RegistryKey>
+							<Shortcut Id="DesktopShortcut" Directory="DesktopFolder" Name="Halite" 
+								Icon="HaliteIcon.exe" Target="[INSTALLDIR]Halite.exe" WorkingDirectory='INSTALLDIR' />
+						</Component>
+					</Directory>
 
 					<Component Id="MagnetProtocol" Guid="*">
 						<Condition>REGISTERMAGNETPROTOCOL</Condition>
@@ -181,7 +186,6 @@
 							</RegistryKey>
 						</RegistryKey>
 					</Component>
-
 
 					<Component Id="Empty" Guid="" KeyPath="yes" />
 
@@ -279,6 +283,7 @@
 			<ComponentRef Id="InstallRegCU" />
 			<ComponentRef Id="ReadMeText" />
 			<ComponentRef Id="DesktopShortcut" />
+			<ComponentRef Id="AssociateTorrentFiles" />			
 			<ComponentRef Id="MagnetProtocol" />
 			
 		</Feature>
@@ -409,6 +414,6 @@
 		
 		<Icon Id="HaliteIcon.exe" SourceFile="$(var.RootDirectory)sln\HaliteWix\WixIcon.exe" />
 
-		<UIRef Id="WixUI_FeatureTree" />    
+		<UIRef Id="MyWixUI_FeatureTree" />    
 	</Product>
 </Wix>

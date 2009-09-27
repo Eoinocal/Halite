@@ -49,6 +49,8 @@
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MyVerifyReadyDlg.wxs" />
+    <Compile Include="MyWixUI_FeatureTree.wxs" />
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
