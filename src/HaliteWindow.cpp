@@ -363,7 +363,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	hal::bit::allocations allocation_type = hal::bit::sparse_allocation;
 	
 	if (!boost::filesystem::exists(default_save_folder))
-		boost::filesystem::create_directory(default_save_folder);
+		boost::filesystem::create_directories(default_save_folder);
 
 	if (hal::config().save_prompt_)
 	{
@@ -384,10 +384,20 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	issueUiUpdate();
 
 	}
-	catch(const boost::filesystem::filesystem_error&)
+	catch (const boost::filesystem::wfilesystem_error&)
 	{
 		hal::event_log().post(shared_ptr<hal::EventDetail>(
-			new hal::EventDebug(hal::event_logger::warning, L"filesystem error")));
+			new hal::EventMsg(L"File creation error.", hal::event_logger::warning)));
+	}
+	catch (const std::exception&)
+	{
+		hal::event_log().post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(L"File creation error.", hal::event_logger::warning)));
+	}
+	catch (...)
+	{
+		hal::event_log().post(shared_ptr<hal::EventDetail>(
+			new hal::EventMsg(L"File creation error.", hal::event_logger::warning)));	
 	}
 }
 

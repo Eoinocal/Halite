@@ -38,6 +38,7 @@ public:
 	void set_working_directory(const boost::filesystem::wpath& p);
 	
 	const boost::optional<boost::filesystem::wpath>& get_local_appdata() const;
+	const boost::optional<boost::filesystem::wpath>& get_my_documents() const;
 	
 	const std::vector<std::wstring>& command_args() const;
 	
@@ -50,6 +51,9 @@ public:
 
 	STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(const boost::optional<boost::filesystem::wpath>&, app_module, 
 		get_local_appdata, local_appdata);
+
+	STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(const boost::optional<boost::filesystem::wpath>&, app_module, 
+		get_my_documents, local_my_doc_);
 
 	STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(const boost::filesystem::wpath&, const boost::filesystem::wpath&, 
 		app_module, get_working_directory, set_working_directory, working_directory);

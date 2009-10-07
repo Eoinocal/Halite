@@ -34,8 +34,6 @@ Config::Config() :
 	enable_ip_filter_(false),
 	enableProxy(false),
 	proxyPort(0),
-	default_save_folder_((hal::app().exe_path().parent_path()/L"incoming").string()),
-	default_move_folder_((hal::app().exe_path().parent_path()/L"completed").string()),
 	use_move_to_(false),
 	save_prompt_(true),
 	enable_pe_(false),
@@ -50,6 +48,18 @@ Config::Config() :
 	ut_pex_plugin_(false),
 	smart_ban_plugin_(false)
 {
+	if (hal::app().get_my_documents())
+	{
+		default_save_folder_ = (hal::app().get_my_documents()->parent_path()/L"Halite"/L"Incoming").string();
+		default_move_folder_ = (hal::app().get_my_documents()->parent_path()/L"Halite"/L"Completed").string();
+	}
+	else
+	{
+		default_save_folder_ = (hal::app().exe_path().parent_path()/L"Incoming").string();
+		default_move_folder_ = (hal::app().exe_path().parent_path()/L"Completed").string();
+	}
+
+
 	queue_settings_ = hal::bittorrent::Instance().get_queue_settings();
 	timeouts_ = hal::bittorrent::Instance().get_timeouts();
 }

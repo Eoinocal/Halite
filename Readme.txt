@@ -1,6 +1,6 @@
 ﻿Halite: A Free Open-Source BitTorrent client
 
-Version: 0.3.1.8 dev 766 released 10th June 2009
+Version: 0.3.2 RC released 4th October 2009
 
 WWW:   http://www.binarynotions.com/halite-bittorrent-client 
 Forum: http://www.binarynotions.com/forum.php
@@ -38,13 +38,19 @@ That said, it supports:
   + Compatible with UAC.
   + Shutdown scheduler.
 
-Requirements: Windows 2000, XP, Server 2003, Vista, Server 2008 or Win7.
+Requirements: Windows 2000, XP, Server 2003, Vista, Server 2008 or Win7*
+
+* I run Win 7 myself but still support is not 100%. Notably ipfilter 
+cause the UI to appear to freeze briefly after just starting Halite. 
+Also the shutdown scheduler can't actually switch off the PC unless 
+started with Admin privileges which isn't necessarily recommended 
+unless the feature is really needed.
 
 Important note for people upgrading!
 
 When installing through the MSI file download, Halite will make a
 registry entry pointing it to use the local Application Data directory
-for all configuration files. User should manually copy any existing
+for all configuration files. Users should manually copy any existing
 files from an older Halite version to that directory. The recommended
 files and folder to copy are:
 
@@ -59,12 +65,27 @@ These changes were necessary to make Halite fully compatible with User
 Account Control. To revert to 'portable mode' whereby all config
 information will be saved alongside the executable simply delete that
 registry key (HKEY_CURRENT_USER\Software\Halite\path). If you only
-ever used the standalone download release this will not be necessary.
+ever used the standalone 'zipped' download then this will not be 
+necessary.
 
 Changes:
 
+ + from v 0.3.1.8 to 0.3.2 RC:
+   1) Peer details exception fixed.
+   2) Updated to OpenSSL 0.98k
+   3) Updated to Boot 1.40
+   4) Updated to libtorrent 0.14.6
+      - UPnP bug fixed.
+      - fixed bug when setting unlimited upload or download rates for 
+        torrents.
+      - replaces invalid filename characters with '.'
+      - fixed bug where web seeds would not disconnect if being resolved 
+        when the torrent was paused.
+   5) Contributed language translations updated.
+   6) Numerous other small bug fixes and improvements.
+
  + from v 0.3.1 to 0.3.1.8:
-   1) Shutdown Dialog added.
+   1) Shutdown scheduler.
    2) Updated to libtorrent 0.14.4
       - Potential libtorrent vulnerability fixed.
    3) Numerous small bug fixes and improvements.

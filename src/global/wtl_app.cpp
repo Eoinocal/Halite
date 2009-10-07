@@ -77,6 +77,7 @@ private:
 	boost::filesystem::wpath initial_path_;
 	boost::filesystem::wpath working_directory_;
 	boost::optional<boost::filesystem::wpath> local_appdata_;
+	boost::optional<boost::filesystem::wpath> local_my_doc_;
 	
 	std::vector<std::wstring> command_args_;	
 };
@@ -131,6 +132,29 @@ const boost::optional<boost::filesystem::wpath>& app_module::get_local_appdata()
 	}
 
 	return pimpl_->local_appdata_; 
+}
+
+const boost::optional<boost::filesystem::wpath>& app_module::get_my_documents() const 
+{ 
+	if (!pimpl_->local_my_doc_)
+	{
+		wchar_t displayName[_MAX_PATH + 1];
+		LPITEMIDLIST iil;
+		HRESULT hr = ::SHGetSpecialFolderLocation(NULL, CSIDL_PERSONAL, &iil);
+	  
+		if(FAILED(hr))
+		{
+		}
+		else
+		{
+			stlsoft::scoped_handle<void*> iil_(iil, winstl::SHMemFree);
+
+			::SHGetPathFromIDList(iil, displayName);
+			pimpl_->local_my_doc_ = std::wstring(displayName);
+		}
+	}
+
+	return pimpl_->local_my_doc_; 
 }
 	
 const std::vector<std::wstring>& app_module::command_args() const 
