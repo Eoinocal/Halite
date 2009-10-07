@@ -140,7 +140,7 @@ const boost::optional<boost::filesystem::wpath>& app_module::get_my_documents() 
 	{
 		wchar_t displayName[_MAX_PATH + 1];
 		LPITEMIDLIST iil;
-		HRESULT hr = ::SHGetSpecialFolderLocation(NULL, CSIDL_PERSONAL, &iil);
+		HRESULT hr = ::SHGetSpecialFolderLocation(NULL, CSIDL_MYDOCUMENTS, &iil);
 	  
 		if(FAILED(hr))
 		{

@@ -50,15 +50,14 @@ Config::Config() :
 {
 	if (hal::app().get_my_documents())
 	{
-		default_save_folder_ = (hal::app().get_my_documents()->parent_path()/L"Halite"/L"Incoming").string();
-		default_move_folder_ = (hal::app().get_my_documents()->parent_path()/L"Halite"/L"Completed").string();
+		default_save_folder_ = (hal::app().get_my_documents()->parent_path()/L"Halite Downloads"/L"Incoming").string();
+		default_move_folder_ = (hal::app().get_my_documents()->parent_path()/L"Halite Downloads"/L"Completed").string();
 	}
 	else
 	{
 		default_save_folder_ = (hal::app().exe_path().parent_path()/L"Incoming").string();
 		default_move_folder_ = (hal::app().exe_path().parent_path()/L"Completed").string();
 	}
-
 
 	queue_settings_ = hal::bittorrent::Instance().get_queue_settings();
 	timeouts_ = hal::bittorrent::Instance().get_timeouts();
