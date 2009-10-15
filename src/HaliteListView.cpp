@@ -85,8 +85,16 @@ DWORD HaliteListViewCtrl::OnItemPrePaint(int idCtrl, LPNMCUSTOMDRAW lpNMCD)
 
 bool HaliteListViewCtrl::sort_list_comparison(std::wstring l, std::wstring r, size_t index, bool ascending)
 {
+	try
+	{
+
 	return hal::hal_details_ptr_compare(
 		hal::bittorrent::Instance().torrentDetails().get(l), hal::bittorrent::Instance().torrentDetails().get(r), index, ascending);
+
+	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteListViewCtrl::sort_list_comparison")
+
+	return false;
 }
 
 LRESULT HaliteListViewCtrl::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
@@ -270,6 +278,9 @@ LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND h
 
 LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
+	try
+	{
+
 	HAL_DEV_MSG(L"OnDownloadFolder");
 
 	std::set<wpath> uniquePaths;
@@ -302,11 +313,17 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 			HAL_DEV_MSG(L"Success");
 	}	
 
+	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteListViewCtrl::OnDownloadFolder")
+
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
+	try
+	{
+
 	HAL_DEV_MSG(L"OnEditFolders");
 
 	if (hal::bit::torrent t = hal::bittorrent::Instance().get(*is_selected_begin()))
@@ -331,11 +348,17 @@ LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndC
 		}
 	}
 
+	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteListViewCtrl::OnEditFolders")
+
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
+	try
+	{
+
 /*	hal::try_update_lock<listClass> lock(*this);
 	if (lock) 
 	{		
@@ -353,11 +376,17 @@ LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCt
 
 	halite_window_.issueUiUpdate();
 
+	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteListViewCtrl::OnSetManaged")
+
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnSetUnmanaged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
+	try
+	{
+
 /*	hal::try_update_lock<listClass> lock(*this);
 	if (lock) 
 	{		
@@ -375,11 +404,17 @@ LRESULT HaliteListViewCtrl::OnSetUnmanaged(WORD wNotifyCode, WORD wID, HWND hWnd
 
 	halite_window_.issueUiUpdate();
 
+	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteListViewCtrl::OnSetUnmanaged")
+
 	return 0;
 }
 
 LRESULT HaliteListViewCtrl::OnAdjustQueuePosition(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
+	try
+	{
+
 	foreach(const list_value_type v, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
 		hal::bit::torrent t = hal::bittorrent::Instance().get(v);
@@ -402,6 +437,9 @@ LRESULT HaliteListViewCtrl::OnAdjustQueuePosition(WORD wNotifyCode, WORD wID, HW
 	}
 
 	halite_window_.issueUiUpdate();
+
+	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteListViewCtrl::OnAdjustQueuePosition")
 	
 	return 0;
 }

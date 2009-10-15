@@ -6,7 +6,8 @@
 
 #pragma once
 
-/*#include <string>
+/*
+#include <string>
 #include <vector>
 #include <set>
 
@@ -508,6 +509,25 @@ typedef std::pair<std::vector<int>, int> vec_int_pair;
 
 class bit_impl;
 class torrent_internal;
+
+	
+class invalid_torrent : public std::exception
+{
+public:
+	invalid_torrent(const wstring& who) :
+		who_(who)
+	{}
+	
+	virtual ~invalid_torrent() throw () {}
+
+	wstring who() const throw ()
+	{
+		return who_;
+	}       
+	
+private:
+	wstring who_;	
+};
 
 class bit
 {

@@ -54,30 +54,35 @@
 #endif
 
 #define HAL_GENERIC_FN_EXCEPTION_CATCH(FUNCTION) \
-catch (const access_violation& e) \
-{ \
-	hal::event_log().post(shared_ptr<hal::EventDetail>( \
-		new hal::EventMsg(hal::wform(L"%1% access_violation (code %2$x) at %3$x. Bad address %4$x") % hal::to_wstr_shim(FUNCTION) % e.code() % (unsigned)e.where() % (unsigned)e.badAddress(), \
-			hal::event_logger::critical))); \
-} \
-catch (const win32_exception& e) \
-{ \
-	hal::event_log().post(shared_ptr<hal::EventDetail>( \
-		new hal::EventMsg(hal::wform(L"%1% win32_exception (code %2$x) at %3$x") % hal::to_wstr_shim(FUNCTION) % e.code() % (unsigned)e.where(), \
-			hal::event_logger::critical))); \
-} \
-catch(std::exception& e) \
-{ \
-	hal::event_log().post(shared_ptr<hal::EventDetail>( \
-		new hal::EventMsg(hal::wform(L"%1% std::exception, %2%") % hal::to_wstr_shim(FUNCTION) % hal::from_utf8(e.what()), \
-			hal::event_logger::critical))); \
-} \
-catch(...) \
-{ \
-	hal::event_log().post(shared_ptr<hal::EventDetail>( \
-		new hal::EventMsg(hal::wform(L"%1% catch all") % hal::to_wstr_shim(FUNCTION), \
-			hal::event_logger::critical))); \
-}
+	catch (const access_violation& e) \
+	{ \
+		hal::event_log().post(shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(hal::wform(L"%1% access_violation (code %2$x) at %3$x. Bad address %4$x") % hal::to_wstr_shim(FUNCTION) % e.code() % (unsigned)e.where() % (unsigned)e.badAddress(), \
+				hal::event_logger::critical))); \
+	} \
+	catch (const win32_exception& e) \
+	{ \
+		hal::event_log().post(shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(hal::wform(L"%1% win32_exception (code %2$x) at %3$x") % hal::to_wstr_shim(FUNCTION) % e.code() % (unsigned)e.where(), \
+				hal::event_logger::critical))); \
+	} \
+	catch (const hal::invalid_torrent& e) \
+	{ \
+		hal::event_log().post(shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(hal::wform(L"Invalid torrent %1%") % FUNCTION, hal::event_logger::debug))); \
+	} \
+	catch(std::exception& e) \
+	{ \
+		hal::event_log().post(shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(hal::wform(L"%1% std::exception, %2%") % hal::to_wstr_shim(FUNCTION) % hal::from_utf8(e.what()), \
+				hal::event_logger::critical))); \
+	} \
+	catch(...) \
+	{ \
+		hal::event_log().post(shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(hal::wform(L"%1% catch all") % hal::to_wstr_shim(FUNCTION), \
+				hal::event_logger::critical))); \
+	}
 
 namespace hal 
 {

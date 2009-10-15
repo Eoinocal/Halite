@@ -101,3 +101,5 @@ catch (...) \
 		new hal::EventMsg(hal::wform(L"Generic Session Pimpl %1% catch all") % hal::from_utf8(FUNCTION), \
 			hal::event_logger::critical))); \
 }
+
+

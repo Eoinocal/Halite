@@ -192,13 +192,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 
 		
 	}
-	catch(const std::exception& e)
-	{
-		hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
-			new hal::EventStdException(hal::event_logger::critical, e, L"HaliteWindow::OnCreate"))); 
-
-		DestroyWindow();
-	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::OnCreate")
 
 	return 0;
 }
@@ -213,9 +207,9 @@ LRESULT HaliteWindow::OnAdvanced(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnTrayNotification(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam)
 {
-    trayIcon_.OnTrayNotification(wParam, lParam);
-    
-    return 0;
+	trayIcon_.OnTrayNotification(wParam, lParam);
+
+	return 0;
 }
 
 void HaliteWindow::setCorrectDialog()
@@ -287,6 +281,9 @@ void HaliteWindow::updateWindow()
 
 void HaliteWindow::OnTimer(UINT uTimerID)
 {		
+	try
+	{
+
 	if (uTimerID == ID_UPDATE_TIMER) 
 	{	
 		issueUiUpdate();
@@ -305,6 +302,8 @@ void HaliteWindow::OnTimer(UINT uTimerID)
 	{		
 		SetMsgHandled(false);
 	}	
+	
+	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::OnTimer")
 }	
 
 void HaliteWindow::issueUiUpdate()

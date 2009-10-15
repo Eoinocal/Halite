@@ -131,24 +131,6 @@ inline libt::storage_mode_t hal_allocation_to_libt(bit::allocations alloc)
 		return libt::storage_mode_sparse;
 	}
 }
-
-class invalid_torrent : public std::exception
-{
-public:
-	invalid_torrent(const wstring& who) :
-		who_(who)
-	{}
-	
-	virtual ~invalid_torrent() throw () {}
-
-	wstring who() const throw ()
-	{
-		return who_;
-	}       
-	
-private:
-	wstring who_;	
-};
 	
 template<typename T>
 class transfer_tracker
