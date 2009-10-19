@@ -43,6 +43,7 @@ struct pausing;
 struct paused;
 struct in_error;
 struct stopping;
+struct removing;
 struct resume_data_waiting;
 struct resume_data_idling;
 
@@ -181,8 +182,14 @@ struct stopped : sc::state<stopped, out_of_session>
 {
 	typedef sc::state<stopped, out_of_session> base_type;
 
+	typedef mpl::list<
+		sc::custom_reaction< ev_stop >
+	> reactions;
+
 	stopped(base_type::my_context ctx);
 	~stopped();
+
+	sc::result react(const ev_stop& evt);
 };
 
 }; // namespace hal

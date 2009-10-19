@@ -225,11 +225,36 @@ stopped::stopped(base_type::my_context ctx) :
 
 	torrent_internal& t_i = context<torrent_internal>();
 	t_i.state(torrent_details::torrent_stopped);
+
+	if (! t_i.removed_callback_.empty())
+
+	{	TORRENT_STATE_LOG(L"Calling removed_callback_");
+		thread_t t(t_i.removed_callback_);
+
+		 t_i.removed_callback_.clear();
+	}
 }
 
 stopped::~stopped()
 {
 	TORRENT_STATE_LOG(L"Exiting ~stopped()");
+}	
+
+sc::result stopped::react(const ev_stop& evt)
+{	TORRENT_STATE_LOG(L"Entering stopped()");
+
+	torrent_internal& t_i = context<torrent_internal>();
+	t_i.state(torrent_details::torrent_stopped);
+
+	if (! t_i.removed_callback_.empty())
+
+	{	TORRENT_STATE_LOG(L"Calling removed_callback_");
+		thread_t t(t_i.removed_callback_);
+
+		 t_i.removed_callback_.clear();
+	}
+
+	return discard_event();
 }
 
 not_started::not_started(base_type::my_context ctx) :

@@ -282,6 +282,7 @@ class torrent_internal :
 	friend struct not_started;
 	friend struct resume_data_waiting;
 	friend struct resume_data_idling;
+	friend struct removing;
 
 private:
 	#define TORRENT_INTERNALS_DEFAULTS \
@@ -437,6 +438,15 @@ public:
 		
 		locked_process_event(ev_start());
 	}
+	
+	void remove_files(boost::function<void (void)> fn)
+	{
+		HAL_DEV_MSG(hal::wform(L"stop() - %1%") % name_);
+
+		removed_callback_ = fn;
+		
+		locked_process_event(ev_stop());
+	}
 
 	void set_state_stopped()
 	{
@@ -474,18 +484,36 @@ public:
 	
 	void clear_resume_data()
 	{
+		try {
+
 		wpath resume_file = hal::app().get_working_directory() / L"resume" / (name_ + L".fastresume");
 		
 		if (exists(resume_file))
 			remove(resume_file);
+
+		} 
+		catch (const boost::filesystem::wfilesystem_error&)
+		{
+			event_log().post(shared_ptr<EventDetail>(
+				new EventMsg(L"Resume data removal error.", event_logger::warning)));
+		}
 	}
 
 	void delete_torrent_file()
 	{		
+		try {
+
 		wpath torrent_file = hal::app().get_working_directory() / L"torrents" / filename_;
 		
 		if (exists(torrent_file))
 			remove(torrent_file);
+
+		}
+		catch (const boost::filesystem::wfilesystem_error&)
+		{
+			event_log().post(shared_ptr<EventDetail>(
+				new EventMsg(L"Torrent file removal error.", event_logger::warning)));
+		}
 	}
 
 	const wpath get_save_directory()
@@ -858,6 +886,8 @@ private:
 	void apply_file_priorities();	
 	void apply_resolve_countries();
 	void state(unsigned s);
+
+	boost::function<void ()> removed_callback_;
 
 	void initialize_state_machine(torrent_internal_ptr p)
 	{

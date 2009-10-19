@@ -241,12 +241,15 @@ void HaliteListViewCtrl::remove_to_bin(hal::fs::wpath root, boost::shared_ptr<ha
 			% root.file_string() % file.branch % file.filename).str();
 
 		wstring full_file = hal::fs::wpath(root / file.branch / file.filename).file_string();
-		 
-		HAL_DEV_MSG(hal::wform(L"File %1%") % full_file);
 
-		std::copy(full_file.begin(), full_file.end(), 
-			std::back_inserter(file_names_buffer));
-		file_names_buffer.push_back(L'\0');
+		if (hal::fs::exists(full_file))
+		{
+			HAL_DEV_MSG(hal::wform(L"File %1%") % full_file);
+
+			std::copy(full_file.begin(), full_file.end(), 
+				std::back_inserter(file_names_buffer));
+			file_names_buffer.push_back(L'\0');
+		}
 	}
 	file_names_buffer.push_back(L'\0');
 
@@ -258,6 +261,7 @@ void HaliteListViewCtrl::remove_to_bin(hal::fs::wpath root, boost::shared_ptr<ha
 	shf.pTo = 0;
 	shf.fFlags = FOF_ALLOWUNDO;
 
+	HAL_DEV_MSG(L"Calling SHFileOperation");
 	SHFileOperation(&shf);
 }
 

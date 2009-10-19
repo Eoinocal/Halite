@@ -808,23 +808,43 @@ public:
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(name, "remove_torrent")
 	}
 
+	void remove_wrapper_function(const std::wstring name, boost::function<void (void)> fn)
+	{
+		try {
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Remove wrapper.")));
+
+		if (!fn.empty()) 
+			fn();
+		
+		torrent_internal_ptr pTI = the_torrents_.get(name);
+		if(pTI)
+		{
+			pTI->clear_resume_data();
+			pTI->delete_torrent_file();
+
+			the_torrents_.remove_torrent(name);
+		}		
+
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(name, "remove_wrapper_function")
+	}
+
+
 	void remove_torrent_wipe_files(const std::wstring& name, remove_files fn)
 	{
 		try {
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Removing Torrent and files.")));
-
-		boost::shared_ptr<file_details_vec> files = boost::shared_ptr<file_details_vec>(new file_details_vec());		
-		torrent_internal_ptr pTI = the_torrents_.get(name);
-
-		pTI->get_file_details(*files);
-		thread_t t(bind(fn, pTI->get_save_directory(), files));
-
-		pTI->clear_resume_data();
-		pTI->delete_torrent_file();
-
-		the_torrents_.remove_torrent(name);
 		
-		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Removed, started thread.")));
+		torrent_internal_ptr pTI = the_torrents_.get(name);
+		if(pTI)
+		{
+			boost::shared_ptr<file_details_vec> files = boost::shared_ptr<file_details_vec>(new file_details_vec());
+			pTI->get_file_details(*files);
+
+			boost::function<void ()> fn2 = bind(fn, pTI->get_save_directory(), files);
+			pTI->remove_files(bind(&bit_impl::remove_wrapper_function, this, name, fn2));
+
+			event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Removed, registered thread.")));
+		}		
 		
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(name, "remove_torrent_wipe_files")
 	}
