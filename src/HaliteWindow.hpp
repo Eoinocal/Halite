@@ -51,7 +51,7 @@ private:
 
 class HaliteWindow :
 	public WTL::CFrameWindowImpl<HaliteWindow>,
-//	public WTL::CAeroFrameImpl<HaliteWindow>,
+	public WTL::CDwmImpl<HaliteWindow>,
 	public WTL::CUpdateUI<HaliteWindow>,
 	public CDropFileTarget<HaliteWindow>,
 	public WTL::CMessageFilter,
