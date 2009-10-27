@@ -3,7 +3,7 @@
 <?define VerGeneration = "0" ?>
 <?define VerMajor = "3" ?>
 <?define VerMinor = "2" ?>
-<?define VerBuild = "1077" ?>
+<?define VerBuild = "1078" ?>
 
 <?define FullGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor) Build $(var.VerBuild)" ?>
 <?define ShortGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor)" ?>
@@ -163,7 +163,7 @@
 						<RegistryKey Root="HKCU" Key="Software\Halite" Action="createAndRemoveOnUninstall">
 							<RegistryValue Name="FirewallException" Value="1" Type="integer" KeyPath="yes"/>
 						</RegistryKey>
-						<fire:FirewallException Id="HaliteFirewallExcep" File="HaliteDotExe" Name="Halite BitTorrent Client" Scope="any"  />
+						<fire:FirewallException Id="HaliteFirewallExcep" File="HaliteDotExe" Name="Halite BitTorrent Client" Scope="any" IgnoreFailure="yes"/>
 					</Component>
 
 					<Directory Id="DesktopFolder" Name="Desktop">
@@ -195,6 +195,8 @@
 							</RegistryKey>
 						</RegistryKey>
 					</Component>
+
+					<Component Id="Empty" Guid="" KeyPath="yes" />
 
 					<Component Id='LanguageFiles.Czech' Guid='*'>
 						<File Id='Czech' KeyPath="yes" Name='Czech.dll' DiskId='1'
@@ -299,6 +301,8 @@
 		<Feature
 			Id="HaliteLanguages" Title="Languages" Level="1"	AllowAdvertise='no'
 		>
+			<ComponentRef Id="Empty" />
+			
 			<Feature Id="HaliteLanguages.Czech" Title="Czech"
 				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
 			>
