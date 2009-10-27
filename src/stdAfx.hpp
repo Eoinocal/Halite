@@ -48,6 +48,7 @@
 #	include <atlddx.h>
 #	include <atlscrl.h>
 #	include <atltheme.h>
+#	include <atldwm.h>
 
 #	include "AtlAutosizeDlg.h"
 #pragma warning (pop)
