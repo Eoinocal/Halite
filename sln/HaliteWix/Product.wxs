@@ -29,7 +29,7 @@
 
 <?define RootDirectory = "$(var.ProjectDir)..\..\" ?>
 
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:fire="http://schemas.microsoft.com/wix/FirewallExtension">
 	
 	<?define UpgradeCode="{6981C8F9-F2FF-49bb-9335-BDFD9B7B635F}"?>
 	
@@ -93,6 +93,7 @@
 
 		<Property Id="INSTALLDESKTOPSHORTCUT" Value="1" />
 		<Property Id="ASSOCIATETORRENTFILES" Value="1" />
+		<Property Id="SETFIREWALLEXCEPTION" Value="1" />
 		<!-- 
 		<Property Id="REGISTERMAGNETPROTOCOL" Value="1" /> 
 		-->
@@ -157,6 +158,14 @@
 						</ProgId>
 					</Component>
 
+					<Component Id="FirewallException" Guid='*'>
+						<Condition>SETFIREWALLEXCEPTION</Condition>
+						<RegistryKey Root="HKCU" Key="Software\Halite" Action="createAndRemoveOnUninstall">
+							<RegistryValue Name="FirewallException" Value="1" Type="integer" KeyPath="yes"/>
+						</RegistryKey>
+						<fire:FirewallException Id="HaliteFirewallExcep" File="HaliteDotExe" Name="Halite BitTorrent Client" Scope="any"  />
+					</Component>
+
 					<Directory Id="DesktopFolder" Name="Desktop">
 						<Component Id="DesktopShortcut" Guid='*'>
 							<Condition>INSTALLDESKTOPSHORTCUT</Condition>
@@ -186,8 +195,6 @@
 							</RegistryKey>
 						</RegistryKey>
 					</Component>
-
-					<Component Id="Empty" Guid="" KeyPath="yes" />
 
 					<Component Id='LanguageFiles.Czech' Guid='*'>
 						<File Id='Czech' KeyPath="yes" Name='Czech.dll' DiskId='1'
@@ -283,6 +290,7 @@
 			<ComponentRef Id="InstallRegCU" />
 			<ComponentRef Id="ReadMeText" />
 			<ComponentRef Id="DesktopShortcut" />
+			<ComponentRef Id="FirewallException" />
 			<ComponentRef Id="AssociateTorrentFiles" />			
 			<ComponentRef Id="MagnetProtocol" />
 			
@@ -291,8 +299,6 @@
 		<Feature
 			Id="HaliteLanguages" Title="Languages" Level="1"	AllowAdvertise='no'
 		>
-			<ComponentRef Id="Empty" />
-
 			<Feature Id="HaliteLanguages.Czech" Title="Czech"
 				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
 			>

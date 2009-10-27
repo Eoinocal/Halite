@@ -4,8 +4,6 @@ require "iconv"
 require "yaml"
 require "rubyscript2exe"
 
-exit if RUBYSCRIPT2EXE.is_compiling?
-
 def compile_dlls(arg)
 
 	puts " - - Wrote new language file"
@@ -130,6 +128,8 @@ ARGV.each do |arg|
 	begin	
 		if res_lang = resource_original_file.clone
 		
+			puts " - - Building map..."
+		
 			res_lang.gsub!(/\".*?\"/) do |text_string|
 
 				if text_string.include?(';')
@@ -157,6 +157,7 @@ ARGV.each do |arg|
 				end
 			end
 			
+			puts " - - Map built"				
 			
 			begin
 				local_file = File.new(resource_dir+arg+'.rc', "w+b")
@@ -169,8 +170,10 @@ ARGV.each do |arg|
 			end	
 		end
 		
-	rescue
+	rescue Exception => e
+		puts "#{ e } (#{ e.class })!"
 		puts " ! Problem reading/creating existing localized resource file."
+		
 		next 
 	end		
 	
