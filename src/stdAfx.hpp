@@ -36,6 +36,8 @@
 #	include <atlbase.h>
 #	include <atlapp.h>
 
+extern WTL::CAppModule _Module;
+
 #	include <atlwin.h>
 #	include <atlframe.h>
 #	include <atlmisc.h>
@@ -56,7 +58,6 @@
 //#include <stlsoft/util/nulldef.h>
 
 #include "../res/resource.h"
-extern WTL::CAppModule _Module;
 
 // Include very common C++ and Boost libraries
 

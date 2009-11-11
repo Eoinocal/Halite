@@ -190,9 +190,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		
 		WTL::CMessageLoop theLoop;
 		_Module.AddMessageLoop(&theLoop);
-			
+
+#		if (_ATL_VER > 0x0700)
 			if (halite().dll() != L"") hal::app().res_set_dll(halite().dll());
-			
+#		endif // (_ATL_VER > 0x0700)			
 			HaliteWindow wndMain(WMU_ARE_YOU_ME);
 			if (wndMain.CreateEx() == NULL)
 				return 1;

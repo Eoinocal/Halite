@@ -43,9 +43,12 @@ public:
 	const std::vector<std::wstring>& command_args() const;
 	
 	std::wstring res_wstr(unsigned uID);	
+	std::pair<void*,size_t> res_find_lock(unsigned name, unsigned type);
+
+#	if (_ATL_VER > 0x0700)
 	void res_set_dll(std::wstring dll);
 	void res_revert();
-	std::pair<void*,size_t> res_find_lock(unsigned name, unsigned type);
+#	endif // (_ATL_VER > 0x0700)
 	
 	friend app_module& app();
 

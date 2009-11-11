@@ -162,6 +162,7 @@ const std::vector<std::wstring>& app_module::command_args() const
 	return pimpl_->command_args_; 
 }
 	
+#if (_ATL_VER > 0x0700)
 void app_module::res_revert()
 {
 	if (pimpl_->hmod_) FreeLibrary(pimpl_->hmod_);
@@ -176,6 +177,7 @@ void app_module::res_set_dll(std::wstring dll)
 	HMODULE hmod_ = ::LoadLibraryEx(dll.c_str(), 0, LOAD_LIBRARY_AS_DATAFILE);
 	_Module.SetResourceInstance(reinterpret_cast<HINSTANCE>(hmod_));
 }
+#endif // (_ATL_VER > 0x0700)
 
 std::wstring app_module::res_wstr(unsigned uID)
 {
