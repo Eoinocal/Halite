@@ -8,7 +8,10 @@
 #define LISTVIEW_SORT_MIXIN_HPP_INCLUDED
 
 #include <boost/iterator/filter_iterator.hpp>
-#include <winstl/controls/listview_sequence.hpp>
+#pragma warning (push)
+#pragma warning (disable : 4244)
+#	include <winstl/controls/listview_sequence.hpp>
+#pragma warning (pop)
 
 #define SLVN_SECONDSORTCHANGED		SLVN_SORTCHANGED+1
 

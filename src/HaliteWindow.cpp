@@ -192,7 +192,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 
 		
 	}
-	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::OnCreate")
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"in HaliteWindow::OnCreate")
 
 	return 0;
 }
@@ -276,10 +276,10 @@ void HaliteWindow::updateWindow()
 
 	UpdateLayout();
 	
-	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::updateWindow()")
+	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"in HaliteWindow::updateWindow()")
 }
 
-void HaliteWindow::OnTimer(UINT uTimerID)
+void HaliteWindow::OnTimer(UINT_PTR uTimerID)
 {		
 	try
 	{
@@ -383,11 +383,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	issueUiUpdate();
 
 	}
-	catch (const boost::filesystem::wfilesystem_error&)
-	{
-		hal::event_log().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(L"File creation error.", hal::event_logger::warning)));
-	}
+	HAL_FILESYSTEM_EXCEPTION_CATCH("in ProcessFile")
 	catch (const std::exception&)
 	{
 		hal::event_log().post(shared_ptr<hal::EventDetail>(

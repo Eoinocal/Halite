@@ -29,18 +29,22 @@ public:
 		signal_(signal)
 	{}
 
-    BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(thisClass)
+		try
+		{
 		REFLECTED_COMMAND_CODE_HANDLER_EX(EN_KILLFOCUS, OnKillFocus)
 		REFLECTED_COMMAND_CODE_HANDLER_EX(EN_CHANGE, OnChange)
 		MSG_OCM_CTLCOLOREDIT(OnReflectedCtlColorEdit)
-		
-        DEFAULT_REFLECTION_HANDLER()
-    END_MSG_MAP()
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in CHaliteEditCtrl MSG_MAP")
+
+		DEFAULT_REFLECTION_HANDLER()
+	END_MSG_MAP()
 
 	void Attach(HWND hWndNew)
 	{
 		ATLASSERT(::IsWindow(hWndNew));
-        baseClass::SubclassWindow(hWndNew);
+		baseClass::SubclassWindow(hWndNew);
 	}
 	
 	LRESULT OnChange(UINT uNotifyCode, int nID, ATL::CWindow wndCtl)

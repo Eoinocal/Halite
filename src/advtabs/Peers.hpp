@@ -36,10 +36,14 @@ public:
 	};
 	
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+		{
 		MSG_WM_DESTROY(OnDestroy)
 
 		REFLECTED_NOTIFY_CODE_HANDLER(SLVN_SORTCHANGED, OnSortChanged)
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_GETDISPINFO, OnGetDispInfo)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in PeerListView MSG_MAP")
 
 		CHAIN_MSG_MAP(listClass)
 		DEFAULT_REFLECTION_HANDLER()
@@ -139,8 +143,12 @@ public:
 	}
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+		{
 		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_CLOSE(OnClose)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in AdvPeerDialog MSG_MAP")
 	
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;

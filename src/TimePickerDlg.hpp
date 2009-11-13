@@ -52,7 +52,11 @@ public:
 	{}
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+	{
 		REFLECTED_NOTIFY_CODE_HANDLER_EX(DTN_DATETIMECHANGE, OnDateTimeChange)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in DateTimePicker MSG_MAP")
 
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
@@ -108,6 +112,8 @@ public:
 	}
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+		{
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_CLOSE(OnClose)	
 
@@ -115,6 +121,8 @@ public:
 		COMMAND_ID_HANDLER_EX(IDCANCEL, OnCancel)
 
 		COMMAND_HANDLER_EX(HAL_TIME_ACTIONS, CBN_SELCHANGE, OnActionChanged)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in TimePickerDlg MSG_MAP")
 
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
@@ -199,7 +207,7 @@ public:
 	void OnActionChanged(UINT uNotifyCode, int nID, CWindow wndCtl)
 	{	
 		hal::win_c_str<std::wstring> str_buf(MAX_PATH);		
-		wndCtl.GetWindowText(str_buf, str_buf.size());
+		wndCtl.GetWindowText(str_buf, numeric_cast<int>(str_buf.size()));
 		
 		if (str_buf.str() == hal::app().res_wstr(HAL_TIME_ACTION_PAUSEALL))
 		{

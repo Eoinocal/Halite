@@ -28,12 +28,12 @@ public:
 		unapplied_(false)
 	{}
 
-    BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(thisClass)
 		MSG_OCM_CTLCOLOREDIT(OnReflectedCtlColorEdit)
 		REFLECTED_COMMAND_CODE_HANDLER_EX(EN_CHANGE, OnChange)
 		
-        DEFAULT_REFLECTION_HANDLER()
-    END_MSG_MAP()
+		DEFAULT_REFLECTION_HANDLER()
+	END_MSG_MAP()
 
 	void SubclassWindow(HWND hWndNew)
 	{
@@ -74,10 +74,10 @@ public:
 	
 	operator std::wstring () 
 	{ 
-		size_t maxLen = GetWindowTextLength()+1;
+		int max_len = GetWindowTextLength()+1;
 
-		std::vector<wchar_t> buffer(maxLen);
-		size_t len = GetWindowText(&buffer[0], maxLen);
+		std::vector<wchar_t> buffer(max_len);
+		size_t len = GetWindowText(&buffer[0], max_len);
 
 		unapplied_ = false;		
 		InvalidateRect(0, true);

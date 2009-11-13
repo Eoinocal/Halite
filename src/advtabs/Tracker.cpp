@@ -204,10 +204,10 @@ void AdvTrackerDialog::onApply(UINT, int, HWND)
 	{
 		array<wchar_t, MAX_PATH> buffer;		
 		
-		m_list.GetItemText(i, 0, buffer.elems, buffer.size());
+		m_list.GetItemText(i, 0, buffer.elems, numeric_cast<int>(buffer.size()));
 		trackers.push_back(hal::tracker_detail(wstring(buffer.elems), 0));
 		
-		m_list.GetItemText(i, 1, buffer.elems, buffer.size());
+		m_list.GetItemText(i, 1, buffer.elems, numeric_cast<int>(buffer.size()));
 		trackers.back().tier = lexical_cast<int>(wstring(buffer.elems));
 	}
 	

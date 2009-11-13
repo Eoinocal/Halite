@@ -192,10 +192,10 @@ hal::file_size_pairs_t FilesSheet::FileSizePairs() const
 	for (int i=0, e=filesList_.GetItemCount(); i<e; ++i)
 	{
 		hal::win_c_str<std::wstring> name_buf(MAX_PATH);		
-		filesList_.GetItemText(i, 0, name_buf, name_buf.size());
+		filesList_.GetItemText(i, 0, name_buf, numeric_cast<int>(name_buf.size()));
 
 		hal::win_c_str<std::wstring> path_buf(MAX_PATH);		
-		filesList_.GetItemText(i, 1, path_buf, path_buf.size());
+		filesList_.GetItemText(i, 1, path_buf, numeric_cast<int>(path_buf.size()));
 
 		filePairs.push_back(hal::make_pair(
 			wpath(wpath(path_buf.str()) / name_buf).string(), 
@@ -222,10 +222,10 @@ hal::tracker_details_t TrackerSheet::Trackers() const
 		for (int i=0, e=trackerList_.GetItemCount(); i<e; ++i)
 		{
 			hal::win_c_str<std::wstring> str_buf(MAX_PATH);		
-			trackerList_.GetItemText(i, 0, str_buf, str_buf.size());
+			trackerList_.GetItemText(i, 0, str_buf, numeric_cast<int>(str_buf.size()));
 
 			hal::win_c_str<std::wstring> tier_buf(MAX_PATH);		
-			trackerList_.GetItemText(i, 1, tier_buf, tier_buf.size());
+			trackerList_.GetItemText(i, 1, tier_buf, numeric_cast<int>(tier_buf.size()));
 
 			trackers.push_back(hal::tracker_detail(
 				str_buf, lexical_cast<unsigned>(tier_buf.str())));
@@ -247,9 +247,9 @@ hal::dht_node_details_t PeersSheet::DhtNodes() const
 
 		for (int i=0, e=peersList_.GetItemCount(); i<e; ++i)
 		{
-			peersList_.GetItemText(i, 0, str_url, str_url.size());	
-			peersList_.GetItemText(i, 1, str_port, str_port.size());
-			peersList_.GetItemText(i, 2, str_type, str_type.size());
+			peersList_.GetItemText(i, 0, str_url, numeric_cast<int>(str_url.size()));	
+			peersList_.GetItemText(i, 1, str_port, numeric_cast<int>(str_port.size()));
+			peersList_.GetItemText(i, 2, str_type, numeric_cast<int>(str_type.size()));
 
 			if (hal::app().res_wstr(HAL_NEWT_ADD_PEERS_DHT) == str_type.str())
 				dht_nodes.push_back(hal::dht_node_detail(str_url.str(), lexical_cast<unsigned>(str_port.str())));
@@ -270,8 +270,8 @@ hal::web_seed_details_t PeersSheet::WebSeeds() const
 
 		for (int i=0, e=peersList_.GetItemCount(); i<e; ++i)
 		{
-			peersList_.GetItemText(i, 0, str_url, str_url.size());	
-			peersList_.GetItemText(i, 2, str_type, str_type.size());
+			peersList_.GetItemText(i, 0, str_url, numeric_cast<int>(str_url.size()));	
+			peersList_.GetItemText(i, 2, str_type, numeric_cast<int>(str_type.size()));
 
 			if (hal::app().res_wstr(HAL_NEWT_ADD_PEERS_WEB) == str_type.str())
 				web_seeds.push_back(hal::web_seed_detail(str_url.str()));
@@ -436,7 +436,7 @@ LRESULT NewTorrentDialog::OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	ProgressDialog progDlg(hal::app().res_wstr(HAL_NEWT_SAVING_TORRENT), bind(
 		&hal::bit::create_torrent, &hal::bittorrent::Instance(), params, fileSheet_.OutputFile(), _1));
 
-	int err_code = progDlg.DoModal();
+	INT_PTR err_code = progDlg.DoModal();
 
 	HAL_DEV_MSG(hal::wform(L"progDlg err_code: %1%") % err_code);
 

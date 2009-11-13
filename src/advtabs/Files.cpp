@@ -63,7 +63,7 @@ void FileListView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	{
 		HAL_DEV_MSG(hal::wform(L"OnMenuPriority() = %1%, %2%, %3%") 
 				% std::wstring(winstl::c_str_ptr(val)) % val.index() % files_[val.index()].order());
-		indices.push_back(files_[val.index()].order());
+		indices.push_back(numeric_cast<int>(files_[val.index()].order()));
 	}
 	
 	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;	
@@ -180,7 +180,7 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	{			
 		if (std::equal(branch.begin(), branch.end(), (*i).branch.begin()))
 		{
-			indices.push_back((*i).order());
+			indices.push_back(numeric_cast<int>((*i).order()));
 		}
 	}
 	
@@ -297,7 +297,7 @@ void AdvFilesDialog::doUiUpdate()
 			list_files->push_back(all_files[(*i).order()]);
 		}
 			
-		list_.SetItemCountEx(list_files->size(),LVSICF_NOSCROLL);
+		list_.SetItemCountEx(numeric_cast<int>(list_files->size()),LVSICF_NOSCROLL);
 	}
 
 	requestUiUpdate();
@@ -329,7 +329,7 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 				list_files->push_back(all_files[(*i).order()]);
 			}
 				
-			list_.SetItemCountEx(list_files->size(),LVSICF_NOSCROLL);
+			list_.SetItemCountEx(numeric_cast<int>(list_files->size()),LVSICF_NOSCROLL);
 		}
 
 
@@ -415,7 +415,7 @@ void AdvFilesDialog::focusChanged(const hal::torrent_details_ptr pT)
 			list_files->push_back(all_files[(*i).order()]);
 		}
 			
-		list_.SetItemCountEx(list_files->size(),LVSICF_NOSCROLL);
+		list_.SetItemCountEx(numeric_cast<int>(list_files->size()),LVSICF_NOSCROLL);
 	}
 }
 

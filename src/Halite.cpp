@@ -166,7 +166,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				COPYDATASTRUCT cmdLine; 
 				cmdLine.dwData = HALITE_SENDING_CMD; 
 				cmdLine.cbData = 
-					hal::app().command_args().front().length()*sizeof(wchar_t); 
+					numeric_cast<DWORD>(hal::app().command_args().front().length())*sizeof(wchar_t); 
 				cmdLine.lpData = const_cast<wchar_t*>(
 					hal::app().command_args().front().c_str());
 				

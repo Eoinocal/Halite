@@ -22,7 +22,10 @@
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/random_access_index.hpp>
 
-#include <winstl/controls/listview_sequence.hpp>
+#pragma warning (push)
+#pragma warning (disable : 4244)
+#	include <winstl/controls/listview_sequence.hpp>
+#pragma warning (pop)
 
 #include "Halite.hpp"
 #include "halTorrent.hpp"
@@ -121,10 +124,14 @@ public:
 	}
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+	{
 		COMMAND_ID_HANDLER(ID_LVM_AUTOSORT, OnAutoSort)
 		
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_RCLICK, OnRClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_ITEMCHANGED, OnItemChanged)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in CHaliteSortListViewCtrl MSG_MAP")
 
 		CHAIN_MSG_MAP(listClass)
 		DEFAULT_REFLECTION_HANDLER()
@@ -430,7 +437,7 @@ public:
 		for (size_t i=0; i<list_widths_.size(); ++i)
 		{
 			if (list_visible_[i])
-				list_widths_[i] = GetColumnWidth(i);
+				list_widths_[i] = GetColumnWidth(numeric_cast<int>(i));
 		}
 
 		GetColumnOrderArray(static_cast<int>(list_order_.size()), &list_order_[0]);
@@ -467,7 +474,7 @@ public:
 		ar & make_nvp("secondary_descending", listClass::bSecondaryDescending);
 		ar & make_nvp("secondary_sort_column", listClass::iSecondarySort);		
 		
-		SetColumnOrderArray(list_order_.size(), &list_order_[0]);
+		SetColumnOrderArray(numeric_cast<int>(list_order_.size()), &list_order_[0]);
 
 		m_bSortDescending = descending_;
 		if (sortCol_ >= 0 && sortCol_ < m_arrColSortType.GetSize())
@@ -475,11 +482,11 @@ public:
 
 		for (size_t i=0; i<list_widths_.size(); ++i)
 		{
-			SetColumnWidth(i, list_widths_[i]);
+			SetColumnWidth(numeric_cast<int>(i), list_widths_[i]);
 			if (!list_visible_[i])
 			{
 				list_visible_[i] = true;
-				OnNameChecked(i);
+				OnNameChecked(numeric_cast<int>(i));
 			}
 		}
 
@@ -591,22 +598,22 @@ protected:
 			HAL_DEV_SORT_MSG(hal::wform(L"Existing index %1%, key %3%, selected %2%") % *index % (*i).first % key);
 
 			if ((*i).first)
-				SetItemState(*index, LVIS_SELECTED, LVIS_SELECTED);
+				SetItemState(numeric_cast<int>(*index), LVIS_SELECTED, LVIS_SELECTED);
 			else
-				SetItemState(*index, 0, LVIS_SELECTED);
+				SetItemState(numeric_cast<int>(*index), 0, LVIS_SELECTED);
 
-			return *index;
+			return numeric_cast<int>(*index);
 		}
 		else
 		{
-			int list_item_index = pair_container_.size();
+			int list_item_index = numeric_cast<int>(pair_container_.size());
 
 			bool selected = (pItem->stateMask & LVIS_SELECTED) && (pItem->state & LVIS_SELECTED);
 			list_pair_t lp = list_pair_t(selected, key);
 
 			pair_container_.push_back(lp);
 
-			SetItemCountEx(pair_container_.size(), LVSICF_NOSCROLL);
+			SetItemCountEx(numeric_cast<int>(pair_container_.size()), LVSICF_NOSCROLL);
 			SetItemState(list_item_index, 0, LVIS_SELECTED);
 
 			HAL_DEV_SORT_MSG(hal::wform(L"New index %1%, key %3%, selected %2%") % list_item_index % false % key);
@@ -680,7 +687,7 @@ protected:
 	void erase_from_list(size_t index)
 	{
 		pair_container_.erase(pair_container_.begin() + index);
-		DeleteItem(index);
+		DeleteItem(numeric_cast<int>(index));
 	}
 	
 	void erase_from_list(const DataType& str)
@@ -690,7 +697,7 @@ protected:
 
 		if (i != pair_container_.get<by_key>().end())
 		{
-			DeleteItem(std::distance(pair_container_.begin(), i_pos));
+			DeleteItem(numeric_cast<int>(std::distance(pair_container_.begin(), i_pos)));
 			pair_container_.erase(i_pos);
 		}
 	}
@@ -705,7 +712,7 @@ protected:
 			{				
 				HAL_DEV_SORT_MSG(hal::wform(L" Erasing,"));
 				
-				DeleteItem(std::distance(pair_container_.begin(), i));
+				DeleteItem(numeric_cast<int>(std::distance(pair_container_.begin(), i)));
 				i  = pair_container_.erase(i);
 			}
 			else

@@ -25,8 +25,8 @@
 class LogEdit : public ATL::CWindowImpl<LogEdit, WTL::CEdit>
 {
 public:
-    BEGIN_MSG_MAP_EX(CEditImpl)
-    END_MSG_MAP()
+	BEGIN_MSG_MAP_EX(CEditImpl)
+	END_MSG_MAP()
 
 	LogEdit() :
 		editLogger(hal::wlog().attach(bind(&LogEdit::log, this, _1)))
@@ -34,7 +34,7 @@ public:
 
 	void log(const std::wstring& text)
 	{
-		int len = ::SendMessage(m_hWnd, WM_GETTEXTLENGTH, 0, 0);
+		int len = numeric_cast<int>(::SendMessage(m_hWnd, WM_GETTEXTLENGTH, 0, 0));
 		SetSel(len, len);
 		ReplaceSel(text.c_str(), false);
 	}
@@ -46,8 +46,8 @@ private:
 class LogList : public ATL::CWindowImpl<LogList, WTL::CListBox>
 {
 public:
-    BEGIN_MSG_MAP_EX(LogList)
-    END_MSG_MAP()
+	BEGIN_MSG_MAP_EX(LogList)
+	END_MSG_MAP()
 
 	LogList() :
 		listLogger(hal::wlog().attach(bind(&LogList::log, this, _1)))
@@ -81,8 +81,12 @@ public:
 	};
 
 	BEGIN_MSG_MAP_EX(LogListViewCtrl)
+		try
+		{
 		MSG_WM_DESTROY(OnDestroy)
 		MESSAGE_HANDLER_EX(WM_USER_LOGPOST, OnMessageLogPost)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in LogListViewCtrl MSG_MAP")
 
 		CHAIN_MSG_MAP(listClass)
 		DEFAULT_REFLECTION_HANDLER()
@@ -105,13 +109,13 @@ public:
 		save_to_ini();
 	}
 
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
-    {
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
 		ar & boost::serialization::make_nvp("listview", 
 			boost::serialization::base_object<listClass>(*this));
-    }
+	}
 
 	void operator()(shared_ptr<hal::EventDetail> event)
 	{
@@ -226,11 +230,15 @@ public:
 	}
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+		{
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_CLOSE(onClose)
 
 		COMMAND_ID_HANDLER_EX(HAL_DEBUGFILECHECK, onFileCheck)
 		COMMAND_ID_HANDLER_EX(HAL_DEBUGDEBUGCHECK, onDebugCheck)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in AdvDebugDialog MSG_MAP")
 
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;

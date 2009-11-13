@@ -38,11 +38,15 @@ public:
 	
 	enum { IDD = HAL_PROGRESS };
 
-    BEGIN_MSG_MAP_EX(ProgressDialog)
-		MSG_WM_INITDIALOG(onInitDialog)
+	BEGIN_MSG_MAP_EX(ProgressDialog)
+		try
+		{
+			MSG_WM_INITDIALOG(onInitDialog)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in ProgressDialog MSG_MAP")
 
 		COMMAND_ID_HANDLER_EX(HAL_PROG_CANCEL, onCancel)
-    END_MSG_MAP()
+	END_MSG_MAP()
 	
 	LRESULT onInitDialog(HWND, LPARAM)
 	{
@@ -80,7 +84,7 @@ public:
 	bool Callback(size_t progress, size_t total, wstring description)
 	{
 		SetDlgItemText(HAL_PROG_DESCP, description.c_str());
-		prog_.SetPos((100*progress)/total);
+		prog_.SetPos(numeric_cast<int>((100*progress)/total));
 		
 		return stop_;
 	}

@@ -73,6 +73,8 @@ public:
 //	ui_signal& ui() { return ui_; }
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try 
+		{
 		MSG_WM_CREATE(OnCreate)
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_DESTROY(OnDestroy)
@@ -106,6 +108,8 @@ public:
 
 		COMMAND_ID_HANDLER(HAL_WINDOW_AUTOSHUTDOWN, OnAutoShutdown)
 		COMMAND_ID_HANDLER(HAL_WINDOW_EXIT, OnToolbarExit)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in HaliteWindow MSG_MAP")
 
 		REFLECT_NOTIFICATIONS()
 		CHAIN_MSG_MAP(frameClass)
@@ -167,7 +171,7 @@ protected:
 	LRESULT OnUpdateUIInfo(UINT, WPARAM, LPARAM, BOOL&);
 	LRESULT HaliteWindow::OnNotify(int wParam, LPNMHDR lParam);
 	LRESULT OnCreate(LPCREATESTRUCT lpcs);
-	void OnTimer(UINT uTimerID);
+	void OnTimer(UINT_PTR uTimerID);
 	void OnClose();
 	void OnDestroy();
 	void OnSize(UINT, WTL::CSize);

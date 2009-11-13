@@ -64,13 +64,13 @@ void NewTorrent_PeersListViewCtrl::editItem(int index)
 	try {
 
 	hal::win_c_str<std::wstring> str_url(MAX_PATH);	
-	GetItemText(index, 0, str_url, str_url.size());
+	GetItemText(index, 0, str_url, numeric_cast<int>(str_url.size()));
 
 	hal::win_c_str<std::wstring> str_port(MAX_PATH);	
-	GetItemText(index, 1, str_port, str_port.size());
+	GetItemText(index, 1, str_port, numeric_cast<int>(str_port.size()));
 
 	hal::win_c_str<std::wstring> str_type(MAX_PATH);
-	GetItemText(index, 2, str_type, str_type.size());
+	GetItemText(index, 2, str_type, numeric_cast<int>(str_type.size()));
 	
 	hal::web_seed_or_dht_node_detail peer;
 

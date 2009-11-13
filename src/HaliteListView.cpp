@@ -7,7 +7,10 @@
 #include "stdAfx.hpp"
 
 #include <boost/iterator/filter_iterator.hpp>
-#include <winstl/controls/listview_sequence.hpp>
+#pragma warning (push)
+#pragma warning (disable : 4244)
+#	include <winstl/controls/listview_sequence.hpp>
+#pragma warning (pop)
 
 #include "Halite.hpp"
 
@@ -92,7 +95,7 @@ bool HaliteListViewCtrl::sort_list_comparison(std::wstring l, std::wstring r, si
 		hal::bittorrent::Instance().torrentDetails().get(l), hal::bittorrent::Instance().torrentDetails().get(r), index, ascending);
 
 	}
-	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteListViewCtrl::sort_list_comparison")
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"in HaliteListViewCtrl::sort_list_comparison")
 
 	return false;
 }
@@ -318,7 +321,7 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 	}	
 
 	}
-	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteListViewCtrl::OnDownloadFolder")
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"in HaliteListViewCtrl::OnDownloadFolder")
 
 	return 0;
 }
@@ -353,7 +356,7 @@ LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndC
 	}
 
 	}
-	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteListViewCtrl::OnEditFolders")
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"in HaliteListViewCtrl::OnEditFolders")
 
 	return 0;
 }
@@ -381,7 +384,7 @@ LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCt
 	halite_window_.issueUiUpdate();
 
 	}
-	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteListViewCtrl::OnSetManaged")
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"in HaliteListViewCtrl::OnSetManaged")
 
 	return 0;
 }
@@ -409,7 +412,7 @@ LRESULT HaliteListViewCtrl::OnSetUnmanaged(WORD wNotifyCode, WORD wID, HWND hWnd
 	halite_window_.issueUiUpdate();
 
 	}
-	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteListViewCtrl::OnSetUnmanaged")
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"in HaliteListViewCtrl::OnSetUnmanaged")
 
 	return 0;
 }
@@ -443,7 +446,7 @@ LRESULT HaliteListViewCtrl::OnAdjustQueuePosition(WORD wNotifyCode, WORD wID, HW
 	halite_window_.issueUiUpdate();
 
 	}
-	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteListViewCtrl::OnAdjustQueuePosition")
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"in HaliteListViewCtrl::OnAdjustQueuePosition")
 	
 	return 0;
 }

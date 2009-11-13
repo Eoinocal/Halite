@@ -7,7 +7,6 @@
 #pragma once
 
 #include "stdAfx.hpp"
-//#include "UxthemeWrapper.hpp"
 
 template <class T>
 class ATL_NO_VTABLE CHalTabPageImpl : 
@@ -16,14 +15,14 @@ class ATL_NO_VTABLE CHalTabPageImpl :
 	public WTL::CThemeImpl<CHalTabPageImpl<T> >
 {
 public:
-    BEGIN_MSG_MAP_EX(CHalTabPageImpl)
+	BEGIN_MSG_MAP_EX(CHalTabPageImpl)
 		MSG_WM_CTLCOLORDLG(OnCltColorDlg)
 		MSG_WM_CTLCOLORBTN(OnCltColor)
 		MSG_WM_CTLCOLORSTATIC(OnCltColor)
 
 		CHAIN_MSG_MAP(WTL::CThemeImpl<CHalTabPageImpl<T> >)
-        DEFAULT_REFLECTION_HANDLER()
-    END_MSG_MAP()
+		DEFAULT_REFLECTION_HANDLER()
+	END_MSG_MAP()
 
 protected:
 	LRESULT OnEraseBkgnd(HDC dc)

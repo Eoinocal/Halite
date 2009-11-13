@@ -26,7 +26,8 @@ namespace hal
 peer_detail::peer_detail(libt::peer_info& peerInfo) :
 	ip_address(hal::from_utf8_safe(peerInfo.ip.address().to_string())),
 	country(L""),
-	speed(std::make_pair(peerInfo.payload_down_speed, peerInfo.payload_up_speed)),
+	speed(std::pair<float,float>(boost::numeric_cast<float>(peerInfo.payload_down_speed), 
+		boost::numeric_cast<float>(peerInfo.payload_up_speed))),
 	client(hal::from_utf8_safe(peerInfo.client))
 {
 	std::vector<wstring> status_vec;
@@ -66,7 +67,13 @@ peer_detail::peer_detail(libt::peer_info& peerInfo) :
 	//	if (peerInfo.flags & libt::peer_info::local_connection)						// Not sure whats up here?
 	//		status_vec.push_back(app().res_wstr(HAL_PEER_LOCAL_CONNECTION));			
 		if (peerInfo.flags & libt::peer_info::queued)
-			status_vec.push_back(app().res_wstr(HAL_PEER_QUEUED));
+			status_vec.push_back(app().res_wstr(HAL_PEER_QUEUED));		
+		if (peerInfo.flags & libt::peer_info::on_parole)
+			status_vec.push_back(app().res_wstr(HAL_PEER_ON_PAROLE));		
+		if (peerInfo.flags & libt::peer_info::optimistic_unchoke)
+			status_vec.push_back(app().res_wstr(HAL_PEER_OPTIMISTIC_UNCHOKE));		
+		if (peerInfo.flags & libt::peer_info::snubbed)
+			status_vec.push_back(app().res_wstr(HAL_PEER_SNUBBED));
 	}
 	
 	seed = (peerInfo.flags & libt::peer_info::seed) ? true : false;
