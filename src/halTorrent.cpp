@@ -215,7 +215,7 @@ std::wstring torrent_details::to_wstring(size_t index)
 
 	case total_wanted_e: 
 		{
-		return (wform(L"%1$.2fMB") % (static_cast<float>(total_wanted_-total_wanted_done_)/(1024*1024))).str(); 
+		return (wform(L"%1$.2fMB") % (static_cast<float>(total_wanted_)/(1024*1024))).str(); 
 		}
 
 	case uploaded_e: 
