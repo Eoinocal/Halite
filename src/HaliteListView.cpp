@@ -88,11 +88,19 @@ bool HaliteListViewCtrl::sort_list_comparison(std::wstring l, std::wstring r, si
 	try
 	{
 
-	return hal::hal_details_ptr_compare(
-		hal::bittorrent::Instance().torrentDetails().get(l), hal::bittorrent::Instance().torrentDetails().get(r), index, ascending);
-
+	if (hal::torrent_details_ptr left = hal::bittorrent::Instance().torrentDetails().get(l))
+	{
+		if (hal::torrent_details_ptr right = hal::bittorrent::Instance().torrentDetails().get(r))
+			return hal::hal_details_ptr_compare(left, right, index, ascending);
+		else
+			return true;	// Huh?
 	}
-	HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteListViewCtrl::sort_list_comparison")
+	else
+		return false;	// Huh also?  Well these two being opposite means an 
+					// invalid entry always comapres as greater. Unless
+					// are two invalids!!
+	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"in HaliteListViewCtrl::sort_list_comparison")
 
 	return false;
 }
@@ -287,19 +295,23 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 
 	HAL_DEV_MSG(L"OnDownloadFolder");
 
-	std::set<wpath> uniquePaths;
+	std::set<wpath> unique_paths;
 
 	foreach(const list_value_type& v, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
-		wpath saveDir = hal::bittorrent::Instance().get(v).save_directory;		
-		HAL_DEV_MSG(hal::wform(L"Name %1%, Save dir: %2%.") % v.text() % saveDir);
+		hal::bit::torrent t = hal::bittorrent::Instance().get(v);
 
-		uniquePaths.insert(saveDir);
+		wpath save_dir = t.save_directory;
+		if (boost::filesystem::is_directory(save_dir/wpath(t.name)))
+			save_dir /= t.name;
+		HAL_DEV_MSG(hal::wform(L"Name %1%, Save dir: %2%.") % v.text() % save_dir);
+
+		unique_paths.insert(save_dir);
 	}
 
 	SHELLEXECUTEINFO sei = { sizeof(SHELLEXECUTEINFO) };
 
-	for(std::set<wpath>::const_iterator i=uniquePaths.begin(), e=uniquePaths.end();
+	for (std::set<wpath>::const_iterator i=unique_paths.begin(), e=unique_paths.end();
 		i != e; ++i)
 	{	
 		wstring p = (*i).file_string();
