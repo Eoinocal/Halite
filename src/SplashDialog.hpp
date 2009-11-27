@@ -52,18 +52,22 @@ public:
 		load_from_ini();
 	}
 
-    BEGIN_MSG_MAP_EX(CMainDlg)
-        MSG_WM_INITDIALOG(onInitDialog)
+	BEGIN_MSG_MAP_EX(CMainDlg)
+		try
+		{
+		MSG_WM_INITDIALOG(onInitDialog)
 		COMMAND_ID_HANDLER_EX(HAL_SPLASH_FORCE_CLOSE, OnForceClose)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in SplashDialog MSG_MAP")
 
 		CHAIN_MSG_MAP(resizeClass)
-    END_MSG_MAP()
-	
-	BEGIN_DDX_MAP(CMainDlg)
-        DDX_CHECK(HAL_SPLASH_MSG, halite().showMessage_)
-    END_DDX_MAP()
+	END_MSG_MAP()
 
-    BEGIN_DLGRESIZE_MAP(thisClass)
+	BEGIN_DDX_MAP(CMainDlg)
+		DDX_CHECK(HAL_SPLASH_MSG, halite().showMessage_)
+	END_DDX_MAP()
+
+	BEGIN_DLGRESIZE_MAP(thisClass)
 		DLGRESIZE_CONTROL(HAL_CSPLASH_MSG, DLSZ_SIZE_X|DLSZ_SIZE_Y)
 		DLGRESIZE_CONTROL(HAL_CSPLASH_NUM_ACT, DLSZ_MOVE_Y|DLSZ_SIZE_X)
 		DLGRESIZE_CONTROL(HAL_SPLASH_MSG, DLSZ_MOVE_Y|DLSZ_SIZE_X)
@@ -71,8 +75,8 @@ public:
 	END_DLGRESIZE_MAP()
 
 	friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
 	{
 		ar & BOOST_SERIALIZATION_NVP(rect_);
 	}

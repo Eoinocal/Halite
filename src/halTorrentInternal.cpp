@@ -183,8 +183,8 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr()
 		state_str, 
 		hal::from_utf8(status_memory_.current_tracker), 
 		std::pair<float, float>(
-			status_memory_.download_payload_rate, 
-			status_memory_.upload_payload_rate),
+			boost::numeric_cast<float>(status_memory_.download_payload_rate), 
+			boost::numeric_cast<float>(status_memory_.upload_payload_rate)),
 		progress_, 
 		status_memory_.distributed_copies, 
 		status_memory_.total_wanted_done, 
@@ -229,7 +229,7 @@ file_details_vec torrent_internal::get_file_details()
 	return files;
 }
 
-void torrent_internal::get_file_details(file_details_vec& files)
+void torrent_internal::get_file_details(file_details_vec& files_vec)
 {
 	if (file_details_memory_.empty())
 	{
@@ -247,7 +247,7 @@ void torrent_internal::get_file_details(file_details_vec& files)
 		
 		for(size_t i=0, e=files.size(); i<e; ++i)
 		{
-			wstring fullPath = hal::from_utf8(files[i].path.string());
+			wstring fullPath = hal::from_utf8(files[i].path);
 			boost::int64_t size = static_cast<boost::int64_t>(files[i].size);
 			
 			file_details_memory_.push_back(file_details(fullPath, size, 0, file_priorities_[i], i));
@@ -266,7 +266,7 @@ void torrent_internal::get_file_details(file_details_vec& files)
 	for(size_t i=0, e=file_details_memory_.size(); i<e; ++i)
 		file_details_memory_[i].priority =  file_priorities_[i];
 	
-	files = file_details_memory_;
+	files_vec = file_details_memory_;
 }
 
 void torrent_internal::prepare(wpath filename)
@@ -274,7 +274,7 @@ void torrent_internal::prepare(wpath filename)
 	mutex_t::scoped_lock l(mutex_);
 	
 	if (fs::exists(filename)) 
-		info_memory_ = new libt::torrent_info(path_to_utf8(filename));
+		info_memory_ = new libt::torrent_info(filename.string());
 	
 	extract_names(info_memory());			
 	
@@ -332,7 +332,7 @@ boost::tuple<size_t, size_t, size_t, size_t> torrent_internal::update_peers()
 	
 	foreach (libt::peer_info& peer, peers_) 
 	{
-		float speedSum = peer.down_speed + peer.up_speed;
+		float speedSum = boost::numeric_cast<float>(peer.down_speed + peer.up_speed);
 		
 		if (!(peer.flags & libt::peer_info::seed))
 		{

@@ -85,10 +85,10 @@ void NewTorrent_TrackerListViewCtrl::editItem(int index)
 {
 	array<wchar_t, MAX_PATH> buffer;
 
-	GetItemText(index, 0, buffer.elems, buffer.size());
+	GetItemText(index, 0, buffer.elems, numeric_cast<int>(buffer.size()));
 	hal::tracker_detail tracker(wstring(buffer.elems), 0);
 	
-	GetItemText(index, 1, buffer.elems, buffer.size());
+	GetItemText(index, 1, buffer.elems, numeric_cast<int>(buffer.size()));
 	tracker.tier = lexical_cast<int>(wstring(buffer.elems));
 
 	NewTorrent_TrackerAddDialog trackDlg(hal::app().res_wstr(HAL_NEWT_EDIT_TRACKER), tracker);

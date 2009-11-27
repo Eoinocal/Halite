@@ -40,20 +40,24 @@ public:
 
 	enum { IDD = HAL_ADJUST_DLG };
 
-    BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(thisClass)
+		try
+		{
 		MSG_WM_INITDIALOG(onInitDialog)
 		COMMAND_ID_HANDLER_EX(HAL_ADDT_MOVETO_CHECK, OnMoveTo)
 		COMMAND_ID_HANDLER_EX(HAL_BC_SAVEBROWSE, OnBrowse)
 		COMMAND_ID_HANDLER_EX(HAL_ADDT_MOVETO_BROWSE, OnMoveBrowse)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in HaliteSaveAndMoveToDlg MSG_MAP")
 
-        CHAIN_MSG_MAP(autosizeClass)
-    END_MSG_MAP()
+		CHAIN_MSG_MAP(autosizeClass)
+	END_MSG_MAP()
 
-    BEGIN_DDX_MAP(thisClass)
-        DDX_CHECK(HAL_ADDT_MOVETO_CHECK, useMove_)
+	BEGIN_DDX_MAP(thisClass)
+		DDX_CHECK(HAL_ADDT_MOVETO_CHECK, useMove_)
 		DDX_EX_STDWSTRING(HAL_BC_SAVEFOLDER, saveDirectory_)
 		DDX_EX_STDWSTRING(HAL_ADDT_MOVETO_FOLDER, moveToDirectory_)
-    END_DDX_MAP()	
+	END_DDX_MAP()	
 
 #define ADD_FOLDERS_LAYOUT \
 	WMB_HEAD(WMB_COLNOMAX(_exp), WMB_COL(_auto)), \

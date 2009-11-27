@@ -173,28 +173,6 @@ void read_range_to_filter(fs::ifstream& ifs, libt::ip_filter& ip_filter)
 		libt::ip_filter::blocked);
 }
 
-static event_logger::eventLevel lbtAlertToHalEvent(libt::alert::severity_t severity)
-{
-	switch (severity)
-	{
-	case libt::alert::debug:
-		return event_logger::debug;
-	
-	case libt::alert::info:
-		return event_logger::info;
-	
-	case libt::alert::warning:
-		return event_logger::warning;
-	
-	case libt::alert::critical:
-	case libt::alert::fatal:
-		return event_logger::critical;
-	
-	default:
-		return event_logger::none;
-	}
-}
-
 static event_logger::eventLevel lbt_category_to_event(int category)
 {
 	switch (category)
@@ -454,7 +432,7 @@ public:
 		times.tracker_receive_timeout = settings.tracker_receive_timeout;
 		times.stop_tracker_timeout = settings.stop_tracker_timeout;
 
-		times.request_queue_time = settings.request_queue_time;
+		times.request_queue_time = boost::numeric_cast<float>(settings.request_queue_time);
 		times.piece_timeout = settings.piece_timeout;
 		times.min_reconnect_time = settings.min_reconnect_time;		
 
@@ -475,7 +453,7 @@ public:
 		settings.tracker_receive_timeout = times.tracker_receive_timeout;
 		settings.stop_tracker_timeout = times.stop_tracker_timeout;
 
-		settings.request_queue_time = times.request_queue_time;
+		settings.request_queue_time = boost::numeric_cast<int>(times.request_queue_time);
 		settings.piece_timeout = times.piece_timeout;
 		settings.min_reconnect_time = times.min_reconnect_time;		
 

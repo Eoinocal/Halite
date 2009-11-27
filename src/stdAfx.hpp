@@ -20,10 +20,10 @@
 
 #define HALITE_SENDING_CMD 68816889
 
-//#define HAL_TORRENT_DEV_MSGES
-//#define HAL_TORRENT_STATE_LOGGING
-//#define HAL_SORT_LOGGING
-//#define TXML_ARCHIVE_LOGGING
+#define HAL_TORRENT_DEV_MSGES
+#define HAL_TORRENT_STATE_LOGGING
+#define HAL_SORT_LOGGING
+#define TXML_ARCHIVE_LOGGING
 
 #pragma warning (push)
 #pragma warning (disable : 4996)

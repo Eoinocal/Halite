@@ -51,6 +51,8 @@ public:
 	}
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+		{
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_CLOSE(onClose)
 
@@ -61,6 +63,9 @@ public:
 		COMMAND_ID_HANDLER_EX(HAL_TRACKER_APPLY, onApply)
 
 	//	COMMAND_RANGE_CODE_HANDLER_EX(HAL_TRACKER_USER, HAL_TRACKER_PASS, EN_KILLFOCUS, OnEditKillFocus)
+
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in AdvTrackerDialog MSG_MAP")
 
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;

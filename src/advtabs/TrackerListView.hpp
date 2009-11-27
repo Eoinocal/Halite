@@ -46,8 +46,12 @@ public:
 	{}
 
 	BEGIN_MSG_MAP_EX(TrackerListViewCtrl)
+		try
+		{
 		MSG_WM_DESTROY(OnDestroy)
 		COMMAND_ID_HANDLER(ID_TLVM_PRIMARY, OnPrimary)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in TrackerListViewCtrl MSG_MAP")
 
 		CHAIN_MSG_MAP(genericAddlistClass)
 		CHAIN_MSG_MAP(listClass)

@@ -53,36 +53,121 @@
 #	define HAL_DEV_SORT_MSG(msg)
 #endif
 
-#define HAL_GENERIC_FN_EXCEPTION_CATCH(FUNCTION) \
+#define HAL_FILESYSTEM_EXCEPTION_CATCH(FN_MSG) \
+	catch (const boost::filesystem::wfilesystem_error& e) \
+	{ \
+		if (!e.path1().empty()) \
+		{ \
+			hal::event_log().post(shared_ptr<hal::EventDetail>( \
+				new hal::EventMsg(hal::wform(L"File related error %1%. %2% with %3%") \
+						% FN_MSG \
+						% hal::from_utf8(e.what()) \
+						% e.path1().string(), \
+					hal::event_logger::warning))); \
+		} \
+		else \
+		{ \
+			hal::event_log().post(shared_ptr<hal::EventDetail>( \
+				new hal::EventMsg(hal::wform(L"Filesystem related error %1%. %2%") \
+						% FN_MSG \
+						% hal::from_utf8(e.what()), \
+					hal::event_logger::warning))); \
+		} \
+	} \
+	catch (const boost::filesystem::filesystem_error& e) \
+	{ \
+		if (!e.path1().empty()) \
+		{ \
+			hal::event_log().post(shared_ptr<hal::EventDetail>( \
+				new hal::EventMsg(hal::wform(L"File related error %1%. %2% with %3%") \
+						% FN_MSG \
+						% hal::from_utf8(e.what()) \
+						% hal::from_utf8(e.path1().string()), \
+					hal::event_logger::warning))); \
+		} \
+		else \
+		{ \
+			hal::event_log().post(shared_ptr<hal::EventDetail>( \
+				new hal::EventMsg(hal::wform(L"Filesystem related error %1%. %2%") \
+						% FN_MSG \
+						% hal::from_utf8(e.what()), \
+					hal::event_logger::warning))); \
+		} \
+	}
+
+#define HAL_NUMERIC_EXCEPTION_CATCH(FN_MSG) \
+	catch (const boost::numeric::positive_overflow& e) \
+	{ \
+		hal::event_log().post(shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(hal::wform(L"Numeric positive overflow %1%. %2%") \
+					% FN_MSG \
+					% hal::from_utf8(e.what()), \
+				hal::event_logger::warning))); \
+	} \
+	catch (const boost::numeric::negative_overflow& e) \
+	{ \
+		hal::event_log().post(shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(hal::wform(L"Numeric negative overflow in %1%. %2%") \
+					% FN_MSG \
+					% hal::from_utf8(e.what()), \
+				hal::event_logger::warning))); \
+	} \
+	catch (const boost::numeric::bad_numeric_cast& e) \
+	{ \
+		hal::event_log().post(shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(hal::wform(L"Bad numeric cast %1%. %2%") \
+					% FN_MSG \
+					% hal::from_utf8(e.what()), \
+				hal::event_logger::warning))); \
+	}
+
+#define HAL_GENERIC_FN_EXCEPTION_CATCH(FN_MSG) \
 	catch (const access_violation& e) \
 	{ \
 		hal::event_log().post(shared_ptr<hal::EventDetail>( \
-			new hal::EventMsg(hal::wform(L"%1% access_violation (code %2$x) at %3$x. Bad address %4$x") % hal::to_wstr_shim(FUNCTION) % e.code() % (unsigned)e.where() % (unsigned)e.badAddress(), \
+			new hal::EventMsg(hal::wform(L"An access_violation %1% (code %2$x) at %3$x. Bad address %4$x") \
+					% FN_MSG \
+					% e.code() \
+					% (unsigned)e.where() \
+					% (unsigned)e.badAddress(), \
 				hal::event_logger::critical))); \
 	} \
 	catch (const win32_exception& e) \
 	{ \
 		hal::event_log().post(shared_ptr<hal::EventDetail>( \
-			new hal::EventMsg(hal::wform(L"%1% win32_exception (code %2$x) at %3$x") % hal::to_wstr_shim(FUNCTION) % e.code() % (unsigned)e.where(), \
+			new hal::EventMsg(hal::wform(L"A win32_exception %1% (code %2$x) at %3$x") \
+					% FN_MSG \
+					% e.code() \
+					% (unsigned)e.where(), \
 				hal::event_logger::critical))); \
 	} \
-	catch (const hal::invalid_torrent& e) \
+	catch (const hal::invalid_torrent&) \
 	{ \
 		hal::event_log().post(shared_ptr<hal::EventDetail>( \
-			new hal::EventMsg(hal::wform(L"Invalid torrent %1%") % FUNCTION, hal::event_logger::debug))); \
+			new hal::EventMsg(hal::wform(L"Invalid torrent %1%") \
+					% FN_MSG, \
+				hal::event_logger::debug))); \
 	} \
-	catch(std::exception& e) \
+	catch (const std::exception& e) \
 	{ \
 		hal::event_log().post(shared_ptr<hal::EventDetail>( \
-			new hal::EventMsg(hal::wform(L"%1% std::exception, %2%") % hal::to_wstr_shim(FUNCTION) % hal::from_utf8(e.what()), \
+			new hal::EventMsg(hal::wform(L"Std exception %1%, %2%") \
+					% FN_MSG \
+					% hal::from_utf8(e.what()), \
 				hal::event_logger::critical))); \
 	} \
-	catch(...) \
+	catch (...) \
 	{ \
 		hal::event_log().post(shared_ptr<hal::EventDetail>( \
-			new hal::EventMsg(hal::wform(L"%1% catch all") % hal::to_wstr_shim(FUNCTION), \
+			new hal::EventMsg(hal::wform(L"Catch all exception %1%") \
+					% FN_MSG, \
 				hal::event_logger::critical))); \
 	}
+
+#define HAL_ALL_EXCEPTION_CATCH(FN_MSG) \
+	HAL_NUMERIC_EXCEPTION_CATCH(FN_MSG) \
+	HAL_FILESYSTEM_EXCEPTION_CATCH(FN_MSG) \
+	HAL_GENERIC_FN_EXCEPTION_CATCH(FN_MSG)
 
 namespace hal 
 {

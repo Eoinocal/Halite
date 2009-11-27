@@ -40,13 +40,17 @@ public:
 	
 	enum { IDD = dialogIDD };
 
-    BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(thisClass)
+		try
+		{
 		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_CLOSE(OnClose)	
 
 		COMMAND_ID_HANDLER_EX(IDOK, OnOk)
 		COMMAND_ID_HANDLER_EX(IDCANCEL, OnCancel)
-    END_MSG_MAP()
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in GenericAddDialog MSG_MAP")
+	END_MSG_MAP()
 
 	LRESULT OnInitDialog(HWND, LPARAM)
 	{
@@ -140,11 +144,15 @@ public:
 	enum { IDD = HAL_GENERIC_HOLDER };
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+		{
 		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_CLOSE(OnClose)	
 
 		COMMAND_ID_HANDLER_EX(IDOK, OnOk)
 		COMMAND_ID_HANDLER_EX(IDCANCEL, OnCancel)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in GenericAddContainerDialog MSG_MAP")
 
 		CHAIN_MSG_MAP(resizeClass)
 	END_MSG_MAP()

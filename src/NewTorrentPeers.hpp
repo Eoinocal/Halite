@@ -56,8 +56,12 @@ public:
 	{}
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+		{
 		MSG_WM_INITDIALOG(onInitDialog)
 		COMMAND_HANDLER_EX(HAL_NEWT_ADD_PEERS_TYP_CBOX, CBN_SELCHANGE, OnTypeChanged)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in NewTorrent_PeersAddDialog MSG_MAP")
 
 		CHAIN_MSG_MAP(resizeClass)
 		CHAIN_MSG_MAP(genericBaseClass)
@@ -107,7 +111,7 @@ public:
 	void OnTypeChanged(UINT uNotifyCode, int nID, CWindow wndCtl)
 	{	
 		hal::win_c_str<std::wstring> str_buf(MAX_PATH);		
-		wndCtl.GetWindowText(str_buf, str_buf.size());
+		wndCtl.GetWindowText(str_buf, numeric_cast<int>(str_buf.size()));
 		
 		if (str_buf.str() == hal::app().res_wstr(HAL_NEWT_ADD_PEERS_WEB))
 		{
@@ -151,7 +155,11 @@ public:
 	{}
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+	{
 		MSG_WM_DESTROY(OnDestroy)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in NewTorrent_PeersListViewCtrl MSG_MAP")
 
 		CHAIN_MSG_MAP(genericAddlistClass)
 		CHAIN_MSG_MAP(listClass)

@@ -35,13 +35,13 @@ public:
 		currentPage_(0)
 	{}
 
-    BEGIN_MSG_MAP_EX(CHalTabCtrl)
+	BEGIN_MSG_MAP_EX(CHalTabCtrl)
 		MSG_WM_SIZE(OnSize)
 
 		REFLECTED_NOTIFY_CODE_HANDLER_EX(TCN_SELCHANGE, OnSelChange)
 
-        DEFAULT_REFLECTION_HANDLER()
-    END_MSG_MAP()
+		DEFAULT_REFLECTION_HANDLER()
+	END_MSG_MAP()
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg)
 	{
@@ -99,7 +99,7 @@ public:
 	void AddPage(CHalTabPageImpl<T>& tabPage, std::wstring wndText)
 	{
 		TCITEM tie = { TCIF_TEXT, 0, 0, const_cast<wchar_t*>(wndText.c_str()), 0, -1, 0 };
-		InsertItem(pages_.size(), &tie);
+		InsertItem(numeric_cast<int>(pages_.size()), &tie);
 
 		pages_.push_back(CHalTabPage(tabPage));
 	}

@@ -8,7 +8,10 @@
 #define LISTVIEW_ITERATORS_HPP_INCLUDED
 
 #include <boost/iterator/filter_iterator.hpp>
-#include <winstl/controls/listview_sequence.hpp>
+#pragma warning (push)
+#pragma warning (disable : 4244)
+#	include <winstl/controls/listview_sequence.hpp>
+#pragma warning (pop)
 
 namespace WTLx
 {

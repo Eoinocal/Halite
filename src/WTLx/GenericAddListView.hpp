@@ -32,9 +32,13 @@ class GenericAddListView
 	
 public:
 	BEGIN_MSG_MAP_EX(GenericAddListView)
+		try
+		{
 		COMMAND_ID_HANDLER(listID_NEW, OnNew)
 		COMMAND_ID_HANDLER(listID_EDIT, OnEdit)
 		COMMAND_ID_HANDLER(listID_DELETE, OnDelete)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in GenericAddListView MSG_MAP")
 
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_CLICK, OnSingleClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_DBLCLK, OnDoubleClick)

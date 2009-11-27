@@ -33,15 +33,15 @@ public:
 		tracker_(tracker)
 	{}
 
-    BEGIN_MSG_MAP_EX(TrackerAddDialog)
+	BEGIN_MSG_MAP_EX(TrackerAddDialog)
 		CHAIN_MSG_MAP(resizeClass)
 		CHAIN_MSG_MAP(genericBaseClass)
-    END_MSG_MAP()
+	END_MSG_MAP()
 
-    BEGIN_DDX_MAP(TrackerAddDialog)
+	BEGIN_DDX_MAP(TrackerAddDialog)
 		DDX_EX_STDWSTRING(HAL_TRACKER_EDIT_URL, tracker_.url);
-        DDX_INT(HAL_TRACKER_EDIT_TIER, tracker_.tier)
-    END_DDX_MAP()	
+		DDX_INT(HAL_TRACKER_EDIT_TIER, tracker_.tier)
+	END_DDX_MAP()	
 
 	BEGIN_DLGRESIZE_MAP(thisClass)
 		DLGRESIZE_CONTROL(HAL_TRACKER_EDIT_URL, DLSZ_SIZE_X)

@@ -11,8 +11,8 @@
 class LogEdit : public CWindowImpl<LogEdit, CEdit>
 {
 public:
-    BEGIN_MSG_MAP_EX(CEditImpl)
-    END_MSG_MAP()
+	BEGIN_MSG_MAP_EX(CEditImpl)
+	END_MSG_MAP()
 
 	LogEdit() :
 		editLogger(hal::wlog().attach(bind(&LogEdit::log, this, _1)))
@@ -49,8 +49,12 @@ public:
 	}
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+		{
 		MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
 		MESSAGE_HANDLER(WM_CLOSE, OnClose)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in DebugDialog MSG_MAP")
 
 		if(uMsg == WM_FORWARDMSG)
 			if(PreTranslateMessage((LPMSG)lParam)) return TRUE;

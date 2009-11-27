@@ -40,8 +40,8 @@ public:
 
 	BEGIN_MSG_MAP_EX(thisClass)
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_DBLCLK, OnDoubleClick)
-		
-        DEFAULT_REFLECTION_HANDLER()
+
+		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 	
 	void SubclassWindow(HWND hWndNew)
@@ -49,7 +49,7 @@ public:
 		HAL_DEV_MSG(L"SubclassWindow");
 
 		ATLASSERT(::IsWindow(hWndNew));
-        baseClass::SubclassWindow(hWndNew);
+		baseClass::SubclassWindow(hWndNew);
 		hjk = hWndNew;
 	}
 

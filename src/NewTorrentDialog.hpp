@@ -71,7 +71,11 @@ public:
 	{}
 
 	BEGIN_MSG_MAP_EX(FilesListViewCtrl)
+		try
+	{
 		MSG_WM_DESTROY(OnDestroy)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in FilesListViewCtrl MSG_MAP")
 
 		CHAIN_MSG_MAP(listClass)
 		DEFAULT_REFLECTION_HANDLER()
@@ -115,10 +119,14 @@ public:
 	enum { IDD = HAL_NEWTORRENT };
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+	{
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_DESTROY(OnDestroy)
 
 		COMMAND_ID_HANDLER_EX(HAL_NEWT_OUT_BROWSE, OnOutBrowse)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in DetailsSheet MSG_MAP")
 
 		CHAIN_MSG_MAP(autosizeClass)
 		CHAIN_MSG_MAP(sheetClass)
@@ -174,11 +182,15 @@ public:
 	enum { IDD = HAL_NEWT_FILES };
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+		{
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_DESTROY(OnDestroy)
 
 		COMMAND_ID_HANDLER_EX(HAL_NEWT_FILE_BROWSE, OnFileBrowse)
 		COMMAND_ID_HANDLER_EX(HAL_NEWT_DIR_BROWSE, OnDirBrowse)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in FilesSheet MSG_MAP")
 
 		CHAIN_MSG_MAP(autosizeClass)
 		CHAIN_MSG_MAP(sheetClass)
@@ -229,8 +241,12 @@ public:
 	enum { IDD = HAL_NEWT_TRACKERS };
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+		{
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_DESTROY(OnDestroy)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in TrackerSheet MSG_MAP")
 
 		CHAIN_MSG_MAP(autosizeClass)
 		CHAIN_MSG_MAP(sheetClass)
@@ -272,8 +288,12 @@ public:
 	enum { IDD = HAL_NEWT_PEERS };
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+		{
 		MSG_WM_INITDIALOG(onInitDialog)
 		MSG_WM_DESTROY(OnDestroy)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in PeersSheet MSG_MAP")
 
 		CHAIN_MSG_MAP(autosizeClass)
 		CHAIN_MSG_MAP(sheetClass)
@@ -330,12 +350,16 @@ public:
 	}
 
 	BEGIN_MSG_MAP_EX(thisClass)
+		try
+		{
 		MSG_WM_SHOWWINDOW(OnShowWindow)
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_CLOSE(OnClose)	
 		MSG_WM_DESTROY(OnDestroy)
 
 		COMMAND_ID_HANDLER(0x1, OnSave)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in CPropertySheet MSG_MAP")
 
 		CHAIN_MSG_MAP(resizeClass)
 		CHAIN_MSG_MAP(CPropertySheet)

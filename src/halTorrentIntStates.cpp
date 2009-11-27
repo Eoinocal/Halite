@@ -73,7 +73,7 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	}
 
 	p.ti = t_i.info_memory_;
-	p.save_path = path_to_utf8(t_i.save_directory_);
+	p.save_path = path_to_utf8(t_i.save_directory_).string();
 	p.storage_mode = hal_allocation_to_libt(t_i.allocation_);
 	p.paused = evt.pause();
 	p.duplicate_is_error = false;
