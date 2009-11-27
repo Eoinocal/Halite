@@ -253,13 +253,13 @@ struct torrent_standalone :
 	torrent_internal_ptr torrent;
 	pt::ptime save_time;
 
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
-    {
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
 		ar & boost::serialization::make_nvp("torrent", torrent);
 		ar & boost::serialization::make_nvp("save_time", save_time);
-    }
+	}
 };
 
 struct out_of_session;
@@ -298,7 +298,7 @@ private:
 		managed_(false), \
 		start_time_(boost::posix_time::second_clock::universal_time()), \
 		in_session_(false), \
-		queue_position_(0)
+		queue_position_(-1)
 		
 	torrent_internal() :	
 		TORRENT_INTERNALS_DEFAULTS,
@@ -685,6 +685,7 @@ public:
 			ar & make_nvp("move_to_directory", move_to_directory_);
 			
 			ar & make_nvp("payload_uploaded", payload_uploaded_);
+			ar & make_nvp("queue_position", queue_position_);
 			ar & make_nvp("payload_downloaded", payload_downloaded_);
 			ar & make_nvp("uploaded", uploaded_);
 			ar & make_nvp("downloaded", downloaded_);			
@@ -885,6 +886,7 @@ private:
 	void apply_tracker_login();	
 	void apply_file_priorities();	
 	void apply_resolve_countries();
+	void apply_queue_position();
 	void state(unsigned s);
 
 	boost::function<void ()> removed_callback_;

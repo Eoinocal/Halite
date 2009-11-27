@@ -868,7 +868,9 @@ public:
 				the_torrents_.erase(i++);
 			}
 		}
-		
+
+		the_torrents_.apply_queue_positions();
+
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "resume_all")
 	}
 

@@ -468,6 +468,29 @@ void torrent_internal::apply_resolve_countries()
 	}
 }
 
+
+void torrent_internal::apply_queue_position()
+{
+	mutex_t::scoped_lock l(mutex_);
+	if (in_session())
+	{
+		if (handle_.queue_position() != -1 && queue_position_ != -1)
+		{
+			while (handle_.queue_position() != queue_position_)
+			{
+				HAL_DEV_MSG(hal::wform(L"Queue position libtorrent %1% - Halite %2%") 
+					% handle_.queue_position() % queue_position_);
+
+				if (handle_.queue_position() < queue_position_)
+					handle_.queue_position_down();
+				if (handle_.queue_position() > queue_position_)
+					handle_.queue_position_up();
+			}
+		}
+	}
+	HAL_DEV_MSG(L"Applying Queue Position");
+}
+
 void torrent_internal::state(unsigned s)
 {
 	switch (s)
