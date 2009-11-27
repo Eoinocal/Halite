@@ -101,7 +101,7 @@ inline std::pair<std::string, std::string> extract_names(const wpath &file)
 {
 	if (fs::exists(file)) 
 	{	
-		libt::torrent_info info(file.string());
+		libt::torrent_info info(path_to_utf8(file));
 
 		std::string name = info.name();	
 		std::string filename = name;
@@ -526,7 +526,7 @@ public:
 		if (in_session() && !is_finished() &&
 				s != path_from_utf8(handle_.save_path()))
 		{
-			handle_.move_storage(s.string());
+			handle_.move_storage(path_to_utf8(s));
 			save_directory_ = s;
 		}
 		else if (!in_session() && force)
@@ -546,7 +546,7 @@ public:
 		{
 			if (m != path_from_utf8(handle_.save_path()))
 			{
-				handle_.move_storage(m.string());
+				handle_.move_storage(path_to_utf8(m));
 				save_directory_ = move_to_directory_ = m;
 			}
 		}
@@ -579,7 +579,7 @@ public:
 			if (!move_to_directory_.empty() && 
 					move_to_directory_ !=  path_from_utf8(handle_.save_path()))
 			{
-				handle_.move_storage(move_to_directory_.string());
+				handle_.move_storage(path_to_utf8(move_to_directory_));
 				save_directory_ = move_to_directory_;
 			}
 		}
@@ -782,7 +782,7 @@ public:
 	{
 		if (!info_memory_) 
 			info_memory_ = boost::intrusive_ptr<libt::torrent_info>
-				(new libt::torrent_info(filename()));
+				(new libt::torrent_info(path_to_utf8(filename())));
 		
 		return info_memory_;
 	}

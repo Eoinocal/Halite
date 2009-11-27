@@ -94,15 +94,19 @@ public:
 	LRESULT OnEdit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 	{
 		ListClass* pT = static_cast<ListClass*>(this);
-		pT->editItem(pT->is_selected_begin()->index());
+
+		if (pT->is_selected_begin() != pT->is_selected_end())
+			pT->editItem(pT->is_selected_begin()->index());
 
 		return 0;
 	}
 
 	LRESULT OnDelete(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 	{
-		ListClass* pT = static_cast<ListClass*>(this);		
-		pT->deleteItem(pT->is_selected_begin()->index());
+		ListClass* pT = static_cast<ListClass*>(this);	
+
+		if (pT->is_selected_begin() != pT->is_selected_end())
+			pT->deleteItem(pT->is_selected_begin()->index());
 
 		return 0;
 	}

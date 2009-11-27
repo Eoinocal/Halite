@@ -53,7 +53,7 @@ public:
 
 	BEGIN_MSG_MAP_EX(thisClass)
 		try
-	{
+		{
 		REFLECTED_NOTIFY_CODE_HANDLER_EX(DTN_DATETIMECHANGE, OnDateTimeChange)
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in DateTimePicker MSG_MAP")

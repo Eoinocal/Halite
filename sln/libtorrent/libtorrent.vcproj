@@ -562,23 +562,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\allocator.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\lib\libtorrent\src\assert.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\lib\libtorrent\src\bandwidth_limit.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\lib\libtorrent\src\bandwidth_manager.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\lib\libtorrent\src\bandwidth_queue_entry.cpp"
 				>
 			</File>
 			<File
@@ -591,10 +575,6 @@
 			</File>
 			<File
 				RelativePath="..\..\lib\libtorrent\src\connection_queue.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\lib\libtorrent\src\ConvertUTF.cpp"
 				>
 			</File>
 			<File
@@ -654,19 +634,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\http_seed_connection.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\lib\libtorrent\src\http_stream.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\lib\libtorrent\src\http_tracker_connection.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\lib\libtorrent\src\i2p_stream.cpp"
 				>
 			</File>
 			<File
@@ -694,19 +666,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\lt_trackers.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\lib\libtorrent\src\magnet_uri.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\metadata_transfer.cpp"
+				RelativePath="..\..\lib\libtorrent\src\memdebug.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\mpi.c"
+				RelativePath="..\..\lib\libtorrent\src\metadata_transfer.cpp"
 				>
 			</File>
 			<File
@@ -750,7 +718,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\socket_io.cpp"
+				RelativePath="..\..\lib\libtorrent\src\socks4_stream.cpp"
 				>
 			</File>
 			<File
@@ -808,6 +776,10 @@
 			<Filter
 				Name="kademlia"
 				>
+				<File
+					RelativePath="..\..\lib\libtorrent\src\kademlia\closest_nodes.cpp"
+					>
+				</File>
 				<File
 					RelativePath="..\..\lib\libtorrent\src\kademlia\dht_tracker.cpp"
 					>

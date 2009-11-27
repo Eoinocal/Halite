@@ -247,7 +247,7 @@ void torrent_internal::get_file_details(file_details_vec& files_vec)
 		
 		for(size_t i=0, e=files.size(); i<e; ++i)
 		{
-			wstring fullPath = hal::from_utf8(files[i].path);
+			wstring fullPath = hal::from_utf8(files[i].path.string());
 			boost::int64_t size = static_cast<boost::int64_t>(files[i].size);
 			
 			file_details_memory_.push_back(file_details(fullPath, size, 0, file_priorities_[i], i));
@@ -274,7 +274,7 @@ void torrent_internal::prepare(wpath filename)
 	mutex_t::scoped_lock l(mutex_);
 	
 	if (fs::exists(filename)) 
-		info_memory_ = new libt::torrent_info(filename.string());
+		info_memory_ = new libt::torrent_info(path_to_utf8(filename));
 	
 	extract_names(info_memory());			
 	

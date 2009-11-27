@@ -62,12 +62,12 @@ public:
 	void enterNewTracker();
 	void saveSettings();
 
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
-    {
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
 		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
-    }
+	}
 
 	LRESULT OnPrimary(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 

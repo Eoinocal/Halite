@@ -227,11 +227,11 @@ stopped::stopped(base_type::my_context ctx) :
 	t_i.state(torrent_details::torrent_stopped);
 
 	if (! t_i.removed_callback_.empty())
-
-	{	TORRENT_STATE_LOG(L"Calling removed_callback_");
+	{	
+		TORRENT_STATE_LOG(L"Calling removed_callback_");
 		thread_t t(t_i.removed_callback_);
 
-		 t_i.removed_callback_.clear();
+		t_i.removed_callback_.clear();
 	}
 }
 

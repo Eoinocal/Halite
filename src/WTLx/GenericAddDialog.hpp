@@ -10,7 +10,6 @@
 
 #ifndef RC_INVOKED
 
-
 #include "DdxEx.hpp"
 
 namespace WTLx
@@ -72,17 +71,17 @@ public:
 	
 	void OnClose()
 	{
-		endDialog(0);
+		end_dialog(0);
 	}
 
 	void OnCancel(UINT uNotifyCode, int nID, ATL::CWindow wndCtl)
 	{
-		endDialog(0);
+		end_dialog(0);
 	}
 
 	void OnOk(UINT uNotifyCode, int nID, ATL::CWindow wndCtl)
 	{
-		endDialog(1);
+		end_dialog(1);
 	}
 
 	BOOL PreTranslateMessage(MSG* pMsg)
@@ -93,18 +92,18 @@ public:
 	void onCancel(UINT, int, HWND hWnd)
 	{}
 
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
 	{
 		ar & boost::serialization::make_nvp("rect", rect_);
 	}
 
 private:
-
-	void endDialog(int i)
+	void end_dialog(int i)
 	{
 		TBase* pT = static_cast<TBase*>(this);
+
 		pT->DoDataExchange(true);
 		pT->GetWindowRect(rect_);
 
@@ -192,17 +191,17 @@ public:
 	
 	void OnClose()
 	{
-		endDialog(0);
+		end_dialog(0);
 	}
 
 	void OnCancel(UINT uNotifyCode, int nID, ATL::CWindow wndCtl)
 	{
-		endDialog(0);
+		end_dialog(0);
 	}
 
 	void OnOk(UINT uNotifyCode, int nID, ATL::CWindow wndCtl)
 	{
-		endDialog(1);
+		end_dialog(1);
 	}
 
 	BOOL PreTranslateMessage(MSG* pMsg)
@@ -213,17 +212,18 @@ public:
 	void onCancel(UINT, int, HWND hWnd)
 	{}
 
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
 	{
 		ar & boost::serialization::make_nvp("rect", rect_);
 	}
 
 private:
-	void endDialog(int i)
+	void end_dialog(int i)
 	{
 		TBase* pT = static_cast<TBase*>(this);
+
 		pT->DoDataExchange(true);
 		pT->GetWindowRect(rect_);
 
