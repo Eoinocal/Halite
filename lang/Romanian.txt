@@ -189,6 +189,7 @@
 "OK" ---> "OK"
 "OS reported error for file '%1%'" ---> "Sistemul de operare a reportat eroare la fişierul '%1%'"
 "Ok" ---> "Ok"
+"On parole" --->  ??? 
 "Open &Halite" ---> "Deschide &Halite"
 "Open Download Folder" ---> "Deschide Directorul Download"
 "Open a (single) port between : " ---> "Deschide un (singur) port între :"
@@ -280,6 +281,7 @@
 "Shutting down session" ---> "Sessiunea se închide"
 "Size" ---> "Mărime"
 "Smart Ban Plugin" ---> "Pluginul Smart Ban"
+"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Excepţia Standard (%1%) aruncat de la %2%."
 "Start Time" ---> "Timpul pornirii"
 "Status" ---> "Stare"
@@ -289,6 +291,7 @@
 "Stopped" ---> "Oprit"
 "Stopping Torrents" ---> "Opreşte Torrentele"
 "Stopping" ---> "Opreşte"
+"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." ---> "Cu Succes %1%."
 "Supports extensions" ---> "Suportă extensii"
 "SysDateTimePick32" --->  ??? 
@@ -342,6 +345,7 @@
 "Up" ---> "Sus"
 "Update in:" ---> "Actualizare în:"
 "Upload Rate (KB/s) :" ---> "Rata de încărcare (KB/s) :"
+"Upload only" --->  ??? 
 "Upload" ---> "Încărcare"
 "Uploaded" ---> "Încărcat"
 "Use a proxy." ---> "Foloseşte un proxy."

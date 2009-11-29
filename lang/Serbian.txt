@@ -189,6 +189,7 @@
 "OK" ---> "U redu"
 "OS reported error for file '%1%'" ---> "Operativni sistem javlja grešku kod '%1%'"
 "Ok" ---> "U redu"
+"On parole" --->  ??? 
 "Open &Halite" ---> "Uvećaj halite"
 "Open Download Folder" ---> "Otvori ulaznu mapu"
 "Open a (single) port between : " ---> "Otvori jedan port između...:"
@@ -280,6 +281,7 @@
 "Shutting down session" ---> "Prekida se sednica"
 "Size" ---> "Veličina"
 "Smart Ban Plugin" ---> "Opšireno kažnavanje"
+"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Standardni izuzetak (%1%) desio se kod (%2%)"
 "Start Time" ---> "Početo preuzimanje"
 "Status" ---> "Akcija"
@@ -289,6 +291,7 @@
 "Stopped" ---> "Zaustavljen"
 "Stopping Torrents" ---> "Zaustavi torente"
 "Stopping" ---> "Zaustavi"
+"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." ---> "%1% uspešno."
 "Supports extensions" ---> "Podržava ekstenziju"
 "SysDateTimePick32" --->  ??? 
@@ -342,6 +345,7 @@
 "Up" ---> "Izlazna"
 "Update in:" ---> "Obnova za:"
 "Upload Rate (KB/s) :" ---> "Brzina izlaznog protoka (KB/s):"
+"Upload only" --->  ??? 
 "Upload" ---> "Izlazna brz."
 "Uploaded" ---> "Već podelio"
 "Use a proxy." ---> "Upotrebi Proksi-servera"

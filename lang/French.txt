@@ -189,6 +189,7 @@
 "OK" ---> "OK"
 "OS reported error for file '%1%'" --->  ??? 
 "Ok" ---> "Ok"
+"On parole" --->  ??? 
 "Open &Halite" ---> "Ouvrir &Halite"
 "Open Download Folder" ---> "Ouvrir le Dossier de Téléchargement"
 "Open a (single) port between : " ---> "Ouvrir un (seul) port entre:"
@@ -280,6 +281,7 @@
 "Shutting down session" ---> "Fermeture de la session"
 "Size" ---> "Taille"
 "Smart Ban Plugin" --->  ??? 
+"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Levée d'exception standard (%1%) dans (%2%)."
 "Start Time" ---> "Heure Démarr."
 "Status" ---> "Statut"
@@ -289,6 +291,7 @@
 "Stopped" ---> "Stoppé"
 "Stopping Torrents" ---> "Arrêt des Torrents"
 "Stopping" ---> "En cours d'arrêt"
+"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." ---> "Réussi %1%."
 "Supports extensions" ---> "Extensions supportées"
 "SysDateTimePick32" --->  ??? 
@@ -342,6 +345,7 @@
 "Up" ---> "envoi"
 "Update in:" ---> "Actu. dans"
 "Upload Rate (KB/s) :" ---> "Emission (Ko/s) :"
+"Upload only" --->  ??? 
 "Upload" ---> "Upload"
 "Uploaded" ---> "Uploadé"
 "Use a proxy." ---> "Utiliser un proxy"

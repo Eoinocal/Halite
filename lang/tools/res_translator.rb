@@ -2,7 +2,7 @@
 
 require "iconv"
 require "yaml"
-require "rubyscript2exe"
+#require "rubyscript2exe"
 
 def compile_dlls(arg)
 

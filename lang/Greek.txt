@@ -189,6 +189,7 @@
 "OK" ---> "Εντάξει"
 "OS reported error for file '%1%'" --->  ??? 
 "Ok" ---> "Εντάξει"
+"On parole" --->  ??? 
 "Open &Halite" ---> "Άνοιγμα του Halite"
 "Open Download Folder" ---> "Άνοιγμα φεκέλου ληφθέντων"
 "Open a (single) port between : " ---> "Άνοιγμα (μίας) θύρας μεταξύ : "
@@ -280,6 +281,7 @@
 "Shutting down session" ---> "Κλείσιμο σύνδεσης"
 "Size" ---> "Μέγεθος"
 "Smart Ban Plugin" --->  ??? 
+"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Πρότυπη εξαίρεση (%1%) ερχόμενα από %2%."
 "Start Time" ---> "Ώρα έναρξης"
 "Status" ---> "Κατάσταση"
@@ -289,6 +291,7 @@
 "Stopped" ---> "Στάματημένο"
 "Stopping Torrents" ---> "Διακοπή όλων των Torrents"
 "Stopping" ---> "Σταμάτημα"
+"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." ---> "Επιτυχία %1%."
 "Supports extensions" ---> "Υποστηρίζει επέκταση"
 "SysDateTimePick32" --->  ??? 
@@ -342,6 +345,7 @@
 "Up" ---> "Ανέβασμα"
 "Update in:" ---> "Ανανέωση σε:"
 "Upload Rate (KB/s) :" ---> "Ταχύτητα αποστολής"
+"Upload only" --->  ??? 
 "Upload" ---> "Αποστολή"
 "Uploaded" ---> "Στάλθηκαν"
 "Use a proxy." ---> "Χρηση proxy."
