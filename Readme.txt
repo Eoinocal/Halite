@@ -1,6 +1,6 @@
 ﻿Halite: A Free Open-Source BitTorrent client
 
-Version: 0.3.2 released 11th November 2009
+Version: 0.3.2.1 released 2nd December 2009
 
 WWW:   http://www.binarynotions.com/halite-bittorrent-client 
 Forum: http://www.binarynotions.com/forum.php
@@ -69,6 +69,12 @@ ever used the standalone 'zipped' download then this will not be
 necessary.
 
 Changes:
+
+ + from v 0.3.2 to 0.3.2.1:
+   1) Open folder behaviour changed to open torrent subfolder.
+   2) Queue positions correctly restored between sessions.
+   3) Right-click menu crash when no tracker selected fixed.
+   4) Fixed issue with displayed transfer payloads.
 
  + from v 0.3.2 RC to 0.3.2:
    1) Firewall exception option added to installer.

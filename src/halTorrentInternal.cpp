@@ -81,7 +81,7 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr()
 	try
 	{
 
-	if (in_session())
+	if (in_session() && is_active())
 	{
 		status_memory_ = handle_.status();
 		progress_ = status_memory_.progress;
@@ -94,6 +94,8 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr()
 		
 		status_memory_.download_payload_rate = 0;
 		status_memory_.upload_payload_rate = 0;
+		status_memory_.total_payload_download = 0;
+		status_memory_.total_payload_upload = 0;
 		status_memory_.next_announce = boost::posix_time::seconds(0);		
 	}
 	

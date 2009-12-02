@@ -349,7 +349,7 @@
 "Upload" ---> "Subida"
 "Uploaded" ---> "Subido"
 "Use a proxy." ---> "Usar proxy."
-"User cancelled Torrent file creation" ---> "El usuario ha cancelado la creación del torrent"
+"User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "Nombre de usuario : "
 "Warning" ---> "Advertencia"
 "Web Seed" ---> "Semilla web"

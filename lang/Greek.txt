@@ -349,7 +349,7 @@
 "Upload" ---> "Αποστολή"
 "Uploaded" ---> "Στάλθηκαν"
 "Use a proxy." ---> "Χρηση proxy."
-"User cancelled Torrent file creation" ---> "Χρήστης ακύρωσε την δημιουργία αρχείου torrent"
+"User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "Όνομα χρήστη : "
 "Warning" ---> "Προειδοπείηση"
 "Web Seed" ---> "Web Seed"

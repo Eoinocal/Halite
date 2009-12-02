@@ -244,8 +244,6 @@ LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 
 void HaliteListViewCtrl::remove_to_bin(const wstring name, hal::fs::wpath root, boost::shared_ptr<hal::file_details_vec> files)
 {
-	erase_from_list(name);
-
 	std::vector<wchar_t> file_names_buffer;
 
 	foreach(hal::file_details file, *files)
@@ -276,6 +274,8 @@ void HaliteListViewCtrl::remove_to_bin(const wstring name, hal::fs::wpath root, 
 
 	HAL_DEV_MSG(L"Calling SHFileOperation");
 	SHFileOperation(&shf);
+
+	erase_from_list(name);
 }
 
 LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)

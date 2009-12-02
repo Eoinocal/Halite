@@ -349,7 +349,7 @@
 "Upload" ---> "Upload"
 "Uploaded" --->  ??? 
 "Use a proxy." ---> "Gebruik een proxy."
-"User cancelled Torrent file creation" ---> "Gebruiker annuleerde Torrent creatie"
+"User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "Gebruikersnaam : "
 "Warning" ---> "Waarschuwing"
 "Web Seed" --->  ??? 

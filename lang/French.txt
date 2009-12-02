@@ -1,5 +1,5 @@
 "English" ---> "Français"
-"English.rtf" ---> "../lang/French.rtf"
+"English.rtf" ---> "French.rtf"
 " %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKo/s R - %2$.2fKo/s E"
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMo Récep. - %2$.2fMo Envoi"
@@ -349,7 +349,7 @@
 "Upload" ---> "Upload"
 "Uploaded" ---> "Uploadé"
 "Use a proxy." ---> "Utiliser un proxy"
-"User cancelled Torrent file creation" ---> "Création du fichier torrent annulée par l'utilisateur"
+"User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "Identifiant :"
 "Warning" ---> "Alerte"
 "Web Seed" ---> "Source Web"

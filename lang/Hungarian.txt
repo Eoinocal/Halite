@@ -1,5 +1,5 @@
 "English" ---> "Magyar"
-"English.rtf" ---> "../lang/Hungarian.rtf"
+"English.rtf" ---> "Hungarian.rtf"
 " %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s le - %2$.2fKB/s fel"
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB le - %2$.2fMB fel"

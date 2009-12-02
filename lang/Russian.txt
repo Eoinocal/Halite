@@ -1,5 +1,5 @@
 "English" ---> "Русский"
-"English.rtf" ---> "../lang/Russian.rtf"
+"English.rtf" ---> "Russian.rtf"
 " %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s приёма - %2$.2fKB/s отдачи"
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB приёма - %2$.2fMB отдачи"
@@ -349,7 +349,7 @@
 "Upload" ---> "Выкачать"
 "Uploaded" ---> "Выкачано"
 "Use a proxy." ---> "Использовать прокси."
-"User cancelled Torrent file creation" ---> "Пользователь отменил создание торрент файла"
+"User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "Имя пользователя : "
 "Warning" ---> "Предупреждение"
 "Web Seed" ---> "Сид"

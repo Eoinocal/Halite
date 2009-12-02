@@ -159,13 +159,15 @@ public:
 	
 	T update(T rel_total) const
 	{
-		total_ += (rel_total - total_offset_);
+		if (rel_total >= total_offset_)
+			total_ += (rel_total - total_offset_);
+
 		total_offset_ = rel_total;
 		
 		return total_;
 	}
 	
-	void setOffset(T offset) const
+	void set_offset(T offset) const
 	{
 		total_offset_ = offset;
 	}
@@ -198,14 +200,14 @@ public:
 			start_ = boost::posix_time::second_clock::universal_time();
 
 		if (static_cast<boost::posix_time::time_duration>(total_).is_special()) 
-			total_.setOffset(boost::posix_time::time_duration(0,0,0,0));
+			total_.set_offset(boost::posix_time::time_duration(0,0,0,0));
 		
 		return total_.update(boost::posix_time::second_clock::universal_time() - start_);
 	}
 	
 	void reset() const
 	{
-		total_.setOffset(boost::posix_time::time_duration(0,0,0,0));
+		total_.set_offset(boost::posix_time::time_duration(0,0,0,0));
 		start_ = boost::posix_time::second_clock::universal_time();
 	}
 	

@@ -349,7 +349,7 @@
 "Upload" ---> "Gor"
 "Uploaded" ---> "Prenos gor"
 "Use a proxy." ---> "Uporabi proxy."
-"User cancelled Torrent file creation" ---> "Uporabnik je preklcal ustvarjanje torrent datoteke"
+"User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "Uporabnik : "
 "Warning" ---> "Opozorilo"
 "Web Seed" ---> "Spletni sejalec"
