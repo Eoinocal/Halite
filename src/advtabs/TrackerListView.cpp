@@ -133,7 +133,7 @@ LRESULT TrackerListViewCtrl::OnPrimary(WORD wNotifyCode, WORD wID, HWND hWndCtl,
 			SetItemText(i, 1, L"1");
 	}
 	
-//	SetItemText(manager().selectedIndex(), 1, L"0");
+	SetItemText((*is_selected_begin()).index(), 1, L"0");
 	
 	listEdited_();
 	
