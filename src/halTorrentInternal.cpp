@@ -76,10 +76,9 @@ bool torrent_internal::remove_from_session(bool write_data)
 
 torrent_details_ptr torrent_internal::get_torrent_details_ptr()
 {	
-	mutex_t::scoped_lock l(mutex_);
-
 	try
 	{
+	mutex_t::scoped_lock l(mutex_);
 
 	if (in_session() && is_active())
 	{
@@ -225,6 +224,8 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr()
 
 file_details_vec torrent_internal::get_file_details()
 {
+	mutex_t::scoped_lock l(mutex_);
+
 	file_details_vec files;
 	get_file_details(files);
 
@@ -233,6 +234,8 @@ file_details_vec torrent_internal::get_file_details()
 
 void torrent_internal::get_file_details(file_details_vec& files_vec)
 {
+	mutex_t::scoped_lock l(mutex_);
+
 	if (file_details_memory_.empty())
 	{
 		boost::intrusive_ptr<libt::torrent_info> info = info_memory();

@@ -632,6 +632,8 @@ public:
 	
 	const std::vector<tracker_detail>& get_trackers()
 	{
+		mutex_t::scoped_lock l(mutex_);
+
 		if (trackers_.empty() && info_memory_)
 		{
 			std::vector<libt::announce_entry> trackers = info_memory_->trackers();
@@ -647,6 +649,8 @@ public:
 	
 	void set_file_priorities(std::vector<int> fileIndices, int priority)
 	{
+		mutex_t::scoped_lock l(mutex_);
+
 		if (!file_priorities_.empty())
 		{
 			foreach(int i, fileIndices)
