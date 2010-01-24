@@ -21,17 +21,14 @@ void NewTorrent_TrackerListViewCtrl::OnAttach()
 	// "Tracker;Tier"
 	boost::split(names, column_names, boost::is_any_of(L";"));
 	
-	array<int, 2> widths = {287,50};
-	array<int, 2> order = {0,1};
-	array<bool, 2> visible = {true,true};	
+	array<int, 2> widths = {287, 50};
+	array<int, 2> order = {0, 1};
+	array<bool, 2> visible = {true, true};	
 	
 	for (int i=0, e=2; i < e; ++i)
-	{
-		AddColumn(names[i].c_str(), i, visible[i], widths[i]);
-	}	
+		AddColumn(names[i].c_str(), i, visible[i], widths[i]);	
 	
-	load_from_ini();
-	
+	load_from_ini();	
 	SetColumnSortType(1, WTL::LVCOLSORT_LONG);
 }
 
