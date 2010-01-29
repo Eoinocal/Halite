@@ -45,6 +45,8 @@
 #include "halIni.hpp"
 #include "halTypes.hpp"
 #include "halSignaler.hpp"
+
+#include "halTorrentFile.hpp"
 #include "halTorrentIntEvents.hpp"
 
 namespace hal 
