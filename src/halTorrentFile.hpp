@@ -77,31 +77,69 @@ private:
 	int priority_;
 };
 
-struct by_filename{};
-struct by_random{};
-
-typedef boost::multi_index_container<
-	torrent_file,
-	mi::indexed_by<
-		mi::random_access<
-			mi::tag<by_random>
-		>,
-		mi::ordered_unique<
-			mi::tag<by_filename>,
-			mi::const_mem_fun<
-				torrent_file, const fs::wpath&, &torrent_file::original_name> 
-		>
-	>
-> torrent_file_index_t;
-
-typedef torrent_file_index_t::index<by_filename>::type torrent_file_by_filename;
-typedef torrent_file_index_t::index<by_random>::type torrent_file_by_random;
-
 class torrent_files
 {
+	struct by_filename{};
+	struct by_random{};
+
+	typedef boost::multi_index_container<
+		torrent_file,
+		mi::indexed_by<
+			mi::random_access<
+				mi::tag<by_random>
+			>,
+			mi::ordered_unique<
+				mi::tag<by_filename>,
+				mi::const_mem_fun<
+					torrent_file, const fs::wpath&, &torrent_file::original_name> 
+			>
+		>
+	> torrent_file_index_impl_t;
+
+	typedef torrent_file_index_impl_t::index<by_filename>::type torrent_file_by_filename;
+	typedef torrent_file_index_impl_t::index<by_random>::type torrent_file_by_random;
+
+public:
+	void set_file_priorities(std::vector<int> file_indices, int priority)
+	{
+		if (!files_.empty())
+		{
+			foreach(int i, file_indices)
+			{
+				torrent_file_by_random::iterator file_i = files_.get<by_random>().begin() + i; 
+
+				torrent_file tmp_file = *(file_i);
+				tmp_file.set_priority(priority);
+
+				files_.get<by_random>().replace(file_i, tmp_file);
+			}
+		}
+	}
+
+	void push_back(const torrent_file& t)
+	{
+		files_.push_back(t);
+	}
+
+	bool empty() const
+	{
+		return files_.empty();
+	}
+
+	const torrent_file& operator[](size_type n) const
+	{
+		return files_.get<by_random>()[n];
+	}
+	
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
+		ar & boost::serialization::make_nvp("files", files_);
+	}	
 
 private:
-	torrent_file_index_t files_;
+	torrent_file_index_impl_t files_;
 };
 
 

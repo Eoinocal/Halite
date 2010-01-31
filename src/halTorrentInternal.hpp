@@ -653,18 +653,7 @@ public:
 	{
 		mutex_t::scoped_lock l(mutex_);
 
-		if (!files_.empty())
-		{
-			foreach(int i, file_indices)
-			{
-				torrent_file_by_random::iterator file_i = files_.get<by_random>().begin() + i; 
-
-				torrent_file tmp_file = *(file_i);
-				tmp_file.set_priority(priority);
-
-				files_.get<by_random>().replace(file_i, tmp_file);
-			}
-		}
+		files_.set_file_priorities(file_indices, priority);
 
 		if (!file_priorities_.empty())
 		{
@@ -970,7 +959,7 @@ private:
 	std::vector<libt::peer_info> peers_;	
 	std::vector<int> file_priorities_;
 
-	torrent_file_index_t files_;
+	torrent_files files_;
 	
 	float progress_;	
 	int queue_position_;

@@ -358,7 +358,7 @@ void torrent_internal::extract_filenames(boost::intrusive_ptr<libt::torrent_info
 		{
 			fs::wpath p = path_from_utf8((*i).path);
 
-			assert(p == files_.get<by_random>()[std::distance(metadata->begin_files(), i)].original_name());
+			assert(p == files_[std::distance(metadata->begin_files(), i)].original_name());
 		}
 	}
 	
