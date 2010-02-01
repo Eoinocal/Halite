@@ -89,7 +89,7 @@ static const unsigned WMU_ARE_YOU_ME = ::RegisterWindowMessage(WMU_ARE_YOU_ME_ST
 static BOOL CALLBACK hwndSearcher(HWND hWnd, LPARAM lParam)
 {
 	ULONG_PTR result;
-	LRESULT ok = ::SendMessageTimeout(hWnd,	WMU_ARE_YOU_ME,
+	LRESULT ok = ::SendMessageTimeout(hWnd, WMU_ARE_YOU_ME,
 		0, 0, SMTO_BLOCK | SMTO_ABORTIFHUNG, 200, &result);
 	
 	if (ok == 0)

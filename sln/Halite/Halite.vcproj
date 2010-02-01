@@ -1690,6 +1690,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\halTorrentFile.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\halTorrentInternal.hpp"
 				>
 			</File>

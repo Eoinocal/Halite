@@ -45,6 +45,8 @@
 #include "halIni.hpp"
 #include "halTypes.hpp"
 #include "halSignaler.hpp"
+
+#include "halTorrentFile.hpp"
 #include "halTorrentIntEvents.hpp"
 
 namespace hal 
@@ -55,7 +57,7 @@ class torrent_manager;
 }
 
 BOOST_CLASS_VERSION(hal::TorrentInternalOld, 9)
-BOOST_CLASS_VERSION(hal::torrent_internal, 2)
+BOOST_CLASS_VERSION(hal::torrent_internal, 3)
 
 namespace hal 
 {
@@ -600,7 +602,7 @@ public:
 		tracker_password_ = password;
 		
 		apply_tracker_login();
-	}	
+	}
 	
 	std::pair<wstring, wstring> get_tracker_login() const
 	{
@@ -647,13 +649,15 @@ public:
 		return trackers_;
 	}
 	
-	void set_file_priorities(std::vector<int> fileIndices, int priority)
+	void set_file_priorities(std::vector<int> file_indices, int priority)
 	{
 		mutex_t::scoped_lock l(mutex_);
 
+		files_.set_file_priorities(file_indices, priority);
+
 		if (!file_priorities_.empty())
 		{
-			foreach(int i, fileIndices)
+			foreach(int i, file_indices)
 				file_priorities_[i] = priority;
 				
 			apply_file_priorities();
@@ -669,6 +673,13 @@ public:
 		using boost::serialization::make_nvp;
 
 		if (version > 1) {
+
+			switch (version)
+			{
+			case 3:
+			ar & make_nvp("files", files_);
+
+			case 2:
 			ar & make_nvp("transfer_limits", transfer_limit_);
 			ar & make_nvp("connection_limits", connections_);
 			ar & make_nvp("upload_limits", uploads_);	
@@ -702,7 +713,8 @@ public:
 			ar & make_nvp("finish_time", finish_time_);
 			ar & make_nvp("active_duration", active_duration_);
 			ar & make_nvp("seeding_duration", seeding_duration_);
-			ar & make_nvp("managed", managed_);				
+			ar & make_nvp("managed", managed_);		
+			}
 		} 
 		else 
 		{
@@ -784,6 +796,7 @@ public:
 	}
 	
 	void extract_names(boost::intrusive_ptr<libt::torrent_info> metadata);
+	void extract_filenames(boost::intrusive_ptr<libt::torrent_info> metadata);
 	
 	boost::intrusive_ptr<libt::torrent_info> info_memory()
 	{
@@ -945,6 +958,8 @@ private:
 	std::vector<libt::announce_entry> torrent_trackers_;
 	std::vector<libt::peer_info> peers_;	
 	std::vector<int> file_priorities_;
+
+	torrent_files files_;
 	
 	float progress_;	
 	int queue_position_;
