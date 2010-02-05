@@ -519,6 +519,27 @@ public:
 				new EventMsg(L"Torrent file removal error.", event_logger::warning)));
 		}
 	}
+	
+	void set_file_priorities(std::vector<int> file_indices, int priority)
+	{
+		mutex_t::scoped_lock l(mutex_);
+
+		files_.set_file_priorities(file_indices, priority);
+
+		if (!file_priorities_.empty())
+		{
+			foreach(int i, file_indices)
+				file_priorities_[i] = priority;
+				
+			apply_file_priorities();
+		}
+	}
+
+	void set_file_finished(int index);
+
+	void get_file_details(file_details_vec& files);
+
+	file_details_vec get_file_details();
 
 	const wpath get_save_directory()
 	{
@@ -648,21 +669,6 @@ public:
 		}		
 		return trackers_;
 	}
-	
-	void set_file_priorities(std::vector<int> file_indices, int priority)
-	{
-		mutex_t::scoped_lock l(mutex_);
-
-		files_.set_file_priorities(file_indices, priority);
-
-		if (!file_priorities_.empty())
-		{
-			foreach(int i, file_indices)
-				file_priorities_[i] = priority;
-				
-			apply_file_priorities();
-		}
-	}
 
 	const wpath& save_directory() { return save_directory_; }
 	
@@ -783,9 +789,6 @@ public:
 			}	
 		}
 	}
-
-	void get_file_details(file_details_vec& files);
-	file_details_vec get_file_details();
 	
 	void prepare(wpath filename);
 
@@ -904,6 +907,7 @@ private:
 	void apply_trackers();	
 	void apply_tracker_login();	
 	void apply_file_priorities();	
+	void apply_file_names();	
 	void apply_resolve_countries();
 	void apply_queue_position();
 	void state(unsigned s);

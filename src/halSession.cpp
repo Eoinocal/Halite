@@ -31,7 +31,11 @@ namespace hal
 {
 
 bit_impl::bit_impl() :
+#	ifndef NDEBUG
+	bittorrent_ini_(L"BitTorrent.debug.xml"),
+#	else
 	bittorrent_ini_(L"BitTorrent.xml"),
+#	endif
 	the_torrents_(bittorrent_ini_),
 	action_timer_(io_service_),
 	alert_timer_(io_service_),
@@ -620,6 +624,36 @@ void bit_impl::alert_handler()
 		
 		get(a.handle)->finished();	
 	}
+
+	void operator()(libt::file_renamed_alert const& a) const
+	{
+		event_log().post(shared_ptr<EventDetail>(
+			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_FILE_RENAMED)) 
+					% get(a.handle)->name()
+					% a.index 
+					% hal::from_utf8_safe(a.name)), 
+				event_logger::info, a.timestamp())));
+	}
+
+	void operator()(libt::file_rename_failed_alert const& a) const
+	{
+		event_log().post(shared_ptr<EventDetail>(
+			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_FILE_RENAME_ERR)) 
+					% get(a.handle)->name()
+					% a.index), 
+				event_logger::info, a.timestamp())));
+	}	
+
+	void operator()(libt::file_completed_alert const& a) const
+	{
+		event_log().post(shared_ptr<EventDetail>(
+			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_FILE_COMPLETED)) 
+					% get(a.handle)->name()
+					% a.index), 
+				event_logger::info, a.timestamp())));
+		
+		get(a.handle)->set_file_finished(a.index);	
+	}
 	
 	void operator()(libt::torrent_paused_alert const& a) const
 	{
@@ -888,6 +922,9 @@ void bit_impl::alert_handler()
 			libt::torrent_finished_alert,
 			libt::torrent_paused_alert,
 			libt::torrent_resumed_alert,
+			libt::file_renamed_alert,
+			libt::file_rename_failed_alert,
+			libt::file_completed_alert,
 			libt::peer_error_alert,
 			libt::peer_ban_alert,
 			libt::hash_failed_alert,
