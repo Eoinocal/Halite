@@ -24,7 +24,7 @@ public:
 		haliteWindow_(haliteWindow)
 	{		
 		connection_ = haliteWindow.connectUiUpdate(bind(&thisClass::handleUiUpdate, this, _1));
-		connection_.unblock();
+		connection_.block();
 	}
 	
 	BEGIN_MSG_MAP_EX(thisClass)
