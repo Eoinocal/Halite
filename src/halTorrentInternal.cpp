@@ -6,6 +6,8 @@
 
 #include "stdAfx.hpp"
 
+#include "libtorrent/escape_string.hpp"
+
 #include "halTorrentInternal.hpp"
 
 namespace hal 
@@ -232,6 +234,14 @@ file_details_vec torrent_internal::get_file_details()
 	return files;
 }
 
+void torrent_internal::set_file_finished(int i)
+{
+	mutex_t::scoped_lock l(mutex_);
+
+	files_.set_file_finished(i);
+	handle_.rename_file(i, files_[i].current_name());
+}
+
 void torrent_internal::get_file_details(file_details_vec& files_vec)
 {
 	mutex_t::scoped_lock l(mutex_);
@@ -255,7 +265,7 @@ void torrent_internal::get_file_details(file_details_vec& files_vec)
 			wstring fullPath = hal::from_utf8(files[i].path.string());
 			boost::int64_t size = static_cast<boost::int64_t>(files[i].size);
 			
-			file_details_memory_.push_back(file_details(fullPath, size, 0, file_priorities_[i], i));
+			file_details_memory_.push_back(file_details(files_[i].original_name(), size, 0, file_priorities_[i], i));
 		}	
 	}		
 	
@@ -329,7 +339,10 @@ void torrent_internal::extract_filenames(boost::intrusive_ptr<libt::torrent_info
 	mutex_t::scoped_lock l(mutex_);
 			
 	if (files_.empty())
-	{
+	{		
+		libt::sha1_hash const& ih = metadata->info_hash();
+		wstring hash = from_utf8(libt::base32encode(std::string((char const*)&ih[0], 20)));
+
 		for (libt::torrent_info::file_iterator i = metadata->begin_files(), e = metadata->end_files();
 			i != e; ++i)
 		{
@@ -338,9 +351,9 @@ void torrent_internal::extract_filenames(boost::intrusive_ptr<libt::torrent_info
 
 			if (++p_orig.begin() != p_orig.end())
 			{
-				p_new /= L"incoming";
+				p_new /= hash;
 				
-				for (fs::wpath::iterator i = p_orig.begin(), e = p_orig.end(); i != e; ++i)
+				for (fs::wpath::iterator i = ++p_orig.begin(), e = p_orig.end(); i != e; ++i)
 				{
 					p_new /= *i;
 				}
@@ -369,6 +382,7 @@ void torrent_internal::extract_filenames(boost::intrusive_ptr<libt::torrent_info
 	event_log().post(shared_ptr<EventDetail>(new EventMsg(
 		hal::wform(L"Loaded names: %1%, %2%") % name_ % filename_)));
 }
+
 boost::tuple<size_t, size_t, size_t, size_t> torrent_internal::update_peers()
 {
 	mutex_t::scoped_lock l(mutex_);
@@ -415,6 +429,7 @@ void torrent_internal::apply_settings()
 	apply_tracker_login();
 	apply_file_priorities();
 	apply_resolve_countries();
+	apply_file_names();
 }
 
 void torrent_internal::apply_transfer_speed()
@@ -506,6 +521,22 @@ void torrent_internal::apply_file_priorities()
 		
 		HAL_DEV_MSG(L"Applying File Priorities");
 	}
+}
+
+void torrent_internal::apply_file_names()
+{		
+	mutex_t::scoped_lock l(mutex_);
+
+	if (in_session() && !files_.empty() &&
+		(files_.size() == info_memory_->num_files())) 
+	{
+		for (int i = 0; i < info_memory_->num_files(); ++i)
+		{
+			handle_.rename_file(i, files_[i].current_name());
+		}
+		
+		HAL_DEV_MSG(L"Applying File Names");
+	}
 }	
 
 void torrent_internal::apply_resolve_countries()
@@ -518,7 +549,6 @@ void torrent_internal::apply_resolve_countries()
 		HAL_DEV_MSG(hal::wform(L"Applying Resolve Countries %1%") % resolve_countries_);
 	}
 }
-
 
 void torrent_internal::apply_queue_position()
 {

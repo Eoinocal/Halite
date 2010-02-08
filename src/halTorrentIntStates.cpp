@@ -85,9 +85,9 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	t_i.in_session_ = true;
 
 	if (evt.pause())
-		return transit< paused >();
+		return transit<paused>();
 	else
-		return transit< active >();
+		return transit<active>();
 
 }
 
