@@ -24,7 +24,7 @@ HWND FileListView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowNa
 	DWORD dwStyle, DWORD dwExStyle,
 	ATL::_U_MENUorID MenuOrID, LPVOID lpCreateParam)
 {
-	HWND hwnd = listClass::Create(hWndParent, rect.m_lpRect, szWindowName, dwStyle|LVS_OWNERDATA, dwExStyle, MenuOrID.m_hMenu, lpCreateParam);
+	HWND hwnd = listClass::Create(hWndParent, rect.m_lpRect, szWindowName, dwStyle|LVS_OWNERDATA|LVS_EDITLABELS, dwExStyle, MenuOrID.m_hMenu, lpCreateParam);
 	assert(hwnd);
 	
 	WTL::CMenuHandle menu;
@@ -100,6 +100,30 @@ LRESULT FileListView::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 	}
 	
 	return 0;
+}
+
+LRESULT FileListView::OnBeginLabelEdit(int i, LPNMHDR pnmh, BOOL&)
+{		
+	HAL_DEV_MSG(hal::wform(L"OnBeginLabelEdit(int i = %1%)") % i);
+
+	hal::try_update_lock<listClass> lock(this);
+	if (lock) 
+	{	
+		NMLVDISPINFO* nmlv = (NMLVDISPINFO*)pnmh;
+
+		return false;
+	}
+
+	//
+
+	return false;
+}
+
+LRESULT FileListView::OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&)
+{	
+	HAL_DEV_MSG(hal::wform(L"OnEndLabelEdit(int i = %1%)") % i);
+
+	return false;
 }
 
 LRESULT FileListView::OnSortChanged(int, LPNMHDR pnmh, BOOL&)
@@ -189,7 +213,7 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	if (hal::bit::torrent t = hal::bittorrent::Instance().get(hal::bittorrent::Instance().torrentDetails().focused_torrent()))
 		t.file_priorities = std::pair<std::vector<int>, int>(indices, priority);
 	
-	hal::try_update_lock<thisClass> lock(*this);
+	hal::try_update_lock<thisClass> lock(this);
 	if (lock) do_ui_update_();
 }
 
@@ -216,7 +240,7 @@ void FileTreeView::determineFocused()
 
 LRESULT FileTreeView::OnSelChanged(int, LPNMHDR pnmh, BOOL&)
 {	
-	hal::try_update_lock<thisClass> lock(*this);
+	hal::try_update_lock<thisClass> lock(this);
 	if (lock)
 	{		
 		determineFocused();
@@ -313,7 +337,7 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 		return;
 	}
 	
-	hal::try_update_lock<FileListView::listClass> lock(list_);
+	hal::try_update_lock<FileListView::listClass> lock(&list_);
 	if (lock) 
 	{
 		hal::file_details_vec all_files = focused_torrent()->get_file_details();	
@@ -382,7 +406,7 @@ void AdvFilesDialog::focusChanged(const hal::torrent_details_ptr pT)
 
 	std::sort(fileLinks_.begin(), fileLinks_.end());
 	
-	{ 	hal::mutex_update_lock<FileTreeView> lock(tree_);
+	{ 	hal::mutex_update_lock<FileTreeView> lock(&tree_);
 	
 		treeManager_.InvalidateAll();
 		

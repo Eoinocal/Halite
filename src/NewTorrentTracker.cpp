@@ -47,7 +47,7 @@ void NewTorrent_TrackerListViewCtrl::uiUpdate(const hal::torrent_details_ptr pT)
 {
 	if (hal::bit::torrent t = hal::bittorrent::Instance().get(pT))
 	{			
-		hal::try_update_lock<listClass> lock(*this);
+		hal::try_update_lock<listClass> lock(this);
 		if (lock) 
 		{			
 			std::vector<hal::tracker_detail> trackers =	t.trackers;

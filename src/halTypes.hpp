@@ -32,7 +32,17 @@ namespace hal
 	using boost::bind;
 
 	using fs::wpath;
-	using fs::path;
+	using fs::path;	
+
+	inline boost::wformat wform(const std::wstring & f_string) 
+	{
+		using namespace boost::io;
+
+		boost::wformat fmter(f_string);
+		fmter.exceptions(no_error_bits);
+
+		return fmter;
+	}
 }
 
 #define foreach BOOST_FOREACH

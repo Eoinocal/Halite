@@ -39,13 +39,14 @@
 #include "WTLx/SelectionManager.hpp"
 #include "WTLx/ListViewIterators.hpp"
 #include "WTLx/ListViewSortMixin.hpp"
-#include "HaliteUpdateLock.hpp"
+#include "WTLx/UpdateLockable.hpp"
 
 template <class TBase, typename DataType=void*>
 class CHaliteSortListViewCtrl : 
 	public ATL::CWindowImpl<TBase, WTL::CListViewCtrl>,
 	public WTLx::ListViewIterators<CHaliteSortListViewCtrl<TBase, DataType> >,
-	public WTLx::ListViewSortMixin<CHaliteSortListViewCtrl<TBase, DataType> >
+	public WTLx::ListViewSortMixin<CHaliteSortListViewCtrl<TBase, DataType> >,
+	public hal::update_lockable<CHaliteSortListViewCtrl<TBase, DataType> >
 {
 public:
 	typedef CHaliteSortListViewCtrl<TBase, DataType> thisClass;
@@ -108,7 +109,6 @@ public:
 	
 	thisClass() :
 		header_(*this),
-		update_lock_(0),
 		auto_sort_(false),
 		descending_(false),
 		sortCol_(-1)
@@ -304,7 +304,7 @@ public:
 
 	LRESULT OnItemChanged(int, LPNMHDR pnmh, BOOL&)
 	{		
-		hal::try_update_lock<thisClass> lock(*this);
+		hal::try_update_lock<thisClass> lock(this);
 		
 //		if (lock) manager_.sync_list(true, true);
 		
@@ -502,8 +502,6 @@ public:
 	const std::vector<int>& ListColumnWidth() const { return listColumnWidth_; }
 	const std::vector<int>& ListColumnOrder() const { return listColumnOrder_; }
 	
-	bool CanUpdate() const { return updateLock_ == 0; }
-	
 	bool AutoSort() { return auto_sort_; }
 	
 	static bool is_selected (const winstl::listview_sequence::sequence_value_type& v) 
@@ -512,11 +510,7 @@ public:
 	}
 
 protected:		
-	mutable int update_lock_;
 	mutable hal::mutex_t mutex_;
-
-	friend class hal::mutex_update_lock<thisClass>;	
-	friend class hal::try_update_lock<thisClass>;	
 
 	WTL::CMenu menu_;
 	CHaliteHeaderCtrl header_;	

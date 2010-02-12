@@ -9,22 +9,26 @@
 namespace hal
 {
 
+
+template<class T>
+class update_lockable;
+
 template<class T>
 class mutex_update_lock
 {
 public:
-	mutex_update_lock(T& window) :
+	mutex_update_lock(update_lockable<T>* window) :
 		window_(window),
-		lock_(window_.mutex_)
+		lock_(window_->update_mutex_)
 	{
-		++window_.update_lock_;
+		++window_->update_lock_;
 
 //		window_.LockWindowUpdate(true);
 	}
 	
 	~mutex_update_lock()
 	{
-		if (!--window_.update_lock_)
+		if (!--window_->update_lock_)
 			unlock();
 	}
 	
@@ -35,7 +39,7 @@ public:
 	}
 	
 private:
-	T& window_;
+	update_lockable<T>* window_;
 
 	mutex_t::scoped_lock lock_;
 };
@@ -44,36 +48,37 @@ template<class T>
 class try_update_lock
 {
 public:
-	try_update_lock(T& window) :
+	try_update_lock(update_lockable<T>* window) :
 		window_(window),
-		lock_(window_.mutex_),
+		lock_(window_->update_mutex_),
 		locked_(false)
 	{
-		if (0 == window_.update_lock_)
+		if (0 == window_->update_lock_)
 		{
 			locked_ =  true;
-			++window_.update_lock_;
+			++window_->update_lock_;
 
-//			window_.LockWindowUpdate(true);
+			T* pT = static_cast<T*>(window);
+			pT->LockWindowUpdate(true);
 		}
 	}
 	
 	~try_update_lock()
 	{
-		if (locked_ && !--window_.update_lock_)
+		if (locked_ && !--window_->update_lock_)
 			unlock();
 	}
 	
 	void unlock()
 	{
-//		window_.LockWindowUpdate(false);
-//		window_.InvalidateRect(NULL, true);
+		T* pT = static_cast<T*>(window_);
+		pT->LockWindowUpdate(false);
 	}
 	
 	operator bool() const { return locked_; }
 	
 private:
-	T& window_;
+	update_lockable<T>* window_;
 
 	mutex_t::scoped_lock lock_;
 	bool locked_;

@@ -126,6 +126,8 @@ public:
 
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_GETDISPINFO, OnGetDispInfo)
 		REFLECTED_NOTIFY_CODE_HANDLER(SLVN_SORTCHANGED, OnSortChanged)
+		REFLECTED_NOTIFY_CODE_HANDLER(LVN_BEGINLABELEDIT, OnBeginLabelEdit)
+		REFLECTED_NOTIFY_CODE_HANDLER(LVN_ENDLABELEDIT, OnEndLabelEdit)
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in FileListView MSG_MAP")
 
@@ -169,9 +171,11 @@ public:
 protected:	
 	LRESULT OnGetDispInfo(int, LPNMHDR pnmh, BOOL&);
 	LRESULT OnSortChanged(int, LPNMHDR pnmh, BOOL&);
+	LRESULT OnBeginLabelEdit(int i, LPNMHDR pnmh, BOOL&);
+	LRESULT OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&);
 
 private:
-	//mutable hal::mutex_t mutex_;
+	boost::shared_ptr<hal::mutex_update_lock<thisClass> > lock_ptr_;
 
 	do_ui_update_fn do_ui_update_;
 	hal::file_details_vec files_;
@@ -181,6 +185,7 @@ private:
 class FileTreeView :
 	public ATL::CWindowImpl<FileTreeView, WTL::CTreeViewCtrlEx>,
 	public hal::IniBase<FileTreeView>,
+	public hal::update_lockable<FileTreeView>,
 	private boost::noncopyable
 {
 protected:
@@ -195,7 +200,6 @@ protected:
 public:	
 	FileTreeView(do_ui_update_fn uiu) :
 		iniClass("treeviews/advFiles", "FileTreeView"),
-		update_lock_(0),
 		do_ui_update_(uiu)
 	{}
 	
@@ -232,11 +236,7 @@ protected:
 	
 	LRESULT OnSelChanged(int, LPNMHDR pnmh, BOOL&);
 	
-	mutable int update_lock_;
 	mutable hal::mutex_t mutex_;
-
-	friend class hal::mutex_update_lock<thisClass>;	
-	friend class hal::try_update_lock<thisClass>;		
 	
 	wpath focused_;
 

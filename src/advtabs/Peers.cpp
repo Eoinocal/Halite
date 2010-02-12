@@ -29,7 +29,7 @@ LRESULT PeerListView::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 
 	HAL_DEV_SORT_MSG(hal::wform(L"OnGetDispInfo index = %1% size = %2%") % pdi->item.iItem % peer_details_.size());
 
-	hal::try_update_lock<listClass> lock(*this);
+	hal::try_update_lock<listClass> lock(this);
 	if (lock && pdi->item.iItem >= 0 && peer_details_.size() >= numeric_cast<unsigned>(pdi->item.iItem)) 
 	{	
 
@@ -50,7 +50,7 @@ LRESULT PeerListView::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 
 void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 {
-	hal::try_update_lock<listClass> lock(*this);
+	hal::try_update_lock<listClass> lock(this);
 	if (lock) 
 	{		
 		selection_from_listview();
