@@ -47,16 +47,15 @@ void NewTorrent_TrackerListViewCtrl::uiUpdate(const hal::torrent_details_ptr pT)
 {
 	if (hal::bit::torrent t = hal::bittorrent::Instance().get(pT))
 	{			
-		hal::try_update_lock<listClass> lock(this);
-		if (lock) 
+		if (hal::try_update_lock<listClass> lock = hal::try_update_lock<listClass>(this)) 
 		{			
-			std::vector<hal::tracker_detail> trackers =	t.trackers;
+			std::vector<hal::tracker_detail> trackers = t.trackers;
 			DeleteAllItems();
 			
 			foreach (const hal::tracker_detail& tracker, trackers)
 			{
-				int itemPos = AddItem(0, 0, tracker.url.c_str(), 0);
-				SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());
+				int item_pos = AddItem(0, 0, tracker.url.c_str(), 0);
+				SetItemText(item_pos, 1, lexical_cast<wstring>(tracker.tier).c_str());
 			}
 		}
 	}

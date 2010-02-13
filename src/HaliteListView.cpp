@@ -110,8 +110,7 @@ bool HaliteListViewCtrl::sort_list_comparison(std::wstring l, std::wstring r, si
 
 LRESULT HaliteListViewCtrl::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 {	
-	hal::try_update_lock<listClass> lock(this);
-	if (lock) 
+	if (hal::try_update_lock<listClass> lock = hal::try_update_lock<listClass>(this)) 
 	{	
 
 	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
@@ -132,8 +131,7 @@ LRESULT HaliteListViewCtrl::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 
 void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 {
-	hal::try_update_lock<listClass> lock(this);
-	if (lock) 
+	if (hal::try_update_lock<listClass> lock = hal::try_update_lock<listClass>(this)) 
 	{		
 
 	selection_from_listview();

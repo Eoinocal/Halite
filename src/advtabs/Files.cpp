@@ -230,8 +230,8 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	if (hal::bit::torrent t = hal::bittorrent::Instance().get(hal::bittorrent::Instance().torrentDetails().focused_torrent()))
 		t.file_priorities = std::pair<std::vector<int>, int>(indices, priority);
 	
-	hal::try_update_lock<thisClass> lock(this);
-	if (lock) do_ui_update_();
+	if (hal::try_update_lock<thisClass> lock = hal::try_update_lock<thisClass>(this)) 
+		do_ui_update_();
 }
 
 void FileTreeView::determineFocused()
@@ -257,12 +257,12 @@ void FileTreeView::determineFocused()
 
 LRESULT FileTreeView::OnSelChanged(int, LPNMHDR pnmh, BOOL&)
 {	
-	hal::try_update_lock<thisClass> lock(this);
-	if (lock)
+	if (hal::try_update_lock<thisClass> lock = hal::try_update_lock<thisClass>(this))
 	{		
 		determineFocused();
 		do_ui_update_();
-	}	
+	}
+
 	return 0;
 }
 
@@ -354,8 +354,7 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 		return;
 	}
 	
-	hal::try_update_lock<FileListView::listClass> lock(&list_);
-	if (lock) 
+	if (hal::try_update_lock<FileListView::listClass> lock = hal::try_update_lock<FileListView::listClass>(&list_)) 
 	{
 		hal::file_details_vec all_files = focused_torrent()->get_file_details();	
 		FileListView::scoped_files list_files = list_.files();
@@ -405,7 +404,7 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 			}
 		}
 	}
-
+	
 	list_.InvalidateRect(NULL,true);
 }
 

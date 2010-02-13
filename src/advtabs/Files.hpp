@@ -161,7 +161,6 @@ public:
 		ar & boost::serialization::make_nvp("listview", 
 			boost::serialization::base_object<listClass>(*this));
 	}
-
 	
 	void setFocused(const hal::torrent_details_ptr& f) { focused_ = f; }
 	const hal::torrent_details_ptr focused() { return focused_; }

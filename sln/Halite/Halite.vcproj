@@ -1920,6 +1920,10 @@
 					RelativePath="..\..\src\WTLx\UpdateLockable.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\src\WTLx\UpdateLocks.hpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
