@@ -28,11 +28,11 @@ class TrackerListViewCtrl :
 	public WTLx::GenericAddListView<TrackerListViewCtrl, false, ID_TLVM_NEW, ID_TLVM_EDIT, ID_TLVM_DELETE>,
 	private boost::noncopyable
 {
-	typedef hal::IniBase<TrackerListViewCtrl> iniClass;
-	typedef CHaliteSortListViewCtrl<TrackerListViewCtrl> listClass;
-	typedef WTLx::GenericAddListView<TrackerListViewCtrl, false, ID_TLVM_NEW, ID_TLVM_EDIT, ID_TLVM_DELETE> genericAddlistClass;
+	typedef hal::IniBase<TrackerListViewCtrl> ini_class_t;
+	typedef CHaliteSortListViewCtrl<TrackerListViewCtrl> list_class_t;
+	typedef WTLx::GenericAddListView<TrackerListViewCtrl, false, ID_TLVM_NEW, ID_TLVM_EDIT, ID_TLVM_DELETE> genericAddlist_class_t;
 
-	friend class listClass;
+	friend class list_class_t;
 	
 public:
 	enum { 
@@ -42,7 +42,7 @@ public:
 	};
 	
 	TrackerListViewCtrl(boost::filesystem::path location, std::string name) :
-		iniClass(location, name)
+		ini_class_t(location, name)
 	{}
 
 	BEGIN_MSG_MAP_EX(TrackerListViewCtrl)
@@ -53,8 +53,8 @@ public:
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in TrackerListViewCtrl MSG_MAP")
 
-		CHAIN_MSG_MAP(genericAddlistClass)
-		CHAIN_MSG_MAP(listClass)
+		CHAIN_MSG_MAP(genericAddlist_class_t)
+		CHAIN_MSG_MAP(list_class_t)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 
@@ -66,7 +66,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
+		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
 	}
 
 	LRESULT OnPrimary(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);

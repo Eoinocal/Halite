@@ -59,10 +59,8 @@ class HaliteWindow :
 	public hal::IniBase<HaliteWindow>,
 	private boost::noncopyable
 {
-	typedef HaliteWindow thisClass;
-	typedef WTL::CFrameWindowImpl<thisClass> frameClass;
-	typedef WTL::CUpdateUI<thisClass> updateUiClass;
-	typedef CDropFileTarget<thisClass> dropClass;
+	typedef HaliteWindow this_class_t;
+	typedef WTL::CFrameWindowImpl<this_class_t> frame_class_t;
 
 public:
 	HaliteWindow(unsigned ARE_YOU_ME);
@@ -72,7 +70,7 @@ public:
 
 //	ui_signal& ui() { return ui_; }
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try 
 		{
 		MSG_WM_CREATE(OnCreate)
@@ -112,9 +110,9 @@ public:
 		HAL_ALL_EXCEPTION_CATCH(L"in HaliteWindow MSG_MAP")
 
 		REFLECT_NOTIFICATIONS()
-		CHAIN_MSG_MAP(frameClass)
-		CHAIN_MSG_MAP(updateUiClass)
-		CHAIN_MSG_MAP(dropClass)
+		CHAIN_MSG_MAP(frame_class_t)
+		CHAIN_MSG_MAP(WTL::CUpdateUI<this_class_t>)
+		CHAIN_MSG_MAP(CDropFileTarget<this_class_t>)
 	END_MSG_MAP()
 
 	BEGIN_UPDATE_UI_MAP(HaliteWindow)
@@ -151,7 +149,7 @@ public:
 	LRESULT OnAreYouMe(UINT, WPARAM, LPARAM, BOOL&);
 	
 protected:
-	typedef hal::IniBase<HaliteWindow> iniClass;
+	typedef hal::IniBase<HaliteWindow> ini_class_t;
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 

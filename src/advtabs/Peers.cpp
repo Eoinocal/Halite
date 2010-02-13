@@ -25,7 +25,7 @@ bool PeerListView::sort_list_comparison(std::wstring l, std::wstring r, size_t i
 
 LRESULT PeerListView::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 {	
-	hal::mutex_t::scoped_lock l(listClass::mutex_);
+	hal::mutex_t::scoped_lock l(list_class_t::mutex_);
 
 	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
 
@@ -51,7 +51,7 @@ LRESULT PeerListView::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 
 void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 {
-	if (hal::try_update_lock<listClass> lock = hal::try_update_lock<listClass>(this)) 
+	if (hal::try_update_lock<list_class_t> lock = hal::try_update_lock<list_class_t>(this)) 
 	{		
 		selection_from_listview();
 		
@@ -111,7 +111,7 @@ LRESULT AdvPeerDialog::OnInitDialog(HWND, LPARAM)
 {	
 	peerList_.SubclassWindow(GetDlgItem(HAL_PEERLIST));
 	
-	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);	
+	resize_class_t::DlgResize_Init(false, true, WS_CLIPCHILDREN);	
 	
 	return 0;
 }

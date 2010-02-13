@@ -41,8 +41,8 @@ class DateTimePicker :
 	public ATL::CWindowImpl<DateTimePicker, WTL::CDateTimePickerCtrl>
 {
 protected:
-	typedef DateTimePicker thisClass;
-	typedef ATL::CWindowImpl<thisClass, WTL::CDateTimePickerCtrl> baseClass;
+	typedef DateTimePicker this_class_t;
+	typedef ATL::CWindowImpl<this_class_t, WTL::CDateTimePickerCtrl> base_class_t;
 
 public:
 	typedef boost::function<void ()> date_time_changed_fn;
@@ -51,7 +51,7 @@ public:
 		date_time_changed_(dtc)
 	{}
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		REFLECTED_NOTIFY_CODE_HANDLER_EX(DTN_DATETIMECHANGE, OnDateTimeChange)
@@ -71,7 +71,7 @@ public:
 	void Attach(HWND hWndNew)
 	{
 		ATLASSERT(::IsWindow(hWndNew));
-		baseClass::SubclassWindow(hWndNew);
+		base_class_t::SubclassWindow(hWndNew);
 	}
 
 private:
@@ -84,9 +84,9 @@ class TimePickerDlg :
 	public ATL::CAutoSizeWindow<TimePickerDlg, true>
 {
 protected:
-	typedef TimePickerDlg thisClass;
-	typedef ATL::CDialogImpl<thisClass> baseClass;
-	typedef ATL::CAutoSizeWindow<thisClass, true> autosizeClass;
+	typedef TimePickerDlg this_class_t;
+	typedef ATL::CDialogImpl<this_class_t> base_class_t;
+	typedef ATL::CAutoSizeWindow<this_class_t, true> autosizeClass;
 public:
 	enum { IDD = HAL_TIME_DLG };
 
@@ -111,7 +111,7 @@ public:
 		return this->IsDialogMessage(pMsg);
 	}
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		MSG_WM_INITDIALOG(onInitDialog)
@@ -136,7 +136,7 @@ public:
 		WMB_ROW(_auto, 0 , IDOK, IDCANCEL), \
 	WMB_END()
 
-	BEGIN_WINDOW_MAP(thisClass, 6, 6, 3, 3)
+	BEGIN_WINDOW_MAP(this_class_t, 6, 6, 3, 3)
 		WMB_HEAD(WMB_COL(80), WMB_COL(_exp), WMB_COL(_exp)),
 		//	WMB_ROW(_auto, HAL_TIME_LABEL_SET_ACTION, _r, _r), 
 			WMB_ROW(_auto, HAL_TIME_EDITABOUT, HAL_TIME_ACTIONS), 

@@ -20,13 +20,13 @@ class GenericAddDialog :
 	private hal::IniBase<GenericAddDialog<TBase, dialogIDD> >,
 	private boost::noncopyable
 {
-	typedef GenericAddDialog<TBase, dialogIDD> thisClass;
-	typedef hal::IniBase<thisClass> iniClass;
+	typedef GenericAddDialog<TBase, dialogIDD> this_class_t;
+	typedef hal::IniBase<this_class_t> ini_class_t;
 	
 public:
 	GenericAddDialog(std::wstring title, boost::filesystem::path location, std::string name) :
 		title_(title),
-		iniClass(location, name),
+		ini_class_t(location, name),
 		rect_(0,0,0,0)
 	{
 		load_from_ini();	
@@ -39,7 +39,7 @@ public:
 	
 	enum { IDD = dialogIDD };
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		MSG_WM_INITDIALOG(OnInitDialog)
@@ -121,15 +121,15 @@ class GenericAddContainerDialog :
 	private hal::IniBase<GenericAddContainerDialog<TBase, dlgClass, dialogIDD> >,
 	private boost::noncopyable
 {
-	typedef GenericAddContainerDialog<TBase, dlgClass, dialogIDD> thisClass;
-	typedef WTL::CDialogResize<thisClass> resizeClass;
-	typedef hal::IniBase<thisClass> iniClass;
+	typedef GenericAddContainerDialog<TBase, dlgClass, dialogIDD> this_class_t;
+	typedef WTL::CDialogResize<this_class_t> resize_class_t;
+	typedef hal::IniBase<this_class_t> ini_class_t;
 	
 public:
 	GenericAddContainerDialog(std::wstring title, boost::filesystem::path location, std::string name, dlgClass& dlg) :
 		dlg_(dlg),
 		title_(title),
-		iniClass(location, name),
+		ini_class_t(location, name),
 		rect_(0,0,0,0)
 	{
 		load_from_ini();	
@@ -142,7 +142,7 @@ public:
 	
 	enum { IDD = HAL_GENERIC_HOLDER };
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		MSG_WM_INITDIALOG(OnInitDialog)
@@ -153,10 +153,10 @@ public:
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in GenericAddContainerDialog MSG_MAP")
 
-		CHAIN_MSG_MAP(resizeClass)
+		CHAIN_MSG_MAP(resize_class_t)
 	END_MSG_MAP()
 
-	BEGIN_DLGRESIZE_MAP(thisClass)
+	BEGIN_DLGRESIZE_MAP(this_class_t)
 		DLGRESIZE_CONTROL(dialogIDD, DLSZ_SIZE_X|DLSZ_SIZE_Y)
 
 		DLGRESIZE_CONTROL(IDOK, DLSZ_MOVE_X|DLSZ_MOVE_Y)
@@ -170,7 +170,7 @@ public:
 		dlg_.Create(*pT);
 		dlg_.SetDlgCtrlID(dialogIDD);
 
-		resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
+		resize_class_t::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 
 		dlg_.ShowWindow(SW_SHOW);
 

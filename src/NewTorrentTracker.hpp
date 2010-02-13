@@ -39,19 +39,19 @@ class NewTorrent_TrackerAddDialog :
 	public WTLx::WinDataExchangeEx<NewTorrent_TrackerAddDialog>
 {
 public:
-	typedef NewTorrent_TrackerAddDialog thisClass;
-	typedef WTLx::GenericAddDialog<thisClass, HAL_TRACKEDIT> genericBaseClass;
-	typedef WTL::CDialogResize<thisClass> resizeClass;
+	typedef NewTorrent_TrackerAddDialog this_class_t;
+	typedef WTLx::GenericAddDialog<this_class_t, HAL_TRACKEDIT> generic_dlg_class_t;
+	typedef WTL::CDialogResize<this_class_t> resize_class_t;
 	
 public:
 	NewTorrent_TrackerAddDialog(wstring title, hal::tracker_detail& tracker) :
-		genericBaseClass(title, "genericAddDlgs/NewTorrentAddTracker", "NewTorrentAddTracker"),
+		generic_dlg_class_t(title, "genericAddDlgs/NewTorrentAddTracker", "NewTorrentAddTracker"),
 		tracker_(tracker)
 	{}
 
 	BEGIN_MSG_MAP_EX(TrackerAddDialog)
-		CHAIN_MSG_MAP(resizeClass)
-		CHAIN_MSG_MAP(genericBaseClass)
+		CHAIN_MSG_MAP(resize_class_t)
+		CHAIN_MSG_MAP(generic_dlg_class_t)
 	END_MSG_MAP()
 
 	BEGIN_DDX_MAP(TrackerAddDialog)
@@ -59,7 +59,7 @@ public:
 		DDX_INT(IDC_TRACKER_EDIT_TIER, tracker_.tier)
 	END_DDX_MAP()	
 
-	BEGIN_DLGRESIZE_MAP(thisClass)
+	BEGIN_DLGRESIZE_MAP(this_class_t)
 		DLGRESIZE_CONTROL(IDC_TRACKER_EDIT_URL, DLSZ_SIZE_X)
 		DLGRESIZE_CONTROL(IDC_TRACKER_EDIT_TIER, DLSZ_MOVE_X)
 		DLGRESIZE_CONTROL(IDC_TRACKER_TEXT_URL, DLSZ_SIZE_X)
@@ -79,12 +79,12 @@ class NewTorrent_TrackerListViewCtrl :
 	public WTLx::GenericAddListView<NewTorrent_TrackerListViewCtrl, true>,
 	private boost::noncopyable
 {
-	typedef NewTorrent_TrackerListViewCtrl thisClass;
-	typedef hal::IniBase<thisClass> iniClass;
-	typedef CHaliteSortListViewCtrl<thisClass> listClass;
-	typedef WTLx::GenericAddListView<thisClass, true> genericAddlistClass;
+	typedef NewTorrent_TrackerListViewCtrl this_class_t;
+	typedef hal::IniBase<this_class_t> ini_class_t;
+	typedef CHaliteSortListViewCtrl<this_class_t> list_class_t;
+	typedef WTLx::GenericAddListView<this_class_t, true> genericAddlist_class_t;
 
-	friend class listClass;
+	friend class list_class_t;
 	
 public:
 	enum { 
@@ -94,7 +94,7 @@ public:
 	};
 	
 	NewTorrent_TrackerListViewCtrl() :
-		iniClass("listviews/NewTorrent", "NewTorrentListView")
+		ini_class_t("listviews/NewTorrent", "NewTorrentListView")
 	{}
 
 	BEGIN_MSG_MAP_EX(TrackerListViewCtrl)
@@ -104,8 +104,8 @@ public:
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in NewTorrent_TrackerListViewCtrl MSG_MAP")
 
-		CHAIN_MSG_MAP(genericAddlistClass)
-		CHAIN_MSG_MAP(listClass)
+		CHAIN_MSG_MAP(genericAddlist_class_t)
+		CHAIN_MSG_MAP(list_class_t)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 
@@ -116,7 +116,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
+		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
 	}
 
 	void newItem();

@@ -21,9 +21,9 @@ class ThemeTestDialog :
 	public WTL::CDialogResize<ThemeTestDialog>
 {
 protected:
-	typedef ThemeTestDialog thisClass;
-	typedef CHalTabPageImpl<ThemeTestDialog> baseClass;
-	typedef WTL::CDialogResize<ThemeTestDialog> resizeClass;
+	typedef ThemeTestDialog this_class_t;
+	typedef CHalTabPageImpl<ThemeTestDialog> base_class_t;
+	typedef WTL::CDialogResize<ThemeTestDialog> resize_class_t;
 public:
 	enum { IDD = HAL_THEMETEST };
 
@@ -35,17 +35,17 @@ public:
 		return this->IsDialogMessage(pMsg);
 	}
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		MSG_WM_INITDIALOG(onInitDialog)
 
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
 
-		CHAIN_MSG_MAP(baseClass)
-		CHAIN_MSG_MAP(resizeClass)
+		CHAIN_MSG_MAP(base_class_t)
+		CHAIN_MSG_MAP(resize_class_t)
 	END_MSG_MAP()
 
-	BEGIN_DLGRESIZE_MAP(thisClass)
+	BEGIN_DLGRESIZE_MAP(this_class_t)
 
 	END_DLGRESIZE_MAP()
 

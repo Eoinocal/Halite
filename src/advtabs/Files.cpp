@@ -16,7 +16,7 @@
 #define TVS_EX_DOUBLEBUFFER 0x0004
 
 FileListView::FileListView(do_ui_update_fn uiu) :
-	iniClass("listviews/advFiles", "FileListView"),
+	ini_class_t("listviews/advFiles", "FileListView"),
 	do_ui_update_(uiu)
 {}
 
@@ -24,7 +24,7 @@ HWND FileListView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowNa
 	DWORD dwStyle, DWORD dwExStyle,
 	ATL::_U_MENUorID MenuOrID, LPVOID lpCreateParam)
 {
-	HWND hwnd = listClass::Create(hWndParent, rect.m_lpRect, szWindowName, dwStyle|LVS_OWNERDATA|LVS_EDITLABELS, dwExStyle, MenuOrID.m_hMenu, lpCreateParam);
+	HWND hwnd = list_class_t::Create(hWndParent, rect.m_lpRect, szWindowName, dwStyle|LVS_OWNERDATA|LVS_EDITLABELS, dwExStyle, MenuOrID.m_hMenu, lpCreateParam);
 	assert(hwnd);
 	
 	WTL::CMenuHandle menu;
@@ -106,7 +106,7 @@ LRESULT FileListView::OnBeginLabelEdit(int i, LPNMHDR pnmh, BOOL&)
 {		
 	HAL_DEV_MSG(hal::wform(L"OnBeginLabelEdit(int i = %1%)") % i);
 
-	lock_ptr_.reset(new hal::try_update_lock<listClass>(this));
+	lock_ptr_.reset(new hal::try_update_lock<list_class_t>(this));
 	if (*lock_ptr_) 
 	{	
 		NMLVDISPINFO* nmlv = (NMLVDISPINFO*)pnmh;
@@ -230,7 +230,7 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	if (hal::bit::torrent t = hal::bittorrent::Instance().get(hal::bittorrent::Instance().torrentDetails().focused_torrent()))
 		t.file_priorities = std::pair<std::vector<int>, int>(indices, priority);
 	
-	if (hal::try_update_lock<thisClass> lock = hal::try_update_lock<thisClass>(this)) 
+	if (hal::try_update_lock<this_class_t> lock = hal::try_update_lock<this_class_t>(this)) 
 		do_ui_update_();
 }
 
@@ -257,7 +257,7 @@ void FileTreeView::determineFocused()
 
 LRESULT FileTreeView::OnSelChanged(int, LPNMHDR pnmh, BOOL&)
 {	
-	if (hal::try_update_lock<thisClass> lock = hal::try_update_lock<thisClass>(this))
+	if (hal::try_update_lock<this_class_t> lock = hal::try_update_lock<this_class_t>(this))
 	{		
 		determineFocused();
 		do_ui_update_();
@@ -267,9 +267,9 @@ LRESULT FileTreeView::OnSelChanged(int, LPNMHDR pnmh, BOOL&)
 }
 
 AdvFilesDialog::AdvFilesDialog(HaliteWindow& halWindow) :
-	dialogBaseClass(halWindow),
+	dlg_base_class_t(halWindow),
 	treeManager_(tree_),
-	iniClass("AdvFilesDlg", "settings"),
+	ini_class_t("AdvFilesDlg", "settings"),
 	splitterPos(150),
 	tree_(boost::bind(&AdvFilesDialog::doUiUpdate, this)),
 	list_(boost::bind(&AdvFilesDialog::doUiUpdate, this))
@@ -279,7 +279,7 @@ AdvFilesDialog::AdvFilesDialog(HaliteWindow& halWindow) :
 
 LRESULT AdvFilesDialog::onInitDialog(HWND, LPARAM)
 {
-	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
+	resize_class_t::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 	
 	WTL::CRect rc; GetClientRect(&rc);
 	
@@ -307,7 +307,7 @@ LRESULT AdvFilesDialog::onInitDialog(HWND, LPARAM)
 
 void AdvFilesDialog::DlgResize_UpdateLayout(int cxWidth, int cyHeight)
 {
-	resizeClass::DlgResize_UpdateLayout(cxWidth, cyHeight);
+	resize_class_t::DlgResize_UpdateLayout(cxWidth, cyHeight);
 	
 	WTL::CRect rect; ::GetClientRect(GetDlgItem(HAL_CONTAINER), &rect);
 	
@@ -354,7 +354,7 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 		return;
 	}
 	
-	if (hal::try_update_lock<FileListView::listClass> lock = hal::try_update_lock<FileListView::listClass>(&list_)) 
+	if (hal::try_update_lock<FileListView::list_class_t> lock = hal::try_update_lock<FileListView::list_class_t>(&list_)) 
 	{
 		hal::file_details_vec all_files = focused_torrent()->get_file_details();	
 		FileListView::scoped_files list_files = list_.files();

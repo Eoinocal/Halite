@@ -34,9 +34,9 @@ class DebugDialog :
 	public CDialogResize<DebugDialog>
 {
 private:
-	typedef DebugDialog thisClass;
-	typedef CDialogImpl<thisClass> baseClass;
-	typedef CDialogResize<thisClass> resizeClass;
+	typedef DebugDialog this_class_t;
+	typedef CDialogImpl<this_class_t> base_class_t;
+	typedef CDialogResize<this_class_t> resize_class_t;
 
 	LogEdit logEdit;
 
@@ -48,7 +48,7 @@ public:
 		return this->IsDialogMessage(pMsg);
 	}
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
@@ -59,17 +59,17 @@ public:
 		if(uMsg == WM_FORWARDMSG)
 			if(PreTranslateMessage((LPMSG)lParam)) return TRUE;
 
-		CHAIN_MSG_MAP(resizeClass)
+		CHAIN_MSG_MAP(resize_class_t)
 
 	END_MSG_MAP()
 
-	BEGIN_DLGRESIZE_MAP(thisClass)
+	BEGIN_DLGRESIZE_MAP(this_class_t)
 		DLGRESIZE_CONTROL(ED_CON, DLSZ_SIZE_X | DLSZ_SIZE_Y)
 	END_DLGRESIZE_MAP()
 
 	LRESULT OnInitDialog(UINT, WPARAM, LPARAM, BOOL&)
 	{
-		resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
+		resize_class_t::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 		logEdit.SubclassWindow(GetDlgItem(ED_CON));
 
 		return true;

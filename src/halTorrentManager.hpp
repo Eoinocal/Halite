@@ -33,8 +33,8 @@ namespace hal
 class torrent_manager : 
 	public hal::IniBase<torrent_manager>
 {
-	typedef torrent_manager thisClass;
-	typedef hal::IniBase<thisClass> iniClass;
+	typedef torrent_manager this_class_t;
+	typedef hal::IniBase<this_class_t> ini_class_t;
 
 	struct torrent_holder
 	{
@@ -100,7 +100,7 @@ public:
 	typedef torrent_multi_index::index<by_name>::type torrent_by_name;
 	
 	torrent_manager(ini_file& ini) :
-		iniClass("bittorrent", "torrent_manager", ini)
+		ini_class_t("bittorrent", "torrent_manager", ini)
 	{}
 
 	~torrent_manager()

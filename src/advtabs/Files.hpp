@@ -83,14 +83,14 @@ class FileListView :
 	private boost::noncopyable
 {
 public:
-	typedef FileListView thisClass;
-	typedef const hal::file_details dataClass;
-	typedef CHaliteSortListViewCtrl<thisClass, dataClass> listClass;
-	typedef hal::IniBase<thisClass> iniClass;
+	typedef FileListView this_class_t;
+	typedef const hal::file_details data_class_t;
+	typedef CHaliteSortListViewCtrl<this_class_t, data_class_t> list_class_t;
+	typedef hal::IniBase<this_class_t> ini_class_t;
 	
 	typedef boost::function<void ()> do_ui_update_fn;
 
-	friend class listClass;
+	friend class list_class_t;
 
 public:	
 	class scoped_files
@@ -117,7 +117,7 @@ public:
 		LISTVIEW_ID_COLUMNWIDTHS = 0
 	};
 	
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		MSG_WM_DESTROY(OnDestroy)
@@ -131,7 +131,7 @@ public:
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in FileListView MSG_MAP")
 
-		CHAIN_MSG_MAP(listClass)
+		CHAIN_MSG_MAP(list_class_t)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 
@@ -159,13 +159,13 @@ public:
 	void serialize(Archive& ar, const unsigned int version)
 	{
 		ar & boost::serialization::make_nvp("listview", 
-			boost::serialization::base_object<listClass>(*this));
+			boost::serialization::base_object<list_class_t>(*this));
 	}
 	
 	void setFocused(const hal::torrent_details_ptr& f) { focused_ = f; }
 	const hal::torrent_details_ptr focused() { return focused_; }
 
-	scoped_files files() { return scoped_files(listClass::mutex_, &files_); }
+	scoped_files files() { return scoped_files(list_class_t::mutex_, &files_); }
 
 protected:	
 	LRESULT OnGetDispInfo(int, LPNMHDR pnmh, BOOL&);
@@ -174,7 +174,7 @@ protected:
 	LRESULT OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&);
 
 private:
-	boost::shared_ptr<hal::try_update_lock<listClass> > lock_ptr_;
+	boost::shared_ptr<hal::try_update_lock<list_class_t> > lock_ptr_;
 
 	do_ui_update_fn do_ui_update_;
 	hal::file_details_vec files_;
@@ -188,9 +188,9 @@ class FileTreeView :
 	private boost::noncopyable
 {
 protected:
-	typedef FileTreeView thisClass;
-	typedef ATL::CWindowImpl<thisClass, WTL::CTreeViewCtrlEx> treeClass;
-	typedef hal::IniBase<thisClass> iniClass;
+	typedef FileTreeView this_class_t;
+	typedef ATL::CWindowImpl<this_class_t, WTL::CTreeViewCtrlEx> treeClass;
+	typedef hal::IniBase<this_class_t> ini_class_t;
 	
 	typedef boost::function<void ()> do_ui_update_fn;
 
@@ -198,11 +198,11 @@ protected:
 	
 public:	
 	FileTreeView(do_ui_update_fn uiu) :
-		iniClass("treeviews/advFiles", "FileTreeView"),
+		ini_class_t("treeviews/advFiles", "FileTreeView"),
 		do_ui_update_(uiu)
 	{}
 	
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		MSG_WM_DESTROY(OnDestroy)
@@ -354,11 +354,11 @@ class AdvFilesDialog :
 	private boost::noncopyable
 {
 protected:
-	typedef AdvFilesDialog thisClass;
-	typedef CHalTabPageImpl<thisClass> baseClass;
-	typedef WTL::CDialogResize<thisClass> resizeClass;
-	typedef CHaliteDialogBase<thisClass> dialogBaseClass;
-	typedef hal::IniBase<thisClass> iniClass;
+	typedef AdvFilesDialog this_class_t;
+	typedef CHalTabPageImpl<this_class_t> base_class_t;
+	typedef WTL::CDialogResize<this_class_t> resize_class_t;
+	typedef CHaliteDialogBase<this_class_t> dlg_base_class_t;
+	typedef hal::IniBase<this_class_t> ini_class_t;
 
 public:
 	enum { IDD = HAL_ADVFILES };
@@ -372,7 +372,7 @@ public:
 		return this->IsDialogMessage(pMsg);
 	}
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		MSG_WM_INITDIALOG(onInitDialog)
@@ -384,13 +384,13 @@ public:
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
 		
-		CHAIN_MSG_MAP(dialogBaseClass)
-		CHAIN_MSG_MAP(resizeClass)
-		CHAIN_MSG_MAP(baseClass)
+		CHAIN_MSG_MAP(dlg_base_class_t)
+		CHAIN_MSG_MAP(resize_class_t)
+		CHAIN_MSG_MAP(base_class_t)
 		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
 
-	BEGIN_DLGRESIZE_MAP(thisClass)
+	BEGIN_DLGRESIZE_MAP(this_class_t)
 		DLGRESIZE_CONTROL(HAL_CONTAINER, DLSZ_SIZE_X|DLSZ_SIZE_Y|DLSZ_REPAINT)
 	END_DLGRESIZE_MAP()
 

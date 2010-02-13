@@ -22,7 +22,7 @@
 #include "halConfig.hpp"
 
 HaliteWindow::HaliteWindow(unsigned areYouMe = 0) :
-	iniClass("HaliteWindow", "HaliteWindow"),
+	ini_class_t("HaliteWindow", "HaliteWindow"),
 	haliteList(*this),
 	WM_AreYouMe_(areYouMe),
 	splitterPos(100),
@@ -50,7 +50,7 @@ HaliteWindow::~HaliteWindow()
 
 BOOL HaliteWindow::PreTranslateMessage(MSG* pMsg)
 {
-	if(CFrameWindowImpl<thisClass>::PreTranslateMessage(pMsg))
+	if(CFrameWindowImpl<this_class_t>::PreTranslateMessage(pMsg))
 		return TRUE;
 
 	if (!advancedUI)
@@ -312,7 +312,7 @@ void HaliteWindow::issueUiUpdate()
 	{
 	std::set<wstring> s;
 
-	foreach(const HaliteListViewCtrl::listClass::list_value_type val, std::make_pair(haliteList.is_selected_begin(), haliteList.is_selected_end()))
+	foreach(const HaliteListViewCtrl::list_class_t::list_value_type val, std::make_pair(haliteList.is_selected_begin(), haliteList.is_selected_end()))
 	{
 		s.insert(val.text().c_str());
 	}

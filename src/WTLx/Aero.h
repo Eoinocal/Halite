@@ -225,7 +225,7 @@ class ATL_NO_VTABLE CAeroFrameImpl :
 	public CFrameWindowImpl<T, TBase, TWinTraits>,
 	public CAeroImpl<T>
 {
-	typedef CFrameWindowImpl<T, TBase, TWinTraits> _baseClass;
+	typedef CFrameWindowImpl<T, TBase, TWinTraits> _base_class_t;
 public:
 	CAeroFrameImpl(LPCWSTR lpstrThemeClassList = L"window") : CAeroImpl(lpstrThemeClassList)
 	{}
@@ -304,19 +304,19 @@ public:
 
 	static HWND CreateSimpleReBarCtrl(HWND hWndParent, DWORD dwStyle = ATL_SIMPLE_REBAR_STYLE, UINT nID = ATL_IDW_TOOLBAR)
 	{
-		return _baseClass::CreateSimpleReBarCtrl(hWndParent, dwStyle | CCS_NOPARENTALIGN, nID);
+		return _base_class_t::CreateSimpleReBarCtrl(hWndParent, dwStyle | CCS_NOPARENTALIGN, nID);
 	}
 
 	BOOL CreateSimpleReBar(DWORD dwStyle = ATL_SIMPLE_REBAR_STYLE, UINT nID = ATL_IDW_TOOLBAR)
 	{
 		ATLASSERT(!::IsWindow(m_hWndToolBar));
-		m_hWndToolBar = _baseClass::CreateSimpleReBarCtrl(m_hWnd, dwStyle | CCS_NOPARENTALIGN, nID);
+		m_hWndToolBar = _base_class_t::CreateSimpleReBarCtrl(m_hWnd, dwStyle | CCS_NOPARENTALIGN, nID);
 		return (m_hWndToolBar != NULL);
 	}
 
 	BEGIN_MSG_MAP(CAeroFrameImpl)
 		CHAIN_MSG_MAP(CAeroImpl<T>)
-		CHAIN_MSG_MAP(_baseClass)
+		CHAIN_MSG_MAP(_base_class_t)
 	END_MSG_MAP()
 };
 

@@ -32,13 +32,13 @@ typedef ATL::CWinTraits<WS_CHILD|WS_VISIBLE|WS_CLIPCHILDREN|WS_CLIPSIBLINGS|LVS_
 template <class T, class TBase = CListViewCtrl, class TWinTraits = CEditListViewCtrlTraits>
 class ATL_NO_VTABLE CEditListViewCtrlImpl: public ATL::CWindowImpl<T, TBase, TWinTraits>, public CEditListViewImpl<T>
 {
-	typedef CEditListViewCtrlImpl< T, TBase, TWinTraits> thisClass;
-	typedef ATL::CWindowImpl<T, TBase, TWinTraits> baseClass;
+	typedef CEditListViewCtrlImpl< T, TBase, TWinTraits> this_class_t;
+	typedef ATL::CWindowImpl<T, TBase, TWinTraits> base_class_t;
 
 public:
 	DECLARE_WND_SUPERCLASS(NULL, TBase::GetWndClassName())
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_DBLCLK, OnDoubleClick)
 
 		DEFAULT_REFLECTION_HANDLER()
@@ -49,7 +49,7 @@ public:
 		HAL_DEV_MSG(L"SubclassWindow");
 
 		ATLASSERT(::IsWindow(hWndNew));
-		baseClass::SubclassWindow(hWndNew);
+		base_class_t::SubclassWindow(hWndNew);
 		hjk = hWndNew;
 	}
 

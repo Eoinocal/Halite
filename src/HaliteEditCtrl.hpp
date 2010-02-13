@@ -18,8 +18,8 @@ class CHaliteEditCtrl :
 	private boost::noncopyable
 {
 protected:
-	typedef CHaliteEditCtrl<T> thisClass;
-	typedef ATL::CWindowImpl<thisClass, WTL::CEdit> baseClass;
+	typedef CHaliteEditCtrl<T> this_class_t;
+	typedef ATL::CWindowImpl<this_class_t, WTL::CEdit> base_class_t;
 	
 public:
 	explicit CHaliteEditCtrl(T lwr = 0, bool include = false, bool signal = true) :
@@ -29,7 +29,7 @@ public:
 		signal_(signal)
 	{}
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		REFLECTED_COMMAND_CODE_HANDLER_EX(EN_KILLFOCUS, OnKillFocus)
@@ -44,7 +44,7 @@ public:
 	void Attach(HWND hWndNew)
 	{
 		ATLASSERT(::IsWindow(hWndNew));
-		baseClass::SubclassWindow(hWndNew);
+		base_class_t::SubclassWindow(hWndNew);
 	}
 	
 	LRESULT OnChange(UINT uNotifyCode, int nID, ATL::CWindow wndCtl)

@@ -24,8 +24,8 @@ class ProgressDialog :
 	public ATL::CDialogImpl<ProgressDialog>
 {
 protected:
-	typedef ProgressDialog thisClass;
-	typedef ATL::CDialogImpl<ProgressDialog> baseClass;
+	typedef ProgressDialog this_class_t;
+	typedef ATL::CDialogImpl<ProgressDialog> base_class_t;
 	
 	typedef boost::function<bool (hal::progress_callback fn)> threadFunction;
 

@@ -45,17 +45,17 @@ class NewTorrent_PeersAddDialog :
 	public WTLx::WinDataExchangeEx<NewTorrent_PeersAddDialog>
 {
 public:
-	typedef NewTorrent_PeersAddDialog thisClass;
-	typedef WTLx::GenericAddDialog<thisClass, HAL_PEEREDIT> genericBaseClass;
-	typedef WTL::CDialogResize<thisClass> resizeClass;
+	typedef NewTorrent_PeersAddDialog this_class_t;
+	typedef WTLx::GenericAddDialog<this_class_t, HAL_PEEREDIT> generic_dlg_class_t;
+	typedef WTL::CDialogResize<this_class_t> resize_class_t;
 	
 public:
 	NewTorrent_PeersAddDialog(wstring title, hal::web_seed_or_dht_node_detail& peer) :
-		genericBaseClass(title, "genericAddDlgs/NewTorrentAddPeers", "NewTorrentAddPeers"),
+		generic_dlg_class_t(title, "genericAddDlgs/NewTorrentAddPeers", "NewTorrentAddPeers"),
 		peer_(peer)
 	{}
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		MSG_WM_INITDIALOG(onInitDialog)
@@ -63,17 +63,17 @@ public:
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in NewTorrent_PeersAddDialog MSG_MAP")
 
-		CHAIN_MSG_MAP(resizeClass)
-		CHAIN_MSG_MAP(genericBaseClass)
+		CHAIN_MSG_MAP(resize_class_t)
+		CHAIN_MSG_MAP(generic_dlg_class_t)
 	END_MSG_MAP()
 
-	BEGIN_DDX_MAP(thisClass)
+	BEGIN_DDX_MAP(this_class_t)
 		DDX_EX_STDWSTRING(HAL_NEWT_ADD_PEERS_URL_EDIT, peer_.url);
 		DDX_INT(HAL_NEWT_ADD_DHT_PORT, peer_.port)
 		DDX_EX_STDWSTRING(HAL_NEWT_ADD_PEERS_TYP_CBOX, peer_.type)
 	END_DDX_MAP()	
 
-	BEGIN_DLGRESIZE_MAP(thisClass)
+	BEGIN_DLGRESIZE_MAP(this_class_t)
 		DLGRESIZE_CONTROL(HAL_NEWT_ADD_PEERS_URL_EDIT, DLSZ_SIZE_X)
 		DLGRESIZE_CONTROL(HAL_NEWT_ADD_PEERS_TYP_CBOX, DLSZ_MOVE_X)
 		DLGRESIZE_CONTROL(HAL_NEWT_ADD_PEERS_URL_TEXT, DLSZ_SIZE_X)
@@ -102,7 +102,7 @@ public:
 			::EnableWindow(GetDlgItem(HAL_NEWT_ADD_DHT_PORT), true);
 		}
 
-		resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
+		resize_class_t::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 
 		SetMsgHandled(false);
 		return 0;
@@ -136,12 +136,12 @@ class NewTorrent_PeersListViewCtrl :
 	public WTLx::GenericAddListView<NewTorrent_PeersListViewCtrl, true>,
 	private boost::noncopyable
 {
-	typedef NewTorrent_PeersListViewCtrl thisClass;
-	typedef hal::IniBase<thisClass> iniClass;
-	typedef CHaliteSortListViewCtrl<thisClass> listClass;
-	typedef WTLx::GenericAddListView<thisClass, true> genericAddlistClass;
+	typedef NewTorrent_PeersListViewCtrl this_class_t;
+	typedef hal::IniBase<this_class_t> ini_class_t;
+	typedef CHaliteSortListViewCtrl<this_class_t> list_class_t;
+	typedef WTLx::GenericAddListView<this_class_t, true> genericAddlist_class_t;
 
-	friend class listClass;
+	friend class list_class_t;
 	
 public:
 	enum { 
@@ -151,18 +151,18 @@ public:
 	};
 	
 	NewTorrent_PeersListViewCtrl() :
-		iniClass("listviews/NewTorrentPeers", "NewPeersListView")
+		ini_class_t("listviews/NewTorrentPeers", "NewPeersListView")
 	{}
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 	{
 		MSG_WM_DESTROY(OnDestroy)
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in NewTorrent_PeersListViewCtrl MSG_MAP")
 
-		CHAIN_MSG_MAP(genericAddlistClass)
-		CHAIN_MSG_MAP(listClass)
+		CHAIN_MSG_MAP(genericAddlist_class_t)
+		CHAIN_MSG_MAP(list_class_t)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 
@@ -173,7 +173,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
+		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
 	}
 
 	void newItem();

@@ -31,7 +31,7 @@ LRESULT AdvDebugDialog::onInitDialog(HWND, LPARAM)
 {
 	logList.Attach(GetDlgItem(HAL_DEBUGLISTVIEW));
 
-	resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);	
+	resize_class_t::DlgResize_Init(false, true, WS_CLIPCHILDREN);	
 	DoDataExchange(false);
 	
 	return 0;

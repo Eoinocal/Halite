@@ -17,17 +17,17 @@
 template <class TBase>
 class CHaliteDialogBase
 {
-	typedef CHaliteDialogBase<TBase> thisClass;
+	typedef CHaliteDialogBase<TBase> this_class_t;
 	
 public:
 	CHaliteDialogBase(HaliteWindow& haliteWindow) :
 		haliteWindow_(haliteWindow)
 	{		
-		connection_ = haliteWindow.connectUiUpdate(bind(&thisClass::handleUiUpdate, this, _1));
+		connection_ = haliteWindow.connectUiUpdate(bind(&this_class_t::handleUiUpdate, this, _1));
 		connection_.block();
 	}
 	
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		MSG_WM_SHOWWINDOW(OnShow)
 //		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()

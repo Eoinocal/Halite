@@ -18,8 +18,8 @@ template <class T, class TBase = WTL::CEdit, class TWinTraits = ATL::CControlWin
 class ATL_NO_VTABLE EditHilightImpl : public ATL::CWindowImpl<T, TBase, TWinTraits>
 {
 protected:
-	typedef EditHilightImpl< T, TBase, TWinTraits> thisClass;
-	typedef ATL::CWindowImpl<T, TBase, TWinTraits> baseClass;
+	typedef EditHilightImpl< T, TBase, TWinTraits> this_class_t;
+	typedef ATL::CWindowImpl<T, TBase, TWinTraits> base_class_t;
 
 public:
 	DECLARE_WND_SUPERCLASS(NULL, TBase::GetWndClassName())
@@ -28,7 +28,7 @@ public:
 		unapplied_(false)
 	{}
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		MSG_OCM_CTLCOLOREDIT(OnReflectedCtlColorEdit)
 		REFLECTED_COMMAND_CODE_HANDLER_EX(EN_CHANGE, OnChange)
 		
@@ -38,7 +38,7 @@ public:
 	void SubclassWindow(HWND hWndNew)
 	{
 		ATLASSERT(::IsWindow(hWndNew));
-        baseClass::SubclassWindow(hWndNew);
+        base_class_t::SubclassWindow(hWndNew);
 	}
 	
 	LRESULT OnChange(UINT uNotifyCode, int nID, ATL::CWindow wndCtl)
