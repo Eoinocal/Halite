@@ -9,7 +9,6 @@
 namespace hal
 {
 
-
 template<class T>
 class update_lockable;
 

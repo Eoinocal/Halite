@@ -18,7 +18,7 @@
 #include "../halIni.hpp"
 #include "../HaliteListViewCtrl.hpp"
 
-#include "../HaliteUpdateLock.hpp"
+#include "../WTLx/UpdateLockable.hpp"
 
 struct FileLink
 {

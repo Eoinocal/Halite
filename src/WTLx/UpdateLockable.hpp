@@ -6,8 +6,7 @@
 
 #pragma once
 
-
-#include "../HaliteUpdateLock.hpp"
+#include "UpdateLocks.hpp"
 
 namespace hal
 {
