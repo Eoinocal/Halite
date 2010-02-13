@@ -55,27 +55,27 @@ public:
 	{
 		if (0 == window_->update_lock_)
 		{
-			locked_ =  true;
 			++window_->update_lock_;
 
 			T* pT = static_cast<T*>(window);
-			pT->LockWindowUpdate(true);
+			pT->SetRedraw(false);
 		}
 	}
 	
 	~try_update_lock()
 	{
-		if (locked_ && !--window_->update_lock_)
+		if (!--window_->update_lock_)
 			unlock();
 	}
 	
 	void unlock()
 	{
 		T* pT = static_cast<T*>(window_);
-		pT->LockWindowUpdate(false);
+		pT->SetRedraw(true);
+		pT->RedrawWindow(NULL, NULL, RDW_ERASE | RDW_FRAME | RDW_INVALIDATE | RDW_ALLCHILDREN);
 	}
 	
-	operator bool() const { return locked_; }
+	operator bool() const { return 0 != window_->update_lock_; }
 	
 private:
 	update_lockable<T>* window_;

@@ -106,10 +106,12 @@ LRESULT FileListView::OnBeginLabelEdit(int i, LPNMHDR pnmh, BOOL&)
 {		
 	HAL_DEV_MSG(hal::wform(L"OnBeginLabelEdit(int i = %1%)") % i);
 
-	hal::try_update_lock<listClass> lock(this);
-	if (lock) 
+	lock_ptr_.reset(new hal::try_update_lock<listClass>(this));
+	if (*lock_ptr_) 
 	{	
 		NMLVDISPINFO* nmlv = (NMLVDISPINFO*)pnmh;
+		
+		HAL_DEV_MSG(hal::wform(L"OnBeginLabelEdit(int i = %1%)") % i);
 
 		return false;
 	}
@@ -122,6 +124,21 @@ LRESULT FileListView::OnBeginLabelEdit(int i, LPNMHDR pnmh, BOOL&)
 LRESULT FileListView::OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&)
 {	
 	HAL_DEV_MSG(hal::wform(L"OnEndLabelEdit(int i = %1%)") % i);
+
+	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
+	wstring str;
+
+	if (pdi->item.iItem < static_cast<int>(files_.size()))
+	{
+		if (pdi->item.mask & LVIF_TEXT)
+		{
+			str = files_[pdi->item.iItem].to_wstring(pdi->item.iSubItem);
+		}
+	}
+	
+	HAL_DEV_MSG(hal::wform(L"iItem: %1%, text: %2%, orig: %3%") % pdi->item.iItem % pdi->item.pszText % str);
+
+	lock_ptr_.reset();
 
 	return false;
 }
@@ -355,7 +372,6 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 				
 			list_.SetItemCountEx(numeric_cast<int>(list_files->size()),LVSICF_NOSCROLL);
 		}
-
 
 		foreach (hal::file_details& file, *list_files)
 		{

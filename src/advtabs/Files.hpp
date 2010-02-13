@@ -175,7 +175,7 @@ protected:
 	LRESULT OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&);
 
 private:
-	boost::shared_ptr<hal::mutex_update_lock<thisClass> > lock_ptr_;
+	boost::shared_ptr<hal::try_update_lock<listClass> > lock_ptr_;
 
 	do_ui_update_fn do_ui_update_;
 	hal::file_details_vec files_;
