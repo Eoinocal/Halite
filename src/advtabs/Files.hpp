@@ -209,6 +209,8 @@ public:
 
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_RCLICK, OnRClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(TVN_SELCHANGED, OnSelChanged)
+		REFLECTED_NOTIFY_CODE_HANDLER(TVN_BEGINLABELEDIT, OnBeginLabelEdit)
+		REFLECTED_NOTIFY_CODE_HANDLER(TVN_ENDLABELEDIT, OnEndLabelEdit)
 		
 		COMMAND_RANGE_HANDLER_EX(ID_HAL_FILE_PRIORITY_0, ID_HAL_FILE_PRIORITY_7, OnMenuPriority)
 		}
@@ -222,6 +224,8 @@ public:
 	
 	LRESULT OnRClick(int i, LPNMHDR pnmh, BOOL&);
 	void OnMenuPriority(UINT, int, HWND);
+	LRESULT OnBeginLabelEdit(int i, LPNMHDR pnmh, BOOL&);
+	LRESULT OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&);
 	
 	wpath focused() { return focused_; }
 		
@@ -236,6 +240,7 @@ protected:
 	LRESULT OnSelChanged(int, LPNMHDR pnmh, BOOL&);
 	
 	mutable hal::mutex_t mutex_;
+	boost::shared_ptr<hal::try_update_lock<this_class_t> > lock_ptr_;
 	
 	wpath focused_;
 

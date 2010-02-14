@@ -10,7 +10,7 @@
 
 template <class T>
 class ATL_NO_VTABLE CHalTabPageImpl : 
-	public ATL::CDialogImpl< T >,
+	public ATL::CDialogImpl<T>,
 	public WTL::CMessageFilter,
 	public WTL::CThemeImpl<CHalTabPageImpl<T> >
 {
@@ -32,30 +32,27 @@ protected:
 		CRect rect;
 		GetClientRect(rect);
 		
-		if(IsThemingSupported() && IsAppThemed())
+		if (IsThemingSupported() && IsAppThemed())
 		{
-			if(GetThemeClassList() == NULL)
+			if (GetThemeClassList() == NULL)
 			{
 				SetThemeClassList(L"Tab");
 				OpenThemeData();
 			}
-		//	if (uxtheme().pDrawThemeParentBackground)
-		//	{
-				DrawThemeParentBackground(dc, rect);
-		//	}
+		
+			DrawThemeParentBackground(dc, rect);
 		}
 		
 		return 1;
-	}
-	
+	}	
 
 	LRESULT OnCltColorDlg(HDC hDC, HWND hWnd)
 	{
 		SetMsgHandled(false);
 
-		if(IsThemingSupported() && IsAppThemed())
+		if (IsThemingSupported() && IsAppThemed())
 		{
-			if(GetThemeClassList() == NULL)
+			if (GetThemeClassList() == NULL)
 			{
 				SetThemeClassList(L"Tab");
 				OpenThemeData();
@@ -75,9 +72,9 @@ protected:
 	{
 		SetMsgHandled(false);
 
-		if(IsThemingSupported() && IsAppThemed())
+		if (IsThemingSupported() && IsAppThemed())
 		{
-			if(GetThemeClassList() == NULL)
+			if (GetThemeClassList() == NULL)
 			{
 				SetThemeClassList(L"Tab");
 				OpenThemeData();
