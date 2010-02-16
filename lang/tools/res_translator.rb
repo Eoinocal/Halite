@@ -8,25 +8,20 @@ def compile_dlls(arg)
 
 	puts " - - Wrote new language file"
 	
-	puts "\n - Compiling 32bit resource file\n\n"
+	puts "\n - - Compiling resource file\n\n"
 	
 	system "call tools\\rc /I \"..\\src\" \"..\\res\\"+arg+".rc\""
 
 	system "call tools\\cvtres /MACHINE:X86 \"..\\res\\"+arg+".res\""
 	system "call tools\\link /NOENTRY /DLL /MACHINE:X86 /OUT:\".\\bin\\"+arg+".dll\" \"..\\res\\"+arg+".obj\""
-	
-#	puts " - Compiling 64bit resource file\n\n"
 
-#	system "call tools\\cvtres /MACHINE:AMD64 \"..\\res\\"+arg+".res\""
-#	system "call tools\\link /NOENTRY /DLL /MACHINE:AMD64 /OUT:\".\\bin\\x64\\"+arg+".dll\" \"..\\res\\"+arg+".obj\""
-
-	puts " - Cleaning temp files\n\n"
+	puts " - - Cleaning temp files\n"
 	
-#	system "del \"..\\res\\"+arg+".rc\""
+	system "del \"..\\res\\"+arg+".rc\""
 	system "del \"..\\res\\"+arg+".res\""
 	system "del \"..\\res\\"+arg+".obj\""
 	
-	puts " - Done\n\n"	
+	puts " - Done\n"	
 end
 
 resource_dir = ARGV.shift
@@ -41,7 +36,7 @@ ignore_array = Array.new
 
 begin
 	puts " + "+resource_filename
-	res_language_file = File.open(resource_filename, "r+b")
+	res_language_file = File.open(resource_filename, "r+b")	
 
 	if resource_original_file = res_language_file.gets(nil)
 		
@@ -51,10 +46,12 @@ begin
 				
 			puts " - loaded base resource file."	
 		rescue
-			puts " ! Uincode conversion issue."
+			puts " ! Unicode conversion issue."
 		end	
 
+		resource_original_file.force_encoding("ASCII-8BIT")
 		resource_file = resource_original_file.clone
+		puts resource_original_file.encoding
 		
 		begin	# Parse the translation file.	
 			File.open(ignore_filename, File::CREAT) do |ignore_yaml_file|
@@ -62,7 +59,7 @@ begin
 			end
 		rescue
 			puts " ! No ignore file."
-		end
+		end		
 		
 		# First we strip comments so they don't confuse the map and also lines starting with '#'
 		resource_file.gsub!(/\/\/.*/, "\n")
@@ -71,13 +68,15 @@ begin
 
 		# Collect all strings in the resource file
 		resource_file.scan(/\".*?\"/) do |text_string|
+			text_string.force_encoding("utf-8")
 			if (not ignore_array.include?(text_string))				
 				
 				if text_string.include?(';')
 					# Split semicolon deliminated strings
 					text_string.delete('"').split(';').each {|s| resource_array.push('"'+s+'"') }					
 				else
-					resource_array.push(text_string)
+					resource_array.push(text_string)					
+				#	puts text_string
 				end
 				
 			end
@@ -102,9 +101,9 @@ ARGV.each do |arg|
 	
 	puts "\n + "+lang_filename
 	
-	File.open(lang_filename, 'r+') do |language_file|
-	
+	File.open(lang_filename, 'r+:utf-8') do |language_file|
 		while lang_line = language_file.gets
+			lang_line.force_encoding("ASCII-8BIT")
 			lang_line.scan(/(\".*?\")\s*--->\s*(\".*?\")/) do |original, trans| 
 				
 				if original.include?(';')
@@ -150,7 +149,7 @@ ARGV.each do |arg|
 										
 				else
 					if lang_map.has_key?(text_string)
-						lang_map[text_string]
+						lang_map[text_string].force_encoding("ASCII-8BIT")
 					else
 						text_string
 					end
@@ -161,7 +160,8 @@ ARGV.each do |arg|
 			
 			begin
 				local_file = File.new(resource_dir+arg+'.rc', "w+b")
-				local_file.print(Iconv.iconv('UTF-16LE', 'UTF-8', res_lang))
+				local_file.print(Iconv.iconv('UTF-16LE', 'UTF-8', 
+					res_lang.force_encoding("utf-8")).join)
 				local_file.close
 				puts " - - Constructed localized resource file"		
 			rescue
@@ -177,31 +177,33 @@ ARGV.each do |arg|
 		next 
 	end		
 	
+	#puts resource_array
+	
 	begin	
-		lang_file = File.new(lang_filename, 'w+')
+		lang_file = File.new(lang_filename, 'w+:utf-8')
 		
 		# Special case for 'English' and 'English.rtf' to bring them to the top of list.
 		
 		resource_array.delete('"English"')
 		if lang_map.has_key?('"English"')
-			lang_file.print('"English"' + " ---> " + lang_map['"English"'] + "\n")
+			lang_file.print('"English"' + " ---> " + lang_map['"English"'].force_encoding("UTF-8") + "\n")
 		else
 			lang_file.print('"English"' + " --->  ??? \n")
 		end
 			
 		resource_array.delete('"English.rtf"')
 		if lang_map.has_key?('"English.rtf"')
-			lang_file.print('"English.rtf"' + " ---> " + lang_map['"English.rtf"'] + "\n")
+			lang_file.print('"English.rtf"' + " ---> " + lang_map['"English.rtf"'].force_encoding("UTF-8") + "\n")
 		else
 			lang_file.print('"English.rtf"' + " --->  ??? \n")
 		end	
 		
 		# Process rest alphabeticially [sic].
 
-		resource_array.sort.each do |value| 	
-			if lang_map.has_key?(value)
-				lang_file.print(value + " ---> " + lang_map[value] + "\n")
-			else
+		resource_array.sort.each do |value| 
+			if lang_map.has_key?(value)	
+				lang_file.print(value + " ---> " + lang_map[value].force_encoding("UTF-8") + "\n")
+			else	
 				lang_file.print(value + " --->  ??? \n")
 			end
 		end	

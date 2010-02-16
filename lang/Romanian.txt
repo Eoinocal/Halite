@@ -309,6 +309,9 @@
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Timp"
 "Toolbar2k.bmp" ---> "Toolbar2k.bmp"
+"Torrent %1% file %2% completed." --->  ??? 
+"Torrent %1% file %2% renamed failed." --->  ??? 
+"Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% gata."
 "Torrent %1% paused." ---> "Torrent %1% pauzat."
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) exception caught: %2% from %3%."
@@ -363,4 +366,4 @@
 "to" ---> "până la"
 "uTorrent Metadata Plugin" ---> "Pluginul Metadata de la uTorrent"
 "uTorrent Peer Exchange Plugin" ---> "Pluginul  Peer Exchange de la uTorrent"
-"∞" ---> "∞"
+"∞" --->  ??? 
