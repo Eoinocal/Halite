@@ -37,16 +37,16 @@ class SplashDialog :
 	public WTL::CDialogResize<SplashDialog>
 {
 protected:
-	typedef SplashDialog thisClass;
-	typedef ATL::CDialogImpl<thisClass> baseClass;
-	typedef hal::IniBase<thisClass> iniClass;
-	typedef WTL::CDialogResize<thisClass> resizeClass;
+	typedef SplashDialog this_class_t;
+	typedef ATL::CDialogImpl<this_class_t> base_class_t;
+	typedef hal::IniBase<this_class_t> ini_class_t;
+	typedef WTL::CDialogResize<this_class_t> resize_class_t;
 
 public:
 	enum { IDD = HAL_CLOSESPLASH };
 
 	SplashDialog() :	
-		iniClass("SplashDialog", "dialog"),	
+		ini_class_t("SplashDialog", "dialog"),	
 		rect_(0,0,0,0)
 	{
 		load_from_ini();
@@ -60,14 +60,14 @@ public:
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in SplashDialog MSG_MAP")
 
-		CHAIN_MSG_MAP(resizeClass)
+		CHAIN_MSG_MAP(resize_class_t)
 	END_MSG_MAP()
 
 	BEGIN_DDX_MAP(CMainDlg)
 		DDX_CHECK(HAL_SPLASH_MSG, halite().showMessage_)
 	END_DDX_MAP()
 
-	BEGIN_DLGRESIZE_MAP(thisClass)
+	BEGIN_DLGRESIZE_MAP(this_class_t)
 		DLGRESIZE_CONTROL(HAL_CSPLASH_MSG, DLSZ_SIZE_X|DLSZ_SIZE_Y)
 		DLGRESIZE_CONTROL(HAL_CSPLASH_NUM_ACT, DLSZ_MOVE_Y|DLSZ_SIZE_X)
 		DLGRESIZE_CONTROL(HAL_SPLASH_MSG, DLSZ_MOVE_Y|DLSZ_SIZE_X)
@@ -83,7 +83,7 @@ public:
 	
 	LRESULT onInitDialog(HWND, LPARAM)
 	{
-		resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
+		resize_class_t::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 
 		if (rect_.left != rect_.right)
 			MoveWindow(rect_.left, rect_.top, 

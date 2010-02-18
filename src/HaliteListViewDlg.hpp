@@ -27,8 +27,8 @@ class HaliteSaveAndMoveToDlg :
 	public WTLx::WinDataExchangeEx<HaliteSaveAndMoveToDlg>
 {
 public:
-	typedef HaliteSaveAndMoveToDlg thisClass;
-	typedef ATL::CAutoSizeWindow<thisClass, true> autosizeClass;
+	typedef HaliteSaveAndMoveToDlg this_class_t;
+	typedef ATL::CAutoSizeWindow<this_class_t, true> autosizeClass;
 	
 public:
 	HaliteSaveAndMoveToDlg(wstring& s, wstring& m, bool& u, bool d = false) :
@@ -40,7 +40,7 @@ public:
 
 	enum { IDD = HAL_ADJUST_DLG };
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		MSG_WM_INITDIALOG(onInitDialog)
@@ -53,7 +53,7 @@ public:
 		CHAIN_MSG_MAP(autosizeClass)
 	END_MSG_MAP()
 
-	BEGIN_DDX_MAP(thisClass)
+	BEGIN_DDX_MAP(this_class_t)
 		DDX_CHECK(HAL_ADDT_MOVETO_CHECK, useMove_)
 		DDX_EX_STDWSTRING(HAL_BC_SAVEFOLDER, saveDirectory_)
 		DDX_EX_STDWSTRING(HAL_ADDT_MOVETO_FOLDER, moveToDirectory_)
@@ -67,7 +67,7 @@ public:
 		WMB_ROW(_auto,	HAL_ADDT_MOVETO_FOLDER, HAL_ADDT_MOVETO_BROWSE), \
 	WMB_END()
 
-	BEGIN_WINDOW_MAP(thisClass, 0, 0, 3, 3)
+	BEGIN_WINDOW_MAP(this_class_t, 0, 0, 3, 3)
 		WMB_HEAD(WMB_COLNOMAX(_exp)),
 			WMB_ROW(_auto,	ADD_FOLDERS_LAYOUT),
 		WMB_END()
@@ -148,12 +148,12 @@ class HaliteListViewAdjustDlg :
 	public WTLx::GenericAddContainerDialog<HaliteListViewAdjustDlg, HaliteSaveAndMoveToDlg, HAL_ADJUST_DLG>
 {
 public:
-	typedef HaliteListViewAdjustDlg thisClass;
-	typedef WTLx::GenericAddContainerDialog<thisClass, HaliteSaveAndMoveToDlg, HAL_ADJUST_DLG> genericBaseClass;
+	typedef HaliteListViewAdjustDlg this_class_t;
+	typedef WTLx::GenericAddContainerDialog<this_class_t, HaliteSaveAndMoveToDlg, HAL_ADJUST_DLG> generic_dlg_class_t;
 	
 public:
 	HaliteListViewAdjustDlg(wstring title, wstring& s, wstring& m, bool& u, bool d=false) :
-		genericBaseClass(title, "genericAddDlgs/HaliteListViewAdjustDlg", "HaliteListViewAdjustDlg", dlg_),
+		generic_dlg_class_t(title, "genericAddDlgs/HaliteListViewAdjustDlg", "HaliteListViewAdjustDlg", dlg_),
 		dlg_(s, m, u, d)
 	{}
 

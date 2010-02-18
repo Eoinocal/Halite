@@ -24,7 +24,7 @@
 
 HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	halite_window_(HalWindow),
-	iniClass("listviews/halite", "HaliteListView"),
+	ini_class_t("listviews/halite", "HaliteListView"),
 	queue_view_(false)
 {		
 	HalWindow.connectUiUpdate(bind(&HaliteListViewCtrl::uiUpdate, this, _1));
@@ -110,8 +110,7 @@ bool HaliteListViewCtrl::sort_list_comparison(std::wstring l, std::wstring r, si
 
 LRESULT HaliteListViewCtrl::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 {	
-	hal::try_update_lock<listClass> lock(*this);
-	if (lock) 
+	if (hal::try_update_lock<list_class_t> lock = hal::try_update_lock<list_class_t>(this)) 
 	{	
 
 	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
@@ -132,8 +131,7 @@ LRESULT HaliteListViewCtrl::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 
 void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 {
-	hal::try_update_lock<listClass> lock(*this);
-	if (lock) 
+	if (hal::try_update_lock<list_class_t> lock = hal::try_update_lock<list_class_t>(this)) 
 	{		
 
 	selection_from_listview();
@@ -378,7 +376,7 @@ LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCt
 	try
 	{
 
-/*	hal::try_update_lock<listClass> lock(*this);
+/*	hal::try_update_lock<list_class_t> lock(*this);
 	if (lock) 
 	{		
 */
@@ -406,7 +404,7 @@ LRESULT HaliteListViewCtrl::OnSetUnmanaged(WORD wNotifyCode, WORD wID, HWND hWnd
 	try
 	{
 
-/*	hal::try_update_lock<listClass> lock(*this);
+/*	hal::try_update_lock<list_class_t> lock(*this);
 	if (lock) 
 	{		
 */

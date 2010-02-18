@@ -19,12 +19,12 @@ class CRadioPaneDialog :
 	CRadioPaneDialog
 	> // CIndirectDialogImpl
 {
-	typedef CRadioPaneDialog thisClass;
+	typedef CRadioPaneDialog this_class_t;
 public:
 
 	CRadioPaneDialog() {}
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 	END_MSG_MAP()
 };
 

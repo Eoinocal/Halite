@@ -117,9 +117,9 @@ class ATL_NO_VTABLE CEmptyDialogImpl :
 	TBase
 	> // CIndirectDialogImpl
 {
-	typedef CEmptyDialogImpl<T, t_uIDD, TDlgTemplate, TBase> thisClass;
+	typedef CEmptyDialogImpl<T, t_uIDD, TDlgTemplate, TBase> this_class_t;
 public:
-	typedef thisClass EmptyDialog;
+	typedef this_class_t EmptyDialog;
 
 // Constructors
 	// Empty constructor : derived class performs m_Template and m_Data initializations
@@ -418,17 +418,17 @@ template
 	>
 class CCellMenu : 
 	public CEmptyDialogImpl<
-		/*thisClass*/CCellMenu<t_uIDD, t_nCol, t_nRow>, 
+		/*this_class_t*/CCellMenu<t_uIDD, t_nCol, t_nRow>, 
 		t_uIDD,
 		/*TDlgTemplate*/CMenuDlgTemplate
 		>, // CEmptyDialogImpl
 	public CMenuDialog<
-		/*thisClass*/CCellMenu<t_uIDD, t_nCol, t_nRow> 
+		/*this_class_t*/CCellMenu<t_uIDD, t_nCol, t_nRow> 
 		> // CMenuDialog
 {
-	typedef CCellMenu<t_uIDD, t_nCol, t_nRow> thisClass;
+	typedef CCellMenu<t_uIDD, t_nCol, t_nRow> this_class_t;
 public:
-	typedef CMenuDialog<thisClass> MenuDialog;
+	typedef CMenuDialog<this_class_t> MenuDialog;
 
 	// Helper for size and position computations
 	struct CELL
@@ -774,9 +774,9 @@ template
 class CControlDialogImpl :  
 	public TDlgImpl
 {
-	typedef CControlDialogImpl<T, t_uIDD, TCtrl, TControlTraits, TDlgImpl> thisClass;
+	typedef CControlDialogImpl<T, t_uIDD, TCtrl, TControlTraits, TDlgImpl> this_class_t;
 public:
-	typedef thisClass ControlDialog;
+	typedef this_class_t ControlDialog;
 
 // Construction
 	CControlDialogImpl(){}
@@ -901,18 +901,18 @@ template
 	>
 class CControlDialog : 
 	public CControlDialogImpl< 
-		/*thisClass*/CControlDialog<t_uIDD, TCtrl, TControlTraits, TControlDlgTraits>, 
+		/*this_class_t*/CControlDialog<t_uIDD, TCtrl, TControlTraits, TControlDlgTraits>, 
 		t_uIDD, 
 		TCtrl, 
 		TControlTraits, 
 		/*TDlgImpl*/CEmptyDialogImpl< 
-			/*thisClass*/CControlDialog<t_uIDD, TCtrl, TControlTraits, TControlDlgTraits> , 
+			/*this_class_t*/CControlDialog<t_uIDD, TCtrl, TControlTraits, TControlDlgTraits> , 
 			t_uIDD, 
 			/*TDlgTemplate*/CEmptyDlgTemplate<t_uIDD, TControlDlgTraits> 
 		> // CEmptyDialogImpl
 	> // CControlDialogImpl
 {
-	typedef CControlDialog<t_uIDD, TCtrl, TControlTraits, TControlDlgTraits> thisClass;
+	typedef CControlDialog<t_uIDD, TCtrl, TControlTraits, TControlDlgTraits> this_class_t;
 public:
 	// Constructors
 	CControlDialog(){}
@@ -936,19 +936,19 @@ template <
 	>
 class CInPlaceEditor : 
 	public CControlDialogImpl<
-		/*thisClass*/CInPlaceEditor<t_uLength, TEditCtrl, TEditTraits>, 
+		/*this_class_t*/CInPlaceEditor<t_uLength, TEditCtrl, TEditTraits>, 
 		/*t_uIDD*/t_uLength, 
 		/*TCtrl*/TEditCtrl, 
 		/*TCtrlTraits*/TEditTraits,
 		/*TDlgImpl*/CEmptyDialogImpl<
-			/*thisClass*/CInPlaceEditor<t_uLength, TEditCtrl, TEditTraits>,
+			/*this_class_t*/CInPlaceEditor<t_uLength, TEditCtrl, TEditTraits>,
 			/*t_uIDD*/t_uLength, 
 			/*TDlgTemplate*/CMenuDlgTemplate
 			> // CEmptyDialogImpl
 		>, // CControlDialogImpl
 	public CMenuDialog<CInPlaceEditor<t_uLength, TEditCtrl, TEditTraits> >
 {
-	typedef CInPlaceEditor<t_uLength, TEditCtrl, TEditTraits> thisClass;
+	typedef CInPlaceEditor<t_uLength, TEditCtrl, TEditTraits> this_class_t;
 public:
 	// Constructor
 	CInPlaceEditor(RECT rect) : ControlDialog(rect)
@@ -957,7 +957,7 @@ public:
 	// Operation
 	static bool Edit(RECT& rEdit, LPTSTR sText, HWND hwndParent = GetActiveWindow())
 	{
-		return thisClass(rEdit).DoModal(hwndParent, (LPARAM)sText) == IDOK;
+		return this_class_t(rEdit).DoModal(hwndParent, (LPARAM)sText) == IDOK;
 	}
 
 	// Specialized
@@ -1000,7 +1000,7 @@ public:
 
 	// Message map
 	BEGIN_MSG_MAP(CInPlaceEditor)
-		CHAIN_MSG_MAP(CMenuDialog<thisClass>)
+		CHAIN_MSG_MAP(CMenuDialog<this_class_t>)
 		CHAIN_MSG_MAP(ControlDialog)
 	END_MSG_MAP()
 
@@ -1037,9 +1037,9 @@ class ATL_NO_VTABLE CSplitDialogImpl :
 	public TDlgImpl, 
 	public TSplitImpl
 {
-	typedef CSplitDialogImpl<T, t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, TDlgImpl> thisClass;
+	typedef CSplitDialogImpl<T, t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, TDlgImpl> this_class_t;
 public:
-	typedef thisClass SplitDialog;
+	typedef this_class_t SplitDialog;
 	typedef TSplitImpl Splitter;
 // Construction
 	CSplitDialogImpl(){}
@@ -1180,7 +1180,7 @@ template
 	>
 class CSplitDialog : 
 	public CSplitDialogImpl<
-		/*thisClass*/CSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
+		/*this_class_t*/CSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
 		t_uIDD, 
 		TSplitImpl, 
 		TLeft, 
@@ -1188,13 +1188,13 @@ class CSplitDialog :
 		TLeftTraits, 
 		TRightTraits,
 		/*TDlgImpl*/CEmptyDialogImpl< 
-			/*thisClass*/CSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
+			/*this_class_t*/CSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
 			t_uIDD,
 			/*TDlgTemplate*/CEmptyDlgTemplate<t_uIDD, TSplitDialogTraits> 
 		> // CEmptyDialogImpl 
 	> // CSplitDialogImpl
 {
-	typedef CSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits> thisClass;
+	typedef CSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits> this_class_t;
 public:
 // Constructors
 	CSplitDialog(){}
@@ -1219,21 +1219,21 @@ template // see CSplitDialog template parameters description
 	>
 class CVSplitDialog : 
 	public CSplitDialogImpl<
-		/*thisClass*/CVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
+		/*this_class_t*/CVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
 		t_uIDD, 
 		/*TSplitImpl*/CSplitterImpl<
-			/*thisClass*/CVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>,
+			/*this_class_t*/CVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>,
 			true
 			>, // CSplitterImpl
 		TLeft, TRight, TLeftTraits, TRightTraits,
 		/*TDlgImpl*/CEmptyDialogImpl< 
-			/*thisClass*/CVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits,TSplitDialogTraits> , 
+			/*this_class_t*/CVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits,TSplitDialogTraits> , 
 			t_uIDD,
 			/*TDlgTemplate*/CEmptyDlgTemplate<t_uIDD, TSplitDialogTraits> 
 		> // CEmptyDialogImpl  
 	> // CSplitDialogImpl
 {
-	typedef CVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits> thisClass;
+	typedef CVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits> this_class_t;
 public:
 // Constructors
 	CVSplitDialog(){}
@@ -1256,21 +1256,21 @@ template // see CSplitDialog template parameters description
 	>
 class CHSplitDialog : 
 	public CSplitDialogImpl<
-		/*thisClass*/CHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
+		/*this_class_t*/CHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
 		t_uIDD, 
 		/*TSplitImpl*/CSplitterImpl<
-			/*thisClass*/CHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
+			/*this_class_t*/CHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
 			false
 			>, // CSplitterImpl
 		TLeft, TRight, TLeftTraits, TRightTraits,
 		/*TDlgImpl*/CEmptyDialogImpl< 
-			/*thisClass*/CHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits,TSplitDialogTraits> , 
+			/*this_class_t*/CHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits,TSplitDialogTraits> , 
 			t_uIDD,
 			/*TDlgTemplate*/CEmptyDlgTemplate<t_uIDD, TSplitDialogTraits> 
 		> // CEmptyDialogImpl  
 	> // CSplitDialogImpl
 {
-	typedef CHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits> thisClass;
+	typedef CHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits> this_class_t;
 public:
 // Constructors
 	CHSplitDialog(){}
@@ -1304,11 +1304,11 @@ class ATL_NO_VTABLE CEmptyDialogImpl :
 	aero::CDialogImpl<T>
 	> // WTL::CEmptyDialogImpl
 {
-	typedef aero::CEmptyDialogImpl<T, t_uIDD, TDlgTemplate> thisClass;
+	typedef aero::CEmptyDialogImpl<T, t_uIDD, TDlgTemplate> this_class_t;
 public:
 	typedef aero::CDialogImpl<T> AeroDialog;
 	typedef WTL::CEmptyDialogImpl<T, t_uIDD, TDlgTemplate, AeroDialog> BaseEmptyDialog;
-	typedef thisClass EmptyDialog;
+	typedef this_class_t EmptyDialog;
 
 // Constructors
 	CEmptyDialogImpl(){}
@@ -1366,18 +1366,18 @@ template
 	>
 class CControlDialog : 
 	public WTL::CControlDialogImpl< 
-	/*thisClass*/aero::CControlDialog<t_uIDD, TCtrl, TControlTraits, TControlDlgTraits>, 
+	/*this_class_t*/aero::CControlDialog<t_uIDD, TCtrl, TControlTraits, TControlDlgTraits>, 
 		t_uIDD, 
 		TCtrl, 
 		TControlTraits, 
 		/*TDlgImpl*/aero::CEmptyDialogImpl< 
-			/*thisClass*/aero::CControlDialog<t_uIDD, TCtrl, TControlTraits, TControlDlgTraits> , 
+			/*this_class_t*/aero::CControlDialog<t_uIDD, TCtrl, TControlTraits, TControlDlgTraits> , 
 			t_uIDD, 
 			/*TDlgTemplate*/CEmptyDlgTemplate<t_uIDD, TControlDlgTraits> 
 		> // aero::CEmptyDialogImpl
 	> // WTL::CControlDialogImpl
 {
-	typedef aero::CControlDialog<t_uIDD, TCtrl, TControlTraits, TControlDlgTraits> thisClass;
+	typedef aero::CControlDialog<t_uIDD, TCtrl, TControlTraits, TControlDlgTraits> this_class_t;
 public:
 	// Constructors
 	CControlDialog(){}
@@ -1405,7 +1405,7 @@ template
 	>
 class CSplitDialog : 
 	public WTL::CSplitDialogImpl<
-	/*thisClass*/aero::CSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
+	/*this_class_t*/aero::CSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
 		t_uIDD, 
 		TSplitImpl, 
 		TLeft, 
@@ -1413,13 +1413,13 @@ class CSplitDialog :
 		TLeftTraits, 
 		TRightTraits,
 		/*TDlgImpl*/aero::CEmptyDialogImpl< 
-		/*thisClass*/aero::CSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
+		/*this_class_t*/aero::CSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
 			t_uIDD,
 			/*TDlgTemplate*/CEmptyDlgTemplate<t_uIDD, TSplitDialogTraits> 
 		> // aero::CEmptyDialogImpl 
 	> // WTL::CSplitDialogImpl
 {
-	typedef aero::CSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits> thisClass;
+	typedef aero::CSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits> this_class_t;
 public:
 // Constructors
 	CSplitDialog(){}
@@ -1463,13 +1463,13 @@ class ATL_NO_VTABLE CStdEmptyDialogImpl :
 		/*TBase*/CStdDialogImpl<T, t_shidiFlags, true> 
 	> // CEmptyDialogImpl
 {
-	typedef CStdEmptyDialogImpl<T, t_uIDD, t_shidiFlags, TDlgTemplate> thisClass;
+	typedef CStdEmptyDialogImpl<T, t_uIDD, t_shidiFlags, TDlgTemplate> this_class_t;
 public:
 	typedef CStdDialogImpl<T, t_shidiFlags, true> Std;
-	//typedef CStdDialogImpl<thisClass, t_shidiFlags, true> Std;
-	typedef thisClass EmptyDialog;
+	//typedef CStdDialogImpl<this_class_t, t_shidiFlags, true> Std;
+	typedef this_class_t EmptyDialog;
 	typedef CEmptyDialogImpl<T, t_uIDD, TDlgTemplate, Std> BaseEmptyDialog;
-	//typedef CEmptyDialogImpl<thisClass, t_uIDD, TDlgTemplate, Std> BaseEmptyDialog;
+	//typedef CEmptyDialogImpl<this_class_t, t_uIDD, TDlgTemplate, Std> BaseEmptyDialog;
 
 	// Constructor
 	CStdEmptyDialogImpl() 
@@ -1564,7 +1564,7 @@ public:
 		MESSAGE_ANSWER(WM_ERASEBKGND, TRUE)
 		MESSAGE_HANDLER(WM_INITDIALOG, /*BaseEmptyDialog::*/OnInitDialog)
 		MESSAGE_HANDLER(WM_SIZE, /*BaseEmptyDialog::*/OnSize)
-		MESSAGE_HANDLER(WM_PAINT, /*thisClass::*/OnPaint)
+		MESSAGE_HANDLER(WM_PAINT, /*this_class_t::*/OnPaint)
 #ifdef WIN32_PLATFORM_PSPC 
 		MESSAGE_HANDLER(WM_SETTINGCHANGE, /*Std::*/OnSettingChange)
 #elif defined(WIN32_PLATFORM_WFSP) 
@@ -1572,7 +1572,7 @@ public:
 		MESSAGE_ANSWER(WM_GETDLGCODE, DLGC_WANTALLKEYS)
 #endif
 		COMMAND_RANGE_HANDLER(IDOK, IDCANCEL, /*BaseEmptyDialog::*/OnCloseCommand)
-		COMMAND_RANGE_HANDLER(ID_MENU_OK, ID_MENU_CANCEL, /*thisClass::*/OnMenuClose)
+		COMMAND_RANGE_HANDLER(ID_MENU_OK, ID_MENU_CANCEL, /*this_class_t::*/OnMenuClose)
 	END_MSG_MAP()
 
 	LRESULT OnPaint(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& bHandled)
@@ -1609,19 +1609,19 @@ template
 	>
 class CStdControlDialog : 
 	public CControlDialogImpl< 
-		/*thisClass*/CStdControlDialog<t_uIDD, TCtrl, TControlTraits, t_shidiFlags, TDlgTemplate>, 
+		/*this_class_t*/CStdControlDialog<t_uIDD, TCtrl, TControlTraits, t_shidiFlags, TDlgTemplate>, 
 		t_uIDD, 
 		TCtrl, 
 		TControlTraits,
 		/*TDlgImpl*/CStdEmptyDialogImpl<
-			/*thisClass*/CStdControlDialog<t_uIDD, TCtrl, TControlTraits, t_shidiFlags, TDlgTemplate> , 
+			/*this_class_t*/CStdControlDialog<t_uIDD, TCtrl, TControlTraits, t_shidiFlags, TDlgTemplate> , 
 			t_uIDD, 
 			t_shidiFlags, 
 			TDlgTemplate
 			> //  CStdEmptyDialogImpl 
 		> // CControlDialogImpl
 {
-	typedef CStdControlDialog<t_uIDD, TCtrl, TControlTraits, t_shidiFlags, TDlgTemplate> thisClass;
+	typedef CStdControlDialog<t_uIDD, TCtrl, TControlTraits, t_shidiFlags, TDlgTemplate> this_class_t;
 };
 
 
@@ -1651,7 +1651,7 @@ template
 	>
 class CStdSplitDialog : 
 	public CSplitDialogImpl<
-		/*thisClass*/CStdSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
+		/*this_class_t*/CStdSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
 		t_uIDD, 
 		TSplitImpl, 
 		TLeft, 
@@ -1659,14 +1659,14 @@ class CStdSplitDialog :
 		TLeftTraits, 
 		TRightTraits, 
 		/*TDlgImpl*/CStdEmptyDialogImpl <
-			/*thisClass*/CStdSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
+			/*this_class_t*/CStdSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
 			t_uIDD, 
 			t_shidiFlags, 
 			TDlgTemplate
 			> //  CStdEmptyDialogImpl
 		> // CSplitDialogImpl
 {
-	typedef CStdSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate> thisClass;
+	typedef CStdSplitDialog<t_uIDD, TSplitImpl, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate> this_class_t;
 };
 
 #ifdef __ATLSPLIT_H__
@@ -1685,10 +1685,10 @@ template // see CStdSplitDialog template parameters description
 	>
 class CStdVSplitDialog : 
 	public CSplitDialogImpl<
-		/*thisClass*/CStdVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
+		/*this_class_t*/CStdVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
 		t_uIDD, 
 		/*TSplitImpl*/CSplitterImpl<
-			/*thisClass*/CStdVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
+			/*this_class_t*/CStdVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
 			true
 			>, // CSplitterImpl 
 		TLeft, 
@@ -1696,14 +1696,14 @@ class CStdVSplitDialog :
 		TLeftTraits, 
 		TRightTraits, 
 		/*TDlgImpl*/CStdEmptyDialogImpl <
-			/*thisClass*/CStdVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
+			/*this_class_t*/CStdVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
 			t_uIDD, 
 			t_shidiFlags, 
 			TDlgTemplate
 			> // CEmptyDialogImpl 
 		> // CSplitDialogImpl
 {
-	typedef CStdVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate> thisClass;
+	typedef CStdVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate> this_class_t;
 };
 
 /////////////////////////////////////////////////////////////////
@@ -1720,10 +1720,10 @@ template // see CStdSplitDialog template parameters description
 	>
 class CStdHSplitDialog : 
 	public CSplitDialogImpl<
-		/*thisClass*/CStdHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
+		/*this_class_t*/CStdHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
 		t_uIDD, 
 		/*TSplitImpl*/CSplitterImpl<
-			/*thisClass*/CStdHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
+			/*this_class_t*/CStdHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
 			false
 			>, // CSplitterImpl 
 		TLeft, 
@@ -1731,14 +1731,14 @@ class CStdHSplitDialog :
 		TLeftTraits, 
 		TRightTraits, 
 		/*TDlgImpl*/CStdEmptyDialogImpl <
-			/*thisClass*/CStdHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
+			/*this_class_t*/CStdHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate>, 
 			t_uIDD, 
 			t_shidiFlags, 
 			TDlgTemplate
 			> // CEmptyDialogImpl 
 		> // CSplitDialogImpl
 {
-	typedef CStdHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate> thisClass;
+	typedef CStdHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, t_shidiFlags, TDlgTemplate> this_class_t;
 };
 
 #endif // __ATLSPLIT_H__

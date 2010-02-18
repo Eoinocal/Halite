@@ -32,16 +32,16 @@ class AdvTrackerDialog :
 	public WTLx::WinDataExchangeEx<AdvTrackerDialog>
 {
 protected:
-	typedef AdvTrackerDialog thisClass;
-	typedef CHalTabPageImpl<thisClass> baseClass;
-	typedef ATL::CAutoSizeWindow<thisClass, false> autosizeClass;
-	typedef CHaliteDialogBase<thisClass> dialogBaseClass;
+	typedef AdvTrackerDialog this_class_t;
+	typedef CHalTabPageImpl<this_class_t> base_class_t;
+	typedef ATL::CAutoSizeWindow<this_class_t, false> autosizeClass;
+	typedef CHaliteDialogBase<this_class_t> dlg_base_class_t;
 
 public:
 	enum { IDD = HAL_ADVTRACKER };
 
 	AdvTrackerDialog(HaliteWindow& HalWindow) :
-		dialogBaseClass(HalWindow),
+		dlg_base_class_t(HalWindow),
 		m_list("listviews/tracker", "TrackerListView")
 	{}
 
@@ -50,7 +50,7 @@ public:
 		return this->IsDialogMessage(pMsg);
 	}
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		MSG_WM_INITDIALOG(onInitDialog)
@@ -70,13 +70,13 @@ public:
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
 
-		CHAIN_MSG_MAP(dialogBaseClass)
+		CHAIN_MSG_MAP(dlg_base_class_t)
 		CHAIN_MSG_MAP(autosizeClass)
-		CHAIN_MSG_MAP(baseClass)
+		CHAIN_MSG_MAP(base_class_t)
 		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
 
-	BEGIN_DDX_MAP(thisClass)
+	BEGIN_DDX_MAP(this_class_t)
 		DDX_WTLx_WSTRING(userEdit_, username_)
 		DDX_WTLx_WSTRING(passEdit_, password_)
     END_DDX_MAP()

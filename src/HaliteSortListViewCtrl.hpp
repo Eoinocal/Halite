@@ -39,25 +39,26 @@
 #include "WTLx/SelectionManager.hpp"
 #include "WTLx/ListViewIterators.hpp"
 #include "WTLx/ListViewSortMixin.hpp"
-#include "HaliteUpdateLock.hpp"
+#include "WTLx/UpdateLockable.hpp"
 
 template <class TBase, typename DataType=void*>
 class CHaliteSortListViewCtrl : 
 	public ATL::CWindowImpl<TBase, WTL::CListViewCtrl>,
 	public WTLx::ListViewIterators<CHaliteSortListViewCtrl<TBase, DataType> >,
-	public WTLx::ListViewSortMixin<CHaliteSortListViewCtrl<TBase, DataType> >
+	public WTLx::ListViewSortMixin<CHaliteSortListViewCtrl<TBase, DataType> >,
+	public hal::update_lockable<CHaliteSortListViewCtrl<TBase, DataType> >
 {
 public:
-	typedef CHaliteSortListViewCtrl<TBase, DataType> thisClass;
-	typedef ATL::CWindowImpl<TBase, WTL::CListViewCtrl> parentClass;
-	typedef WTLx::ListViewSortMixin<thisClass> listClass;
+	typedef CHaliteSortListViewCtrl<TBase, DataType> this_class_t;
+	typedef ATL::CWindowImpl<TBase, WTL::CListViewCtrl> parent_class_t;
+	typedef WTLx::ListViewSortMixin<this_class_t> list_class_t;
 	
 	class CHaliteHeaderCtrl : public CWindowImpl<CHaliteHeaderCtrl, WTL::CHeaderCtrl>
 	{
 	public:
 		enum { COL_MENU_NAMES = 123, COL_MAX_NAMES = 256 };
 
-		CHaliteHeaderCtrl(thisClass& listView) :
+		CHaliteHeaderCtrl(this_class_t& listView) :
 			listView_(listView)
 		{}
 
@@ -99,16 +100,15 @@ public:
 		
 	private:
 		WTL::CMenu menu_;
-		thisClass& listView_;
+		this_class_t& listView_;
 	};
 	
 public:
-	typedef WTLx::selection_manager<thisClass, std::wstring> SelectionManager;
+	typedef WTLx::selection_manager<this_class_t, std::wstring> SelectionManager;
 	typedef SelectionManager selection_manage_class;
 	
-	thisClass() :
+	this_class_t() :
 		header_(*this),
-		update_lock_(0),
 		auto_sort_(false),
 		descending_(false),
 		sortCol_(-1)
@@ -123,7 +123,7 @@ public:
 		}
 	}
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 	{
 		COMMAND_ID_HANDLER(ID_LVM_AUTOSORT, OnAutoSort)
@@ -133,14 +133,14 @@ public:
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in CHaliteSortListViewCtrl MSG_MAP")
 
-		CHAIN_MSG_MAP(listClass)
+		CHAIN_MSG_MAP(list_class_t)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 
 	void Attach(HWND hWndNew)
 	{
 		ATLASSERT(::IsWindow(hWndNew));
-		parentClass::SubclassWindow(hWndNew);
+		parent_class_t::SubclassWindow(hWndNew);
 
 		TBase* pT = static_cast<TBase*>(this);
 		pT->OnAttach();
@@ -150,7 +150,7 @@ public:
 		DWORD dwStyle = 0, DWORD dwExStyle = 0,
 		ATL::_U_MENUorID MenuOrID = 0U, LPVOID lpCreateParam = NULL)
 	{
-		HWND hwnd = parentClass::Create(hWndParent, 
+		HWND hwnd = parent_class_t::Create(hWndParent, 
 			(RECT &)rect.m_lpRect, szWindowName, dwStyle, dwExStyle, (UINT)MenuOrID.m_hMenu, lpCreateParam);
 			
 		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER|LVS_EX_SUBITEMIMAGES);
@@ -161,7 +161,7 @@ public:
 	
 	bool SubclassWindow(HWND hwnd)
 	{
-		if(!parentClass::SubclassWindow(hwnd))
+		if(!parent_class_t::SubclassWindow(hwnd))
 			return false;
 			
 		SetExtendedListViewStyle(WS_EX_CLIENTEDGE|LVS_EX_FULLROWSELECT|LVS_EX_HEADERDRAGDROP|LVS_EX_DOUBLEBUFFER);
@@ -304,7 +304,7 @@ public:
 
 	LRESULT OnItemChanged(int, LPNMHDR pnmh, BOOL&)
 	{		
-		hal::try_update_lock<thisClass> lock(*this);
+		hal::try_update_lock<this_class_t> lock(this);
 		
 //		if (lock) manager_.sync_list(true, true);
 		
@@ -365,7 +365,7 @@ public:
 		int nMask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM,
 		int nFmt = LVCFMT_LEFT, bool visible=true, int width=-1)
 	{
-		int i = parentClass::AddColumn(strItem, nItem, nSubItem, nMask, nFmt);
+		int i = parent_class_t::AddColumn(strItem, nItem, nSubItem, nMask, nFmt);
 
 		if (i == -1) return i;
 
@@ -403,7 +403,7 @@ public:
 
 	void SetColumnSortType(int iCol, WORD wType, void* colAdapter=NULL)
 	{
-		listClass::SetColumnSortType(iCol, wType);
+		list_class_t::SetColumnSortType(iCol, wType);
 		
 	//	if (WTL::LVCOLSORT_CUSTOM == wType)
 	//		regColumnAdapter(iCol, colAdapter);
@@ -454,8 +454,8 @@ public:
 		ar & make_nvp("descending", descending_);
 		ar & make_nvp("sortCol", sortCol_);
 
-		ar & make_nvp("secondary_descending", listClass::bSecondaryDescending);
-		ar & make_nvp("secondary_sort_column", listClass::iSecondarySort);		
+		ar & make_nvp("secondary_descending", list_class_t::bSecondaryDescending);
+		ar & make_nvp("secondary_sort_column", list_class_t::iSecondarySort);		
 	}
 
 	template<class Archive>
@@ -471,8 +471,8 @@ public:
 		ar & make_nvp("descending", descending_);
 		ar & make_nvp("sortCol", sortCol_);
 
-		ar & make_nvp("secondary_descending", listClass::bSecondaryDescending);
-		ar & make_nvp("secondary_sort_column", listClass::iSecondarySort);		
+		ar & make_nvp("secondary_descending", list_class_t::bSecondaryDescending);
+		ar & make_nvp("secondary_sort_column", list_class_t::iSecondarySort);		
 		
 		SetColumnOrderArray(numeric_cast<int>(list_order_.size()), &list_order_[0]);
 
@@ -502,8 +502,6 @@ public:
 	const std::vector<int>& ListColumnWidth() const { return listColumnWidth_; }
 	const std::vector<int>& ListColumnOrder() const { return listColumnOrder_; }
 	
-	bool CanUpdate() const { return updateLock_ == 0; }
-	
 	bool AutoSort() { return auto_sort_; }
 	
 	static bool is_selected (const winstl::listview_sequence::sequence_value_type& v) 
@@ -512,11 +510,7 @@ public:
 	}
 
 protected:		
-	mutable int update_lock_;
 	mutable hal::mutex_t mutex_;
-
-	friend class hal::mutex_update_lock<thisClass>;	
-	friend class hal::try_update_lock<thisClass>;	
 
 	WTL::CMenu menu_;
 	CHaliteHeaderCtrl header_;	
@@ -654,7 +648,7 @@ protected:
 		std::copy(pair_container_.begin(), pair_container_.end(), std::back_inserter(sv));
 
 		std::stable_sort(sv.begin(), sv.end(), 
-			bind(&thisClass::data_type_comparison, this, _1, _2, index, ascending));
+			bind(&this_class_t::data_type_comparison, this, _1, _2, index, ascending));
 
 		pair_container_.rearrange(sv.begin());
 	}

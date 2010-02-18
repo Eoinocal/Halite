@@ -1690,6 +1690,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\halTorrentDetails.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\halTorrentFile.hpp"
 				>
 			</File>
@@ -1910,6 +1914,14 @@
 				</File>
 				<File
 					RelativePath="..\..\src\WTLx\SSFileDialog.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\WTLx\UpdateLockable.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\WTLx\UpdateLocks.hpp"
 					>
 				</File>
 			</Filter>

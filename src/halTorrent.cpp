@@ -573,18 +573,19 @@ void bit::add_torrent(wpath file, wpath saveDirectory, bool startStopped, bool m
 
 const torrent_details_manager& bit::torrentDetails()
 {
-	return torrentDetails_;
+	return torrent_details_;
 }
 
 const torrent_details_manager& bit::update_torrent_details_manager(const wstring& focused, const std::set<wstring>& selected)
 {
 	try {
 
-	boost::thread(bind(&bit::update_torrent_details_manager_thread, this, focused, selected));
+	boost::thread t(bind(&bit::update_torrent_details_manager_thread, this, focused, selected));
+	t.join();
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "updatetorrent_details_manager")
 	
-	return torrentDetails_;
+	return torrent_details_;
 }
 
 void bit::update_torrent_details_manager_thread(const wstring& focused, const std::set<wstring>& selected)
@@ -599,16 +600,13 @@ void bit::update_torrent_details_manager_thread(const wstring& focused, const st
 		tmp_map[(*i).torrent->name()] = pT;
 	}
 
-	{
-		
-	mutex_t::scoped_lock l(torrentDetails_.mutex_);
+	{	
+		mutex_t::scoped_lock l(torrent_details_.mutex_);
 
-	torrentDetails_.clear_all(l);	
-	torrentDetails_.focused_ = focused;
-	torrentDetails_.selected_names_ = selected;
+		torrent_details_.focused_ = focused;
+		torrent_details_.selected_names_ = selected;
 
-	std::swap(tmp_map, torrentDetails_.torrent_map_);
-
+		std::swap(tmp_map, torrent_details_.torrent_map_);
 	}
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "updatetorrent_details_manager")

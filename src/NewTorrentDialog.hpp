@@ -6,32 +6,31 @@
 
 #pragma once
 
-#define ID_NEWTORRENT_BEGIN				14000
-#define HAL_NEWTORRENT_SELECT_TEXT		ID_NEWTORRENT_BEGIN+1
-#define HAL_NEWTORRENT_TRACKERS_TEXT	ID_NEWTORRENT_BEGIN+2
-#define HAL_NEWTORRENT_CREATOR_TEXT		ID_NEWTORRENT_BEGIN+3
-#define HAL_NEWTORRENT_CREATOR			ID_NEWTORRENT_BEGIN+4
-#define HAL_NEWTORRENT_COMMENT_TEXT		ID_NEWTORRENT_BEGIN+5
-#define HAL_NEWTORRENT_COMMENT			ID_NEWTORRENT_BEGIN+6
-#define HAL_NEWTORRENT_PRIVATE			ID_NEWTORRENT_BEGIN+7
-#define HAL_NEWT_FILE_BROWSE			ID_NEWTORRENT_BEGIN+8
-#define HAL_NEWT_DIR_BROWSE				ID_NEWTORRENT_BEGIN+9
-#define HAL_NEWT_LISTFILES				ID_NEWTORRENT_BEGIN+10
-#define HAL_FILES_LISTVIEW_ADV			ID_NEWTORRENT_BEGIN+11
-#define HAL_NEW_PANE_DLG				ID_NEWTORRENT_BEGIN+12
-#define HAL_NEWT_TRACKERTIER			ID_NEWTORRENT_BEGIN+13
-#define HAL_NEWTORRENT_PEERS_TEXT		ID_NEWTORRENT_BEGIN+14
-#define HAL_NEWT_LISTPEERS				ID_NEWTORRENT_BEGIN+15
-#define HAL_SAVE_TEXT					ID_NEWTORRENT_BEGIN+16
-#define HAL_NEWT_OUT_BROWSE				ID_NEWTORRENT_BEGIN+17
-#define HAL_NEWT_OUTFILE_TEXT			ID_NEWTORRENT_BEGIN+18
-#define HAL_NEWT_SAVING_TORRENT			ID_NEWTORRENT_BEGIN+19
-#define HAL_NEWT_DIALOG_TITLE			ID_NEWTORRENT_BEGIN+20
-#define HAL_NEWT_FILE_NAME				ID_NEWTORRENT_BEGIN+21
-#define HAL_NEWT_FILE_NAME_EDIT			ID_NEWTORRENT_BEGIN+22
-#define HAL_NEWT_PIECESIZE_TEXT			ID_NEWTORRENT_BEGIN+23
-#define HAL_NEWT_PIECESIZE				ID_NEWTORRENT_BEGIN+24
-
+#define ID_NEWTORRENT_BEGIN			14000
+#define HAL_NEWTORRENT_SELECT_TEXT		ID_NEWTORRENT_BEGIN + 1
+#define HAL_NEWTORRENT_TRACKERS_TEXT	ID_NEWTORRENT_BEGIN + 2
+#define HAL_NEWTORRENT_CREATOR_TEXT	ID_NEWTORRENT_BEGIN + 3
+#define HAL_NEWTORRENT_CREATOR		ID_NEWTORRENT_BEGIN + 4
+#define HAL_NEWTORRENT_COMMENT_TEXT	ID_NEWTORRENT_BEGIN + 5
+#define HAL_NEWTORRENT_COMMENT		ID_NEWTORRENT_BEGIN + 6
+#define HAL_NEWTORRENT_PRIVATE		ID_NEWTORRENT_BEGIN + 7
+#define HAL_NEWT_FILE_BROWSE			ID_NEWTORRENT_BEGIN + 8
+#define HAL_NEWT_DIR_BROWSE			ID_NEWTORRENT_BEGIN + 9
+#define HAL_NEWT_LISTFILES			ID_NEWTORRENT_BEGIN + 10
+#define HAL_FILES_LISTVIEW_ADV			ID_NEWTORRENT_BEGIN + 11
+#define HAL_NEW_PANE_DLG			ID_NEWTORRENT_BEGIN + 12
+#define HAL_NEWT_TRACKERTIER			ID_NEWTORRENT_BEGIN + 13
+#define HAL_NEWTORRENT_PEERS_TEXT		ID_NEWTORRENT_BEGIN + 14
+#define HAL_NEWT_LISTPEERS			ID_NEWTORRENT_BEGIN + 15
+#define HAL_SAVE_TEXT				ID_NEWTORRENT_BEGIN + 16
+#define HAL_NEWT_OUT_BROWSE			ID_NEWTORRENT_BEGIN + 17
+#define HAL_NEWT_OUTFILE_TEXT			ID_NEWTORRENT_BEGIN + 18
+#define HAL_NEWT_SAVING_TORRENT		ID_NEWTORRENT_BEGIN + 19
+#define HAL_NEWT_DIALOG_TITLE			ID_NEWTORRENT_BEGIN + 20
+#define HAL_NEWT_FILE_NAME			ID_NEWTORRENT_BEGIN + 21
+#define HAL_NEWT_FILE_NAME_EDIT		ID_NEWTORRENT_BEGIN + 22
+#define HAL_NEWT_PIECESIZE_TEXT		ID_NEWTORRENT_BEGIN + 23
+#define HAL_NEWT_PIECESIZE			ID_NEWTORRENT_BEGIN + 24
 
 #ifndef RC_INVOKED
 
@@ -54,10 +53,10 @@ class FilesListViewCtrl :
 	private boost::noncopyable
 {
 
-	typedef hal::IniBase<FilesListViewCtrl> iniClass;
-	typedef CHaliteSortListViewCtrl<FilesListViewCtrl> listClass;
+	typedef hal::IniBase<FilesListViewCtrl> ini_class_t;
+	typedef CHaliteSortListViewCtrl<FilesListViewCtrl> list_class_t;
 
-	friend class listClass;
+	friend class list_class_t;
 	
 public:
 	enum { 
@@ -67,7 +66,7 @@ public:
 	};
 	
 	FilesListViewCtrl() :
-		iniClass("listviews/new_files", "NewFilesListView")
+		ini_class_t("listviews/new_files", "NewFilesListView")
 	{}
 
 	BEGIN_MSG_MAP_EX(FilesListViewCtrl)
@@ -77,7 +76,7 @@ public:
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in FilesListViewCtrl MSG_MAP")
 
-		CHAIN_MSG_MAP(listClass)
+		CHAIN_MSG_MAP(list_class_t)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 
@@ -87,7 +86,7 @@ public:
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<listClass>(*this));
+		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
     }
 
 private:
@@ -106,9 +105,9 @@ class DetailsSheet :
 	public ATL::CAutoSizeWindow<DetailsSheet, false>
 {
 protected:
-	typedef DetailsSheet thisClass;
-	typedef WTL::CPropertyPageImpl<thisClass> sheetClass;
-	typedef ATL::CAutoSizeWindow<thisClass, false> autosizeClass;
+	typedef DetailsSheet this_class_t;
+	typedef WTL::CPropertyPageImpl<this_class_t> sheetClass;
+	typedef ATL::CAutoSizeWindow<this_class_t, false> autosizeClass;
 
 public:
 	DetailsSheet(enable_save enableSave) :
@@ -118,7 +117,7 @@ public:
 	
 	enum { IDD = HAL_NEWTORRENT };
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 	{
 		MSG_WM_INITDIALOG(onInitDialog)
@@ -133,7 +132,7 @@ public:
 		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
 
-	BEGIN_DDX_MAP(thisClass)
+	BEGIN_DDX_MAP(this_class_t)
 		DDX_EX_STDWSTRING(HAL_NEWTORRENT_CREATOR, creator_);
 		DDX_EX_STDWSTRING(HAL_NEWTORRENT_COMMENT, comment_);
 		DDX_EX_STDWSTRING(HAL_NEWT_FILE, outFile_);
@@ -149,7 +148,6 @@ public:
 	}
 	
 	void OnOutBrowse(UINT, int, HWND hWnd);
-
 	LRESULT onInitDialog(HWND, LPARAM);
 	void OnDestroy() {};
 
@@ -174,14 +172,14 @@ class FilesSheet :
 	public ATL::CAutoSizeWindow<FilesSheet, false>
 {
 protected:
-	typedef FilesSheet thisClass;
-	typedef WTL::CPropertyPageImpl<thisClass> sheetClass;
-	typedef ATL::CAutoSizeWindow<thisClass, false> autosizeClass;
+	typedef FilesSheet this_class_t;
+	typedef WTL::CPropertyPageImpl<this_class_t> sheetClass;
+	typedef ATL::CAutoSizeWindow<this_class_t, false> autosizeClass;
 
 public:	
 	enum { IDD = HAL_NEWT_FILES };
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		MSG_WM_INITDIALOG(onInitDialog)
@@ -204,10 +202,9 @@ public:
 		return 0;
 	}
 
-	void OnDestroy() {}
-
 	static CWindowMapStruct* GetWindowMap();
 
+	void OnDestroy() {}
 	void OnFileBrowse(UINT, int, HWND hWnd);
 	void OnDirBrowse(UINT, int, HWND hWnd);
 
@@ -233,14 +230,14 @@ class TrackerSheet :
 	public ATL::CAutoSizeWindow<TrackerSheet, false>
 {
 protected:
-	typedef TrackerSheet thisClass;
-	typedef WTL::CPropertyPageImpl<thisClass> sheetClass;
-	typedef ATL::CAutoSizeWindow<thisClass, false> autosizeClass;
+	typedef TrackerSheet this_class_t;
+	typedef WTL::CPropertyPageImpl<this_class_t> sheetClass;
+	typedef ATL::CAutoSizeWindow<this_class_t, false> autosizeClass;
 
 public:	
 	enum { IDD = HAL_NEWT_TRACKERS };
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		MSG_WM_INITDIALOG(onInitDialog)
@@ -280,14 +277,14 @@ class PeersSheet :
 	public ATL::CAutoSizeWindow<PeersSheet, false>
 {
 protected:
-	typedef PeersSheet thisClass;
-	typedef WTL::CPropertyPageImpl<thisClass> sheetClass;
-	typedef ATL::CAutoSizeWindow<thisClass, false> autosizeClass;
+	typedef PeersSheet this_class_t;
+	typedef WTL::CPropertyPageImpl<this_class_t> sheetClass;
+	typedef ATL::CAutoSizeWindow<this_class_t, false> autosizeClass;
 
 public:	
 	enum { IDD = HAL_NEWT_PEERS };
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		MSG_WM_INITDIALOG(onInitDialog)
@@ -328,15 +325,15 @@ class NewTorrentDialog :
 	public hal::IniBase<NewTorrentDialog>,
 	public WTL::CDialogResize<NewTorrentDialog>
 {
-	typedef NewTorrentDialog thisClass;
-	typedef hal::IniBase<thisClass> iniClass;
-	typedef WTL::CDialogResize<thisClass> resizeClass;
+	typedef NewTorrentDialog this_class_t;
+	typedef hal::IniBase<this_class_t> ini_class_t;
+	typedef WTL::CDialogResize<this_class_t> resize_class_t;
 
 public:
     NewTorrentDialog(LPCTSTR title = (LPCTSTR)NULL,
 			UINT uStartPage = 0, HWND hWndParent = NULL) :
         CPropertySheet(title, uStartPage, hWndParent),
-		iniClass("NewTorrentDialog", "Dialog"),
+		ini_class_t("NewTorrentDialog", "Dialog"),
 		inited_(false),
 		rect_(0,0,0,0),
 		fileSheet_(bind(&NewTorrentDialog::EnableSave, this, _1))
@@ -349,7 +346,7 @@ public:
 		AddPage(detailsSheet_);		
 	}
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		MSG_WM_SHOWWINDOW(OnShowWindow)
@@ -361,11 +358,11 @@ public:
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in CPropertySheet MSG_MAP")
 
-		CHAIN_MSG_MAP(resizeClass)
+		CHAIN_MSG_MAP(resize_class_t)
 		CHAIN_MSG_MAP(CPropertySheet)
 	END_MSG_MAP()
 
-	BEGIN_DLGRESIZE_MAP(thisClass)
+	BEGIN_DLGRESIZE_MAP(this_class_t)
 		DLGRESIZE_CONTROL(0x3020, DLSZ_SIZE_X|DLSZ_SIZE_Y)
 
 		DLGRESIZE_CONTROL(0x1, DLSZ_MOVE_X|DLSZ_MOVE_Y)

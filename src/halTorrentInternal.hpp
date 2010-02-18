@@ -241,15 +241,15 @@ typedef shared_ptr<torrent_internal> torrent_internal_ptr;
 struct torrent_standalone :
 	public hal::IniBase<torrent_standalone>
 {
-	typedef torrent_standalone thisClass;
-	typedef hal::IniBase<thisClass> iniClass;
+	typedef torrent_standalone this_class_t;
+	typedef hal::IniBase<this_class_t> ini_class_t;
 
 	torrent_standalone() :
-		iniClass("torrent")
+		ini_class_t("torrent")
 	{}
 
 	torrent_standalone(torrent_internal_ptr t) :
-		iniClass("torrent"),
+		ini_class_t("torrent"),
 		torrent(t),
 		save_time(pt::second_clock::universal_time())
 	{}

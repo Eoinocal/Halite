@@ -14,7 +14,7 @@
 
 LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 {
-	dialogBaseClass::InitializeHalDialogBase();	
+	dlg_base_class_t::InitializeHalDialogBase();	
 	
 	m_list.Attach(GetDlgItem(HAL_TRACKERLIST));	
 	m_list.attachEditedConnection(bind(&AdvTrackerDialog::trackerListEdited, this));

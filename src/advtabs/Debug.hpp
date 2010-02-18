@@ -68,10 +68,10 @@ class LogListViewCtrl :
 	private boost::noncopyable
 {
 protected:
-	typedef hal::IniBase<LogListViewCtrl> iniClass;
-	typedef CHaliteSortListViewCtrl<LogListViewCtrl> listClass;
+	typedef hal::IniBase<LogListViewCtrl> ini_class_t;
+	typedef CHaliteSortListViewCtrl<LogListViewCtrl> list_class_t;
 
-	friend class listClass;
+	friend class list_class_t;
 
 public:	
 	enum { 
@@ -88,12 +88,12 @@ public:
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in LogListViewCtrl MSG_MAP")
 
-		CHAIN_MSG_MAP(listClass)
+		CHAIN_MSG_MAP(list_class_t)
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 
 	LogListViewCtrl() :
-		iniClass("listviews/eventLog", "LogListView")
+		ini_class_t("listviews/eventLog", "LogListView")
 	{}
 	
 	~LogListViewCtrl()
@@ -114,7 +114,7 @@ public:
 	void serialize(Archive& ar, const unsigned int version)
 	{
 		ar & boost::serialization::make_nvp("listview", 
-			boost::serialization::base_object<listClass>(*this));
+			boost::serialization::base_object<list_class_t>(*this));
 	}
 
 	void operator()(shared_ptr<hal::EventDetail> event)
@@ -212,16 +212,16 @@ class AdvDebugDialog :
 	private boost::noncopyable
 {
 protected:
-	typedef AdvDebugDialog thisClass;
-	typedef CHalTabPageImpl<AdvDebugDialog> baseClass;
-	typedef WTL::CDialogResize<AdvDebugDialog> resizeClass;
-	typedef CHaliteDialogBase<AdvDebugDialog> dialogBaseClass;
+	typedef AdvDebugDialog this_class_t;
+	typedef CHalTabPageImpl<AdvDebugDialog> base_class_t;
+	typedef WTL::CDialogResize<AdvDebugDialog> resize_class_t;
+	typedef CHaliteDialogBase<AdvDebugDialog> dlg_base_class_t;
 
 public:
 	enum { IDD = HAL_ADVDEBUGLOG };
 
 	AdvDebugDialog(HaliteWindow& halWindow) :
-		dialogBaseClass(halWindow)
+		dlg_base_class_t(halWindow)
 	{}
 	
 	BOOL PreTranslateMessage(MSG* pMsg)
@@ -229,7 +229,7 @@ public:
 		return this->IsDialogMessage(pMsg);
 	}
 
-	BEGIN_MSG_MAP_EX(thisClass)
+	BEGIN_MSG_MAP_EX(this_class_t)
 		try
 		{
 		MSG_WM_INITDIALOG(onInitDialog)
@@ -243,15 +243,15 @@ public:
 		if (uMsg == WM_FORWARDMSG)
 			if (PreTranslateMessage((LPMSG)lParam)) return TRUE;
 
-		CHAIN_MSG_MAP(dialogBaseClass)
-		CHAIN_MSG_MAP(resizeClass)
-		CHAIN_MSG_MAP(baseClass)
+		CHAIN_MSG_MAP(dlg_base_class_t)
+		CHAIN_MSG_MAP(resize_class_t)
+		CHAIN_MSG_MAP(base_class_t)
 		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
 
 	BOOL DoDataExchange(BOOL bSaveAndValidate = FALSE, UINT nCtlID = (UINT)-1);
 
-	BEGIN_DLGRESIZE_MAP(thisClass)
+	BEGIN_DLGRESIZE_MAP(this_class_t)
 		DLGRESIZE_CONTROL(HAL_DEBUGLISTVIEW, DLSZ_SIZE_X|DLSZ_SIZE_Y)
 		DLGRESIZE_CONTROL(HAL_DEBUGFILECHECK, DLSZ_SIZE_X|DLSZ_MOVE_Y)
 		DLGRESIZE_CONTROL(HAL_DEBUGDEBUGCHECK, DLSZ_MOVE_X|DLSZ_MOVE_Y)

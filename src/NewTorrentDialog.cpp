@@ -374,7 +374,7 @@ PeersSheet::CWindowMapStruct* PeersSheet::GetWindowMap()
 
 void NewTorrentDialog::OnShowWindow(BOOL bShow, UINT nStatus)
 {
-    resizeClass::DlgResize_Init(false, true, WS_CLIPCHILDREN);
+    resize_class_t::DlgResize_Init(false, true, WS_CLIPCHILDREN);
 
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"NewTorrentDialog::OnShowWindow()")));

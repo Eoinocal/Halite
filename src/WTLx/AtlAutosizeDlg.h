@@ -492,7 +492,7 @@ template <class T, bool t_bAutoMinSize = true>
 class CAutoSizeWindow
 {
 protected: 
-	typedef CAutoSizeWindow<T> thisClass; ///< A shortcut to the complete name of this class
+	typedef CAutoSizeWindow<T> this_class_t; ///< A shortcut to the complete name of this class
 
 public:
 #pragma pack(push, 4)

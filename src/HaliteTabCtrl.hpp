@@ -75,7 +75,8 @@ public:
 			GetClientRect(&rect);
 			AdjustRect(false, &rect);
 
-			::SetWindowPos(currentPage_, HWND_TOP, rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top, 0);
+			::SetWindowPos(currentPage_, HWND_TOP, 
+				rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top, 0);
 		}
 	}
 
@@ -104,7 +105,7 @@ public:
 		pages_.push_back(CHalTabPage(tabPage));
 	}
 
-	HWND GetCurrentPage() const	{ return currentPage_; }
+	HWND GetCurrentPage() const { return currentPage_; }
 
 protected:
 	std::vector<CHalTabPage> pages_;
