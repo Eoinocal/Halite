@@ -895,6 +895,8 @@ public:
 		}
 	}
 
+	torrent_files& files() { return files_; }
+
 	static boost::optional<libt::session>* the_session_;	
 
 	friend class torrent_manager;

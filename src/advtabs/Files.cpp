@@ -138,6 +138,8 @@ LRESULT FileListView::OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&)
 	
 	HAL_DEV_MSG(hal::wform(L"iItem: %1%, text: %2%, orig: %3%") % pdi->item.iItem % pdi->item.pszText % str);
 
+
+
 	lock_ptr_.reset();
 
 	return false;

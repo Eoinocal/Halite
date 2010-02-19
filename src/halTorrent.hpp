@@ -172,8 +172,43 @@ public:
 
 			operator bool() const { return ptr; }
 
+
 		private:
 			boost::shared_ptr<torrent_internal> ptr;
+		};
+
+		class files_proxy
+		{
+		public:
+			class file_proxy
+			{
+			public:
+				file_proxy(class_type& t, size_type n) :
+					t_(t),
+					n_(n)
+				{}
+
+				void set_name(const wpath& new_ratio);
+				wpath get_name() const;
+
+				STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(wpath, const wpath&, file_proxy, 
+					get_name, set_name, name);
+			private:
+				class_type& t_;
+				size_type n_;
+			};
+			
+			files_proxy(class_type& t) :
+				t_(t)
+			{}
+
+			file_proxy operator[](size_type n)
+			{
+				return file_proxy(t_, n);
+			}
+
+		private:
+			class_type& t_;
 		};
 
 		torrent();
@@ -207,7 +242,7 @@ public:
 
 		void set_managed(bool);
 		bool get_managed() const;
-
+		
 	public:
 		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(const std::wstring, class_type, 
 			get_name, name);
@@ -245,6 +280,9 @@ public:
 		void reset_trackers();
 		bool is_open() const;
 		void adjust_queue_position(bit::queue_adjustments adjust);
+		files_proxy files();
+
+		friend class files_proxy::file_proxy;
 
 	private:
 		exec_around_ptr ptr;
