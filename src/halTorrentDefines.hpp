@@ -6,9 +6,9 @@
 
 #pragma once
 
-#define HALITE_VERSION						0, 3, 2, 1108
-#define HALITE_VERSION_STRING				"v 0.3.2.1"
-#define HALITE_FINGERPRINT					"HL", 0, 3, 2, 1
+#define HALITE_VERSION						0, 3, 3, 1105
+#define HALITE_VERSION_STRING				"v 0.3.3.0"
+#define HALITE_FINGERPRINT					"HL", 0, 3, 3, 0
 
 #ifndef HAL_NA
 #define HAL_NA							40013

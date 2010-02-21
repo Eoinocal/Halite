@@ -69,7 +69,7 @@ public:
 
 	const fs::wpath& original_name() const { return original_name_; };
 	const fs::wpath& current_name() const { return current_name_; };
-	const fs::wpath& completed_name() const { return finished_ ? completed_name_ : original_name_; };
+	const fs::wpath& completed_name() const { return completed_name_ != L"" ? completed_name_ : original_name_; };
 
 	int priority() const { return priority_; };
 	
@@ -156,6 +156,15 @@ public:
 
 		torrent_file tmp_file = *(file_i);
 		tmp_file.set_finished();
+		files_.get<by_random>().replace(file_i, tmp_file);
+	}
+
+	void change_filename(size_type i, const fs::wpath& fn)
+	{
+		torrent_file_by_random::iterator file_i = files_.get<by_random>().begin() + i; 
+
+		torrent_file tmp_file = *(file_i);
+		tmp_file.change_filename(fn);
 		files_.get<by_random>().replace(file_i, tmp_file);
 	}
 

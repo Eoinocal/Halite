@@ -850,10 +850,12 @@ void bit::schedual_cancel()
 	return pimpl()->schedual_cancel();
 }
 
-bit::torrent::torrent()
+bit::torrent::torrent() //:
+//	files(*this)
 {}
 
-bit::torrent::torrent(boost::shared_ptr<torrent_internal> p) :
+bit::torrent::torrent(boost::shared_ptr<torrent_internal> p) :	
+//	files(*this),
 	ptr(p)
 {}
 
@@ -903,6 +905,11 @@ void bit::torrent::set_ratio(float r)
 	ptr->set_ratio(r);
 	
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_ratio")
+}
+
+bit::torrent::files_proxy bit::torrent::files()
+{
+	return bit::torrent::files_proxy(*this);
 }
 
 std::pair<int, int> bit::torrent::get_connection_limits() const
@@ -1094,6 +1101,36 @@ void bit::torrent::set_managed(bool m)
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_managed")
 }
 
+/*files_proxy bit::torrent::get_files() const
+{
+	return const files_proxy(*this);
+}
+
+files_proxy bit::torrent::set_files()
+{
+	return files_proxy(*this);
+}*/
+
+wpath bit::torrent::files_proxy::file_proxy::get_name() const
+{
+	try {
+
+	return t_.ptr->files()[n_].completed_name();
+	
+	} HAL_GENERIC_PIMPL_EXCEPTION_CATCH("bit::torrent::files_proxy::file_proxy::get_name()")
+
+	return wpath();
+}
+
+void bit::torrent::files_proxy::file_proxy::set_name(const wpath& filename)
+{
+	try {
+
+	t_.ptr->files().change_filename(n_, filename);
+	
+	} HAL_GENERIC_PIMPL_EXCEPTION_CATCH("bit::torrent::files_proxy::file_proxy::set_name()")
+}
+
 void bit::start_event_receiver()
 {
 	try {
@@ -1115,6 +1152,7 @@ void bit::stop_event_receiver()
 	
 	} HAL_GENERIC_PIMPL_EXCEPTION_CATCH("bit::stop_event_receiver()")
 }
+
 
 int bit::default_torrent_max_connections() { return pimpl()->default_torrent_max_connections_; }
 int bit::default_torrent_max_uploads() { return pimpl()->default_torrent_max_uploads_; }
