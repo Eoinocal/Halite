@@ -121,6 +121,7 @@ public:
 		try
 		{
 		MSG_WM_DESTROY(OnDestroy)
+		MSG_WM_LBUTTONUP(OnLButtonUp)
 
 		COMMAND_RANGE_HANDLER_EX(ID_HAL_FILE_PRIORITY_0, ID_HAL_FILE_PRIORITY_7, OnMenuPriority)
 
@@ -128,6 +129,7 @@ public:
 		REFLECTED_NOTIFY_CODE_HANDLER(SLVN_SORTCHANGED, OnSortChanged)
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_BEGINLABELEDIT, OnBeginLabelEdit)
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_ENDLABELEDIT, OnEndLabelEdit)
+		REFLECTED_NOTIFY_CODE_HANDLER(LVN_BEGINDRAG, OnBeginDrag)
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in FileListView MSG_MAP")
 
@@ -172,9 +174,12 @@ protected:
 	LRESULT OnSortChanged(int, LPNMHDR pnmh, BOOL&);
 	LRESULT OnBeginLabelEdit(int i, LPNMHDR pnmh, BOOL&);
 	LRESULT OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&);
+	LRESULT OnBeginDrag(int i, LPNMHDR pnmh, BOOL&);
+	void OnLButtonUp(UINT nFlags, WTL::CPoint point);
 
 private:
 	boost::shared_ptr<hal::try_update_lock<list_class_t> > lock_ptr_;
+	WTL::CCursorHandle cursor_;
 
 	do_ui_update_fn do_ui_update_;
 	hal::file_details_vec files_;

@@ -126,23 +126,51 @@ LRESULT FileListView::OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&)
 	HAL_DEV_MSG(hal::wform(L"OnEndLabelEdit(int i = %1%)") % i);
 
 	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
-	wstring str;
 
-	if (pdi->item.iItem < static_cast<int>(files_.size()))
+	if (pdi->item.iItem < static_cast<int>(files_.size()) 
+		&& pdi->item.mask & LVIF_TEXT)
 	{
-		if (pdi->item.mask & LVIF_TEXT)
-		{
-			str = files_[pdi->item.iItem].to_wstring(pdi->item.iSubItem);
-		}
-	}
-	
-	HAL_DEV_MSG(hal::wform(L"iItem: %1%, text: %2%, orig: %3%") % pdi->item.iItem % pdi->item.pszText % str);
-
-
+		wstring str = files_[pdi->item.iItem].to_wstring(pdi->item.iSubItem);
+		
+		HAL_DEV_MSG(hal::wform(L"iItem: %1%, text: %2%, orig: %3%") 
+			% pdi->item.iItem % pdi->item.pszText % str);
+	}	
 
 	lock_ptr_.reset();
 
 	return false;
+}
+
+LRESULT FileListView::OnBeginDrag(int i, LPNMHDR pnmh, BOOL&)
+{		
+	HAL_DEV_MSG(hal::wform(L"OnBeginDrag(int i = %1%)") % i);
+
+	lock_ptr_.reset(new hal::try_update_lock<list_class_t>(this));
+	if (*lock_ptr_) 
+	{	
+		NMLVDISPINFO* nmlv = (NMLVDISPINFO*)pnmh;
+		
+		HAL_DEV_MSG(hal::wform(L"OnBeginDrag(int i = %1%)") % i);
+		
+		cursor_.Attach(::SetCursor(::LoadCursor(NULL, IDC_HAND)));
+
+		SetCapture();
+	}
+
+	return false;
+}
+
+void FileListView::OnLButtonUp(UINT nFlags, WTL::CPoint point)
+{	
+	HAL_DEV_MSG(hal::wform(L"OnLButtonUp(int p = %1%, %2%)") % point.x % point.y);
+
+//	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
+
+	if (!cursor_.IsNull())
+		::SetCursor(cursor_.Detach());
+
+	lock_ptr_.reset();
+	ReleaseCapture();
 }
 
 LRESULT FileListView::OnSortChanged(int, LPNMHDR pnmh, BOOL&)
