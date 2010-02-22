@@ -2,10 +2,8 @@
 
 require "iconv"
 require "yaml"
-require "rubyscript2exe"
 
 exit if Object.const_defined?(:Ocra)
-exit if RUBYSCRIPT2EXE.is_compiling?
 
 def compile_dlls(arg)
 

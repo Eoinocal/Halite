@@ -1,53 +1,53 @@
-"English" ---> "Nederlands"
-"English.rtf" ---> "../lang/Dutch.rtf"
+"English" --->  ??? 
+"English.rtf" --->  ??? 
 " %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
 "%1$.2fMB down - %2$.2fMB up" --->  ??? 
-"%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB van %2$.2fMB"
-"%1% DHT node(s)" ---> "%1% DHT knopen"
-"%1% active torrent(s)" ---> "%1% Actieve torrent(s)"
+"%1$.2fMB of %2$.2fMB" --->  ??? 
+"%1% DHT node(s)" --->  ??? 
+"%1% active torrent(s)" --->  ??? 
 "%1% peers from DHT for %2%." --->  ??? 
 "%1% port %2% mapping succeeded." --->  ??? 
 "%1% port mapping request failed." --->  ??? 
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
-"&Pause All" ---> "&Pauzeer alles"
-"&Resume All" ---> "&Herstart alles"
+"&Pause All" --->  ??? 
+"&Resume All" --->  ??? 
 "(C) Eoin O'Callaghan 2009" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
-"About" ---> "Over Halite"
-"Above Normal" ---> "Boven Normaal"
+"About" --->  ??? 
+"Above Normal" --->  ??? 
 "Active downloads :" --->  ??? 
 "Active seeds :" --->  ??? 
 "Active seeds hard limit:" --->  ??? 
-"Active" ---> "Actief"
-"Add New Peer" ---> "Voeg nieuwe Peer toe"
-"Add New Tracker" ---> "Voeg nieuwe Tracker toe"
-"Add New Web Seed or DHT Node" ---> "Voeg nieuwe Webseed of DHT knoop toe"
-"Add Torrent" ---> "Torrent toevoegen"
-"Add" ---> "Voeg toe"
+"Active" --->  ??? 
+"Add New Peer" --->  ??? 
+"Add New Tracker" --->  ??? 
+"Add New Web Seed or DHT Node" --->  ??? 
+"Add Torrent" --->  ??? 
+"Add" --->  ??? 
 "Adjust Queue Position" --->  ??? 
-"Advanced GUI" ---> "Geavanceerde GUI"
+"Advanced GUI" --->  ??? 
 "Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
-"Allocating" ---> "Bezig met Alloceren"
+"Allocating" --->  ??? 
 "Allocation Mode:" --->  ??? 
-"Allow only one instance to run" ---> "Sta maar één draaiende instantie toe"
-"An invalid connection policy, %1%, was passed as an encryption setting." ---> "Een ongeldig verbindings regeling, %1%, is doorgegaan als encryptie instelling."
-"An invalid encoding level, %1%, was passed as an encryption setting." ---> "Een ongeldig encoderings niveau, %1%, is doorgegaan als encryptie instelling."
-"Apply" ---> "Toepassen"
-"Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Weet je zeker dat je Halite wilt sluiten? Dit zal alle actieve taken stoppen"
+"Allow only one instance to run" --->  ??? 
+"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
+"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
+"Apply" --->  ??? 
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
 "Are you sure you wish to delete all downloaded data?" --->  ??? 
-"Auto Sort" ---> "Auto Sorteren"
+"Auto Sort" --->  ??? 
 "Auto-managed" --->  ??? 
-"BitTorrent" ---> "BitTorrent"
+"BitTorrent" --->  ??? 
 "Bittorrent Event: %1%." --->  ??? 
-"Block %2% of piece %3% downloading. (%1%)" ---> "Blok %2% van deel %3% aan het downloaden. (%1%)"
-"Block %2% of piece %3% finished. (%1%)" ---> "Blok %2% van deel %3% voltooid. (%1%)"
-"Both" ---> "Beide"
+"Block %2% of piece %3% downloading. (%1%)" --->  ??? 
+"Block %2% of piece %3% finished. (%1%)" --->  ??? 
+"Both" --->  ??? 
 "Cache Status, Current Total Size : %1.2f MiB" --->  ??? 
 "Cache Write Size :" --->  ??? 
-"Calculating Piece Hashes..." ---> "Pakket hashes berekenen..."
+"Calculating Piece Hashes..." --->  ??? 
 "Cancel" --->  ??? 
 "Checking Files" --->  ??? 
 "Choked" --->  ??? 

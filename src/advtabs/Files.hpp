@@ -137,7 +137,7 @@ public:
 		DEFAULT_REFLECTION_HANDLER()
 	END_MSG_MAP()
 
-	FileListView(do_ui_update_fn uiu);
+	FileListView(do_ui_update_fn uiu, HWND hwnd);
 	
 	void saveSettings()
 	{
@@ -184,6 +184,7 @@ private:
 	do_ui_update_fn do_ui_update_;
 	hal::file_details_vec files_;
 	hal::torrent_details_ptr focused_;
+	HWND treeview_;
 };
 
 class FileTreeView :
@@ -404,9 +405,9 @@ public:
 		DLGRESIZE_CONTROL(HAL_CONTAINER, DLSZ_SIZE_X|DLSZ_SIZE_Y|DLSZ_REPAINT)
 	END_DLGRESIZE_MAP()
 
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
 	{
 		ar & BOOST_SERIALIZATION_NVP(splitterPos);
 	}
