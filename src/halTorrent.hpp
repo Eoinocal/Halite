@@ -6,31 +6,6 @@
 
 #pragma once
 
-/*
-#include <string>
-#include <vector>
-#include <set>
-
-#include <boost/foreach.hpp>
-#include <boost/format.hpp>
-#include <boost/array.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/bind.hpp>
-
-#include <boost/smart_ptr.hpp>
-#include <boost/noncopyable.hpp>
-
-#include <boost/signal.hpp>
-#include <boost/optional.hpp>
-#include <boost/function.hpp>
-
-#include <boost/smart_ptr.hpp>
-
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/fstream.hpp>
-*/
-
 #include <boost/algorithm/string.hpp>
 
 #include <stlsoft/properties/method_properties.hpp>
@@ -49,7 +24,6 @@
 
 namespace hal 
 {
-
 	
 struct create_torrent_params
 {
@@ -411,8 +385,6 @@ public:
 
 	void schedual_cancel();
 	
-//	friend bit& bittorrent();
-	
 	int default_torrent_max_connections();
 	int default_torrent_max_uploads();
 	float default_torrent_download();
@@ -421,6 +393,8 @@ public:
 	const torrent_details_manager& torrentDetails();
 	const torrent_details_manager& update_torrent_details_manager(
 		const std::wstring& focused, const std::set<std::wstring>& selected);
+
+	void connect_file_completed_signal(function<void (wstring filename) fn);
 	
 	bit();
 	~bit();
