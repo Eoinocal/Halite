@@ -28,6 +28,7 @@
 #	include <libtorrent/session.hpp>
 #	include <libtorrent/ip_filter.hpp>
 #	include <libtorrent/torrent_handle.hpp>
+//#	include <libtorrent/dht_tracker.hpp>
 #	include <libtorrent/peer_connection.hpp>
 #	include <libtorrent/extensions/metadata_transfer.hpp>
 #	include <libtorrent/extensions/ut_pex.hpp>
@@ -284,7 +285,12 @@ public:
 		{		
 			try
 			{
-			session_->start_dht(dht_state_);
+			session_->start_dht();
+
+			// DTH state no longer saved!!!!!
+
+			//session_->load_state(dht_state_);
+
 			dht_on_ = true;
 			}
 			catch(...)
@@ -712,6 +718,7 @@ public:
 		signaler<> torrent_finished;
 
 		boost::signal<bool()> torrent_paused;
+		boost::signal<void (wstring torrent_name)> torrent_completed;
 	} 
 	signals;
 
@@ -948,7 +955,9 @@ public:
 			
 		if (dht_on_) 
 		{	
-			halencode(hal::app().get_working_directory()/L"DHTState.bin", session_->dht_state());
+			libt::entry state;
+			session_->save_state(state);
+			halencode(hal::app().get_working_directory()/L"DHTState.bin", state);
 		}
 		
 		}		
@@ -1032,7 +1041,7 @@ private:
 	
 	bool dht_on_;
 	libt::dht_settings dht_settings_;
-	libt::entry dht_state_;	
+	libt::lazy_entry dht_state_;	
 
 	libt::upnp* upnp_;
 	libt::natpmp* natpmp_;

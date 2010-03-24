@@ -22,6 +22,7 @@
 
 
 #define WM_HALITE_UNCONDITIONAL_SHUTDOWN	WM_USER + 321
+#define WM_HALITE_TORRENT_COMPLETED		WM_USER + 322
 
 #ifndef RC_INVOKED
 
@@ -84,7 +85,10 @@ public:
 		MSG_WM_TIMER(OnTimer)
 		MSG_WM_COPYDATA(OnCopyData);
 		MESSAGE_HANDLER(WM_AreYouMe_, OnAreYouMe)
+
 		MESSAGE_HANDLER_EX(WM_HALITE_UNCONDITIONAL_SHUTDOWN, OnUnconditionalShutdown)
+		MESSAGE_HANDLER_EX(WM_HALITE_TORRENT_COMPLETED, OnTorrentCompleted)
+
 		MESSAGE_HANDLER_EX(WM_TRAYNOTIFY, OnTrayNotification)	
 		
 		MSG_WM_ERASEBKGND(OnEraseBkgnd)
@@ -177,6 +181,7 @@ protected:
 	void OnShowWindow(BOOL bShow, UINT nStatus);	
 	LRESULT OnTrayNotification(UINT, WPARAM wParam, LPARAM lParam);
 	LRESULT OnUnconditionalShutdown(UINT, WPARAM wParam, LPARAM lParam);
+	LRESULT OnTorrentCompleted(UINT, WPARAM wParam, LPARAM lParam);
 	LRESULT OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnTrayOpenHalite(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
@@ -201,6 +206,7 @@ protected:
 	void exitCallback();
 	void logoffCallback();
 	void shutdownCallback();
+	void torrentCompletedCallback(std::wstring torrent_name);
 
 	friend class boost::serialization::access;
 	template<class Archive>

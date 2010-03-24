@@ -850,6 +850,11 @@ void bit::schedual_cancel()
 	return pimpl()->schedual_cancel();
 }
 
+void bit::connect_torrent_completed_signal(function<void (wstring torrent_name)> fn)
+{
+	pimpl()->signals.torrent_completed.connect(fn);
+}
+
 bit::torrent::torrent() //:
 //	files(*this)
 {}
@@ -1101,12 +1106,6 @@ void bit::torrent::set_managed(bool m)
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_managed")
 }
 
-
-
-void bit::torrent::connect_file_completed_signal(function<void (wstring filename) fn)
-{
-
-}
 
 /*files_proxy bit::torrent::get_files() const
 {

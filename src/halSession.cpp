@@ -108,7 +108,10 @@ bit_impl::bit_impl() :
 	{
 		try
 		{
-			dht_state_ = haldecode(hal::app().get_working_directory()/L"DHTState.bin");
+			std::vector<char> in;
+
+			if (libt::load_file(path_to_utf8(hal::app().get_working_directory()/L"DHTState.bin"), in) == 0)
+				libt::lazy_bdecode(&in[0], &in[0] + in.size(), dht_state_);
 		}		
 		catch(const std::exception& e)
 		{
@@ -622,7 +625,9 @@ void bit_impl::alert_handler()
 					% get(a.handle)->name()), 
 				event_logger::info, a.timestamp())));
 		
-		get(a.handle)->finished();	
+		get(a.handle)->finished();
+
+		bit_impl_.signals.torrent_completed(get(a.handle)->name());
 	}
 
 	void operator()(libt::file_renamed_alert const& a) const

@@ -394,7 +394,7 @@ public:
 	const torrent_details_manager& update_torrent_details_manager(
 		const std::wstring& focused, const std::set<std::wstring>& selected);
 
-	void connect_file_completed_signal(function<void (wstring filename) fn);
+	void connect_torrent_completed_signal(function<void (wstring torrent_name)> fn);
 	
 	bit();
 	~bit();

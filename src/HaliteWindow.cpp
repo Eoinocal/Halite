@@ -147,6 +147,10 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	trayIcon_.Create(this, HAL_TRAY_MENU, L"Halite", 
 		CTrayNotifyIcon::LoadIconResource(HAL_APP_ICON), WM_TRAYNOTIFY, HAL_TRAY_MENU);
 	trayIcon_.Hide();
+
+	//Set callback for completed torrents
+	hal::bittorrent::Instance().connect_torrent_completed_signal(
+					bind(&HaliteWindow::torrentCompletedCallback, this, _1));
 	
 	// Add ToolBar and register it along with StatusBar for UIUpdates
 	UIAddToolBar(hWndToolBar);
@@ -610,6 +614,14 @@ LRESULT HaliteWindow::OnUnconditionalShutdown(UINT /*uMsg*/, WPARAM wParam, LPAR
 	return 0;
 }
 
+LRESULT HaliteWindow::OnTorrentCompleted(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam)
+{
+	HAL_DEV_MSG(L"In OnTorrentCompleted");
+
+
+	return 0;
+}
+
 void HaliteWindow::exitCallback()
 {
 	HAL_DEV_MSG(L"In exit callback");
@@ -635,6 +647,14 @@ void HaliteWindow::shutdownCallback()
 		EWX_SHUTDOWN, SHTDN_REASON_MAJOR_OTHER | SHTDN_REASON_MINOR_OTHER | SHTDN_REASON_FLAG_PLANNED);
 
 	PostMessage(WM_HALITE_UNCONDITIONAL_SHUTDOWN, 0, 0);
+}
+
+void HaliteWindow::torrentCompletedCallback(std::wstring torrent_name)
+{
+	HAL_DEV_MSG(hal::wform(L"In torrent completed callback, %1%") 
+					% torrent_name);
+
+	PostMessage(WM_HALITE_TORRENT_COMPLETED, 0, 0);
 }
 
 LRESULT HaliteWindow::OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
