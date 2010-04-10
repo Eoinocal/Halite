@@ -12,6 +12,49 @@
 
 #include "Peers.hpp"
 
+
+bool PeerListView::SubclassWindow(HWND hwnd)
+	{
+	if(!list_class_t::SubclassWindow(hwnd))
+		return false;
+
+	InitialSetup();	
+	
+	std::vector<wstring> names;	
+	wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
+
+	boost::split(names, column_names, boost::is_any_of(L";"));
+
+	//	Peer;			Country;			Download;		Upload;			Type;			Client,			Status"
+
+	array<int, 7> widths = {
+		100,				20,				70,				70,				70,				100,				200};
+
+	array<int, 7> order = {
+		0,				1,				2,				3,				4,				5,				6};
+
+	array<bool, 7> visible = {
+		true,			true,			true,			true,			true,			true,			true};
+
+	array<int, 7> formats = {
+		LVCFMT_CENTER,	LVCFMT_CENTER,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_CENTER,	LVCFMT_CENTER,	LVCFMT_LEFT};
+
+	for (int i=0, e=7; i < e; ++i)
+	{
+		AddColumn(names[i].c_str(), i, visible[i], widths[i], formats[i]);
+	}	
+				
+	load_from_ini();		
+
+	for (unsigned i=0, e = hal::peer_detail::status_e-hal::peer_detail::ip_address_e; i <= e; ++i)
+		SetColumnSortType(i, i + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e));		
+
+//	SetColumnSortType(2, hal::peer_detail::speed_down_e + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), NULL);		
+//	SetColumnSortType(3, hal::peer_detail::speed_up_e + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), NULL);
+	
+	return true;
+}
+
 bool PeerListView::sort_list_comparison(std::wstring l, std::wstring r, size_t index, bool ascending)
 {
 	hal::peer_details_vec::optional_type pdl = peer_details_.find_peer(l);

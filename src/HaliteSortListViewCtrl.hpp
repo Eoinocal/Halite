@@ -354,11 +354,11 @@ public:
 			return true;
 	}
 
-	int AddColumn(LPCTSTR strItem, int nItem, bool visible, int width=-1)
+	int AddColumn(LPCTSTR strItem, int nItem, bool visible, int width=-1, int fmt=LVCFMT_LEFT)
 	{
 		return AddColumn(strItem, nItem, -1,
 			LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM,
-			LVCFMT_LEFT, visible, width);
+			fmt, visible, width);
 	}
 
 	int AddColumn(LPCTSTR strItem, int nItem, int nSubItem = -1,

@@ -60,38 +60,7 @@ public:
 		save_to_ini();
 	}
 	
-	bool SubclassWindow(HWND hwnd)
-	{
-		if(!list_class_t::SubclassWindow(hwnd))
-			return false;
-
-		InitialSetup();	
-		
-		std::vector<wstring> names;	
-		wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
-
-		// "Peer;Country;Download;Upload;Type;Client,Status"
-		boost::split(names, column_names, boost::is_any_of(L";"));
-		
-		array<int, 7> widths = {100,20,70,70,70,100,200};
-		array<int, 7> order = {0,1,2,3,4,5,6};
-		array<bool, 7> visible = {true,true,true,true,true,true,true};
-
-		for (int i=0, e=7; i < e; ++i)
-		{
-			AddColumn(names[i].c_str(), i, visible[i], widths[i]);
-		}	
-					
-		load_from_ini();		
-
-		for (unsigned i=0, e = hal::peer_detail::status_e-hal::peer_detail::ip_address_e; i <= e; ++i)
-			SetColumnSortType(i, i + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e));		
-
-	//	SetColumnSortType(2, hal::peer_detail::speed_down_e + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), NULL);		
-	//	SetColumnSortType(3, hal::peer_detail::speed_up_e + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e), NULL);
-		
-		return true;
-	}
+	bool SubclassWindow(HWND hwnd);
 	
 	void OnDestroy()
 	{

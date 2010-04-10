@@ -41,13 +41,32 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	
 	boost::split(names, column_names, boost::is_any_of(L";"));
 	
-	array<int, NumberOfColumns_s> widths = {100,110,60,60,60,42,45,61,45,45,45,45,45,45,45,45,45,45,45,45,45,30,45};
-	array<bool, NumberOfColumns_s> visible = {true,true,true,true,true,true,true,true,true,true,true,\
-		true,true,true,true,true,true,true,true,true,true,true,true};
+	// 	Name;			Status;			Progress;			Download;		Upload;			Peers;			Seeds;	
+	//	ETA;				Copies;			Tracker;			Reannounce;		Ratio;			Total;			Completed;
+	//	Remaining;		Downloaded;		Uploaded;		Active;			Seeding;			Start Time;		Finish Time;
+	//	Managed;		Queue Position"
+
+	array<int, NumberOfColumns_s> widths = {
+		100,				110,				60,				60,				60,				42,				45,		
+		61,				45,				45,				45,				45,				45,				45,
+		45,				45,				45,				45,				45,				45,				45,
+		30,				45};
+
+	array<int, NumberOfColumns_s> formats = {
+		0,				0,				LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_CENTER,	LVCFMT_CENTER,	
+		LVCFMT_RIGHT,	LVCFMT_RIGHT,	0,				LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	
+		LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	
+		0,				LVCFMT_RIGHT};
+
+	array<bool, NumberOfColumns_s> visible = {
+		true,			true,			true,			true,			true,			true,			true,
+		true,			true,			true,			true,			true,			true,			true,
+		true,			true,			true,			true,			true,			true,			true,
+		true,			true};
 
 	for (int i=0, e=NumberOfColumns_s; i < e; ++i)
 	{
-		AddColumn(names[i].c_str(), i, visible[i], widths[i]);
+		AddColumn(names[i].c_str(), i, visible[i], widths[i], formats[i]);
 	}	
 
 	SafeLoadFromIni();

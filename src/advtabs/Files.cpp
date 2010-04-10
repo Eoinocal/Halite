@@ -34,16 +34,26 @@ HWND FileListView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowNa
 
 	std::vector<wstring> names;	
 	wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
-
-	boost::split(names, column_names, boost::is_any_of(L";"));
 	
-	array<int, 5> widths = {100,70,70,70,70};
-	array<int, 5> order = {0,1,2,3,4};
-	array<bool, 5> visible = {true,true,true,true,true};
+	boost::split(names, column_names, boost::is_any_of(L";"));
+
+	//	"Filename;		Path;			Size;			Progress;			Priority"
+	
+	array<int, 5> widths = {
+		100,				70,				70,				70,				70};
+
+	array<int, 5> order = {
+		0,				1,				2,				3,				4};
+
+	array<bool, 5> visible = {
+		true,			true,			true,			true,			true};
+
+	array<int, 5> formats = {
+		0,				0,				LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT};	
 
 	for (int i=0, e=5; i < e; ++i)
 	{
-		AddColumn(names[i].c_str(), i, visible[i], widths[i]);
+		AddColumn(names[i].c_str(), i, visible[i], widths[i], formats[i]);
 	}	
 	
 	for (unsigned i=0, e = hal::file_details::priority_e-hal::file_details::filename_e; i <= e; ++i)
