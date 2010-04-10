@@ -31,6 +31,8 @@ HaliteWindow::HaliteWindow(unsigned areYouMe = 0) :
 	closeToTray(false),
 	confirmClose(true),
 	activeTab(0),
+	torrent_complete_balloon_(true),
+	balloons_timout_(10),
 	action_time_(boost::posix_time::not_a_date_time),
 	action_action_(TimePickerDlg::action_na)
 {
@@ -624,15 +626,25 @@ void HaliteWindow::torrentCompletedCallback(std::wstring torrent_name)
 
 LRESULT HaliteWindow::OnTorrentCompleted(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam)
 {
-	HAL_DEV_MSG(L"In OnTorrentCompleted");
+	try
+	{
 
 	boost::scoped_ptr<std::wstring> name(reinterpret_cast<std::wstring*>(lParam));
 
-	if (!trayIcon_.SetBalloonDetails((hal::wform(L"Torrent %1% competed") % *name).str().c_str(), L"Torrent Completed", 
-		CTrayNotifyIcon::Info, 10, 0, 0))
+	if (torrent_complete_balloon_)
 	{
-		HAL_DEV_MSG(L"Problem displaying balloon");
+		wstring msg = hal::app().res_wstr(HAL_BALLOON_TORRENT_COMPLETE);
+		wstring title = hal::app().res_wstr(HAL_BALLOON_TITLE_COMPLETE);
+
+		if (!trayIcon_.SetBalloonDetails(
+			(hal::wform(msg) % *name).str().c_str(), title.c_str(), 
+				CTrayNotifyIcon::Info, balloons_timout_, 0, 0))
+		{
+			HAL_DEV_MSG(L"Problem displaying balloon");
+		}	
 	}
+	
+	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::OnTorrentCompleted")
 
 	return 0;
 }

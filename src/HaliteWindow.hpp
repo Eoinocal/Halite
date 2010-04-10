@@ -10,15 +10,17 @@
 #define HAL_SHUTDOWN_MENU					13001
 #define HAL_DATETIME_DLG					13002
 
-#define HAL_WINDOW_CLOSECONFRIM		ID_WINDOW_BEGIN + 10
-#define HAL_WINDOW_SOCKETS_FAILED	ID_WINDOW_BEGIN + 11
-#define HAL_WINDOW_AUTOSHUTDOWN		ID_WINDOW_BEGIN + 13
-#define HAL_WINDOW_EXIT			ID_WINDOW_BEGIN + 4
-#define HAL_SHUTDOWN_OPENHALITE		ID_WINDOW_BEGIN + 6
-#define HAL_SHUTDOWN_PAUSEALL		ID_WINDOW_BEGIN + 7
-#define HAL_SHUTDOWN_RESUMEALL		ID_WINDOW_BEGIN + 8
-#define HAL_SHUTDOWN_EXIT			ID_WINDOW_BEGIN + 9
-#define HAL_DATETIME_DEFFLD_TEXT		ID_WINDOW_BEGIN + 12
+#define HAL_WINDOW_EXIT						ID_WINDOW_BEGIN + 4
+#define HAL_SHUTDOWN_OPENHALITE			ID_WINDOW_BEGIN + 6
+#define HAL_SHUTDOWN_PAUSEALL				ID_WINDOW_BEGIN + 7
+#define HAL_SHUTDOWN_RESUMEALL				ID_WINDOW_BEGIN + 8
+#define HAL_SHUTDOWN_EXIT					ID_WINDOW_BEGIN + 9
+#define HAL_WINDOW_CLOSECONFRIM			ID_WINDOW_BEGIN + 10
+#define HAL_WINDOW_SOCKETS_FAILED			ID_WINDOW_BEGIN + 11
+#define HAL_DATETIME_DEFFLD_TEXT			ID_WINDOW_BEGIN + 12
+#define HAL_WINDOW_AUTOSHUTDOWN			ID_WINDOW_BEGIN + 13
+#define HAL_BALLOON_TORRENT_COMPLETE		ID_WINDOW_BEGIN + 14
+#define HAL_BALLOON_TITLE_COMPLETE			ID_WINDOW_BEGIN + 15
 
 
 #define WM_HALITE_UNCONDITIONAL_SHUTDOWN	WM_USER + 321
@@ -216,6 +218,10 @@ protected:
 
 		switch (version)
 		{
+		case 3:
+		ar	& make_nvp("torrent_complete_balloon", torrent_complete_balloon_)
+			& make_nvp("balloons_timout", balloons_timout_);
+
 		case 2:
 		ar	& make_nvp("close_to_tray", closeToTray)
 			& make_nvp("use_tray", use_tray)
@@ -274,11 +280,13 @@ private:
 	bool closeToTray;
 	bool confirmClose;
 	int activeTab;
+	bool torrent_complete_balloon_;
+	int balloons_timout_;
 
 	boost::posix_time::ptime action_time_;
 	unsigned action_action_;
 };
 
-BOOST_CLASS_VERSION(HaliteWindow, 2)
+BOOST_CLASS_VERSION(HaliteWindow, 3)
 
 #endif // RC_INVOKED
