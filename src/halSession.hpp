@@ -733,8 +733,8 @@ public:
 		{	
 //		torrent_internal_ptr TIp;
 
-		std::pair<std::string, std::string> names = extract_names(file);
-		wstring xml_name = from_utf8(names.first) + L".xml";
+	//	std::pair<std::string, std::string> names = extract_names(file);
+	//	wstring xml_name = from_utf8(names.first) + L".xml";
 
 /*		if (false && fs::exists(file.parent_path()/xml_name))
 		{

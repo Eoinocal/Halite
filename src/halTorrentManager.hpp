@@ -136,7 +136,7 @@ public:
 
 		std::pair<torrent_by_name::iterator, bool> p = torrents_.get<by_name>().insert(torrent_holder(t));
 
-		if (!p.second) 
+		if (!p.second) // Torrent already present
 			t.reset();
 		else
 			t->initialize_state_machine(t);
