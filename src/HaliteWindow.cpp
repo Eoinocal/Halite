@@ -614,10 +614,25 @@ LRESULT HaliteWindow::OnUnconditionalShutdown(UINT /*uMsg*/, WPARAM wParam, LPAR
 	return 0;
 }
 
+void HaliteWindow::torrentCompletedCallback(std::wstring torrent_name)
+{
+	HAL_DEV_MSG(hal::wform(L"In torrent completed callback, %1%") 
+					% torrent_name);
+
+	PostMessage(WM_HALITE_TORRENT_COMPLETED, 0, (LPARAM)new std::wstring(torrent_name));
+}
+
 LRESULT HaliteWindow::OnTorrentCompleted(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam)
 {
 	HAL_DEV_MSG(L"In OnTorrentCompleted");
 
+	boost::scoped_ptr<std::wstring> name(reinterpret_cast<std::wstring*>(lParam));
+
+	if (!trayIcon_.SetBalloonDetails((hal::wform(L"Torrent %1% competed") % *name).str().c_str(), L"Torrent Completed", 
+		CTrayNotifyIcon::Info, 10, 0, 0))
+	{
+		HAL_DEV_MSG(L"Problem displaying balloon");
+	}
 
 	return 0;
 }
@@ -647,14 +662,6 @@ void HaliteWindow::shutdownCallback()
 		EWX_SHUTDOWN, SHTDN_REASON_MAJOR_OTHER | SHTDN_REASON_MINOR_OTHER | SHTDN_REASON_FLAG_PLANNED);
 
 	PostMessage(WM_HALITE_UNCONDITIONAL_SHUTDOWN, 0, 0);
-}
-
-void HaliteWindow::torrentCompletedCallback(std::wstring torrent_name)
-{
-	HAL_DEV_MSG(hal::wform(L"In torrent completed callback, %1%") 
-					% torrent_name);
-
-	PostMessage(WM_HALITE_TORRENT_COMPLETED, 0, 0);
 }
 
 LRESULT HaliteWindow::OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)

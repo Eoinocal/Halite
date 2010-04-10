@@ -361,28 +361,28 @@ void torrent_internal::extract_filenames(boost::intrusive_ptr<libt::torrent_info
 			else
 				p_new = L"incoming" / p_new;
 
-			// Compensate for existing file outside HASHED subdir
+			// Compensate for existing files outside HASHED subdir
 
 			if (save_directory_ != move_to_directory_)
 			{
-				if (fs::exists(p_orig) && !fs::exists(p_new)) 	
+				if (fs::exists(save_directory_/p_orig) && !fs::exists(save_directory_/p_new)) 	
 				{
-					if (!fs::exists(p_new.parent_path()))
-						fs::create_directories(p_new.parent_path());
+					if (!fs::exists((save_directory_/p_new).parent_path()))
+						fs::create_directories((save_directory_/p_new).parent_path());
 
 					fs::rename(p_orig, p_new);
 
 					event_log().post(shared_ptr<EventDetail>(new EventMsg(
 						wform(L"Existing File renamed: %1%") % p_orig, event_logger::info)));
 				}
-				else	 if (fs::exists(p_orig) && fs::exists(p_new)) 
+				else	 if (fs::exists(save_directory_/p_orig) && fs::exists(save_directory_/p_new)) 
 				{
 					HAL_DEV_MSG(wform(L"Two files exists, defaulting to using the new style"));
 				}
 			}
 			else
 			{
-				if (fs::exists(p_orig) && p_orig != p_new) 	
+				if (fs::exists(save_directory_/p_orig) && p_orig != p_new) 	
 				{
 					p_new = p_orig;
 
