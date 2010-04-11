@@ -686,10 +686,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\memdebug.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\lib\libtorrent\src\metadata_transfer.cpp"
 				>
 			</File>
