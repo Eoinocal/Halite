@@ -572,7 +572,10 @@ void bit_impl::alert_handler()
 				hal::wform(hal::app().res_wstr(HAL_EXTERNAL_IP_ALERT))
 					% hal::from_utf8_safe(a.message())
 					% hal::from_utf8_safe(a.external_address.to_string()))
-		)	);				
+		)	);		
+
+		if (!bit_impl_.external_address_) 
+			bit_impl_.external_address_.reset(a.external_address);
 	}
 
 	void operator()(libt::portmap_error_alert const& a) const

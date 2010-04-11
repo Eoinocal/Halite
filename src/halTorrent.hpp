@@ -385,6 +385,9 @@ public:
 
 	void schedual_cancel();
 	
+	wstring get_external_ip();
+	void set_external_ip(const wstring& ip);
+	
 	int default_torrent_max_connections();
 	int default_torrent_max_uploads();
 	float default_torrent_download();

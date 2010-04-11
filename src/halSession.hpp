@@ -1033,6 +1033,8 @@ private:
 	bool ip_filter_changed_;
 	libt::ip_filter ip_filter_;
 	size_t ip_filter_count_;
+
+	boost::optional<libt::address> external_address_;
 	
 	void ip_filter_count();
 	void ip_filter_load(progress_callback fn);
