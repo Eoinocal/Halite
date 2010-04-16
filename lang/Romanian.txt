@@ -308,17 +308,21 @@
 "Time ratio limit:" ---> "Limita timp raport:"
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Timp"
+"Timeout (seconds) : " --->  ??? 
 "Toolbar2k.bmp" ---> "Toolbar2k.bmp"
+"Torrent %1% completed." --->  ??? 
 "Torrent %1% file %2% completed." --->  ??? 
 "Torrent %1% file %2% renamed failed." --->  ??? 
 "Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% gata."
 "Torrent %1% paused." ---> "Torrent %1% pauzat."
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) exception caught: %2% from %3%."
+"Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Setări Torrent Predefinite"
 "Torrent File" ---> "Fişier Torrent"
 "Torrent Root" ---> "Director de bază al Torrentului"
 "Torrent and Data" ---> "Torrentul şi Data"
+"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" ---> "Limite de conexiuni al torrentului:"
 "Torrent error: %1% (%2%)" ---> "Eroare Torrentului: %1% (%2%)"
 "Torrent save folder:" ---> "Director în care se salvează torrentele:"
@@ -352,6 +356,7 @@
 "Upload" ---> "Încărcare"
 "Uploaded" ---> "Încărcat"
 "Use a proxy." ---> "Foloseşte un proxy."
+"Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "Utilizatorul a anulat crearea fişierului torrent"
 "Username : " ---> "Numele Utilizatorului :"
 "Warning" ---> "Avertizare"

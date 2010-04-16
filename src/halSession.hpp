@@ -769,13 +769,7 @@ public:
 			if (!start_stopped) TIp->resume();
 		}
 		
-		}
-		catch (const std::exception& e)
-		{
-			event_log().post(shared_ptr<EventDetail>(
-				new EventTorrentException(event_logger::critical, event_logger::torrentException, 
-					std::string(e.what()), to_utf8(file.string()), std::string("addTorrent"))));
-		}
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(file.string(), "remove_torrent")
 	}
 
 	void remove_torrent(const wstring& name)

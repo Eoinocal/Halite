@@ -308,17 +308,21 @@
 "Time ratio limit:" --->  ??? 
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Hora"
+"Timeout (seconds) : " --->  ??? 
 "Toolbar2k.bmp" --->  ??? 
+"Torrent %1% completed." --->  ??? 
 "Torrent %1% file %2% completed." --->  ??? 
 "Torrent %1% file %2% renamed failed." --->  ??? 
 "Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% paused." --->  ??? 
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) exceção detectada: %2% do %3%."
+"Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Padrão para os Torrents"
 "Torrent File" ---> "Arquivo .torrent"
 "Torrent Root" ---> "Raiz do Torrent"
 "Torrent and Data" ---> "Torrent e dados"
+"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" ---> "Limites de conexões do torrent"
 "Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" --->  ??? 
@@ -352,6 +356,7 @@
 "Upload" ---> "Upando"
 "Uploaded" --->  ??? 
 "Use a proxy." ---> "Use um proxy"
+"Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "nome de usuário : "
 "Warning" --->  ??? 

@@ -308,17 +308,21 @@
 "Time ratio limit:" ---> "Časový poměr:"
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" ---> "Zbývající čas: %1% hodin, %2% minut a %3% sekund"
 "Time" ---> "Čas"
+"Timeout (seconds) : " --->  ??? 
 "Toolbar2k.bmp" ---> "Toolbar2k.bmp"
+"Torrent %1% completed." --->  ??? 
 "Torrent %1% file %2% completed." --->  ??? 
 "Torrent %1% file %2% renamed failed." --->  ??? 
 "Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% dokončen."
 "Torrent %1% paused." ---> "Torrent %1% pozastaven."
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Zachycena vyjímka torrentu (%1%): %2% z %3%."
+"Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Výchozí nastavení torrentu"
 "Torrent File" ---> "Torrent soubor"
 "Torrent Root" ---> "Kořen torrentu"
 "Torrent and Data" ---> "Torrent a soubory"
+"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" ---> "Limity připojení torrentu:"
 "Torrent error: %1% (%2%)" ---> "Chyba torrentu: %1% (%2%)"
 "Torrent save folder:" ---> "Adresář pro uložení torrentu:"
@@ -352,6 +356,7 @@
 "Upload" ---> "Odesílání"
 "Uploaded" ---> "Odesláno"
 "Use a proxy." ---> "Použít proxy."
+"Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "Uživatelem přerušené vytvoření torrent souboru"
 "Username : " ---> "Uživatelské jméno: "
 "Warning" ---> "Varování"

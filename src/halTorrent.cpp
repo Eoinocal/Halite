@@ -522,7 +522,7 @@ bool bit::ip_filter_import_dat(boost::filesystem::path file, progress_callback f
 
 wstring bit::get_external_ip()
 {
-
+	return L"";
 }
 	
 void bit::set_external_ip(const wstring& ip)

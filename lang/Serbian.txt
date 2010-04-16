@@ -308,17 +308,21 @@
 "Time ratio limit:" --->  ??? 
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Vreme"
+"Timeout (seconds) : " --->  ??? 
 "Toolbar2k.bmp" --->  ??? 
+"Torrent %1% completed." --->  ??? 
 "Torrent %1% file %2% completed." --->  ??? 
 "Torrent %1% file %2% renamed failed." --->  ??? 
 "Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." ---> "Torent %1% završen."
 "Torrent %1% paused." ---> "Torent %1% pauzira."
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torent (%1%) izuzetak uspešno popravljen: (%2%) u (%3%)."
+"Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Standardna podešavanja"
 "Torrent File" ---> "Torent fajl"
 "Torrent Root" ---> "Put torenta"
 "Torrent and Data" ---> "Torent i datoteku"
+"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" ---> "Ograničenje poveza:"
 "Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" ---> "Ulazna mapa za torente"
@@ -352,6 +356,7 @@
 "Upload" ---> "Izlazna brz."
 "Uploaded" ---> "Već podelio"
 "Use a proxy." ---> "Upotrebi Proksi-servera"
+"Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "Korisnik:"
 "Warning" ---> "Upozorenje"
