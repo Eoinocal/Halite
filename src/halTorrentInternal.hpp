@@ -797,6 +797,18 @@ public:
 		resolve_countries_ = b;
 		apply_resolve_countries();
 	}
+
+	void set_use_external_interface(std::wstring inter)
+	{
+		external_interface_.reset(inter);
+		apply_external_interface();
+	}
+
+	void set_no_external_interface()
+	{
+		external_interface_.reset();
+		apply_external_interface();
+	}
 	
 	void extract_names(boost::intrusive_ptr<libt::torrent_info> metadata);
 	void extract_filenames(boost::intrusive_ptr<libt::torrent_info> metadata);
@@ -911,7 +923,8 @@ private:
 	void apply_file_priorities();	
 	void apply_file_names();	
 	void apply_resolve_countries();
-	void apply_queue_position();
+	void apply_queue_position();	
+	void apply_external_interface();
 	void state(unsigned s);
 
 	boost::function<void ()> removed_callback_;
@@ -937,6 +950,8 @@ private:
 	bool in_session_;
 	float ratio_;
 	bool resolve_countries_;
+
+	boost::optional<std::wstring> external_interface_;
 	
 	wstring filename_;
 	wstring name_;

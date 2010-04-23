@@ -463,6 +463,7 @@ void torrent_internal::apply_settings()
 	apply_file_priorities();
 	apply_resolve_countries();
 	apply_file_names();
+	apply_external_interface();
 }
 
 void torrent_internal::apply_transfer_speed()
@@ -477,6 +478,26 @@ void torrent_internal::apply_transfer_speed()
 		handle_.set_upload_limit(up);
 
 		HAL_DEV_MSG(hal::wform(L"Applying Transfer Speed %1% - %2%") % down % up);
+	}
+}
+
+void torrent_internal::apply_external_interface()
+{
+	mutex_t::scoped_lock l(mutex_);
+	if (in_session())
+	{
+		if (external_interface_)
+		{
+			handle_.use_interface(hal::to_utf8(*external_interface_).c_str());
+
+			HAL_DEV_MSG(hal::wform(L"Applying external interface: %1%") % *external_interface_);
+		}
+		else
+		{
+			handle_.use_interface(0);
+
+			HAL_DEV_MSG(L"Applying no custom external interface: %1%");
+		}
 	}
 }
 

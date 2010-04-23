@@ -653,10 +653,24 @@ public:
 			(*i).torrent->set_resolve_countries(resolve_countries_);
 		}
 
-		if (b)			
+		if (b)
 			event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Set to resolve countries.")));
 		else			
 			event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Not resolving countries.")));
+	}
+	
+	void set_announce_to_all(bool trackers, bool tiers)
+	{
+		libt::session_settings settings = session_->settings();
+
+		settings.announce_to_all_trackers = trackers;
+		settings.announce_to_all_tiers = tiers;
+
+		session_->set_settings(settings);
+
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(
+			hal::wform(L"Set announcing style- Trackers: %1%, Tiers: %2%.") 
+				% settings.announce_to_all_trackers % settings.announce_to_all_tiers)));
 	}
 
 	void start_smart_ban_plugin()
@@ -709,6 +723,44 @@ public:
 		ip_filter_changed_ = true;
 		ip_filter_count();
 	}
+	
+	std::wstring get_external_interface()
+	{
+		if (external_interface_)
+			return *external_interface_;
+		else
+			return L"";
+	}
+
+	void set_external_interface(const std::wstring& ip)
+	{
+		use_custom_interface_ = true;
+
+		for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
+			i != e; ++i)
+		{
+			(*i).torrent->set_use_external_interface(ip);
+		}
+
+		external_interface_.reset(ip);
+		
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(hal::wform(
+			L"Set a custom external interface: %1%") % ip)));
+	}
+
+	void set_no_external_interface()
+	{
+		use_custom_interface_ = false;
+
+		for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
+			i != e; ++i)
+		{
+			(*i).torrent->set_no_external_interface();
+		}
+
+		external_interface_.reset();		
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Disabled custom external interface")));
+	}
 
 	bool ip_filter_import_dat(boost::filesystem::path file, progress_callback fn, bool octalFix);
 
@@ -755,7 +807,7 @@ public:
 		torrent_internal_ptr TIp =
 			the_torrents_.create_torrent(file, saveDirectory, alloc, moveToDirectory);
 
-		if(TIp)
+		if (TIp)
 		{
 			TIp->set_managed(managed);
 			TIp->set_transfer_speed(bittorrent::Instance().default_torrent_download(), 
@@ -763,6 +815,10 @@ public:
 			TIp->set_connection_limit(bittorrent::Instance().default_torrent_max_connections(), 
 				bittorrent::Instance().default_torrent_max_uploads());
 			TIp->set_resolve_countries(resolve_countries_);
+
+			if (use_custom_interface_ && external_interface_)
+				TIp->set_use_external_interface(*external_interface_);
+
 
 			TIp->start();
 
@@ -1028,7 +1084,8 @@ private:
 	libt::ip_filter ip_filter_;
 	size_t ip_filter_count_;
 
-	boost::optional<libt::address> external_address_;
+	boost::optional<std::wstring> external_interface_;
+	bool use_custom_interface_;
 	
 	void ip_filter_count();
 	void ip_filter_load(progress_callback fn);

@@ -297,6 +297,8 @@ public:
 	bool ensure_ip_filter_on(progress_callback fn);
 	void ensure_ip_filter_off();
 
+	void set_announce_to_all(bool trackers, bool tiers);
+
 	void set_resolve_countries(bool);
 	void start_smart_ban_plugin();
 	void start_ut_pex_plugin();
@@ -385,8 +387,9 @@ public:
 
 	void schedual_cancel();
 	
-	wstring get_external_ip();
-	void set_external_ip(const wstring& ip);
+	std::wstring get_external_interface();
+	void set_external_interface(const std::wstring& ip);
+	void set_external_interface();
 	
 	int default_torrent_max_connections();
 	int default_torrent_max_uploads();

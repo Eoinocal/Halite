@@ -262,6 +262,13 @@ public:
 		using boost::serialization::make_nvp;
 		switch (version)
 		{
+		case 7:
+			
+		ar	& make_nvp("announce_all/trackers", announce_all_trackers_)
+			& make_nvp("announce_all/tiers", announce_all_tiers_)
+			& make_nvp("custom_interface/use", use_custom_interface_)
+			& make_nvp("custom_interface/interface", custom_interface_);
+
 		case 6:
 		ar	& make_nvp("globals", globals_)
 			& make_nvp("default_save_folder", default_save_folder_)
@@ -393,6 +400,12 @@ private:
 	bool ut_pex_plugin_;
 	bool smart_ban_plugin_;
 
+	bool announce_all_trackers_;
+	bool announce_all_tiers_;	
+
+	bool use_custom_interface_;
+	std::wstring custom_interface_;	
+
 	hal::cache_settings cache_settings_;
 
 	hal::queue_settings queue_settings_;
@@ -403,4 +416,4 @@ Config& config();
 
 } // namespace hal
 
-BOOST_CLASS_VERSION(hal::Config, 6)
+BOOST_CLASS_VERSION(hal::Config, 7)

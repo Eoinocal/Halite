@@ -460,6 +460,11 @@ void bit::set_resolve_countries(bool b)
 	pimpl()->set_resolve_countries(b);
 }
 
+void bit::set_announce_to_all(bool trackers, bool tiers)
+{
+	pimpl()->set_announce_to_all(trackers, tiers);
+}
+
 void bit::start_smart_ban_plugin()
 {
 	pimpl()->start_smart_ban_plugin();
@@ -520,14 +525,19 @@ bool bit::ip_filter_import_dat(boost::filesystem::path file, progress_callback f
 	return pimpl()->ip_filter_import_dat(file, fn, octalFix);
 }
 
-wstring bit::get_external_ip()
+std::wstring bit::get_external_interface()
 {
-	return L"";
+	return pimpl()->get_external_interface();
 }
 	
-void bit::set_external_ip(const wstring& ip)
+void bit::set_external_interface(const std::wstring& ip)
 {
+	pimpl()->set_external_interface(ip);
+}
 
+void bit::set_external_interface()
+{
+	pimpl()->set_no_external_interface();
 }
 
 const SessionDetail bit::get_session_details()

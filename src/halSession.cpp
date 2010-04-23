@@ -574,8 +574,8 @@ void bit_impl::alert_handler()
 					% hal::from_utf8_safe(a.external_address.to_string()))
 		)	);		
 
-		if (!bit_impl_.external_address_) 
-			bit_impl_.external_address_.reset(a.external_address);
+		if (!bit_impl_.use_custom_interface_ || !bit_impl_.external_interface_) 
+			bit_impl_.external_interface_.reset(hal::from_utf8_safe(a.external_address.to_string()));
 	}
 
 	void operator()(libt::portmap_error_alert const& a) const

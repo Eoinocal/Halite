@@ -44,6 +44,8 @@ Config::Config() :
 	mapping_nat_pmp_(false),
 	resolve_countries_(false),
 	metadata_plugin_(false),
+	announce_all_trackers_(true),
+	announce_all_tiers_(true),
 	ut_metadata_plugin_(false),
 	ut_pex_plugin_(false),
 	smart_ban_plugin_(false)
@@ -125,6 +127,12 @@ bool Config::settingsThread()
 	bittorrent::Instance().set_timeouts(timeouts_);	
 	bittorrent::Instance().set_queue_settings(queue_settings_);
 	bittorrent::Instance().set_resolve_countries(resolve_countries_);
+	bittorrent::Instance().set_announce_to_all(announce_all_trackers_, announce_all_tiers_);
+
+	if (use_custom_interface_)
+		bittorrent::Instance().set_external_interface(custom_interface_);
+	else
+		bittorrent::Instance().set_external_interface();
 
 	if (metadata_plugin_)
 		bittorrent::Instance().start_metadata_plugin();
