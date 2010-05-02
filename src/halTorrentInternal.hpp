@@ -472,7 +472,7 @@ public:
 		wpath resume_dir = hal::app().get_working_directory()/L"resume";
 		
 		if (!exists(resume_dir))
-			create_directory(resume_dir);
+			fs::create_directories(resume_dir);
 
 		boost::filesystem::ofstream out(resume_dir/(name_ + L".fastresume"), std::ios_base::binary);
 		out.unsetf(std::ios_base::skipws);

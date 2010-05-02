@@ -265,7 +265,7 @@ void torrent_internal::get_file_details(file_details_vec& files_vec)
 			wstring fullPath = hal::from_utf8(files[i].path.string());
 			boost::int64_t size = static_cast<boost::int64_t>(files[i].size);
 			
-			file_details_memory_.push_back(file_details(files_[i].original_name(), size, 0, file_priorities_[i], i));
+			file_details_memory_.push_back(file_details(files_[i].completed_name(), size, 0, file_priorities_[i], i));
 		}	
 	}		
 	
@@ -279,7 +279,15 @@ void torrent_internal::get_file_details(file_details_vec& files_vec)
 	}
 
 	for(size_t i=0, e=file_details_memory_.size(); i<e; ++i)
+	{
 		file_details_memory_[i].priority =  file_priorities_[i];
+
+		if (file_details_memory_[i].filename != files_[i].completed_name().filename())
+			file_details_memory_[i].filename = files_[i].completed_name().filename();
+
+		if (file_details_memory_[i].branch != files_[i].completed_name().parent_path())
+			file_details_memory_[i].branch = files_[i].completed_name().parent_path();
+	}
 	
 	files_vec = file_details_memory_;
 }
@@ -304,13 +312,13 @@ void torrent_internal::prepare(wpath filename)
 //		resumedata_ = haldecode(resumeFile);
 
 	if (!exists(hal::app().get_working_directory()/L"torrents"))
-		create_directory(hal::app().get_working_directory()/L"torrents");
+		fs::create_directories(hal::app().get_working_directory()/L"torrents");
 
 	if (!exists(torrentFile))
 		copy_file(filename.string(), torrentFile);
 
 	if (!fs::exists(save_directory_))
-		fs::create_directory(save_directory_);
+		fs::create_directories(save_directory_);
 
 	// These here should not make state changes based on torrent 
 	// session status since it has not been initialized yet.
@@ -494,9 +502,9 @@ void torrent_internal::apply_external_interface()
 		}
 		else
 		{
-			handle_.use_interface(0);
+		//	handle_.use_interface(0);
 
-			HAL_DEV_MSG(L"Applying no custom external interface: %1%");
+			HAL_DEV_MSG(L"Applying no custom external interface.");
 		}
 	}
 }

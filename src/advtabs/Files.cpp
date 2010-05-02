@@ -145,6 +145,12 @@ LRESULT FileListView::OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&)
 		
 		HAL_DEV_MSG(hal::wform(L"iItem: %1%, text: %2%, orig: %3%") 
 			% pdi->item.iItem % pdi->item.pszText % str);
+
+		if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused()))
+		{
+			wpath old_name = t.files()[pdi->item.iItem].name;
+			t.files()[pdi->item.iItem].name = old_name.parent_path()/wstring(pdi->item.pszText);
+		}
 	}	
 
 	lock_ptr_.reset();
@@ -240,7 +246,9 @@ LRESULT FileTreeView::OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&)
 		}
 	}
 */	
-	HAL_DEV_MSG(hal::wform(L"state: %1%, text: %2%") % pdi->item.state % pdi->item.pszText);
+	HAL_DEV_MSG(hal::wform(L"state: %1%, text: %2%-%3%") % pdi->item.state % str % pdi->item.pszText);
+
+
 
 	lock_ptr_.reset();
 

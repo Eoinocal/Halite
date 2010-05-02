@@ -257,6 +257,7 @@ public:
 		files_proxy files();
 
 		friend class files_proxy::file_proxy;
+		typedef files_proxy::file_proxy file;
 
 	private:
 		exec_around_ptr ptr;
