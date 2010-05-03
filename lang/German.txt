@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Peers. (%1%)"
 "&Pause All" ---> "Alle &pausieren"
 "&Resume All" ---> "Alle fo&rtsetzen"
-"(C) Eoin O'Callaghan 2009" --->  ??? 
+"(C) Eoin O'Callaghan 2010" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(D-U) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(D-U) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "Über"
@@ -35,6 +35,8 @@
 "Allow only one instance to run" ---> "Nur eine Instanz erlauben"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Eine ungültige Verbindungsstrategie, %1%, wurde als Verschlüsselungseinstellung verwendet."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Ein ungültiges Verschlüsselungslevel, %1%, wurde als Verschlüsselungseinstellung verwendet."
+"Announce on all tiers" --->  ??? 
+"Announce to all trackers" --->  ??? 
 "Apply" ---> "Anwenden"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Sind Sie sich sicher, dass Sie Halite beenden möchten? Dies wird alle aktiven Torrents anhalten."
 "Are you sure you wish to delete all downloaded data?" ---> "Sind Sie sich sicher, dass Sie alle heruntergeladenen Daten löschen möchten?"

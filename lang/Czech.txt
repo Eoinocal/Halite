@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% peerů. (%1%)"
 "&Pause All" ---> "&Pozastavit vše"
 "&Resume All" ---> "&Obnovit vše"
-"(C) Eoin O'Callaghan 2009" ---> "© Eóin O'Callaghan 2009"
+"(C) Eoin O'Callaghan 2010" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(S-O) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(S-O) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "O programu"
@@ -35,6 +35,8 @@
 "Allow only one instance to run" ---> "Povolit spuštění jen jedné instance"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Neplatná politika spojení, %1%, bylo předáno jako nastavení šifrování."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Neplatná úroveň kódování, %1%, bylo předáno jako nastavení šifrování."
+"Announce on all tiers" --->  ??? 
+"Announce to all trackers" --->  ??? 
 "Apply" ---> "Použít"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Opravdu chcete Halite zavřít? Pokud budete pokračovat, budou zastaveny všechny aktivní torrenty"
 "Are you sure you wish to delete all downloaded data?" ---> "Opravdu chcete smazat všechna stažená data?"

@@ -14,6 +14,75 @@ class TorrentsOptions;
 namespace hal
 {
 
+
+template<typename T>
+class action_setting
+{
+public:
+	typedef boost::function<void (const T&)> function_type;
+
+	action_setting()
+	{}
+
+	action_setting(const T& d) :
+		data_(d)
+	{}
+
+	action_setting(function_type f) :
+		fn_(f)
+	{}
+
+	action_setting(const T& d, function_type f) :
+		data_(d),
+		fn_(f)
+	{}
+	
+	operator const T& () const
+	{ 
+		return data_;
+	}
+
+	void set_no_action(const T& d)
+	{
+		data_ = d;
+	}
+
+	T& operator=(const T& d) 
+	{	
+		if (data_ != d && fn_)
+			fn_(d);
+
+		data_ = d;
+
+		return data_;
+	}
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void save(Archive & ar, const unsigned int version) const
+	{
+		ar & boost::serialization::make_nvp("data", data_);
+	}
+
+	template<class Archive>
+	void load(Archive & ar, const unsigned int version)
+	{	
+		T d = data_;
+		ar & boost::serialization::make_nvp("data", d);
+
+		if (data_ != d && fn_)
+			fn_(d);
+
+		data_ = d;
+	}
+
+	BOOST_SERIALIZATION_SPLIT_MEMBER()
+
+private:
+	T data_;
+	function_type fn_;
+};
+
 struct queue_settings
 {
 	friend class boost::serialization::access;
@@ -408,7 +477,7 @@ private:
 
 	hal::cache_settings cache_settings_;
 
-	hal::queue_settings queue_settings_;
+	action_setting<hal::queue_settings> queue_settings_;
 	hal::timeouts timeouts_;
 };
 
@@ -417,3 +486,16 @@ Config& config();
 } // namespace hal
 
 BOOST_CLASS_VERSION(hal::Config, 7)
+
+/*namespace boost {
+namespace serialization {
+	template <typename T>
+	struct version< hal::action_setting<T> >
+	{
+		typedef mpl::int_<1> type;
+		typedef mpl::integral_c_tag tag;
+		BOOST_STATIC_CONSTANT(unsigned int, value = version::type::value);                                                             
+	};
+}
+}
+*/

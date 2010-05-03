@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Parteneri. (%1%)"
 "&Pause All" ---> "&Pauzează pe Toate"
 "&Resume All" ---> "&Reincepe-le pe Toate"
-"(C) Eoin O'Callaghan 2009" --->  ??? 
+"(C) Eoin O'Callaghan 2010" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(J-S) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(J-S) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "Despre Halite"
@@ -35,6 +35,8 @@
 "Allow only one instance to run" ---> "Permite numai o singură instanţă al programului"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "O poliţă de conectare invalidă, %1%, a fost insertat ca setare criptografică."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Un nivel invalid de codificare, %1%, a fost insertat ca setare criptografică.."
+"Announce on all tiers" --->  ??? 
+"Announce to all trackers" --->  ??? 
 "Apply" ---> "Aplică"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Sunteţi sigur că închideţi Halite? În consecinţă torrentele active se vor opri."
 "Are you sure you wish to delete all downloaded data?" ---> "Sunteti siguri ca vreti să ştergeţi toate datele descărcate?"

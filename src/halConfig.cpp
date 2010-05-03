@@ -48,7 +48,8 @@ Config::Config() :
 	announce_all_tiers_(true),
 	ut_metadata_plugin_(false),
 	ut_pex_plugin_(false),
-	smart_ban_plugin_(false)
+	smart_ban_plugin_(false),
+	queue_settings_(bind(&hal::bit::set_queue_settings, &bittorrent::Instance(), _1))
 {
 	if (hal::app().get_my_documents())
 	{
@@ -61,7 +62,7 @@ Config::Config() :
 		default_move_folder_ = (hal::app().exe_path().parent_path()/L"Completed").string();
 	}
 
-	queue_settings_ = hal::bittorrent::Instance().get_queue_settings();
+	queue_settings_.set_no_action(hal::bittorrent::Instance().get_queue_settings());
 	timeouts_ = hal::bittorrent::Instance().get_timeouts();
 }
 
@@ -125,7 +126,7 @@ bool Config::settingsThread()
 	bittorrent::Instance().set_torrent_defaults(torrent_defaults_);
 
 	bittorrent::Instance().set_timeouts(timeouts_);	
-	bittorrent::Instance().set_queue_settings(queue_settings_);
+//	bittorrent::Instance().set_queue_settings(queue_settings_);
 	bittorrent::Instance().set_resolve_countries(resolve_countries_);
 	bittorrent::Instance().set_announce_to_all(announce_all_trackers_, announce_all_tiers_);
 
