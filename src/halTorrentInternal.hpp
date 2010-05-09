@@ -31,6 +31,7 @@
 #	include <libtorrent/peer_connection.hpp>
 #	include <libtorrent/extensions/metadata_transfer.hpp>
 #	include <libtorrent/extensions/ut_pex.hpp>
+#	include <libtorrent/create_torrent.hpp>
 #pragma warning (pop) 
 
 #include <boost/statechart/event.hpp>
@@ -481,9 +482,44 @@ public:
 		HAL_DEV_MSG(L"Written!");
 	}
 
-	void save_resume_data()
+	void write_torrent_info()
+	{
+		try {
+
+		if (in_session() && info_memory())
+		{
+			wpath torrent_info_file = hal::app().get_working_directory() / L"resume" / (name_ + L".torrent_info");
+			wpath resume_dir = hal::app().get_working_directory()/L"resume";
+			
+			if (!exists(resume_dir))
+				fs::create_directories(resume_dir);
+
+			boost::filesystem::ofstream out(resume_dir/(name_ + L".torrent_info"), std::ios_base::binary);
+			out.unsetf(std::ios_base::skipws);
+
+			libt::create_torrent t(*info_memory());
+			bencode(std::ostream_iterator<char>(out), t.generate());
+
+			HAL_DEV_MSG(L"Torrent info written!");
+		}
+
+		} 
+		catch (const boost::filesystem::wfilesystem_error&)
+		{
+			event_log().post(shared_ptr<EventDetail>(
+				new EventMsg(L"Write torrent info error.", event_logger::warning)));
+		}
+		catch (const libt::libtorrent_exception&)
+		{
+			HAL_DEV_MSG(L"No torrent info");
+		}
+	}
+
+	void save_resume_and_info_data()
 	{
 		handle_.save_resume_data();
+
+		write_torrent_info();
 	}
 	
 	void clear_resume_data()
@@ -491,7 +527,7 @@ public:
 		try {
 
 		wpath resume_file = hal::app().get_working_directory() / L"resume" / (name_ + L".fastresume");
-		
+
 		if (exists(resume_file))
 			remove(resume_file);
 
@@ -500,6 +536,23 @@ public:
 		{
 			event_log().post(shared_ptr<EventDetail>(
 				new EventMsg(L"Resume data removal error.", event_logger::warning)));
+		}
+	}
+	
+	void clear_torrent_info()
+	{
+		try {
+
+		wpath torrent_info_file = hal::app().get_working_directory() / L"resume" / (name_ + L".torrent_info");
+
+		if (exists(torrent_info_file))
+			remove(torrent_info_file);
+
+		} 
+		catch (const boost::filesystem::wfilesystem_error&)
+		{
+			event_log().post(shared_ptr<EventDetail>(
+				new EventMsg(L"Torrent info removal error.", event_logger::warning)));
 		}
 	}
 
@@ -815,10 +868,16 @@ public:
 	
 	boost::intrusive_ptr<libt::torrent_info> info_memory()
 	{
-		if (!info_memory_) 
-			info_memory_ = boost::intrusive_ptr<libt::torrent_info>
-				(new libt::torrent_info(path_to_utf8(filename())));
-		
+		try {
+			if (!info_memory_) 
+				info_memory_ = boost::intrusive_ptr<libt::torrent_info>
+					(new libt::torrent_info(path_to_utf8(filename())));		
+		}
+		catch (const libt::libtorrent_exception&)
+		{
+			HAL_DEV_MSG(L"No torrent info");
+		}
+
 		return info_memory_;
 	}
 	

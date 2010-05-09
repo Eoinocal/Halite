@@ -189,7 +189,6 @@ bool Config::settingsThread()
 	event_log().post(shared_ptr<EventDetail>(
 		new EventMsg(hal::wform(L"Opened listen port; %1%.") % bittorrent::Instance().is_listening_on())));
 
-
 	
 	if (enable_dht_)
 	{
