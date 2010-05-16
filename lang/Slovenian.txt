@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Soležnikov. (%1%)"
 "&Pause All" ---> "Premor vseh"
 "&Resume All" ---> "Nadaljuj vse"
-"(C) Eoin O'Callaghan 2009" --->  ??? 
+"(C) Eoin O'Callaghan 2010" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(D-G) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(D-U) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "O programu"
@@ -35,6 +35,8 @@
 "Allow only one instance to run" ---> "Dovoli le 1 delujočo kopijo Halitea"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Neveljavna nastavitev povezabe %1%."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Neveljavna nastavitev šifriranja %1%."
+"Announce on all tiers" --->  ??? 
+"Announce to all trackers" --->  ??? 
 "Apply" ---> "Posodobi"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Želite zapustiti Halite? S tem boste prekinili vse aktivne prenose."
 "Are you sure you wish to delete all downloaded data?" ---> "Želite izbrisati vse prenešene podatke?"

@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Peerek. (%1%)"
 "&Pause All" ---> "Összes &Leállítása"
 "&Resume All" ---> "Összes &Folytatása"
-"(C) Eoin O'Callaghan 2009" --->  ??? 
+"(C) Eoin O'Callaghan 2010" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(L-F) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(L-F) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "Névjegy"
@@ -35,6 +35,8 @@
 "Allow only one instance to run" ---> "Csak egy példány futása engedélyezett"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "An invalid connection policy, %1%, was passed as an encryption setting."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "An invalid encoding level, %1%, was passed as an encryption setting."
+"Announce on all tiers" --->  ??? 
+"Announce to all trackers" --->  ??? 
 "Apply" ---> "Alkalmaz"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Biztosan leállítod a Halite-ot? Ezzel minden aktív torrent is le fog állni."
 "Are you sure you wish to delete all downloaded data?" ---> "Biztosan törölni akarsz minden letöltött adatot?"
