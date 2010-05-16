@@ -124,7 +124,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	winstl::reg_value_w reg_path_value = reg_path.get_value(L"path");
 
 	if (hal::app().get_local_appdata())
-		hal::app().working_directory = hal::app().get_local_appdata().get()/L"Halite";
+	{
+#		ifndef NDEBUG
+			hal::app().working_directory = hal::app().get_local_appdata().get()/L"Halite.Backup";
+#		else
+			hal::app().working_directory = hal::app().get_local_appdata().get()/L"Halite";
+#		endif
+	}
+
 	}
 	catch(...)
 	{
