@@ -60,8 +60,15 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 
 	libt::add_torrent_params p;
 
-	string torrent_file = to_utf8((hal::app().get_working_directory()/L"torrents"/t_i.filename_).string());
-	t_i.info_memory_.reset(new libt::torrent_info(torrent_file.c_str()));
+	std::string torrent_info_file = to_utf8((hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".torrent_info")).string());
+	if (fs::exists(torrent_info_file))
+	{
+		HAL_DEV_MSG(L"Using torrent info data");
+		t_i.info_memory_.reset(new libt::torrent_info(torrent_info_file.c_str()));
+		p.ti = t_i.info_memory_;
+	}
+
+	//string torrent_file = to_utf8((hal::app().get_working_directory()/L"torrents"/t_i.filename_).string());
 
 	std::string resume_file = to_utf8((hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string());
 
@@ -72,7 +79,6 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 		p.resume_data = &buf;
 	}
 
-	p.ti = t_i.info_memory_;
 	p.save_path = path_to_utf8(t_i.save_directory_).string();
 	p.storage_mode = hal_allocation_to_libt(t_i.allocation_);
 	p.paused = evt.pause();
@@ -299,7 +305,7 @@ resume_data_waiting::resume_data_waiting(base_type::my_context ctx) :
 {
 	TORRENT_STATE_LOG(L"Entering resume_data_waiting()");
 
-	context<torrent_internal>().handle_.save_resume_data();
+	context<torrent_internal>().save_resume_and_info_data();
 }
 
 resume_data_waiting::~resume_data_waiting()
