@@ -585,10 +585,16 @@ void bit::set_torrent_defaults(const connections& defaults)
 			% defaults.download_rate % defaults.upload_rate)));
 }
 
-void bit::add_torrent(wpath file, wpath saveDirectory, bool startStopped, bool managed, allocations alloc, 
-		boost::filesystem::wpath moveToDirectory) 
+void bit::add_torrent(const wpath& file, const wpath& save_directory, 
+	bool start_stopped, bool managed, allocations alloc, const wpath& move_to_directory) 
 {
-	pimpl()->add_torrent(file, saveDirectory, startStopped, managed, alloc, moveToDirectory);
+	pimpl()->add_torrent(file, save_directory, start_stopped, managed, alloc, move_to_directory);
+}
+
+void bit::add_torrent(const wstring& uri, const wpath& save_directory, 
+	bool start_stopped, bool managed, allocations alloc, const wpath& move_to_directory) 
+{
+	pimpl()->add_torrent(uri, save_directory, start_stopped, managed, alloc, move_to_directory);
 }
 
 const torrent_details_manager& bit::torrentDetails()

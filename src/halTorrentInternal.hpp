@@ -312,16 +312,29 @@ private:
 		state(torrent_details::torrent_stopped);
 	}
 
-	torrent_internal(wpath filename, wpath saveDirectory, bit::allocations alloc, wpath move_to_directory=L"") :
+	torrent_internal(const wpath& filename, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"") :
 		TORRENT_INTERNALS_DEFAULTS,
-		save_directory_(saveDirectory.string()),
+		save_directory_(save_directory.string()),
 		move_to_directory_(move_to_directory.string()),
 		allocation_(alloc)
 	{
 		state(torrent_details::torrent_stopped);
 		assert(the_session_);
 
-		prepare(filename);
+		set_info_memory(new libt::torrent_info(path_to_utf8(filename)));
+		prepare();
+	}
+
+	torrent_internal(const wstring& uri, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"") :
+		TORRENT_INTERNALS_DEFAULTS,
+		save_directory_(save_directory.string()),
+		move_to_directory_(move_to_directory.string()),
+		allocation_(alloc)
+	{
+		state(torrent_details::torrent_stopped);
+		assert(the_session_);
+
+		prepare();
 	}
 
 	#undef TORRENT_INTERNALS_DEFAULTS
@@ -486,7 +499,7 @@ public:
 	{
 		try {
 
-		if (in_session() && info_memory())
+		if (info_memory())
 		{
 			wpath torrent_info_file = hal::app().get_working_directory() / L"resume" / (name_ + L".torrent_info");
 			wpath resume_dir = hal::app().get_working_directory()/L"resume";
@@ -710,9 +723,9 @@ public:
 	{
 		mutex_t::scoped_lock l(mutex_);
 
-		if (trackers_.empty() && info_memory_)
+		if (trackers_.empty() && info_memory())
 		{
-			std::vector<libt::announce_entry> trackers = info_memory_->trackers();
+			std::vector<libt::announce_entry> trackers = info_memory()->trackers();
 			
 			foreach (const libt::announce_entry& entry, trackers)
 			{
@@ -821,11 +834,6 @@ public:
 		}
 	}
 
-	void set_entry_data(boost::intrusive_ptr<libt::torrent_info> metadata, libtorrent::entry resumedata)
-	{		
-		info_memory_ = metadata;
-	}
-
 	const std::vector<libt::peer_info>& peers() { return peers_; }
 	
 	boost::tuple<size_t, size_t, size_t, size_t> update_peers();
@@ -843,7 +851,7 @@ public:
 		}
 	}
 	
-	void prepare(wpath filename);
+	void prepare();
 
 	void set_resolve_countries(bool b)
 	{
@@ -865,13 +873,21 @@ public:
 	
 	void extract_names(boost::intrusive_ptr<libt::torrent_info> metadata);
 	void extract_filenames(boost::intrusive_ptr<libt::torrent_info> metadata);
+
+	
+	void set_info_memory(boost::intrusive_ptr<libt::torrent_info> info)
+	{		
+		info_memory_ = info;
+	}
 	
 	boost::intrusive_ptr<libt::torrent_info> info_memory()
 	{
-		try {
-			if (!info_memory_) 
-				info_memory_ = boost::intrusive_ptr<libt::torrent_info>
-					(new libt::torrent_info(path_to_utf8(filename())));		
+		try 
+		{
+
+		if (!info_memory_) 
+			info_memory_.reset(new libt::torrent_info(handle_.get_torrent_info()));	
+
 		}
 		catch (const libt::libtorrent_exception&)
 		{

@@ -333,9 +333,13 @@ public:
 	const SessionDetail get_session_details();
 
 	void set_torrent_defaults(const connections& defaults);	
-	void add_torrent(boost::filesystem::wpath file, boost::filesystem::wpath save_directory, 
+
+	void add_torrent(const boost::filesystem::wpath& file, const boost::filesystem::wpath& save_directory, 
 		bool start_paused=false, bool managed=false, allocations alloc=hal::bit::sparse_allocation, 
-		boost::filesystem::wpath move_to_directory=L"");
+		const boost::filesystem::wpath& move_to_directory=L"");
+	void add_torrent(const std::wstring& uri, const boost::filesystem::wpath& save_directory, 
+		bool start_paused=false, bool managed=false, allocations alloc=hal::bit::sparse_allocation, 
+		const boost::filesystem::wpath& move_to_directory=L"");
 	
 	void get_all_peer_details(const std::string& filename, peer_details_vec& peer_container);
 	void get_all_peer_details(const std::wstring& filename, peer_details_vec& peer_container);

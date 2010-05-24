@@ -292,40 +292,42 @@ void torrent_internal::get_file_details(file_details_vec& files_vec)
 	files_vec = file_details_memory_;
 }
 
-void torrent_internal::prepare(wpath filename)
+void torrent_internal::prepare()
 {
 	mutex_t::scoped_lock l(mutex_);
-	
-	if (fs::exists(filename)) 
-		info_memory_ = new libt::torrent_info(path_to_utf8(filename));
-	
-	extract_names(info_memory());
-	extract_filenames(info_memory());	
-	
-	const wpath resumeFile = hal::app().get_working_directory()/L"resume"/filename_;
-	const wpath torrentFile = hal::app().get_working_directory()/L"torrents"/filename_;
-	
-	event_log().post(shared_ptr<EventDetail>(new EventMsg(
-		hal::wform(L"File: %1%, %2%.") % resumeFile % torrentFile)));
-	
-//	if (exists(resumeFile)) 
-//		resumedata_ = haldecode(resumeFile);
 
-	if (!exists(hal::app().get_working_directory()/L"torrents"))
-		fs::create_directories(hal::app().get_working_directory()/L"torrents");
+	if (info_memory())
+	{		
+		extract_names(info_memory());
+		extract_filenames(info_memory());	
+		
+		write_torrent_info();
+		
+		const wpath resumeFile = hal::app().get_working_directory()/L"resume"/filename_;
+		const wpath torrentFile = hal::app().get_working_directory()/L"torrents"/filename_;
+		
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(
+			hal::wform(L"File: %1%, %2%.") % resumeFile % torrentFile)));
+		
+	//	if (exists(resumeFile)) 
+	//		resumedata_ = haldecode(resumeFile);
 
-	if (!exists(torrentFile))
-		copy_file(filename.string(), torrentFile);
+	//	if (!exists(hal::app().get_working_directory()/L"torrents"))
+	//		fs::create_directories(hal::app().get_working_directory()/L"torrents");
 
-	if (!fs::exists(save_directory_))
-		fs::create_directories(save_directory_);
+	//	if (!exists(torrentFile))
+	//		copy_file(filename.string(), torrentFile);
 
-	// These here should not make state changes based on torrent 
-	// session status since it has not been initialized yet.
-	if (state_ == torrent_details::torrent_stopping)
-		state(torrent_details::torrent_stopped);
-	else if (state_ == torrent_details::torrent_pausing)
-		state(torrent_details::torrent_paused);
+		if (!fs::exists(save_directory_))
+			fs::create_directories(save_directory_);
+
+		// These here should not make state changes based on torrent 
+		// session status since it has not been initialized yet.
+		if (state_ == torrent_details::torrent_stopping)
+			state(torrent_details::torrent_stopped);
+		else if (state_ == torrent_details::torrent_pausing)
+			state(torrent_details::torrent_paused);
+	}
 }
 
 void torrent_internal::extract_names(boost::intrusive_ptr<libt::torrent_info> metadata)

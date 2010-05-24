@@ -778,34 +778,14 @@ public:
 	void stop_alert_handler();
 	void alert_handler();
 
-	void add_torrent(wpath file, wpath saveDirectory, bool start_stopped, bool managed, bit::allocations alloc, 
-			boost::filesystem::wpath moveToDirectory) 
+	void add_torrent(const wpath& file, const wpath& save_directory, bool start_stopped, bool managed, bit::allocations alloc, 
+			const wpath& move_to_directory) 
 	{
 		try 
 		{	
-//		torrent_internal_ptr TIp;
 
-	//	std::pair<std::string, std::string> names = extract_names(file);
-	//	wstring xml_name = from_utf8(names.first) + L".xml";
-
-/*		if (false && fs::exists(file.parent_path()/xml_name))
-		{
-			torrent_standalone tsa;
-			
-			if (tsa.load_standalone(file.parent_path()/xml_name))
-			{
-				TIp = tsa.torrent;
-				
-				TIp->set_save_directory(saveDirectory, true);			
-				if (useMoveTo)
-					TIp->set_move_to_directory(moveToDirectory);
-
-				TIp->prepare(file);
-			}
-		}
-*/
 		torrent_internal_ptr TIp =
-			the_torrents_.create_torrent(file, saveDirectory, alloc, moveToDirectory);
+			the_torrents_.create_torrent(file, save_directory, alloc, move_to_directory);
 
 		if (TIp)
 		{
@@ -819,13 +799,53 @@ public:
 			if (use_custom_interface_ && external_interface_)
 				TIp->set_use_external_interface(*external_interface_);
 
-
 			TIp->start();
 
 			if (!start_stopped) TIp->resume();
 		}
 		
-		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(file.string(), "remove_torrent")
+		} 
+		HAL_TORRENT_FILESYSTEM_EXCEPTION_CATCH(file.string(), "add_torrent")
+		HAL_GENERIC_TORRENT_EXCEPTION_CATCH(file.string(), "add_torrent")
+	}
+
+	void add_torrent(const wstring& uri, const wpath& save_directory, bool start_stopped, bool managed, bit::allocations alloc, 
+			const wpath& move_to_directory) 
+	{
+		try 
+		{	
+
+		torrent_internal_ptr TIp =
+			the_torrents_.create_torrent(uri, save_directory, alloc, move_to_directory);
+		
+		HAL_DEV_MSG(hal::wform(L"URI Torrent: Created"));
+
+		if (TIp)
+		{
+		HAL_DEV_MSG(hal::wform(L"URI Torrent: Managed"));
+			TIp->set_managed(managed);
+		HAL_DEV_MSG(hal::wform(L"URI Torrent: Speeds"));
+			TIp->set_transfer_speed(bittorrent::Instance().default_torrent_download(), 
+				bittorrent::Instance().default_torrent_upload());
+		HAL_DEV_MSG(hal::wform(L"URI Torrent: Limits"));
+			TIp->set_connection_limit(bittorrent::Instance().default_torrent_max_connections(), 
+				bittorrent::Instance().default_torrent_max_uploads());
+			TIp->set_resolve_countries(resolve_countries_);
+
+			if (use_custom_interface_ && external_interface_)
+				TIp->set_use_external_interface(*external_interface_);
+
+		HAL_DEV_MSG(hal::wform(L"URI Torrent: Starting"));
+			TIp->start();
+
+		HAL_DEV_MSG(hal::wform(L"URI Torrent: Resuming"));
+			if (!start_stopped) TIp->resume();
+		HAL_DEV_MSG(hal::wform(L"URI Torrent: Done"));
+		}
+		
+		} 
+		HAL_TORRENT_FILESYSTEM_EXCEPTION_CATCH(uri, "add_torrent")
+		HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uri, "add_torrent")
 	}
 
 	void remove_torrent(const wstring& name)
@@ -892,14 +912,14 @@ public:
 		
 		for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); i != e;)
 		{
-			wpath file = wpath(hal::app().get_working_directory())/L"torrents"/(*i).torrent->filename();
+		//	wpath file = wpath(hal::app().get_working_directory())/L"torrents"/(*i).torrent->filename();
 			
-			if (exists(file))
-			{		
+		//	if (exists(file))
+		//	{		
 				try 
 				{
 					
-				(*i).torrent->prepare(file);	
+		//		(*i).torrent->prepare(file);	
 				(*i).torrent->start();	
 				
 				++i;
@@ -919,11 +939,11 @@ public:
 					
 					the_torrents_.erase(i++);
 				}			
-			}
-			else
-			{
-				the_torrents_.erase(i++);
-			}
+		//	}
+		//	else
+		//	{
+		//		the_torrents_.erase(i++);
+		//	}
 		}
 
 		the_torrents_.apply_queue_positions();

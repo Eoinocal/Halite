@@ -75,6 +75,51 @@ catch (...) \
 		new hal::EventMsg(hal::wform(L"Generic Torrent %1% catch all") % hal::from_utf8(FUNCTION), \
 			hal::event_logger::critical))); \
 }
+#define HAL_TORRENT_FILESYSTEM_EXCEPTION_CATCH(TORRENT, FN_MSG) \
+	catch (const boost::filesystem::wfilesystem_error& e) \
+	{ \
+		if (!e.path1().empty()) \
+		{ \
+			hal::event_log().post(shared_ptr<hal::EventDetail>( \
+				new hal::EventMsg(hal::wform(L"Torrent %4%. File related error %1%. %2% with %3%") \
+						% FN_MSG \
+						% hal::from_utf8(e.what()) \
+						% e.path1().string() \
+						% TORRENT, \
+					hal::event_logger::warning))); \
+		} \
+		else \
+		{ \
+			hal::event_log().post(shared_ptr<hal::EventDetail>( \
+				new hal::EventMsg(hal::wform(L"Torrent %3%. Filesystem related error %1%. %2%") \
+						% FN_MSG \
+						% hal::from_utf8(e.what()) \
+						% TORRENT, \
+					hal::event_logger::warning))); \
+		} \
+	} \
+	catch (const boost::filesystem::filesystem_error& e) \
+	{ \
+		if (!e.path1().empty()) \
+		{ \
+			hal::event_log().post(shared_ptr<hal::EventDetail>( \
+				new hal::EventMsg(hal::wform(L"Torrent %4%. File related error %1%. %2% with %3%") \
+						% FN_MSG \
+						% hal::from_utf8(e.what()) \
+						% hal::from_utf8(e.path1().string()) \
+						% TORRENT, \
+					hal::event_logger::warning))); \
+		} \
+		else \
+		{ \
+			hal::event_log().post(shared_ptr<hal::EventDetail>( \
+				new hal::EventMsg(hal::wform(L"Torrent %3%. Filesystem related error %1%. %2%") \
+						% FN_MSG \
+						% hal::from_utf8(e.what()) \
+						% TORRENT, \
+					hal::event_logger::warning))); \
+		} \
+	}
 
 #define HAL_GENERIC_PIMPL_EXCEPTION_CATCH(FUNCTION) \
 catch (const access_violation& e) \

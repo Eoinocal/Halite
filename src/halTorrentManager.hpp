@@ -130,9 +130,25 @@ public:
 		}
 	}
 
-	torrent_internal_ptr create_torrent(wpath filename, wpath saveDirectory, bit::allocations alloc, wpath move_to_directory=L"")
+	torrent_internal_ptr create_torrent(const wpath& filename, const wpath& save_directory, 
+		bit::allocations alloc, const wpath& move_to_directory=L"")
 	{
-		torrent_internal_ptr t = torrent_internal_ptr(new torrent_internal(filename, saveDirectory, alloc, move_to_directory));
+		torrent_internal_ptr t = torrent_internal_ptr(new torrent_internal(filename, save_directory, alloc, move_to_directory));
+
+		std::pair<torrent_by_name::iterator, bool> p = torrents_.get<by_name>().insert(torrent_holder(t));
+
+		if (!p.second) // Torrent already present
+			t.reset();
+		else
+			t->initialize_state_machine(t);
+
+		return t;			
+	}
+
+	torrent_internal_ptr create_torrent(const wstring& uri, const wpath& save_directory, 
+		bit::allocations alloc, const wpath& move_to_directory=L"")
+	{
+		torrent_internal_ptr t = torrent_internal_ptr(new torrent_internal(uri, save_directory, alloc, move_to_directory));
 
 		std::pair<torrent_by_name::iterator, bool> p = torrents_.get<by_name>().insert(torrent_holder(t));
 

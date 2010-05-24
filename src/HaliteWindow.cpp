@@ -378,10 +378,12 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 			return;
 	}
 	
-	wpath file(lpszPath, boost::filesystem::native);	
+	wpath file(lpszPath, boost::filesystem::native);
+
+	wstring uri=L"magnet:?xt=urn:btih:6f4d67a3cb6058a296f53d7673430b6ec80ea0fe&dn=Have+I+Got+a+Bit+More+Election+News+for+You+S39E05+WS+PDTV+%5BSKID&tr=http%3A%2F%2Ftracker.publicbt.com%2Fannounce";
 
 	if (use_move_to)
-		hal::bittorrent::Instance().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type, 
+		hal::bittorrent::Instance().add_torrent(uri, wpath(default_save_folder), startPaused, managed, allocation_type, 
 			wpath(default_move_folder));
 	else
 		hal::bittorrent::Instance().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type);
