@@ -31,11 +31,7 @@ namespace hal
 {
 
 bit_impl::bit_impl() :
-#	ifndef NDEBUG
-	bittorrent_ini_(L"BitTorrent.debug.xml"),
-#	else
 	bittorrent_ini_(L"BitTorrent.xml"),
-#	endif
 	the_torrents_(bittorrent_ini_),
 	action_timer_(io_service_),
 	alert_timer_(io_service_),
