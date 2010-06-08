@@ -41,14 +41,14 @@ class torrent_manager :
 		mutable torrent_internal_ptr torrent;
 		
 		wstring filename;
-		wstring name;		
+		wstring name;
 		
 		torrent_holder()
 		{}
 		
 		explicit torrent_holder(torrent_internal_ptr t) :
 			torrent(t), filename(torrent->filename()), name(torrent->name())
-		{}				
+		{}
 
 		friend class boost::serialization::access;
 		template<class Archive>
@@ -85,12 +85,12 @@ class torrent_manager :
 			boost::multi_index::ordered_unique<
 				boost::multi_index::tag<by_filename>,
 				boost::multi_index::member<
-					torrent_holder, wstring, &torrent_holder::filename> 
+					torrent_holder, wstring, &torrent_holder::filename>
 				>,
 			boost::multi_index::ordered_unique<
 				boost::multi_index::tag<by_name>,
 				boost::multi_index::member<
-					torrent_holder, wstring, &torrent_holder::name> 
+					torrent_holder, wstring, &torrent_holder::name>
 				>
 		>
 	> torrent_multi_index;
@@ -142,7 +142,7 @@ public:
 		else
 			t->initialize_state_machine(t);
 
-		return t;			
+		return t;
 	}
 
 	torrent_internal_ptr create_torrent(const wstring& uri, const wpath& save_directory, 
@@ -157,7 +157,7 @@ public:
 		else
 			t->initialize_state_machine(t);
 
-		return t;			
+		return t;
 	}
 	
 	size_t remove_torrent(const wstring& name)

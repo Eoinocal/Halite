@@ -6,8 +6,14 @@
 
 #include "stdAfx.hpp"
 
-#define HALITE_GUID L"HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}"
-#define WMU_ARE_YOU_ME_STRING  L"WMU_ARE_YOU_ME_HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}"
+#ifndef NDEBUG
+#	define HALITE_GUID L"HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}-DEBUG"
+#	define WMU_ARE_YOU_ME_STRING L"WMU_ARE_YOU_ME_HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}-DEBUG"
+#else
+#	define HALITE_GUID L"HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}"
+#	define WMU_ARE_YOU_ME_STRING L"WMU_ARE_YOU_ME_HALITE-{E3A8BF7D-962F-476E-886B-FECEDD2F0FC7}"
+#endif
+
 #pragma comment(linker, "\"/manifestdependency:type='Win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #include "Halite.hpp"
@@ -32,17 +38,17 @@ Halite& halite()
 }
 
 Halite::Halite() :
-		hal::IniBase<Halite>("globals/halite", "Halite"),
-		oneInst(true),
-#ifdef TORRENT_LOGGING
+	hal::IniBase<Halite>("globals/halite", "Halite"),
+	oneInst(true),
+#	ifdef TORRENT_LOGGING
 		logDebug_(true),
-#else
+#	else
 		logDebug_(false),
-#endif
-		showMessage_(true),
-		logToFile_(true),
-		logListLen_(128),
-		dll_(L"")
+#	endif
+	showMessage_(true),
+	logToFile_(true),
+	logListLen_(128),
+	dll_(L"")
 {
 	hal::event_log().init();
 	load_from_ini();
@@ -125,11 +131,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	if (hal::app().get_local_appdata())
 	{
-#		ifndef NDEBUG
-			hal::app().working_directory = hal::app().get_local_appdata().get()/L"Halite.Backup";
-#		else
-			hal::app().working_directory = hal::app().get_local_appdata().get()/L"Halite";
-#		endif
+#	ifndef NDEBUG
+		hal::app().working_directory = hal::app().get_local_appdata().get()/L"Halite.Backup";
+#	else
+		hal::app().working_directory = hal::app().get_local_appdata().get()/L"Halite";
+#	endif
 	}
 
 	}

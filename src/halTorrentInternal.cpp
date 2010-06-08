@@ -398,7 +398,6 @@ void torrent_internal::extract_filenames(boost::intrusive_ptr<libt::torrent_info
 
 					HAL_DEV_MSG(wform(L"Set downloading file to original name: %1%") % p_orig);
 				}
-
 			}	
 
 			if (!fs::exists(p_new.parent_path()))
