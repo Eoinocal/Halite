@@ -101,6 +101,7 @@ public:
 	
 	torrent_manager(ini_file& ini) :
 		ini_class_t("bittorrent", "torrent_manager", ini),
+		filename_(L"BitTorrent.data")
 		ini_(ini)
 	{}
 
@@ -114,7 +115,7 @@ public:
 	}
 	void save_to_ini()
 	{
-		fs::wofstream ofs(app().get_working_directory()/L"BitTest.data");
+		fs::wofstream ofs(app().get_working_directory()/filename_);
 		
 		boost::archive::text_woarchive oxml(ofs);
 
@@ -127,7 +128,7 @@ public:
 		try 
 		{
 
-		if (!boost::filesystem::exists(app().get_working_directory()/L"BitTest.data") &&
+		if (!boost::filesystem::exists(app().get_working_directory()/filename_) &&
 			boost::filesystem::exists(ini_.main_file()))
 		{	
 			ini_class_t::load_from_ini();
@@ -135,7 +136,7 @@ public:
 		}
 		else
 		{
-			fs::wifstream ifs(app().get_working_directory()/L"BitTest.data");
+			fs::wifstream ifs(app().get_working_directory()/filename_);
 
 			boost::archive::text_wiarchive ixml(ifs);
 
@@ -264,6 +265,7 @@ public:
 	}	
 	
 private:
+	boost::filesystem::path filename_;
 	ini_file& ini_;
 	torrent_multi_index torrents_;
 };

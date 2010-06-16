@@ -359,6 +359,9 @@ void torrent_internal::extract_filenames(boost::intrusive_ptr<libt::torrent_info
 			fs::wpath p_orig = path_from_utf8((*i).path);
 			fs::wpath p_new = *p_orig.begin();
 
+			event_log().post(shared_ptr<EventDetail>(new EventMsg(
+				wform(L"Processing file: %1%") % p_orig, event_logger::info)));
+
 			if (++p_orig.begin() != p_orig.end())
 			{
 				p_new /= hash;
@@ -380,7 +383,7 @@ void torrent_internal::extract_filenames(boost::intrusive_ptr<libt::torrent_info
 					if (!fs::exists((save_directory_/p_new).parent_path()))
 						fs::create_directories((save_directory_/p_new).parent_path());
 
-					fs::rename(p_orig, p_new);
+					fs::rename(save_directory_/p_orig, save_directory_/p_new);
 
 					event_log().post(shared_ptr<EventDetail>(new EventMsg(
 						wform(L"Existing File renamed: %1%") % p_orig, event_logger::info)));
@@ -389,6 +392,8 @@ void torrent_internal::extract_filenames(boost::intrusive_ptr<libt::torrent_info
 				{
 					HAL_DEV_MSG(wform(L"Two files exists, defaulting to using the new style"));
 				}
+
+			//	p_new = p_orig;
 			}
 			else
 			{
@@ -590,13 +595,24 @@ void torrent_internal::apply_file_names()
 {		
 	mutex_t::scoped_lock l(mutex_);
 
-	if (in_session() && !files_.empty() &&
-		(files_.size() == info_memory_->num_files())) 
+	if (in_session())
 	{
+
+		bool want_recheck = false;
+
+		if (files_.size() != info_memory_->num_files())
+		{
+			extract_filenames(info_memory());
+			want_recheck = true;
+		}
+
 		for (int i = 0; i < info_memory_->num_files(); ++i)
 		{
 			handle_.rename_file(i, files_[i].current_name());
 		}
+
+		if (want_recheck)
+			handle_.force_recheck();
 		
 		HAL_DEV_MSG(L"Applying File Names");
 	}
