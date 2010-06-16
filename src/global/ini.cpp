@@ -24,17 +24,11 @@ class ini_impl
 public:
 	ini_impl(std::wstring filename) :
 		main_file_(app().get_working_directory()/filename),
-		working_file_(app().get_working_directory()/(filename + L".working"))
+		working_file_(app().get_working_directory()/(filename + L".working")),
+		filename_(filename)
 	{		
 		if (boost::filesystem::exists(working_file_))
-		{			
-			std::wstringstream sstr;
-			boost::posix_time::wtime_facet* facet = new boost::posix_time::wtime_facet(L"%Y-%m-%d.%H-%M-%S");
-			sstr.imbue(std::locale(std::cout.getloc(), facet));
-			sstr << boost::posix_time::second_clock::universal_time();
-
-			boost::filesystem::rename(working_file_, app().get_working_directory()/(filename + L"." + sstr.str()));			
-		}
+			boost::filesystem::rename(working_file_, generate_backup_name());
 
 		if (boost::filesystem::exists(main_file_))
 			boost::filesystem::copy_file(main_file_, working_file_);
@@ -102,12 +96,34 @@ public:
 			return 0;
 	}
 
+	boost::filesystem::wpath main_file() const { return main_file_; }
+	boost::filesystem::wpath working_file() const { return working_file_; }
+	
+	void clear() 
+	{				
+		if (boost::filesystem::exists(working_file_))
+			boost::filesystem::copy_file(working_file_, generate_backup_name());	
+
+		xml_.clear();
+		generate_default_file();
+	}
+
 private:
 	void generate_default_file()
 	{
 		xml_.link_end_child(new xml::declaration("1.0", "", ""));
 		
 		xml_.link_end_child(new xml::element("ini"));
+	}
+
+	boost::filesystem::wpath generate_backup_name()
+	{
+		std::wstringstream sstr;
+		boost::posix_time::wtime_facet* facet = new boost::posix_time::wtime_facet(L"%Y-%m-%d.%H-%M-%S");
+		sstr.imbue(std::locale(std::cout.getloc(), facet));
+		sstr << boost::posix_time::second_clock::universal_time();
+
+		return app().get_working_directory()/(filename_ + L"." + sstr.str());
 	}
 	
 	xml::node* get_data_node(boost::filesystem::path location)
@@ -138,6 +154,7 @@ private:
 	
 	boost::filesystem::wpath main_file_;
 	boost::filesystem::wpath working_file_;
+	std::wstring filename_;
 	xml::document xml_;
 };
 
@@ -171,6 +188,21 @@ bool ini_file::save(boost::filesystem::path location, xml::node* data)
 xml::node* ini_file::load(boost::filesystem::path location)
 {
 	return pimpl_->load(location);
+}
+
+boost::filesystem::wpath ini_file::main_file() const 
+{ 
+	return pimpl_->main_file();
+}
+	
+boost::filesystem::wpath ini_file::working_file() const 
+{ 
+	return pimpl_->working_file();
+}
+
+void ini_file::clear()
+{
+	pimpl_->clear();
 }
 
 ini_file& ini()

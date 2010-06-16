@@ -71,7 +71,7 @@ public:
 	{
 		T* pT = static_cast<T*>(window_);
 		pT->SetRedraw(true);
-		pT->RedrawWindow(NULL, NULL, RDW_ERASE | RDW_FRAME | RDW_INVALIDATE | RDW_ALLCHILDREN);
+//		pT->RedrawWindow(NULL, NULL, RDW_ERASE | RDW_FRAME | RDW_INVALIDATE | RDW_ALLCHILDREN);
 	}
 	
 	operator bool() const { return 0 != window_->update_lock_; }

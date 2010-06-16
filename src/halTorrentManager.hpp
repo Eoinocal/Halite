@@ -100,7 +100,8 @@ public:
 	typedef torrent_multi_index::index<by_name>::type torrent_by_name;
 	
 	torrent_manager(ini_file& ini) :
-		ini_class_t("bittorrent", "torrent_manager", ini)
+		ini_class_t("bittorrent", "torrent_manager", ini),
+		ini_(ini)
 	{}
 
 	~torrent_manager()
@@ -109,6 +110,47 @@ public:
 			e = torrents_.get<by_name>().end(); i!=e; ++i)
 		{
 			(*i).torrent->stop();
+		}
+	}
+	void save_to_ini()
+	{
+		fs::wofstream ofs(app().get_working_directory()/L"BitTest.data");
+		
+		boost::archive::text_woarchive oxml(ofs);
+
+		oxml << boost::serialization::make_nvp("BitTorrent", *this);
+	}
+	
+	bool load_from_ini()
+	{
+
+		try 
+		{
+
+		if (!boost::filesystem::exists(app().get_working_directory()/L"BitTest.data") &&
+			boost::filesystem::exists(ini_.main_file()))
+		{	
+			ini_class_t::load_from_ini();
+			ini_.clear();
+		}
+		else
+		{
+			fs::wifstream ifs(app().get_working_directory()/L"BitTest.data");
+
+			boost::archive::text_wiarchive ixml(ifs);
+
+			ixml >> boost::serialization::make_nvp("BitTorrent", *this);
+
+			return true;
+		}
+		
+		}
+		catch (const std::exception& e)
+		{			
+			hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
+				new hal::EventXmlException(hal::from_utf8(e.what()), L"load_standalone"))); 
+
+			return false;
 		}
 	}
 
@@ -222,6 +264,7 @@ public:
 	}	
 	
 private:
+	ini_file& ini_;
 	torrent_multi_index torrents_;
 };
 

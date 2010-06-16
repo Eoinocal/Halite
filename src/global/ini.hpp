@@ -33,6 +33,11 @@ public:
 	bool save(boost::filesystem::path location, xml::node* data);
 	
 	xml::node* load(boost::filesystem::path location);
+
+	boost::filesystem::wpath main_file() const;
+	boost::filesystem::wpath ini_file::working_file() const;
+
+	void clear();
 	
 	friend ini_file& ini();
 	

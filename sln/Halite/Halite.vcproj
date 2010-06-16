@@ -43,7 +43,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm1000"
+				AdditionalOptions="/Zm1000 /bigobj"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)src\WTLx&quot;;&quot;$(SolutionDir)lib\boost_ex&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include&quot;;&quot;$(SolutionDir)lib\OpenSSL\inc&quot;;&quot;$(SolutionDir)lib\STLSoft\include&quot;;&quot;$(SolutionDir)lib\loki\include&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_NO_DEPRECATE;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0"
@@ -125,7 +125,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm1000"
+				AdditionalOptions="/Zm1000 /bigobj"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)src&quot;;&quot;$(SolutionDir)src\WTLx&quot;;&quot;$(SolutionDir)lib\boost_ex&quot;;&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include&quot;;&quot;$(SolutionDir)lib\OpenSSL\inc&quot;;&quot;$(SolutionDir)lib\STLSoft\include&quot;;&quot;$(SolutionDir)lib\loki\include&quot;"
 				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;__USE_W32_SOCKETS;WIN32;_WIN32;WIN64;_WIN64;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_NO_DEPRECATE;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0"
@@ -206,7 +206,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm1000"
+				AdditionalOptions="/Zm1000 /bigobj"
 				Optimization="3"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
@@ -292,7 +292,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm1000"
+				AdditionalOptions="/Zm1000 /bigobj"
 				Optimization="3"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
