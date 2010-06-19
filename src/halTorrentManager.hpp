@@ -101,7 +101,7 @@ public:
 	
 	torrent_manager(ini_file& ini) :
 		ini_class_t("bittorrent", "torrent_manager", ini),
-		filename_(L"BitTorrent.data")
+		filename_(L"BitTorrent.data"),
 		ini_(ini)
 	{}
 
@@ -133,6 +133,8 @@ public:
 		{	
 			ini_class_t::load_from_ini();
 			ini_.clear();
+
+			return true;
 		}
 		else
 		{
@@ -265,7 +267,7 @@ public:
 	}	
 	
 private:
-	boost::filesystem::path filename_;
+	boost::filesystem::wpath filename_;
 	ini_file& ini_;
 	torrent_multi_index torrents_;
 };

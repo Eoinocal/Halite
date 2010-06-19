@@ -303,7 +303,9 @@ private:
 		managed_(false), \
 		start_time_(boost::posix_time::second_clock::universal_time()), \
 		in_session_(false), \
-		queue_position_(-1)
+		queue_position_(-1), \
+		files_(bind(&torrent_internal::set_file_priority_cb, this, _1, _2), \
+			bind(&torrent_internal::change_file_filename_cb, this, _1, _2))
 		
 	torrent_internal() :	
 		TORRENT_INTERNALS_DEFAULTS,
@@ -321,8 +323,7 @@ private:
 		state(torrent_details::torrent_stopped);
 		assert(the_session_);
 
-		set_info_memory(new libt::torrent_info(path_to_utf8(filename)));
-		prepare();
+		prepare(new libt::torrent_info(path_to_utf8(filename)));
 	}
 
 	torrent_internal(const wstring& uri, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"") :
@@ -334,7 +335,7 @@ private:
 		state(torrent_details::torrent_stopped);
 		assert(the_session_);
 
-		prepare();
+//		prepare();
 	}
 
 	#undef TORRENT_INTERNALS_DEFAULTS
@@ -452,14 +453,14 @@ public:
 	
 	void start()
 	{
-		HAL_DEV_MSG(hal::wform(L"stop() - %1%") % name_);
+		HAL_DEV_MSG(hal::wform(L"start() - %1%") % name_);
 		
 		locked_process_event(ev_start());
 	}
 	
 	void remove_files(boost::function<void (void)> fn)
 	{
-		HAL_DEV_MSG(hal::wform(L"stop() - %1%") % name_);
+		HAL_DEV_MSG(hal::wform(L"remove_files() - %1%") % name_);
 
 		removed_callback_ = fn;
 		
@@ -495,38 +496,7 @@ public:
 		HAL_DEV_MSG(L"Written!");
 	}
 
-	void write_torrent_info()
-	{
-		try {
-
-		if (info_memory())
-		{
-			wpath torrent_info_file = hal::app().get_working_directory() / L"resume" / (name_ + L".torrent_info");
-			wpath resume_dir = hal::app().get_working_directory()/L"resume";
-			
-			if (!exists(resume_dir))
-				fs::create_directories(resume_dir);
-
-			boost::filesystem::ofstream out(resume_dir/(name_ + L".torrent_info"), std::ios_base::binary);
-			out.unsetf(std::ios_base::skipws);
-
-			libt::create_torrent t(*info_memory());
-			bencode(std::ostream_iterator<char>(out), t.generate());
-
-			HAL_DEV_MSG(L"Torrent info written!");
-		}
-
-		} 
-		catch (const boost::filesystem::wfilesystem_error&)
-		{
-			event_log().post(shared_ptr<EventDetail>(
-				new EventMsg(L"Write torrent info error.", event_logger::warning)));
-		}
-		catch (const libt::libtorrent_exception&)
-		{
-			HAL_DEV_MSG(L"No torrent info");
-		}
-	}
+	void write_torrent_info();
 
 	void save_resume_and_info_data()
 	{
@@ -591,18 +561,13 @@ public:
 		mutex_t::scoped_lock l(mutex_);
 
 		files_.set_file_priorities(file_indices, priority);
-
-		if (!file_priorities_.empty())
-		{
-			foreach(int i, file_indices)
-				file_priorities_[i] = priority;
 				
-			apply_file_priorities();
-		}
+		apply_file_priorities();
 	}
 
 	void set_file_finished(int index);
 
+	void init_file_details();
 	void get_file_details(file_details_vec& files);
 
 	file_details_vec get_file_details();
@@ -851,7 +816,8 @@ public:
 		}
 	}
 	
-	void prepare();
+	void prepare() { prepare(info_memory()); }
+	void prepare(boost::intrusive_ptr<libt::torrent_info> info);
 
 	void set_resolve_countries(bool b)
 	{
@@ -871,9 +837,8 @@ public:
 		apply_external_interface();
 	}
 	
-	void extract_names(boost::intrusive_ptr<libt::torrent_info> metadata);
-	void extract_filenames(boost::intrusive_ptr<libt::torrent_info> metadata);
-
+	void extract_names();
+	void extract_filenames();
 	
 	void set_info_memory(boost::intrusive_ptr<libt::torrent_info> info)
 	{		
@@ -1001,6 +966,25 @@ private:
 	void apply_queue_position();	
 	void apply_external_interface();
 	void state(unsigned s);
+	
+
+	void set_file_priority_cb(size_t i, int p)
+	{
+		if (i < file_priorities_.size())
+		{
+			file_priorities_[i] = p;
+			file_details_memory_[i].priority = p;
+		}
+	}
+	
+	void change_file_filename_cb(size_t i, const fs::wpath& f)
+	{
+		if (i < file_details_memory_.size())
+		{
+			file_details_memory_[i].filename = f.filename();
+			file_details_memory_[i].branch = f.parent_path();
+		}
+	}
 
 	boost::function<void ()> removed_callback_;
 

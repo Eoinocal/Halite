@@ -59,29 +59,7 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	assert(!t_i.in_session());
 
 	libt::add_torrent_params p;
-
-	if (t_i.name_ != L"")
-	{
-		std::string torrent_info_file = to_utf8((hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".torrent_info")).string());
-		string torrent_file = to_utf8((hal::app().get_working_directory()/L"torrents"/t_i.filename_).string());
-
-		if (t_i.info_memory())
-		{		
-			p.ti = t_i.info_memory();
-		}
-		else if (fs::exists(torrent_info_file))
-		{
-			HAL_DEV_MSG(L"Using torrent info data");
-			t_i.info_memory_.reset(new libt::torrent_info(torrent_info_file.c_str()));
-			p.ti = t_i.info_memory();
-		}
-		else if (fs::exists(torrent_file))
-		{
-			HAL_DEV_MSG(L"Using torrent file");
-			t_i.info_memory_.reset(new libt::torrent_info(torrent_file.c_str()));
-			p.ti = t_i.info_memory();
-		}
-	}
+	p.ti = t_i.info_memory();
 
 	std::string resume_file = to_utf8((hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string());
 
@@ -293,6 +271,26 @@ not_started::~not_started()
 
 sc::result not_started::react(const ev_start& evt)
 {
+	torrent_internal& t_i = context<torrent_internal>();
+
+	if (!t_i.info_memory() && t_i.name_ != L"")
+	{		
+		std::string torrent_info_file = 
+			to_utf8((hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".torrent_info")).string());
+		string torrent_file = to_utf8((hal::app().get_working_directory()/L"torrents"/t_i.filename_).string());
+
+		if (fs::exists(torrent_info_file))
+		{
+			HAL_DEV_MSG(L"Using torrent info data");
+			t_i.info_memory_.reset(new libt::torrent_info(torrent_info_file.c_str()));
+		}
+		else if (fs::exists(torrent_file))
+		{
+			HAL_DEV_MSG(L"Using torrent file");
+			t_i.info_memory_.reset(new libt::torrent_info(torrent_file.c_str()));
+		}
+	}
+
 	switch (stored_state_)
 	{
 	case torrent_details::torrent_active:

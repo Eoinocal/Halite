@@ -54,6 +54,7 @@ public:
 		else
 			current_name_ = completed_name_;
 	}
+
 	void change_filename(const fs::wpath& fn)
 	{
 		completed_name_ = fn;
@@ -119,6 +120,14 @@ class torrent_files
 	typedef torrent_file_index_impl_t::index<by_random>::type torrent_file_by_random;
 
 public:
+	typedef function<void (size_t, int)> set_priority_fn;
+	typedef function<void (size_t, const fs::wpath&)> change_filename_fn;
+
+	torrent_files(set_priority_fn sp, change_filename_fn cf) :
+		set_priority_fn_(sp),
+		change_filename_fn_(cf)
+	{}
+
 	void set_file_priorities(std::vector<int> file_indices, int priority)
 	{
 		if (!files_.empty())
@@ -131,6 +140,8 @@ public:
 				tmp_file.set_priority(priority);
 
 				files_.get<by_random>().replace(file_i, tmp_file);
+
+				set_priority_fn_(i, priority);
 			}
 		}
 	}
@@ -145,12 +156,12 @@ public:
 		return files_.empty();
 	}
 
-	size_type size() const
+	size_t size() const
 	{
 		return files_.size();
 	}
 
-	void set_file_finished(size_type i)
+	void set_file_finished(size_t i)
 	{
 		torrent_file_by_random::iterator file_i = files_.get<by_random>().begin() + i; 
 
@@ -159,16 +170,18 @@ public:
 		files_.get<by_random>().replace(file_i, tmp_file);
 	}
 
-	void change_filename(size_type i, const fs::wpath& fn)
+	void change_filename(size_t i, const fs::wpath& fn)
 	{
 		torrent_file_by_random::iterator file_i = files_.get<by_random>().begin() + i; 
 
 		torrent_file tmp_file = *(file_i);
 		tmp_file.change_filename(fn);
 		files_.get<by_random>().replace(file_i, tmp_file);
+
+		change_filename_fn_(i, fn);
 	}
 
-	const torrent_file& operator[](size_type n) const
+	const torrent_file& operator[](size_t n) const
 	{
 		return files_.get<by_random>()[n];
 	}
@@ -181,6 +194,9 @@ public:
 	}	
 
 private:
+	set_priority_fn set_priority_fn_;
+	change_filename_fn change_filename_fn_;
+
 	torrent_file_index_impl_t files_;
 };
 
