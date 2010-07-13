@@ -317,6 +317,8 @@
 "Torrent %1% file %2% renamed failed." --->  ??? 
 "Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% dokončen."
+"Torrent %1% metadata failed!" --->  ??? 
+"Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." ---> "Torrent %1% pozastaven."
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Zachycena vyjímka torrentu (%1%): %2% z %3%."
 "Torrent Completed!" --->  ??? 

@@ -636,7 +636,7 @@ void bit_impl::alert_handler()
 					% get(a.handle)->name()
 					% a.index 
 					% hal::from_utf8_safe(a.name)), 
-				event_logger::info, a.timestamp())));
+				event_logger::debug, a.timestamp())));
 	}
 
 	void operator()(libt::file_rename_failed_alert const& a) const

@@ -423,7 +423,8 @@ void torrent_internal::extract_filenames()
 			if (!fs::exists(p_new.parent_path()))
 				fs::create_directories(p_new.parent_path());
 
-			files_.push_back(torrent_file(p_orig, p_new));
+			int p = file_priorities_.empty() ? 1 : file_priorities_[std::distance(info_memory()->begin_files(), i)];
+			files_.push_back(torrent_file(p_orig, p_new, p));
 		}
 	}
 	else

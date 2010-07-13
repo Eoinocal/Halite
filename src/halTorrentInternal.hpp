@@ -743,8 +743,9 @@ public:
 			ar & make_nvp("payload_downloaded", payload_downloaded_);
 			ar & make_nvp("uploaded", uploaded_);
 			ar & make_nvp("downloaded", downloaded_);			
-					
-			ar & make_nvp("file_priorities", file_priorities_);
+			
+			if (version == 2)
+				ar & make_nvp("file_priorities", file_priorities_);
 			
 			ar & make_nvp("start_time", start_time_);
 			ar & make_nvp("finish_time", finish_time_);

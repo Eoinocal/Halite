@@ -31,17 +31,17 @@ public:
 	torrent_file()
 	{}
 
-	torrent_file(const wstring& on, const wstring& cn) :
+	torrent_file(const wstring& on, const wstring& cn, int p=1) :
 		original_name_(on),
 		current_name_(cn),
-		priority_(1),
+		priority_(p),
 		finished_(false)
 	{}
 
-	torrent_file(const fs::wpath& on, const fs::wpath& cn) :
+	torrent_file(const fs::wpath& on, const fs::wpath& cn, int p=1) :
 		original_name_(on),
 		current_name_(cn),
-		priority_(1),
+		priority_(p),
 		finished_(false)
 	{}
 
