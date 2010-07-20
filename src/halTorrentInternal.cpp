@@ -239,7 +239,7 @@ void torrent_internal::set_file_finished(int i)
 	mutex_t::scoped_lock l(mutex_);
 
 	files_.set_file_finished(i);
-	handle_.rename_file(i, files_[i].current_name());
+	handle_.rename_file(i, files_[i].current_name().string());
 }
 
 void torrent_internal::init_file_details()
@@ -649,7 +649,7 @@ void torrent_internal::apply_file_names()
 
 		for (int i = 0; i < info_memory()->num_files(); ++i)
 		{
-			handle_.rename_file(i, files_[i].current_name());
+			handle_.rename_file(i, files_[i].current_name().string());
 		}
 
 		if (want_recheck)

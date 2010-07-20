@@ -30,6 +30,7 @@
 #	include <libtorrent/torrent_handle.hpp>
 //#	include <libtorrent/dht_tracker.hpp>
 #	include <libtorrent/peer_connection.hpp>
+#	include <libtorrent/peer_info.hpp>
 #	include <libtorrent/extensions/metadata_transfer.hpp>
 #	include <libtorrent/extensions/ut_pex.hpp>
 #	include <libtorrent/extensions/ut_metadata.hpp>

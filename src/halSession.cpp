@@ -106,7 +106,7 @@ bit_impl::bit_impl() :
 		{
 			std::vector<char> in;
 
-			if (libt::load_file(path_to_utf8(hal::app().get_working_directory()/L"DHTState.bin"), in) == 0)
+			if (libt::load_file(to_utf8((hal::app().get_working_directory()/L"DHTState.bin").string()), in) == 0)
 				libt::lazy_bdecode(&in[0], &in[0] + in.size(), dht_state_);
 		}		
 		catch(const std::exception& e)
@@ -579,7 +579,7 @@ void bit_impl::alert_handler()
 		event_log().post(shared_ptr<EventDetail>(
 			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_PORTMAP_ERROR_ALERT))
-				% (a.type == 0 ? 
+				% (a.map_type == 0 ? 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_PMP) : 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_UPNP)))
 		)	);				
@@ -590,7 +590,7 @@ void bit_impl::alert_handler()
 		event_log().post(shared_ptr<EventDetail>(
 			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_PORTMAP_ALERT))
-				% (a.type == 0 ? 
+				% (a.map_type == 0 ? 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_PMP) : 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_UPNP))
 				% a.external_port)

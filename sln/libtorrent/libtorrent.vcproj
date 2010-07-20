@@ -45,7 +45,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\Openssl\inc&quot;"
-				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0600;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_NO_DEPRECATE;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0"
+				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0600;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_NO_DEPRECATE;TORRENT_USE_WSTRING;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
@@ -110,7 +110,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)lib\libtorrent\include&quot;;&quot;$(SolutionDir)lib\libtorrent\zlib&quot;;&quot;$(SolutionDir)lib\Asio\include\&quot;;&quot;$(SolutionDir)lib\Openssl\inc&quot;"
-				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;_DEBUG;WIN32;_WIN32;_WINDOWS;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_NO_DEPRECATE;WITH_SHIPPED_GEOIP_H;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0"
+				PreprocessorDefinitions="WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;_DEBUG;WIN32;_WIN32;_WINDOWS;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_NO_DEPRECATE;TORRENT_USE_WSTRING;WITH_SHIPPED_GEOIP_H;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
@@ -570,6 +570,18 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\bandwidth_limit.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\bandwidth_manager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\bandwidth_queue_entry.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\broadcast_socket.cpp"
 				>
 			</File>
@@ -654,6 +666,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\i2p_stream.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\identify_client.cpp"
 				>
 			</File>
@@ -690,6 +706,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\mpi.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\natpmp.cpp"
 				>
 			</File>
@@ -714,6 +734,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\puff.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\session.cpp"
 				>
 			</File>
@@ -730,6 +754,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lib\libtorrent\src\socket_io.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\socket_type.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lib\libtorrent\src\socks5_stream.cpp"
 				>
 			</File>
@@ -739,6 +771,10 @@
 			</File>
 			<File
 				RelativePath="..\..\lib\libtorrent\src\storage.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lib\libtorrent\src\time.cpp"
 				>
 			</File>
 			<File
@@ -784,10 +820,6 @@
 			<Filter
 				Name="kademlia"
 				>
-				<File
-					RelativePath="..\..\lib\libtorrent\src\kademlia\closest_nodes.cpp"
-					>
-				</File>
 				<File
 					RelativePath="..\..\lib\libtorrent\src\kademlia\dht_tracker.cpp"
 					>

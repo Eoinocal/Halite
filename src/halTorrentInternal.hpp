@@ -29,6 +29,7 @@
 #	include <libtorrent/ip_filter.hpp>
 #	include <libtorrent/torrent_handle.hpp>
 #	include <libtorrent/peer_connection.hpp>
+#	include <libtorrent/peer_info.hpp>
 #	include <libtorrent/extensions/metadata_transfer.hpp>
 #	include <libtorrent/extensions/ut_pex.hpp>
 #	include <libtorrent/create_torrent.hpp>
@@ -104,7 +105,7 @@ inline std::pair<std::string, std::string> extract_names(const wpath &file)
 {
 	if (fs::exists(file)) 
 	{	
-		libt::torrent_info info(path_to_utf8(file));
+		libt::torrent_info info(file.string());
 
 		std::string name = info.name();	
 		std::string filename = name;
@@ -323,7 +324,7 @@ private:
 		state(torrent_details::torrent_stopped);
 		assert(the_session_);
 
-		prepare(new libt::torrent_info(path_to_utf8(filename)));
+		prepare(new libt::torrent_info(filename.string()));
 	}
 
 	torrent_internal(const wstring& uri, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"") :
@@ -582,7 +583,7 @@ public:
 		if (in_session() && !is_finished() &&
 				s != path_from_utf8(handle_.save_path()))
 		{
-			handle_.move_storage(path_to_utf8(s));
+			handle_.move_storage(s.string());
 			save_directory_ = s;
 		}
 		else if (!in_session() && force)
@@ -602,7 +603,7 @@ public:
 		{
 			if (m != path_from_utf8(handle_.save_path()))
 			{
-				handle_.move_storage(path_to_utf8(m));
+				handle_.move_storage(m.string());
 				save_directory_ = move_to_directory_ = m;
 			}
 		}
@@ -635,7 +636,7 @@ public:
 			if (!move_to_directory_.empty() && 
 					move_to_directory_ !=  path_from_utf8(handle_.save_path()))
 			{
-				handle_.move_storage(path_to_utf8(move_to_directory_));
+				handle_.move_storage(move_to_directory_.string());
 				save_directory_ = move_to_directory_;
 			}
 		}
