@@ -570,18 +570,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\bandwidth_limit.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\lib\libtorrent\src\bandwidth_manager.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\lib\libtorrent\src\bandwidth_queue_entry.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\lib\libtorrent\src\broadcast_socket.cpp"
 				>
 			</File>
@@ -666,10 +654,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\i2p_stream.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\lib\libtorrent\src\identify_client.cpp"
 				>
 			</File>
@@ -706,10 +690,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\mpi.c"
-				>
-			</File>
-			<File
 				RelativePath="..\..\lib\libtorrent\src\natpmp.cpp"
 				>
 			</File>
@@ -734,10 +714,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\puff.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\lib\libtorrent\src\session.cpp"
 				>
 			</File>
@@ -754,14 +730,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\libtorrent\src\socket_io.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\lib\libtorrent\src\socket_type.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\lib\libtorrent\src\socks5_stream.cpp"
 				>
 			</File>
@@ -771,10 +739,6 @@
 			</File>
 			<File
 				RelativePath="..\..\lib\libtorrent\src\storage.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\lib\libtorrent\src\time.cpp"
 				>
 			</File>
 			<File
@@ -820,6 +784,10 @@
 			<Filter
 				Name="kademlia"
 				>
+				<File
+					RelativePath="..\..\lib\libtorrent\src\kademlia\closest_nodes.cpp"
+					>
+				</File>
 				<File
 					RelativePath="..\..\lib\libtorrent\src\kademlia\dht_tracker.cpp"
 					>

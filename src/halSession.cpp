@@ -579,7 +579,7 @@ void bit_impl::alert_handler()
 		event_log().post(shared_ptr<EventDetail>(
 			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_PORTMAP_ERROR_ALERT))
-				% (a.map_type == 0 ? 
+				% (a.type == 0 ? 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_PMP) : 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_UPNP)))
 		)	);				
@@ -590,7 +590,7 @@ void bit_impl::alert_handler()
 		event_log().post(shared_ptr<EventDetail>(
 			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_PORTMAP_ALERT))
-				% (a.map_type == 0 ? 
+				% (a.type == 0 ? 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_PMP) : 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_UPNP))
 				% a.external_port)
