@@ -263,6 +263,8 @@ void torrent_internal::init_file_details()
 		{
 			if (file_it == info_memory()->end_files()) break;
 
+			HAL_DEV_MSG(wform(L"File %1% \n - %2%\n - %3%\n - %4%") % i % files_[i].original_name() % files_[i].current_name() % files_[i].completed_name());
+
 			boost::int64_t size = static_cast<boost::int64_t>(file_it->size);
 			
 			file_details_memory_.push_back(file_details(files_[i].completed_name(), size, 0, files_[i].priority(), i));
@@ -286,7 +288,7 @@ void torrent_internal::get_file_details(file_details_vec& files_vec)
 		handle_.file_progress(file_progress);
 		
 		for(size_t i=0, e=file_details_memory_.size(); i<e; ++i)
-			file_details_memory_[i].progress =  file_progress[i];			
+			file_details_memory_[i].progress =  file_progress[i];	
 	}
 
 /*	for(size_t i=0, e=file_details_memory_.size(); i<e; ++i)

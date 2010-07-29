@@ -122,38 +122,32 @@ LRESULT FileListView::OnBeginLabelEdit(int i, LPNMHDR pnmh, BOOL&)
 	{	
 		NMLVDISPINFO* nmlv = (NMLVDISPINFO*)pnmh;
 		
-		HAL_DEV_MSG(hal::wform(L"OnBeginLabelEdit(int i = %1%)") % i);
-
-		return false;
+		HAL_DEV_MSG(hal::wform(L"LabelEdit Locked!") % i);
 	}
-
-	//
 
 	return false;
 }
 
 LRESULT FileListView::OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&)
 {	
-	HAL_DEV_MSG(hal::wform(L"OnEndLabelEdit(int i = %1%)") % i);
-
 	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
 
-	if (pdi->item.iItem < static_cast<int>(files_.size()) 
-		&& pdi->item.mask & LVIF_TEXT)
+	if (pdi->item.iItem < static_cast<int>(files_.size()) && pdi->item.mask & LVIF_TEXT)
 	{
 		wstring str = files_[pdi->item.iItem].to_wstring(pdi->item.iSubItem);
 		
-		HAL_DEV_MSG(hal::wform(L"iItem: %1%, text: %2%, orig: %3%") 
-			% pdi->item.iItem % pdi->item.pszText % str);
+		HAL_DEV_MSG(hal::wform(L"iItem: %1%, Order: %2%, text: %3%, orig: %4%") 
+			% pdi->item.iItem % files_[pdi->item.iItem].order() % pdi->item.pszText % str);
 
 		if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused()))
 		{
-			wpath old_name = t.files()[pdi->item.iItem].name;
-			t.files()[pdi->item.iItem].name = old_name.parent_path()/wstring(pdi->item.pszText);
+			wpath old_name = t.files()[files_[pdi->item.iItem].order()].name;
+			t.files()[files_[pdi->item.iItem].order()].name = old_name.parent_path()/wstring(pdi->item.pszText);
 		}
-	}	
+	}
 
 	lock_ptr_.reset();
+	HAL_DEV_MSG(hal::wform(L"OnEndLabelEdit(int i = %1%) Unlocked!") % i);
 
 	return false;
 }
