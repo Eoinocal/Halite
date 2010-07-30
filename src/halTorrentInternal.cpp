@@ -239,7 +239,7 @@ void torrent_internal::set_file_finished(int i)
 	mutex_t::scoped_lock l(mutex_);
 
 	files_.set_file_finished(i);
-	handle_.rename_file(i, files_[i].current_name().string());
+	handle_.rename_file(i, files_[i].name().string());
 }
 
 void torrent_internal::init_file_details()
@@ -250,20 +250,12 @@ void torrent_internal::init_file_details()
 	file_priorities_.clear();
 
 	if (info_memory() && !files_.empty())
-	{			
-	/*	if (file_priorities_.size() != files.size())
-		{
-			file_priorities_.clear();
-			file_priorities_.assign(files.size(), 1);
-		}
-	*/	
+	{	
 		libt::torrent_info::file_iterator file_it = info_memory()->begin_files();
 
 		for(size_t i=0, e=files_.size(); i<e; ++i)
 		{
 			if (file_it == info_memory()->end_files()) break;
-
-			HAL_DEV_MSG(wform(L"File %1% \n - %2%\n - %3%\n - %4%") % i % files_[i].original_name() % files_[i].current_name() % files_[i].completed_name());
 
 			boost::int64_t size = static_cast<boost::int64_t>(file_it->size);
 			
@@ -291,17 +283,6 @@ void torrent_internal::get_file_details(file_details_vec& files_vec)
 			file_details_memory_[i].progress =  file_progress[i];	
 	}
 
-/*	for(size_t i=0, e=file_details_memory_.size(); i<e; ++i)
-	{
-		file_details_memory_[i].priority =  file_priorities_[i];
-
-		if (file_details_memory_[i].filename != files_[i].completed_name().filename())
-			file_details_memory_[i].filename = files_[i].completed_name().filename();
-
-		if (file_details_memory_[i].branch != files_[i].completed_name().parent_path())
-			file_details_memory_[i].branch = files_[i].completed_name().parent_path();
-	}
-*/	
 	files_vec = file_details_memory_;
 }
 
@@ -312,25 +293,13 @@ void torrent_internal::prepare(boost::intrusive_ptr<libt::torrent_info> info)
 	if (info)
 	{				
 		set_info_memory(info);
+		
+		libt::sha1_hash const& ih = info_memory()->info_hash();
+		hash_ = from_utf8(libt::base32encode(std::string((char const*)&ih[0], 20)));
 
 		extract_names();
 		extract_filenames();		
 		write_torrent_info();
-		
-	//	const wpath resumeFile = hal::app().get_working_directory()/L"resume"/filename_;
-	//	const wpath torrentFile = hal::app().get_working_directory()/L"torrents"/filename_;
-		
-	//	event_log().post(shared_ptr<EventDetail>(new EventMsg(
-	//		hal::wform(L"File: %1%, %2%.") % resumeFile % torrentFile)));
-		
-	//	if (exists(resumeFile)) 
-	//		resumedata_ = haldecode(resumeFile);
-
-	//	if (!exists(hal::app().get_working_directory()/L"torrents"))
-	//		fs::create_directories(hal::app().get_working_directory()/L"torrents");
-
-	//	if (!exists(torrentFile))
-	//		copy_file(filename.string(), torrentFile);
 
 		if (!fs::exists(save_directory_))
 			fs::create_directories(save_directory_);
@@ -367,9 +336,6 @@ void torrent_internal::extract_filenames()
 			
 	if (info_memory() && files_.empty())
 	{		
-		libt::sha1_hash const& ih = info_memory()->info_hash();
-		wstring hash = from_utf8(libt::base32encode(std::string((char const*)&ih[0], 20)));
-
 		for (libt::torrent_info::file_iterator i = info_memory()->begin_files(), e = info_memory()->end_files();
 			i != e; ++i)
 		{
@@ -381,7 +347,7 @@ void torrent_internal::extract_filenames()
 
 			if (++p_orig.begin() != p_orig.end())
 			{
-				p_new /= hash;
+				p_new /= hash_;
 				
 				for (fs::wpath::iterator i = ++p_orig.begin(), e = p_orig.end(); i != e; ++i)
 				{
@@ -389,7 +355,7 @@ void torrent_internal::extract_filenames()
 				}
 			}
 			else
-				p_new = L"incoming" / p_new;
+				p_new = hash_ / p_new;
 
 			// Compensate for existing files outside HASHED subdir
 
@@ -409,8 +375,6 @@ void torrent_internal::extract_filenames()
 				{
 					HAL_DEV_MSG(wform(L"Two files exists, defaulting to using the new style"));
 				}
-
-			//	p_new = p_orig;
 			}
 			else
 			{
@@ -421,9 +385,6 @@ void torrent_internal::extract_filenames()
 					HAL_DEV_MSG(wform(L"Set downloading file to original name: %1%") % p_orig);
 				}
 			}	
-
-			if (!fs::exists(p_new.parent_path()))
-				fs::create_directories(p_new.parent_path());
 
 			int p = file_priorities_.empty() ? 1 : file_priorities_[std::distance(info_memory()->begin_files(), i)];
 			files_.push_back(torrent_file(p_orig, p_new, p));
@@ -436,7 +397,7 @@ void torrent_internal::extract_filenames()
 		{
 			fs::wpath p = path_from_utf8((*i).path);
 
-			assert(p == files_[std::distance(info_memory()->begin_files(), i)].original_name());
+//			assert(p == files_[std::distance(info_memory()->begin_files(), i)].original_name());
 		}
 	}
 }
@@ -619,14 +580,14 @@ void torrent_internal::apply_tracker_login()
 		}
 
 		HAL_DEV_MSG(hal::wform(L"Applying Tracker Login User: %1% with password")
-			% tracker_username_ );
+			% tracker_username_);
 	}
 }
 
 void torrent_internal::apply_file_priorities()
-{		
+{
 	mutex_t::scoped_lock l(mutex_);
-	if (in_session()) 
+	if (in_session())
 	{
 		if (!file_priorities_.empty())
 			handle_.prioritize_files(file_priorities_);
@@ -651,7 +612,11 @@ void torrent_internal::apply_file_names()
 
 		for (int i = 0; i < info_memory()->num_files(); ++i)
 		{
-			handle_.rename_file(i, files_[i].current_name().string());
+			wpath filename = files_[i].name();
+			if (files_[i].with_hash())
+				filename = hash_/filename;
+
+			handle_.rename_file(i, filename.string());
 		}
 
 		if (want_recheck)

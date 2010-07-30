@@ -32,26 +32,29 @@ public:
 	{}
 
 	torrent_file(const wstring& on, const wstring& cn, int p=1) :
-		original_name_(on),
-		current_name_(cn),
+		current_name_(on),
 		priority_(p),
 		finished_(false)
-	{}
+	{
+		if (on != cn)
+			with_hash_ = true;
+	}
 
 	torrent_file(const fs::wpath& on, const fs::wpath& cn, int p=1) :
-		original_name_(on),
-		current_name_(cn),
+		current_name_(on),
 		priority_(p),
 		finished_(false)
-	{}
+	{
+		if (on != cn)
+			with_hash_ = true;
+	}
 
 	void set_finished()
 	{
 		finished_ = true;
+		with_hash_ = false;
 		
-		if (completed_name_.empty())
-			current_name_ = original_name_;
-		else
+		if (!completed_name_.empty())
 			current_name_ = completed_name_;
 	}
 
@@ -68,11 +71,11 @@ public:
 		priority_ = p;
 	}
 
-	const fs::wpath& original_name() const { return original_name_; };
-	const fs::wpath& current_name() const { return current_name_; };
-	const fs::wpath& completed_name() const { return completed_name_ != L"" ? completed_name_ : original_name_; };
+	const fs::wpath& name() const { return current_name_; };
+	const fs::wpath& completed_name() const { return completed_name_ != L"" ? completed_name_ : current_name_; };
 
 	int priority() const { return priority_; };
+	bool with_hash() const { return with_hash_; }
 	
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -80,21 +83,20 @@ public:
 	{
 		using boost::serialization::make_nvp;
 
-		ar & make_nvp("original_name", original_name_);
-		ar & make_nvp("completed_name", completed_name_);
 		ar & make_nvp("current_name", current_name_);
+		ar & make_nvp("completed_name", completed_name_);
 		ar & make_nvp("priority", priority_);
 		ar & make_nvp("finished", finished_);
+		ar & make_nvp("with_hash", with_hash_);
 	}	
 
 private:
-	fs::wpath original_name_;
-	fs::wpath completed_name_;
-
 	fs::wpath current_name_;
+	fs::wpath completed_name_;
 
 	int priority_;
 	bool finished_;
+	bool with_hash_;
 };
 
 class torrent_files
@@ -111,7 +113,7 @@ class torrent_files
 			mi::ordered_unique<
 				mi::tag<by_filename>,
 				mi::const_mem_fun<
-					torrent_file, const fs::wpath&, &torrent_file::original_name> 
+					torrent_file, const fs::wpath&, &torrent_file::name> 
 			>
 		>
 	> torrent_file_index_impl_t;

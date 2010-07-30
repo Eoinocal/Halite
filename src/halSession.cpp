@@ -143,8 +143,6 @@ bit_impl::~bit_impl()
 
 	for (std::vector<shared_thread_ptr>::iterator i=service_threads_.begin(), e=service_threads_.end(); i != e; ++i)
 		(*i)->join();
-
-	//save_torrent_data();
 	
 	HAL_DEV_MSG(L"Handler stopped!"); 
 	if (ip_filter_changed_)

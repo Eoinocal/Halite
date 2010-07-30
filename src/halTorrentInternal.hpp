@@ -716,6 +716,7 @@ public:
 			{
 			case 3:
 			ar & make_nvp("files", files_);
+			ar & make_nvp("hash", hash_);
 
 			case 2:
 			ar & make_nvp("transfer_limits", transfer_limit_);
@@ -985,6 +986,8 @@ private:
 		{
 			file_details_memory_[i].filename = f.filename();
 			file_details_memory_[i].branch = f.parent_path();
+
+			handle_.rename_file(i, f);
 		}
 	}
 
@@ -1050,6 +1053,7 @@ private:
 	bit::allocations allocation_;
 	
 	boost::intrusive_ptr<libt::torrent_info> info_memory_;
+	wstring hash_;
 	libt::torrent_status status_memory_;
 	file_details_vec file_details_memory_;
 };

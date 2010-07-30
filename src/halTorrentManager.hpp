@@ -124,7 +124,6 @@ public:
 	
 	bool load_from_ini()
 	{
-
 		try 
 		{
 

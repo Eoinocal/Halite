@@ -19,7 +19,6 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 	TORRENT_STATE_LOG(L"Entering in_the_session()");
 
 	torrent_internal& t_i = context<torrent_internal>();
-//	preserve_me_ = t_i.own_weak_ptr_.lock();
 
 	assert(t_i.in_session());
 
@@ -85,7 +84,6 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 		return transit<paused>();
 	else
 		return transit<active>();
-
 }
 
 sc::result out_of_session::react(const ev_resume& evt)
