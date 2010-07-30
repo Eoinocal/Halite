@@ -339,22 +339,9 @@ void torrent_internal::extract_filenames()
 			i != e; ++i)
 		{
 			fs::wpath p_orig = path_from_utf8((*i).path);
-			fs::wpath p_new = *p_orig.begin();
+			fs::wpath p_new = torrent_file::add_hash(p_orig, hash_);
 
-			event_log().post(shared_ptr<EventDetail>(new EventMsg(
-				wform(L"Processing file: %1%") % p_orig, event_logger::info)));
-
-			if (++p_orig.begin() != p_orig.end())
-			{
-				p_new /= hash_;
-				
-				for (fs::wpath::iterator i = ++p_orig.begin(), e = p_orig.end(); i != e; ++i)
-				{
-					p_new /= *i;
-				}
-			}
-			else
-				p_new = hash_ / p_new;
+			bool using_hash = true;
 
 			// Compensate for existing files outside HASHED subdir
 
@@ -379,14 +366,14 @@ void torrent_internal::extract_filenames()
 			{
 				if (fs::exists(save_directory_/p_orig) && p_orig != p_new) 	
 				{
-					p_new = p_orig;
+					using_hash = false;
 
-					HAL_DEV_MSG(wform(L"Set downloading file to original name: %1%") % p_orig);
+					HAL_DEV_MSG(wform(L"Not using hashed directory") % p_orig);
 				}
 			}	
 
 			int p = file_priorities_.empty() ? 1 : file_priorities_[std::distance(info_memory()->begin_files(), i)];
-			files_.push_back(torrent_file(p_orig, p_new, p));
+			files_.push_back(torrent_file(p_orig, using_hash, p));
 		}
 	}
 	else

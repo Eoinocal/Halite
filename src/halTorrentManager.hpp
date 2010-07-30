@@ -113,15 +113,16 @@ public:
 			(*i).torrent->stop();
 		}
 	}
+
 	void save_to_ini()
 	{
 		fs::wofstream ofs(app().get_working_directory()/filename_);
 		
-		boost::archive::text_woarchive oxml(ofs);
+		boost::archive::text_woarchive ot(ofs);
 
-		oxml << boost::serialization::make_nvp("BitTorrent", *this);
-	}
-	
+		ot << boost::serialization::make_nvp("BitTorrent", *this);
+	}	
+
 	bool load_from_ini()
 	{
 		try 
@@ -139,9 +140,9 @@ public:
 		{
 			fs::wifstream ifs(app().get_working_directory()/filename_);
 
-			boost::archive::text_wiarchive ixml(ifs);
+			boost::archive::text_wiarchive it(ifs);
 
-			ixml >> boost::serialization::make_nvp("BitTorrent", *this);
+			it>> boost::serialization::make_nvp("BitTorrent", *this);
 
 			return true;
 		}

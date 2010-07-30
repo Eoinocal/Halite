@@ -51,23 +51,19 @@ public:
 	torrent_file()
 	{}
 
-	torrent_file(const wstring& on, const wstring& cn, int p=1) :
+	torrent_file(const wstring& on, bool h, int p=1) :
 		current_name_(on),
 		priority_(p),
-		finished_(false)
-	{
-		if (on != cn)
-			with_hash_ = true;
-	}
+		finished_(false),
+		with_hash_(h)
+	{}
 
-	torrent_file(const fs::wpath& on, const fs::wpath& cn, int p=1) :
+	torrent_file(const fs::wpath& on, bool h, int p=1) :
 		current_name_(on),
 		priority_(p),
-		finished_(false)
-	{
-		if (on != cn)
-			with_hash_ = true;
-	}
+		finished_(false),
+		with_hash_(h)
+	{}
 
 	void set_finished()
 	{
