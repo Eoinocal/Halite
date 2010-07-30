@@ -1495,6 +1495,10 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\global\work_file.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\global\wtl_app.cpp"
 					>
 				</File>
@@ -1838,6 +1842,10 @@
 				</File>
 				<File
 					RelativePath="..\..\src\global\utf8.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\global\work_file.hpp"
 					>
 				</File>
 				<File

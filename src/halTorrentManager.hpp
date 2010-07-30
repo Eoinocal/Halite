@@ -25,6 +25,7 @@
 #include <boost/multi_index/tag.hpp>
 
 #include "halIni.hpp"
+#include "global/work_file.hpp"
 #include "halTorrentInternal.hpp"
 
 namespace hal 
@@ -101,7 +102,7 @@ public:
 	
 	torrent_manager(ini_file& ini) :
 		ini_class_t("bittorrent", "torrent_manager", ini),
-		filename_(L"BitTorrent.data"),
+		work_file_(L"BitTorrent.data"),
 		ini_(ini)
 	{}
 
@@ -116,9 +117,8 @@ public:
 
 	void save_to_ini()
 	{
-		fs::wofstream ofs(app().get_working_directory()/filename_);
-		
-		boost::archive::text_woarchive ot(ofs);
+		shared_wostream_ptr ofs = work_file_.wostream();		
+		boost::archive::text_woarchive ot(*ofs);
 
 		ot << boost::serialization::make_nvp("BitTorrent", *this);
 	}	
@@ -128,7 +128,7 @@ public:
 		try 
 		{
 
-		if (!boost::filesystem::exists(app().get_working_directory()/filename_) &&
+		if (!boost::filesystem::exists(work_file_.working_file()) &&
 			boost::filesystem::exists(ini_.main_file()))
 		{	
 			ini_class_t::load_from_ini();
@@ -137,12 +137,11 @@ public:
 			return true;
 		}
 		else
-		{
-			fs::wifstream ifs(app().get_working_directory()/filename_);
+		{			
+			shared_wistream_ptr ifs = work_file_.wistream();
+			boost::archive::text_wiarchive it(*ifs);
 
-			boost::archive::text_wiarchive it(ifs);
-
-			it>> boost::serialization::make_nvp("BitTorrent", *this);
+			it >> boost::serialization::make_nvp("BitTorrent", *this);
 
 			return true;
 		}
@@ -151,7 +150,7 @@ public:
 		catch (const std::exception& e)
 		{			
 			hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventXmlException(hal::from_utf8(e.what()), L"load_standalone"))); 
+				new hal::EventXmlException(hal::from_utf8(e.what()), L"load_from_ini"))); 
 
 			return false;
 		}
@@ -267,7 +266,7 @@ public:
 	}	
 	
 private:
-	boost::filesystem::wpath filename_;
+	work_file work_file_;
 	ini_file& ini_;
 	torrent_multi_index torrents_;
 };
