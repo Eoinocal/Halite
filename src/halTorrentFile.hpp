@@ -28,6 +28,26 @@ namespace mi = boost::multi_index;
 class torrent_file
 {
 public:
+
+	static fs::wpath add_hash(const fs::wpath& p_orig, const std::wstring& hash)
+	{
+		fs::wpath p_new = *p_orig.begin();
+
+		if (++p_orig.begin() != p_orig.end())
+		{
+			p_new /= hash;
+			
+			for (fs::wpath::iterator i = ++p_orig.begin(), e = p_orig.end(); i != e; ++i)
+			{
+				p_new /= *i;
+			}
+		}
+		else
+			p_new = hash / p_new;
+
+		return p_new;
+	}
+
 	torrent_file()
 	{}
 
@@ -71,11 +91,19 @@ public:
 		priority_ = p;
 	}
 
-	const fs::wpath& name() const { return current_name_; };
-	const fs::wpath& completed_name() const { return completed_name_ != L"" ? completed_name_ : current_name_; };
+	fs::wpath active_name(const std::wstring& hash) const 
+	{ 
+		if (with_hash_)
+			return add_hash(current_name_, hash);
+		else
+			return current_name_; 
+	}
+
+	const fs::wpath& completed_name() const { return completed_name_ != L"" ? completed_name_ : current_name_; }
 
 	int priority() const { return priority_; };
 	bool with_hash() const { return with_hash_; }
+	bool is_finished() const { return finished_; }
 	
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -113,7 +141,7 @@ class torrent_files
 			mi::ordered_unique<
 				mi::tag<by_filename>,
 				mi::const_mem_fun<
-					torrent_file, const fs::wpath&, &torrent_file::name> 
+					torrent_file, const fs::wpath&, &torrent_file::completed_name> 
 			>
 		>
 	> torrent_file_index_impl_t;
@@ -123,11 +151,11 @@ class torrent_files
 
 public:
 	typedef function<void (size_t, int)> set_priority_fn;
-	typedef function<void (size_t, const fs::wpath&)> change_filename_fn;
+	typedef function<void (size_t)> changed_filename_fn;
 
-	torrent_files(set_priority_fn sp, change_filename_fn cf) :
+	torrent_files(set_priority_fn sp, changed_filename_fn cf) :
 		set_priority_fn_(sp),
-		change_filename_fn_(cf)
+		changed_filename_fn_(cf)
 	{}
 
 	void set_file_priorities(std::vector<int> file_indices, int priority)
@@ -170,6 +198,8 @@ public:
 		torrent_file tmp_file = *(file_i);
 		tmp_file.set_finished();
 		files_.get<by_random>().replace(file_i, tmp_file);
+
+		changed_filename_fn_(i);
 	}
 
 	void change_filename(size_t i, const fs::wpath& fn)
@@ -180,7 +210,7 @@ public:
 		tmp_file.change_filename(fn);
 		files_.get<by_random>().replace(file_i, tmp_file);
 
-		change_filename_fn_(i, fn);
+		changed_filename_fn_(i);
 	}
 
 	const torrent_file& operator[](size_t n) const
@@ -197,7 +227,7 @@ public:
 
 private:
 	set_priority_fn set_priority_fn_;
-	change_filename_fn change_filename_fn_;
+	changed_filename_fn changed_filename_fn_;
 
 	torrent_file_index_impl_t files_;
 };

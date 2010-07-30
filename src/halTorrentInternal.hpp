@@ -306,7 +306,7 @@ private:
 		in_session_(false), \
 		queue_position_(-1), \
 		files_(bind(&torrent_internal::set_file_priority_cb, this, _1, _2), \
-			bind(&torrent_internal::change_file_filename_cb, this, _1, _2))
+			bind(&torrent_internal::changed_file_filename_cb, this, _1))
 		
 	torrent_internal() :	
 		TORRENT_INTERNALS_DEFAULTS,
@@ -980,14 +980,17 @@ private:
 		}
 	}
 	
-	void change_file_filename_cb(size_t i, const fs::wpath& f)
+	void changed_file_filename_cb(size_t i)
 	{
 		if (i < file_details_memory_.size())
 		{
+			fs::wpath f = files_[i].completed_name();
+
 			file_details_memory_[i].filename = f.filename();
 			file_details_memory_[i].branch = f.parent_path();
 
-			handle_.rename_file(i, f);
+			if (files_[i].is_finished())
+				handle_.rename_file(i, f);
 		}
 	}
 
