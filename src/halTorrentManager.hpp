@@ -25,7 +25,7 @@
 #include <boost/multi_index/tag.hpp>
 
 #include "halIni.hpp"
-#include "global/work_file.hpp"
+#include "global/versioned_file.hpp"
 #include "halTorrentInternal.hpp"
 
 namespace hal 
@@ -99,10 +99,10 @@ class torrent_manager :
 public:
 	typedef torrent_multi_index::index<by_filename>::type torrent_by_filename;
 	typedef torrent_multi_index::index<by_name>::type torrent_by_name;
-	
+
 	torrent_manager(ini_file& ini) :
 		ini_class_t("bittorrent", "torrent_manager", ini),
-		work_file_(L"BitTorrent.data"),
+		work_file_(L"BitTorrent.data", boost::lexical_cast<boost::uuids::uuid>("7246289F-C92C-4781-A574-A1E944FD1183"), 1),
 		ini_(ini)
 	{}
 
@@ -138,12 +138,16 @@ public:
 		}
 		else
 		{			
-			shared_wistream_ptr ifs = work_file_.wistream();
-			boost::archive::text_wiarchive it(*ifs);
+			if (boost::optional<shared_wistream_ptr> ifs = work_file_.wistream())
+			{
+				boost::archive::text_wiarchive it(**ifs);
 
-			it >> boost::serialization::make_nvp("BitTorrent", *this);
+				it >> boost::serialization::make_nvp("BitTorrent", *this);
 
-			return true;
+				return true;
+			}
+			else
+				return false;
 		}
 		
 		}
@@ -266,7 +270,7 @@ public:
 	}	
 	
 private:
-	work_file work_file_;
+	versioned_file work_file_;
 	ini_file& ini_;
 	torrent_multi_index torrents_;
 };

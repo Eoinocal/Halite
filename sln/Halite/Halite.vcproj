@@ -1845,6 +1845,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\global\versioned_file.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\global\work_file.hpp"
 					>
 				</File>

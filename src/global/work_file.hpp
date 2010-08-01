@@ -20,7 +20,7 @@ typedef boost::shared_ptr<std::wistream> shared_wistream_ptr;
 class work_file
 {
 public:	
-	work_file(std::wstring filename);
+	work_file(const std::wstring& filename);
 	~work_file();
 	
 	shared_wostream_ptr wostream();

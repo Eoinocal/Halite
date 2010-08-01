@@ -18,7 +18,7 @@
 namespace hal 
 {
 
-work_file::work_file(std::wstring filename) :
+work_file::work_file(const std::wstring& filename) :
 	main_file_(app().get_working_directory()/filename),
 	working_file_(app().get_working_directory()/(filename + L".working")),
 	filename_(filename)
