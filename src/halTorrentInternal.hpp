@@ -331,12 +331,11 @@ private:
 		TORRENT_INTERNALS_DEFAULTS,
 		save_directory_(save_directory.string()),
 		move_to_directory_(move_to_directory.string()),
-		allocation_(alloc)
+		allocation_(alloc),
+		magnet_uri_(to_utf8(uri))
 	{
 		state(torrent_details::torrent_stopped);
 		assert(the_session_);
-
-//		prepare();
 	}
 
 	#undef TORRENT_INTERNALS_DEFAULTS
@@ -387,7 +386,13 @@ public:
 		return std::make_pair(connections_, uploads_);
 	}
 	
-	const wstring& name() const { return name_; }
+	const wstring& name() 
+	{ 
+		if (name_.empty() && in_session())
+			name_ = hal::from_utf8_safe(handle_.name());
+		
+		return name_; 
+	}
 	
 	void set_ratio(float ratio) 
 	{ 
@@ -433,35 +438,35 @@ public:
 
 	void resume()
 	{
-		HAL_DEV_MSG(hal::wform(L"resume() - %1%") % name_);
+		HAL_DEV_MSG(hal::wform(L"resume() - %1%") % name());
 		
 		locked_process_event(ev_resume());
 	}
 	
 	void pause()
 	{
-		HAL_DEV_MSG(hal::wform(L"pause() - %1%") % name_);
+		HAL_DEV_MSG(hal::wform(L"pause() - %1%") % name());
 		
 		locked_process_event(ev_pause());		
 	}
 	
 	void stop()
 	{
-		HAL_DEV_MSG(hal::wform(L"stop() - %1%") % name_);
+		HAL_DEV_MSG(hal::wform(L"stop() - %1%") % name());
 		
 		locked_process_event(ev_stop());
 	}
 	
 	void start()
 	{
-		HAL_DEV_MSG(hal::wform(L"start() - %1%") % name_);
+		HAL_DEV_MSG(hal::wform(L"start() - %1%") % name());
 		
 		locked_process_event(ev_start());
 	}
 	
 	void remove_files(boost::function<void (void)> fn)
 	{
-		HAL_DEV_MSG(hal::wform(L"remove_files() - %1%") % name_);
+		HAL_DEV_MSG(hal::wform(L"remove_files() - %1%") % name());
 
 		removed_callback_ = fn;
 		
@@ -476,7 +481,7 @@ public:
 	void force_recheck()
 	{
 		mutex_t::scoped_lock l(mutex_);
-		HAL_DEV_MSG(hal::wform(L"force_recheck() - %1%") % name_);
+		HAL_DEV_MSG(hal::wform(L"force_recheck() - %1%") % name());
 		
 		process_event(ev_force_recheck());	
 	}
@@ -490,7 +495,7 @@ public:
 		if (!exists(resume_dir))
 			fs::create_directories(resume_dir);
 
-		boost::filesystem::ofstream out(resume_dir/(name_ + L".fastresume"), std::ios_base::binary);
+		boost::filesystem::ofstream out(resume_dir/(name() + L".fastresume"), std::ios_base::binary);
 		out.unsetf(std::ios_base::skipws);
 		bencode(std::ostream_iterator<char>(out), ent);
 
@@ -510,7 +515,7 @@ public:
 	{
 		try {
 
-		wpath resume_file = hal::app().get_working_directory() / L"resume" / (name_ + L".fastresume");
+		wpath resume_file = hal::app().get_working_directory() / L"resume" / (name() + L".fastresume");
 
 		if (exists(resume_file))
 			remove(resume_file);
@@ -527,7 +532,7 @@ public:
 	{
 		try {
 
-		wpath torrent_info_file = hal::app().get_working_directory() / L"resume" / (name_ + L".torrent_info");
+		wpath torrent_info_file = hal::app().get_working_directory() / L"resume" / (name() + L".torrent_info");
 
 		if (exists(torrent_info_file))
 			remove(torrent_info_file);
@@ -853,7 +858,7 @@ public:
 		try 
 		{
 
-		if (!info_memory_) 
+		if (!info_memory_ && in_session()) 
 			info_memory_.reset(new libt::torrent_info(handle_.get_torrent_info()));	
 
 		}
@@ -869,10 +874,10 @@ public:
 	{
 		mutex_t::scoped_lock l(mutex_);
 		return signals_;
-	}	
+	}
 	
 	unsigned state() const 
-	{ 
+	{
 /*		if (!in_session())
 		{
 			if (state_ != torrent_details::torrent_stopped)
@@ -882,7 +887,7 @@ public:
 			}
 		}
 */		
-		return state_; 
+		return state_;
 	}
 
 	wstring check_error() 
@@ -900,7 +905,7 @@ public:
 
 	void output_torrent_debug_details()
 	{
-		HAL_DEV_MSG(wform(L"Name %1%") % name_);
+		HAL_DEV_MSG(wform(L"Name %1%") % name());
 		HAL_DEV_MSG(wform(L" >> In session       %1%") % in_session());
 
 		if (in_session())
@@ -1055,6 +1060,7 @@ private:
 	bool managed_;
 	bit::allocations allocation_;
 	
+	std::string magnet_uri_;
 	boost::intrusive_ptr<libt::torrent_info> info_memory_;
 	wstring hash_;
 	libt::torrent_status status_memory_;
@@ -1064,4 +1070,3 @@ private:
 } // namespace hal
 
 #include "halTorrentIntStates.hpp"
-

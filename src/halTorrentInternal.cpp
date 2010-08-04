@@ -181,7 +181,7 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr()
 	boost::tuple<size_t, size_t, size_t, size_t> connections = update_peers();	
 
 	return torrent_details_ptr(new torrent_details(
-		name_, filename_, 
+		name(), filename_, 
 		save_directory().string(), 
 		state_str, 
 		hal::from_utf8(status_memory_.current_tracker), 
@@ -208,17 +208,17 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr()
 	{
 		event_log().post(shared_ptr<EventDetail>(
 			new EventInvalidTorrent(event_logger::critical, 
-				event_logger::invalid_torrent, to_utf8(name_), "get_torrent_details_ptr")));
+				event_logger::invalid_torrent, to_utf8(name()), "get_torrent_details_ptr")));
 	}
 	catch (const std::exception& e)
 	{
 		event_log().post(shared_ptr<EventDetail>(
 			new EventTorrentException(event_logger::critical, 
-				event_logger::torrentException, e.what(), to_utf8(name_), "get_torrent_details_ptr")));
+				event_logger::torrentException, e.what(), to_utf8(name()), "get_torrent_details_ptr")));
 	}
 	
 	return torrent_details_ptr(new torrent_details(
-		name_, filename_, 
+		name(), filename_, 
 		save_directory().string(), 
 		app().res_wstr(HAL_TORRENT_STOPPED), 
 		app().res_wstr(HAL_NA)));
@@ -320,12 +320,12 @@ void torrent_internal::extract_names()
 	{				
 		name_ = hal::from_utf8_safe(info_memory()->name());
 		
-		filename_ = name_;
+		filename_ = name();
 		if (!boost::find_last(filename_, L".torrent")) 
 				filename_ += L".torrent";
 		
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(
-			hal::wform(L"Loaded names: %1%, %2%") % name_ % filename_)));
+			hal::wform(L"Loaded names: %1%, %2%") % name() % filename_)));
 	}
 }
 
@@ -394,13 +394,13 @@ void torrent_internal::write_torrent_info()
 
 	if (info_memory())
 	{
-		wpath torrent_info_file = hal::app().get_working_directory() / L"resume" / (name_ + L".torrent_info");
+		wpath torrent_info_file = hal::app().get_working_directory() / L"resume" / (name() + L".torrent_info");
 		wpath resume_dir = hal::app().get_working_directory()/L"resume";
 		
 		if (!exists(resume_dir))
 			fs::create_directories(resume_dir);
 
-		boost::filesystem::ofstream out(resume_dir/(name_ + L".torrent_info"), std::ios_base::binary);
+		boost::filesystem::ofstream out(resume_dir/(name() + L".torrent_info"), std::ios_base::binary);
 		out.unsetf(std::ios_base::skipws);
 
 		libt::create_torrent t(*info_memory());

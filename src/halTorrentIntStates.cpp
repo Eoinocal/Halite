@@ -8,6 +8,10 @@
 
 #include "halTorrentIntStates.hpp"
 
+#pragma warning (push, 1)
+#	include <libtorrent/magnet_uri.hpp>
+#pragma warning (pop) 
+
 namespace hal
 {
 
@@ -75,7 +79,12 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	p.duplicate_is_error = false;
 	p.auto_managed = t_i.managed_;
 
-	t_i.handle_ = (*t_i.the_session_)->add_torrent(p);
+	if (p.ti)
+		t_i.handle_ = (*t_i.the_session_)->add_torrent(p);
+	else if (!t_i.magnet_uri_.empty())
+		t_i.handle_ = libt::add_magnet_uri(**t_i.the_session_, t_i.magnet_uri_, p);
+	else		
+		return transit<in_error>();
 
 	assert(t_i.handle_.is_valid());
 	t_i.in_session_ = true;

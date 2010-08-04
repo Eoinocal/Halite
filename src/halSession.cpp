@@ -935,6 +935,8 @@ void bit_impl::alert_handler()
 		libt::handle_alert<
 			libt::save_resume_data_alert,
 			libt::save_resume_data_failed_alert,
+			libt::metadata_failed_alert,
+			libt::metadata_received_alert,
 			libt::external_ip_alert,
 			libt::portmap_error_alert,
 			libt::portmap_alert,
@@ -960,9 +962,7 @@ void bit_impl::alert_handler()
 			libt::block_downloading_alert,
 			libt::listen_failed_alert,
 			libt::listen_succeeded_alert,
-			libt::peer_blocked_alert,
-			libt::metadata_failed_alert,
-			libt::metadata_received_alert
+			libt::peer_blocked_alert
 		>::handle_alert(p_alert, handler);			
 		
 		}
