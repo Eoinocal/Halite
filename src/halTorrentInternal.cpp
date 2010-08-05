@@ -12,9 +12,13 @@
 #pragma warning (pop) 
 
 #include "halTorrentInternal.hpp"
+#include "halTorrentManager.hpp"
 
 namespace hal 
 {
+	
+boost::optional<libt::session>* torrent_internal::the_session_ = 0;	
+boost::optional<torrent_manager&> torrent_internal::the_manager_ = 0;
 
 void torrent_internal::adjust_queue_position(bit::queue_adjustments adjust)
 {
@@ -301,7 +305,8 @@ void torrent_internal::prepare(boost::intrusive_ptr<libt::torrent_info> info)
 				
 		extract_hash();
 		extract_names();
-		extract_filenames();		
+		extract_filenames();	
+
 		write_torrent_info();
 
 		if (!fs::exists(save_directory_))
@@ -313,6 +318,22 @@ void torrent_internal::prepare(boost::intrusive_ptr<libt::torrent_info> info)
 			state(torrent_details::torrent_stopped);
 		else if (state_ == torrent_details::torrent_pausing)
 			state(torrent_details::torrent_paused);
+	}
+}
+
+void torrent_internal::metadata_completed()
+{
+	prepare();
+	apply_settings();
+
+	update_manager();
+}
+
+void torrent_internal::update_manager()
+{
+	if (the_manager_)
+	{
+		the_manager_->update_torrent(shared_from_this());
 	}
 }
 

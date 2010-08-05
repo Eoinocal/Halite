@@ -339,7 +339,7 @@ private:
 		state(torrent_details::torrent_stopped);
 		assert(the_session_);
 
-	//	extract_hash();
+		extract_hash();
 	}
 
 	#undef TORRENT_INTERNALS_DEFAULTS
@@ -726,6 +726,7 @@ public:
 			case 3:
 			ar & make_nvp("files", files_);
 			ar & make_nvp("hash", hash_);
+			ar & make_nvp("hash_string", hash_str_);
 
 			case 2:
 			ar & make_nvp("transfer_limits", transfer_limit_);
@@ -827,7 +828,9 @@ public:
 			}	
 		}
 	}
-	
+
+	void metadata_completed();
+
 	void prepare() { prepare(info_memory()); }
 	void prepare(boost::intrusive_ptr<libt::torrent_info> info);
 
@@ -953,6 +956,7 @@ public:
 	torrent_files& files() { return files_; }
 
 	static boost::optional<libt::session>* the_session_;	
+	static boost::optional<torrent_manager&> the_manager_;	
 
 	friend class torrent_manager;
 
@@ -970,7 +974,8 @@ private:
 	void apply_external_interface();
 	void state(unsigned s);
 
-	void extract_hash();	
+	void extract_hash();
+	void update_manager();
 
 	void set_file_priority_cb(size_t i, int p)
 	{

@@ -53,6 +53,7 @@ bit_impl::bit_impl() :
 	{
 
 	torrent_internal::the_session_ = &session_;
+	torrent_internal::the_manager_ = the_torrents_;
 
 	session_->session::set_alert_mask(libt::alert::all_categories);		
 	session_->add_extension(&libt::create_metadata_plugin);
@@ -664,7 +665,7 @@ void bit_impl::alert_handler()
 					% get(a.handle)->name()), 
 				event_logger::info, a.timestamp())));
 		
-		get(a.handle)->prepare();	
+		get(a.handle)->metadata_completed();	
 	}
 
 	void operator()(libt::metadata_failed_alert const& a) const

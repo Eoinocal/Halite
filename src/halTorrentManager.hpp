@@ -49,7 +49,7 @@ class torrent_manager :
 		{}
 		
 		explicit torrent_holder(torrent_internal_ptr t) :
-			torrent(t), filename(torrent->filename()), name(torrent->name())
+			torrent(t), filename(torrent->filename()), name(torrent->name()), hash(torrent->hash())
 		{}
 
 		friend class boost::serialization::access;
@@ -208,7 +208,7 @@ public:
 	{
 		torrent_internal_ptr t = torrent_internal_ptr(new torrent_internal(uri, save_directory, alloc, move_to_directory));
 
-		std::pair<torrent_by_name::iterator, bool> p = torrents_.get<by_name>().insert(torrent_holder(t));
+		std::pair<torrent_by_hash::iterator, bool> p = torrents_.get<by_hash>().insert(torrent_holder(t));
 
 		if (!p.second) // Torrent already present
 			t.reset();
@@ -264,6 +264,16 @@ public:
 		}
 		
 		throw invalid_torrent(L"From hash");
+	}
+
+	void update_torrent(torrent_internal_ptr torrent)
+	{
+		torrent_by_hash::iterator it = torrents_.get<by_hash>().find(torrent->hash());
+		
+		if (it != torrents_.get<by_hash>().end() && (*it).torrent)
+		{
+			torrents_.get<by_hash>().replace(it, torrent_holder(torrent));
+		}
 	}
 	
 	torrent_by_name::iterator erase(torrent_by_name::iterator where)

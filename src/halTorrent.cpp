@@ -23,7 +23,6 @@
 
 namespace hal 
 {
-	boost::optional<libt::session>* torrent_internal::the_session_ = 0;
 }
 
 namespace hal 
