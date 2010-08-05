@@ -163,16 +163,16 @@ paused::~paused()
 sc::result paused::react(const ev_stop& evt)
 {
 	if (state_downcast<const resume_data_waiting*>() != 0 )
-		return transit< stopping >();
+		return transit<stopping>();
 	else
-		return transit< stopped >();
+		return transit<stopped>();
 }
 
 sc::result paused::react(const ev_resume& evt)
 {
 	context<torrent_internal>().handle_.resume();
 
-	return transit< active >();
+	return transit<active>();
 }
 
 sc::result paused::react(const ev_force_recheck& evt)

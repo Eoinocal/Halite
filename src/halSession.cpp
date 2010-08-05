@@ -916,7 +916,7 @@ void bit_impl::alert_handler()
 		
 		torrent_internal_ptr get(libt::torrent_handle h) const 
 		{ 
-			torrent_internal_ptr p = bit_impl_.the_torrents_.get(from_utf8_safe(h.get_torrent_info().name())); 
+			torrent_internal_ptr p = bit_impl_.the_torrents_.get_by_hash(h.info_hash()); 
 
 			if (p)
 				return p;

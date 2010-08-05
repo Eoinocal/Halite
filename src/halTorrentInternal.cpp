@@ -6,7 +6,10 @@
 
 #include "stdAfx.hpp"
 
-#include "libtorrent/escape_string.hpp"
+#pragma warning (push, 1)
+#	include <libtorrent/escape_string.hpp>
+#	include <libtorrent/magnet_uri.hpp>
+#pragma warning (pop) 
 
 #include "halTorrentInternal.hpp"
 
@@ -151,6 +154,9 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr()
 		case libt::torrent_status::allocating:
 			state_str = app().res_wstr(HAL_TORRENT_ALLOCATING);
 			break;
+		case libt::torrent_status::checking_resume_data:
+			state_str = app().res_wstr(HAL_TORRENT_CHECKING_RESUME);
+			break;
 		}	
 	}
 	
@@ -292,10 +298,8 @@ void torrent_internal::prepare(boost::intrusive_ptr<libt::torrent_info> info)
 	if (info)
 	{				
 		set_info_memory(info);
-		
-		libt::sha1_hash const& ih = info_memory()->info_hash();
-		hash_ = from_utf8(libt::base32encode(std::string((char const*)&ih[0], 20)));
-
+				
+		extract_hash();
 		extract_names();
 		extract_filenames();		
 		write_torrent_info();
@@ -329,6 +333,51 @@ void torrent_internal::extract_names()
 	}
 }
 
+void torrent_internal::extract_hash()
+{
+	mutex_t::scoped_lock l(mutex_);
+	
+	HAL_DEV_MSG(L"Extracting hash...");
+
+	if (in_session())
+	{		
+		HAL_DEV_MSG(L"    from handle");
+		hash_ = handle_.info_hash();
+	}
+	else if (info_memory())
+	{		
+		HAL_DEV_MSG(L"    from info_memory");
+		hash_ = info_memory()->info_hash();
+	}
+	else if (!magnet_uri_.empty())
+	{
+		HAL_DEV_MSG(L"    from magnet uri");
+		libt::add_torrent_params p;
+
+		p.ti = info_memory();
+		p.save_path = path_to_utf8(save_directory_).string();
+		p.storage_mode = hal_allocation_to_libt(allocation_);
+		p.paused = true;
+		p.duplicate_is_error = false;
+		p.auto_managed = false;
+
+		libt::torrent_handle h = libt::add_magnet_uri(**the_session_, magnet_uri_, p);
+		hash_ = h.info_hash();	
+
+		HAL_DEV_MSG(L"    removing temp handle");
+		(*the_session_)->remove_torrent(h);
+	}
+	else
+	{		
+		HAL_DEV_MSG(L"    No Hash!");
+		hash_.clear();
+	}
+	
+	libt::sha1_hash const& ih = hash_;
+	hash_str_ = from_utf8(libt::base32encode(std::string((char const*)&ih[0], 20)));
+	HAL_DEV_MSG(hal::wform(L"    hash : %1%") % hash_str_);
+}
+
 void torrent_internal::extract_filenames()
 {
 	mutex_t::scoped_lock l(mutex_);
@@ -339,7 +388,7 @@ void torrent_internal::extract_filenames()
 			i != e; ++i)
 		{
 			fs::wpath p_orig = path_from_utf8((*i).path);
-			fs::wpath p_new = torrent_file::add_hash(p_orig, hash_);
+			fs::wpath p_new = torrent_file::add_hash(p_orig, hash_str_);
 
 			bool using_hash = true;
 
@@ -598,7 +647,7 @@ void torrent_internal::apply_file_names()
 
 		for (int i = 0; i < info_memory()->num_files(); ++i)
 		{
-			handle_.rename_file(i, files_[i].active_name(hash_).string());
+			handle_.rename_file(i, files_[i].active_name(hash_str_).string());
 		}
 
 		if (want_recheck)

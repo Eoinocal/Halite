@@ -43,6 +43,7 @@ class torrent_manager :
 		
 		wstring filename;
 		wstring name;
+		libt::big_number hash;
 		
 		torrent_holder()
 		{}
@@ -60,6 +61,7 @@ class torrent_manager :
 			ar & make_nvp("torrent", torrent);
 			ar & make_nvp("filename", filename);
 			ar & make_nvp("name", name);
+			ar & make_nvp("hash", hash);
 
 			torrent->initialize_state_machine(torrent);
 		}
@@ -72,6 +74,7 @@ class torrent_manager :
 			ar & make_nvp("torrent", torrent);
 			ar & make_nvp("filename", filename);
 			ar & make_nvp("name", name);
+			ar & make_nvp("hash", hash);
 		}
 
 		BOOST_SERIALIZATION_SPLIT_MEMBER()
@@ -79,6 +82,7 @@ class torrent_manager :
 	
 	struct by_filename{};
 	struct by_name{};
+	struct by_hash{};
 	
 	typedef boost::multi_index_container<
 		torrent_holder,
@@ -92,6 +96,11 @@ class torrent_manager :
 				boost::multi_index::tag<by_name>,
 				boost::multi_index::member<
 					torrent_holder, wstring, &torrent_holder::name>
+				>,
+			boost::multi_index::ordered_unique<
+				boost::multi_index::tag<by_hash>,
+				boost::multi_index::member<
+					torrent_holder, libt::big_number, &torrent_holder::hash>
 				>
 		>
 	> torrent_multi_index;
@@ -99,6 +108,7 @@ class torrent_manager :
 public:
 	typedef torrent_multi_index::index<by_filename>::type torrent_by_filename;
 	typedef torrent_multi_index::index<by_name>::type torrent_by_name;
+	typedef torrent_multi_index::index<by_hash>::type torrent_by_hash;
 
 	torrent_manager(ini_file& ini) :
 		ini_class_t("bittorrent", "torrent_manager", ini),
@@ -226,8 +236,8 @@ public:
 		
 		throw invalid_torrent(filename);
 	}
-	
-	torrent_internal_ptr get(const wstring& name)
+
+	torrent_internal_ptr get_by_name(const wstring& name)
 	{
 		torrent_by_name::iterator it = torrents_.get<by_name>().find(name);
 		
@@ -237,6 +247,23 @@ public:
 		}
 		
 		throw invalid_torrent(name);
+	}
+
+	torrent_internal_ptr get(const wstring& name)
+	{
+		return get_by_name(name);
+	}
+	
+	torrent_internal_ptr get_by_hash(const libt::big_number& hash)
+	{
+		torrent_by_hash::iterator it = torrents_.get<by_hash>().find(hash);
+		
+		if (it != torrents_.get<by_hash>().end() && (*it).torrent)
+		{
+			return (*it).torrent;
+		}
+		
+		throw invalid_torrent(L"From hash");
 	}
 	
 	torrent_by_name::iterator erase(torrent_by_name::iterator where)

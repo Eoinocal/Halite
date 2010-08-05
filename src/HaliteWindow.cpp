@@ -380,7 +380,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	
 	wpath file(lpszPath, boost::filesystem::native);
 
-	wstring uri=L"magnet:?xt=urn:btih:cb48f465160a6715a3e4fd9bbcfdde0d646389ac&dn=Futurama.S06E07.The.Late.Philip.J.Fry.HDTV.XviD-FQM.%5BVTV%5D.avi&tr=http%3A%2F%2Ftracker.openbittorrent.com%2Fannounce";
+	wstring uri=L"magnet:?xt=urn:btih:dac584c8ba71997d932a4b64277aee73da1aaaa4&dn=Top+Gear+S15E06+HD+720p&tr=http%3A%2F%2Ftracker.openbittorrent.com%2Fannounce";
 
 	if (use_move_to)
 		hal::bittorrent::Instance().add_torrent(uri, wpath(default_save_folder), startPaused, managed, allocation_type, 

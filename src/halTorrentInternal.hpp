@@ -30,9 +30,10 @@
 #	include <libtorrent/torrent_handle.hpp>
 #	include <libtorrent/peer_connection.hpp>
 #	include <libtorrent/peer_info.hpp>
+#	include <libtorrent/create_torrent.hpp>
+
 #	include <libtorrent/extensions/metadata_transfer.hpp>
 #	include <libtorrent/extensions/ut_pex.hpp>
-#	include <libtorrent/create_torrent.hpp>
 #pragma warning (pop) 
 
 #include <boost/statechart/event.hpp>
@@ -48,6 +49,7 @@
 #include "halTypes.hpp"
 #include "halSignaler.hpp"
 
+#include "halTorrentSerialization.hpp"
 #include "halTorrentFile.hpp"
 #include "halTorrentIntEvents.hpp"
 
@@ -336,6 +338,8 @@ private:
 	{
 		state(torrent_details::torrent_stopped);
 		assert(the_session_);
+
+	//	extract_hash();
 	}
 
 	#undef TORRENT_INTERNALS_DEFAULTS
@@ -392,6 +396,11 @@ public:
 			name_ = hal::from_utf8_safe(handle_.name());
 		
 		return name_; 
+	}
+	
+	const libt::sha1_hash& hash() const
+	{ 		
+		return hash_; 
 	}
 	
 	void set_ratio(float ratio) 
@@ -649,11 +658,6 @@ public:
 	
 	bool is_active() const { return state() == torrent_details::torrent_active; }
 
-	unsigned get_state()
-	{
-		return state_;
-	}
-	
 	void set_tracker_login(wstring username, wstring password)
 	{
 		tracker_username_ = username;
@@ -878,15 +882,6 @@ public:
 	
 	unsigned state() const 
 	{
-/*		if (!in_session())
-		{
-			if (state_ != torrent_details::torrent_stopped)
-			{			
-				HAL_DEV_MSG(L"Should really be stopped!");
-				state_ = torrent_details::torrent_stopped;
-			}
-		}
-*/		
 		return state_;
 	}
 
@@ -974,7 +969,8 @@ private:
 	void apply_queue_position();	
 	void apply_external_interface();
 	void state(unsigned s);
-	
+
+	void extract_hash();	
 
 	void set_file_priority_cb(size_t i, int p)
 	{
@@ -1059,10 +1055,12 @@ private:
 	bool compact_storage_;
 	bool managed_;
 	bit::allocations allocation_;
+
+	libt::sha1_hash hash_;
+	wstring hash_str_;
 	
 	std::string magnet_uri_;
 	boost::intrusive_ptr<libt::torrent_info> info_memory_;
-	wstring hash_;
 	libt::torrent_status status_memory_;
 	file_details_vec file_details_memory_;
 };
