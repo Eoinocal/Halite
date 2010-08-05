@@ -52,6 +52,7 @@
 "Calculating Piece Hashes..." ---> "Probíhá výpočet kontrolního součtu dílu..."
 "Cancel" ---> "Storno"
 "Checking Files" ---> "Kontrola souborů"
+"Checking Resume Data" --->  ??? 
 "Choked" ---> "Přiškrceno"
 "Clear IP database" ---> "Smazat databázi IP"
 "Client" ---> "Klient"
@@ -186,6 +187,7 @@
 "New" ---> "Nový"
 "None" ---> "Žádná"
 "Normal" ---> "Normální"
+"Not Started" --->  ??? 
 "Not currently set to take any action" ---> "Aktuálně není nastaveno vykonání žádné akce"
 "Note. Compact Allocation is incompatible with File Selection" ---> "Upozornění: Kompaktní alokace není kompatibilní s výběrem souborů"
 "OK" ---> "OK"

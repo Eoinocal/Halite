@@ -3,7 +3,7 @@
 <?define VerGeneration = "0" ?>
 <?define VerMajor = "3" ?>
 <?define VerMinor = "3" ?>
-<?define VerBuild = "1185" ?>
+<?define VerBuild = "1191" ?>
 
 <?define FullGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor) Build $(var.VerBuild)" ?>
 <?define ShortGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor)" ?>
@@ -94,9 +94,7 @@
 		<Property Id="INSTALLDESKTOPSHORTCUT" Value="1" />
 		<Property Id="ASSOCIATETORRENTFILES" Value="1" />
 		<Property Id="SETFIREWALLEXCEPTION" Value="1" />
-		<!-- 
 		<Property Id="REGISTERMAGNETPROTOCOL" Value="1" /> 
-		-->
 
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="AppDataFolder" />

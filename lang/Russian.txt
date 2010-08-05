@@ -52,6 +52,7 @@
 "Calculating Piece Hashes..." ---> "Calculating Piece Hashes..."
 "Cancel" ---> "Отменить"
 "Checking Files" ---> "Проверка файлов"
+"Checking Resume Data" --->  ??? 
 "Choked" ---> "Заглушен"
 "Clear IP database" ---> "Очистить базу данных IP"
 "Client" ---> "Клиент"
@@ -186,6 +187,7 @@
 "New" ---> "Новый"
 "None" ---> "Никакой"
 "Normal" ---> "Нормальный"
+"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Note. Compact Allocation is incompatible with File Selection"
 "OK" ---> "ОК"

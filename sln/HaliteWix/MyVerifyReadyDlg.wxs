@@ -94,15 +94,19 @@
                     <Condition Action="show">NOT Installed</Condition>
                 </Control>
 
-		  <Control Id="AddFirewallException" Type="CheckBox" X="20" Y="160" Width="290" Height="17" Hidden="yes" Property="SETFIREWALLEXCEPTION" CheckBoxValue="1" Text="Add Halite to Windows Firewall exceptions list." >
-			  <Condition Action="show">NOT Installed</Condition>
-		  </Control>
+              <Control Id="RegisterMagnetProtocol" Type="CheckBox" X="20" Y="160" Width="290" Height="17" Hidden="yes" Property="REGISTERMAGNETPROTOCOL" CheckBoxValue="1" Text="Register Halite as the magnet protocol handler." >
+                <Condition Action="show">NOT Installed</Condition>
+              </Control>
+
+              <Control Id="AddFirewallException" Type="CheckBox" X="20" Y="178" Width="290" Height="17" Hidden="yes" Property="SETFIREWALLEXCEPTION" CheckBoxValue="1" Text="Add Halite to Windows Firewall exceptions list." >
+                <Condition Action="show">NOT Installed</Condition>
+              </Control>
 		  
-		  <Control Id="DesktopShortcutCheckBox" Type="CheckBox" X="20" Y="180" Width="290" Height="17" Hidden="yes" Property="INSTALLDESKTOPSHORTCUT" CheckBoxValue="1" Text="Create a shortcut for this program on the desktop." >
+		  <Control Id="DesktopShortcutCheckBox" Type="CheckBox" X="20" Y="196" Width="290" Height="17" Hidden="yes" Property="INSTALLDESKTOPSHORTCUT" CheckBoxValue="1" Text="Create a shortcut for this program on the desktop." >
 			  <Condition Action="show">NOT Installed</Condition>
 		  </Control>
 
-		  <Control Id="AssociateTorrentCheckBox" Type="CheckBox" X="20" Y="200" Width="290" Height="17" Hidden="yes" Property="ASSOCIATETORRENTFILES" CheckBoxValue="1" Text="Associate '.torrent' files with Halite." >
+		  <Control Id="AssociateTorrentCheckBox" Type="CheckBox" X="20" Y="214" Width="290" Height="17" Hidden="yes" Property="ASSOCIATETORRENTFILES" CheckBoxValue="1" Text="Associate '.torrent' files with Halite." >
 			  <Condition Action="show">NOT Installed</Condition>
 		  </Control>
 

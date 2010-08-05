@@ -52,6 +52,7 @@
 "Calculating Piece Hashes..." ---> "Hash érték számolása..."
 "Cancel" ---> "Mégse"
 "Checking Files" ---> "Fájlok Ellenőrzése"
+"Checking Resume Data" --->  ??? 
 "Choked" ---> "Bedugult"
 "Clear IP database" ---> "IP adatbázis törlése"
 "Client" ---> "Kliens"
@@ -186,6 +187,7 @@
 "New" ---> "Új"
 "None" ---> "Nincs"
 "Normal" ---> "Normál"
+"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Figyelem! A Tömörített Foglalás nem kompatibilis a Fájl Kiválasztással."
 "OK" ---> "OK"

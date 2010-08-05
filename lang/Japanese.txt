@@ -52,6 +52,7 @@
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" ---> "取消"
 "Checking Files" --->  ??? 
+"Checking Resume Data" --->  ??? 
 "Choked" --->  ??? 
 "Clear IP database" ---> "IP データベースを削除"
 "Client" ---> "クライアント"
@@ -186,6 +187,7 @@
 "New" ---> "新規"
 "None" --->  ??? 
 "Normal" ---> "低"
+"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" --->  ??? 

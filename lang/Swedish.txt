@@ -52,6 +52,7 @@
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" ---> "Avbryt"
 "Checking Files" ---> "Granskar filer"
+"Checking Resume Data" --->  ??? 
 "Choked" ---> "Strypt"
 "Clear IP database" ---> "Rensa IP-databas"
 "Client" ---> "Klient"
@@ -186,6 +187,7 @@
 "New" ---> "Ny"
 "None" --->  ??? 
 "Normal" ---> "Medel"
+"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" --->  ??? 

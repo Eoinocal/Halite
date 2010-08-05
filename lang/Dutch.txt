@@ -52,6 +52,7 @@
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" --->  ??? 
 "Checking Files" --->  ??? 
+"Checking Resume Data" --->  ??? 
 "Choked" --->  ??? 
 "Clear IP database" --->  ??? 
 "Client" --->  ??? 
@@ -186,6 +187,7 @@
 "New" --->  ??? 
 "None" --->  ??? 
 "Normal" --->  ??? 
+"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" --->  ??? 

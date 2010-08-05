@@ -52,6 +52,7 @@
 "Calculating Piece Hashes..." ---> "Izdelujem Piece Hashes..."
 "Cancel" ---> "Prekliči"
 "Checking Files" ---> "Preverjam datoteke"
+"Checking Resume Data" --->  ??? 
 "Choked" ---> "Zadušeno"
 "Clear IP database" ---> "Počisti bazo IP naslovov"
 "Client" ---> "BT odjemalec"
@@ -186,6 +187,7 @@
 "New" ---> "Novo"
 "None" ---> "Nobeno"
 "Normal" ---> "Navadna"
+"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Opozorilo: Kompaktna alokacija je nekompatibilna s prenašanjem posameznih datotek."
 "OK" ---> "V redu"

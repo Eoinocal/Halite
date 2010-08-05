@@ -52,6 +52,7 @@
 "Calculating Piece Hashes..." ---> "Прорачунај делове хаша"
 "Cancel" ---> "Прекини"
 "Checking Files" ---> "Провера фајлова"
+"Checking Resume Data" --->  ??? 
 "Choked" ---> "Успорени"
 "Clear IP database" ---> "Избриши ИП-датотеку"
 "Client" ---> "Клијент"
@@ -186,6 +187,7 @@
 "New" ---> "Нови"
 "None" ---> "Никакви"
 "Normal" ---> "Нормално"
+"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Информација: компактно додаванје не иде са свакој акцији"
 "OK" ---> "У реду"
