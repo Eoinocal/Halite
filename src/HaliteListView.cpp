@@ -390,6 +390,31 @@ LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndC
 	return 0;
 }
 
+
+LRESULT HaliteListViewCtrl::OnToggleSuperseeding(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	try
+	{
+
+	std::set<wstring> torrent_names;
+
+	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+		torrent_names.insert(hal::to_wstr_shim(val));
+
+	foreach(wstring name, torrent_names)
+		if (hal::bit::torrent t = hal::bittorrent::Instance().get(name))
+		{
+			t.superseeding = !t.superseeding;
+		}
+
+	halite_window_.issueUiUpdate();
+
+	}
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"in HaliteListViewCtrl::OnToggleSuperseeding")
+
+	return 0;
+}
+
 LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	try
@@ -399,7 +424,7 @@ LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCt
 	if (lock) 
 	{		
 */
-	std::set<wstring>  torrent_names;
+	std::set<wstring> torrent_names;
 
 	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
 		torrent_names.insert(hal::to_wstr_shim(val));
@@ -427,7 +452,7 @@ LRESULT HaliteListViewCtrl::OnSetUnmanaged(WORD wNotifyCode, WORD wID, HWND hWnd
 	if (lock) 
 	{		
 */
-	std::set<wstring>  torrent_names;
+	std::set<wstring> torrent_names;
 
 	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
 		torrent_names.insert(hal::to_wstr_shim(val));

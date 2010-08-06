@@ -297,6 +297,7 @@
 "Stopping" ---> "Zastavování"
 "Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." ---> "Úspěšně %1%."
+"Super-seeding" --->  ??? 
 "Supports extensions" ---> "Podporuje rozšíření"
 "SysDateTimePick32" ---> "SysDateTimePick32"
 "Take no action" ---> "Žádná akce"
@@ -313,6 +314,7 @@
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" ---> "Zbývající čas: %1% hodin, %2% minut a %3% sekund"
 "Time" ---> "Čas"
 "Timeout (seconds) : " --->  ??? 
+"Toggle Superseeding" --->  ??? 
 "Toolbar2k.bmp" ---> "Toolbar2k.bmp"
 "Torrent %1% completed." --->  ??? 
 "Torrent %1% file %2% completed." --->  ??? 

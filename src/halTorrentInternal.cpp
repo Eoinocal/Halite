@@ -40,6 +40,41 @@ void torrent_internal::adjust_queue_position(bit::queue_adjustments adjust)
 			break;
 		};
 	}
+}	
+void torrent_internal::set_managed(bool m)
+{
+	mutex_t::scoped_lock l(mutex_);
+	managed_ = m;
+	
+	if (in_session()) handle_.auto_managed(managed_);
+}
+
+bool torrent_internal::is_managed()
+{
+	if (in_session())
+	{
+		managed_ = handle_.is_auto_managed();
+	}
+
+	return managed_;
+}
+
+void torrent_internal::set_superseeding(bool ss)
+{
+	superseeding_ = ss;
+
+	apply_superseeding();
+}
+
+bool torrent_internal::get_superseeding(bool actually)
+{
+	if (actually)
+		if (in_session())
+			return handle_.super_seeding();
+		else
+			return false;
+	else
+		return superseeding_;
 }
 
 void torrent_internal::add_to_session(bool paused)
@@ -153,7 +188,10 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr()
 			state_str = app().res_wstr(HAL_TORRENT_FINISHED);
 			break;
 		case libt::torrent_status::seeding:
-			state_str = app().res_wstr(HAL_TORRENT_SEEDING);
+			if (!get_superseeding(true))
+				state_str = app().res_wstr(HAL_TORRENT_SEEDING);
+			else
+				state_str = app().res_wstr(HAL_TORRENT_SUPERSEEDING);
 			break;
 		case libt::torrent_status::allocating:
 			state_str = app().res_wstr(HAL_TORRENT_ALLOCATING);
@@ -537,6 +575,7 @@ void torrent_internal::apply_settings()
 	apply_tracker_login();
 	apply_file_priorities();
 	apply_resolve_countries();
+	apply_superseeding();
 	apply_file_names();
 	apply_external_interface();
 }
@@ -686,6 +725,17 @@ void torrent_internal::apply_resolve_countries()
 		handle_.resolve_countries(resolve_countries_);
 		
 		HAL_DEV_MSG(hal::wform(L"Applying Resolve Countries %1%") % resolve_countries_);
+	}
+}
+
+void torrent_internal::apply_superseeding()
+{
+	mutex_t::scoped_lock l(mutex_);
+	if (in_session())
+	{
+		handle_.super_seeding(superseeding_);
+		
+		HAL_DEV_MSG(hal::wform(L"Applying Superseeding %1%") % superseeding_);
 	}
 }
 

@@ -6,12 +6,12 @@
 
 #pragma once
 
-#define HALITE_VERSION						0, 3, 3, 1191
+#define HALITE_VERSION						0, 3, 3, 1192
 #define HALITE_VERSION_STRING				"v 0.3.3.0 (dev)"
 #define HALITE_FINGERPRINT					"HL", 0, 3, 3, 0
 
 #ifndef HAL_NA
-#define HAL_NA							40013
+#define HAL_NA								40013
 #endif
 
 #define HAL_TORRENT_EXT_BEGIN 				41000
@@ -92,3 +92,4 @@
 #define HAL_TORRENT_CHECKING_RESUME		HAL_TORRENT_INT_BEGIN + 36
 #define HAL_TORRENT_ACTIVE					HAL_TORRENT_INT_BEGIN + 37
 #define HAL_TORRENT_NOT_STARTED			HAL_TORRENT_INT_BEGIN + 38
+#define HAL_TORRENT_SUPERSEEDING		 	HAL_TORRENT_INT_BEGIN + 39

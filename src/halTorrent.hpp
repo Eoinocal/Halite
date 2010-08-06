@@ -216,6 +216,9 @@ public:
 
 		void set_managed(bool);
 		bool get_managed() const;
+
+		void set_superseeding(bool);
+		bool get_superseeding() const;
 		
 	public:
 		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(const std::wstring, class_type, 
@@ -247,6 +250,9 @@ public:
 
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(bool, bool, class_type, 
 			get_managed, set_managed, managed);
+
+		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(bool, bool, class_type, 
+			get_superseeding, set_superseeding, superseeding);
 
 		STLSOFT_METHOD_PROPERTY_SET_EXTERNAL(const vec_int_pair&, class_type, 
 			set_file_priorities, file_priorities);

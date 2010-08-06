@@ -61,7 +61,7 @@ class torrent_manager;
 }
 
 BOOST_CLASS_VERSION(hal::TorrentInternalOld, 9)
-BOOST_CLASS_VERSION(hal::torrent_internal, 3)
+BOOST_CLASS_VERSION(hal::torrent_internal, 4)
 
 namespace hal 
 {
@@ -294,7 +294,6 @@ class torrent_internal :
 
 private:
 	#define TORRENT_INTERNALS_DEFAULTS \
-		original_filename_(L""), \
 		transfer_limit_(std::pair<float, float>(-1, -1)), \
 		connections_(-1), \
 		uploads_(-1), \
@@ -307,6 +306,8 @@ private:
 		start_time_(boost::posix_time::second_clock::universal_time()), \
 		in_session_(false), \
 		queue_position_(-1), \
+		hash_(0), \
+		superseeding_(false), \
 		files_(bind(&torrent_internal::set_file_priority_cb, this, _1, _2), \
 			bind(&torrent_internal::changed_file_filename_cb, this, _1))
 		
@@ -416,23 +417,11 @@ public:
 		return ratio_;
 	}
 
-	void set_managed(bool m)
-	{
-		mutex_t::scoped_lock l(mutex_);
-		managed_ = m;
-		
-		if (in_session()) handle_.auto_managed(managed_);
-	}
+	void set_managed(bool m);
+	bool is_managed();
 
-	bool is_managed()
-	{
-		if (in_session())
-		{
-			managed_ = handle_.is_auto_managed();
-		}
-
-		return managed_;
-	}
+	void set_superseeding(bool ss);
+	bool get_superseeding(bool actually=false);
 	
 	void add_to_session(bool paused = false);
 	
@@ -653,6 +642,8 @@ public:
 				handle_.move_storage(move_to_directory_.string());
 				save_directory_ = move_to_directory_;
 			}
+
+			apply_superseeding();
 		}
 	}
 	
@@ -723,6 +714,9 @@ public:
 
 			switch (version)
 			{
+			case 4:
+			ar & make_nvp("super_seeding", superseeding_);
+
 			case 3:
 			ar & make_nvp("files", files_);
 			ar & make_nvp("hash", hash_);
@@ -969,7 +963,8 @@ private:
 	void apply_tracker_login();	
 	void apply_file_priorities();	
 	void apply_file_names();	
-	void apply_resolve_countries();
+	void apply_resolve_countries();	
+	void apply_superseeding();
 	void apply_queue_position();	
 	void apply_external_interface();
 	void state(unsigned s);
@@ -1063,6 +1058,8 @@ private:
 
 	libt::sha1_hash hash_;
 	wstring hash_str_;
+
+	bool superseeding_;
 	
 	std::string magnet_uri_;
 	boost::intrusive_ptr<libt::torrent_info> info_memory_;

@@ -1131,6 +1131,26 @@ void bit::torrent::set_managed(bool m)
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_managed")
 }
 
+bool bit::torrent::get_superseeding() const
+{
+	try {
+	
+	return ptr->get_superseeding();
+	
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_superseeding")
+	
+	return false;
+}
+
+void bit::torrent::set_superseeding(bool ss)
+{
+	try {
+	
+	ptr->set_superseeding(ss);
+	
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_superseeding")
+}
+
 
 /*files_proxy bit::torrent::get_files() const
 {
