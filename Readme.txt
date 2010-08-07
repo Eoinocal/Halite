@@ -1,6 +1,6 @@
 ﻿Halite: A Free Open-Source BitTorrent client
 
-Version: 0.3.2.1 released 2nd December 2009
+Version: 0.3.3.0 dev 1191 released ?? August 2010
 
 WWW:   http://www.binarynotions.com/halite-bittorrent-client 
 Forum: http://www.binarynotions.com/forum.php
@@ -23,6 +23,9 @@ That said, it supports:
   + 'Managed torrent' queue system.
   + Disk cache support.
   + Trackerless torrents (using the Mainline kademlia DHT protocol).
+  + Support Magnet URIs.
+  + Super-seeding.
+  + uTorrent style multi-tracker announcement. 
   + IP filtering with eMule style ipfilter.dat import.
   + Protocol Encryption support.
   + Translations of the UI into a number of languages through the help 
@@ -70,6 +73,16 @@ necessary.
 
 Changes:
 
+ + from v 0.3.2.1 to 0.3.3.0:
+   1) Announce to all trackers.
+   2) Magnet URIs support added.
+   3) Download complete balloon notification.
+   4) Right aligned numeric columns.
+   5) Super-seeding.
+   6) File renaming (not fully exposed by UI).
+   7) Updated to libtorrent 0.15.1
+      - brings significant optimizations and bug fixes.
+   
  + from v 0.3.2 to 0.3.2.1:
    1) Open folder behaviour changed to open torrent subfolder.
    2) Queue positions correctly restored between sessions.
