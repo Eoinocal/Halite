@@ -29,23 +29,50 @@ class torrent_file
 {
 public:
 
-	static fs::wpath add_hash(const fs::wpath& p_orig, const std::wstring& hash)
+	typedef std::pair<std::wstring, fs::wpath> split_path_pair_t;
+
+	static split_path_pair_t split_root(const fs::wpath& p_orig)
 	{
-		fs::wpath p_new = *p_orig.begin();
+		if (!p_orig.empty())
+		{
+		std::wstring root = *p_orig.begin();
+		fs::wpath p_new;
 
 		if (++p_orig.begin() != p_orig.end())
-		{
-			p_new /= hash;
-			
+		{			
 			for (fs::wpath::iterator i = ++p_orig.begin(), e = p_orig.end(); i != e; ++i)
 			{
 				p_new /= *i;
 			}
+
+			return std::make_pair(root, p_new);
 		}
 		else
-			p_new = hash / p_new;
+			return std::make_pair(L"", p_orig);
+		}
+		else
+			return split_path_pair_t(); 
+	}
 
-		return p_new;
+	static fs::wpath add_hash(const fs::wpath& p_orig, const std::wstring& hash)
+	{
+		split_path_pair_t split = split_root(p_orig);
+
+		return fs::wpath(split.first) / hash / split.second;
+	}	
+	
+	static fs::wpath change_root_name(const fs::wpath& p_orig, const std::wstring& root)
+	{
+		split_path_pair_t split = split_root(p_orig);
+
+		if (split.first.empty())
+		{
+			return p_orig;
+		}
+		else
+		{
+			return root / split.second;
+		}
 	}
 
 	torrent_file()
@@ -93,6 +120,12 @@ public:
 			return add_hash(current_name_, hash);
 		else
 			return current_name_; 
+	}
+
+	void change_root_name(const std::wstring& root)
+	{
+		current_name_ = change_root_name(current_name_, root);
+		completed_name_ = change_root_name(completed_name_, root);
 	}
 
 	const fs::wpath& completed_name() const { return completed_name_ != L"" ? completed_name_ : current_name_; }
@@ -170,6 +203,22 @@ public:
 				set_priority_fn_(i, priority);
 			}
 		}
+	}
+
+	void set_root_name(const wstring& root)
+	{
+		torrent_file_index_impl_t new_files;
+
+		for (torrent_file_by_random::iterator i=files_.get<by_random>().begin(), e=files_.get<by_random>().end();
+			i != e; ++i)
+		{
+			torrent_file tmp_file = *(i);
+			tmp_file.change_root_name(root);
+
+			new_files.push_back(tmp_file);
+		}
+
+		std::swap(files_, new_files);
 	}
 
 	void push_back(const torrent_file& t)

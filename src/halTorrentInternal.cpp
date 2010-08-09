@@ -59,6 +59,25 @@ bool torrent_internal::is_managed()
 	return managed_;
 }
 
+const wstring& torrent_internal::name() 
+{ 
+	if (name_.empty() && in_session())
+		name_ = hal::from_utf8_safe(handle_.name());
+	
+	return name_; 
+}
+
+void torrent_internal::set_name(const wstring& n)
+{
+	mutex_t::scoped_lock l(mutex_);
+
+	//name_ = n;
+	files_.set_root_name(n);
+
+	init_file_details();
+	apply_file_names();
+}
+
 void torrent_internal::set_superseeding(bool ss)
 {
 	superseeding_ = ss;
@@ -305,8 +324,10 @@ void torrent_internal::init_file_details()
 			if (file_it == info_memory()->end_files()) break;
 
 			boost::int64_t size = static_cast<boost::int64_t>(file_it->size);
+
+			torrent_file::split_path_pair_t split = torrent_file::split_root(files_[i].completed_name());
 			
-			file_details_memory_.push_back(file_details(files_[i].completed_name(), size, 0, files_[i].priority(), i));
+			file_details_memory_.push_back(file_details(split.second, size, 0, files_[i].priority(), i));
 			file_priorities_.push_back(files_[i].priority());
 
 			++file_it;

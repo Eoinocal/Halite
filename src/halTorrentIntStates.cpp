@@ -24,8 +24,32 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 
 	torrent_internal& t_i = context<torrent_internal>();
 
-	assert(t_i.in_session());
+	libt::add_torrent_params p;
+	p.ti = t_i.info_memory();
 
+	std::string resume_file = to_utf8((hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string());
+
+	std::vector<char> buf;
+	if (libt::load_file(resume_file.c_str(), buf) == 0)
+	{
+		HAL_DEV_MSG(L"Using resume data");
+		p.resume_data = &buf;
+	}
+
+	p.save_path = path_to_utf8(t_i.save_directory_).string();
+	p.storage_mode = hal_allocation_to_libt(t_i.allocation_);
+	p.paused = true;
+	p.duplicate_is_error = false;
+	p.auto_managed = t_i.managed_;
+
+	if (p.ti)
+		t_i.handle_ = (*t_i.the_session_)->add_torrent(p);
+	else if (!t_i.magnet_uri_.empty())
+		t_i.handle_ = libt::add_magnet_uri(**t_i.the_session_, t_i.magnet_uri_, p);
+
+	assert(t_i.handle_.is_valid());
+
+	t_i.in_session_ = true;
 	t_i.apply_settings();
 }
 
@@ -60,34 +84,6 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	torrent_internal& t_i = context<torrent_internal>();
 
 	assert(!t_i.in_session());
-
-	libt::add_torrent_params p;
-	p.ti = t_i.info_memory();
-
-	std::string resume_file = to_utf8((hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string());
-
-	std::vector<char> buf;
-	if (libt::load_file(resume_file.c_str(), buf) == 0)
-	{
-		HAL_DEV_MSG(L"Using resume data");
-		p.resume_data = &buf;
-	}
-
-	p.save_path = path_to_utf8(t_i.save_directory_).string();
-	p.storage_mode = hal_allocation_to_libt(t_i.allocation_);
-	p.paused = evt.pause();
-	p.duplicate_is_error = false;
-	p.auto_managed = t_i.managed_;
-
-	if (p.ti)
-		t_i.handle_ = (*t_i.the_session_)->add_torrent(p);
-	else if (!t_i.magnet_uri_.empty())
-		t_i.handle_ = libt::add_magnet_uri(**t_i.the_session_, t_i.magnet_uri_, p);
-	else		
-		return transit<in_error>();
-
-	assert(t_i.handle_.is_valid());
-	t_i.in_session_ = true;
 
 	if (evt.pause())
 		return transit<paused>();

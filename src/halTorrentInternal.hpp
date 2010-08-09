@@ -391,13 +391,8 @@ public:
 		return std::make_pair(connections_, uploads_);
 	}
 	
-	const wstring& name() 
-	{ 
-		if (name_.empty() && in_session())
-			name_ = hal::from_utf8_safe(handle_.name());
-		
-		return name_; 
-	}
+	const wstring& name();
+	void set_name(const wstring& n);
 	
 	const libt::sha1_hash& hash() const
 	{ 		
@@ -985,13 +980,13 @@ private:
 	{
 		if (i < file_details_memory_.size())
 		{
-			fs::wpath f = files_[i].completed_name();
+			torrent_file::split_path_pair_t split = torrent_file::split_root(files_[i].completed_name());
 
-			file_details_memory_[i].filename = f.filename();
-			file_details_memory_[i].branch = f.parent_path();
+			file_details_memory_[i].filename = split.second.filename();
+			file_details_memory_[i].branch = split.second.parent_path();
 
 			if (files_[i].is_finished())
-				handle_.rename_file(i, f);
+				handle_.rename_file(i, files_[i].completed_name());
 		}
 	}
 

@@ -189,6 +189,7 @@ public:
 		torrent(boost::shared_ptr<torrent_internal> p);
 
 		const std::wstring get_name() const;
+		void set_name(const wstring&);
 
 		float get_ratio() const;
 		void set_ratio(float new_ratio);
@@ -221,8 +222,8 @@ public:
 		bool get_superseeding() const;
 		
 	public:
-		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(const std::wstring, class_type, 
-			get_name, name);
+		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(const wstring, const wstring&, class_type, 
+			get_name, set_name, name);
 
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(float, float, class_type, 
 			get_ratio, set_ratio, ratio);

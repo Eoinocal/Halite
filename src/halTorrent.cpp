@@ -917,6 +917,15 @@ const std::wstring bit::torrent::get_name() const
 	return 0;
 }
 
+void bit::torrent::set_name(const std::wstring& n)
+{
+	try {
+	
+	ptr->set_name(n);
+	
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Torrent Unknown", "torrent::set_name()")
+}
+
 float bit::torrent::get_ratio() const
 {
 	try {
