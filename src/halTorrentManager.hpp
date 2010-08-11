@@ -58,10 +58,16 @@ class torrent_manager :
 		{
 			using boost::serialization::make_nvp;
 
+			switch (version)
+			{
+			case 1:
+			ar & make_nvp("hash", hash);
+
+			case 0:
 			ar & make_nvp("torrent", torrent);
 			ar & make_nvp("filename", filename);
 			ar & make_nvp("name", name);
-			ar & make_nvp("hash", hash);
+			}
 
 			torrent->initialize_state_machine(torrent);
 		}
@@ -71,10 +77,16 @@ class torrent_manager :
 		{
 			using boost::serialization::make_nvp;
 
+			switch (version)
+			{
+			case 1:
+			ar & make_nvp("hash", hash);
+
+			case 0:
 			ar & make_nvp("torrent", torrent);
 			ar & make_nvp("filename", filename);
 			ar & make_nvp("name", name);
-			ar & make_nvp("hash", hash);
+			}
 		}
 
 		BOOST_SERIALIZATION_SPLIT_MEMBER()
@@ -87,17 +99,17 @@ class torrent_manager :
 	typedef boost::multi_index_container<
 		torrent_holder,
 		boost::multi_index::indexed_by<
-			boost::multi_index::ordered_unique<
+			boost::multi_index::ordered_non_unique<
 				boost::multi_index::tag<by_filename>,
 				boost::multi_index::member<
 					torrent_holder, wstring, &torrent_holder::filename>
 				>,
-			boost::multi_index::ordered_unique<
+			boost::multi_index::ordered_non_unique<
 				boost::multi_index::tag<by_name>,
 				boost::multi_index::member<
 					torrent_holder, wstring, &torrent_holder::name>
 				>,
-			boost::multi_index::ordered_unique<
+			boost::multi_index::ordered_non_unique<
 				boost::multi_index::tag<by_hash>,
 				boost::multi_index::member<
 					torrent_holder, libt::big_number, &torrent_holder::hash>
@@ -266,13 +278,25 @@ public:
 		throw invalid_torrent(L"From hash");
 	}
 
-	void update_torrent(torrent_internal_ptr torrent)
+	void update_torrent_by_hash(torrent_internal_ptr torrent)
 	{
 		torrent_by_hash::iterator it = torrents_.get<by_hash>().find(torrent->hash());
 		
 		if (it != torrents_.get<by_hash>().end() && (*it).torrent)
 		{
 			torrents_.get<by_hash>().replace(it, torrent_holder(torrent));
+			display_holder(torrent_holder(torrent));
+		}
+	}
+
+	void update_torrent_by_name(torrent_internal_ptr torrent)
+	{
+		torrent_by_name::iterator it = torrents_.get<by_name>().find(torrent->name());
+		
+		if (it != torrents_.get<by_name>().end() && (*it).torrent)
+		{
+			torrents_.get<by_name>().replace(it, torrent_holder(torrent));
+			display_holder(torrent_holder(torrent));
 		}
 	}
 	
@@ -307,6 +331,14 @@ public:
 	}	
 	
 private:
+
+	void display_holder(const torrent_holder& t)
+	{
+		HAL_DEV_MSG(hal::wform(L"Holder name : %1%") % t.name);
+		HAL_DEV_MSG(hal::wform(L"   filename : %1%") % t.filename);
+		HAL_DEV_MSG(hal::wform(L"       hash : %1%") % from_utf8(libt::base32encode(std::string((char const*)&t.hash[0], 20))));
+	}
+
 	versioned_file work_file_;
 	ini_file& ini_;
 	torrent_multi_index torrents_;

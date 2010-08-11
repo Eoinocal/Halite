@@ -294,6 +294,12 @@ sc::result not_started::react(const ev_start& evt)
 		}
 	}
 
+	if (t_i.hash_str_.empty())
+	{
+		t_i.extract_hash();
+		t_i.update_manager_by_name();
+	}
+
 	switch (stored_state_)
 	{
 	case torrent_details::torrent_active:

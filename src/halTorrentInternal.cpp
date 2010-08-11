@@ -385,14 +385,22 @@ void torrent_internal::metadata_completed()
 	prepare();
 	apply_settings();
 
-	update_manager();
+	update_manager_by_hash();
 }
 
-void torrent_internal::update_manager()
+void torrent_internal::update_manager_by_name()
 {
 	if (the_manager_)
 	{
-		the_manager_->update_torrent(shared_from_this());
+		the_manager_->update_torrent_by_name(shared_from_this());
+	}
+}
+
+void torrent_internal::update_manager_by_hash()
+{
+	if (the_manager_)
+	{
+		the_manager_->update_torrent_by_hash(shared_from_this());
 	}
 }
 
