@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Pauzeer alles"
 "&Resume All" ---> "&Herstart alles"
-"(C) Eoin O'Callaghan 2009" --->  ??? 
+"(C) Eoin O'Callaghan 2010" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "About" ---> "Over Halite"
@@ -35,6 +35,8 @@
 "Allow only one instance to run" ---> "Sta maar één draaiende instantie toe"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Een ongeldig verbindings regeling, %1%, is doorgegaan als encryptie instelling."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Een ongeldig encoderings niveau, %1%, is doorgegaan als encryptie instelling."
+"Announce on all tiers" --->  ??? 
+"Announce to all trackers" --->  ??? 
 "Apply" ---> "Toepassen"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Weet je zeker dat je Halite wilt sluiten? Dit zal alle actieve taken stoppen"
 "Are you sure you wish to delete all downloaded data?" --->  ??? 
@@ -50,6 +52,7 @@
 "Calculating Piece Hashes..." ---> "Pakket hashes berekenen..."
 "Cancel" ---> "Annuleren"
 "Checking Files" ---> "Bestanden controleren"
+"Checking Resume Data" --->  ??? 
 "Choked" --->  ??? 
 "Clear IP database" ---> "Leeg IP Database"
 "Client" --->  ??? 
@@ -184,11 +187,13 @@
 "New" ---> "Nieuw"
 "None" ---> "Geen"
 "Normal" ---> "Normaal"
+"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "nb. Compacte allocatie is niet compatible met Bestands Selectie"
 "OK" --->  ??? 
 "OS reported error for file '%1%'" --->  ??? 
 "Ok" --->  ??? 
+"On parole" --->  ??? 
 "Open &Halite" ---> "Open &Halite"
 "Open Download Folder" ---> "Open Download Map"
 "Open a (single) port between : " ---> "Open een (enkele) poort tussen : "
@@ -280,6 +285,7 @@
 "Shutting down session" ---> "Sessie wordt afgesloten"
 "Size" ---> "Grootte"
 "Smart Ban Plugin" --->  ??? 
+"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." --->  ??? 
 "Start Time" ---> "Start Tijd"
 "Status" ---> "Status"
@@ -289,7 +295,9 @@
 "Stopped" ---> "Gestopt"
 "Stopping Torrents" ---> "Torrents worden gestopt"
 "Stopping" ---> "Stopt"
+"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." ---> "Succesvol %1%."
+"Super-seeding" --->  ??? 
 "Supports extensions" ---> "Ondersteund extensies"
 "SysDateTimePick32" --->  ??? 
 "Take no action" --->  ??? 
@@ -305,14 +313,24 @@
 "Time ratio limit:" --->  ??? 
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Tijd"
+"Timeout (seconds) : " --->  ??? 
+"Toggle Superseeding" --->  ??? 
 "Toolbar2k.bmp" --->  ??? 
+"Torrent %1% completed." --->  ??? 
+"Torrent %1% file %2% completed." --->  ??? 
+"Torrent %1% file %2% renamed failed." --->  ??? 
+"Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% voltooid."
+"Torrent %1% metadata failed!" --->  ??? 
+"Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." ---> "Torrent %1% gepauzeerd."
 "Torrent (%1%) exception caught: %2% from %3%." --->  ??? 
+"Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Torrent Standaard"
 "Torrent File" ---> "Torrent Bestand"
 "Torrent Root" ---> "Torrent Hoofdmap"
 "Torrent and Data" ---> "Torrent en Data"
+"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" ---> "Torrent verbindings limiet"
 "Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" ---> "Torrent opslag map"
@@ -342,9 +360,11 @@
 "Up" ---> "Up"
 "Update in:" ---> "Update over:"
 "Upload Rate (KB/s) :" ---> "Upload snelheid (KB/s) :"
+"Upload only" --->  ??? 
 "Upload" ---> "Upload"
 "Uploaded" --->  ??? 
 "Use a proxy." ---> "Gebruik een proxy."
+"Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "Gebruiker annuleerde Torrent creatie"
 "Username : " ---> "Gebruikersnaam : "
 "Warning" ---> "Waarschuwing"

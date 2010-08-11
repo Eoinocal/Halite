@@ -228,10 +228,14 @@
 						<File Id='Japanese' KeyPath="yes" Name='Japanese.dll' DiskId='1'
 						      Source='$(var.RootDirectory)lang\bin\Japanese.dll' />
 					</Component>
-					<Component Id='LanguageFiles.Norwegian' Guid='*'>
-						<File Id='Norwegian' KeyPath="yes"  Name='Norwegian.dll' DiskId='1'
+          <Component Id='LanguageFiles.Macedonian.Cyrillic' Guid='*'>
+            <File Id='Macedonian.Cyrillic' KeyPath="yes"  Name='Macedonian(Cyrillic).dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Macedonian(Cyrillic).dll' />
+          </Component>
+          <Component Id='LanguageFiles.Norwegian' Guid='*'>
+            <File Id='Norwegian' KeyPath="yes"  Name='Norwegian.dll' DiskId='1'
 						      Source='$(var.RootDirectory)lang\bin\Norwegian.dll' />
-					</Component>
+          </Component>
 					<Component Id='LanguageFiles.Polish' Guid='*'>
 						<File Id='Polish' KeyPath="yes"  Name='Polish.dll' DiskId='1'
 						      Source='$(var.RootDirectory)lang\bin\Polish.dll' />
@@ -253,8 +257,8 @@
 						      Source='$(var.RootDirectory)lang\bin\Serbian.dll' />
 					</Component>
 					<Component Id='LanguageFiles.Serbian.Cyrillic' Guid='*'>
-						<File Id='Serbian.Cyrillic' KeyPath="yes" Name='Serbian.Cyrillic.dll' DiskId='1'
-						      Source='$(var.RootDirectory)lang\bin\Serbian (Cyrillic).dll' />
+						<File Id='Serbian.Cyrillic' KeyPath="yes" Name='Serbian(Cyrillic).dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Serbian(Cyrillic).dll' />
 					</Component>
 					<Component Id='LanguageFiles.Slovenian' Guid='*'>
 						<File Id='Slovenian' KeyPath="yes"  Name='Slovenian.dll' DiskId='1'
@@ -339,13 +343,18 @@
 			<Feature Id="HaliteLanguages.Japanese" Title="Japanese"
 				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
 			>
-				<ComponentRef Id="LanguageFiles.Japanese" />
-			</Feature>
-			<Feature Id="HaliteLanguages.Norwegian" Title="Norwegian"
+        <ComponentRef Id="LanguageFiles.Japanese" />
+      </Feature>
+      <Feature Id="HaliteLanguages.Norwegian" Title="Norwegian"
 				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
 			>
-				<ComponentRef Id="LanguageFiles.Norwegian" />
-			</Feature>
+        <ComponentRef Id="LanguageFiles.Norwegian" />
+      </Feature>
+      <Feature Id="HaliteLanguages.Macedonian.Cyrillic" Title="Macedonian (Cyrillic)"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+        <ComponentRef Id="LanguageFiles.Macedonian.Cyrillic" />
+      </Feature>
 			<Feature Id="HaliteLanguages.Polish" Title="Polish"
 				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
 			>

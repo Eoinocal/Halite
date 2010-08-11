@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" --->  ??? 
 "&Resume All" --->  ??? 
-"(C) Eoin O'Callaghan 2009" --->  ??? 
+"(C) Eoin O'Callaghan 2010" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "About" ---> "Haliteについて"
@@ -35,6 +35,8 @@
 "Allow only one instance to run" --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
+"Announce on all tiers" --->  ??? 
+"Announce to all trackers" --->  ??? 
 "Apply" ---> "適用"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
 "Are you sure you wish to delete all downloaded data?" --->  ??? 
@@ -50,6 +52,7 @@
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" ---> "取消"
 "Checking Files" --->  ??? 
+"Checking Resume Data" --->  ??? 
 "Choked" --->  ??? 
 "Clear IP database" ---> "IP データベースを削除"
 "Client" ---> "クライアント"
@@ -184,11 +187,13 @@
 "New" ---> "新規"
 "None" --->  ??? 
 "Normal" ---> "低"
+"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" --->  ??? 
 "OS reported error for file '%1%'" --->  ??? 
 "Ok" --->  ??? 
+"On parole" --->  ??? 
 "Open &Halite" --->  ??? 
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "から"
@@ -280,6 +285,7 @@
 "Shutting down session" --->  ??? 
 "Size" ---> "サイズ"
 "Smart Ban Plugin" --->  ??? 
+"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." --->  ??? 
 "Start Time" --->  ??? 
 "Status" ---> "状態"
@@ -289,7 +295,9 @@
 "Stopped" ---> "停止"
 "Stopping Torrents" --->  ??? 
 "Stopping" --->  ??? 
+"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." --->  ??? 
+"Super-seeding" --->  ??? 
 "Supports extensions" --->  ??? 
 "SysDateTimePick32" --->  ??? 
 "Take no action" --->  ??? 
@@ -305,14 +313,24 @@
 "Time ratio limit:" --->  ??? 
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "日時"
+"Timeout (seconds) : " --->  ??? 
+"Toggle Superseeding" --->  ??? 
 "Toolbar2k.bmp" --->  ??? 
+"Torrent %1% completed." --->  ??? 
+"Torrent %1% file %2% completed." --->  ??? 
+"Torrent %1% file %2% renamed failed." --->  ??? 
+"Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." --->  ??? 
+"Torrent %1% metadata failed!" --->  ??? 
+"Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." --->  ??? 
 "Torrent (%1%) exception caught: %2% from %3%." --->  ??? 
+"Torrent Completed!" --->  ??? 
 "Torrent Defaults" --->  ??? 
 "Torrent File" --->  ??? 
 "Torrent Root" --->  ??? 
 "Torrent and Data" ---> ".torrentファイルとダウンロードデータを"
+"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" ---> "トレントあたりの最大ピア接続数"
 "Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" --->  ??? 
@@ -342,9 +360,11 @@
 "Up" ---> "上り"
 "Update in:" ---> "更新時間:"
 "Upload Rate (KB/s) :" ---> "上り速度 (KB/秒)"
+"Upload only" --->  ??? 
 "Upload" ---> "アップロード"
 "Uploaded" --->  ??? 
 "Use a proxy." ---> "プロクシを使用"
+"Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "ユーザ名"
 "Warning" --->  ??? 

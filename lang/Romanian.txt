@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Parteneri. (%1%)"
 "&Pause All" ---> "&Pauzează pe Toate"
 "&Resume All" ---> "&Reincepe-le pe Toate"
-"(C) Eoin O'Callaghan 2009" --->  ??? 
+"(C) Eoin O'Callaghan 2010" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(J-S) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(J-S) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "Despre Halite"
@@ -35,6 +35,8 @@
 "Allow only one instance to run" ---> "Permite numai o singură instanţă al programului"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "O poliţă de conectare invalidă, %1%, a fost insertat ca setare criptografică."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Un nivel invalid de codificare, %1%, a fost insertat ca setare criptografică.."
+"Announce on all tiers" --->  ??? 
+"Announce to all trackers" --->  ??? 
 "Apply" ---> "Aplică"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Sunteţi sigur că închideţi Halite? În consecinţă torrentele active se vor opri."
 "Are you sure you wish to delete all downloaded data?" ---> "Sunteti siguri ca vreti să ştergeţi toate datele descărcate?"
@@ -50,6 +52,7 @@
 "Calculating Piece Hashes..." ---> "Calculează Haşul Pieselor"
 "Cancel" ---> "Anulează"
 "Checking Files" ---> "Verifică Fişierele"
+"Checking Resume Data" --->  ??? 
 "Choked" ---> "Sugrumat"
 "Clear IP database" ---> "Ştergerea bazelor de date IP"
 "Client" ---> "Client"
@@ -184,11 +187,13 @@
 "New" ---> "Nou"
 "None" ---> "Niciunu"
 "Normal" ---> "Normal"
+"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Important. Alocarea Compactă e incompatibila cu Selecţionarea Fişierelor"
 "OK" ---> "OK"
 "OS reported error for file '%1%'" ---> "Sistemul de operare a reportat eroare la fişierul '%1%'"
 "Ok" ---> "Ok"
+"On parole" --->  ??? 
 "Open &Halite" ---> "Deschide &Halite"
 "Open Download Folder" ---> "Deschide Directorul Download"
 "Open a (single) port between : " ---> "Deschide un (singur) port între :"
@@ -280,6 +285,7 @@
 "Shutting down session" ---> "Sessiunea se închide"
 "Size" ---> "Mărime"
 "Smart Ban Plugin" ---> "Pluginul Smart Ban"
+"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Excepţia Standard (%1%) aruncat de la %2%."
 "Start Time" ---> "Timpul pornirii"
 "Status" ---> "Stare"
@@ -289,7 +295,9 @@
 "Stopped" ---> "Oprit"
 "Stopping Torrents" ---> "Opreşte Torrentele"
 "Stopping" ---> "Opreşte"
+"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." ---> "Cu Succes %1%."
+"Super-seeding" --->  ??? 
 "Supports extensions" ---> "Suportă extensii"
 "SysDateTimePick32" --->  ??? 
 "Take no action" --->  ??? 
@@ -305,14 +313,24 @@
 "Time ratio limit:" ---> "Limita timp raport:"
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Timp"
+"Timeout (seconds) : " --->  ??? 
+"Toggle Superseeding" --->  ??? 
 "Toolbar2k.bmp" ---> "Toolbar2k.bmp"
+"Torrent %1% completed." --->  ??? 
+"Torrent %1% file %2% completed." --->  ??? 
+"Torrent %1% file %2% renamed failed." --->  ??? 
+"Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% gata."
+"Torrent %1% metadata failed!" --->  ??? 
+"Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." ---> "Torrent %1% pauzat."
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) exception caught: %2% from %3%."
+"Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Setări Torrent Predefinite"
 "Torrent File" ---> "Fişier Torrent"
 "Torrent Root" ---> "Director de bază al Torrentului"
 "Torrent and Data" ---> "Torrentul şi Data"
+"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" ---> "Limite de conexiuni al torrentului:"
 "Torrent error: %1% (%2%)" ---> "Eroare Torrentului: %1% (%2%)"
 "Torrent save folder:" ---> "Director în care se salvează torrentele:"
@@ -342,9 +360,11 @@
 "Up" ---> "Sus"
 "Update in:" ---> "Actualizare în:"
 "Upload Rate (KB/s) :" ---> "Rata de încărcare (KB/s) :"
+"Upload only" --->  ??? 
 "Upload" ---> "Încărcare"
 "Uploaded" ---> "Încărcat"
 "Use a proxy." ---> "Foloseşte un proxy."
+"Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "Utilizatorul a anulat crearea fişierului torrent"
 "Username : " ---> "Numele Utilizatorului :"
 "Warning" ---> "Avertizare"
@@ -359,4 +379,4 @@
 "to" ---> "până la"
 "uTorrent Metadata Plugin" ---> "Pluginul Metadata de la uTorrent"
 "uTorrent Peer Exchange Plugin" ---> "Pluginul  Peer Exchange de la uTorrent"
-"∞" ---> "∞"
+"∞" --->  ??? 

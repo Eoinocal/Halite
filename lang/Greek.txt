@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Peers. (%1%)"
 "&Pause All" ---> "Παύση όλων"
 "&Resume All" ---> "Συνέχιση όλων"
-"(C) Eoin O'Callaghan 2009" --->  ??? 
+"(C) Eoin O'Callaghan 2010" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(Λ-Α) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(Λ-Α) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "Περί"
@@ -35,6 +35,8 @@
 "Allow only one instance to run" ---> "Επιτρέψτε τρέξιμο μόνο ενός αντικείμενου κλάσσης"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Μια άκυρη πολιτική σύνδεσης, %1%, προσπέρασε μια ρύθμιση κρυπτογράφησης."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Ένα άκυρο επίπεδο κωδικοποίησης, %1%, προσπέρασε μια ρύθμιση κρυπτογράφησης."
+"Announce on all tiers" --->  ??? 
+"Announce to all trackers" --->  ??? 
 "Apply" ---> "Εφαρμογή"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Είστε σίγουρος οτι θέλετε να κλείσετε το Halite? Κάνοντας αυτό θα σταματήσουν όποιαδήποτε ενεργά  torrents"
 "Are you sure you wish to delete all downloaded data?" ---> "Είστε σίγουρος ότι θέλετε να διαγράψεται όλα τα στοιχεία?"
@@ -50,6 +52,7 @@
 "Calculating Piece Hashes..." ---> "Υπλογισμός Piece Hashes..."
 "Cancel" ---> "Ακύρωση"
 "Checking Files" ---> "Έλεγχος των αρχείων"
+"Checking Resume Data" --->  ??? 
 "Choked" ---> "Μειωμένο"
 "Clear IP database" ---> "Καθαρισμός βάσης διευθύνσεων IP"
 "Client" ---> "Πρόγραμμα"
@@ -184,11 +187,13 @@
 "New" ---> "Νέο"
 "None" ---> "Κανένα"
 "Normal" ---> "Κανονικό"
+"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Σημείωση. Η συμπίεση κατανομών είναι ασυμβίβαστη με την επιλογή αρχείου"
 "OK" ---> "Εντάξει"
 "OS reported error for file '%1%'" --->  ??? 
 "Ok" ---> "Εντάξει"
+"On parole" --->  ??? 
 "Open &Halite" ---> "Άνοιγμα του Halite"
 "Open Download Folder" ---> "Άνοιγμα φεκέλου ληφθέντων"
 "Open a (single) port between : " ---> "Άνοιγμα (μίας) θύρας μεταξύ : "
@@ -280,6 +285,7 @@
 "Shutting down session" ---> "Κλείσιμο σύνδεσης"
 "Size" ---> "Μέγεθος"
 "Smart Ban Plugin" --->  ??? 
+"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Πρότυπη εξαίρεση (%1%) ερχόμενα από %2%."
 "Start Time" ---> "Ώρα έναρξης"
 "Status" ---> "Κατάσταση"
@@ -289,7 +295,9 @@
 "Stopped" ---> "Στάματημένο"
 "Stopping Torrents" ---> "Διακοπή όλων των Torrents"
 "Stopping" ---> "Σταμάτημα"
+"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." ---> "Επιτυχία %1%."
+"Super-seeding" --->  ??? 
 "Supports extensions" ---> "Υποστηρίζει επέκταση"
 "SysDateTimePick32" --->  ??? 
 "Take no action" --->  ??? 
@@ -305,14 +313,24 @@
 "Time ratio limit:" --->  ??? 
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Χρόνος"
+"Timeout (seconds) : " --->  ??? 
+"Toggle Superseeding" --->  ??? 
 "Toolbar2k.bmp" --->  ??? 
+"Torrent %1% completed." --->  ??? 
+"Torrent %1% file %2% completed." --->  ??? 
+"Torrent %1% file %2% renamed failed." --->  ??? 
+"Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% ολοκληρώθηκε."
+"Torrent %1% metadata failed!" --->  ??? 
+"Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." ---> "Torrent %1% παύει."
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) εξαίρεση πιάστηκε: %2% απο %3%."
+"Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Torrent προεπιλογές"
 "Torrent File" ---> "Αρχείο Torrent"
 "Torrent Root" ---> "Torrent Root"
 "Torrent and Data" ---> "Torrent και Δεδομένα"
+"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" ---> "Όρια συνδέσεων του torrent"
 "Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" ---> "Φάκελος αποθήκευσης Torrent:"
@@ -342,9 +360,11 @@
 "Up" ---> "Ανέβασμα"
 "Update in:" ---> "Ανανέωση σε:"
 "Upload Rate (KB/s) :" ---> "Ταχύτητα αποστολής"
+"Upload only" --->  ??? 
 "Upload" ---> "Αποστολή"
 "Uploaded" ---> "Στάλθηκαν"
 "Use a proxy." ---> "Χρηση proxy."
+"Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "Χρήστης ακύρωσε την δημιουργία αρχείου torrent"
 "Username : " ---> "Όνομα χρήστη : "
 "Warning" ---> "Προειδοπείηση"
@@ -359,4 +379,4 @@
 "to" ---> "μέχρι"
 "uTorrent Metadata Plugin" --->  ??? 
 "uTorrent Peer Exchange Plugin" --->  ??? 
-"∞" ---> "∞"
+"∞" --->  ??? 

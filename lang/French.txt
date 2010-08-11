@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Peers. (%1%)"
 "&Pause All" ---> "&Tout Suspendre"
 "&Resume All" ---> "&Tout Reprendre"
-"(C) Eoin O'Callaghan 2009" --->  ??? 
+"(C) Eoin O'Callaghan 2010" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(R-E) %1$.2fKo/s - %2$.2fKo/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(R-E) 0000.000Ko/s - 0000.000Ko/s"
 "About" ---> "A propos"
@@ -35,6 +35,8 @@
 "Allow only one instance to run" ---> "N'autoriser qu'une instance du programme"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Une règle de connexion invalide (%1%), a été passé en paramètre de chiffrement."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Un niveau d'encodage invalide (%1%) a été passé en paramètre de chiffrement."
+"Announce on all tiers" --->  ??? 
+"Announce to all trackers" --->  ??? 
 "Apply" ---> "Appliquer"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Etes vous sûr de vouloir fermer Halite ? Ceci stoppera tous les torrents actifs."
 "Are you sure you wish to delete all downloaded data?" ---> "Etes vous sûr de vouloir effacer toutes les données téléchargées ?"
@@ -50,6 +52,7 @@
 "Calculating Piece Hashes..." ---> "Calcul du Hash de la Pièce..."
 "Cancel" ---> "Annuler"
 "Checking Files" ---> "Vérification des fichiers"
+"Checking Resume Data" --->  ??? 
 "Choked" ---> "Refusé"
 "Clear IP database" ---> "Nettoyer la base de données des IP"
 "Client" ---> "Client"
@@ -184,11 +187,13 @@
 "New" ---> "Nouveau"
 "None" ---> "Aucun"
 "Normal" ---> "Normal"
+"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Note: L'allocation compacte est incompatible avec la Sélection des Fichiers"
 "OK" ---> "OK"
 "OS reported error for file '%1%'" --->  ??? 
 "Ok" ---> "Ok"
+"On parole" --->  ??? 
 "Open &Halite" ---> "Ouvrir &Halite"
 "Open Download Folder" ---> "Ouvrir le Dossier de Téléchargement"
 "Open a (single) port between : " ---> "Ouvrir un (seul) port entre:"
@@ -280,6 +285,7 @@
 "Shutting down session" ---> "Fermeture de la session"
 "Size" ---> "Taille"
 "Smart Ban Plugin" --->  ??? 
+"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Levée d'exception standard (%1%) dans (%2%)."
 "Start Time" ---> "Heure Démarr."
 "Status" ---> "Statut"
@@ -289,7 +295,9 @@
 "Stopped" ---> "Stoppé"
 "Stopping Torrents" ---> "Arrêt des Torrents"
 "Stopping" ---> "En cours d'arrêt"
+"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." ---> "Réussi %1%."
+"Super-seeding" --->  ??? 
 "Supports extensions" ---> "Extensions supportées"
 "SysDateTimePick32" --->  ??? 
 "Take no action" --->  ??? 
@@ -305,14 +313,24 @@
 "Time ratio limit:" --->  ??? 
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Temps"
+"Timeout (seconds) : " --->  ??? 
+"Toggle Superseeding" --->  ??? 
 "Toolbar2k.bmp" --->  ??? 
+"Torrent %1% completed." --->  ??? 
+"Torrent %1% file %2% completed." --->  ??? 
+"Torrent %1% file %2% renamed failed." --->  ??? 
+"Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% terminé."
+"Torrent %1% metadata failed!" --->  ??? 
+"Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." ---> "Torrent %1% en pause."
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent %1%, levée d'exception : %2% dans %3%."
+"Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Torrent par défaut"
 "Torrent File" ---> "Fichier Torrent"
 "Torrent Root" ---> "Racine du Torrent"
 "Torrent and Data" ---> "Torrent et Données"
+"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" ---> "Limites de connexion du torrent"
 "Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" ---> "Dossier de sauvegarde du Torrent:"
@@ -342,9 +360,11 @@
 "Up" ---> "envoi"
 "Update in:" ---> "Actu. dans"
 "Upload Rate (KB/s) :" ---> "Emission (Ko/s) :"
+"Upload only" --->  ??? 
 "Upload" ---> "Upload"
 "Uploaded" ---> "Uploadé"
 "Use a proxy." ---> "Utiliser un proxy"
+"Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "Création du fichier torrent annulée par l'utilisateur"
 "Username : " ---> "Identifiant :"
 "Warning" ---> "Alerte"
@@ -359,4 +379,4 @@
 "to" ---> "à"
 "uTorrent Metadata Plugin" --->  ??? 
 "uTorrent Peer Exchange Plugin" --->  ??? 
-"∞" ---> "∞"
+"∞" --->  ??? 

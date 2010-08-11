@@ -1,4 +1,4 @@
-﻿"English" ---> "Italiano"
+"English" ---> "Italiano"
 "English.rtf" ---> "../lang/Italian.rtf"
 " %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Pausa Tutti"
 "&Resume All" ---> "&Riprendi Tutti"
-"(C) Eoin O'Callaghan 2009" --->  ??? 
+"(C) Eoin O'Callaghan 2010" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "About" ---> "A proposito di"
@@ -35,6 +35,8 @@
 "Allow only one instance to run" ---> "Consenti una sola istanza del programma"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Un comportamento di connessione non valido, %1%, è stato inserito nella configurazione di criptaggio."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Un livello di codifica non valido, %1%, è stato inserito nella configurazione di criptaggio."
+"Announce on all tiers" --->  ??? 
+"Announce to all trackers" --->  ??? 
 "Apply" ---> "Applica"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Sei sicuro di voler chiudere Halite? Tutti i torrents attivi si fermeranno"
 "Are you sure you wish to delete all downloaded data?" ---> "Sei sicuro di voler cancellare anche tutti i dati scaricati?"
@@ -50,6 +52,7 @@
 "Calculating Piece Hashes..." ---> "Calcolando l'Hash dei Pezzi"
 "Cancel" ---> "Annulla"
 "Checking Files" ---> "Controllo i Files"
+"Checking Resume Data" --->  ??? 
 "Choked" --->  ??? 
 "Clear IP database" ---> "Cancella database IP"
 "Client" ---> "Client"
@@ -155,7 +158,7 @@
 "Loading IP filters..." ---> "Caricando Filtri IP..."
 "Local connection" ---> "Connessione Locale"
 "Log debug events." ---> "Log eventi di debug."
-"Log off Windows" --->  "Disconnetti da Windows" 
+"Log off Windows" ---> "Disconnetti da Windows"
 "Log to file." ---> "Salva Logfile."
 "Logging" --->  ??? 
 "Manage Torrent(s)" ---> "Gestisci Torrent"
@@ -174,7 +177,7 @@
 "Move Down" ---> "Muovi Giù"
 "Move To Bottom" ---> "Muovi alla Fine"
 "Move To Top" ---> "Muovi in Cima"
-"Move Up" --->  "Muovi Su" 
+"Move Up" ---> "Muovi Su"
 "Move finished torrents to :" ---> "Sposta torrents completati in :"
 "Move the completed torrent to:" ---> "Sposta il torrent completato in :"
 "N/A" ---> "N/A"
@@ -184,11 +187,13 @@
 "New" ---> "Nuovo"
 "None" ---> "Nessuno"
 "Normal" ---> "Normale"
-"Not currently set to take any action" --->  "Attualmente impostato per non fare nulla" 
+"Not Started" --->  ??? 
+"Not currently set to take any action" ---> "Attualmente impostato per non fare nulla"
 "Note. Compact Allocation is incompatible with File Selection" ---> "Nota: l'Allocazione Compatta è incompatibile con la Selezione File"
 "OK" --->  ??? 
 "OS reported error for file '%1%'" --->  ??? 
 "Ok" --->  ??? 
+"On parole" --->  ??? 
 "Open &Halite" ---> "Apri &Halite"
 "Open Download Folder" ---> "Apri Cartella Download"
 "Open a (single) port between : " ---> "Apri una (singola) porta tra :"
@@ -197,7 +202,7 @@
 "Overhead:" --->  ??? 
 "Password : " --->  ??? 
 "Path" ---> "Destinazione"
-"Pause all torrents" --->  "Metti in pausa tutti" 
+"Pause all torrents" ---> "Metti in pausa tutti"
 "Pause" ---> "Pausa"
 "Paused" ---> "In Pausa"
 "Pausing" ---> "Mettendo in Pausa"
@@ -225,7 +230,7 @@
 "Progress" ---> "Progresso"
 "Protocol Encryption" ---> "Criptazione Protocollare"
 "Proxies" --->  ??? 
-"Proxy Host/IP : " --->  "Host/IP del Proxy"
+"Proxy Host/IP : " ---> "Host/IP del Proxy"
 "Proxy Settings" ---> "Settaggi Proxy"
 "Queue Position" ---> "Posizione nella Coda"
 "Queue System" ---> "Sistema Coda"
@@ -262,24 +267,25 @@
 "Seeding" --->  ??? 
 "Seeds" --->  ??? 
 "Seeds:" --->  ??? 
-"Select Timed Action" --->  "Seleziona Azione Programmata"
+"Select Timed Action" ---> "Seleziona Azione Programmata"
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Seleziona una cartella in cui salvare i files. Premi annulla per accettare la destinazione predefinita."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Seleziona una cartella in cui salvare i files, o annulla per non scaricare il torrent."
 "Select a file or directory from which to construct the torrent." ---> "Seleziona un file o una cartella da cui creare il torrent."
 "Select a random port within this range." ---> "Scegli una porta a caso nell'intervallo."
-"Select action to take :" --->  "Seleziona azione da compiere :"
+"Select action to take :" ---> "Seleziona azione da compiere :"
 "Select the (TCP) port (or range) on which to listen for incoming connections." ---> "Seleziona la porta TCP (o l'intervallo) per le connessioni entranti."
 "Send login info to trackers." ---> "Manda informazioni di login ai trackers."
 "Set Priority" ---> "Priorità"
 "Set as Primary" ---> "Seleziona come Primario"
-"Set time :" --->  "Imposta orario"
+"Set time :" ---> "Imposta orario"
 "Severity" ---> "Gravità"
 "Share ratio limit:" ---> "Limite ratio condivisione: "
 "Show this message in future" ---> "Mostra messaggio in futuro"
-"Shutdown Windows" --->  "Spegni Windows"
+"Shutdown Windows" ---> "Spegni Windows"
 "Shutting down session" ---> "Chiudendo la sessione"
 "Size" ---> "Dimensione"
 "Smart Ban Plugin" ---> "Plugin Smart Ban"
+"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." --->  ??? 
 "Start Time" ---> "Ora Avvio"
 "Status" ---> "Stato"
@@ -289,10 +295,12 @@
 "Stopped" ---> "Fermato"
 "Stopping Torrents" ---> "Fermando i Torrents"
 "Stopping" ---> "Fermando"
+"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." --->  ??? 
+"Super-seeding" --->  ??? 
 "Supports extensions" --->  ??? 
 "SysDateTimePick32" --->  ??? 
-"Take no action" --->  "Non fare nulla"
+"Take no action" ---> "Non fare nulla"
 "Test" --->  ??? 
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "La sessione BitTorrent non si è avviata. Prova a selezionare un'altra porta nelle Opzioni."
 "The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." ---> "L'infrastruttura del socket non si è avviata e Halite deve essere chiuso. Per favore, assicurarsi che nessun programma stia impedendo ad Halite l'accesso alla rete."
@@ -303,16 +311,26 @@
 "Time left:" ---> "Al termine:"
 "Time limit (sec):" ---> "Limite di tempo (sec):"
 "Time ratio limit:" ---> "Limite temporale ratio:"
-"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  "Tempo rimanente: %1% ora/e, %2% minuto/i e %3% secondo/i"
+"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" ---> "Tempo rimanente: %1% ora/e, %2% minuto/i e %3% secondo/i"
 "Time" ---> "Orario"
+"Timeout (seconds) : " --->  ??? 
+"Toggle Superseeding" --->  ??? 
 "Toolbar2k.bmp" --->  ??? 
+"Torrent %1% completed." --->  ??? 
+"Torrent %1% file %2% completed." --->  ??? 
+"Torrent %1% file %2% renamed failed." --->  ??? 
+"Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% finito."
+"Torrent %1% metadata failed!" --->  ??? 
+"Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." ---> "Torrent %1% in pausa."
 "Torrent (%1%) exception caught: %2% from %3%." --->  ??? 
+"Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Limiti per file Torrent"
 "Torrent File" ---> "File Torrent"
 "Torrent Root" ---> "Cartella base del Torrent"
 "Torrent and Data" ---> "Torrent e Dati"
+"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" ---> "Limiti connessioni torrent:"
 "Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" ---> "Cartella di salvataggio:"
@@ -342,9 +360,11 @@
 "Up" --->  ??? 
 "Update in:" ---> "Aggiorno tra:"
 "Upload Rate (KB/s) :" ---> "Velocità Upload (KB/s) :"
+"Upload only" --->  ??? 
 "Upload" --->  ??? 
 "Uploaded" ---> "Inviati"
 "Use a proxy." ---> "Usa un proxy."
+"Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "L'utente ha cancellato la creazione del file torrent"
 "Username : " ---> "Nome Utente :"
 "Warning" --->  ??? 
@@ -353,7 +373,7 @@
 "Write Cache Hit Ratio :" ---> "Obbiettivo Ratio Cache di Lettura:"
 "Xml Exception (%1%) with %2%." --->  ??? 
 "\r\0" --->  ??? 
-"libTorrrent based client" --->  "client basato su libTorrent" 
+"libTorrrent based client" ---> "client basato su libTorrent"
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "e"

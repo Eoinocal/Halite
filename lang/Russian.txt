@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% пиров. (%1%)"
 "&Pause All" ---> "&Приостановить все"
 "&Resume All" ---> "&Запустить все"
-"(C) Eoin O'Callaghan 2009" --->  ??? 
+"(C) Eoin O'Callaghan 2010" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(З-В) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(З-В) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "Информация"
@@ -35,6 +35,8 @@
 "Allow only one instance to run" ---> "Разрешить работать только одному запросу"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Неверный стандарт соединения, %1%, прошло как настройки кодирования."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Неверный уровень кодирования, %1%, прошло как настройки кодирования."
+"Announce on all tiers" --->  ??? 
+"Announce to all trackers" --->  ??? 
 "Apply" ---> "Применить"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Вы уверены что хотите закрить Halite? Все активные торренты остановляться"
 "Are you sure you wish to delete all downloaded data?" ---> "Вы уверены что хотите удалить все скачаные данные?"
@@ -50,6 +52,7 @@
 "Calculating Piece Hashes..." ---> "Calculating Piece Hashes..."
 "Cancel" ---> "Отменить"
 "Checking Files" ---> "Проверка файлов"
+"Checking Resume Data" --->  ??? 
 "Choked" ---> "Заглушен"
 "Clear IP database" ---> "Очистить базу данных IP"
 "Client" ---> "Клиент"
@@ -184,11 +187,13 @@
 "New" ---> "Новый"
 "None" ---> "Никакой"
 "Normal" ---> "Нормальный"
+"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Note. Compact Allocation is incompatible with File Selection"
 "OK" ---> "ОК"
 "OS reported error for file '%1%'" --->  ??? 
 "Ok" ---> "Ок"
+"On parole" --->  ??? 
 "Open &Halite" ---> "Открыть &Халит"
 "Open Download Folder" ---> "Открыть папку закачки"
 "Open a (single) port between : " ---> "Открыть (единственный) порт между : "
@@ -280,6 +285,7 @@
 "Shutting down session" ---> "Закрытие сесии"
 "Size" ---> "Размер"
 "Smart Ban Plugin" --->  ??? 
+"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Стандартное исключение (%1%) подброшено от %2%."
 "Start Time" ---> "Время старта"
 "Status" ---> "Статус"
@@ -289,7 +295,9 @@
 "Stopped" ---> "Остановлен"
 "Stopping Torrents" ---> "Остановление торрентов"
 "Stopping" ---> "Остановление"
+"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." ---> "Успешно %1%."
+"Super-seeding" --->  ??? 
 "Supports extensions" ---> "Поддерживает расширения"
 "SysDateTimePick32" --->  ??? 
 "Take no action" --->  ??? 
@@ -305,14 +313,24 @@
 "Time ratio limit:" --->  ??? 
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Время"
+"Timeout (seconds) : " --->  ??? 
+"Toggle Superseeding" --->  ??? 
 "Toolbar2k.bmp" --->  ??? 
+"Torrent %1% completed." --->  ??? 
+"Torrent %1% file %2% completed." --->  ??? 
+"Torrent %1% file %2% renamed failed." --->  ??? 
+"Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." ---> "Торрент %1% завершен."
+"Torrent %1% metadata failed!" --->  ??? 
+"Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." ---> "Торрент %1% в паузе."
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Получено Торрент исключение (%1%): %2% от %3%."
+"Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Установки торрента по умолчанию"
 "Torrent File" ---> "Торрент файл"
 "Torrent Root" ---> "Torrent Root"
 "Torrent and Data" ---> "Торрент файл и данные"
+"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" ---> "Лимит соединений торрента"
 "Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" ---> "Папка сохранения торрент файла:"
@@ -342,9 +360,11 @@
 "Up" ---> "Вверх"
 "Update in:" ---> "Обновление через:"
 "Upload Rate (KB/s) :" ---> "Скорость выкачки (KB/s) :"
+"Upload only" --->  ??? 
 "Upload" ---> "Выкачать"
 "Uploaded" ---> "Выкачано"
 "Use a proxy." ---> "Использовать прокси."
+"Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "Пользователь отменил создание торрент файла"
 "Username : " ---> "Имя пользователя : "
 "Warning" ---> "Предупреждение"
@@ -359,4 +379,4 @@
 "to" ---> "в"
 "uTorrent Metadata Plugin" --->  ??? 
 "uTorrent Peer Exchange Plugin" --->  ??? 
-"∞" ---> "∞"
+"∞" --->  ??? 

@@ -1,4 +1,4 @@
-﻿"English" ---> "Srpski (Latinica)"
+"English" ---> "Srpski (Latinica)"
 "English.rtf" ---> "../lang/Serbian.rtf"
 " %2%" ---> " %2%"
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s ulazni - %2$.2fKB/s izlazni"
@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Mušterije. (%1%)"
 "&Pause All" ---> "Sve pauzirati"
 "&Resume All" ---> "Sve nastaviti"
-"(C) Eoin O'Callaghan 2009" ---> "© Eoin O'Callaghan 2009"
+"(C) Eoin O'Callaghan 2010" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(U-I) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(U-I) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "O nama"
@@ -35,6 +35,8 @@
 "Allow only one instance to run" ---> "Dozvoli samo jednu instancu"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Nekorektni način poveza, %1%, je upotrebljen."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Nekorektna stepenica šifracije, %1%, je upotrebljena."
+"Announce on all tiers" --->  ??? 
+"Announce to all trackers" --->  ??? 
 "Apply" ---> "Potvrdi"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Jeste li sigurni da želite zatvoriti halite?"
 "Are you sure you wish to delete all downloaded data?" ---> "Jeste li sigurni, da želite sve preuzeto izbrisati?"
@@ -50,6 +52,7 @@
 "Calculating Piece Hashes..." ---> "Proračunaj delove 'hash'-a"
 "Cancel" ---> "Prekini"
 "Checking Files" ---> "Provera fajlova"
+"Checking Resume Data" --->  ??? 
 "Choked" ---> "Usporeni"
 "Clear IP database" ---> "Izbriši IP-datoteku"
 "Client" ---> "Klijent"
@@ -184,11 +187,13 @@
 "New" ---> "Novi"
 "None" ---> "Nikakvi"
 "Normal" ---> "Normalno"
+"Not Started" --->  ??? 
 "Not currently set to take any action" ---> "Do sada nije ni jedna akcija određena"
 "Note. Compact Allocation is incompatible with File Selection" ---> "Informacija: kompaktno dodavanje ne ide sa svakoj akciji"
 "OK" ---> "U redu"
 "OS reported error for file '%1%'" ---> "Operativni sistem javlja grešku kod '%1%'"
 "Ok" ---> "U redu"
+"On parole" --->  ??? 
 "Open &Halite" ---> "Uvećaj halite"
 "Open Download Folder" ---> "Otvori ulaznu mapu"
 "Open a (single) port between : " ---> "Otvori jedan port između...:"
@@ -280,6 +285,7 @@
 "Shutting down session" ---> "Prekida se sednica"
 "Size" ---> "Veličina"
 "Smart Ban Plugin" ---> "Opšireno kažnavanje"
+"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Standardni izuzetak (%1%) desio se kod (%2%)"
 "Start Time" ---> "Početo preuzimanje"
 "Status" ---> "Akcija"
@@ -289,7 +295,9 @@
 "Stopped" ---> "Zaustavljen"
 "Stopping Torrents" ---> "Zaustavi torente"
 "Stopping" ---> "Zaustavi"
+"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." ---> "%1% uspešno."
+"Super-seeding" --->  ??? 
 "Supports extensions" ---> "Podržava ekstenziju"
 "SysDateTimePick32" ---> "SysDateTimePick32"
 "Take no action" ---> "Nikakva akcija"
@@ -305,14 +313,24 @@
 "Time ratio limit:" ---> "Vremensko odnosna granica:"
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" ---> "Preostalo vreme: %1% sat(a), %2% minut(a) i %3% sekunda/e"
 "Time" ---> "Vreme"
+"Timeout (seconds) : " --->  ??? 
+"Toggle Superseeding" --->  ??? 
 "Toolbar2k.bmp" ---> "Toolbar2k.bmp"
+"Torrent %1% completed." --->  ??? 
+"Torrent %1% file %2% completed." --->  ??? 
+"Torrent %1% file %2% renamed failed." --->  ??? 
+"Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." ---> "Torent %1% završen."
+"Torrent %1% metadata failed!" --->  ??? 
+"Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." ---> "Torent %1% pauzira."
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torent (%1%) izuzetak uspešno popravljen: (%2%) u (%3%)."
+"Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Standardna podešavanja"
 "Torrent File" ---> "Torent fajl"
 "Torrent Root" ---> "Put torenta"
 "Torrent and Data" ---> "Torent fajl i datoteku"
+"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" ---> "Ograničenje poveza:"
 "Torrent error: %1% (%2%)" ---> "Greška torenta: %1% (%2%)"
 "Torrent save folder:" ---> "Ulazna mapa za torente"
@@ -342,9 +360,11 @@
 "Up" ---> "Izlazna"
 "Update in:" ---> "Obnova za:"
 "Upload Rate (KB/s) :" ---> "Brzina izlaznog protoka (KB/s):"
+"Upload only" --->  ??? 
 "Upload" ---> "Izlazna brz."
 "Uploaded" ---> "Već podelio"
 "Use a proxy." ---> "Upotrebi Proksi-servera"
+"Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "Korisnik je prekinuo pravljenje torenta"
 "Username : " ---> "Korisnik:"
 "Warning" ---> "Upozorenje"
@@ -359,4 +379,4 @@
 "to" ---> "Do"
 "uTorrent Metadata Plugin" ---> "μTorrent-dodatak za 'meta'-fajlovi"
 "uTorrent Peer Exchange Plugin" ---> "'μTorrent'-dodatak za bolje cirkuliranja izvora"
-"∞" ---> "- -"
+"∞" --->  ??? 

@@ -1,5 +1,5 @@
 "English" ---> "Српски (ћирилица)"
-"English.rtf" ---> "../lang/Serbian (Cyrillic).rtf"
+"English.rtf" ---> "../lang/Serbian(Cyrillic).rtf"
 " %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s улазни - %2$.2fKB/s излазни"
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB улазни - %2$.2fMB излазни"
