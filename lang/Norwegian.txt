@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Pause Alle"
 "&Resume All" ---> "&Fortsett Alle"
-"(C) Eoin O'Callaghan 2010" --->  ??? 
+"(C) Eoin O'Callaghan 2009" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(N-O) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "About" ---> "Om"
@@ -35,8 +35,6 @@
 "Allow only one instance to run" --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
 "An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
-"Announce on all tiers" --->  ??? 
-"Announce to all trackers" --->  ??? 
 "Apply" ---> "Bruk"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
 "Are you sure you wish to delete all downloaded data?" --->  ??? 
@@ -52,7 +50,6 @@
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" ---> "Avbryt"
 "Checking Files" ---> "Sjekker filer"
-"Checking Resume Data" --->  ??? 
 "Choked" ---> "Strypt"
 "Clear IP database" ---> "Nullstill IP database"
 "Client" --->  ??? 
@@ -187,13 +184,11 @@
 "New" ---> "Ny"
 "None" ---> "Ingen"
 "Normal" --->  ??? 
-"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" --->  ??? 
 "OS reported error for file '%1%'" --->  ??? 
 "Ok" --->  ??? 
-"On parole" --->  ??? 
 "Open &Halite" ---> "Åpne &Halite"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "Åpne en (enkel) port mellom : "
@@ -285,7 +280,6 @@
 "Shutting down session" --->  ??? 
 "Size" --->  ??? 
 "Smart Ban Plugin" --->  ??? 
-"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Standard unntak (%1%) reist av %2%."
 "Start Time" --->  ??? 
 "Status" --->  ??? 
@@ -295,9 +289,7 @@
 "Stopped" ---> "Stoppet"
 "Stopping Torrents" --->  ??? 
 "Stopping" --->  ??? 
-"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." --->  ??? 
-"Super-seeding" --->  ??? 
 "Supports extensions" ---> "Supporterer utvidelser"
 "SysDateTimePick32" --->  ??? 
 "Take no action" --->  ??? 
@@ -313,24 +305,14 @@
 "Time ratio limit:" --->  ??? 
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Tid"
-"Timeout (seconds) : " --->  ??? 
-"Toggle Superseeding" --->  ??? 
 "Toolbar2k.bmp" --->  ??? 
-"Torrent %1% completed." --->  ??? 
-"Torrent %1% file %2% completed." --->  ??? 
-"Torrent %1% file %2% renamed failed." --->  ??? 
-"Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." --->  ??? 
-"Torrent %1% metadata failed!" --->  ??? 
-"Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." --->  ??? 
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) unntak fanget: %2% fra %3%."
-"Torrent Completed!" --->  ??? 
 "Torrent Defaults" --->  ??? 
 "Torrent File" ---> "Torrent Fil"
 "Torrent Root" --->  ??? 
 "Torrent and Data" ---> "Torrent og Data"
-"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" --->  ??? 
 "Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" --->  ??? 
@@ -360,11 +342,9 @@
 "Up" ---> "Opp"
 "Update in:" ---> "Oppdater om:"
 "Upload Rate (KB/s) :" ---> "Opplasings-rate (KB/s) :"
-"Upload only" --->  ??? 
 "Upload" --->  ??? 
 "Uploaded" --->  ??? 
 "Use a proxy." ---> "Bruk en proxy."
-"Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "Brukernavn : "
 "Warning" --->  ??? 

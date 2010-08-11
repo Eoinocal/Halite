@@ -126,7 +126,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 
 	// Create ListView and Dialog
 	haliteList.Create(m_Split.m_hWnd, rc, NULL, 
-		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS|LVS_OWNERDATA);
+		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS|LVS_OWNERDATA|LVS_EDITLABELS);
 //	haliteList.manager().attach(bind(&HaliteWindow::issueUiUpdate, this));
 
 	hal::event_log().post(shared_ptr<hal::EventDetail>(

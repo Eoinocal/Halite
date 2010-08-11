@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "&Pausar Todos"
 "&Resume All" ---> "&Continuar Todos"
-"(C) Eoin O'Callaghan 2010" --->  ??? 
+"(C) Eoin O'Callaghan 2009" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "About" ---> "Sobre"
@@ -35,8 +35,6 @@
 "Allow only one instance to run" --->  ??? 
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "uma política de conexão inválida, %1%, foi passada como opção de encriptação."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Um nível de codificação inválido, %1%, foi passado como opção de encriptação."
-"Announce on all tiers" --->  ??? 
-"Announce to all trackers" --->  ??? 
 "Apply" ---> "Aplicar"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
 "Are you sure you wish to delete all downloaded data?" --->  ??? 
@@ -52,7 +50,6 @@
 "Calculating Piece Hashes..." --->  ??? 
 "Cancel" ---> "Cancelar"
 "Checking Files" ---> "Checando os arquivos"
-"Checking Resume Data" --->  ??? 
 "Choked" --->  ??? 
 "Clear IP database" ---> "Apagar todas as listas de IPs"
 "Client" ---> "Cliente"
@@ -187,13 +184,11 @@
 "New" ---> "Novo"
 "None" ---> "Nenhum"
 "Normal" ---> "Normal"
-"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" --->  ??? 
 "OK" --->  ??? 
 "OS reported error for file '%1%'" --->  ??? 
 "Ok" --->  ??? 
-"On parole" --->  ??? 
 "Open &Halite" ---> "Abrir &Halite"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "Abrir uma (única) porta entre :"
@@ -285,7 +280,6 @@
 "Shutting down session" --->  ??? 
 "Size" ---> "Tamanho"
 "Smart Ban Plugin" --->  ??? 
-"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." --->  ??? 
 "Start Time" --->  ??? 
 "Status" ---> "Estado"
@@ -295,9 +289,7 @@
 "Stopped" ---> "Parado"
 "Stopping Torrents" --->  ??? 
 "Stopping" --->  ??? 
-"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." --->  ??? 
-"Super-seeding" --->  ??? 
 "Supports extensions" ---> "Suporta extensões"
 "SysDateTimePick32" --->  ??? 
 "Take no action" --->  ??? 
@@ -313,24 +305,14 @@
 "Time ratio limit:" --->  ??? 
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Hora"
-"Timeout (seconds) : " --->  ??? 
-"Toggle Superseeding" --->  ??? 
 "Toolbar2k.bmp" --->  ??? 
-"Torrent %1% completed." --->  ??? 
-"Torrent %1% file %2% completed." --->  ??? 
-"Torrent %1% file %2% renamed failed." --->  ??? 
-"Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." --->  ??? 
-"Torrent %1% metadata failed!" --->  ??? 
-"Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." --->  ??? 
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) exceção detectada: %2% do %3%."
-"Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Padrão para os Torrents"
 "Torrent File" ---> "Arquivo .torrent"
 "Torrent Root" ---> "Raiz do Torrent"
 "Torrent and Data" ---> "Torrent e dados"
-"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" ---> "Limites de conexões do torrent"
 "Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" --->  ??? 
@@ -360,11 +342,9 @@
 "Up" ---> "Sem."
 "Update in:" ---> "Atualização em:"
 "Upload Rate (KB/s) :" ---> "Upar com velocidade (KB/s) :"
-"Upload only" --->  ??? 
 "Upload" ---> "Upando"
 "Uploaded" --->  ??? 
 "Use a proxy." ---> "Use um proxy"
-"Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "nome de usuário : "
 "Warning" --->  ??? 

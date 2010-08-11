@@ -1,5 +1,5 @@
 "English" ---> "Magyar"
-"English.rtf" ---> "Hungarian.rtf"
+"English.rtf" ---> "../lang/Hungarian.rtf"
 " %2%" --->  ??? 
 "%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s le - %2$.2fKB/s fel"
 "%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB le - %2$.2fMB fel"
@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Peerek. (%1%)"
 "&Pause All" ---> "Összes &Leállítása"
 "&Resume All" ---> "Összes &Folytatása"
-"(C) Eoin O'Callaghan 2010" --->  ??? 
+"(C) Eoin O'Callaghan 2009" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(L-F) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(L-F) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "Névjegy"
@@ -35,8 +35,6 @@
 "Allow only one instance to run" ---> "Csak egy példány futása engedélyezett"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "An invalid connection policy, %1%, was passed as an encryption setting."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "An invalid encoding level, %1%, was passed as an encryption setting."
-"Announce on all tiers" --->  ??? 
-"Announce to all trackers" --->  ??? 
 "Apply" ---> "Alkalmaz"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Biztosan leállítod a Halite-ot? Ezzel minden aktív torrent is le fog állni."
 "Are you sure you wish to delete all downloaded data?" ---> "Biztosan törölni akarsz minden letöltött adatot?"
@@ -52,7 +50,6 @@
 "Calculating Piece Hashes..." ---> "Hash érték számolása..."
 "Cancel" ---> "Mégse"
 "Checking Files" ---> "Fájlok Ellenőrzése"
-"Checking Resume Data" --->  ??? 
 "Choked" ---> "Bedugult"
 "Clear IP database" ---> "IP adatbázis törlése"
 "Client" ---> "Kliens"
@@ -187,13 +184,11 @@
 "New" ---> "Új"
 "None" ---> "Nincs"
 "Normal" ---> "Normál"
-"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Figyelem! A Tömörített Foglalás nem kompatibilis a Fájl Kiválasztással."
 "OK" ---> "OK"
 "OS reported error for file '%1%'" --->  ??? 
 "Ok" ---> "Ok"
-"On parole" --->  ??? 
 "Open &Halite" ---> "&Halite Megnyitása"
 "Open Download Folder" ---> "Letöltési Könyvtár Megnyitása"
 "Open a (single) port between : " ---> "Port nyitása ebben a tartományban:"
@@ -285,7 +280,6 @@
 "Shutting down session" ---> "Munkamenet leállítása"
 "Size" ---> "Méret"
 "Smart Ban Plugin" --->  ??? 
-"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Standard exception (%1%) thrown from %2%."
 "Start Time" ---> "Kezdési Idő"
 "Status" ---> "Állapot"
@@ -295,9 +289,7 @@
 "Stopped" ---> "Leállítva"
 "Stopping Torrents" ---> "Torrentek Leállítása"
 "Stopping" ---> "Leállítás"
-"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." ---> "Successfully %1%."
-"Super-seeding" --->  ??? 
 "Supports extensions" ---> "Supports extensions"
 "SysDateTimePick32" --->  ??? 
 "Take no action" --->  ??? 
@@ -313,24 +305,14 @@
 "Time ratio limit:" --->  ??? 
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Idő"
-"Timeout (seconds) : " --->  ??? 
-"Toggle Superseeding" --->  ??? 
 "Toolbar2k.bmp" --->  ??? 
-"Torrent %1% completed." --->  ??? 
-"Torrent %1% file %2% completed." --->  ??? 
-"Torrent %1% file %2% renamed failed." --->  ??? 
-"Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% finished."
-"Torrent %1% metadata failed!" --->  ??? 
-"Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." ---> "Torrent %1% paused."
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) exception caught: %2% from %3%."
-"Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Torrent Alapértelmezések"
 "Torrent File" ---> "Torrent Fájl"
 "Torrent Root" ---> "Torrent Gyökér"
 "Torrent and Data" ---> "Torrent és Adat"
-"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" ---> "Torrent kapcsolódási limitek:"
 "Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" ---> "Torrent mentési könyvtár:"
@@ -360,11 +342,9 @@
 "Up" ---> "Fel"
 "Update in:" ---> "Frissítés:"
 "Upload Rate (KB/s) :" ---> "Feltöltési Sebesség (KB/s):"
-"Upload only" --->  ??? 
 "Upload" ---> "Feltöltés"
 "Uploaded" ---> "Feltöltve"
 "Use a proxy." ---> "Proxy használata."
-"Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "Felhasználónév:"
 "Warning" ---> "Figyelmeztetés"
@@ -379,4 +359,4 @@
 "to" ---> "-tól"
 "uTorrent Metadata Plugin" --->  ??? 
 "uTorrent Peer Exchange Plugin" --->  ??? 
-"∞" --->  ??? 
+"∞" ---> "∞"

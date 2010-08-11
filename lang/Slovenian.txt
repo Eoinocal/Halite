@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Soležnikov. (%1%)"
 "&Pause All" ---> "Premor vseh"
 "&Resume All" ---> "Nadaljuj vse"
-"(C) Eoin O'Callaghan 2010" --->  ??? 
+"(C) Eoin O'Callaghan 2009" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(D-G) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(D-U) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "O programu"
@@ -35,8 +35,6 @@
 "Allow only one instance to run" ---> "Dovoli le 1 delujočo kopijo Halitea"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Neveljavna nastavitev povezabe %1%."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Neveljavna nastavitev šifriranja %1%."
-"Announce on all tiers" --->  ??? 
-"Announce to all trackers" --->  ??? 
 "Apply" ---> "Posodobi"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Želite zapustiti Halite? S tem boste prekinili vse aktivne prenose."
 "Are you sure you wish to delete all downloaded data?" ---> "Želite izbrisati vse prenešene podatke?"
@@ -52,7 +50,6 @@
 "Calculating Piece Hashes..." ---> "Izdelujem Piece Hashes..."
 "Cancel" ---> "Prekliči"
 "Checking Files" ---> "Preverjam datoteke"
-"Checking Resume Data" --->  ??? 
 "Choked" ---> "Zadušeno"
 "Clear IP database" ---> "Počisti bazo IP naslovov"
 "Client" ---> "BT odjemalec"
@@ -187,13 +184,11 @@
 "New" ---> "Novo"
 "None" ---> "Nobeno"
 "Normal" ---> "Navadna"
-"Not Started" --->  ??? 
 "Not currently set to take any action" --->  ??? 
 "Note. Compact Allocation is incompatible with File Selection" ---> "Opozorilo: Kompaktna alokacija je nekompatibilna s prenašanjem posameznih datotek."
 "OK" ---> "V redu"
 "OS reported error for file '%1%'" --->  ??? 
 "Ok" ---> "V redu"
-"On parole" --->  ??? 
 "Open &Halite" ---> "Odpri"
 "Open Download Folder" --->  ??? 
 "Open a (single) port between : " ---> "Odpri posamičen port v rangu:"
@@ -285,7 +280,6 @@
 "Shutting down session" ---> "Ustavljam sejo"
 "Size" ---> "Velikost"
 "Smart Ban Plugin" --->  ??? 
-"Snubbed" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Standardna izjema (%1%) prejeta od %2%."
 "Start Time" ---> "Datum pričetka"
 "Status" ---> "Stanje"
@@ -295,9 +289,7 @@
 "Stopped" ---> "Prekinjen"
 "Stopping Torrents" ---> "Ustavljam torrente"
 "Stopping" ---> "Ustavljam"
-"Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." ---> "Uspešno %1%."
-"Super-seeding" --->  ??? 
 "Supports extensions" ---> "Podpira vtičnike"
 "SysDateTimePick32" --->  ??? 
 "Take no action" --->  ??? 
@@ -313,24 +305,14 @@
 "Time ratio limit:" --->  ??? 
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
 "Time" ---> "Čas"
-"Timeout (seconds) : " --->  ??? 
-"Toggle Superseeding" --->  ??? 
 "Toolbar2k.bmp" --->  ??? 
-"Torrent %1% completed." --->  ??? 
-"Torrent %1% file %2% completed." --->  ??? 
-"Torrent %1% file %2% renamed failed." --->  ??? 
-"Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." ---> "Torrent %1% se je prenesel."
-"Torrent %1% metadata failed!" --->  ??? 
-"Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." ---> "Torrent %1% je na pavzi."
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) zaznana izjema: %2% od %3%."
-"Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Privzete nastavitve torrenta:"
 "Torrent File" ---> "Torrent datoteko"
 "Torrent Root" ---> "Izvor torrenta"
 "Torrent and Data" ---> "Torrent datoteko in podatke"
-"Torrent completed balloon" --->  ??? 
 "Torrent connection limits:" ---> "Omejitev povezave na torrentu"
 "Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" ---> "Mapa za shranjevanje torrentov:"
@@ -360,12 +342,10 @@
 "Up" ---> "Gor"
 "Update in:" ---> "Posodobitev čez:"
 "Upload Rate (KB/s) :" ---> "Prenos gor (KB/s) :"
-"Upload only" --->  ??? 
 "Upload" ---> "Gor"
 "Uploaded" ---> "Prenos gor"
 "Use a proxy." ---> "Uporabi proxy."
-"Use this network interface" --->  ??? 
-"User cancelled Torrent file creation" --->  ??? 
+"User cancelled Torrent file creation" ---> "Uporabnik je preklcal ustvarjanje torrent datoteke"
 "Username : " ---> "Uporabnik : "
 "Warning" ---> "Opozorilo"
 "Web Seed" ---> "Spletni sejalec"
@@ -379,4 +359,4 @@
 "to" ---> "v"
 "uTorrent Metadata Plugin" --->  ??? 
 "uTorrent Peer Exchange Plugin" --->  ??? 
-"∞" --->  ??? 
+"∞" ---> "∞"

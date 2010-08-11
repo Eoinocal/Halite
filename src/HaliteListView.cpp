@@ -25,6 +25,7 @@
 HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	halite_window_(HalWindow),
 	ini_class_t("listviews/halite", "HaliteListView"),
+	editing_lock_(false),
 	queue_view_(false)
 {		
 	HalWindow.connectUiUpdate(bind(&HaliteListViewCtrl::uiUpdate, this, _1));
@@ -148,6 +149,44 @@ LRESULT HaliteListViewCtrl::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 	return 0;
 }
 
+LRESULT HaliteListViewCtrl::OnBeginLabelEdit(int i, LPNMHDR pnmh, BOOL&)
+{		
+	HAL_DEV_MSG(hal::wform(L"OnBeginLabelEdit(int i = %1%)") % i);
+
+	editing_lock_ = true;
+	{	
+		NMLVDISPINFO* nmlv = (NMLVDISPINFO*)pnmh;
+		
+		HAL_DEV_MSG(hal::wform(L"LabelEdit Locked!") % i);
+	}
+
+	return false;
+}
+
+LRESULT HaliteListViewCtrl::OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&)
+{	
+	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
+
+/*	if (pdi->item.iItem < static_cast<int>(files_.size()) && pdi->item.mask & LVIF_TEXT)
+	{
+		wstring str = files_[pdi->item.iItem].to_wstring(pdi->item.iSubItem);
+		
+		HAL_DEV_MSG(hal::wform(L"iItem: %1%, Order: %2%, text: %3%, orig: %4%") 
+			% pdi->item.iItem % files_[pdi->item.iItem].order() % pdi->item.pszText % str);
+
+		if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused()))
+		{
+			wpath old_name = t.files()[files_[pdi->item.iItem].order()].name;
+			t.files()[files_[pdi->item.iItem].order()].name = old_name.parent_path()/wstring(pdi->item.pszText);
+		}
+	}
+*/
+	editing_lock_ = false;
+	HAL_DEV_MSG(hal::wform(L"OnEndLabelEdit(int i = %1%) Unlocked!") % i);
+
+	return false;
+}
+
 void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 {
 	if (hal::try_update_lock<list_class_t> lock = hal::try_update_lock<list_class_t>(this)) 
@@ -163,25 +202,28 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	
 	erase_based_on_set(torrent_set, true);	
 
-	if (IsSortOnce() || AutoSort())
+	if (!editing_lock_)
 	{
-		if (GetSecondarySortColumn() != -1)
+		if (IsSortOnce() || AutoSort())
 		{
-			int index = GetColumnSortType(GetSecondarySortColumn());					
-			if (index > WTL::LVCOLSORT_LAST)
-				sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSecondarySortDescending());
-		}
+			if (GetSecondarySortColumn() != -1)
+			{
+				int index = GetColumnSortType(GetSecondarySortColumn());					
+				if (index > WTL::LVCOLSORT_LAST)
+					sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSecondarySortDescending());
+			}
 
-		if (GetSortColumn() != -1)
-		{		
-			int index = GetColumnSortType(GetSortColumn());				
-			if (index > WTL::LVCOLSORT_LAST)
-				sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSortDescending());
+			if (GetSortColumn() != -1)
+			{		
+				int index = GetColumnSortType(GetSortColumn());				
+				if (index > WTL::LVCOLSORT_LAST)
+					sort(index - (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e), IsSortDescending());
+			}
 		}
+		
+		if (queue_view_)
+			sort(hal::torrent_details::managed_e, false);
 	}
-	
-	if (queue_view_)
-		sort(hal::torrent_details::managed_e, false);
 
 	set_keys(torrent_set);	
 	InvalidateRect(NULL,true);
