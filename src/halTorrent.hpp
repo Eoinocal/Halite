@@ -157,7 +157,7 @@ public:
 			class file_proxy
 			{
 			public:
-				file_proxy(class_type& t, size_type n) :
+				file_proxy(class_type& t, size_t n) :
 					t_(t),
 					n_(n)
 				{}
@@ -169,7 +169,7 @@ public:
 					get_name, set_name, name);
 			private:
 				class_type& t_;
-				size_type n_;
+				size_t n_;
 			};
 			
 			files_proxy(class_type& t) :

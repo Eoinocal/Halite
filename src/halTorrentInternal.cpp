@@ -819,4 +819,12 @@ void torrent_internal::state(unsigned s)
 	state_ = s;
 }
 
+void torrent_internal::initialize_non_serialized(boost::shared_ptr<torrent_manager> p_tm)
+{
+	manager_ptr_ = p_tm;
+
+	TORRENT_STATE_LOG(L"Torrent state machine initiate");
+	initiate();
+}
+
 };

@@ -830,43 +830,7 @@ public:
 			
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Resuming all torrents.")));
 		
-		for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); i != e;)
-		{
-		//	wpath file = wpath(hal::app().get_working_directory())/L"torrents"/(*i).torrent->filename();
-			
-		//	if (exists(file))
-		//	{		
-				try 
-				{
-					
-		//		(*i).torrent->prepare(file);	
-				(*i).torrent->start();	
-				
-				++i;
-				
-				}
-				catch(const libt::duplicate_torrent&)
-				{
-					hal::event_log().post(shared_ptr<hal::EventDetail>(
-						new hal::EventDebug(hal::event_logger::debug, L"Encountered duplicate torrent")));
-					
-					++i; // Harmless, don't worry about it.
-				}
-				catch(const std::exception& e) 
-				{
-					hal::event_log().post(shared_ptr<hal::EventDetail>(
-						new hal::EventStdException(hal::event_logger::warning, e, L"resume_all")));
-					
-					the_torrents_.erase(i++);
-				}			
-		//	}
-		//	else
-		//	{
-		//		the_torrents_.erase(i++);
-		//	}
-		}
-
-		the_torrents_.apply_queue_positions();
+		the_torrents_.start_all();
 
 		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "resume_all")
 	}

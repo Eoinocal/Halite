@@ -43,6 +43,10 @@
 #include <boost/statechart/state.hpp>
 #include <boost/statechart/custom_reaction.hpp>
 
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <boost/uuid/uuid_serialize.hpp>
+
 #include <boost/mpl/list.hpp>
 
 #include "halIni.hpp"
@@ -398,6 +402,11 @@ public:
 	{ 		
 		return hash_; 
 	}
+
+	boost::uuids::uuid uuid() const
+	{ 
+		return uuid_;
+	}
 	
 	void set_ratio(float ratio) 
 	{ 
@@ -712,6 +721,7 @@ public:
 			case 3:
 			ar & make_nvp("super_seeding", superseeding_);
 			ar & make_nvp("files", files_);
+			ar & make_nvp("uuid", uuid_);
 			ar & make_nvp("hash", hash_);
 			ar & make_nvp("hash_string", hash_str_);
 
@@ -796,6 +806,12 @@ public:
 			ar & make_nvp("finish_time", finish_time_);
 			
 			ar & make_nvp("progress", progress_);
+		}
+
+		if (version < 3)
+		{
+		//	boost::uuids::random_generator gen;
+			uuid_ = boost::uuids::random_generator()();
 		}
 	}
 
@@ -964,7 +980,8 @@ private:
 
 	void extract_hash();
 	void update_manager_by_name();
-	void update_manager_by_hash();
+	void update_manager_by_hash();	
+	void initialize_non_serialized(boost::shared_ptr<torrent_manager> p_tm);
 
 	void set_file_priority_cb(size_t i, int p)
 	{
@@ -991,18 +1008,10 @@ private:
 
 	boost::function<void ()> removed_callback_;
 
-	void initialize_state_machine(torrent_internal_ptr p)
-	{
-		own_weak_ptr_ = boost::weak_ptr<torrent_internal>(p);
-
-		TORRENT_STATE_LOG(L"Torrent state machine initiate");
-		initiate();
-	}
-
 	mutable mutex_t mutex_;
 	signalers signals_;
 
-	boost::weak_ptr<torrent_internal> own_weak_ptr_;
+	boost::weak_ptr<torrent_manager> manager_ptr_;
 	
 	std::pair<float, float> transfer_limit_;
 	
@@ -1050,6 +1059,7 @@ private:
 	bool managed_;
 	bit::allocations allocation_;
 
+	boost::uuids::uuid uuid_;
 	libt::sha1_hash hash_;
 	wstring hash_str_;
 

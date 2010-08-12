@@ -24,14 +24,18 @@
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/tag.hpp>
 
+#include <boost/uuid/random_generator.hpp>
+
 #include "halIni.hpp"
 #include "global/versioned_file.hpp"
 #include "halTorrentInternal.hpp"
+
 
 namespace hal 
 {
 
 class torrent_manager : 
+	public boost::enable_shared_from_this<torrent_manager>,
 	public hal::IniBase<torrent_manager>
 {
 	typedef torrent_manager this_class_t;
@@ -41,7 +45,7 @@ class torrent_manager :
 	{
 		mutable torrent_internal_ptr torrent;
 		
-		wstring filename;
+		boost::uuids::uuid uuid;
 		wstring name;
 		libt::big_number hash;
 		
@@ -49,7 +53,7 @@ class torrent_manager :
 		{}
 		
 		explicit torrent_holder(torrent_internal_ptr t) :
-			torrent(t), filename(torrent->filename()), name(torrent->name()), hash(torrent->hash())
+			torrent(t), uuid(torrent->uuid()), name(torrent->name()), hash(torrent->hash())
 		{}
 
 		friend class boost::serialization::access;
@@ -58,18 +62,25 @@ class torrent_manager :
 		{
 			using boost::serialization::make_nvp;
 
+			wstring filename;
+
 			switch (version)
 			{
 			case 1:
 			ar & make_nvp("hash", hash);
+			ar & make_nvp("uuid", uuid);
 
 			case 0:
 			ar & make_nvp("torrent", torrent);
-			ar & make_nvp("filename", filename);
+
+			if (version == 0)
+				ar & make_nvp("filename", filename);
+
 			ar & make_nvp("name", name);
 			}
-
-			torrent->initialize_state_machine(torrent);
+			
+			if (version == 0)
+				uuid = torrent->uuid();
 		}
 
 		template<class Archive>
@@ -81,10 +92,10 @@ class torrent_manager :
 			{
 			case 1:
 			ar & make_nvp("hash", hash);
+			ar & make_nvp("uuid", uuid);
 
 			case 0:
 			ar & make_nvp("torrent", torrent);
-			ar & make_nvp("filename", filename);
 			ar & make_nvp("name", name);
 			}
 		}
@@ -92,17 +103,17 @@ class torrent_manager :
 		BOOST_SERIALIZATION_SPLIT_MEMBER()
 	};
 	
-	struct by_filename{};
+	struct by_uuid{};
 	struct by_name{};
 	struct by_hash{};
 	
 	typedef boost::multi_index_container<
 		torrent_holder,
 		boost::multi_index::indexed_by<
-			boost::multi_index::ordered_non_unique<
-				boost::multi_index::tag<by_filename>,
+			boost::multi_index::ordered_unique<
+				boost::multi_index::tag<by_uuid>,
 				boost::multi_index::member<
-					torrent_holder, wstring, &torrent_holder::filename>
+					torrent_holder, boost::uuids::uuid, &torrent_holder::uuid>
 				>,
 			boost::multi_index::ordered_non_unique<
 				boost::multi_index::tag<by_name>,
@@ -118,7 +129,7 @@ class torrent_manager :
 	> torrent_multi_index;
 	
 public:
-	typedef torrent_multi_index::index<by_filename>::type torrent_by_filename;
+	typedef torrent_multi_index::index<by_uuid>::type torrent_by_uuid;
 	typedef torrent_multi_index::index<by_name>::type torrent_by_name;
 	typedef torrent_multi_index::index<by_hash>::type torrent_by_hash;
 
@@ -187,8 +198,43 @@ public:
 		for (torrent_by_name::iterator i= torrents_.get<by_name>().begin(), 
 			e = torrents_.get<by_name>().end(); i!=e; ++i)
 		{
-			(*i).torrent->start();
+		//	wpath file = wpath(hal::app().get_working_directory())/L"torrents"/(*i).torrent->filename();
+			
+		//	if (exists(file))
+		//	{		
+				try 
+				{
+					
+		//		(*i).torrent->prepare(file);	
+					
+				(*i).torrent->initialize_non_serialized(shared_from_this());
+				(*i).torrent->start();	
+				
+				++i;
+				
+				}
+				catch(const libt::duplicate_torrent&)
+				{
+					hal::event_log().post(shared_ptr<hal::EventDetail>(
+						new hal::EventDebug(hal::event_logger::debug, L"Encountered duplicate torrent")));
+					
+					++i; // Harmless, don't worry about it.
+				}
+				catch(const std::exception& e) 
+				{
+					hal::event_log().post(shared_ptr<hal::EventDetail>(
+						new hal::EventStdException(hal::event_logger::warning, e, L"resume_all")));
+					
+					erase(i++);
+				}			
+		//	}
+		//	else
+		//	{
+		//		the_torrents_.erase(i++);
+		//	}
 		}
+
+		apply_queue_positions();
 	}
 
 	void apply_queue_positions()
@@ -210,7 +256,7 @@ public:
 		if (!p.second) // Torrent already present
 			t.reset();
 		else
-			t->initialize_state_machine(t);
+			t->initialize_non_serialized(shared_from_this());
 
 		return t;
 	}
@@ -225,7 +271,7 @@ public:
 		if (!p.second) // Torrent already present
 			t.reset();
 		else
-			t->initialize_state_machine(t);
+			t->initialize_non_serialized(shared_from_this());
 
 		return t;
 	}
@@ -237,7 +283,7 @@ public:
 		return torrents_.get<by_name>().erase(name);
 	}
 
-	torrent_internal_ptr get_by_file(const wstring& filename)
+/*	torrent_internal_ptr get_by_file(const wstring& filename)
 	{
 		torrent_by_filename::iterator it = torrents_.get<by_filename>().find(filename);
 		
@@ -248,7 +294,7 @@ public:
 		
 		throw invalid_torrent(filename);
 	}
-
+*/
 	torrent_internal_ptr get_by_name(const wstring& name)
 	{
 		torrent_by_name::iterator it = torrents_.get<by_name>().find(name);
@@ -335,7 +381,7 @@ private:
 	void display_holder(const torrent_holder& t)
 	{
 		HAL_DEV_MSG(hal::wform(L"Holder name : %1%") % t.name);
-		HAL_DEV_MSG(hal::wform(L"   filename : %1%") % t.filename);
+		HAL_DEV_MSG(hal::wform(L"       uuid : %1%") % t.uuid);
 		HAL_DEV_MSG(hal::wform(L"       hash : %1%") % from_utf8(libt::base32encode(std::string((char const*)&t.hash[0], 20))));
 	}
 
