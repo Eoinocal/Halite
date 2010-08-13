@@ -24,8 +24,6 @@
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/tag.hpp>
 
-#include <boost/uuid/random_generator.hpp>
-
 #include "halIni.hpp"
 #include "global/versioned_file.hpp"
 #include "halTorrentInternal.hpp"
@@ -66,20 +64,20 @@ class torrent_manager :
 
 			switch (version)
 			{
-			case 1:
+			case 2:
 			ar & make_nvp("hash", hash);
 			ar & make_nvp("uuid", uuid);
 
-			case 0:
+			case 1:
 			ar & make_nvp("torrent", torrent);
 
-			if (version == 0)
+			if (version == 1)
 				ar & make_nvp("filename", filename);
 
 			ar & make_nvp("name", name);
 			}
 			
-			if (version == 0)
+			if (version == 1)
 				uuid = torrent->uuid();
 		}
 
@@ -90,11 +88,11 @@ class torrent_manager :
 
 			switch (version)
 			{
-			case 1:
+			case 2:
 			ar & make_nvp("hash", hash);
 			ar & make_nvp("uuid", uuid);
 
-			case 0:
+			case 1:
 			ar & make_nvp("torrent", torrent);
 			ar & make_nvp("name", name);
 			}
@@ -196,7 +194,7 @@ public:
 	void start_all()
 	{
 		for (torrent_by_name::iterator i= torrents_.get<by_name>().begin(), 
-			e = torrents_.get<by_name>().end(); i!=e; ++i)
+			e = torrents_.get<by_name>().end(); i!=e; /**/)
 		{
 		//	wpath file = wpath(hal::app().get_working_directory())/L"torrents"/(*i).torrent->filename();
 			
@@ -207,7 +205,7 @@ public:
 					
 		//		(*i).torrent->prepare(file);	
 					
-				(*i).torrent->initialize_non_serialized(shared_from_this());
+				(*i).torrent->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1));
 				(*i).torrent->start();	
 				
 				++i;
@@ -223,7 +221,7 @@ public:
 				catch(const std::exception& e) 
 				{
 					hal::event_log().post(shared_ptr<hal::EventDetail>(
-						new hal::EventStdException(hal::event_logger::warning, e, L"resume_all")));
+						new hal::EventStdException(hal::event_logger::warning, e, L"torrent_manager::start_all")));
 					
 					erase(i++);
 				}			
@@ -256,7 +254,7 @@ public:
 		if (!p.second) // Torrent already present
 			t.reset();
 		else
-			t->initialize_non_serialized(shared_from_this());
+			t->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1));
 
 		return t;
 	}
@@ -271,7 +269,7 @@ public:
 		if (!p.second) // Torrent already present
 			t.reset();
 		else
-			t->initialize_non_serialized(shared_from_this());
+			t->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1));
 
 		return t;
 	}
@@ -345,6 +343,17 @@ public:
 			display_holder(torrent_holder(torrent));
 		}
 	}
+
+	void update_torrent(torrent_internal_ptr torrent)
+	{
+		torrent_by_uuid::iterator it = torrents_.get<by_uuid>().find(torrent->uuid());
+		
+		if (it != torrents_.get<by_uuid>().end() && (*it).torrent)
+		{
+			torrents_.get<by_uuid>().replace(it, torrent_holder(torrent));
+			display_holder(torrent_holder(torrent));
+		}
+	}
 	
 	torrent_by_name::iterator erase(torrent_by_name::iterator where)
 	{
@@ -392,4 +401,4 @@ private:
 
 };
 
-BOOST_CLASS_VERSION(hal::torrent_manager::torrent_holder, 1)
+BOOST_CLASS_VERSION(hal::torrent_manager::torrent_holder, 2)

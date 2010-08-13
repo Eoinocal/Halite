@@ -44,6 +44,7 @@
 #include <boost/statechart/custom_reaction.hpp>
 
 #include <boost/uuid/uuid.hpp>
+#include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/uuid/uuid_serialize.hpp>
 
@@ -324,6 +325,7 @@ private:
 
 	torrent_internal(const wpath& filename, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"") :
 		TORRENT_INTERNALS_DEFAULTS,
+		uuid_(boost::uuids::random_generator()()),
 		save_directory_(save_directory.string()),
 		move_to_directory_(move_to_directory.string()),
 		allocation_(alloc)
@@ -336,6 +338,7 @@ private:
 
 	torrent_internal(const wstring& uri, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"") :
 		TORRENT_INTERNALS_DEFAULTS,
+		uuid_(boost::uuids::random_generator()()),
 		save_directory_(save_directory.string()),
 		move_to_directory_(move_to_directory.string()),
 		allocation_(alloc),
@@ -979,9 +982,8 @@ private:
 	void state(unsigned s);
 
 	void extract_hash();
-	void update_manager_by_name();
-	void update_manager_by_hash();	
-	void initialize_non_serialized(boost::shared_ptr<torrent_manager> p_tm);
+	void update_manager();
+	void initialize_non_serialized(function<void (torrent_internal_ptr)>);
 
 	void set_file_priority_cb(size_t i, int p)
 	{
@@ -1006,12 +1008,11 @@ private:
 		}
 	}
 
-	boost::function<void ()> removed_callback_;
+	function<void ()> removed_callback_;
+	function<void (torrent_internal_ptr)> update_manager_;
 
 	mutable mutex_t mutex_;
 	signalers signals_;
-
-	boost::weak_ptr<torrent_manager> manager_ptr_;
 	
 	std::pair<float, float> transfer_limit_;
 	

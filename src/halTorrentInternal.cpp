@@ -383,24 +383,16 @@ void torrent_internal::prepare(boost::intrusive_ptr<libt::torrent_info> info)
 void torrent_internal::metadata_completed()
 {
 	prepare();
+
 	apply_settings();
-
-	update_manager_by_hash();
+	update_manager();
 }
 
-void torrent_internal::update_manager_by_name()
+void torrent_internal::update_manager()
 {
-	if (the_manager_)
+	if (update_manager_)
 	{
-		the_manager_->update_torrent_by_name(shared_from_this());
-	}
-}
-
-void torrent_internal::update_manager_by_hash()
-{
-	if (the_manager_)
-	{
-		the_manager_->update_torrent_by_hash(shared_from_this());
+		update_manager_(shared_from_this());
 	}
 }
 
@@ -819,9 +811,9 @@ void torrent_internal::state(unsigned s)
 	state_ = s;
 }
 
-void torrent_internal::initialize_non_serialized(boost::shared_ptr<torrent_manager> p_tm)
+void torrent_internal::initialize_non_serialized(function<void (torrent_internal_ptr)> f)
 {
-	manager_ptr_ = p_tm;
+	update_manager_ = f;
 
 	TORRENT_STATE_LOG(L"Torrent state machine initiate");
 	initiate();

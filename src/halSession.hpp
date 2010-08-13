@@ -832,7 +832,7 @@ public:
 		
 		the_torrents_.start_all();
 
-		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "resume_all")
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "bit_impl::resume_all")
 	}
 
 	bool close_counter(int* count)

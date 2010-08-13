@@ -297,7 +297,7 @@ sc::result not_started::react(const ev_start& evt)
 	if (t_i.hash_str_.empty())
 	{
 		t_i.extract_hash();
-		t_i.update_manager_by_name();
+		t_i.update_manager();
 	}
 
 	switch (stored_state_)
