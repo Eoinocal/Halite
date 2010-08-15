@@ -43,7 +43,6 @@
 #include <boost/statechart/state.hpp>
 #include <boost/statechart/custom_reaction.hpp>
 
-#include <boost/uuid/uuid.hpp>
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/uuid/uuid_serialize.hpp>
@@ -406,7 +405,7 @@ public:
 		return hash_; 
 	}
 
-	boost::uuids::uuid uuid() const
+	const boost::uuids::uuid& uuid() const
 	{ 
 		return uuid_;
 	}

@@ -165,31 +165,36 @@ void file_details_sort(file_details_vec& f, size_t index, bool cmp_less = true);
 class torrent_details 
 {
 public:
-	torrent_details(std::wstring n, std::wstring f, 
-			std::wstring sd, 
-			std::wstring s, 
-			std::wstring cT, 
-			std::pair<float,float> sp=std::pair<float,float>(0,0),
+	torrent_details(const std::wstring& n, 
+			const std::wstring& f, 
+			const std::wstring& sd, 
+			const std::wstring& s, 
+			const boost::uuids::uuid& id, 
+			const std::wstring& cT, 
+			const std::wstring& hh, 
+			const std::pair<float,float>& sp=std::pair<float,float>(0,0),
 			float c=0, float d=0, 
 			size_type tWD=0, size_type tW=0, 
 			size_type tU=0, size_type tpU=0, 
 			size_type tD=0, size_type tpD=0, 
-			boost::tuple<size_type, size_type, size_type, size_type> connections = 
+			const boost::tuple<size_type, size_type, size_type, size_type>& connections = 
 				boost::tuple<size_type, size_type, size_type, size_type>(0,0,0,0), 
 			float r=0, 
-			boost::posix_time::time_duration eta=boost::posix_time::seconds(0), 
-			boost::posix_time::time_duration uIn=boost::posix_time::seconds(0),
-			boost::posix_time::time_duration actve=boost::posix_time::seconds(0), 
-			boost::posix_time::time_duration seding=boost::posix_time::seconds(0), 
-			boost::posix_time::ptime srt=boost::posix_time::second_clock::universal_time(), 
-			boost::posix_time::ptime fin=boost::posix_time::second_clock::universal_time(), 
+			const pt::time_duration& eta=pt::seconds(0), 
+			const pt::time_duration& uIn=pt::seconds(0),
+			const pt::time_duration& actve=pt::seconds(0), 
+			const pt::time_duration& seding=pt::seconds(0), 
+			const pt::ptime& srt=pt::second_clock::universal_time(), 
+			const pt::ptime& fin=pt::second_clock::universal_time(), 
 			int q_p=-1, 
 			bool man=false) :
 		filename_(f),
 		name_(n),
-		saveDir_(sd),
+		save_dir_(sd),
 		state_(s),
+		uuid_(id),
 		currentTracker_(cT),
+		hash_(hh),
 		speed_(sp),
 		completion_(c),
 		distributed_copies_(d),
@@ -256,13 +261,17 @@ public:
 		start_time_e,
 		finish_time_e,
 		managed_e,
-		queue_position_e
+		queue_position_e,
+		uuid_e,
+		hash_e
 	};
 	
 //	const std::wstring& filename() const { return filename_; }
 	const std::wstring& name() const { return name_; }
-	const std::wstring& save_directory() const { return saveDir_; }
+	const std::wstring& save_directory() const { return save_dir_; }
 	const std::wstring& state() const { return state_; }
+	const std::wstring& hash() const { return hash_; }
+	const boost::uuids::uuid& uuid() const { return uuid_; }
 	const std::wstring& current_tracker() const { return currentTracker_; }
 	
 	std::pair<float,float> speed() const { return speed_; }
@@ -283,16 +292,16 @@ public:
 	
 	float ratio() { return ratio_; }
 	
-	const boost::posix_time::time_duration& estimated_time_left() { return estimated_time_left_; }
-	const boost::posix_time::time_duration& update_tracker_in() { return update_tracker_in_; }
+	const pt::time_duration& estimated_time_left() { return estimated_time_left_; }
+	const pt::time_duration& update_tracker_in() { return update_tracker_in_; }
 	
 	const peer_details_vec& get_peer_details() const;
 	const file_details_vec& get_file_details() const;
 	
-	const boost::posix_time::time_duration& active() { return active_; }
-	const boost::posix_time::time_duration& seeding() { return seeding_; }
-	const boost::posix_time::ptime& start_time() { return start_time_; }
-	const boost::posix_time::ptime& finish_time() { return finish_time_; }
+	const pt::time_duration& active() { return active_; }
+	const pt::time_duration& seeding() { return seeding_; }
+	const pt::ptime& start_time() { return start_time_; }
+	const pt::ptime& finish_time() { return finish_time_; }
 
 	int queue_position() const { return queue_position_; }
 	bool managed() const { return managed_; }
@@ -303,7 +312,9 @@ public:
 public:
 	std::wstring filename_;
 	std::wstring name_;
-	std::wstring saveDir_;
+	std::wstring hash_;
+	boost::uuids::uuid uuid_;
+	std::wstring save_dir_;
 	std::wstring state_;
 	std::wstring currentTracker_;
 
@@ -325,13 +336,13 @@ public:
 	
 	float ratio_;
 	
-	boost::posix_time::time_duration estimated_time_left_;
-	boost::posix_time::time_duration update_tracker_in_;
+	pt::time_duration estimated_time_left_;
+	pt::time_duration update_tracker_in_;
 	
-	boost::posix_time::time_duration active_;
-	boost::posix_time::time_duration seeding_;
-	boost::posix_time::ptime start_time_;
-	boost::posix_time::ptime finish_time_;
+	pt::time_duration active_;
+	pt::time_duration seeding_;
+	pt::ptime start_time_;
+	pt::ptime finish_time_;
 
 	int queue_position_;
 	bool managed_;

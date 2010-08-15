@@ -179,6 +179,8 @@ bool torrent_details::less(const torrent_details& r, size_t index) const
 
 	case queue_position_e: return queue_position_ < r.queue_position_;
 	case managed_e: return managed_ < r.managed_;
+	case uuid_e: return uuid_ < r.uuid_;
+	case hash_e: return hash_ < r.hash_;
 
 	default: return false; // ???
 	};
@@ -305,6 +307,16 @@ std::wstring torrent_details::to_wstring(size_t index)
 		}
 
 	case managed_e: return managed_ ?  L"Yes" : L"No";
+
+	case uuid_e: 
+		{
+			std::wstringstream ss;
+			ss << uuid_;
+
+			return ss.str();
+		}
+		
+	case hash_e: return hash_;
 
 	default: return L"(Undefined)"; // ???
 	};

@@ -251,7 +251,9 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr()
 		name(), filename_, 
 		save_directory().string(), 
 		state_str, 
+		uuid(),
 		hal::from_utf8(status_memory_.current_tracker), 
+		hash_str_,
 		std::pair<float, float>(
 			boost::numeric_cast<float>(status_memory_.download_payload_rate), 
 			boost::numeric_cast<float>(status_memory_.upload_payload_rate)),
@@ -288,7 +290,9 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr()
 		name(), filename_, 
 		save_directory().string(), 
 		app().res_wstr(HAL_TORRENT_STOPPED), 
-		app().res_wstr(HAL_NA)));
+		uuid(), 
+		app().res_wstr(HAL_NA),
+		hash_str_));
 }
 
 file_details_vec torrent_internal::get_file_details()

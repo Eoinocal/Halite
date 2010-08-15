@@ -45,25 +45,25 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	// 	Name;			Status;			Progress;			Download;		Upload;			Peers;			Seeds;	
 	//	ETA;				Copies;			Tracker;			Reannounce;		Ratio;			Total;			Completed;
 	//	Remaining;		Downloaded;		Uploaded;		Active;			Seeding;			Start Time;		Finish Time;
-	//	Managed;		Queue Position"
+	//	Managed;		Queue Position	Uuid				Hash"
 
 	array<int, NumberOfColumns_s> widths = {
-		100,				110,				60,				60,				60,				42,				45,		
+		180,				110,				60,				60,				60,				42,				45,		
 		61,				45,				45,				45,				45,				45,				45,
 		45,				45,				45,				45,				45,				45,				45,
-		30,				45};
+		30,				45,				210,				240};
 
 	array<int, NumberOfColumns_s> formats = {
 		0,				0,				LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_CENTER,	LVCFMT_CENTER,	
 		LVCFMT_RIGHT,	LVCFMT_RIGHT,	0,				LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	
 		LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	
-		0,				LVCFMT_RIGHT};
+		0,				LVCFMT_RIGHT,	0,				0};
 
 	array<bool, NumberOfColumns_s> visible = {
 		true,			true,			true,			true,			true,			true,			true,
-		true,			true,			true,			true,			true,			true,			true,
-		true,			true,			true,			true,			true,			true,			true,
-		true,			true};
+		true,			true,			false,			false,			true,			false,			false,
+		false,			false,			false,			false,			false,			false,			false,
+		false,			false,			false,			false};
 
 	for (int i=0, e=NumberOfColumns_s; i < e; ++i)
 	{
@@ -72,7 +72,7 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 
 	SafeLoadFromIni();
 
-	for (unsigned i=0, e = hal::torrent_details::queue_position_e-hal::torrent_details::name_e; i <= e; ++i)
+	for (unsigned i=0, e = hal::torrent_details::hash_e-hal::torrent_details::name_e; i <= e; ++i)
 		SetColumnSortType(i, i + (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e));
 	
 	queue_view_mode();
@@ -295,6 +295,8 @@ LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 {
 	foreach(const list_value_type& v, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
+		//HAL_DEV_MSG(hal::wform(L"UUid: %1%") % v.text(hal::torrent_details::uuid_e-hal::torrent_details::name_e));
+
 		hal::bittorrent::Instance().recheck_torrent(v.text().c_str());
 	}
 

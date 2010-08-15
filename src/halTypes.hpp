@@ -10,6 +10,7 @@
 #include <boost/tuple/tuple.hpp>
 #include <boost/thread/recursive_mutex.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/uuid/uuid.hpp>
 
 namespace hal
 {	
