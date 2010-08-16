@@ -235,18 +235,18 @@ private:
 	mutable boost::posix_time::ptime start_;		
 };
 	
-struct signalers
+/*struct signalers
 {
 	signaler<> torrent_finished;
 
 	boost::signal<void ()> torrent_paused;
 	boost::signal<void ()> resume_data;
 };
-
+*/
 class torrent_internal;
 typedef shared_ptr<torrent_internal> torrent_internal_ptr;
 
-struct torrent_standalone :
+/*struct torrent_standalone :
 	public hal::IniBase<torrent_standalone>
 {
 	typedef torrent_standalone this_class_t;
@@ -273,7 +273,7 @@ struct torrent_standalone :
 		ar & boost::serialization::make_nvp("save_time", save_time);
 	}
 };
-
+*/
 struct out_of_session;
 
 class torrent_internal :
@@ -882,12 +882,12 @@ public:
 		return info_memory_;
 	}
 	
-	signalers& signals()
+/*	signalers& signals()
 	{
 		mutex_t::scoped_lock l(mutex_);
 		return signals_;
 	}
-	
+	*/
 	unsigned state() const 
 	{
 		return state_;
@@ -1011,7 +1011,7 @@ private:
 	function<void (torrent_internal_ptr)> update_manager_;
 
 	mutable mutex_t mutex_;
-	signalers signals_;
+//	signalers signals_;
 	
 	std::pair<float, float> transfer_limit_;
 	

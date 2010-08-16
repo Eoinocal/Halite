@@ -176,7 +176,7 @@ public:
 				t_(t)
 			{}
 
-			file_proxy operator[](size_type n)
+			file_proxy operator[](size_t n)
 			{
 				return file_proxy(t_, n);
 			}

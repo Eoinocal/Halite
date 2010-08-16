@@ -126,7 +126,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 
 	// Create ListView and Dialog
 	haliteList.Create(m_Split.m_hWnd, rc, NULL, 
-		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS|LVS_OWNERDATA|LVS_EDITLABELS);
+		LVS_REPORT|WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|LVS_SHOWSELALWAYS|LVS_OWNERDATA);//|LVS_EDITLABELS);
 //	haliteList.manager().attach(bind(&HaliteWindow::issueUiUpdate, this));
 
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
@@ -211,7 +211,7 @@ LRESULT HaliteWindow::OnAdvanced(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	return 0;
 }
 
-LRESULT HaliteWindow::OnTrayNotification(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam)
+LRESULT HaliteWindow::OnTrayNotification(UINT, WPARAM wParam, LPARAM lParam)
 {
 	trayIcon_.OnTrayNotification(wParam, lParam);
 
