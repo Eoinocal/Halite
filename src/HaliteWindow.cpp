@@ -316,15 +316,15 @@ void HaliteWindow::issueUiUpdate()
 {	
 	try
 	{
-	std::set<wstring> s;
+	std::set<hal::uuid> s;
 
-	foreach(const HaliteListViewCtrl::list_class_t::list_value_type val, std::make_pair(haliteList.is_selected_begin(), haliteList.is_selected_end()))
+	foreach(const HaliteListViewCtrl::list_value_type val, std::make_pair(haliteList.is_selected_begin(), haliteList.is_selected_end()))
 	{
-		s.insert(val.text().c_str());
+		s.insert(val.hash());
 	}
 	
 	const hal::torrent_details_manager& torrents = hal::bittorrent::Instance().update_torrent_details_manager(
-		haliteList.is_selected_begin()->text().c_str(), s);
+		HaliteListViewCtrl::list_value_type(*haliteList.is_selected_begin()).hash(), s);
 
 	Sleep(1);
 

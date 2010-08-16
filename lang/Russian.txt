@@ -139,6 +139,7 @@
 "Handshake" ---> "Рукопожатие"
 "Has choked us" ---> "Заглушил нас"
 "Hash failed for piece %2% of %1%." ---> "Hash failed for piece %2% of %1%."
+"Hash" --->  ??? 
 "IP Filter blocked %1%, %2%." ---> "IP фильтер блокирован %1%, %2%."
 "IP Filtering" ---> "Фильтрация IP"
 "IP filter disabled" ---> "IP фильт отключён"
@@ -367,6 +368,7 @@
 "Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "Пользователь отменил создание торрент файла"
 "Username : " ---> "Имя пользователя : "
+"Uuid" --->  ??? 
 "Warning" ---> "Предупреждение"
 "Web Seed" ---> "Сид"
 "Web Seeds and DHT Nodes" ---> "Сиды и DHT узлы"

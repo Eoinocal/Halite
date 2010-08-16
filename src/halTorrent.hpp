@@ -54,19 +54,19 @@ class torrent_internal;
 class invalid_torrent : public std::exception
 {
 public:
-	invalid_torrent(const wstring& who) :
+	invalid_torrent(const uuid& who) :
 		who_(who)
 	{}
 	
 	virtual ~invalid_torrent() throw () {}
 
-	wstring who() const throw ()
+	uuid who() const throw ()
 	{
 		return who_;
 	}       
 	
 private:
-	wstring who_;	
+	uuid who_;	
 };
 
 class bit
@@ -191,6 +191,8 @@ public:
 		const std::wstring get_name() const;
 		void set_name(const wstring&);
 
+		const uuid get_uuid() const;
+
 		float get_ratio() const;
 		void set_ratio(float new_ratio);
 		
@@ -222,6 +224,9 @@ public:
 		bool get_superseeding() const;
 		
 	public:
+		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(const uuid, class_type, 
+			get_uuid, uuid);
+
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(const wstring, const wstring&, class_type, 
 			get_name, set_name, name);
 
@@ -275,22 +280,12 @@ public:
 
 	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn);
 
-	template<typename T>
-	torrent get(T t)
+	torrent get(torrent_details_ptr p)
 	{
-		return get_wstr(to_wstr_shim(t));
+		return get(p->uuid());
 	}
-	
-	template<>
-	torrent get(const hal::torrent_details_ptr t)
-	{
-		if (t) 
-			return get_wstr(t->name());
-		else
-			return torrent();
-	}	
 
-	torrent get_wstr(const std::wstring& filename);
+	torrent get(const uuid& id);
 	
 	bool listen_on(std::pair<int, int> const& port_range);
 	int is_listening_on();
@@ -348,45 +343,27 @@ public:
 		bool start_paused=false, bool managed=false, allocations alloc=hal::bit::sparse_allocation, 
 		const boost::filesystem::wpath& move_to_directory=L"");
 	
-	void get_all_peer_details(const std::string& filename, peer_details_vec& peer_container);
-	void get_all_peer_details(const std::wstring& filename, peer_details_vec& peer_container);
-	void get_all_file_details(const std::string& filename, file_details_vec& file_details);
-	void get_all_file_details(const std::wstring& filename, file_details_vec& file_details);
+	void get_all_peer_details(const uuid&, peer_details_vec&);
+	void get_all_file_details(const uuid&, file_details_vec&);
 	
 	void resume_all();
 	void close_all(boost::optional<report_num_active> fn);
 	
-	bool is_torrent(const std::string& filename);
-	bool is_torrent(const std::wstring& filename);	
+	bool is_torrent(const uuid&);
 	
-	void pause_torrent(const std::string& filename);
-	void pause_torrent(const std::wstring& filename);
-	void resume_torrent(const std::string& filename);
-	void resume_torrent(const std::wstring& filename);
-	void stop_torrent(const std::string& filename);
-	void stop_torrent(const std::wstring& filename);
-	bool is_torrent_active(const std::string& filename);
-	bool is_torrent_active(const std::wstring& filename);
-	void reannounce_torrent(const std::string& filename);
-	void reannounce_torrent(const std::wstring& filename);
-	void recheck_torrent(const std::string& filename);
-	void recheck_torrent(const std::wstring& filename);
+	void pause_torrent(const uuid&);
+	void resume_torrent(const uuid&);
+	void stop_torrent(const uuid&);
+	bool is_torrent_active(const uuid&);
+	void reannounce_torrent(const uuid&);
+	void recheck_torrent(const uuid&);
 	
 	void pause_all_torrents();
 	void unpause_all_torrents();
 	bool is_any_torrent_active();
 
-	template<typename S>
-	void remove_torrent(S filename)
-	{ 
-		remove_torrent_wstr(to_wstr_shim(filename)); 
-	}	
-
-	template<typename S>
-	void remove_torrent_wipe_files(S filename, remove_files fn)
-	{ 
-		remove_torrent_wipe_files_wstr(to_wstr_shim(filename), fn); 
-	}	
+	void remove_torrent(const uuid& id);
+	void remove_torrent_wipe_files(const uuid& id, remove_files fn);
 
 	void start_event_receiver();
 	void stop_event_receiver();
@@ -410,7 +387,7 @@ public:
 
 	const torrent_details_manager& torrentDetails();
 	const torrent_details_manager& update_torrent_details_manager(
-		const std::wstring& focused, const std::set<std::wstring>& selected);
+		const uuid& id, const std::set<uuid>& selected);
 
 	void connect_torrent_completed_signal(function<void (wstring torrent_name)> fn);
 	
@@ -422,12 +399,9 @@ private:
 	const bit_impl* pimpl() const;
 
 	boost::scoped_ptr<bit_impl> pimpl_;
-	
-	void remove_torrent_wstr(const std::wstring& filename);
-	void remove_torrent_wipe_files_wstr(const std::wstring&  filename, remove_files fn);
 
 	void update_torrent_details_manager_thread(
-		const wstring& focused, const std::set<wstring>& selected);
+		const uuid& focused, const std::set<uuid>& selected);
 	
 	torrent_details_manager torrent_details_;
 };

@@ -52,6 +52,8 @@ public:
 	typedef CHaliteSortListViewCtrl<TBase, DataType> this_class_t;
 	typedef ATL::CWindowImpl<TBase, WTL::CListViewCtrl> parent_class_t;
 	typedef WTLx::ListViewSortMixin<this_class_t> list_class_t;
+
+	typedef DataType list_class_data_t;
 	
 	class CHaliteHeaderCtrl : public CWindowImpl<CHaliteHeaderCtrl, WTL::CHeaderCtrl>
 	{

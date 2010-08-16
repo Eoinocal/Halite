@@ -139,6 +139,7 @@
 "Handshake" ---> "Handshake"
 "Has choked us" ---> "Přiškrtil nás"
 "Hash failed for piece %2% of %1%." ---> "Hash dílu %2% z %1% nesouhlasí."
+"Hash" --->  ??? 
 "IP Filter blocked %1%, %2%." ---> "IP filtr zablokoval %1%, %2%."
 "IP Filtering" ---> "Filtrování IP"
 "IP filter disabled" ---> "IP filtr zakázán"
@@ -367,6 +368,7 @@
 "Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "Uživatelem přerušené vytvoření torrent souboru"
 "Username : " ---> "Uživatelské jméno: "
+"Uuid" --->  ??? 
 "Warning" ---> "Varování"
 "Web Seed" ---> "Web seed"
 "Web Seeds and DHT Nodes" ---> "Web seedy a DHT uzly"

@@ -139,6 +139,7 @@
 "Handshake" ---> "Handslag"
 "Has choked us" ---> "Har Strypt oss"
 "Hash failed for piece %2% of %1%." --->  ??? 
+"Hash" --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
 "IP Filtering" ---> "IP-filtrering"
 "IP filter disabled" ---> "IP-filter av"
@@ -367,6 +368,7 @@
 "Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "Användarnamn :"
+"Uuid" --->  ??? 
 "Warning" --->  ??? 
 "Web Seed" ---> "Webb källa"
 "Web Seeds and DHT Nodes" --->  ??? 

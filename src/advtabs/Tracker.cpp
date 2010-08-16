@@ -161,13 +161,13 @@ void AdvTrackerDialog::onReannounce(UINT, int, HWND)
 {
 	if (hal::bittorrent::Instance().torrentDetails().focused_torrent())
 	{
-		if (!hal::bittorrent::Instance().is_torrent_active(focused_torrent()->name()))
+		if (!hal::bittorrent::Instance().is_torrent_active(focused_torrent()->uuid()))
 		{
-			hal::bittorrent::Instance().resume_torrent(focused_torrent()->name());
+			hal::bittorrent::Instance().resume_torrent(focused_torrent()->uuid());
 		}
 		else
 		{
-			hal::bittorrent::Instance().reannounce_torrent(focused_torrent()->name());
+			hal::bittorrent::Instance().reannounce_torrent(focused_torrent()->uuid());
 		}
 	}
 }
@@ -183,7 +183,7 @@ void AdvTrackerDialog::onReset(UINT, int, HWND)
 	{
 		t.reset_trackers();
 		
-		std::vector<hal::tracker_detail> trackers =t.trackers;
+		std::vector<hal::tracker_detail> trackers=t.trackers;
 		m_list.DeleteAllItems();
 		
 		foreach (const hal::tracker_detail& tracker, trackers)

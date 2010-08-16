@@ -360,42 +360,42 @@ private:
 class EventInvalidTorrent : public EventDetail
 {
 public:
-	template<typename t_str, typename f_str>
-	EventInvalidTorrent(event_logger::eventLevel l, event_logger::codes code, t_str t, f_str f) :
+	template<typename f_str>
+	EventInvalidTorrent(event_logger::eventLevel l, event_logger::codes code, const uuid& id, f_str f) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), code),
-		torrent_(hal::to_wstr_shim(t)),
+		id_(id),
 		function_(hal::to_wstr_shim(f))
 	{}
 	
 	virtual std::wstring msg()
 	{
-		return (wform(hal::app().res_wstr(code())) % torrent_ % function_).str();
+		return (wform(hal::app().res_wstr(code())) % id_ % function_).str();
 	}
 	
 private:
 	std::wstring function_;
-	std::wstring torrent_;
+	uuid id_;
 	std::wstring exception_;
 };
 
 class EventTorrentException : public EventDetail
 {
 public:
-	template<typename e_str, typename t_str, typename f_str>
-	EventTorrentException(event_logger::eventLevel l, event_logger::codes code, e_str e, t_str t, f_str f) :
+	template<typename e_str, typename f_str>
+	EventTorrentException(event_logger::eventLevel l, event_logger::codes code, e_str e, const hal::uuid& id, f_str f) :
 		EventDetail(l, boost::posix_time::second_clock::universal_time(), code),
-		torrent_(hal::to_wstr_shim(t)),
+		id_(id),
 		function_(hal::to_wstr_shim(f)),
 		exception_(hal::to_wstr_shim(e))
 	{}
 	
 	virtual std::wstring msg()
 	{
-		return (wform(hal::app().res_wstr(code())) % torrent_ % exception_ % function_).str();
+		return (wform(hal::app().res_wstr(code())) % id_ % exception_ % function_).str();
 	}
 	
 private:
-	std::wstring torrent_;
+	hal::uuid id_;
 	std::wstring function_;
 	std::wstring exception_;
 };

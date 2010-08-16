@@ -139,6 +139,7 @@
 "Handshake" ---> "Kézfogás"
 "Has choked us" ---> "Eltömített minket"
 "Hash failed for piece %2% of %1%." ---> "Hash failed for piece %2% of %1%."
+"Hash" --->  ??? 
 "IP Filter blocked %1%, %2%." ---> "IP Filter blocked %1%, %2%."
 "IP Filtering" ---> "IP Szűrés"
 "IP filter disabled" ---> "IP szűrő letiltva"
@@ -367,6 +368,7 @@
 "Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "Felhasználónév:"
+"Uuid" --->  ??? 
 "Warning" ---> "Figyelmeztetés"
 "Web Seed" ---> "Web Seed"
 "Web Seeds and DHT Nodes" ---> "Web Seeds és DHT Csomópontok"

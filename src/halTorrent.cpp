@@ -104,7 +104,7 @@ const peer_details_vec& torrent_details::get_peer_details() const
 {
 	if (!peer_details_filled_)
 	{
-		bittorrent::Instance().get_all_peer_details(hal::to_utf8(name_), peer_details_);
+		bittorrent::Instance().get_all_peer_details(uuid_, peer_details_);
 		peer_details_filled_ = true;
 	}
 	
@@ -115,7 +115,7 @@ const file_details_vec& torrent_details::get_file_details() const
 {
 	if (!file_details_filled_)
 	{
-		bittorrent::Instance().get_all_file_details(hal::to_utf8(name_), file_details_);
+		bittorrent::Instance().get_all_file_details(uuid_, file_details_);
 		file_details_filled_ = true;
 	}
 	
@@ -386,9 +386,9 @@ bool bit::create_torrent(const create_torrent_params& params, fs::wpath out_file
 	return pimpl()->create_torrent(params, out_file, fn);
 }
 
-bit::torrent bit::get_wstr(const std::wstring& filename)
+bit::torrent bit::get(const uuid& id)
 {
-	return bit::torrent(pimpl()->the_torrents_.get(filename));
+	return bit::torrent(pimpl()->the_torrents_.get(id));
 }
 
 bool bit::listen_on(std::pair<int, int> const& range)
@@ -613,19 +613,19 @@ const torrent_details_manager& bit::torrentDetails()
 	return torrent_details_;
 }
 
-const torrent_details_manager& bit::update_torrent_details_manager(const wstring& focused, const std::set<wstring>& selected)
+const torrent_details_manager& bit::update_torrent_details_manager(const uuid& focused, const std::set<uuid>& selected)
 {
 	try {
 
 	boost::thread t(bind(&bit::update_torrent_details_manager_thread, this, focused, selected));
 	t.join();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "updatetorrent_details_manager")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uuid(), "updatetorrent_details_manager")
 	
 	return torrent_details_;
 }
 
-void bit::update_torrent_details_manager_thread(const wstring& focused, const std::set<wstring>& selected)
+void bit::update_torrent_details_manager_thread(const uuid& focused, const std::set<uuid>& selected)
 {
 	try {	
 
@@ -634,7 +634,7 @@ void bit::update_torrent_details_manager_thread(const wstring& focused, const st
 	for (torrent_manager::torrent_by_name::iterator i=pimpl()->the_torrents_.begin(), e=pimpl()->the_torrents_.end(); i != e; ++i)
 	{
 		torrent_details_ptr pT = (*i).torrent->get_torrent_details_ptr();				
-		tmp_map[(*i).torrent->name()] = pT;
+		tmp_map[(*i).torrent->uuid()] = pT;
 	}
 
 	{	
@@ -646,7 +646,7 @@ void bit::update_torrent_details_manager_thread(const wstring& focused, const st
 		std::swap(tmp_map, torrent_details_.torrent_map_);
 	}
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "updatetorrent_details_manager")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uuid(), "updatetorrent_details_manager")
 }
 
 void bit::resume_all()
@@ -664,147 +664,102 @@ const cache_details bit::get_cache_details() const
 	return pimpl()->get_cache_details();
 }
 
-void bit::get_all_peer_details(const std::string& filename, peer_details_vec& peer_container)
-{
-	get_all_peer_details(from_utf8_safe(filename), peer_container);
-}
-
-void bit::get_all_peer_details(const std::wstring& filename, peer_details_vec& peer_container)
+void bit::get_all_peer_details(const uuid& id, peer_details_vec& peer_container)
 {
 	try {
 	
-	pimpl()->the_torrents_.get(filename)->get_peer_details(peer_container);
+	pimpl()->the_torrents_.get(id)->get_peer_details(peer_container);
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "get_all_peer_details")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(id, "get_all_peer_details")
 }
 
-void bit::get_all_file_details(const std::string& filename, file_details_vec& file_details)
-{
-	get_all_file_details(from_utf8_safe(filename), file_details);
-}
-
-void bit::get_all_file_details(const std::wstring& filename, file_details_vec& file_details)
+void bit::get_all_file_details(const uuid& id, file_details_vec& file_details)
 {
 	try {
 	
-	pimpl()->the_torrents_.get(filename)->get_file_details(file_details);
+	pimpl()->the_torrents_.get(id)->get_file_details(file_details);
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "get_all_file_details")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(id, "get_all_file_details")
 }
 
-bool bit::is_torrent(const std::string& filename)
-{	
-	return is_torrent(hal::to_wstr_shim(filename));
-}
-
-bool bit::is_torrent(const std::wstring& filename)
+bool bit::is_torrent(const uuid& id)
 {	
 	try {
 	
-	return pimpl()->the_torrents_.exists(filename);
+	return pimpl()->the_torrents_.exists(id);
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "is_torrent")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(id, "is_torrent")
 	
 	return false;
 }
 
-void bit::pause_torrent(const std::string& filename)
-{
-	pause_torrent(hal::to_wstr_shim(filename));
-}
-
-void bit::pause_torrent(const std::wstring& filename)
+void bit::pause_torrent(const uuid& id)
 {
 	try {
 	
-	pimpl()->the_torrents_.get(filename)->pause();
+	pimpl()->the_torrents_.get(id)->pause();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "pause_torrent")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(id, "pause_torrent")
 }
 
-void bit::resume_torrent(const std::string& filename)
-{
-	resume_torrent(hal::to_wstr_shim(filename));
-}
-
-void bit::resume_torrent(const std::wstring& filename)
+void bit::resume_torrent(const uuid& id)
 {
 	try {
 	
-	pimpl()->the_torrents_.get(filename)->resume();
+	pimpl()->the_torrents_.get(id)->resume();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "resume_torrent")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(id, "resume_torrent")
 }
 
-void bit::stop_torrent(const std::string& filename)
-{
-	stop_torrent(hal::to_wstr_shim(filename));
-}
-
-void bit::stop_torrent(const std::wstring& filename)
+void bit::stop_torrent(const uuid& id)
 {
 	try {
 	
-	pimpl()->the_torrents_.get(filename)->stop();
+	pimpl()->the_torrents_.get(id)->stop();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "stop_torrent")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(id, "stop_torrent")
 }
 
-bool bit::is_torrent_active(const std::string& filename)
-{
-	return is_torrent_active(hal::to_wstr_shim(filename));
-}
-
-bool bit::is_torrent_active(const std::wstring& filename)
+bool bit::is_torrent_active(const uuid& id)
 {
 	try {
 	
-	return pimpl()->the_torrents_.get(filename)->is_active();
+	return pimpl()->the_torrents_.get(id)->is_active();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "is_torrent_active")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(id, "is_torrent_active")
 	
 	return false; // ??? is this correct
 }
 
-void bit::reannounce_torrent(const std::string& filename)
-{
-	reannounce_torrent(hal::to_wstr_shim(filename));
-}
-
-void bit::reannounce_torrent(const std::wstring& filename)
+void bit::reannounce_torrent(const uuid& id)
 {
 	try {
 	
-	pimpl()->the_torrents_.get(filename)->handle().force_reannounce();
+	pimpl()->the_torrents_.get(id)->handle().force_reannounce();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "reannounce_torrent")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(id, "reannounce_torrent")
 }
 
 
-void bit::recheck_torrent(const std::string& filename)
-{
-	recheck_torrent(hal::to_wstr_shim(filename));
-}
-
-void bit::recheck_torrent(const std::wstring& filename)
+void bit::recheck_torrent(const uuid& id)
 {
 	try {
 	
 //	pimpl()->the_torrents_.get(filename)->output_torrent_debug_details();
 
-	pimpl()->the_torrents_.get(filename)->force_recheck();
+	pimpl()->the_torrents_.get(id)->force_recheck();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(filename, "recheck_torrent")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(id, "recheck_torrent")
 }
 
-void bit::remove_torrent_wstr(const std::wstring& filename)
+void bit::remove_torrent(const uuid& id)
 {
-	pimpl()->remove_torrent(filename);
+	pimpl()->remove_torrent(id);
 }
 
-void bit::remove_torrent_wipe_files_wstr(const std::wstring& filename, remove_files f)
+void bit::remove_torrent_wipe_files(const uuid& id, remove_files f)
 {
-	pimpl()->remove_torrent_wipe_files(hal::to_wstr_shim(filename), f);
+	pimpl()->remove_torrent_wipe_files(id, f);
 }
 
 void bit::pause_all_torrents()
@@ -822,7 +777,7 @@ void bit::pause_all_torrents()
 */
 	pimpl()->session_->pause();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "pause_all_torrents")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uuid(), "pause_all_torrents")
 }
 
 void bit::unpause_all_torrents()
@@ -838,7 +793,7 @@ void bit::unpause_all_torrents()
 */
 	pimpl()->session_->resume();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "unpause_all_torrents")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uuid(), "unpause_all_torrents")
 }
 
 bool bit::is_any_torrent_active()
@@ -857,7 +812,7 @@ bool bit::is_any_torrent_active()
 		}
 	}
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "is_any_torrent_active")
+	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uuid(), "is_any_torrent_active")
 	
 	return result;
 }
@@ -924,7 +879,7 @@ const std::wstring bit::torrent::get_name() const
 	
 	return ptr->name();
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Torrent Unknown", "torrent::get_name()")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_name()")
 	
 	return 0;
 }
@@ -935,8 +890,20 @@ void bit::torrent::set_name(const std::wstring& n)
 	
 	ptr->set_name(n);
 	
-	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(L"Torrent Unknown", "torrent::set_name()")
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_name()")
 }
+
+const uuid bit::torrent::get_uuid() const
+{
+	try {
+	
+	return ptr->uuid();
+	
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_uuid()")
+	
+	return hal::uuid();
+}
+
 
 float bit::torrent::get_ratio() const
 {

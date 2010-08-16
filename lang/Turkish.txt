@@ -139,6 +139,7 @@
 "Handshake" ---> "El Sıkışma"
 "Has choked us" ---> "Bize tıkadı"
 "Hash failed for piece %2% of %1%." --->  ??? 
+"Hash" --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
 "IP Filtering" ---> "IP Süzme"
 "IP filter disabled" ---> "IP süzgeci etkisiz"
@@ -367,6 +368,7 @@
 "Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "Torrent oluşturma kullanıcı tarafından iptal edildi"
 "Username : " ---> "Kullanıcı Adı"
+"Uuid" --->  ??? 
 "Warning" ---> "Uyarı"
 "Web Seed" ---> "Web Kaynağı"
 "Web Seeds and DHT Nodes" ---> "Web Kaynakları ve DHT Nodları"

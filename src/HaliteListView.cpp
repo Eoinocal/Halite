@@ -22,6 +22,34 @@
 
 #define HAL_CUSTOMDRAW_TITLEDATA 1000000000
 
+template<>
+inline const std::wstring hal::to_wstr_shim<const HaliteListViewCtrl::list_value_type>
+	(const HaliteListViewCtrl::list_value_type& v)
+{
+	return std::wstring(v.text().c_str());
+}
+
+template<>
+inline const std::wstring hal::to_wstr_shim<HaliteListViewCtrl::list_value_type>
+	(HaliteListViewCtrl::list_value_type& v)
+{
+	return std::wstring(v.text().c_str());
+}
+
+HaliteListViewCtrl::ex_list_value_type::ex_list_value_type(const list_class_t::list_value_type& l) :
+	list_class_t::list_value_type(l)
+{}
+
+hal::uuid HaliteListViewCtrl::ex_list_value_type::hash() const
+{
+	std::wstringstream ss(wstring(text(hal::torrent_details::uuid_e-hal::torrent_details::name_e).c_str()));
+	hal::uuid id;
+
+	ss >> id;
+
+	return id;
+}	
+
 HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	halite_window_(HalWindow),
 	ini_class_t("listviews/halite", "HaliteListView"),
@@ -106,7 +134,7 @@ DWORD HaliteListViewCtrl::OnItemPrePaint(int idCtrl, LPNMCUSTOMDRAW lpNMCD)
 	return CDRF_DODEFAULT;
 }
 
-bool HaliteListViewCtrl::sort_list_comparison(std::wstring l, std::wstring r, size_t index, bool ascending)
+bool HaliteListViewCtrl::sort_list_comparison(list_class_data_t l, list_class_data_t r, size_t index, bool ascending)
 {
 	try
 	{
@@ -194,10 +222,10 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 
 	selection_from_listview();
 		
-	std::set<std::wstring> torrent_set;
+	std::set<hal::uuid> torrent_set;
 	foreach (hal::torrent_details_ptr t,  tD.torrents())
 	{
-		torrent_set.insert(t->name());
+		torrent_set.insert(t->uuid());
 	}
 	
 	erase_based_on_set(torrent_set, true);	
@@ -242,7 +270,7 @@ LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 {
 	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
-		hal::bittorrent::Instance().resume_torrent(val.text().c_str());
+		hal::bittorrent::Instance().resume_torrent(val.hash());
 	}
 	
 	return 0;
@@ -252,7 +280,7 @@ LRESULT HaliteListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BO
 {	
 	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
-		hal::bittorrent::Instance().pause_torrent(val.text().c_str());
+		hal::bittorrent::Instance().pause_torrent(val.hash());
 	}
 	
 	return 0;
@@ -262,7 +290,7 @@ LRESULT HaliteListViewCtrl::OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
 {
 	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
-		hal::bittorrent::Instance().stop_torrent(val.text().c_str());
+		hal::bittorrent::Instance().stop_torrent(val.hash());
 	}
 
 	return 0;
@@ -270,7 +298,7 @@ LRESULT HaliteListViewCtrl::OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
 
 LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	hal::bittorrent::Instance().remove_torrent(hal::to_utf8(is_selected_begin()->text().c_str()));
+	hal::bittorrent::Instance().remove_torrent(list_value_type(*is_selected_begin()).hash());
 	erase_from_list(*is_selected_begin());
 
 	return 0;
@@ -278,15 +306,15 @@ LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWn
 
 LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	std::set<wstring>  torrent_names;
+	std::set<hal::uuid> torrent_ids;
 
 	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
-		torrent_names.insert(hal::to_wstr_shim(val));
+		torrent_ids.insert(val.hash());
 	
-	erase_based_on_set(torrent_names, false);
+	erase_based_on_set(torrent_ids, false);
 
-	foreach(wstring name, torrent_names)
-		hal::bittorrent::Instance().remove_torrent(name);
+	foreach(const hal::uuid& id, torrent_ids)
+		hal::bittorrent::Instance().remove_torrent(id);
 
 	return 0;
 }
@@ -297,13 +325,13 @@ LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 	{
 		//HAL_DEV_MSG(hal::wform(L"UUid: %1%") % v.text(hal::torrent_details::uuid_e-hal::torrent_details::name_e));
 
-		hal::bittorrent::Instance().recheck_torrent(v.text().c_str());
+		hal::bittorrent::Instance().recheck_torrent(v.hash());
 	}
 
 	return 0;
 }
 
-void HaliteListViewCtrl::remove_to_bin(const wstring name, hal::fs::wpath root, boost::shared_ptr<hal::file_details_vec> files)
+void HaliteListViewCtrl::remove_to_bin(const hal::uuid& id, hal::fs::wpath root, boost::shared_ptr<hal::file_details_vec> files)
 {
 	std::vector<wchar_t> file_names_buffer;
 
@@ -336,18 +364,18 @@ void HaliteListViewCtrl::remove_to_bin(const wstring name, hal::fs::wpath root, 
 	HAL_DEV_MSG(L"Calling SHFileOperation");
 	SHFileOperation(&shf);
 
-	erase_from_list(name);
+	erase_from_list(id);
 }
 
 LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	std::set<wstring>  torrent_names;
+	std::set<hal::uuid> torrent_names;
 
 	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
-		torrent_names.insert(hal::to_wstr_shim(val));
+		torrent_names.insert(val.hash());
 
-	foreach(wstring name, torrent_names)
-		hal::bittorrent::Instance().remove_torrent_wipe_files(name, bind(&HaliteListViewCtrl::remove_to_bin, this, name, _1, _2));
+	foreach(const hal::uuid& id, torrent_names)
+		hal::bittorrent::Instance().remove_torrent_wipe_files(id, bind(&HaliteListViewCtrl::remove_to_bin, this, id, _1, _2));
 
 	return 0;
 }
@@ -363,7 +391,7 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 
 	foreach(const list_value_type& v, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
-		hal::bit::torrent t = hal::bittorrent::Instance().get(v);
+		hal::bit::torrent t = hal::bittorrent::Instance().get(v.hash());
 
 		wpath save_dir = t.save_directory;
 		if (boost::filesystem::is_directory(save_dir/wpath(t.name)))
@@ -406,7 +434,7 @@ LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndC
 
 	HAL_DEV_MSG(L"OnEditFolders");
 
-	if (hal::bit::torrent t = hal::bittorrent::Instance().get(*is_selected_begin()))
+	if (hal::bit::torrent t = hal::bittorrent::Instance().get(list_value_type(*is_selected_begin()).hash()))
 	{
 		wstring saveDirectory = static_cast<wpath>(t.save_directory).native_file_string();
 		wstring moveToDirectory = static_cast<wpath>(t.move_to_directory).native_file_string();
@@ -440,13 +468,13 @@ LRESULT HaliteListViewCtrl::OnToggleSuperseeding(WORD wNotifyCode, WORD wID, HWN
 	try
 	{
 
-	std::set<wstring> torrent_names;
+	std::set<hal::uuid> torrent_names;
 
 	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
-		torrent_names.insert(hal::to_wstr_shim(val));
+		torrent_names.insert(val.hash());
 
-	foreach(wstring name, torrent_names)
-		if (hal::bit::torrent t = hal::bittorrent::Instance().get(name))
+	foreach(const hal::uuid& id, torrent_names)
+		if (hal::bit::torrent t = hal::bittorrent::Instance().get(id))
 		{
 			t.superseeding = !t.superseeding;
 		}
@@ -468,15 +496,15 @@ LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCt
 	if (lock) 
 	{		
 */
-	std::set<wstring> torrent_names;
+	std::set<hal::uuid> torrent_names;
 
 	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
-		torrent_names.insert(hal::to_wstr_shim(val));
+		torrent_names.insert(val.hash());
 	
 //	erase_based_on_set(torrent_names, false);
 
-	foreach(wstring name, torrent_names)
-		hal::bittorrent::Instance().get(name).managed = true;
+	foreach(const hal::uuid& id, torrent_names)
+		hal::bittorrent::Instance().get(id).managed = true;
 //	}
 
 	halite_window_.issueUiUpdate();
@@ -496,15 +524,15 @@ LRESULT HaliteListViewCtrl::OnSetUnmanaged(WORD wNotifyCode, WORD wID, HWND hWnd
 	if (lock) 
 	{		
 */
-	std::set<wstring> torrent_names;
+	std::set<hal::uuid> torrent_names;
 
 	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
-		torrent_names.insert(hal::to_wstr_shim(val));
+		torrent_names.insert(val.hash());
 	
 //	erase_based_on_set(torrent_names, false);
 
-	foreach(wstring name, torrent_names)
-		hal::bittorrent::Instance().get(name).managed = false;
+	foreach(const hal::uuid& id, torrent_names)
+		hal::bittorrent::Instance().get(id).managed = false;
 //	}
 
 	halite_window_.issueUiUpdate();
@@ -522,7 +550,7 @@ LRESULT HaliteListViewCtrl::OnAdjustQueuePosition(WORD wNotifyCode, WORD wID, HW
 
 	foreach(const list_value_type v, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
-		hal::bit::torrent t = hal::bittorrent::Instance().get(v);
+		hal::bit::torrent t = hal::bittorrent::Instance().get(v.hash());
 
 		switch (wID)
 		{
@@ -559,9 +587,9 @@ LRESULT HaliteListViewCtrl::OnQueueView(WORD wNotifyCode, WORD wID, HWND hWndCtl
 	return 0;
 }
 
-void HaliteListViewCtrl::erase_torrent_name(wstring name)
+void HaliteListViewCtrl::erase_torrent_name(const hal::uuid& id)
 {
-	erase_from_list(name);
+	erase_from_list(id);
 }
 
 void HaliteListViewCtrl::queue_view_mode()

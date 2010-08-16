@@ -193,8 +193,8 @@ public:
 
 	void start_all()
 	{
-		for (torrent_by_name::iterator i= torrents_.get<by_name>().begin(), 
-			e = torrents_.get<by_name>().end(); i!=e; /**/)
+		for (torrent_by_uuid::iterator i= torrents_.get<by_uuid>().begin(), 
+			e = torrents_.get<by_uuid>().end(); i!=e; /**/)
 		{
 		//	wpath file = wpath(hal::app().get_working_directory())/L"torrents"/(*i).torrent->filename();
 			
@@ -237,8 +237,8 @@ public:
 
 	void apply_queue_positions()
 	{
-		for (torrent_by_name::iterator i= torrents_.get<by_name>().begin(), 
-			e = torrents_.get<by_name>().end(); i!=e; ++i)
+		for (torrent_by_uuid::iterator i= torrents_.get<by_uuid>().begin(), 
+			e = torrents_.get<by_uuid>().end(); i!=e; ++i)
 		{
 			(*i).torrent->apply_queue_position();
 		}
@@ -274,11 +274,11 @@ public:
 		return t;
 	}
 	
-	size_t remove_torrent(const wstring& name)
+	size_t remove_torrent(const uuid& name)
 	{		
 		TORRENT_STATE_LOG(L"Torrent manager erasing");
 
-		return torrents_.get<by_name>().erase(name);
+		return torrents_.get<by_uuid>().erase(name);
 	}
 
 /*	torrent_internal_ptr get_by_file(const wstring& filename)
@@ -302,12 +302,7 @@ public:
 			return (*it).torrent;
 		}
 		
-		throw invalid_torrent(name);
-	}
-
-	torrent_internal_ptr get(const wstring& name)
-	{
-		return get_by_name(name);
+		throw invalid_torrent(uuid());
 	}
 	
 	torrent_internal_ptr get_by_hash(const libt::big_number& hash)
@@ -319,7 +314,24 @@ public:
 			return (*it).torrent;
 		}
 		
-		throw invalid_torrent(L"From hash");
+		throw invalid_torrent(uuid());
+	}
+	
+	torrent_internal_ptr get_by_uuid(const uuid& id)
+	{
+		torrent_by_uuid::iterator it = torrents_.get<by_uuid>().find(id);
+		
+		if (it != torrents_.get<by_uuid>().end() && (*it).torrent)
+		{
+			return (*it).torrent;
+		}
+		
+		throw invalid_torrent(id);
+	}
+
+	torrent_internal_ptr get(const uuid& id)
+	{
+		return get_by_uuid(id);
 	}
 
 	void update_torrent_by_hash(torrent_internal_ptr torrent)
@@ -355,9 +367,9 @@ public:
 		}
 	}
 	
-	torrent_by_name::iterator erase(torrent_by_name::iterator where)
+	torrent_by_uuid::iterator erase(torrent_by_uuid::iterator where)
 	{
-		return torrents_.get<by_name>().erase(where);
+		return torrents_.get<by_uuid>().erase(where);
 	}
 	
 	size_t size()
@@ -365,11 +377,11 @@ public:
 		return torrents_.size();
 	}
 	
-	bool exists(const wstring& name)
+	bool exists(const uuid& id)
 	{
-		torrent_by_name::iterator it = torrents_.get<by_name>().find(name);
+		torrent_by_uuid::iterator it = torrents_.get<by_uuid>().find(id);
 		
-		if (it != torrents_.get<by_name>().end())
+		if (it != torrents_.get<by_uuid>().end())
 			return true;
 		else
 			return false;

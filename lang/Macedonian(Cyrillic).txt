@@ -139,6 +139,7 @@
 "Handshake" ---> "Рукованје"
 "Has choked us" ---> "Успорио нас је"
 "Hash failed for piece %2% of %1%." ---> "Неуспешан хаш за део %2% од %1%. "
+"Hash" --->  ??? 
 "IP Filter blocked %1%, %2%." ---> "ИП-филтер блокирао %1%, %2%."
 "IP Filtering" ---> "ИП Филтрациј"
 "IP filter disabled" ---> "ИП-филтер искључен"
@@ -367,6 +368,7 @@
 "Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "Корисникот го прекина правејњето на торет"
 "Username : " ---> "Корисник:"
+"Uuid" --->  ??? 
 "Warning" ---> "Предупредување"
 "Web Seed" ---> "'Webseed'"
 "Web Seeds and DHT Nodes" ---> "'Webseed' и ДХТ чвори"

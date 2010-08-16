@@ -10,7 +10,9 @@
 #include <boost/tuple/tuple.hpp>
 #include <boost/thread/recursive_mutex.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+
 #include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 namespace hal
 {	
@@ -27,6 +29,8 @@ namespace hal
 	typedef boost::int64_t size_type;
 	typedef boost::recursive_mutex mutex_t;
 	typedef boost::thread thread_t;
+
+	typedef boost::uuids::uuid uuid;
 
 	using boost::tuple;
 	using boost::shared_ptr;

@@ -139,6 +139,7 @@
 "Handshake" ---> "Etablissement de connexion"
 "Has choked us" ---> "Nous refuse la connexion"
 "Hash failed for piece %2% of %1%." ---> "Echec du Hachage pour la pièce %2% sur %1%."
+"Hash" --->  ??? 
 "IP Filter blocked %1%, %2%." ---> "IP bloquée par le filtre %1%, %2%."
 "IP Filtering" ---> "Filtrage des IP"
 "IP filter disabled" ---> "Filtre IP désactivé"
@@ -367,6 +368,7 @@
 "Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "Création du fichier torrent annulée par l'utilisateur"
 "Username : " ---> "Identifiant :"
+"Uuid" --->  ??? 
 "Warning" ---> "Alerte"
 "Web Seed" ---> "Source Web"
 "Web Seeds and DHT Nodes" ---> "Source Web et Noeuds DHT"

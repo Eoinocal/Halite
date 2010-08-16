@@ -139,6 +139,7 @@
 "Handshake" ---> "Handshake"
 "Has choked us" ---> "Ne-a sugrumat"
 "Hash failed for piece %2% of %1%." ---> "Haşul incorect la piesa %2% din %1%."
+"Hash" --->  ??? 
 "IP Filter blocked %1%, %2%." ---> "Filtrul IP a blocat %1%, %2%."
 "IP Filtering" ---> "Filtrare IP"
 "IP filter disabled" ---> "Filtrul IP dezactivat"
@@ -367,6 +368,7 @@
 "Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "Utilizatorul a anulat crearea fişierului torrent"
 "Username : " ---> "Numele Utilizatorului :"
+"Uuid" --->  ??? 
 "Warning" ---> "Avertizare"
 "Web Seed" ---> "Donatori Web"
 "Web Seeds and DHT Nodes" ---> "Donatori Web şi Noduri DHT"

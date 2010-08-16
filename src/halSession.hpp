@@ -725,8 +725,8 @@ public:
 		}
 		
 		} 
-		HAL_TORRENT_FILESYSTEM_EXCEPTION_CATCH(file.string(), "add_torrent")
-		HAL_GENERIC_TORRENT_EXCEPTION_CATCH(file.string(), "add_torrent")
+		HAL_TORRENT_FILESYSTEM_EXCEPTION_CATCH(uuid(), "add_torrent")
+		HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uuid(), "add_torrent")
 	}
 
 	void add_torrent(const wstring& uri, const wpath& save_directory, bool start_stopped, bool managed, bit::allocations alloc, 
@@ -764,26 +764,26 @@ public:
 		}
 		
 		} 
-		HAL_TORRENT_FILESYSTEM_EXCEPTION_CATCH(uri, "add_torrent")
-		HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uri, "add_torrent")
+		HAL_TORRENT_FILESYSTEM_EXCEPTION_CATCH(uuid(), "add_torrent")
+		HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uuid(), "add_torrent")
 	}
 
-	void remove_torrent(const wstring& name)
+	void remove_torrent(const uuid& id)
 	{
 		try {
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Removing Torrent.")));
 
 		boost::shared_ptr<file_details_vec> files = boost::shared_ptr<file_details_vec>(new file_details_vec());		
-		torrent_internal_ptr pTI = the_torrents_.get(name);
+		torrent_internal_ptr pTI = the_torrents_.get(id);
 
-		the_torrents_.remove_torrent(name);
+		the_torrents_.remove_torrent(id);
 		
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Removed")));
 		
-		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(name, "remove_torrent")
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(id, "remove_torrent")
 	}
 
-	void remove_wrapper_function(const std::wstring name, boost::function<void (void)> fn)
+	void remove_wrapper_function(const uuid& id, boost::function<void (void)> fn)
 	{
 		try {
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Remove wrapper.")));
@@ -791,37 +791,37 @@ public:
 		if (!fn.empty()) 
 			fn();
 		
-		torrent_internal_ptr pTI = the_torrents_.get(name);
+		torrent_internal_ptr pTI = the_torrents_.get(id);
 		if(pTI)
 		{
 			pTI->clear_resume_data();
 			pTI->delete_torrent_file();
 
-			the_torrents_.remove_torrent(name);
+			the_torrents_.remove_torrent(id);
 		}		
 
-		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(name, "remove_wrapper_function")
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(id, "remove_wrapper_function")
 	}
 
 
-	void remove_torrent_wipe_files(const std::wstring& name, remove_files fn)
+	void remove_torrent_wipe_files(const uuid& id, remove_files fn)
 	{
 		try {
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Removing Torrent and files.")));
 		
-		torrent_internal_ptr pTI = the_torrents_.get(name);
+		torrent_internal_ptr pTI = the_torrents_.get(id);
 		if(pTI)
 		{
 			boost::shared_ptr<file_details_vec> files = boost::shared_ptr<file_details_vec>(new file_details_vec());
 			pTI->get_file_details(*files);
 
 			boost::function<void ()> fn_wrapper = bind(fn, pTI->get_save_directory(), files);
-			pTI->remove_files(bind(&bit_impl::remove_wrapper_function, this, name, fn_wrapper));
+			pTI->remove_files(bind(&bit_impl::remove_wrapper_function, this, id, fn_wrapper));
 
 			event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Removed, registered thread.")));
 		}		
 		
-		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(name, "remove_torrent_wipe_files")
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(id, "remove_torrent_wipe_files")
 	}
 
 	void resume_all()
@@ -832,7 +832,7 @@ public:
 		
 		the_torrents_.start_all();
 
-		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "bit_impl::resume_all")
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uuid(), "bit_impl::resume_all")
 	}
 
 	bool close_counter(int* count)
@@ -895,7 +895,7 @@ public:
 		
 		event_log().post(shared_ptr<EventDetail>(new EventInfo(L"	... all torrents stopped.")));		
 		
-		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH("Torrent Unknown!", "close_all()")
+		} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uuid(), "close_all()")
 	}
 	
 	void save_torrent_data()

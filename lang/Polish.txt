@@ -139,6 +139,7 @@
 "Handshake" --->  ??? 
 "Has choked us" --->  ??? 
 "Hash failed for piece %2% of %1%." --->  ??? 
+"Hash" --->  ??? 
 "IP Filter blocked %1%, %2%." --->  ??? 
 "IP Filtering" --->  ??? 
 "IP filter disabled" --->  ??? 
@@ -367,6 +368,7 @@
 "Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" --->  ??? 
 "Username : " ---> "Użytkownik :"
+"Uuid" --->  ??? 
 "Warning" --->  ??? 
 "Web Seed" --->  ??? 
 "Web Seeds and DHT Nodes" --->  ??? 

@@ -139,6 +139,7 @@
 "Handshake" ---> "Handshake"
 "Has choked us" ---> "Μας έκοψε ταχύτητα"
 "Hash failed for piece %2% of %1%." ---> "Hash απέτυχε για κομμάτι %2% of %1%."
+"Hash" --->  ??? 
 "IP Filter blocked %1%, %2%." ---> "IP φίλτρο εμπόδισε %1%, %2%."
 "IP Filtering" ---> "Περιορισμός διευθύνσεων IP"
 "IP filter disabled" ---> "IP φίλτρο απενεργοποιημένο"
@@ -367,6 +368,7 @@
 "Use this network interface" --->  ??? 
 "User cancelled Torrent file creation" ---> "Χρήστης ακύρωσε την δημιουργία αρχείου torrent"
 "Username : " ---> "Όνομα χρήστη : "
+"Uuid" --->  ??? 
 "Warning" ---> "Προειδοπείηση"
 "Web Seed" ---> "Web Seed"
 "Web Seeds and DHT Nodes" ---> "Web Seeds και DHT κόμβοι"

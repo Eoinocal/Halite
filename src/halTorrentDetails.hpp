@@ -361,7 +361,7 @@ typedef boost::weak_ptr<torrent_details> torrent_details_wptr;
 typedef std::vector<torrent_details_ptr> torrent_details_vec;
 
 typedef std::set<torrent_details_ptr> torrent_details_set;
-typedef std::map<std::wstring, torrent_details_ptr> torrent_details_map;
+typedef std::map<uuid, torrent_details_ptr> torrent_details_map;
 
 class torrent_details_manager
 {
@@ -384,17 +384,17 @@ public:
 		return get(focused_); 
 	}
 
-	const std::set<wstring> selected_names() const
+	const std::set<uuid> selected_uuids() const
 	{
 		mutex_t::scoped_lock l(mutex_);
 		return selected_names_; 
 	}
 	
-	const torrent_details_ptr get(std::wstring filename) const
+	const torrent_details_ptr get(const uuid& u) const
 	{
 		mutex_t::scoped_lock l(mutex_);	
 		
-		torrent_details_map::const_iterator i = torrent_map_.find(filename);
+		torrent_details_map::const_iterator i = torrent_map_.find(u);
 		
 		if (i != torrent_map_.end())
 			return i->second;
@@ -405,10 +405,10 @@ public:
 	friend class bit;
 
 private:
-	std::set<wstring> selected_names_;
+	std::set<uuid> selected_names_;
 	torrent_details_map torrent_map_;
 
-	wstring focused_;
+	uuid focused_;
 	
 	mutable mutex_t mutex_;
 };

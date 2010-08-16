@@ -277,13 +277,13 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr()
 	{
 		event_log().post(shared_ptr<EventDetail>(
 			new EventInvalidTorrent(event_logger::critical, 
-				event_logger::invalid_torrent, to_utf8(name()), "get_torrent_details_ptr")));
+				event_logger::invalid_torrent, uuid(), "get_torrent_details_ptr")));
 	}
 	catch (const std::exception& e)
 	{
 		event_log().post(shared_ptr<EventDetail>(
 			new EventTorrentException(event_logger::critical, 
-				event_logger::torrentException, e.what(), to_utf8(name()), "get_torrent_details_ptr")));
+				event_logger::torrentException, e.what(), uuid(), "get_torrent_details_ptr")));
 	}
 	
 	return torrent_details_ptr(new torrent_details(
