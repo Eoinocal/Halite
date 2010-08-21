@@ -53,7 +53,6 @@ bit_impl::bit_impl() :
 	{
 
 	torrent_internal::the_session_ = &session_;
-	torrent_internal::the_manager_ = the_torrents_;
 
 	session_->session::set_alert_mask(libt::alert::all_categories);		
 	session_->add_extension(&libt::create_metadata_plugin);

@@ -28,6 +28,7 @@ namespace hal
 
 	typedef boost::int64_t size_type;
 	typedef boost::recursive_mutex mutex_t;
+
 	typedef boost::thread thread_t;
 
 	typedef boost::uuids::uuid uuid;

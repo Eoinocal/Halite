@@ -18,7 +18,6 @@ namespace hal
 {
 	
 boost::optional<libt::session>* torrent_internal::the_session_ = 0;	
-boost::optional<torrent_manager&> torrent_internal::the_manager_ = 0;
 
 void torrent_internal::adjust_queue_position(bit::queue_adjustments adjust)
 {
@@ -44,13 +43,16 @@ void torrent_internal::adjust_queue_position(bit::queue_adjustments adjust)
 void torrent_internal::set_managed(bool m)
 {
 	mutex_t::scoped_lock l(mutex_);
+
 	managed_ = m;
 	
 	if (in_session()) handle_.auto_managed(managed_);
 }
 
-bool torrent_internal::is_managed()
+bool torrent_internal::is_managed() const
 {
+	mutex_t::scoped_lock l(mutex_);
+
 	if (in_session())
 	{
 		managed_ = handle_.is_auto_managed();
@@ -59,10 +61,14 @@ bool torrent_internal::is_managed()
 	return managed_;
 }
 
-const wstring& torrent_internal::name() 
+const wstring& torrent_internal::name() const
 { 
+	mutex_t::scoped_lock l(mutex_);
+
 	if (name_.empty() && in_session())
+	{
 		name_ = hal::from_utf8_safe(handle_.name());
+	}
 	
 	return name_; 
 }
@@ -80,13 +86,17 @@ void torrent_internal::set_name(const wstring& n)
 
 void torrent_internal::set_superseeding(bool ss)
 {
+	mutex_t::scoped_lock l(mutex_);
+
 	superseeding_ = ss;
 
 	apply_superseeding();
 }
 
-bool torrent_internal::get_superseeding(bool actually)
+bool torrent_internal::get_superseeding(bool actually) const
 {
+	mutex_t::scoped_lock l(mutex_);
+
 	if (actually)
 		if (in_session())
 			return handle_.super_seeding();
@@ -102,9 +112,7 @@ void torrent_internal::add_to_session(bool paused)
 	{
 	HAL_DEV_MSG(hal::wform(L"add_to_session() paused=%1%") % paused);
 
-	mutex_t::scoped_lock l(mutex_);	
-
-	process_event(ev_add_to_session(paused));
+	locked_process_event(ev_add_to_session(paused));
 	assert(in_session());
 
 	}
@@ -120,10 +128,8 @@ bool torrent_internal::remove_from_session(bool write_data)
 	try
 	{
 	HAL_DEV_MSG(hal::wform(L"remove_from_session() write_data=%1%") % write_data);
-
-	mutex_t::scoped_lock l(mutex_);
 	
-	process_event(ev_remove_from_session(write_data));
+	locked_process_event(ev_remove_from_session(write_data));
 	assert(in_session());
 
 	}
@@ -137,17 +143,17 @@ bool torrent_internal::remove_from_session(bool write_data)
 	return true;
 }
 
-torrent_details_ptr torrent_internal::get_torrent_details_ptr()
+torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 {	
+	mutex_t::scoped_lock l(mutex_);
+
 	try
 	{
-	mutex_t::scoped_lock l(mutex_);
 
 	if (in_session() && is_active())
 	{
 		status_memory_ = handle_.status();
 		progress_ = status_memory_.progress;
-
 		queue_position_ = handle_.queue_position();
 	}
 	else
@@ -305,11 +311,23 @@ file_details_vec torrent_internal::get_file_details()
 	return files;
 }
 
-void torrent_internal::set_file_finished(int i)
+void torrent_internal::get_file_details(file_details_vec& files_vec)
 {
 	mutex_t::scoped_lock l(mutex_);
 
-	files_.set_file_finished(i);
+	if (file_details_memory_.empty())
+		init_file_details();	
+	
+	if (in_session())
+	{			
+		std::vector<libt::size_type> file_progress;			
+		handle_.file_progress(file_progress);
+		
+		for(size_t i=0, e=file_details_memory_.size(); i<e; ++i)
+			file_details_memory_[i].progress =  file_progress[i];	
+	}
+
+	files_vec = file_details_memory_;
 }
 
 void torrent_internal::init_file_details()
@@ -339,23 +357,11 @@ void torrent_internal::init_file_details()
 	}
 }
 
-void torrent_internal::get_file_details(file_details_vec& files_vec)
+void torrent_internal::set_file_finished(int i)
 {
 	mutex_t::scoped_lock l(mutex_);
 
-	if (file_details_memory_.empty())
-		init_file_details();	
-	
-	if (in_session())
-	{			
-		std::vector<libt::size_type> file_progress;			
-		handle_.file_progress(file_progress);
-		
-		for(size_t i=0, e=file_details_memory_.size(); i<e; ++i)
-			file_details_memory_[i].progress =  file_progress[i];	
-	}
-
-	files_vec = file_details_memory_;
+	files_.set_file_finished(i);
 }
 
 void torrent_internal::prepare(boost::intrusive_ptr<libt::torrent_info> info)
@@ -521,8 +527,10 @@ void torrent_internal::extract_filenames()
 	}
 }
 
-void torrent_internal::write_torrent_info()
+void torrent_internal::write_torrent_info() const
 {
+	mutex_t::scoped_lock l(mutex_);
+
 	try {
 
 	if (info_memory())
@@ -554,7 +562,7 @@ void torrent_internal::write_torrent_info()
 	}
 }
 
-boost::tuple<size_t, size_t, size_t, size_t> torrent_internal::update_peers()
+boost::tuple<size_t, size_t, size_t, size_t> torrent_internal::update_peers() const
 {
 	mutex_t::scoped_lock l(mutex_);
 
@@ -608,6 +616,7 @@ void torrent_internal::apply_settings()
 void torrent_internal::apply_transfer_speed()
 {
 	mutex_t::scoped_lock l(mutex_);
+
 	if (in_session())
 	{
 		int down = (transfer_limit_.first > 0) ? static_cast<int>(transfer_limit_.first*1024) : -1;
@@ -623,6 +632,7 @@ void torrent_internal::apply_transfer_speed()
 void torrent_internal::apply_external_interface()
 {
 	mutex_t::scoped_lock l(mutex_);
+
 	if (in_session())
 	{
 		if (external_interface_)
@@ -643,6 +653,7 @@ void torrent_internal::apply_external_interface()
 void torrent_internal::apply_connection_limit()
 {
 	mutex_t::scoped_lock l(mutex_);
+
 	if (in_session())
 	{
 		handle_.set_max_connections(connections_);
@@ -655,6 +666,7 @@ void torrent_internal::apply_connection_limit()
 void torrent_internal::apply_ratio()
 { 
 	mutex_t::scoped_lock l(mutex_);
+
 	if (in_session())
 	{
 		handle_.set_ratio(ratio_);
@@ -666,6 +678,7 @@ void torrent_internal::apply_ratio()
 void torrent_internal::apply_trackers()
 {
 	mutex_t::scoped_lock l(mutex_);
+
 	if (in_session())
 	{
 		if (torrent_trackers_.empty())
@@ -691,6 +704,7 @@ void torrent_internal::apply_trackers()
 void torrent_internal::apply_tracker_login()
 {
 	mutex_t::scoped_lock l(mutex_);
+
 	if (in_session())
 	{
 		if (tracker_username_ != L"")
@@ -707,6 +721,7 @@ void torrent_internal::apply_tracker_login()
 void torrent_internal::apply_file_priorities()
 {
 	mutex_t::scoped_lock l(mutex_);
+
 	if (in_session())
 	{
 		if (!file_priorities_.empty())
@@ -745,6 +760,7 @@ void torrent_internal::apply_file_names()
 void torrent_internal::apply_resolve_countries()
 {
 	mutex_t::scoped_lock l(mutex_);
+
 	if (in_session())
 	{
 		handle_.resolve_countries(resolve_countries_);
@@ -756,6 +772,7 @@ void torrent_internal::apply_resolve_countries()
 void torrent_internal::apply_superseeding()
 {
 	mutex_t::scoped_lock l(mutex_);
+
 	if (in_session())
 	{
 		handle_.super_seeding(superseeding_);
@@ -767,6 +784,7 @@ void torrent_internal::apply_superseeding()
 void torrent_internal::apply_queue_position()
 {
 	mutex_t::scoped_lock l(mutex_);
+
 	if (in_session())
 	{
 		if (handle_.queue_position() != -1 && queue_position_ != -1)
