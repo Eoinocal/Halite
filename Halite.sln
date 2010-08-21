@@ -2,6 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halite", "sln\Halite\Halite.vcproj", "{ED987C84-FFF9-4656-8F27-2A65FC0847FD}"
 	ProjectSection(ProjectDependencies) = postProject
+		{9EE1FB67-715D-406D-8777-1D54C29896AE} = {9EE1FB67-715D-406D-8777-1D54C29896AE}
 		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8} = {333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}
 	EndProjectSection
 EndProject
@@ -16,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientTest", "sln\libtorren
 	ProjectSection(ProjectDependencies) = postProject
 		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8} = {333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "halTorrent", "sln\halTorrent\halTorrent.vcproj", "{9EE1FB67-715D-406D-8777-1D54C29896AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,6 +144,31 @@ Global
 		{67F0629E-04ED-4CF3-BC02-4A49B4919F05}.Release|Win32.ActiveCfg = Release|Win32
 		{67F0629E-04ED-4CF3-BC02-4A49B4919F05}.Release|x64.ActiveCfg = Release|Win32
 		{67F0629E-04ED-4CF3-BC02-4A49B4919F05}.Release|x86.ActiveCfg = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Debug|Win32.Build.0 = Debug|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Debug|x64.ActiveCfg = Debug|x64
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Debug|x64.Build.0 = Debug|x64
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Debug|x86.ActiveCfg = Debug|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release Logging|Mixed Platforms.ActiveCfg = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release Logging|Mixed Platforms.Build.0 = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release Logging|Win32.ActiveCfg = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release Logging|Win32.Build.0 = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release Logging|x64.ActiveCfg = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release Logging|x86.ActiveCfg = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release Small|Mixed Platforms.ActiveCfg = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release Small|Mixed Platforms.Build.0 = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release Small|Win32.ActiveCfg = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release Small|Win32.Build.0 = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release Small|x64.ActiveCfg = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release Small|x86.ActiveCfg = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release|Win32.ActiveCfg = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release|Win32.Build.0 = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release|x64.ActiveCfg = Release|Win32
+		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

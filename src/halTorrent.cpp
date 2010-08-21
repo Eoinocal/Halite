@@ -4,8 +4,10 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "stdAfx.hpp"
+#include "halPch.hpp"
 #include <functional>
+
+#include "../res/resource.h"
 
 #include "global/wtl_app.hpp"
 #include "global/string_conv.hpp"

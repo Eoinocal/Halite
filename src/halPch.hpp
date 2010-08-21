@@ -1,9 +1,4 @@
 
-//         Copyright Eóin O'Callaghan 2006 - 2010.
-// Distributed under the Boost Software License, Version 1.0.
-//    (See accompanying file LICENSE_1_0.txt or copy at
-//          http://www.boost.org/LICENSE_1_0.txt)
-
 #pragma once
 
 #define WINVER				0x0600
@@ -17,42 +12,6 @@
 #ifndef WIN32_LEAN_AND_MEAN
 #	define WIN32_LEAN_AND_MEAN
 #endif
-
-#define HALITE_SENDING_CMD 68816889
-
-#pragma warning (push)
-#pragma warning (disable : 4996)
-#	define _ATL_NO_AUTOMATIC_NAMESPACE
-#	define _WTL_NO_AUTOMATIC_NAMESPACE
-#	define _ATL_USE_DDX_FLOAT
-
-#	include <winsock2.h>
-#	include <shellapi.h>
-#	include <atlbase.h>
-#	include <atlapp.h>
-
-extern WTL::CAppModule _Module;
-
-#	include <atlwin.h>
-#	include <atlframe.h>
-#	include <atlmisc.h>
-#	include <atlcrack.h>
-#	include <atldlgs.h>
-#	include <atlsplit.h>
-#	include <atlctrls.h>
-#	include <atlctrlw.h>
-#	include <atlctrlx.h>
-#	include <atlddx.h>
-#	include <atlscrl.h>
-#	include <atltheme.h>
-#	include <atldwm.h>
-
-#	include "AtlAutosizeDlg.h"
-#pragma warning (pop)
-
-//#include <stlsoft/util/nulldef.h>
-
-#include "../res/resource.h"
 
 // Include very common C++ and Boost libraries
 

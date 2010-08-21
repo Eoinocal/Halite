@@ -714,70 +714,6 @@
 			<File
 				RelativePath="..\..\src\halEvent.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Logging|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Logging|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Small|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Small|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\src\Halite.cpp"
@@ -858,26 +794,6 @@
 						AdditionalOptions="/bigobj"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\halPeers.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halSession.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrent.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrentInternal.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrentIntStates.cpp"
-				>
 			</File>
 			<File
 				RelativePath="..\..\src\NewTorrentDialog.cpp"
@@ -1606,22 +1522,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\halCatchDefines.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halConfig.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halEvent.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halIni.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\Halite.hpp"
 				>
 			</File>
@@ -1667,62 +1567,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\HaliteWindow.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halPeers.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halSession.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halSessionStates.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halSignaler.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrent.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrentDefines.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrentDetails.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrentFile.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrentInternal.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrentIntEvents.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrentIntStates.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrentManager.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTorrentSerialization.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halTypes.hpp"
 				>
 			</File>
 			<File

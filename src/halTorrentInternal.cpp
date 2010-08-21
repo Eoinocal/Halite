@@ -4,7 +4,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "stdAfx.hpp"
+#include "halPch.hpp"
 
 #pragma warning (push, 1)
 #	include <libtorrent/escape_string.hpp>
