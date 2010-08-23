@@ -6,15 +6,15 @@
 
 #pragma once
 
-#include "stdAfx.hpp"
-#include "Halite.hpp"
+#include "halPch.hpp"
+//#include "Halite.hpp"
 
 #include "global/string_conv.hpp"
 #include "global/wtl_app.hpp"
 
 #include "halIni.hpp"
 #include "halConfig.hpp"
-#include "ProgressDialog.hpp"
+//#include "ProgressDialog.hpp"
 
 namespace hal
 {
@@ -80,7 +80,8 @@ bool Config::settingsThread()
 	try
 	{
 
-	event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Applying BitTorrent session settings.")));	
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Applying BitTorrent session settings.")));
+
 	unsigned listen_port = port_range_.first;
 	int current_port = bittorrent::Instance().is_listening_on();
 
@@ -90,9 +91,13 @@ bool Config::settingsThread()
 	{
 	if (enable_ip_filter_)
 	{
-		ProgressDialog progDlg(L"Loading IP filters...", bind(
-			&bit::ensure_ip_filter_on, &bittorrent::Instance(), _1));
-		progDlg.DoModal();
+		if (pdc_)
+		{
+			pdc_(L"Loading IP filters...", bind(
+				&bit::ensure_ip_filter_on, &bittorrent::Instance(), _1));
+		}
+		else
+			bittorrent::Instance().ensure_ip_filter_on(progress_callback());
 	}
 	else
 		bittorrent::Instance().ensure_ip_filter_off();

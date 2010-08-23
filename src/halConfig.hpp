@@ -14,7 +14,6 @@ class TorrentsOptions;
 namespace hal
 {
 
-
 template<typename T>
 class action_setting
 {
@@ -414,6 +413,7 @@ public:
 		}
 	}
 	
+	void set_callback(progress_display_callback f) { pdc_ = f; }
 	bool settingsChanged();
 	
 	friend class HaliteWindow;
@@ -426,6 +426,8 @@ public:
 
 private:
 	bool settingsThread();
+
+	hal::progress_display_callback pdc_;
 	
 	hal::connections globals_;
 

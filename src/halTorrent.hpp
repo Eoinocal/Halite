@@ -43,7 +43,11 @@ struct create_torrent_params
 };
 
 typedef boost::function<bool (size_t, size_t, size_t)> filter_callback;
+
 typedef boost::function<bool (size_t, size_t, std::wstring)> progress_callback;
+typedef boost::function<bool (progress_callback fn)> progress_callback_callback;
+typedef boost::function<void (std::wstring, progress_callback_callback)> progress_display_callback;
+
 typedef boost::function<void ()> action_callback_t;
 typedef boost::function<void (int)> report_num_active;
 typedef boost::function<void (wpath path, boost::shared_ptr<file_details_vec> files)> remove_files;

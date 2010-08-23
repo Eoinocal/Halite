@@ -4,7 +4,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "stdAfx.hpp"
+#include "halPch.hpp"
 
 #define HAL_EVENT_IMPL_UNIT
 
@@ -13,7 +13,8 @@
 #endif
 
 #include "halEvent.hpp"
-#include "Halite.hpp"
+#include "../res/resource.h"
+//#include "Halite.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -40,7 +41,11 @@ namespace hal
 
 struct event_impl
 {
+	event_impl() : debug_(false) {}
+
 	mutable mutex_t mutex_;
+
+	bool debug_;
 	boost::signal<void (boost::shared_ptr<EventDetail>)> event_signal_;
 };
 
@@ -82,12 +87,18 @@ void event_logger::dettach(const boost::signals::connection& c)
 	}
 }
 
+
+void event_logger::set_debug_logging(bool d)
+{
+	pimpl_->debug_ = d;
+}
+
 void event_logger::post(boost::shared_ptr<EventDetail> e)
 {
 	if (pimpl_)
 	{
 	mutex_t::scoped_lock l(pimpl_->mutex_);
-	if (e->level() != hal::event_logger::debug || halite().logDebug())
+	if (e->level() != hal::event_logger::debug || pimpl_->debug_)
 		pimpl_->event_signal_(e);
 	}
 }

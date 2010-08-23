@@ -127,7 +127,7 @@ public:
 
 	BEGIN_MSG_MAP_EX(this_class_t)
 		try
-	{
+		{
 		COMMAND_ID_HANDLER(ID_LVM_AUTOSORT, OnAutoSort)
 		
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_RCLICK, OnRClick)
@@ -266,7 +266,9 @@ public:
 		if (!list_visible_[i])
 		{		
 			GetColumnOrderArray(static_cast<int>(list_names_.size()), &list_order_[0]);
-			SetColumnWidth(i, list_widths_[i]);
+
+			int w = (list_widths_[i] == 0) ? 60 : list_widths_[i];
+			SetColumnWidth(i, w);
 
 			list_order_.erase(std::find(list_order_.begin(), list_order_.end(), i));
 			

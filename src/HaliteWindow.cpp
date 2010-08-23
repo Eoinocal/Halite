@@ -17,6 +17,7 @@
 #include "NewTorrentDialog.hpp"
 #include "SplashDialog.hpp"
 #include "TimePickerDlg.hpp"
+#include "ProgressDialog.hpp"
 
 #include "ConfigOptions.hpp"
 #include "halConfig.hpp"
@@ -76,6 +77,8 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading Halite configuration ...")));
 	hal::config().load_from_ini();
+	hal::config().set_callback(bind(&HaliteWindow::runProgressCommand, this, _1, _2));
+
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"	... Done")));
 	
@@ -662,6 +665,12 @@ LRESULT HaliteWindow::OnTorrentCompleted(UINT /*uMsg*/, WPARAM wParam, LPARAM lP
 	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::OnTorrentCompleted")
 
 	return 0;
+}
+
+void HaliteWindow::runProgressCommand(wstring title, hal::progress_callback_callback fn)
+{	
+	ProgressDialog progDlg(title, fn);
+	progDlg.DoModal();
 }
 
 void HaliteWindow::exitCallback()

@@ -56,4 +56,6 @@ void AdvDebugDialog::onClose()
 void AdvDebugDialog::onDebugOption(UINT, int, HWND)
 {
 	DoDataExchange(true);
+
+	hal::event_log().set_debug_logging(halite().logDebug_);
 }

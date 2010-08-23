@@ -210,6 +210,8 @@ protected:
 	void shutdownCallback();
 	void torrentCompletedCallback(std::wstring torrent_name);
 
+	void runProgressCommand(wstring title, hal::progress_callback_callback fn);
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)

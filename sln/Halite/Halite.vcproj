@@ -708,14 +708,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\halConfig.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\halEvent.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\Halite.cpp"
 				>
 			</File>
