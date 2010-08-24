@@ -6,45 +6,12 @@
 
 #pragma once
 
-/*
-#include <string>
-#include <vector>
-#include <set>
+#if defined(HALTORRENT_PCH)
+#	include "halPch.hpp"
+#else
+#	include "halTypes.hpp"
+#endif
 
-#include <boost/foreach.hpp>
-#include <boost/format.hpp>
-#include <boost/array.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/bind.hpp>
-
-#include <boost/smart_ptr.hpp>
-#include <boost/noncopyable.hpp>
-
-#include <boost/signal.hpp>
-#include <boost/optional.hpp>
-#include <boost/function.hpp>
-
-#include <boost/smart_ptr.hpp>
-
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/fstream.hpp>
-*/
-
-#include <boost/algorithm/string.hpp>
-
-#include <stlsoft/properties/method_properties.hpp>
-#include <stlsoft/util/operator_bool_adaptor.hpp>
-
-#include <loki/Singleton.h>
-
-#include <boost/asio/ip/tcp.hpp>
-#include <boost/asio/ip/udp.hpp>
-
-#include <boost/asio/deadline_timer.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
-
-#include "halTypes.hpp"
 #include "halPeers.hpp"
 
 namespace hal 

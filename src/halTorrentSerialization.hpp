@@ -6,11 +6,11 @@
 
 #pragma once
 
-#pragma warning (push, 1)
-#	include <libtorrent/peer_id.hpp>
-#	include <libtorrent/peer_connection.hpp>
-#pragma warning (pop) 
-
+#if defined(HALTORRENT_PCH)
+#	include "halPch.hpp"
+#else
+#	include "halTypes.hpp"
+#endif
 
 namespace libtorrent
 {

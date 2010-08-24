@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 
+#include <functional>
 #include <iostream>
 #include <fstream>
 #include <iterator>
@@ -28,21 +29,17 @@
 #include <vector>
 
 #include <boost/regex.hpp>
-#include <boost/lambda/lambda.hpp>
-#include <boost/algorithm/string/find.hpp>
-#include <boost/algorithm/string/case_conv.hpp>
-
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <boost/array.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/numeric/conversion/cast.hpp>
 #include <boost/bind.hpp>
-#include <boost/thread/thread.hpp>
-#include <boost/thread/recursive_mutex.hpp>
-#include <boost/smart_ptr.hpp>
 #include <boost/noncopyable.hpp>
-#include <boost/tuple/tuple.hpp>
+
+#include <boost/lambda/lambda.hpp>
+#include <boost/numeric/conversion/cast.hpp>
+#include <boost/algorithm/string/find.hpp>
+#include <boost/algorithm/string/case_conv.hpp>
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
@@ -78,4 +75,41 @@
 
 #include <boost/date_time/posix_time/time_serialize.hpp>
 #include <boost/date_time/gregorian/gregorian_types.hpp>
-#include <boost/date_time/posix_time/posix_time_types.hpp>
+
+#include <boost/tuple/tuple.hpp>
+#include <boost/enable_shared_from_this.hpp>
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/ordered_index.hpp>
+#include <boost/multi_index/indexed_by.hpp>
+#include <boost/multi_index/identity.hpp>
+#include <boost/multi_index/member.hpp>
+#include <boost/multi_index/tag.hpp>
+
+#define TORRENT_MAX_ALERT_TYPES 32
+
+#pragma warning (push, 1)
+#	include <libtorrent/file.hpp>
+#	include <libtorrent/hasher.hpp>
+#	include <libtorrent/storage.hpp>
+#	include <libtorrent/file_pool.hpp>
+#	include <libtorrent/alert_types.hpp>
+#	include <libtorrent/entry.hpp>
+#	include <libtorrent/bencode.hpp>
+#	include <libtorrent/upnp.hpp>
+#	include <libtorrent/natpmp.hpp>
+#	include <libtorrent/session.hpp>
+#	include <libtorrent/ip_filter.hpp>
+#	include <libtorrent/torrent_handle.hpp>
+//#	include <libtorrent/dht_tracker.hpp>
+#	include <libtorrent/create_torrent.hpp>
+#	include <libtorrent/peer_connection.hpp>
+#	include <libtorrent/peer_info.hpp>
+#	include <libtorrent/peer_id.hpp>
+#	include <libtorrent/peer_connection.hpp>
+#	include <libtorrent/extensions/metadata_transfer.hpp>
+#	include <libtorrent/extensions/ut_pex.hpp>
+#	include <libtorrent/extensions/ut_metadata.hpp>
+#	include <libtorrent/extensions/smart_ban.hpp>
+#pragma warning (pop) 
+
+#include "halTypes.hpp"

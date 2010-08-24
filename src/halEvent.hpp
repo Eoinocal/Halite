@@ -6,6 +6,12 @@
 
 #pragma once
 
+#if defined(HALTORRENT_PCH)
+#	include "halPch.hpp"
+#else
+#	include "halTypes.hpp"
+#endif
+
 #define HAL_EVENT_BEGIN			81000
 #define HAL_EVENT_EXP			HAL_EVENT_BEGIN + 1
 #define HAL_EVENT_XML_EXP		HAL_EVENT_BEGIN + 2
@@ -29,9 +35,6 @@
 
 #include <string>
 #include <vector>
-
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/smart_ptr.hpp>
 
 #include <loki/Singleton.h>
 

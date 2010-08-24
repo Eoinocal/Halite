@@ -6,8 +6,6 @@
 
 #include "halPch.hpp"
 
-#define TORRENT_MAX_ALERT_TYPES 32
-
 #include <boost/utility/in_place_factory.hpp>
 #include <boost/none.hpp>
 
@@ -23,9 +21,6 @@
 #include "halSignaler.hpp"
 #include "halSession.hpp"
 
-#pragma warning (push, 1)
-#	include <libtorrent/create_torrent.hpp>
-#pragma warning (pop) 
 
 namespace hal
 {

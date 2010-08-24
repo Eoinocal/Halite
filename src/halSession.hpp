@@ -6,39 +6,13 @@
 
 #pragma once
 
-#include <boost/tuple/tuple.hpp>
-#include <boost/enable_shared_from_this.hpp>
-#include <boost/multi_index_container.hpp>
-#include <boost/multi_index/ordered_index.hpp>
-#include <boost/multi_index/indexed_by.hpp>
-#include <boost/multi_index/identity.hpp>
-#include <boost/multi_index/member.hpp>
-#include <boost/multi_index/tag.hpp>
-
-#pragma warning (push, 1)
-#	include <libtorrent/file.hpp>
-#	include <libtorrent/hasher.hpp>
-#	include <libtorrent/storage.hpp>
-#	include <libtorrent/file_pool.hpp>
-#	include <libtorrent/alert_types.hpp>
-#	include <libtorrent/entry.hpp>
-#	include <libtorrent/bencode.hpp>
-#	include <libtorrent/upnp.hpp>
-#	include <libtorrent/natpmp.hpp>
-#	include <libtorrent/session.hpp>
-#	include <libtorrent/ip_filter.hpp>
-#	include <libtorrent/torrent_handle.hpp>
-//#	include <libtorrent/dht_tracker.hpp>
-#	include <libtorrent/peer_connection.hpp>
-#	include <libtorrent/peer_info.hpp>
-#	include <libtorrent/extensions/metadata_transfer.hpp>
-#	include <libtorrent/extensions/ut_pex.hpp>
-#	include <libtorrent/extensions/ut_metadata.hpp>
-#	include <libtorrent/extensions/smart_ban.hpp>
-#pragma warning (pop) 
+#if defined(HALTORRENT_PCH)
+#	include "halPch.hpp"
+#else
+#	include "halTypes.hpp"
+#endif
 
 #include "halIni.hpp"
-#include "halTypes.hpp"
 #include "halEvent.hpp"
 #include "halConfig.hpp"
 #include "halTorrentSerialization.hpp"
@@ -46,7 +20,6 @@
 #include "halTorrentManager.hpp"
 #include "halSignaler.hpp"
 #include "halCatchDefines.hpp"
-
 
 namespace hal
 {

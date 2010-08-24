@@ -5,7 +5,6 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include "halPch.hpp"
-#include <functional>
 
 #include "../res/resource.h"
 
@@ -23,19 +22,10 @@
 #include "halSession.hpp"
 #include "halConfig.hpp"
 
-namespace hal 
-{
-}
 
 namespace hal 
 {
 
-/*bit& bittorrent()
-{
-	static bit t;
-	return t;
-}
-*/
 bool file_details::less(const file_details& r, size_t index) const
 {	
 	switch (index)

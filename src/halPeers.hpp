@@ -6,13 +6,11 @@
 
 #pragma once
 
-#include <stlsoft/properties/method_properties.hpp>
-#include <stlsoft/util/operator_bool_adaptor.hpp>
-
-#include <boost/asio/ip/tcp.hpp>
-#include <boost/asio/ip/udp.hpp>
-
-#include "halTypes.hpp"
+#if defined(HALTORRENT_PCH)
+#	include "halPch.hpp"
+#else
+#	include "halTypes.hpp"
+#endif
 
 namespace libtorrent { struct peer_info; }
 

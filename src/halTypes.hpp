@@ -6,10 +6,21 @@
 
 #pragma once
 
+#include <boost/smart_ptr.hpp>
 #include <boost/thread/thread.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/thread/recursive_mutex.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/algorithm/string.hpp>
+
+#include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/ip/udp.hpp>
+#include <boost/asio/deadline_timer.hpp>
+
+#include <stlsoft/properties/method_properties.hpp>
+#include <stlsoft/util/operator_bool_adaptor.hpp>
+
+#include <loki/Singleton.h>
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_io.hpp>

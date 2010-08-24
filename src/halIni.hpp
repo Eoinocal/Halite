@@ -6,6 +6,12 @@
 
 #pragma once
 
+#if defined(HALTORRENT_PCH)
+#	include "halPch.hpp"
+#else
+#	include "halTypes.hpp"
+#endif
+
 #include "global/txml_ini_adapter.hpp"
 #include "global/txml_oarchive.hpp"
 #include "global/txml_iarchive.hpp"

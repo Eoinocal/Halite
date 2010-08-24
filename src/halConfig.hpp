@@ -6,6 +6,12 @@
 
 #pragma once
 
+#if defined(HALTORRENT_PCH)
+#	include "halPch.hpp"
+#else
+#	include "halTypes.hpp"
+#endif
+
 class BitTorrentOptions;
 class SecurityOptions;
 class ProxyOptions;

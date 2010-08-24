@@ -6,20 +6,12 @@
 
 #pragma once
 
-#include <boost/algorithm/string.hpp>
+#if defined(HALTORRENT_PCH)
+#	include "halPch.hpp"
+#else
+#	include "halTypes.hpp"
+#endif
 
-#include <stlsoft/properties/method_properties.hpp>
-#include <stlsoft/util/operator_bool_adaptor.hpp>
-
-#include <loki/Singleton.h>
-
-#include <boost/asio/ip/tcp.hpp>
-#include <boost/asio/ip/udp.hpp>
-
-#include <boost/asio/deadline_timer.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
-
-#include "halTypes.hpp"
 #include "halTorrentDetails.hpp"
 
 namespace hal 
