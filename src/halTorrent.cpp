@@ -626,7 +626,7 @@ void bit::update_torrent_details_manager_thread(const uuid& focused, const std::
 	for (torrent_manager::torrent_by_name::iterator i=pimpl()->the_torrents_.begin(), e=pimpl()->the_torrents_.end(); i != e; ++i)
 	{
 		torrent_details_ptr pT = (*i).torrent->get_torrent_details_ptr();				
-		tmp_map[(*i).torrent->uuid()] = pT;
+		tmp_map[(*i).torrent->id()] = pT;
 	}
 
 	{	
@@ -888,7 +888,7 @@ const uuid bit::torrent::get_uuid() const
 {
 	try {
 	
-	return ptr->uuid();
+	return ptr->id();
 	
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_uuid()")
 	
@@ -965,7 +965,7 @@ wpath bit::torrent::get_save_directory() const
 {
 	try {
 	
-	return ptr->get_save_directory();
+	return ptr->save_directory();
 	
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_save_directory")
 	

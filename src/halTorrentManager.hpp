@@ -34,7 +34,7 @@ class torrent_manager :
 	{
 		mutable torrent_internal_ptr torrent;
 		
-		boost::uuids::uuid uuid;
+		boost::uuids::uuid id;
 		wstring name;
 		libt::big_number hash;
 		
@@ -42,7 +42,7 @@ class torrent_manager :
 		{}
 		
 		explicit torrent_holder(torrent_internal_ptr t) :
-			torrent(t), uuid(torrent->uuid()), name(torrent->name()), hash(torrent->hash())
+			torrent(t), id(torrent->id()), name(torrent->name()), hash(torrent->hash())
 		{}
 
 		friend class boost::serialization::access;
@@ -57,7 +57,7 @@ class torrent_manager :
 			{
 			case 2:
 			ar & make_nvp("hash", hash);
-			ar & make_nvp("uuid", uuid);
+			ar & make_nvp("uuid", id);
 
 			case 1:
 			ar & make_nvp("torrent", torrent);
@@ -69,7 +69,7 @@ class torrent_manager :
 			}
 			
 			if (version == 1)
-				uuid = torrent->uuid();
+				id = torrent->id();
 		}
 
 		template<class Archive>
@@ -81,7 +81,7 @@ class torrent_manager :
 			{
 			case 2:
 			ar & make_nvp("hash", hash);
-			ar & make_nvp("uuid", uuid);
+			ar & make_nvp("uuid", id);
 
 			case 1:
 			ar & make_nvp("torrent", torrent);
@@ -102,7 +102,7 @@ class torrent_manager :
 			boost::multi_index::ordered_unique<
 				boost::multi_index::tag<by_uuid>,
 				boost::multi_index::member<
-					torrent_holder, boost::uuids::uuid, &torrent_holder::uuid>
+					torrent_holder, boost::uuids::uuid, &torrent_holder::id>
 				>,
 			boost::multi_index::ordered_non_unique<
 				boost::multi_index::tag<by_name>,
@@ -345,7 +345,7 @@ public:
 
 	void update_torrent(torrent_internal_ptr torrent)
 	{
-		torrent_by_uuid::iterator it = torrents_.get<by_uuid>().find(torrent->uuid());
+		torrent_by_uuid::iterator it = torrents_.get<by_uuid>().find(torrent->id());
 		
 		if (it != torrents_.get<by_uuid>().end() && (*it).torrent)
 		{
@@ -389,7 +389,7 @@ private:
 	void display_holder(const torrent_holder& t)
 	{
 		HAL_DEV_MSG(hal::wform(L"Holder name : %1%") % t.name);
-		HAL_DEV_MSG(hal::wform(L"       uuid : %1%") % t.uuid);
+		HAL_DEV_MSG(hal::wform(L"       uuid : %1%") % t.id);
 		HAL_DEV_MSG(hal::wform(L"       hash : %1%") % from_utf8(libt::base32encode(std::string((char const*)&t.hash[0], 20))));
 	}
 
