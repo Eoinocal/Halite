@@ -51,7 +51,7 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 	assert(t_i.handle_.is_valid());
 
 	t_i.in_session_ = true;
-	t_i.apply_settings();
+	t_i.apply_settings(l);
 }
 
 in_the_session::~in_the_session()
@@ -298,8 +298,8 @@ sc::result not_started::react(const ev_start& evt)
 
 	if (t_i.hash_str_.empty())
 	{
-		t_i.extract_hash();
-		t_i.update_manager();
+		t_i.extract_hash(l);
+		t_i.update_manager(l);
 	}
 
 	switch (stored_state_)

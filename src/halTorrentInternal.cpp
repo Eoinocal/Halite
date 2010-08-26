@@ -106,7 +106,7 @@ void torrent_internal::set_name(const wstring& n)
 	files_.set_root_name(n);
 
 	init_file_details();
-	apply_file_names();
+	apply_file_names(l);
 }
 
 void torrent_internal::set_superseeding(bool ss)
@@ -115,7 +115,7 @@ void torrent_internal::set_superseeding(bool ss)
 
 	superseeding_ = ss;
 
-	apply_superseeding();
+	apply_superseeding(l);
 }
 
 bool torrent_internal::get_superseeding(bool actually) const
@@ -412,9 +412,9 @@ void torrent_internal::prepare(unique_lock_t& l, boost::intrusive_ptr<libt::torr
 	{				
 		set_info_memory(info);
 				
-		extract_hash();
-		extract_names();
-		extract_filenames();	
+		extract_hash(l);
+		extract_names(l);
+		extract_filenames(l);	
 
 		write_torrent_info();
 
@@ -436,11 +436,11 @@ void torrent_internal::metadata_completed()
 
 	prepare(l);
 
-	apply_settings();
-	update_manager();
+	apply_settings(l);
+	update_manager(l);
 }
 
-void torrent_internal::update_manager()
+void torrent_internal::update_manager(unique_lock_t& l)
 {
 	if (update_manager_)
 	{
@@ -448,10 +448,8 @@ void torrent_internal::update_manager()
 	}
 }
 
-void torrent_internal::extract_names()
+void torrent_internal::extract_names(unique_lock_t& l)
 {
-	unique_lock_t l(mutex_);
-
 	if (info_memory(l))
 	{				
 		name_ = hal::from_utf8_safe(info_memory(l)->name());
@@ -465,10 +463,8 @@ void torrent_internal::extract_names()
 	}
 }
 
-void torrent_internal::extract_hash()
-{
-	unique_lock_t l(mutex_);
-	
+void torrent_internal::extract_hash(unique_lock_t& l)
+{	
 	HAL_DEV_MSG(L"Extracting hash...");
 
 	if (in_session(l))
@@ -510,10 +506,8 @@ void torrent_internal::extract_hash()
 	HAL_DEV_MSG(hal::wform(L"    hash : %1%") % hash_str_);
 }
 
-void torrent_internal::extract_filenames()
-{
-	unique_lock_t l(mutex_);
-			
+void torrent_internal::extract_filenames(unique_lock_t& l)
+{			
 	if (info_memory(l) && files_.empty())
 	{		
 		for (libt::torrent_info::file_iterator i = info_memory(l)->begin_files(), e = info_memory(l)->end_files();
@@ -641,24 +635,22 @@ boost::tuple<size_t, size_t, size_t, size_t> torrent_internal::update_peers() co
 
 // ----------------- private -----------------
 
-void torrent_internal::apply_settings()
+void torrent_internal::apply_settings(unique_lock_t& l)
 {		
-	apply_transfer_speed();
-	apply_connection_limit();
-	apply_ratio();
-	apply_trackers();
-	apply_tracker_login();
-	apply_file_priorities();
-	apply_resolve_countries();
-	apply_superseeding();
-	apply_file_names();
-	apply_external_interface();
+	apply_transfer_speed(l);
+	apply_connection_limit(l);
+	apply_ratio(l);
+	apply_trackers(l);
+	apply_tracker_login(l);
+	apply_file_priorities(l);
+	apply_resolve_countries(l);
+	apply_superseeding(l);
+	apply_file_names(l);
+	apply_external_interface(l);
 }
 
-void torrent_internal::apply_transfer_speed()
+void torrent_internal::apply_transfer_speed(unique_lock_t& l)
 {
-	unique_lock_t l(mutex_);
-
 	if (in_session(l))
 	{
 		int down = (transfer_limit_.first > 0) ? static_cast<int>(transfer_limit_.first*1024) : -1;
@@ -671,10 +663,8 @@ void torrent_internal::apply_transfer_speed()
 	}
 }
 
-void torrent_internal::apply_external_interface()
+void torrent_internal::apply_external_interface(unique_lock_t& l)
 {
-	unique_lock_t l(mutex_);
-
 	if (in_session(l))
 	{
 		if (external_interface_)
@@ -692,10 +682,8 @@ void torrent_internal::apply_external_interface()
 	}
 }
 
-void torrent_internal::apply_connection_limit()
+void torrent_internal::apply_connection_limit(unique_lock_t& l)
 {
-	unique_lock_t l(mutex_);
-
 	if (in_session(l))
 	{
 		handle_.set_max_connections(connections_);
@@ -705,10 +693,8 @@ void torrent_internal::apply_connection_limit()
 	}
 }
 
-void torrent_internal::apply_ratio()
+void torrent_internal::apply_ratio(unique_lock_t& l)
 { 
-	unique_lock_t l(mutex_);
-
 	if (in_session(l))
 	{
 		handle_.set_ratio(ratio_);
@@ -717,10 +703,8 @@ void torrent_internal::apply_ratio()
 	}
 }
 
-void torrent_internal::apply_trackers()
+void torrent_internal::apply_trackers(unique_lock_t& l)
 {
-	unique_lock_t l(mutex_);
-
 	if (in_session(l))
 	{
 		if (torrent_trackers_.empty())
@@ -743,10 +727,8 @@ void torrent_internal::apply_trackers()
 	}
 }
 
-void torrent_internal::apply_tracker_login()
+void torrent_internal::apply_tracker_login(unique_lock_t& l)
 {
-	unique_lock_t l(mutex_);
-
 	if (in_session(l))
 	{
 		if (tracker_username_ != L"")
@@ -760,10 +742,8 @@ void torrent_internal::apply_tracker_login()
 	}
 }
 
-void torrent_internal::apply_file_priorities()
+void torrent_internal::apply_file_priorities(unique_lock_t& l)
 {
-	unique_lock_t l(mutex_);
-
 	if (in_session(l))
 	{
 		if (!file_priorities_.empty())
@@ -773,17 +753,15 @@ void torrent_internal::apply_file_priorities()
 	}
 }
 
-void torrent_internal::apply_file_names()
-{		
-	unique_lock_t l(mutex_);
-
+void torrent_internal::apply_file_names(unique_lock_t& l)
+{
 	if (in_session(l) && info_memory(l))
 	{
 		bool want_recheck = false;
 
 		if (files_.size() != info_memory(l)->num_files())
 		{
-			extract_filenames();
+			extract_filenames(l);
 			want_recheck = true;
 		}
 
@@ -799,10 +777,8 @@ void torrent_internal::apply_file_names()
 	}
 }	
 
-void torrent_internal::apply_resolve_countries()
+void torrent_internal::apply_resolve_countries(unique_lock_t& l)
 {
-	unique_lock_t l(mutex_);
-
 	if (in_session(l))
 	{
 		handle_.resolve_countries(resolve_countries_);
@@ -811,10 +787,8 @@ void torrent_internal::apply_resolve_countries()
 	}
 }
 
-void torrent_internal::apply_superseeding()
+void torrent_internal::apply_superseeding(unique_lock_t& l)
 {
-	unique_lock_t l(mutex_);
-
 	if (in_session(l))
 	{
 		handle_.super_seeding(superseeding_);
@@ -826,7 +800,11 @@ void torrent_internal::apply_superseeding()
 void torrent_internal::apply_queue_position()
 {
 	unique_lock_t l(mutex_);
+	apply_queue_position(l);
+}
 
+void torrent_internal::apply_queue_position(unique_lock_t& l)
+{
 	if (in_session(l))
 	{
 		if (handle_.queue_position() != -1 && queue_position_ != -1)

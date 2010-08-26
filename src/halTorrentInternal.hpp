@@ -283,10 +283,12 @@ private:
 		allocation_(alloc),
 		magnet_uri_(to_utf8(uri))
 	{
+		unique_lock_t l(mutex_);
+
 		state(torrent_details::torrent_stopped);
 		assert(the_session_);
 
-		extract_hash();
+		extract_hash(l);
 	}
 
 	#undef TORRENT_INTERNALS_DEFAULTS
@@ -317,7 +319,7 @@ public:
 
 		transfer_limit_ = std::make_pair(down, up);
 		
-		apply_transfer_speed();
+		apply_transfer_speed(l);
 	}
 
 	std::pair<float, float> get_transfer_speed() const
@@ -334,7 +336,7 @@ public:
 		connections_ = maxConn;
 		uploads_ = maxUpload;
 		
-		apply_connection_limit();
+		apply_connection_limit(l);
 	}
 
 	std::pair<int, int> get_connection_limit() const
@@ -368,7 +370,7 @@ public:
 		if (ratio < 0) ratio = 0;
 		ratio_ = ratio; 
 		
-		apply_ratio();
+		apply_ratio(l);
 	}
 	
 	float get_ratio() const
@@ -531,7 +533,7 @@ public:
 
 		files_.set_file_priorities(file_indices, priority);
 				
-		apply_file_priorities();
+		apply_file_priorities(l);
 	}
 
 	void set_file_finished(int index);
@@ -620,7 +622,7 @@ public:
 				save_directory_ = move_to_directory_;
 			}
 
-			apply_superseeding();
+			apply_superseeding(l);
 		}
 	}
 	
@@ -638,7 +640,7 @@ public:
 		tracker_username_ = username;
 		tracker_password_ = password;
 		
-		apply_tracker_login();
+		apply_tracker_login(l);
 	}
 	
 	std::pair<wstring, wstring> get_tracker_login() const
@@ -687,7 +689,7 @@ public:
 		trackers_.clear();
 		trackers_.assign(tracker_details.begin(), tracker_details.end());
 		
-		apply_trackers();
+		apply_trackers(l);
 	}
 	
 	const std::vector<tracker_detail>& get_trackers()
@@ -832,7 +834,7 @@ public:
 	boost::tuple<size_t, size_t, size_t, size_t> update_peers() const;
 	
 	void get_peer_details(peer_details_vec& peer_details) const
-	{		
+	{
 		unique_lock_t l(mutex_);
 
 		if (in_session(l))
@@ -848,24 +850,27 @@ public:
 
 	void set_resolve_countries(bool b)
 	{
+		unique_lock_t l(mutex_);
+
 		resolve_countries_ = b;
-		apply_resolve_countries();
+		apply_resolve_countries(l);
 	}
 
 	void set_use_external_interface(std::wstring inter)
 	{
+		unique_lock_t l(mutex_);
+
 		external_interface_.reset(inter);
-		apply_external_interface();
+		apply_external_interface(l);
 	}
 
 	void set_no_external_interface()
 	{
+		unique_lock_t l(mutex_);
+
 		external_interface_.reset();
-		apply_external_interface();
+		apply_external_interface(l);
 	}
-	
-	void extract_names();
-	void extract_filenames();
 	
 	void set_info_memory(boost::intrusive_ptr<libt::torrent_info> info)
 	{		
@@ -888,32 +893,35 @@ public:
 	friend class torrent_manager;
 
 private:
-	void apply_settings();	
-	void apply_transfer_speed();
-	void apply_connection_limit();	
-	void apply_ratio();	
-	void apply_trackers();	
-	void apply_tracker_login();	
-	void apply_file_priorities();	
-	void apply_file_names();	
-	void apply_resolve_countries();	
-	void apply_superseeding();
-	void apply_queue_position();	
-	void apply_external_interface();
-	void state(unsigned s);
+	void apply_settings(unique_lock_t&);	
+	void apply_transfer_speed(unique_lock_t&);
+	void apply_connection_limit(unique_lock_t&);	
+	void apply_ratio(unique_lock_t&);	
+	void apply_trackers(unique_lock_t&);	
+	void apply_tracker_login(unique_lock_t&);	
+	void apply_file_priorities(unique_lock_t&);	
+	void apply_file_names(unique_lock_t&);	
+	void apply_resolve_countries(unique_lock_t&);	
+	void apply_superseeding(unique_lock_t&);
+	void apply_queue_position();
+	void apply_queue_position(unique_lock_t&);	
+	void apply_external_interface(unique_lock_t&);	
 	
+	void extract_hash(unique_lock_t&);
+	void extract_names(unique_lock_t&);
+	void extract_filenames(unique_lock_t&);	
 	
 	static boost::optional<libt::session>* the_session_;
 	bool in_session(unique_lock_t& l) const;
 
 	boost::intrusive_ptr<libt::torrent_info> info_memory(unique_lock_t&) const;	
-	bool is_managed(unique_lock_t&) const;
+	bool is_managed(unique_lock_t&) const;	
+	void state(unsigned s);
 
 	void prepare(unique_lock_t& l) { prepare(l, info_memory(l)); }
 	void prepare(unique_lock_t& l, boost::intrusive_ptr<libt::torrent_info> info);
 
-	void extract_hash();
-	void update_manager();
+	void update_manager(unique_lock_t&);
 	void initialize_non_serialized(function<void (torrent_internal_ptr)>);
 	
 	void output_torrent_debug_details(unique_lock_t& l) const;
