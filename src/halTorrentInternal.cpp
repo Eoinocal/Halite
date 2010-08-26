@@ -87,9 +87,13 @@ bool torrent_internal::is_managed(unique_lock_t& l) const
 }
 
 const wstring& torrent_internal::name() const
-{ 
+{
 	unique_lock_t l(mutex_);
 
+	return name(l);
+}
+const wstring& torrent_internal::name(unique_lock_t& l) const
+{ 
 	if (name_.empty() && in_session(l))
 	{
 		name_ = hal::from_utf8_safe(handle_.name());
@@ -105,7 +109,7 @@ void torrent_internal::set_name(const wstring& n)
 	//name_ = n;
 	files_.set_root_name(n);
 
-	init_file_details();
+	init_file_details(l);
 	apply_file_names(l);
 }
 
@@ -153,7 +157,6 @@ void torrent_internal::add_to_session(bool paused)
 	HAL_DEV_MSG(hal::wform(L"add_to_session() paused=%1%") % paused);
 
 	process_event(ev_add_to_session(paused));
-	assert(in_session(l));
 
 	}
 	catch(std::exception& e)
@@ -172,7 +175,6 @@ bool torrent_internal::remove_from_session(bool write_data)
 	HAL_DEV_MSG(hal::wform(L"remove_from_session() write_data=%1%") % write_data);
 	
 	process_event(ev_remove_from_session(write_data));
-	assert(in_session(l));
 
 	}
 	catch(std::exception& e)
@@ -293,7 +295,7 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 			seeding_duration_.update();
 	}	
 	
-	boost::tuple<size_t, size_t, size_t, size_t> connections = update_peers();	
+	boost::tuple<size_t, size_t, size_t, size_t> connections = update_peers(l);	
 
 	return torrent_details_ptr(new torrent_details(
 		name(), filename_, 
@@ -345,8 +347,6 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 
 file_details_vec torrent_internal::get_file_details()
 {
-	unique_lock_t l(mutex_);
-
 	file_details_vec files;
 	get_file_details(files);
 
@@ -357,8 +357,13 @@ void torrent_internal::get_file_details(file_details_vec& files_vec)
 {
 	unique_lock_t l(mutex_);
 
+	get_file_details(l, files_vec);
+}
+
+void torrent_internal::get_file_details(unique_lock_t& l, file_details_vec& files_vec)
+{
 	if (file_details_memory_.empty())
-		init_file_details();	
+		init_file_details(l);	
 	
 	if (in_session(l))
 	{			
@@ -372,10 +377,8 @@ void torrent_internal::get_file_details(file_details_vec& files_vec)
 	files_vec = file_details_memory_;
 }
 
-void torrent_internal::init_file_details()
+void torrent_internal::init_file_details(unique_lock_t& l)
 {
-	unique_lock_t l(mutex_);
-
 	file_details_memory_.clear();
 	file_priorities_.clear();
 
@@ -416,7 +419,7 @@ void torrent_internal::prepare(unique_lock_t& l, boost::intrusive_ptr<libt::torr
 		extract_names(l);
 		extract_filenames(l);	
 
-		write_torrent_info();
+		write_torrent_info(l);
 
 		if (!fs::exists(save_directory_))
 			fs::create_directories(save_directory_);
@@ -424,9 +427,9 @@ void torrent_internal::prepare(unique_lock_t& l, boost::intrusive_ptr<libt::torr
 		// These here should not make state changes based on torrent 
 		// session status since it has not been initialized yet.
 		if (state_ == torrent_details::torrent_stopping)
-			state(torrent_details::torrent_stopped);
+			state(l, torrent_details::torrent_stopped);
 		else if (state_ == torrent_details::torrent_pausing)
-			state(torrent_details::torrent_paused);
+			state(l, torrent_details::torrent_paused);
 	}
 }
 
@@ -454,7 +457,7 @@ void torrent_internal::extract_names(unique_lock_t& l)
 	{				
 		name_ = hal::from_utf8_safe(info_memory(l)->name());
 		
-		filename_ = name();
+		filename_ = name(l);
 		if (!boost::find_last(filename_, L".torrent")) 
 				filename_ += L".torrent";
 		
@@ -563,10 +566,8 @@ void torrent_internal::extract_filenames(unique_lock_t& l)
 	}
 }
 
-void torrent_internal::write_torrent_info() const
+void torrent_internal::write_torrent_info(unique_lock_t& l) const
 {
-	unique_lock_t l(mutex_);
-
 	try {
 
 	if (info_memory(l))
@@ -598,10 +599,8 @@ void torrent_internal::write_torrent_info() const
 	}
 }
 
-boost::tuple<size_t, size_t, size_t, size_t> torrent_internal::update_peers() const
+boost::tuple<size_t, size_t, size_t, size_t> torrent_internal::update_peers(unique_lock_t& l) const
 {
-	unique_lock_t l(mutex_);
-
 	if (in_session(l))
 		handle_.get_peer_info(peers_);
 	
@@ -824,7 +823,7 @@ void torrent_internal::apply_queue_position(unique_lock_t& l)
 	HAL_DEV_MSG(L"Applying Queue Position");
 }
 
-void torrent_internal::state(unsigned s)
+void torrent_internal::state(unique_lock_t& l, unsigned s)
 {
 	switch (s)
 	{
@@ -857,7 +856,6 @@ void torrent_internal::initialize_non_serialized(function<void (torrent_internal
 {
 	update_manager_ = f;
 
-	TORRENT_STATE_LOG(L"Torrent state machine initiate");
 	initiate();
 }
 	

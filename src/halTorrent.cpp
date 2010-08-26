@@ -854,8 +854,7 @@ bool bit::torrent::is_open() const
 }
 
 bit::torrent::exec_around_ptr::proxy::proxy(torrent_internal* t) : 
-	t_(t),
-	l_(t->mutex_)
+	t_(t)
 {
 //	HAL_DEV_MSG(L"Ctor proxy");
 }

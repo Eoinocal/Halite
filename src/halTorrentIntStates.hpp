@@ -28,7 +28,8 @@ struct out_of_session : sc::state<out_of_session, torrent_internal, mpl::list< n
 
 	typedef mpl::list<
 		sc::custom_reaction< ev_add_to_session >,
-		sc::custom_reaction< ev_resume >
+		sc::custom_reaction< ev_resume >,
+		sc::custom_reaction< ev_remove >
 	> reactions;
 
 	out_of_session(base_type::my_context ctx);
@@ -36,6 +37,7 @@ struct out_of_session : sc::state<out_of_session, torrent_internal, mpl::list< n
 
 	sc::result react(const ev_add_to_session& evt);
 	sc::result react(const ev_resume& evt);
+	sc::result react(const ev_remove& evt);
 };
 
 struct active;
@@ -51,8 +53,14 @@ struct in_the_session : sc::state<in_the_session, torrent_internal, mpl::list< r
 {
 	typedef sc::state<in_the_session, torrent_internal, mpl::list< resume_data_idling, paused > > base_type;
 
+	typedef mpl::list<
+		sc::custom_reaction< ev_remove >
+	> reactions;
+
 	in_the_session(base_type::my_context ctx);
 	~in_the_session();
+
+	sc::result react(const ev_remove& evt);
 };
 
 struct resume_data_idling : sc::simple_state<resume_data_idling, in_the_session::orthogonal< 0 > >
@@ -93,8 +101,6 @@ struct active : sc::state<active, in_the_session::orthogonal< 1 > >
 	active(base_type::my_context ctx);
 	~active();
 
-	sc::result react(const ev_pause& evt);
-	sc::result react(const ev_stop& evt);
 	sc::result react(const ev_force_recheck& evt);
 };
 
@@ -182,14 +188,8 @@ struct stopped : sc::state<stopped, out_of_session>
 {
 	typedef sc::state<stopped, out_of_session> base_type;
 
-	typedef mpl::list<
-		sc::custom_reaction< ev_stop >
-	> reactions;
-
 	stopped(base_type::my_context ctx);
 	~stopped();
-
-	sc::result react(const ev_stop& evt);
 };
 
 }; // namespace hal

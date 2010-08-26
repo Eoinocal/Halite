@@ -14,15 +14,6 @@
 
 #include "halTorrentDefines.hpp"
 
-#ifndef HAL_TORRENT_STATE_LOGGING
-#	define TORRENT_STATE_LOG(s)
-#else
-#	include "../halEvent.hpp"
-#	define TORRENT_STATE_LOG(msg) \
-	hal::event_log().post(boost::shared_ptr<hal::EventDetail>( \
-			new hal::EventMsg(msg, hal::event_logger::torrent_dev))) 
-#endif
-
 #include "halIni.hpp"
 #include "halTypes.hpp"
 #include "halSignaler.hpp"
@@ -257,7 +248,9 @@ private:
 		TORRENT_INTERNALS_DEFAULTS,
 		allocation_(bit::sparse_allocation)
 	{
-		state(torrent_details::torrent_stopped);
+		unique_lock_t l(mutex_);
+
+		state(l, torrent_details::torrent_stopped);
 	}
 
 	torrent_internal(const wpath& filename, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"") :
@@ -269,7 +262,7 @@ private:
 	{
 		unique_lock_t l(mutex_);
 
-		state(torrent_details::torrent_stopped);
+		state(l, torrent_details::torrent_stopped);
 		assert(the_session_);
 
 		prepare(l, new libt::torrent_info(filename.string()));
@@ -285,7 +278,7 @@ private:
 	{
 		unique_lock_t l(mutex_);
 
-		state(torrent_details::torrent_stopped);
+		state(l, torrent_details::torrent_stopped);
 		assert(the_session_);
 
 		extract_hash(l);
@@ -294,16 +287,9 @@ private:
 	#undef TORRENT_INTERNALS_DEFAULTS
 
 public:
-	void locked_process_event(const sc::event_base & e)
-	{
-		unique_lock_t l(mutex_);
-		process_event(e);
-	}
-
 	~torrent_internal()
 	{
 		terminate();
-		TORRENT_STATE_LOG(L"Torrent state machine terminate");
 	}
 
 	static void set_the_session(boost::optional<libt::session>*);
@@ -346,8 +332,8 @@ public:
 		return std::make_pair(connections_, uploads_);
 	}
 	
-	const wstring& name() const;
 	void set_name(const wstring& n);
+	const wstring& name() const;
 	
 	const libt::sha1_hash& hash() const
 	{
@@ -391,54 +377,40 @@ public:
 	bool remove_from_session(bool write_data=true);
 
 	void resume()
-	{
-		HAL_DEV_MSG(hal::wform(L"resume() - %1%") % name());
-		
-		locked_process_event(ev_resume());
+	{		
+		process_event(ev_resume());
 	}
 	
 	void pause()
-	{
-		HAL_DEV_MSG(hal::wform(L"pause() - %1%") % name());
-		
-		locked_process_event(ev_pause());		
+	{		
+		process_event(ev_pause());		
 	}
 	
 	void stop()
-	{
-		HAL_DEV_MSG(hal::wform(L"stop() - %1%") % name());
-		
-		locked_process_event(ev_stop());
+	{		
+		process_event(ev_stop());
 	}
 	
 	void start()
-	{
-		HAL_DEV_MSG(hal::wform(L"start() - %1%") % name());
-		
-		locked_process_event(ev_start());
+	{		
+		process_event(ev_start());
 	}
 	
-	void remove_files(boost::function<void (void)> fn)
-	{
-		HAL_DEV_MSG(hal::wform(L"remove_files() - %1%") % name());
-
-		removed_callback_ = fn;
-		
-		locked_process_event(ev_stop());
+	void remove_files(function<void (void)> fn)
+	{		
+		process_event(ev_remove(fn));
 	}
 
 	void set_state_stopped()
 	{
 		unique_lock_t l(mutex_);
 
-		state(torrent_details::torrent_stopped);
+		state(l, torrent_details::torrent_stopped);
 	}
 
 	void force_recheck()
-	{
-		HAL_DEV_MSG(hal::wform(L"force_recheck() - %1%") % name());
-		
-		locked_process_event(ev_force_recheck());	
+	{		
+		process_event(ev_force_recheck());	
 	}
 	
 	void write_resume_data(const libt::entry& ent)
@@ -452,14 +424,12 @@ public:
 		if (!exists(resume_dir))
 			fs::create_directories(resume_dir);
 
-		boost::filesystem::ofstream out(resume_dir/(name() + L".fastresume"), std::ios_base::binary);
+		boost::filesystem::ofstream out(resume_dir/(name(l) + L".fastresume"), std::ios_base::binary);
 		out.unsetf(std::ios_base::skipws);
 		bencode(std::ostream_iterator<char>(out), ent);
 
 		HAL_DEV_MSG(L"Written!");
 	}
-
-	void write_torrent_info() const;
 
 	void save_resume_and_info_data() const
 	{
@@ -467,7 +437,7 @@ public:
 
 		handle_.save_resume_data();
 
-		write_torrent_info();
+		write_torrent_info(l);
 	}
 	
 	void clear_resume_data()
@@ -476,7 +446,7 @@ public:
 
 		try {
 
-		wpath resume_file = hal::app().get_working_directory() / L"resume" / (name() + L".fastresume");
+		wpath resume_file = hal::app().get_working_directory() / L"resume" / (name(l) + L".fastresume");
 
 		if (exists(resume_file))
 			remove(resume_file);
@@ -495,7 +465,7 @@ public:
 
 		try {
 
-		wpath torrent_info_file = hal::app().get_working_directory() / L"resume" / (name() + L".torrent_info");
+		wpath torrent_info_file = hal::app().get_working_directory() / L"resume" / (name(l) + L".torrent_info");
 
 		if (exists(torrent_info_file))
 			remove(torrent_info_file);
@@ -537,8 +507,6 @@ public:
 	}
 
 	void set_file_finished(int index);
-
-	void init_file_details();
 	void get_file_details(file_details_vec& files);
 
 	file_details_vec get_file_details();
@@ -830,9 +798,7 @@ public:
 
 		return peers_; 
 	}
-	
-	boost::tuple<size_t, size_t, size_t, size_t> update_peers() const;
-	
+		
 	void get_peer_details(peer_details_vec& peer_details) const
 	{
 		unique_lock_t l(mutex_);
@@ -879,6 +845,8 @@ public:
 	
 	unsigned state() const 
 	{
+		unique_lock_t l(mutex_);
+
 		return state_;
 	}
 
@@ -910,16 +878,22 @@ private:
 	void extract_hash(unique_lock_t&);
 	void extract_names(unique_lock_t&);
 	void extract_filenames(unique_lock_t&);	
+	void init_file_details(unique_lock_t& l);
 	
 	static boost::optional<libt::session>* the_session_;
 	bool in_session(unique_lock_t& l) const;
 
 	boost::intrusive_ptr<libt::torrent_info> info_memory(unique_lock_t&) const;	
+	const wstring& name(unique_lock_t&) const;
 	bool is_managed(unique_lock_t&) const;	
-	void state(unsigned s);
+	void state(unique_lock_t&, unsigned s);
 
 	void prepare(unique_lock_t& l) { prepare(l, info_memory(l)); }
-	void prepare(unique_lock_t& l, boost::intrusive_ptr<libt::torrent_info> info);
+	void prepare(unique_lock_t& l, boost::intrusive_ptr<libt::torrent_info> info);	
+
+	void write_torrent_info(unique_lock_t&) const;
+	boost::tuple<size_t, size_t, size_t, size_t> update_peers(unique_lock_t&) const;
+	void get_file_details(unique_lock_t& l, file_details_vec& files_vec);
 
 	void update_manager(unique_lock_t&);
 	void initialize_non_serialized(function<void (torrent_internal_ptr)>);
@@ -949,7 +923,9 @@ private:
 		}
 	}
 
-	function<void ()> removed_callback_;
+	function<void ()> remove_callback_;
+	function<void (void)>& remove_callback(unique_lock_t&) { return remove_callback_; }
+
 	function<void (torrent_internal_ptr)> update_manager_;
 
 	mutable mutex_t mutex_;

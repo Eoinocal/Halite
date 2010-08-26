@@ -6,15 +6,6 @@
 
 #pragma once
 
-#ifndef HAL_TORRENT_STATE_LOGGING
-#	define TORRENT_STATE_LOG(s)
-#else
-#	include "../halEvent.hpp"
-#	define TORRENT_STATE_LOG(msg) \
-	hal::event_log().post(boost::shared_ptr<hal::EventDetail>( \
-			new hal::EventMsg(msg, hal::event_logger::torrent_dev))) 
-#endif
-
 #include <boost/tuple/tuple.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/multi_index_container.hpp>
@@ -274,8 +265,6 @@ public:
 	
 	size_t remove_torrent(const uuid& name)
 	{		
-		TORRENT_STATE_LOG(L"Torrent manager erasing");
-
 		return torrents_.get<by_uuid>().erase(name);
 	}
 

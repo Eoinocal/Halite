@@ -126,7 +126,6 @@ public:
 
 			private:
 				torrent_internal* t_;
-				unique_lock_t l_;
 			};
 
 			exec_around_ptr() {}

@@ -58,12 +58,29 @@ private:
 	wstring err_;
 };
 
+struct ev_remove : sc::event<ev_remove>
+{
+public:
+	ev_remove()
+	{}
+
+	ev_remove(const function<void (void)>& fn) :
+		remove_callback_(fn)
+	{}
+
+	const function<void (void)>& remove_callback() const { return remove_callback_; }
+	void clear_callback() const { remove_callback_.clear(); }
+
+private:
+	mutable function<void (void)> remove_callback_;
+};
+
 struct ev_pause : sc::event< ev_pause > {};
 struct ev_paused_alert : sc::event<ev_paused_alert> {};
 
-struct ev_stop : sc::event< ev_stop > {};
 struct ev_resume : sc::event<ev_resume> {};
 struct ev_resumed_alert : sc::event<ev_resumed_alert> {};
+struct ev_stop : sc::event<ev_stop> {};
 
 struct ev_force_recheck : sc::event< ev_force_recheck > {};
 

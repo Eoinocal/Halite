@@ -685,7 +685,7 @@ void bit_impl::alert_handler()
 			
 			HAL_DEV_MSG(hal::wform(L"Torrent Paused alert, %1%.") % get(a.handle)->name());
 
-			get(a.handle)->locked_process_event(ev_paused_alert());
+			get(a.handle)->process_event(ev_paused_alert());
 		}
 		else
 		{
@@ -697,7 +697,7 @@ void bit_impl::alert_handler()
 						% get(a.handle)->name()), 
 					event_logger::warning, a.timestamp())));
 
-			get(a.handle)->locked_process_event(ev_error_alert(err));
+			get(a.handle)->process_event(ev_error_alert(err));
 		}
 	}
 	
@@ -708,7 +708,7 @@ void bit_impl::alert_handler()
 					% get(a.handle)->name()), 
 				event_logger::debug, a.timestamp())));
 
-		get(a.handle)->locked_process_event(ev_resumed_alert());
+		get(a.handle)->process_event(ev_resumed_alert());
 	}
 	
 	void operator()(libt::save_resume_data_alert const& a) const
@@ -722,7 +722,7 @@ void bit_impl::alert_handler()
 			get(a.handle)->write_resume_data(*a.resume_data);
 
 	//	get(a.handle)->signals().resume_data();
-		get(a.handle)->locked_process_event(ev_resume_data_alert());
+		get(a.handle)->process_event(ev_resume_data_alert());
 	}
 	
 	void operator()(libt::save_resume_data_failed_alert const& a) const
@@ -732,7 +732,7 @@ void bit_impl::alert_handler()
 					% get(a.handle)->name()), 
 				event_logger::warning, a.timestamp())));
 
-		get(a.handle)->locked_process_event(ev_resume_data_failed_alert());
+		get(a.handle)->process_event(ev_resume_data_failed_alert());
 	}
 	
 	void operator()(libt::peer_error_alert const& a) const

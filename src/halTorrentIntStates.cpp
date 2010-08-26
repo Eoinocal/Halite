@@ -12,6 +12,15 @@
 #	include <libtorrent/magnet_uri.hpp>
 #pragma warning (pop) 
 
+#ifndef HAL_TORRENT_STATE_LOGGING
+#	define TORRENT_STATE_LOG(s)
+#else
+#	include "../halEvent.hpp"
+#	define TORRENT_STATE_LOG(msg) \
+	hal::event_log().post(boost::shared_ptr<hal::EventDetail>( \
+			new hal::EventMsg(msg, hal::event_logger::torrent_dev))) 
+#endif
+
 namespace hal
 {
 
@@ -22,7 +31,7 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 {
 	TORRENT_STATE_LOG(L"Entering in_the_session()");
 
-	torrent_internal& t_i = context<torrent_internal>();	
+	torrent_internal& t_i = context<torrent_internal>();
 	unique_lock_t l(t_i.mutex_);
 
 	libt::add_torrent_params p;
@@ -57,11 +66,29 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 in_the_session::~in_the_session()
 {
 	torrent_internal& t_i = context<torrent_internal>();
+	unique_lock_t l(t_i.mutex_);
 
 	TORRENT_STATE_LOG(L"Removing handle from session");
 	(*t_i.the_session_)->remove_torrent(t_i.handle_);
 
 	TORRENT_STATE_LOG(L"Exiting ~in_the_session()");
+}
+
+sc::result in_the_session::react(const ev_remove& evt)
+{	
+	TORRENT_STATE_LOG(L"in_the_session ev_remove()");
+
+	torrent_internal& t_i = context<torrent_internal>();
+	unique_lock_t l(t_i.mutex_);
+
+	if (!evt.remove_callback().empty())
+	{	
+		t_i.remove_callback(l) = evt.remove_callback();
+	}
+
+	post_event(ev_stop());
+
+	return discard_event();
 }
 
 // -------- out_of_session --------
@@ -83,8 +110,9 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 {
 	TORRENT_STATE_LOG(hal::wform(L"Adding to session, paused - %1%") % evt.pause());
 	torrent_internal& t_i = context<torrent_internal>();
+	unique_lock_t l(t_i.mutex_);
 
-	assert(!t_i.in_session());
+	assert(!t_i.in_session(l));
 
 	if (evt.pause())
 		return transit<paused>();
@@ -97,6 +125,22 @@ sc::result out_of_session::react(const ev_resume& evt)
 	post_event(ev_add_to_session(false));
 
 	return discard_event();
+}	
+
+sc::result out_of_session::react(const ev_remove& evt)
+{	
+	torrent_internal& t_i = context<torrent_internal>();
+	unique_lock_t l(t_i.mutex_);
+
+	if (!evt.remove_callback().empty())
+
+	{	TORRENT_STATE_LOG(L"Calling remove_callback");
+		thread_t t(evt.remove_callback());
+
+		evt.clear_callback();
+	}
+
+	return discard_event();
 }
 
 active::active(base_type::my_context ctx) :
@@ -105,7 +149,9 @@ active::active(base_type::my_context ctx) :
 	TORRENT_STATE_LOG(L"Entering active()");
 
 	torrent_internal& t_i = context<torrent_internal>();
-	t_i.state(torrent_details::torrent_active);
+	unique_lock_t l(t_i.mutex_);
+
+	t_i.state(l, torrent_details::torrent_active);
 
 	if (t_i.handle_.is_paused())
 		t_i.handle_.resume();
@@ -133,7 +179,9 @@ pausing::pausing(base_type::my_context ctx) :
 	TORRENT_STATE_LOG(L"Entering pausing()");
 
 	torrent_internal& t_i = context<torrent_internal>();
-	t_i.state(torrent_details::torrent_pausing);
+	unique_lock_t l(t_i.mutex_);
+
+	t_i.state(l, torrent_details::torrent_pausing);
 }
 
 pausing::~pausing()
@@ -147,7 +195,9 @@ paused::paused(base_type::my_context ctx) :
 	TORRENT_STATE_LOG(L"Entering paused()");
 
 	torrent_internal& t_i = context<torrent_internal>();
-	t_i.state(torrent_details::torrent_paused);
+	unique_lock_t l(t_i.mutex_);
+
+	t_i.state(l, torrent_details::torrent_paused);
 
 	post_event(ev_write_resume_data());
 }
@@ -185,10 +235,11 @@ in_error::in_error(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
 	torrent_internal& t_i = context<torrent_internal>();
+	unique_lock_t l(t_i.mutex_);
 
 	TORRENT_STATE_LOG(hal::wform(L"Entering in_error()() - %1%") % t_i.check_error());
 
-	t_i.state(torrent_details::torrent_in_error);
+	t_i.state(l, torrent_details::torrent_in_error);
 }
 
 in_error::~in_error()
@@ -202,7 +253,9 @@ stopping::stopping(base_type::my_context ctx) :
 	TORRENT_STATE_LOG(L"Entering stopping()");
 
 	torrent_internal& t_i = context<torrent_internal>();
-	t_i.state(torrent_details::torrent_stopping);
+	unique_lock_t l(t_i.mutex_);
+
+	t_i.state(l, torrent_details::torrent_stopping);
 }
 
 stopping::~stopping()
@@ -225,45 +278,32 @@ stopped::stopped(base_type::my_context ctx) :
 	TORRENT_STATE_LOG(L"Entering stopped()");
 
 	torrent_internal& t_i = context<torrent_internal>();
-	t_i.state(torrent_details::torrent_stopped);
+	unique_lock_t l(t_i.mutex_);
 
-	if (! t_i.removed_callback_.empty())
+	t_i.state(l, torrent_details::torrent_stopped);
+
+	if (!t_i.remove_callback(l).empty())
 	{	
 		TORRENT_STATE_LOG(L"Calling removed_callback_");
-		thread_t t(t_i.removed_callback_);
+		thread_t t(t_i.remove_callback(l));
 
-		t_i.removed_callback_.clear();
+		t_i.remove_callback(l).clear();
 	}
 }
 
 stopped::~stopped()
 {
 	TORRENT_STATE_LOG(L"Exiting ~stopped()");
-}	
-
-sc::result stopped::react(const ev_stop& evt)
-{	TORRENT_STATE_LOG(L"Entering stopped()");
-
-	torrent_internal& t_i = context<torrent_internal>();
-	t_i.state(torrent_details::torrent_stopped);
-
-	if (! t_i.removed_callback_.empty())
-
-	{	TORRENT_STATE_LOG(L"Calling removed_callback_");
-		thread_t t(t_i.removed_callback_);
-
-		 t_i.removed_callback_.clear();
-	}
-
-	return discard_event();
 }
 
 not_started::not_started(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
 	torrent_internal& t_i = context<torrent_internal>();
+	unique_lock_t l(t_i.mutex_);
+
 	stored_state_ = t_i.state();
-	t_i.state(torrent_details::torrent_not_started);
+	t_i.state(l, torrent_details::torrent_not_started);
 
 	TORRENT_STATE_LOG(hal::wform(L"Entering not_started() - %1%") % stored_state_);
 }
