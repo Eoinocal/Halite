@@ -116,11 +116,11 @@ bit_impl::bit_impl() :
 		session_->set_settings(settings);
 	}
 	
-	acquire_work_object();
+	//acquire_work_object();
 	start_alert_handler();
 
 	service_threads_.push_back(shared_thread_ptr(new 
-		thread_t(bind(&bit_impl::service_thread, this, service_threads_.size()))));
+		thread_t(bind(&boost::asio::io_service::run, &io_service_))));
 
 
 	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::bit_impl()")
@@ -132,10 +132,11 @@ bit_impl::~bit_impl()
 	{
 	HAL_DEV_MSG(L"Commence ~BitTorrent_impl"); 
 
-	discard_work_object();
+//	discard_work_object();
 
 	stop_alert_handler();
 
+	io_service_.stop();
 	for (std::vector<shared_thread_ptr>::iterator i=service_threads_.begin(), e=service_threads_.end(); i != e; ++i)
 		(*i)->join();
 	
