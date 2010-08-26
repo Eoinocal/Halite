@@ -126,7 +126,7 @@ public:
 
 			private:
 				torrent_internal* t_;
-				mutex_t::scoped_lock l_;
+				unique_lock_t l_;
 			};
 
 			exec_around_ptr() {}

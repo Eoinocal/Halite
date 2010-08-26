@@ -22,10 +22,11 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 {
 	TORRENT_STATE_LOG(L"Entering in_the_session()");
 
-	torrent_internal& t_i = context<torrent_internal>();
+	torrent_internal& t_i = context<torrent_internal>();	
+	unique_lock_t l(t_i.mutex_);
 
 	libt::add_torrent_params p;
-	p.ti = t_i.info_memory();
+	p.ti = t_i.info_memory(l);
 
 	std::string resume_file = to_utf8((hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string());
 
@@ -275,8 +276,9 @@ not_started::~not_started()
 sc::result not_started::react(const ev_start& evt)
 {
 	torrent_internal& t_i = context<torrent_internal>();
+	unique_lock_t l(t_i.mutex_);
 
-	if (!t_i.info_memory() && t_i.name_ != L"")
+	if (!t_i.info_memory(l) && t_i.name_ != L"")
 	{		
 		std::string torrent_info_file = 
 			to_utf8((hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".torrent_info")).string());

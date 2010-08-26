@@ -630,7 +630,7 @@ void bit::update_torrent_details_manager_thread(const uuid& focused, const std::
 	}
 
 	{	
-		mutex_t::scoped_lock l(torrent_details_.mutex_);
+		unique_lock_t l(torrent_details_.mutex_);
 
 		torrent_details_.focused_ = focused;
 		torrent_details_.selected_names_ = selected;

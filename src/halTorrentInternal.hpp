@@ -6,6 +6,12 @@
 
 #pragma once
 
+#if defined(HALTORRENT_PCH)
+#	include "halPch.hpp"
+#else
+#	include "halTypes.hpp"
+#endif
+
 #include "halTorrentDefines.hpp"
 
 #ifndef HAL_TORRENT_STATE_LOGGING
@@ -16,38 +22,6 @@
 	hal::event_log().post(boost::shared_ptr<hal::EventDetail>( \
 			new hal::EventMsg(msg, hal::event_logger::torrent_dev))) 
 #endif
-
-#pragma warning (push, 1)
-#	include <libtorrent/file.hpp>
-#	include <libtorrent/hasher.hpp>
-#	include <libtorrent/storage.hpp>
-#	include <libtorrent/file_pool.hpp>
-#	include <libtorrent/alert_types.hpp>
-#	include <libtorrent/entry.hpp>
-#	include <libtorrent/bencode.hpp>
-#	include <libtorrent/session.hpp>
-#	include <libtorrent/ip_filter.hpp>
-#	include <libtorrent/torrent_handle.hpp>
-#	include <libtorrent/peer_connection.hpp>
-#	include <libtorrent/peer_info.hpp>
-#	include <libtorrent/create_torrent.hpp>
-
-#	include <libtorrent/extensions/metadata_transfer.hpp>
-#	include <libtorrent/extensions/ut_pex.hpp>
-#pragma warning (pop) 
-
-#include <boost/statechart/event.hpp>
-#include <boost/statechart/state_machine.hpp>
-#include <boost/statechart/simple_state.hpp>
-#include <boost/statechart/transition.hpp>
-#include <boost/statechart/state.hpp>
-#include <boost/statechart/custom_reaction.hpp>
-
-#include <boost/uuid/random_generator.hpp>
-#include <boost/uuid/uuid_io.hpp>
-#include <boost/uuid/uuid_serialize.hpp>
-
-#include <boost/mpl/list.hpp>
 
 #include "halIni.hpp"
 #include "halTypes.hpp"
@@ -293,10 +267,12 @@ private:
 		move_to_directory_(move_to_directory.string()),
 		allocation_(alloc)
 	{
+		unique_lock_t l(mutex_);
+
 		state(torrent_details::torrent_stopped);
 		assert(the_session_);
 
-		prepare(new libt::torrent_info(filename.string()));
+		prepare(l, new libt::torrent_info(filename.string()));
 	}
 
 	torrent_internal(const wstring& uri, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"") :
@@ -318,7 +294,7 @@ private:
 public:
 	void locked_process_event(const sc::event_base & e)
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 		process_event(e);
 	}
 
@@ -327,6 +303,9 @@ public:
 		terminate();
 		TORRENT_STATE_LOG(L"Torrent state machine terminate");
 	}
+
+	static void set_the_session(boost::optional<libt::session>*);
+	bool in_session() const;
 	
 	torrent_details_ptr get_torrent_details_ptr() const;
 
@@ -334,7 +313,7 @@ public:
 
 	void set_transfer_speed(float down, float up)
 	{	
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		transfer_limit_ = std::make_pair(down, up);
 		
@@ -343,14 +322,14 @@ public:
 
 	std::pair<float, float> get_transfer_speed() const
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		return transfer_limit_;
 	}
 
 	void set_connection_limit(int maxConn, int maxUpload)		
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		connections_ = maxConn;
 		uploads_ = maxUpload;
@@ -360,7 +339,7 @@ public:
 
 	std::pair<int, int> get_connection_limit() const
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		return std::make_pair(connections_, uploads_);
 	}
@@ -370,21 +349,21 @@ public:
 	
 	const libt::sha1_hash& hash() const
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		return hash_; 
 	}
 
 	const boost::uuids::uuid& uuid() const
 	{ 
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		return uuid_;
 	}
 	
 	void set_ratio(float ratio) 
 	{ 
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		if (ratio < 0) ratio = 0;
 		ratio_ = ratio; 
@@ -394,7 +373,7 @@ public:
 	
 	float get_ratio() const
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		return ratio_;
 	}
@@ -408,13 +387,6 @@ public:
 	void add_to_session(bool paused = false);
 	
 	bool remove_from_session(bool write_data=true);
-
-	bool in_session() const
-	{ 
-		mutex_t::scoped_lock l(mutex_);
-
-		return (in_session_ && the_session_ && handle_.is_valid());
-	}
 
 	void resume()
 	{
@@ -455,7 +427,7 @@ public:
 
 	void set_state_stopped()
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		state(torrent_details::torrent_stopped);
 	}
@@ -469,7 +441,7 @@ public:
 	
 	void write_resume_data(const libt::entry& ent)
 	{		
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 			
 		HAL_DEV_MSG(L"write_resume_data()");
 
@@ -489,7 +461,7 @@ public:
 
 	void save_resume_and_info_data() const
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		handle_.save_resume_data();
 
@@ -498,7 +470,7 @@ public:
 	
 	void clear_resume_data()
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		try {
 
@@ -517,7 +489,7 @@ public:
 	
 	void clear_torrent_info()
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		try {
 
@@ -536,7 +508,7 @@ public:
 
 	void delete_torrent_file()
 	{		
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		try {
 
@@ -555,7 +527,7 @@ public:
 	
 	void set_file_priorities(std::vector<int> file_indices, int priority)
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		files_.set_file_priorities(file_indices, priority);
 				
@@ -571,22 +543,22 @@ public:
 
 	const wpath get_save_directory() const
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		return save_directory_;
 	}
 
 	void set_save_directory(wpath s, bool force=false)
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
-		if (in_session() && !is_finished() &&
+		if (in_session(l) && !is_finished() &&
 				s != path_from_utf8(handle_.save_path()))
 		{
 			handle_.move_storage(s.string());
 			save_directory_ = s;
 		}
-		else if (!in_session() && force)
+		else if (!in_session(l) && force)
 		{
 			save_directory_ = s;
 		}
@@ -594,14 +566,14 @@ public:
 
 	const wpath get_move_to_directory() const
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		return move_to_directory_;
 	}
 	
 	void set_move_to_directory(wpath m)
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		if (is_finished() && !m.empty())
 		{
@@ -619,9 +591,9 @@ public:
 
 	bool is_finished() const
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
-		if (in_session())
+		if (in_session(l))
 		{
 			libt::torrent_status::state_t s = handle_.status().state;
 
@@ -634,7 +606,7 @@ public:
 	
 	void finished()
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		if (finish_time_.is_special())
 			finish_time_ = boost::posix_time::second_clock::universal_time();
@@ -654,14 +626,14 @@ public:
 	
 	bool is_active() const 
 	{ 
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		return state() == torrent_details::torrent_active; 
 	}
 
 	void set_tracker_login(wstring username, wstring password)
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		tracker_username_ = username;
 		tracker_password_ = password;
@@ -671,37 +643,37 @@ public:
 	
 	std::pair<wstring, wstring> get_tracker_login() const
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		return make_pair(tracker_username_, tracker_password_);
 	}
 	
 	const wstring& filename() const 
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 	
 		return filename_; 
 	}
 	
 	const wstring& original_filename() const 
 	{ 
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		return original_filename_; 
 	}
 	
 	const libt::torrent_handle& handle() const 
 	{ 
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		return handle_; 
 	}
 
 	void reset_trackers()
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
-		if (in_session())
+		if (in_session(l))
 		{
 			handle_.replace_trackers(torrent_trackers_);		
 			trackers_.clear();
@@ -710,7 +682,7 @@ public:
 	
 	void set_trackers(const std::vector<tracker_detail>& tracker_details)
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		trackers_.clear();
 		trackers_.assign(tracker_details.begin(), tracker_details.end());
@@ -720,11 +692,11 @@ public:
 	
 	const std::vector<tracker_detail>& get_trackers()
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
-		if (trackers_.empty() && info_memory())
+		if (trackers_.empty() && info_memory(l))
 		{
-			std::vector<libt::announce_entry> trackers = info_memory()->trackers();
+			std::vector<libt::announce_entry> trackers = info_memory(l)->trackers();
 			
 			foreach (const libt::announce_entry& entry, trackers)
 			{
@@ -737,7 +709,7 @@ public:
 
 	const wpath& save_directory() const
 	{ 
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		return save_directory_; 
 	}
@@ -746,7 +718,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		using boost::serialization::make_nvp;
 
@@ -846,14 +818,13 @@ public:
 
 		if (version < 3)
 		{
-		//	boost::uuids::random_generator gen;
 			uuid_ = boost::uuids::random_generator()();
 		}
 	}
 
 	const std::vector<libt::peer_info>& peers() const
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
 		return peers_; 
 	}
@@ -862,9 +833,9 @@ public:
 	
 	void get_peer_details(peer_details_vec& peer_details) const
 	{		
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 
-		if (in_session())
+		if (in_session(l))
 		{
 			foreach (libt::peer_info peer, peers_) 
 			{
@@ -874,9 +845,6 @@ public:
 	}
 
 	void metadata_completed();
-
-	void prepare() { prepare(info_memory()); }
-	void prepare(boost::intrusive_ptr<libt::torrent_info> info);
 
 	void set_resolve_countries(bool b)
 	{
@@ -904,104 +872,18 @@ public:
 		info_memory_ = info;
 	}
 	
-	boost::intrusive_ptr<libt::torrent_info> info_memory() const
-	{
-		mutex_t::scoped_lock l(mutex_);
-
-		try 
-		{
-
-		if (!info_memory_ && in_session()) 
-			info_memory_.reset(new libt::torrent_info(handle_.get_torrent_info()));	
-
-		}
-		catch (const libt::libtorrent_exception&)
-		{
-			HAL_DEV_MSG(L"No torrent info");
-		}
-
-		return info_memory_;
-	}
-	
-/*	signalers& signals()
-	{
-		mutex_t::scoped_lock l(mutex_);
-		return signals_;
-	}
-	*/
 	unsigned state() const 
 	{
 		return state_;
 	}
 
-	wstring check_error() 
-	{		
-		if (in_session())
-		{
-			status_memory_ = handle_.status();
-			return from_utf8(status_memory_.error);
-		}
-		else
-			return L"";
-	}
+	wstring check_error() const;
 
 	bool awaiting_resume_data() { return (state_downcast<const resume_data_waiting*>() != 0); }
 
-	void output_torrent_debug_details()
-	{
-		HAL_DEV_MSG(wform(L"Name %1%") % name());
-		HAL_DEV_MSG(wform(L" >> In session       %1%") % in_session());
+	void output_torrent_debug_details() const;
 
-		if (in_session())
-		{
-
-		wstring state_str;
-
-		switch (state())
-		{
-		case torrent_details::torrent_active:
-			state_str = L"Active";
-			break;
-
-		case torrent_details::torrent_not_started:
-			state_str = L"Not Started!";
-			break;
-
-		case torrent_details::torrent_paused:
-			state_str = app().res_wstr(HAL_TORRENT_PAUSED);
-			break;
-			
-		case torrent_details::torrent_pausing:
-			state_str = app().res_wstr(HAL_TORRENT_PAUSING);
-			break;
-			
-		case torrent_details::torrent_stopped:
-			state_str = app().res_wstr(HAL_TORRENT_STOPPED);
-			break;
-			
-		case torrent_details::torrent_stopping:
-			state_str = app().res_wstr(HAL_TORRENT_STOPPING);
-			break;
-			
-		case torrent_details::torrent_in_error:
-			state_str = app().res_wstr(HAL_TORRENT_IN_ERROR);
-			break;
-			
-		default:
-			state_str = L"Bad State!";
-			break;
-		};
-		
-		HAL_DEV_MSG(wform(L" >> State			%1%") % state_str);
-		HAL_DEV_MSG(wform(L" >> Paused in session	%1%") % handle_.is_paused());
-		HAL_DEV_MSG(wform(L" >> Error state		%1%") % check_error());
-
-		}
-	}
-
-	torrent_files& files() { return files_; }
-
-	static boost::optional<libt::session>* the_session_;		
+	torrent_files& files() { return files_; }		
 
 	friend class torrent_manager;
 
@@ -1019,10 +901,22 @@ private:
 	void apply_queue_position();	
 	void apply_external_interface();
 	void state(unsigned s);
+	
+	
+	static boost::optional<libt::session>* the_session_;
+	bool in_session(unique_lock_t& l) const;
+
+	boost::intrusive_ptr<libt::torrent_info> info_memory(unique_lock_t&) const;	
+	bool is_managed(unique_lock_t&) const;
+
+	void prepare(unique_lock_t& l) { prepare(l, info_memory(l)); }
+	void prepare(unique_lock_t& l, boost::intrusive_ptr<libt::torrent_info> info);
 
 	void extract_hash();
 	void update_manager();
 	void initialize_non_serialized(function<void (torrent_internal_ptr)>);
+	
+	void output_torrent_debug_details(unique_lock_t& l) const;
 
 	void set_file_priority_cb(size_t i, int p)
 	{

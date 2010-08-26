@@ -156,7 +156,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	//Set callback for completed torrents
 	hal::bittorrent::Instance().connect_torrent_completed_signal(
 					bind(&HaliteWindow::torrentCompletedCallback, this, _1));
-	
+
 	// Add ToolBar and register it along with StatusBar for UIUpdates
 	UIAddToolBar(hWndToolBar);
 	UISetCheck(ID_VIEW_TOOLBAR, true);

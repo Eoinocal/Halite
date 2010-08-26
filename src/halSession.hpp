@@ -873,7 +873,7 @@ public:
 	
 	void save_torrent_data()
 	{	
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 		try
 		{
 		

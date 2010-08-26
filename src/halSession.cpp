@@ -47,7 +47,7 @@ bit_impl::bit_impl() :
 	try
 	{
 
-	torrent_internal::the_session_ = &session_;
+	torrent_internal::set_the_session(&session_);
 
 	session_->session::set_alert_mask(libt::alert::all_categories);		
 	session_->add_extension(&libt::create_metadata_plugin);
@@ -455,7 +455,7 @@ void bit_impl::schedual_cancel()
 
 void bit_impl::start_alert_handler()
 {
-	mutex_t::scoped_lock l(mutex_);
+	unique_lock_t l(mutex_);
 
 	keep_checking_ = true;
 
@@ -488,7 +488,7 @@ void bit_impl::start_alert_handler()
 	
 void bit_impl::stop_alert_handler()
 {
-	mutex_t::scoped_lock l(mutex_);
+	unique_lock_t l(mutex_);
 
 	if (keep_checking_ = false)
 	{
@@ -925,7 +925,7 @@ void bit_impl::alert_handler()
 	{	
 		try
 		{
-		//mutex_t::scoped_lock l(mutex_);
+		//unique_lock_t l(mutex_);
 		
 		libt::handle_alert<
 			libt::save_resume_data_alert,

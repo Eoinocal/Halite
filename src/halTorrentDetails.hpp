@@ -335,7 +335,7 @@ class torrent_details_manager
 public:		
 	const torrent_details_set torrents() const 
 	{
-		mutex_t::scoped_lock l(mutex_);	
+		unique_lock_t l(mutex_);	
 
 		torrent_details_set torrents;
 
@@ -353,13 +353,13 @@ public:
 
 	const std::set<uuid> selected_uuids() const
 	{
-		mutex_t::scoped_lock l(mutex_);
+		unique_lock_t l(mutex_);
 		return selected_names_; 
 	}
 	
 	const torrent_details_ptr get(const uuid& u) const
 	{
-		mutex_t::scoped_lock l(mutex_);	
+		unique_lock_t l(mutex_);	
 		
 		torrent_details_map::const_iterator i = torrent_map_.find(u);
 		

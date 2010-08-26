@@ -36,6 +36,8 @@
 #include <boost/bind.hpp>
 #include <boost/noncopyable.hpp>
 
+#include <boost/mpl/list.hpp>
+
 #include <boost/lambda/lambda.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/algorithm/string/find.hpp>
@@ -85,6 +87,16 @@
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/tag.hpp>
 
+#include <boost/statechart/event.hpp>
+#include <boost/statechart/state_machine.hpp>
+#include <boost/statechart/simple_state.hpp>
+#include <boost/statechart/transition.hpp>
+#include <boost/statechart/state.hpp>
+#include <boost/statechart/custom_reaction.hpp>
+
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid_serialize.hpp>
+
 #define TORRENT_MAX_ALERT_TYPES 32
 
 #pragma warning (push, 1)
@@ -106,6 +118,7 @@
 #	include <libtorrent/peer_info.hpp>
 #	include <libtorrent/peer_id.hpp>
 #	include <libtorrent/peer_connection.hpp>
+
 #	include <libtorrent/extensions/metadata_transfer.hpp>
 #	include <libtorrent/extensions/ut_pex.hpp>
 #	include <libtorrent/extensions/ut_metadata.hpp>

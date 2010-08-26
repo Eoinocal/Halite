@@ -13,6 +13,9 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/algorithm/string.hpp>
 
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_io.hpp>
+
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ip/udp.hpp>
 #include <boost/asio/deadline_timer.hpp>
@@ -21,9 +24,6 @@
 #include <stlsoft/util/operator_bool_adaptor.hpp>
 
 #include <loki/Singleton.h>
-
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_io.hpp>
 
 namespace hal
 {	
@@ -38,7 +38,9 @@ namespace hal
 	using std::make_pair;	
 
 	typedef boost::int64_t size_type;
+
 	typedef boost::recursive_mutex mutex_t;
+	typedef mutex_t::scoped_lock unique_lock_t;
 
 	typedef boost::thread thread_t;
 

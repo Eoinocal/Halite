@@ -71,7 +71,7 @@ boost::signals::connection event_logger::attach(boost::function<void (boost::sha
 {
 	if (pimpl_)
 	{
-		mutex_t::scoped_lock l(pimpl_->mutex_);
+		unique_lock_t l(pimpl_->mutex_);
 		return pimpl_->event_signal_.connect(fn);
 	}
 	else
@@ -82,7 +82,7 @@ void event_logger::dettach(const boost::signals::connection& c)
 {
 	if (pimpl_)
 	{
-		mutex_t::scoped_lock l(pimpl_->mutex_);
+		unique_lock_t l(pimpl_->mutex_);
 		pimpl_->event_signal_.disconnect(c);
 	}
 }
@@ -97,7 +97,7 @@ void event_logger::post(boost::shared_ptr<EventDetail> e)
 {
 	if (pimpl_)
 	{
-	mutex_t::scoped_lock l(pimpl_->mutex_);
+	unique_lock_t l(pimpl_->mutex_);
 	if (e->level() != hal::event_logger::debug || pimpl_->debug_)
 		pimpl_->event_signal_(e);
 	}

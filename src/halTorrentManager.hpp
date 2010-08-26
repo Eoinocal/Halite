@@ -202,9 +202,7 @@ public:
 		//	{		
 				try 
 				{
-					
-		//		(*i).torrent->prepare(file);	
-					
+										
 				(*i).torrent->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1));
 				(*i).torrent->start();	
 				
