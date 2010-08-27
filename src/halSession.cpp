@@ -677,7 +677,7 @@ void bit_impl::alert_handler()
 
 		wstring err = get(a.handle)->check_error();
 
-		if (err == L"")
+		if (err.empty())
 		{
 			event_log().post(shared_ptr<EventDetail>(
 				new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) 

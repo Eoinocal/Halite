@@ -321,7 +321,6 @@ std::wstring torrent_details::to_wstring(size_t index)
 }*/
 
 web_seed_or_dht_node_detail::web_seed_or_dht_node_detail() : 
-	url(L""), 
 	port(-1), 
 	type(hal::app().res_wstr(HAL_INT_NEWT_ADD_PEERS_WEB)) 
 {}
@@ -758,15 +757,6 @@ void bit::pause_all_torrents()
 {	
 	try {
 
-/*	Behaviour changed to a session pause.
-	
-	for (torrent_manager::torrent_by_name::iterator i=pimpl()->the_torrents_.begin(), e=pimpl()->the_torrents_.end();
-		i != e; ++i)
-	{		
-		if ((*i).torrent->in_session())
-			(*i).torrent->pause();
-	}
-*/
 	pimpl()->session_->pause();
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uuid(), "pause_all_torrents")
@@ -775,14 +765,7 @@ void bit::pause_all_torrents()
 void bit::unpause_all_torrents()
 {	
 	try {
-	
-/*	for (torrent_manager::torrent_by_name::iterator i=pimpl()->the_torrents_.begin(), e=pimpl()->the_torrents_.end();
-		i != e; ++i)
-	{
-		if ((*i).torrent->in_session() && (*i).torrent->get_state() == torrent_details::torrent_paused)
-			(*i).torrent->resume();
-	}
-*/
+
 	pimpl()->session_->resume();
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uuid(), "unpause_all_torrents")

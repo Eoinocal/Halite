@@ -47,8 +47,7 @@ Halite::Halite() :
 #	endif
 	showMessage_(true),
 	logToFile_(true),
-	logListLen_(128),
-	dll_(L"")
+	logListLen_(128)
 {
 	hal::event_log().init();
 	load_from_ini();
@@ -205,7 +204,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		_Module.AddMessageLoop(&theLoop);
 
 #		if (_ATL_VER > 0x0700)
-			if (halite().dll() != L"") hal::app().res_set_dll(halite().dll());
+			if (!halite().dll().empty()) hal::app().res_set_dll(halite().dll());
 #		endif // (_ATL_VER > 0x0700)			
 			HaliteWindow wndMain(WMU_ARE_YOU_ME);
 			if (wndMain.CreateEx() == NULL)

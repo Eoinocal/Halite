@@ -128,7 +128,7 @@ public:
 		completed_name_ = change_root_name(completed_name_, root);
 	}
 
-	const fs::wpath& completed_name() const { return completed_name_ != L"" ? completed_name_ : current_name_; }
+	const fs::wpath& completed_name() const { return completed_name_.empty() ? current_name_ : completed_name_; }
 
 	int priority() const { return priority_; };
 	bool with_hash() const { return with_hash_; }

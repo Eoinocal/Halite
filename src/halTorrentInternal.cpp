@@ -778,7 +778,7 @@ void torrent_internal::apply_tracker_login(upg_lock_t& l)
 {
 	if (in_session(l))
 	{
-		if (tracker_username_ != L"")
+		if (!tracker_username_.empty())
 		{
 			handle_.set_tracker_login(hal::to_utf8(tracker_username_),
 				hal::to_utf8(tracker_password_));

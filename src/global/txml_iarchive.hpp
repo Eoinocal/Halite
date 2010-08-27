@@ -124,7 +124,7 @@ public:
 		if (xml::node* child = current_node_->first_child())
 			ws = from_utf8(child->value_str());
 		else
-			ws = L"";
+			ws.clear();
 
 		TXML_LOG(boost::wformat(L" << load wstring: %1%") % ws);
 	}

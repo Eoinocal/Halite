@@ -25,7 +25,6 @@ namespace hal
 
 peer_detail::peer_detail(libt::peer_info& peerInfo) :
 	ip_address(hal::from_utf8_safe(peerInfo.ip.address().to_string())),
-	country(L""),
 	speed(std::pair<float,float>(boost::numeric_cast<float>(peerInfo.payload_down_speed), 
 		boost::numeric_cast<float>(peerInfo.payload_up_speed))),
 	client(hal::from_utf8_safe(peerInfo.client))

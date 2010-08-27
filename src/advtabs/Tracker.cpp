@@ -22,8 +22,8 @@ LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 	::EnableWindow(GetDlgItem(HAL_TRACKER_LOGINCHECK), false);
 	::EnableWindow(GetDlgItem(HAL_TRACKERLIST), false);
 	
-	username_ = L"";
-	password_ = L"";
+	username_.clear();
+	password_.clear();
 
 	userEdit_.SubclassWindow(GetDlgItem(HAL_TRACKER_USER));
 	passEdit_.SubclassWindow(GetDlgItem(HAL_TRACKER_PASS));
@@ -34,10 +34,10 @@ LRESULT AdvTrackerDialog::onInitDialog(HWND, LPARAM)
 
 void AdvTrackerDialog::setLoginUiState()
 {
-	if (username_ == L"")
+	if (username_.empty())
 	{
 		::SendMessage(GetDlgItem(HAL_TRACKER_LOGINCHECK), BM_SETCHECK, BST_UNCHECKED, 0);
-		password_ = L"";
+		password_.clear();
 	}
 	else
 	{	
@@ -84,8 +84,8 @@ void AdvTrackerDialog::focusChanged(const hal::torrent_details_ptr pT)
 		::EnableWindow(GetDlgItem(HAL_TRACKER_LOGINCHECK), false);
 		::EnableWindow(GetDlgItem(HAL_TRACKERLIST), false);
 		
-		username_ = L"";
-		password_ = L"";
+		username_.clear();
+		password_.clear();
 	}
 	
 	m_list.uiUpdate(pT);
@@ -137,8 +137,8 @@ void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
 		::EnableWindow(GetDlgItem(HAL_TRACKER_USER), false);
 		::EnableWindow(GetDlgItem(HAL_TRACKER_PASS), false);	
 
-		username_ = L"";	
-		password_ = L"";
+		username_.clear();	
+		password_.clear();
 		
 		if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused_torrent()))
 			t.tracker_login = make_pair(username_, password_);

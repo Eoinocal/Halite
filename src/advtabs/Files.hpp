@@ -24,12 +24,10 @@ struct FileLink
 {
 	FileLink(const boost::filesystem::wpath& b, size_t o=0) :
 		branch(b),
-		filename(L""),
 		order_(o)
 	{}
 
 	FileLink(const wstring& f, size_t o=0) :
-		branch(L""),
 		filename(f),
 		order_(o)
 	{}

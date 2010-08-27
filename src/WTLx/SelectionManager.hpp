@@ -40,7 +40,7 @@ public:
 		hal::win_c_str<string_t, MAX_PATH> c_string;
 
 		std::set<string_t> all_selected;
-		string_t selected = L"";
+		string_t selected;
 		
 		bool do_signal = false;
 		
