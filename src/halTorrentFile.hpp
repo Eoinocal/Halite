@@ -171,15 +171,16 @@ class torrent_files
 	typedef torrent_file_index_impl_t::index<by_random>::type torrent_file_by_random;
 
 public:
-	typedef function<void (size_t, int)> set_priority_fn;
-	typedef function<void (size_t)> changed_filename_fn;
+	typedef function<void (size_t, int, upgrade_lock&)> set_priority_fn;
+	typedef function<void (size_t, upgrade_lock&)> changed_filename_fn;
 
-	torrent_files(set_priority_fn sp, changed_filename_fn cf) :
+	torrent_files(boost::shared_mutex& m, set_priority_fn sp, changed_filename_fn cf) :
+		mutex_(m),
 		set_priority_fn_(sp),
 		changed_filename_fn_(cf)
 	{}
 
-	void set_file_priorities(std::vector<int> file_indices, int priority)
+	void set_file_priorities(std::vector<int> file_indices, int priority, upgrade_lock& l)
 	{
 		if (!files_.empty())
 		{
@@ -190,14 +191,16 @@ public:
 				torrent_file tmp_file = *(file_i);
 				tmp_file.set_priority(priority);
 
-				files_.get<by_random>().replace(file_i, tmp_file);
+				{	upgrade_to_unique_lock up_l(l);
+					files_.get<by_random>().replace(file_i, tmp_file);
+				}
 
-				set_priority_fn_(i, priority);
+				set_priority_fn_(i, priority, l);
 			}
 		}
 	}
 
-	void set_root_name(const wstring& root)
+	void set_root_name(const wstring& root, upgrade_lock& l)
 	{
 		torrent_file_index_impl_t new_files;
 
@@ -210,44 +213,61 @@ public:
 			new_files.push_back(tmp_file);
 		}
 
-		std::swap(files_, new_files);
+		{	upgrade_to_unique_lock up_l(l);
+			std::swap(files_, new_files);
+		}
 	}
 
-	void push_back(const torrent_file& t)
+	void push_back(const torrent_file& t, upgrade_lock& l)
 	{
+		upgrade_to_unique_lock up_l(l);
+
 		files_.push_back(t);
 	}
 
-	bool empty() const
+	bool empty(upgrade_lock& l) const
 	{
 		return files_.empty();
 	}
 
-	size_t size() const
+	size_t size(upgrade_lock& l) const
 	{
 		return files_.size();
 	}
 
-	void set_file_finished(size_t i)
+	void set_file_finished(size_t i, upgrade_lock& l)
 	{
 		torrent_file_by_random::iterator file_i = files_.get<by_random>().begin() + i; 
 
 		torrent_file tmp_file = *(file_i);
 		tmp_file.set_finished();
-		files_.get<by_random>().replace(file_i, tmp_file);
 
-		changed_filename_fn_(i);
+		{	upgrade_to_unique_lock up_l(l);
+			files_.get<by_random>().replace(file_i, tmp_file);
+		}
+
+		changed_filename_fn_(i, l);
 	}
 
 	void change_filename(size_t i, const fs::wpath& fn)
+	{		
+		upgrade_lock l(mutex_);
+		
+		change_filename(i, fn, l);
+	}
+
+	void change_filename(size_t i, const fs::wpath& fn, upgrade_lock& l)
 	{
 		torrent_file_by_random::iterator file_i = files_.get<by_random>().begin() + i; 
 
 		torrent_file tmp_file = *(file_i);
 		tmp_file.change_filename(fn);
-		files_.get<by_random>().replace(file_i, tmp_file);
 
-		changed_filename_fn_(i);
+		{	upgrade_to_unique_lock up_l(l);
+			files_.get<by_random>().replace(file_i, tmp_file);
+		}
+
+		changed_filename_fn_(i, l);
 	}
 
 	const torrent_file& operator[](size_t n) const
@@ -266,6 +286,7 @@ private:
 	set_priority_fn set_priority_fn_;
 	changed_filename_fn changed_filename_fn_;
 
+	boost::shared_mutex& mutex_;
 	torrent_file_index_impl_t files_;
 };
 

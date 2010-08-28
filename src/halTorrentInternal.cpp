@@ -89,6 +89,52 @@ bool torrent_internal::is_managed(upgrade_lock& l) const
 	return managed_;
 }
 
+bool torrent_internal::is_finished() const
+{
+	upgrade_lock l(mutex_);
+
+	return is_finished(l);
+}
+
+bool torrent_internal::is_finished(upgrade_lock& l) const
+{
+	if (in_session(l))
+	{
+		libt::torrent_status::state_t s = handle_.status().state;
+
+		return (s == libt::torrent_status::seeding ||
+					s == libt::torrent_status::finished);
+	}
+	else 
+		return false;
+}
+
+void torrent_internal::finished()
+{
+	upgrade_lock l(mutex_);
+
+	if (finish_time_.is_special())
+	{
+		upgrade_to_unique_lock up_l(l);
+
+		finish_time_ = boost::posix_time::second_clock::universal_time();
+	}
+
+	if (is_finished(l))
+	{
+		if (!move_to_directory_.empty() && 
+				move_to_directory_ !=  path_from_utf8(handle_.save_path()))
+		{				
+			upgrade_to_unique_lock up_l(l);
+
+			handle_.move_storage(move_to_directory_.string());
+			save_directory_ = move_to_directory_;
+		}
+
+		apply_superseeding(l);
+	}
+}
+
 bool torrent_internal::is_active() const 
 { 
 	upgrade_lock l(mutex_);
@@ -127,7 +173,7 @@ void torrent_internal::set_name(const wstring& n)
 	{	upgrade_to_unique_lock up_l(l);
 			
 		//name_ = n;
-		files_.set_root_name(n);
+		files_.set_root_name(n, l);
 	}
 
 	init_file_details(l);
@@ -185,6 +231,11 @@ bool torrent_internal::get_superseeding(bool actually) const
 {
 	upgrade_lock l(mutex_);
 
+	return get_superseeding(actually, l);
+}
+
+bool torrent_internal::get_superseeding(bool actually, upgrade_lock& l) const
+{
 	if (actually)
 		if (in_session(l))
 			return handle_.super_seeding();
@@ -376,11 +427,11 @@ void torrent_internal::init_file_details(upgrade_lock& l)
 	file_details_memory_.clear();
 	file_priorities_.clear();
 
-	if (info_memory(l) && !files_.empty())
+	if (info_memory(l) && !files_.empty(l))
 	{	
 		libt::torrent_info::file_iterator file_it = info_memory(l)->begin_files();
 
-		for(size_t i=0, e=files_.size(); i<e; ++i)
+		for(size_t i=0, e=files_.size(l); i<e; ++i)
 		{
 			if (file_it == info_memory(l)->end_files()) break;
 
@@ -398,9 +449,9 @@ void torrent_internal::init_file_details(upgrade_lock& l)
 
 void torrent_internal::set_file_finished(int i)
 {
-	unique_lock l(mutex_);
+	upgrade_lock l(mutex_);
 
-	files_.set_file_finished(i);
+	files_.set_file_finished(i, l);
 }
 
 void torrent_internal::prepare(upgrade_lock& l, boost::intrusive_ptr<libt::torrent_info> info)
@@ -523,7 +574,7 @@ void torrent_internal::extract_hash(upgrade_lock& l)
 
 void torrent_internal::extract_filenames(upgrade_lock& l)
 {			
-	if (info_memory(l) && files_.empty())
+	if (info_memory(l) && files_.empty(l))
 	{		
 		for (libt::torrent_info::file_iterator i = info_memory(l)->begin_files(), e = info_memory(l)->end_files();
 			i != e; ++i)
@@ -564,10 +615,7 @@ void torrent_internal::extract_filenames(upgrade_lock& l)
 
 			int p = file_priorities_.empty() ? 1 : file_priorities_[std::distance(info_memory(l)->begin_files(), i)];
 
-			{	upgrade_to_unique_lock up_l(l);
-			
-				files_.push_back(torrent_file(p_orig, using_hash, p));
-			}
+			files_.push_back(torrent_file(p_orig, using_hash, p), l);
 		}
 	}
 	else
@@ -778,7 +826,7 @@ void torrent_internal::apply_file_names(upgrade_lock& l)
 	{
 		bool want_recheck = false;
 
-		if (files_.size() != info_memory(l)->num_files())
+		if (files_.size(l) != info_memory(l)->num_files())
 		{
 			extract_filenames(l);
 			want_recheck = true;
@@ -968,7 +1016,7 @@ wstring torrent_internal::state_string(upgrade_lock& l) const
 			state_str = app().res_wstr(HAL_TORRENT_FINISHED);
 			break;
 		case libt::torrent_status::seeding:
-			if (!get_superseeding(true))
+			if (!get_superseeding(true, l))
 				state_str = app().res_wstr(HAL_TORRENT_SEEDING);
 			else
 				state_str = app().res_wstr(HAL_TORRENT_SUPERSEEDING);

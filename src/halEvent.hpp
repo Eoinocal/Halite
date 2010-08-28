@@ -27,8 +27,8 @@
 #endif
 
 #ifndef NDEBUG
-//#	define HAL_TORRENT_DEV_MSGES
-//#	define HAL_TORRENT_STATE_LOGGING
+#	define HAL_TORRENT_DEV_MSGES
+#	define HAL_TORRENT_STATE_LOGGING
 //#	define HAL_SORT_LOGGING
 //#	define TXML_ARCHIVE_LOGGING
 #endif

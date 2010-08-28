@@ -241,8 +241,9 @@ private:
 		queue_position_(-1), \
 		hash_(0), \
 		superseeding_(false), \
-		files_(bind(&torrent_internal::set_file_priority_cb, this, _1, _2), \
-			bind(&torrent_internal::changed_file_filename_cb, this, _1))
+		files_(mutex_, \
+			bind(&torrent_internal::set_file_priority_cb, this, _1, _2, _3), \
+			bind(&torrent_internal::changed_file_filename_cb, this, _1, _2))
 		
 	torrent_internal() :	
 		TORRENT_INTERNALS_DEFAULTS,
@@ -511,7 +512,7 @@ public:
 
 		{	upgrade_to_unique_lock up_l(l);
 			
-			files_.set_file_priorities(file_indices, priority);
+			files_.set_file_priorities(file_indices, priority, l);
 		}
 				
 		apply_file_priorities(l);
@@ -572,46 +573,8 @@ public:
 		}
 	}
 
-	bool is_finished() const
-	{
-		upgrade_lock l(mutex_);
-
-		if (in_session(l))
-		{
-			libt::torrent_status::state_t s = handle_.status().state;
-
-			return (s == libt::torrent_status::seeding ||
-						s == libt::torrent_status::finished);
-		}
-		else 
-			return false;
-	}
-	
-	void finished()
-	{
-		upgrade_lock l(mutex_);
-
-		if (finish_time_.is_special())
-		{
-			upgrade_to_unique_lock up_l(l);
-
-			finish_time_ = boost::posix_time::second_clock::universal_time();
-		}
-
-		if (is_finished())
-		{
-			if (!move_to_directory_.empty() && 
-					move_to_directory_ !=  path_from_utf8(handle_.save_path()))
-			{				
-				upgrade_to_unique_lock up_l(l);
-
-				handle_.move_storage(move_to_directory_.string());
-				save_directory_ = move_to_directory_;
-			}
-
-			apply_superseeding(l);
-		}
-	}
+	bool is_finished() const;	
+	void finished();
 	
 	bool is_active() const;
 
@@ -907,6 +870,8 @@ private:
 	const wpath& save_directory(upgrade_lock& l) const;
 	bool is_managed(upgrade_lock& l) const;	
 	bool is_active(upgrade_lock& l) const;	
+	bool is_finished(upgrade_lock& l) const;
+	bool get_superseeding(bool actually, upgrade_lock& l) const;
 
 	unsigned state(upgrade_lock& l) const;
 	void state(upgrade_lock& l, unsigned s);
@@ -924,7 +889,6 @@ private:
 	wstring state_string(upgrade_lock& l) const;
 	void output_torrent_debug_details(upgrade_lock& l) const;
 	
-	
 	void set_info_cache(boost::intrusive_ptr<libt::torrent_info> info, upgrade_lock& l)
 	{
 		upgrade_to_unique_lock up_l(l);
@@ -934,10 +898,8 @@ private:
 		}
 	}
 
-	void set_file_priority_cb(size_t i, int p)
+	void set_file_priority_cb(size_t i, int p, upgrade_lock& l)
 	{		
-		upgrade_lock l(mutex_);
-
 		if (i < file_priorities_.size())
 		{
 			upgrade_to_unique_lock up_l(l);
@@ -947,10 +909,8 @@ private:
 		}
 	}
 	
-	void changed_file_filename_cb(size_t i)
+	void changed_file_filename_cb(size_t i, upgrade_lock& l)
 	{		
-		upgrade_lock l(mutex_);
-
 		if (i < file_details_memory_.size())
 		{
 			torrent_file::split_path_pair_t split = torrent_file::split_root(files_[i].completed_name());
