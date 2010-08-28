@@ -26,14 +26,14 @@ void torrent_internal::set_the_session(boost::optional<libt::session>* s)
 
 bool torrent_internal::in_session() const
 {	
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
 	return in_session(l);
 }
 
 void torrent_internal::adjust_queue_position(bit::queue_adjustments adjust)
 {
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
 	if (in_session(l) && is_managed(l))
 	{
@@ -55,14 +55,14 @@ void torrent_internal::adjust_queue_position(bit::queue_adjustments adjust)
 	}
 }
 
-bool torrent_internal::in_session(upgrade_lock& l) const
+bool torrent_internal::in_session(poly_lock_ptr l) const
 { 
 	return (in_session_ && the_session_ && handle_.is_valid());
 }
 
 void torrent_internal::set_managed(bool m)
 {
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_unique_lock(mutex_));
 
 	managed_ = m;
 	
@@ -71,15 +71,17 @@ void torrent_internal::set_managed(bool m)
 
 bool torrent_internal::is_managed() const
 {
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
 	return is_managed(l);
 }
 
-bool torrent_internal::is_managed(upgrade_lock& l) const
+bool torrent_internal::is_managed(poly_lock_ptr l) const
 {
 	if (in_session(l))
 	{
+		poly_upgrade_to_unique_lock uniq_l(l);
+			
 		managed_ = handle_.is_auto_managed();
 	}
 
@@ -88,27 +90,29 @@ bool torrent_internal::is_managed(upgrade_lock& l) const
 
 bool torrent_internal::is_active() const 
 { 
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
 	return is_active(l); 
 }
 
-bool torrent_internal::is_active(upgrade_lock& l) const 
+bool torrent_internal::is_active(poly_lock_ptr l) const 
 { 
 	return state(l) == torrent_details::torrent_active; 
 }
 
 const wstring& torrent_internal::name() const
 {
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
 	return name(l);
 }
 
-const wstring& torrent_internal::name(upgrade_lock& l) const
+const wstring& torrent_internal::name(poly_lock_ptr l) const
 { 
 	if (name_.empty() && in_session(l))
 	{
+		poly_upgrade_to_unique_lock uniq_l(l);
+			
 		name_ = hal::from_utf8_safe(handle_.name());
 	}
 	
@@ -117,10 +121,13 @@ const wstring& torrent_internal::name(upgrade_lock& l) const
 
 void torrent_internal::set_name(const wstring& n)
 {
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
-	//name_ = n;
-	files_.set_root_name(n);
+	{	poly_upgrade_to_unique_lock uniq_l(l);
+			
+		//name_ = n;
+		files_.set_root_name(n);
+	}
 
 	init_file_details(l);
 	apply_file_names(l);
@@ -128,51 +135,54 @@ void torrent_internal::set_name(const wstring& n)
 
 const uuid& torrent_internal::id() const
 { 
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
 	return id(l);
 }
 
-const uuid& torrent_internal::id(upgrade_lock& l) const
+const uuid& torrent_internal::id(poly_lock_ptr l) const
 { 
 	return uuid_;
 }
 
 const wpath& torrent_internal::save_directory() const
 { 
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
 	return save_directory(l); 
 }
 
-const wpath& torrent_internal::save_directory(upgrade_lock& l) const
+const wpath& torrent_internal::save_directory(poly_lock_ptr l) const
 { 
 	return save_directory_; 
 }
 
 unsigned torrent_internal::state() const 
 {
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
 	return state(l);
 }
 
-unsigned torrent_internal::state(upgrade_lock& l) const 
+unsigned torrent_internal::state(poly_lock_ptr l) const 
 {
 	return state_;
 }
 void torrent_internal::set_superseeding(bool ss)
 {
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
-	superseeding_ = ss;
+	{	poly_upgrade_to_unique_lock uniq_l(l);
+
+		superseeding_ = ss;
+	}
 
 	apply_superseeding(l);
 }
 
 bool torrent_internal::get_superseeding(bool actually) const
 {
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
 	if (actually)
 		if (in_session(l))
@@ -185,12 +195,11 @@ bool torrent_internal::get_superseeding(bool actually) const
 
 wstring torrent_internal::check_error() const
 {		
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
 	if (in_session(l))
-	{
-		status_memory_ = handle_.status();
-		return from_utf8(status_memory_.error);
+	{ 
+		return from_utf8(renew_status_cache(l).error);
 	}
 	else
 		return L"";
@@ -200,7 +209,7 @@ void torrent_internal::add_to_session(bool paused)
 {
 	try
 	{
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
 	HAL_DEV_MSG(hal::wform(L"add_to_session() paused=%1%") % paused);
 
@@ -218,7 +227,7 @@ bool torrent_internal::remove_from_session(bool write_data)
 {
 	try
 	{
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
 	HAL_DEV_MSG(hal::wform(L"remove_from_session() write_data=%1%") % write_data);
 	
@@ -237,109 +246,40 @@ bool torrent_internal::remove_from_session(bool write_data)
 
 torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 {	
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
 	try
 	{
 
-	if (in_session(l) && is_active(l))
-	{
-		status_memory_ = handle_.status();
-		progress_ = status_memory_.progress;
-		queue_position_ = handle_.queue_position();
-	}
-	else
-	{
-		// Wipe these cause they don't make sense for a non-active torrent.
-		
-		status_memory_.download_payload_rate = 0;
-		status_memory_.upload_payload_rate = 0;
-		status_memory_.total_payload_download = 0;
-		status_memory_.total_payload_upload = 0;
-		status_memory_.next_announce = boost::posix_time::seconds(0);		
-	}
-	
-	wstring state_str;
-	
-	switch (state(l))
-	{
-	case torrent_details::torrent_paused:
-		state_str = app().res_wstr(HAL_TORRENT_PAUSED);
-		break;
-		
-	case torrent_details::torrent_pausing:
-		state_str = app().res_wstr(HAL_TORRENT_PAUSING);
-		break;
-		
-	case torrent_details::torrent_stopped:
-		state_str = app().res_wstr(HAL_TORRENT_STOPPED);
-		break;
-		
-	case torrent_details::torrent_stopping:
-		state_str = app().res_wstr(HAL_TORRENT_STOPPING);
-		break;
-		
-	case torrent_details::torrent_in_error:
-		state_str = app().res_wstr(HAL_TORRENT_IN_ERROR);
-		break;
-		
-	default:
-		switch (status_memory_.state)
-		{
-		case libt::torrent_status::queued_for_checking:
-			state_str = app().res_wstr(HAL_TORRENT_QUEUED_CHECKING);
-			break;
-		case libt::torrent_status::checking_files:
-			state_str = app().res_wstr(HAL_TORRENT_CHECKING_FILES);
-			break;
-//			case libt::torrent_status::connecting_to_tracker:
-//				state = app().res_wstr(HAL_TORRENT_CONNECTING);
-//				break;
-		case libt::torrent_status::downloading_metadata:
-			state_str = app().res_wstr(HAL_TORRENT_METADATA);
-			break;
-		case libt::torrent_status::downloading:
-			state_str = app().res_wstr(HAL_TORRENT_DOWNLOADING);
-			break;
-		case libt::torrent_status::finished:
-			state_str = app().res_wstr(HAL_TORRENT_FINISHED);
-			break;
-		case libt::torrent_status::seeding:
-			if (!get_superseeding(true))
-				state_str = app().res_wstr(HAL_TORRENT_SEEDING);
-			else
-				state_str = app().res_wstr(HAL_TORRENT_SUPERSEEDING);
-			break;
-		case libt::torrent_status::allocating:
-			state_str = app().res_wstr(HAL_TORRENT_ALLOCATING);
-			break;
-		case libt::torrent_status::checking_resume_data:
-			state_str = app().res_wstr(HAL_TORRENT_CHECKING_RESUME);
-			break;
-		}	
-	}
+	renew_status_cache(l);	
+	wstring state_str = state_string(l);
 	
 	pt::time_duration td(pt::pos_infin);
 	
-	if (status_memory_.download_payload_rate != 0)
+	if (status_cache(l).download_payload_rate != 0)
 	{
 		td = boost::posix_time::seconds(	
-			long(float(status_memory_.total_wanted-status_memory_.total_wanted_done) / status_memory_.download_payload_rate));
+			long(float(status_cache(l).total_wanted-status_cache(l).total_wanted_done) / status_cache(l).download_payload_rate));
 	}
 	
-	total_uploaded_ += (status_memory_.total_payload_upload - total_base_);
-	total_base_ = status_memory_.total_payload_upload;
-	
-	uploaded_.update(status_memory_.total_upload);
-	payload_uploaded_.update(status_memory_.total_payload_upload);
-	downloaded_.update(status_memory_.total_download);
-	payload_downloaded_.update(status_memory_.total_payload_download);
+	{	poly_upgrade_to_unique_lock uniq_l(l);
+			
+		total_uploaded_ += (status_cache(l).total_payload_upload - total_base_);
+		total_base_ = status_cache(l).total_payload_upload;
+		
+		uploaded_.update(status_cache(l).total_upload);
+		payload_uploaded_.update(status_cache(l).total_payload_upload);
+		downloaded_.update(status_cache(l).total_download);
+		payload_downloaded_.update(status_cache(l).total_payload_download);
+	}
 	
 	if (is_active(l))
 	{
+		poly_upgrade_to_unique_lock uniq_l(l);
+
 		active_duration_.update();
 		
-		if (libt::torrent_status::seeding == status_memory_.state)
+		if (libt::torrent_status::seeding == status_cache(l).state)
 			seeding_duration_.update();
 	}	
 	
@@ -350,21 +290,21 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 		save_directory(l).string(), 
 		state_str, 
 		id(l),
-		hal::from_utf8(status_memory_.current_tracker), 
+		hal::from_utf8(status_cache(l).current_tracker), 
 		hash_str_,
 		std::pair<float, float>(
-			boost::numeric_cast<float>(status_memory_.download_payload_rate), 
-			boost::numeric_cast<float>(status_memory_.upload_payload_rate)),
+			boost::numeric_cast<float>(status_cache(l).download_payload_rate), 
+			boost::numeric_cast<float>(status_cache(l).upload_payload_rate)),
 		progress_, 
-		status_memory_.distributed_copies, 
-		status_memory_.total_wanted_done, 
-		status_memory_.total_wanted, 
+		status_cache(l).distributed_copies, 
+		status_cache(l).total_wanted_done, 
+		status_cache(l).total_wanted, 
 		uploaded_, payload_uploaded_,
 		downloaded_, payload_downloaded_, 
 		connections, 
 		ratio_, 
 		td, 
-		status_memory_.next_announce, 
+		status_cache(l).next_announce, 
 		active_duration_, seeding_duration_, 
 		start_time_, finish_time_, 
 		queue_position_,
@@ -403,30 +343,35 @@ file_details_vec torrent_internal::get_file_details()
 
 void torrent_internal::get_file_details(file_details_vec& files_vec)
 {
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
 	get_file_details(l, files_vec);
 }
 
-void torrent_internal::get_file_details(upgrade_lock& l, file_details_vec& files_vec)
+void torrent_internal::get_file_details(poly_lock_ptr l, file_details_vec& files_vec)
 {
 	if (file_details_memory_.empty())
 		init_file_details(l);	
 	
 	if (in_session(l))
-	{			
+	{	
 		std::vector<libt::size_type> file_progress;			
 		handle_.file_progress(file_progress);
 		
-		for(size_t i=0, e=file_details_memory_.size(); i<e; ++i)
-			file_details_memory_[i].progress =  file_progress[i];	
+		{	poly_upgrade_to_unique_lock uniq_l(l);
+
+			for(size_t i=0, e=file_details_memory_.size(); i<e; ++i)
+				file_details_memory_[i].progress =  file_progress[i];	
+		}
 	}
 
 	files_vec = file_details_memory_;
 }
 
-void torrent_internal::init_file_details(upgrade_lock& l)
-{
+void torrent_internal::init_file_details(poly_lock_ptr l)
+{	
+	poly_upgrade_to_unique_lock uniq_l(l);
+
 	file_details_memory_.clear();
 	file_priorities_.clear();
 
@@ -452,16 +397,16 @@ void torrent_internal::init_file_details(upgrade_lock& l)
 
 void torrent_internal::set_file_finished(int i)
 {
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_unique_lock(mutex_));
 
 	files_.set_file_finished(i);
 }
 
-void torrent_internal::prepare(upgrade_lock& l, boost::intrusive_ptr<libt::torrent_info> info)
+void torrent_internal::prepare(poly_lock_ptr l, boost::intrusive_ptr<libt::torrent_info> info)
 {
 	if (info)
 	{				
-		set_info_memory(info);
+		set_info_cache(info, l);
 				
 		extract_hash(l);
 		extract_names(l);
@@ -474,6 +419,7 @@ void torrent_internal::prepare(upgrade_lock& l, boost::intrusive_ptr<libt::torre
 
 		// These here should not make state changes based on torrent 
 		// session status since it has not been initialized yet.
+
 		if (state_ == torrent_details::torrent_stopping)
 			state(l, torrent_details::torrent_stopped);
 		else if (state_ == torrent_details::torrent_pausing)
@@ -483,7 +429,7 @@ void torrent_internal::prepare(upgrade_lock& l, boost::intrusive_ptr<libt::torre
 
 void torrent_internal::metadata_completed()
 {
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 
 	prepare(l);
 
@@ -491,7 +437,7 @@ void torrent_internal::metadata_completed()
 	update_manager(l);
 }
 
-void torrent_internal::update_manager(upgrade_lock& l)
+void torrent_internal::update_manager(poly_lock_ptr l)
 {
 	if (update_manager_)
 	{
@@ -499,32 +445,38 @@ void torrent_internal::update_manager(upgrade_lock& l)
 	}
 }
 
-void torrent_internal::extract_names(upgrade_lock& l)
+void torrent_internal::extract_names(poly_lock_ptr l)
 {
 	if (info_memory(l))
-	{				
+	{		
+		poly_upgrade_to_unique_lock uniq_l(l);
+
 		name_ = hal::from_utf8_safe(info_memory(l)->name());
 		
-		filename_ = name(l);
+		filename_ = name_;
 		if (!boost::find_last(filename_, L".torrent")) 
 				filename_ += L".torrent";
 		
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(
-			hal::wform(L"Loaded names: %1%, %2%") % name(l) % filename_)));
+			hal::wform(L"Loaded names: %1%, %2%") % name_ % filename_)));
 	}
 }
 
-void torrent_internal::extract_hash(upgrade_lock& l)
+void torrent_internal::extract_hash(poly_lock_ptr l)
 {	
 	HAL_DEV_MSG(L"Extracting hash...");
 
 	if (in_session(l))
 	{		
+		poly_upgrade_to_unique_lock uniq_l(l);
+
 		HAL_DEV_MSG(L"    from handle");
 		hash_ = handle_.info_hash();
 	}
 	else if (info_memory(l))
-	{		
+	{			
+		poly_upgrade_to_unique_lock uniq_l(l);
+
 		HAL_DEV_MSG(L"    from info_memory");
 		hash_ = info_memory(l)->info_hash();
 	}
@@ -541,23 +493,34 @@ void torrent_internal::extract_hash(upgrade_lock& l)
 		p.auto_managed = false;
 
 		libt::torrent_handle h = libt::add_magnet_uri(**the_session_, magnet_uri_, p);
-		hash_ = h.info_hash();	
+			
+		{	poly_upgrade_to_unique_lock uniq_l(l);
+
+			hash_ = h.info_hash();	
+		}
 
 		HAL_DEV_MSG(L"    removing temp handle");
 		(*the_session_)->remove_torrent(h);
 	}
 	else
 	{		
+		poly_upgrade_to_unique_lock uniq_l(l);
+
 		HAL_DEV_MSG(L"    No Hash!");
 		hash_.clear();
 	}
 	
 	libt::sha1_hash const& ih = hash_;
-	hash_str_ = from_utf8(libt::base32encode(std::string((char const*)&ih[0], 20)));
+
+	{	poly_upgrade_to_unique_lock uniq_l(l);
+
+		hash_str_ = from_utf8(libt::base32encode(std::string((char const*)&ih[0], 20)));
+	}
+
 	HAL_DEV_MSG(hal::wform(L"    hash : %1%") % hash_str_);
 }
 
-void torrent_internal::extract_filenames(upgrade_lock& l)
+void torrent_internal::extract_filenames(poly_lock_ptr l)
 {			
 	if (info_memory(l) && files_.empty())
 	{		
@@ -599,7 +562,11 @@ void torrent_internal::extract_filenames(upgrade_lock& l)
 			}	
 
 			int p = file_priorities_.empty() ? 1 : file_priorities_[std::distance(info_memory(l)->begin_files(), i)];
-			files_.push_back(torrent_file(p_orig, using_hash, p));
+
+			{	poly_upgrade_to_unique_lock uniq_l(l);
+			
+				files_.push_back(torrent_file(p_orig, using_hash, p));
+			}
 		}
 	}
 	else
@@ -614,7 +581,7 @@ void torrent_internal::extract_filenames(upgrade_lock& l)
 	}
 }
 
-void torrent_internal::write_torrent_info(upgrade_lock& l) const
+void torrent_internal::write_torrent_info(poly_lock_ptr l) const
 {
 	try {
 
@@ -647,10 +614,14 @@ void torrent_internal::write_torrent_info(upgrade_lock& l) const
 	}
 }
 
-boost::tuple<size_t, size_t, size_t, size_t> torrent_internal::update_peers(upgrade_lock& l) const
+boost::tuple<size_t, size_t, size_t, size_t> torrent_internal::update_peers(poly_lock_ptr l) const
 {
 	if (in_session(l))
+	{
+		poly_upgrade_to_unique_lock uniq_l(l);
+
 		handle_.get_peer_info(peers_);
+	}
 	
 	size_t totalPeers = 0;
 	size_t peersConnected = 0;
@@ -682,7 +653,7 @@ boost::tuple<size_t, size_t, size_t, size_t> torrent_internal::update_peers(upgr
 
 // ----------------- private -----------------
 
-void torrent_internal::apply_settings(upgrade_lock& l)
+void torrent_internal::apply_settings(poly_lock_ptr l)
 {		
 	apply_transfer_speed(l);
 	apply_connection_limit(l);
@@ -696,7 +667,7 @@ void torrent_internal::apply_settings(upgrade_lock& l)
 	apply_external_interface(l);
 }
 
-void torrent_internal::apply_transfer_speed(upgrade_lock& l)
+void torrent_internal::apply_transfer_speed(poly_lock_ptr l)
 {
 	if (in_session(l))
 	{
@@ -710,7 +681,7 @@ void torrent_internal::apply_transfer_speed(upgrade_lock& l)
 	}
 }
 
-void torrent_internal::apply_external_interface(upgrade_lock& l)
+void torrent_internal::apply_external_interface(poly_lock_ptr l)
 {
 	if (in_session(l))
 	{
@@ -729,7 +700,7 @@ void torrent_internal::apply_external_interface(upgrade_lock& l)
 	}
 }
 
-void torrent_internal::apply_connection_limit(upgrade_lock& l)
+void torrent_internal::apply_connection_limit(poly_lock_ptr l)
 {
 	if (in_session(l))
 	{
@@ -740,7 +711,7 @@ void torrent_internal::apply_connection_limit(upgrade_lock& l)
 	}
 }
 
-void torrent_internal::apply_ratio(upgrade_lock& l)
+void torrent_internal::apply_ratio(poly_lock_ptr l)
 { 
 	if (in_session(l))
 	{
@@ -750,7 +721,7 @@ void torrent_internal::apply_ratio(upgrade_lock& l)
 	}
 }
 
-void torrent_internal::apply_trackers(upgrade_lock& l)
+void torrent_internal::apply_trackers(poly_lock_ptr l)
 {
 	if (in_session(l))
 	{
@@ -774,7 +745,7 @@ void torrent_internal::apply_trackers(upgrade_lock& l)
 	}
 }
 
-void torrent_internal::apply_tracker_login(upgrade_lock& l)
+void torrent_internal::apply_tracker_login(poly_lock_ptr l)
 {
 	if (in_session(l))
 	{
@@ -789,7 +760,7 @@ void torrent_internal::apply_tracker_login(upgrade_lock& l)
 	}
 }
 
-void torrent_internal::apply_file_priorities(upgrade_lock& l)
+void torrent_internal::apply_file_priorities(poly_lock_ptr l)
 {
 	if (in_session(l))
 	{
@@ -800,7 +771,7 @@ void torrent_internal::apply_file_priorities(upgrade_lock& l)
 	}
 }
 
-void torrent_internal::apply_file_names(upgrade_lock& l)
+void torrent_internal::apply_file_names(poly_lock_ptr l)
 {
 	if (in_session(l) && info_memory(l))
 	{
@@ -824,7 +795,7 @@ void torrent_internal::apply_file_names(upgrade_lock& l)
 	}
 }	
 
-void torrent_internal::apply_resolve_countries(upgrade_lock& l)
+void torrent_internal::apply_resolve_countries(poly_lock_ptr l)
 {
 	if (in_session(l))
 	{
@@ -834,7 +805,7 @@ void torrent_internal::apply_resolve_countries(upgrade_lock& l)
 	}
 }
 
-void torrent_internal::apply_superseeding(upgrade_lock& l)
+void torrent_internal::apply_superseeding(poly_lock_ptr l)
 {
 	if (in_session(l))
 	{
@@ -846,11 +817,11 @@ void torrent_internal::apply_superseeding(upgrade_lock& l)
 
 void torrent_internal::apply_queue_position()
 {
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 	apply_queue_position(l);
 }
 
-void torrent_internal::apply_queue_position(upgrade_lock& l)
+void torrent_internal::apply_queue_position(poly_lock_ptr l)
 {
 	if (in_session(l))
 	{
@@ -871,7 +842,7 @@ void torrent_internal::apply_queue_position(upgrade_lock& l)
 	HAL_DEV_MSG(L"Applying Queue Position");
 }
 
-void torrent_internal::state(upgrade_lock& l, unsigned s)
+void torrent_internal::state(poly_lock_ptr l, unsigned s)
 {
 	switch (s)
 	{
@@ -897,23 +868,133 @@ void torrent_internal::state(upgrade_lock& l, unsigned s)
 		HAL_DEV_MSG(L"state() - unknown");
 		break;
 	};
-	state_ = s;
+
+	{	poly_upgrade_to_unique_lock uniq_l(l);
+			
+		state_ = s;
+	}
 }
 
 void torrent_internal::initialize_non_serialized(function<void (torrent_internal_ptr)> f)
 {
-	update_manager_ = f;
+	{	poly_lock_ptr l(new poly_unique_lock(mutex_));
+
+		update_manager_ = f;
+	}
 
 	initiate();
 }
+
+libt::torrent_status& torrent_internal::status_cache(poly_lock_ptr l) const
+{
+	return status_memory_;
+}
+
+libt::torrent_status& torrent_internal::renew_status_cache(poly_lock_ptr l) const
+{	
+	if (in_session(l) && is_active(l))
+	{
+		libt::torrent_status ts = handle_.status();
+		
+		{	poly_upgrade_to_unique_lock uniq_l(l);
+
+			status_memory_ = ts;
+			progress_ = status_memory_.progress;
+			queue_position_ = handle_.queue_position();
+		}
+	}
+	else
+	{
+		poly_upgrade_to_unique_lock uniq_l(l);
+
+		// Wipe these cause they don't make sense for a non-active torrent.
+		
+		status_memory_.download_payload_rate = 0;
+		status_memory_.upload_payload_rate = 0;
+		status_memory_.total_payload_download = 0;
+		status_memory_.total_payload_upload = 0;
+		status_memory_.next_announce = boost::posix_time::seconds(0);		
+	}
+
+	return status_memory_;
+}
 	
-boost::intrusive_ptr<libt::torrent_info> torrent_internal::info_memory(upgrade_lock& l) const
+wstring torrent_internal::state_string(poly_lock_ptr l) const
+{
+	wstring state_str;
+	
+	switch (state(l))
+	{
+	case torrent_details::torrent_paused:
+		state_str = app().res_wstr(HAL_TORRENT_PAUSED);
+		break;
+		
+	case torrent_details::torrent_pausing:
+		state_str = app().res_wstr(HAL_TORRENT_PAUSING);
+		break;
+		
+	case torrent_details::torrent_stopped:
+		state_str = app().res_wstr(HAL_TORRENT_STOPPED);
+		break;
+		
+	case torrent_details::torrent_stopping:
+		state_str = app().res_wstr(HAL_TORRENT_STOPPING);
+		break;
+		
+	case torrent_details::torrent_in_error:
+		state_str = app().res_wstr(HAL_TORRENT_IN_ERROR);
+		break;
+		
+	default:
+		switch (status_cache(l).state)
+		{
+		case libt::torrent_status::queued_for_checking:
+			state_str = app().res_wstr(HAL_TORRENT_QUEUED_CHECKING);
+			break;
+		case libt::torrent_status::checking_files:
+			state_str = app().res_wstr(HAL_TORRENT_CHECKING_FILES);
+			break;
+//			case libt::torrent_status::connecting_to_tracker:
+//				state = app().res_wstr(HAL_TORRENT_CONNECTING);
+//				break;
+		case libt::torrent_status::downloading_metadata:
+			state_str = app().res_wstr(HAL_TORRENT_METADATA);
+			break;
+		case libt::torrent_status::downloading:
+			state_str = app().res_wstr(HAL_TORRENT_DOWNLOADING);
+			break;
+		case libt::torrent_status::finished:
+			state_str = app().res_wstr(HAL_TORRENT_FINISHED);
+			break;
+		case libt::torrent_status::seeding:
+			if (!get_superseeding(true))
+				state_str = app().res_wstr(HAL_TORRENT_SEEDING);
+			else
+				state_str = app().res_wstr(HAL_TORRENT_SUPERSEEDING);
+			break;
+		case libt::torrent_status::allocating:
+			state_str = app().res_wstr(HAL_TORRENT_ALLOCATING);
+			break;
+		case libt::torrent_status::checking_resume_data:
+			state_str = app().res_wstr(HAL_TORRENT_CHECKING_RESUME);
+			break;
+		}	
+	}
+
+	return state_str;
+}
+
+boost::intrusive_ptr<libt::torrent_info> torrent_internal::info_memory(poly_lock_ptr l) const
 {
 	try 
 	{
 
 	if (!info_memory_ && in_session(l)) 
+	{	
+		poly_upgrade_to_unique_lock uniq_l(l);
+			
 		info_memory_.reset(new libt::torrent_info(handle_.get_torrent_info()));	
+	}
 
 	}
 	catch (const libt::libtorrent_exception&)
@@ -926,11 +1007,11 @@ boost::intrusive_ptr<libt::torrent_info> torrent_internal::info_memory(upgrade_l
 
 void torrent_internal::output_torrent_debug_details() const
 {
-	upgrade_lock l(mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(mutex_));
 	output_torrent_debug_details(l);
 }
 
-void torrent_internal::output_torrent_debug_details(upgrade_lock& l) const
+void torrent_internal::output_torrent_debug_details(poly_lock_ptr l) const
 {
 	HAL_DEV_MSG(wform(L"Name %1%") % name(l));
 	HAL_DEV_MSG(wform(L" >> In session       %1%") % in_session(l));

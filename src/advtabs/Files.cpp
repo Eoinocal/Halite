@@ -79,7 +79,7 @@ void FileListView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	
 	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;	
 
-	if (hal::bit::torrent t = hal::bittorrent::Instance().get(hal::bittorrent::Instance().torrentDetails().focused_torrent()->uuid()))
+	if (hal::bit::torrent t = hal::bittorrent::Instance().get(hal::bittorrent::Instance().torrentDetails().focused_torrent()))
 		t.file_priorities = std::pair<std::vector<int>, int>(indices, priority);
 
 	do_ui_update_();
@@ -139,7 +139,7 @@ LRESULT FileListView::OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&)
 		HAL_DEV_MSG(hal::wform(L"iItem: %1%, Order: %2%, text: %3%, orig: %4%") 
 			% pdi->item.iItem % files_[pdi->item.iItem].order() % pdi->item.pszText % str);
 
-		if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused()->uuid()))
+		if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused()))
 		{
 			wpath old_name = t.files()[files_[pdi->item.iItem].order()].name;
 			t.files()[files_[pdi->item.iItem].order()].name = old_name.parent_path()/wstring(pdi->item.pszText);
@@ -311,7 +311,7 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	
 	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;
 	
-	if (hal::bit::torrent t = hal::bittorrent::Instance().get(hal::bittorrent::Instance().torrentDetails().focused_torrent()->uuid()))
+	if (hal::bit::torrent t = hal::bittorrent::Instance().get(hal::bittorrent::Instance().torrentDetails().focused_torrent()))
 		t.file_priorities = std::pair<std::vector<int>, int>(indices, priority);
 	
 	if (hal::try_update_lock<this_class_t> lock = hal::try_update_lock<this_class_t>(this)) 

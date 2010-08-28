@@ -277,7 +277,10 @@ public:
 
 	torrent get(torrent_details_ptr p)
 	{
-		return get(p->uuid());
+		if (!p)			
+			return torrent();
+		else
+			return get(p->uuid());
 	}
 
 	torrent get(const uuid& id);

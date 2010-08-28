@@ -32,7 +32,7 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 	TORRENT_STATE_LOG(L"Entering in_the_session()");
 
 	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(t_i.mutex_));
 
 	libt::add_torrent_params p;
 	p.ti = t_i.info_memory(l);
@@ -51,22 +51,25 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 	p.paused = true;
 	p.duplicate_is_error = false;
 	p.auto_managed = t_i.managed_;
+	
+	{	poly_upgrade_to_unique_lock uniq_l(l);
 
-	if (p.ti)
-		t_i.handle_ = (*t_i.the_session_)->add_torrent(p);
-	else if (!t_i.magnet_uri_.empty())
-		t_i.handle_ = libt::add_magnet_uri(**t_i.the_session_, t_i.magnet_uri_, p);
+		if (p.ti)
+			t_i.handle_ = (*t_i.the_session_)->add_torrent(p);
+		else if (!t_i.magnet_uri_.empty())
+			t_i.handle_ = libt::add_magnet_uri(**t_i.the_session_, t_i.magnet_uri_, p);
 
-	assert(t_i.handle_.is_valid());
+		assert(t_i.handle_.is_valid());
 
-	t_i.in_session_ = true;
+		t_i.in_session_ = true;
+	}
 	t_i.apply_settings(l);
 }
 
 in_the_session::~in_the_session()
 {
 	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(t_i.mutex_));
 
 	TORRENT_STATE_LOG(L"Removing handle from session");
 	(*t_i.the_session_)->remove_torrent(t_i.handle_);
@@ -79,10 +82,11 @@ sc::result in_the_session::react(const ev_remove& evt)
 	TORRENT_STATE_LOG(L"in_the_session ev_remove()");
 
 	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(t_i.mutex_));
 
 	if (!evt.remove_callback().empty())
 	{	
+		poly_upgrade_to_unique_lock uniq_l(l);
 		t_i.remove_callback(l) = evt.remove_callback();
 	}
 
@@ -127,7 +131,7 @@ sc::result out_of_session::react(const ev_resume& evt)
 sc::result out_of_session::react(const ev_remove& evt)
 {	
 	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(t_i.mutex_));
 
 	if (!evt.remove_callback().empty())
 
@@ -146,7 +150,7 @@ active::active(base_type::my_context ctx) :
 	TORRENT_STATE_LOG(L"Entering active()");
 
 	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(t_i.mutex_));
 
 	t_i.state(l, torrent_details::torrent_active);
 
@@ -176,7 +180,7 @@ pausing::pausing(base_type::my_context ctx) :
 	TORRENT_STATE_LOG(L"Entering pausing()");
 
 	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(t_i.mutex_));
 
 	t_i.state(l, torrent_details::torrent_pausing);
 }
@@ -192,7 +196,7 @@ paused::paused(base_type::my_context ctx) :
 	TORRENT_STATE_LOG(L"Entering paused()");
 
 	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(t_i.mutex_));
 
 	t_i.state(l, torrent_details::torrent_paused);
 
@@ -232,7 +236,7 @@ in_error::in_error(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
 	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(t_i.mutex_));
 
 	TORRENT_STATE_LOG(hal::wform(L"Entering in_error()() - %1%") % t_i.check_error());
 
@@ -250,7 +254,7 @@ stopping::stopping(base_type::my_context ctx) :
 	TORRENT_STATE_LOG(L"Entering stopping()");
 
 	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(t_i.mutex_));
 
 	t_i.state(l, torrent_details::torrent_stopping);
 }
@@ -275,7 +279,7 @@ stopped::stopped(base_type::my_context ctx) :
 	TORRENT_STATE_LOG(L"Entering stopped()");
 
 	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(t_i.mutex_));
 
 	t_i.state(l, torrent_details::torrent_stopped);
 
@@ -297,7 +301,7 @@ not_started::not_started(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
 	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	poly_lock_ptr l(new poly_upgrade_lock(t_i.mutex_));
 
 	stored_state_ = t_i.state(l);
 	t_i.state(l, torrent_details::torrent_not_started);
@@ -313,7 +317,7 @@ not_started::~not_started()
 sc::result not_started::react(const ev_start& evt)
 {
 	{	torrent_internal& t_i = context<torrent_internal>();
-		upgrade_lock l(t_i.mutex_);
+		poly_lock_ptr l(new poly_upgrade_lock(t_i.mutex_));
 
 		if (!t_i.info_memory(l) && !t_i.name_.empty())
 		{		
@@ -323,11 +327,15 @@ sc::result not_started::react(const ev_start& evt)
 
 			if (fs::exists(torrent_info_file))
 			{
+				poly_upgrade_to_unique_lock uniq_l(l);
+
 				HAL_DEV_MSG(L"Using torrent info data");
 				t_i.info_memory_.reset(new libt::torrent_info(torrent_info_file.c_str()));
 			}
 			else if (fs::exists(torrent_file))
 			{
+				poly_upgrade_to_unique_lock uniq_l(l);
+
 				HAL_DEV_MSG(L"Using torrent file");
 				t_i.info_memory_.reset(new libt::torrent_info(torrent_file.c_str()));
 			}
