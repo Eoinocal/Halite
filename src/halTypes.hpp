@@ -10,6 +10,7 @@
 #include <boost/thread/thread.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/thread/recursive_mutex.hpp>
+#include <boost/thread/shared_mutex.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/algorithm/string.hpp>
 
@@ -42,7 +43,10 @@ namespace hal
 	typedef boost::recursive_mutex mutex_t;
 //	typedef boost::mutex mutex_t;
 	typedef mutex_t::scoped_lock unique_lock_t;
-	typedef boost::mutex::scoped_lock upg_lock_t;
+
+	typedef boost::shared_lock<boost::shared_mutex> shared_lock;
+	typedef boost::unique_lock<boost::shared_mutex> unique_lock;
+	typedef boost::upgrade_lock<boost::shared_mutex> upgrade_lock;
 
 	typedef boost::thread thread_t;
 

@@ -6,15 +6,6 @@
 
 #pragma once
 
-#include <boost/tuple/tuple.hpp>
-#include <boost/enable_shared_from_this.hpp>
-#include <boost/multi_index_container.hpp>
-#include <boost/multi_index/ordered_index.hpp>
-#include <boost/multi_index/indexed_by.hpp>
-#include <boost/multi_index/identity.hpp>
-#include <boost/multi_index/member.hpp>
-#include <boost/multi_index/tag.hpp>
-
 #include "halIni.hpp"
 #include "global/versioned_file.hpp"
 #include "halTorrentInternal.hpp"

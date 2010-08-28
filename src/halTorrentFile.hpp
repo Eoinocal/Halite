@@ -6,14 +6,6 @@
 
 #pragma once
 
-#include <boost/multi_index_container.hpp>
-#include <boost/multi_index/ordered_index.hpp>
-#include <boost/multi_index/indexed_by.hpp>
-#include <boost/multi_index/identity.hpp>
-#include <boost/multi_index/random_access_index.hpp>
-#include <boost/multi_index/mem_fun.hpp>
-#include <boost/multi_index/tag.hpp>
-
 #include "halTorrentDefines.hpp"
 #include "halTypes.hpp"
 

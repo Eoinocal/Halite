@@ -17,6 +17,7 @@
 #include "halIni.hpp"
 #include "halTypes.hpp"
 #include "halSignaler.hpp"
+#include "halPolyLocks.hpp"
 
 #include "halTorrentSerialization.hpp"
 #include "halTorrentFile.hpp"
@@ -248,7 +249,7 @@ private:
 		TORRENT_INTERNALS_DEFAULTS,
 		allocation_(bit::sparse_allocation)
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		state(l, torrent_details::torrent_stopped);
 	}
@@ -260,7 +261,7 @@ private:
 		move_to_directory_(move_to_directory.string()),
 		allocation_(alloc)
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		state(l, torrent_details::torrent_stopped);
 		assert(the_session_);
@@ -276,7 +277,7 @@ private:
 		allocation_(alloc),
 		magnet_uri_(to_utf8(uri))
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		state(l, torrent_details::torrent_stopped);
 		assert(the_session_);
@@ -301,7 +302,7 @@ public:
 
 	void set_transfer_speed(float down, float up)
 	{	
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		transfer_limit_ = std::make_pair(down, up);
 		
@@ -310,14 +311,14 @@ public:
 
 	std::pair<float, float> get_transfer_speed() const
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		return transfer_limit_;
 	}
 
 	void set_connection_limit(int maxConn, int maxUpload)		
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		connections_ = maxConn;
 		uploads_ = maxUpload;
@@ -327,7 +328,7 @@ public:
 
 	std::pair<int, int> get_connection_limit() const
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		return std::make_pair(connections_, uploads_);
 	}
@@ -337,7 +338,7 @@ public:
 	
 	const libt::sha1_hash& hash() const
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		return hash_; 
 	}
@@ -346,7 +347,7 @@ public:
 	
 	void set_ratio(float ratio) 
 	{ 
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		if (ratio < 0) ratio = 0;
 		ratio_ = ratio; 
@@ -356,7 +357,7 @@ public:
 	
 	float get_ratio() const
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		return ratio_;
 	}
@@ -400,7 +401,7 @@ public:
 
 	void set_state_stopped()
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		state(l, torrent_details::torrent_stopped);
 	}
@@ -412,7 +413,7 @@ public:
 	
 	void write_resume_data(const libt::entry& ent)
 	{		
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 			
 		HAL_DEV_MSG(L"write_resume_data()");
 
@@ -430,7 +431,7 @@ public:
 
 	void save_resume_and_info_data() const
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		handle_.save_resume_data();
 
@@ -439,7 +440,7 @@ public:
 	
 	void clear_resume_data()
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		try {
 
@@ -458,7 +459,7 @@ public:
 	
 	void clear_torrent_info()
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		try {
 
@@ -477,7 +478,7 @@ public:
 
 	void delete_torrent_file()
 	{		
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		try {
 
@@ -496,7 +497,7 @@ public:
 	
 	void set_file_priorities(std::vector<int> file_indices, int priority)
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		files_.set_file_priorities(file_indices, priority);
 				
@@ -510,7 +511,7 @@ public:
 
 	void set_save_directory(wpath s, bool force=false)
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		if (in_session(l) && !is_finished() &&
 				s != path_from_utf8(handle_.save_path()))
@@ -526,14 +527,14 @@ public:
 
 	const wpath get_move_to_directory() const
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		return move_to_directory_;
 	}
 	
 	void set_move_to_directory(wpath m)
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		if (is_finished() && !m.empty())
 		{
@@ -551,7 +552,7 @@ public:
 
 	bool is_finished() const
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		if (in_session(l))
 		{
@@ -566,7 +567,7 @@ public:
 	
 	void finished()
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		if (finish_time_.is_special())
 			finish_time_ = boost::posix_time::second_clock::universal_time();
@@ -588,7 +589,7 @@ public:
 
 	void set_tracker_login(wstring username, wstring password)
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		tracker_username_ = username;
 		tracker_password_ = password;
@@ -598,35 +599,35 @@ public:
 	
 	std::pair<wstring, wstring> get_tracker_login() const
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		return make_pair(tracker_username_, tracker_password_);
 	}
 	
 	const wstring& filename() const 
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 	
 		return filename_; 
 	}
 	
 	const wstring& original_filename() const 
 	{ 
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		return original_filename_; 
 	}
 	
 	const libt::torrent_handle& handle() const 
 	{ 
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		return handle_; 
 	}
 
 	void reset_trackers()
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		if (in_session(l))
 		{
@@ -637,7 +638,7 @@ public:
 	
 	void set_trackers(const std::vector<tracker_detail>& tracker_details)
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		trackers_.clear();
 		trackers_.assign(tracker_details.begin(), tracker_details.end());
@@ -647,7 +648,7 @@ public:
 	
 	const std::vector<tracker_detail>& get_trackers()
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		if (trackers_.empty() && info_memory(l))
 		{
@@ -666,7 +667,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		using boost::serialization::make_nvp;
 
@@ -772,14 +773,14 @@ public:
 
 	const std::vector<libt::peer_info>& peers() const
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		return peers_; 
 	}
 		
 	void get_peer_details(peer_details_vec& peer_details) const
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		if (in_session(l))
 		{
@@ -794,7 +795,7 @@ public:
 
 	void set_resolve_countries(bool b)
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		resolve_countries_ = b;
 		apply_resolve_countries(l);
@@ -802,7 +803,7 @@ public:
 
 	void set_use_external_interface(std::wstring inter)
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		external_interface_.reset(inter);
 		apply_external_interface(l);
@@ -810,7 +811,7 @@ public:
 
 	void set_no_external_interface()
 	{
-		upg_lock_t l(mutex_);
+		upgrade_lock l(mutex_);
 
 		external_interface_.reset();
 		apply_external_interface(l);
@@ -834,49 +835,49 @@ public:
 	friend class torrent_manager;
 
 private:
-	void apply_settings(upg_lock_t&);	
-	void apply_transfer_speed(upg_lock_t&);
-	void apply_connection_limit(upg_lock_t&);	
-	void apply_ratio(upg_lock_t&);	
-	void apply_trackers(upg_lock_t&);	
-	void apply_tracker_login(upg_lock_t&);	
-	void apply_file_priorities(upg_lock_t&);	
-	void apply_file_names(upg_lock_t&);	
-	void apply_resolve_countries(upg_lock_t&);	
-	void apply_superseeding(upg_lock_t&);
+	void apply_settings(upgrade_lock&);	
+	void apply_transfer_speed(upgrade_lock&);
+	void apply_connection_limit(upgrade_lock&);	
+	void apply_ratio(upgrade_lock&);	
+	void apply_trackers(upgrade_lock&);	
+	void apply_tracker_login(upgrade_lock&);	
+	void apply_file_priorities(upgrade_lock&);	
+	void apply_file_names(upgrade_lock&);	
+	void apply_resolve_countries(upgrade_lock&);	
+	void apply_superseeding(upgrade_lock&);
 	void apply_queue_position();
-	void apply_queue_position(upg_lock_t&);	
-	void apply_external_interface(upg_lock_t&);	
+	void apply_queue_position(upgrade_lock&);	
+	void apply_external_interface(upgrade_lock&);	
 	
-	void extract_hash(upg_lock_t&);
-	void extract_names(upg_lock_t&);
-	void extract_filenames(upg_lock_t&);	
-	void init_file_details(upg_lock_t& l);
+	void extract_hash(upgrade_lock&);
+	void extract_names(upgrade_lock&);
+	void extract_filenames(upgrade_lock&);	
+	void init_file_details(upgrade_lock& l);
 	
 	static boost::optional<libt::session>* the_session_;
-	bool in_session(upg_lock_t& l) const;
+	bool in_session(upgrade_lock& l) const;
 
-	boost::intrusive_ptr<libt::torrent_info> info_memory(upg_lock_t&) const;	
-	const wstring& name(upg_lock_t&) const;	
-	const uuid& id(upg_lock_t&) const;
-	const wpath& save_directory(upg_lock_t&) const;
-	bool is_managed(upg_lock_t&) const;	
-	bool is_active(upg_lock_t&) const;	
+	boost::intrusive_ptr<libt::torrent_info> info_memory(upgrade_lock&) const;	
+	const wstring& name(upgrade_lock&) const;	
+	const uuid& id(upgrade_lock&) const;
+	const wpath& save_directory(upgrade_lock&) const;
+	bool is_managed(upgrade_lock&) const;	
+	bool is_active(upgrade_lock&) const;	
 
-	unsigned state(upg_lock_t&) const;
-	void state(upg_lock_t&, unsigned s);
+	unsigned state(upgrade_lock&) const;
+	void state(upgrade_lock&, unsigned s);
 
-	void prepare(upg_lock_t& l) { prepare(l, info_memory(l)); }
-	void prepare(upg_lock_t& l, boost::intrusive_ptr<libt::torrent_info> info);	
+	void prepare(upgrade_lock& l) { prepare(l, info_memory(l)); }
+	void prepare(upgrade_lock& l, boost::intrusive_ptr<libt::torrent_info> info);	
 
-	void write_torrent_info(upg_lock_t&) const;
-	boost::tuple<size_t, size_t, size_t, size_t> update_peers(upg_lock_t&) const;
-	void get_file_details(upg_lock_t& l, file_details_vec& files_vec);
+	void write_torrent_info(upgrade_lock&) const;
+	boost::tuple<size_t, size_t, size_t, size_t> update_peers(upgrade_lock&) const;
+	void get_file_details(upgrade_lock& l, file_details_vec& files_vec);
 
-	void update_manager(upg_lock_t&);
+	void update_manager(upgrade_lock&);
 	void initialize_non_serialized(function<void (torrent_internal_ptr)>);
 	
-	void output_torrent_debug_details(upg_lock_t& l) const;
+	void output_torrent_debug_details(upgrade_lock& l) const;
 
 	void set_file_priority_cb(size_t i, int p)
 	{
@@ -902,11 +903,11 @@ private:
 	}
 
 	function<void ()> remove_callback_;
-	function<void (void)>& remove_callback(upg_lock_t&) { return remove_callback_; }
+	function<void (void)>& remove_callback(upgrade_lock&) { return remove_callback_; }
 
 	function<void (torrent_internal_ptr)> update_manager_;
 
-	mutable boost::mutex mutex_;
+	mutable boost::shared_mutex mutex_;
 	
 	std::pair<float, float> transfer_limit_;
 	

@@ -6,9 +6,6 @@
 
 #include "halPch.hpp"
 
-#include <boost/utility/in_place_factory.hpp>
-#include <boost/none.hpp>
-
 #include "win32_exception.hpp"
 
 #include "global/wtl_app.hpp"
