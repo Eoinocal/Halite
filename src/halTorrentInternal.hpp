@@ -17,7 +17,6 @@
 #include "halIni.hpp"
 #include "halTypes.hpp"
 #include "halSignaler.hpp"
-#include "halPolyLocks.hpp"
 
 #include "halTorrentSerialization.hpp"
 #include "halTorrentFile.hpp"
@@ -249,7 +248,7 @@ private:
 		TORRENT_INTERNALS_DEFAULTS,
 		allocation_(bit::sparse_allocation)
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		state(l, torrent_details::torrent_stopped);
 	}
@@ -261,7 +260,7 @@ private:
 		move_to_directory_(move_to_directory.string()),
 		allocation_(alloc)
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		state(l, torrent_details::torrent_stopped);
 		assert(the_session_);
@@ -277,7 +276,7 @@ private:
 		allocation_(alloc),
 		magnet_uri_(to_utf8(uri))
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		state(l, torrent_details::torrent_stopped);
 		assert(the_session_);
@@ -302,9 +301,9 @@ public:
 
 	void set_transfer_speed(float down, float up)
 	{	
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
-		{	poly_upgrade_to_unique_lock uniq_l(l);
+		{	upgrade_to_unique_lock up_l(l);
 			
 			transfer_limit_ = std::make_pair(down, up);
 		}
@@ -314,16 +313,16 @@ public:
 
 	std::pair<float, float> get_transfer_speed() const
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		return transfer_limit_;
 	}
 
 	void set_connection_limit(int maxConn, int maxUpload)		
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
-		{	poly_upgrade_to_unique_lock uniq_l(l);
+		{	upgrade_to_unique_lock up_l(l);
 			
 			connections_ = maxConn;
 			uploads_ = maxUpload;
@@ -334,7 +333,7 @@ public:
 
 	std::pair<int, int> get_connection_limit() const
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		return std::make_pair(connections_, uploads_);
 	}
@@ -344,7 +343,7 @@ public:
 	
 	const libt::sha1_hash& hash() const
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		return hash_; 
 	}
@@ -353,12 +352,12 @@ public:
 	
 	void set_ratio(float ratio) 
 	{ 
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		if (ratio < 0)
 			ratio = 0;
 
-		{	poly_upgrade_to_unique_lock uniq_l(l);
+		{	upgrade_to_unique_lock up_l(l);
 			
 			ratio_ = ratio; 
 		}
@@ -368,7 +367,7 @@ public:
 	
 	float get_ratio() const
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		return ratio_;
 	}
@@ -412,7 +411,7 @@ public:
 
 	void set_state_stopped()
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		state(l, torrent_details::torrent_stopped);
 	}
@@ -424,7 +423,7 @@ public:
 	
 	void write_resume_data(const libt::entry& ent)
 	{		
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 			
 		HAL_DEV_MSG(L"write_resume_data()");
 
@@ -442,7 +441,7 @@ public:
 
 	void save_resume_and_info_data() const
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		handle_.save_resume_data();
 
@@ -451,7 +450,7 @@ public:
 	
 	void clear_resume_data()
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		try {
 
@@ -470,7 +469,7 @@ public:
 	
 	void clear_torrent_info()
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		try {
 
@@ -489,7 +488,7 @@ public:
 
 	void delete_torrent_file()
 	{		
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		try {
 
@@ -508,9 +507,9 @@ public:
 	
 	void set_file_priorities(std::vector<int> file_indices, int priority)
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
-		{	poly_upgrade_to_unique_lock uniq_l(l);
+		{	upgrade_to_unique_lock up_l(l);
 			
 			files_.set_file_priorities(file_indices, priority);
 		}
@@ -525,12 +524,12 @@ public:
 
 	void set_save_directory(wpath s, bool force=false)
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		if (in_session(l) && !is_finished() &&
 				s != path_from_utf8(handle_.save_path()))
 		{
-			poly_upgrade_to_unique_lock uniq_l(l);
+			upgrade_to_unique_lock up_l(l);
 
 			handle_.move_storage(s.string());
 			
@@ -538,7 +537,7 @@ public:
 		}
 		else if (!in_session(l) && force)
 		{
-			poly_upgrade_to_unique_lock uniq_l(l);
+			upgrade_to_unique_lock up_l(l);
 			
 			save_directory_ = s;
 		}
@@ -546,20 +545,20 @@ public:
 
 	const wpath get_move_to_directory() const
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		return move_to_directory_;
 	}
 	
 	void set_move_to_directory(wpath m)
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		if (is_finished() && !m.empty())
 		{
 			if (m != path_from_utf8(handle_.save_path()))
 			{
-				poly_upgrade_to_unique_lock uniq_l(l);
+				upgrade_to_unique_lock up_l(l);
 
 				handle_.move_storage(m.string());
 				save_directory_ = move_to_directory_ = m;
@@ -567,7 +566,7 @@ public:
 		}
 		else
 		{
-			poly_upgrade_to_unique_lock uniq_l(l);
+			upgrade_to_unique_lock up_l(l);
 
 			move_to_directory_ = m;
 		}
@@ -575,7 +574,7 @@ public:
 
 	bool is_finished() const
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		if (in_session(l))
 		{
@@ -590,11 +589,11 @@ public:
 	
 	void finished()
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		if (finish_time_.is_special())
 		{
-			poly_upgrade_to_unique_lock uniq_l(l);
+			upgrade_to_unique_lock up_l(l);
 
 			finish_time_ = boost::posix_time::second_clock::universal_time();
 		}
@@ -604,7 +603,7 @@ public:
 			if (!move_to_directory_.empty() && 
 					move_to_directory_ !=  path_from_utf8(handle_.save_path()))
 			{				
-				poly_upgrade_to_unique_lock uniq_l(l);
+				upgrade_to_unique_lock up_l(l);
 
 				handle_.move_storage(move_to_directory_.string());
 				save_directory_ = move_to_directory_;
@@ -618,9 +617,9 @@ public:
 
 	void set_tracker_login(wstring username, wstring password)
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
-		{	poly_upgrade_to_unique_lock uniq_l(l);
+		{	upgrade_to_unique_lock up_l(l);
 			tracker_username_ = username;
 			tracker_password_ = password;
 		}
@@ -630,41 +629,41 @@ public:
 	
 	std::pair<wstring, wstring> get_tracker_login() const
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		return make_pair(tracker_username_, tracker_password_);
 	}
 	
 	const wstring& filename() const 
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 	
 		return filename_; 
 	}
 	
 	const wstring& original_filename() const 
 	{ 
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		return original_filename_; 
 	}
 	
 	const libt::torrent_handle& handle() const 
 	{ 
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		return handle_; 
 	}
 
 	void reset_trackers()
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		if (in_session(l))
 		{
 			handle_.replace_trackers(torrent_trackers_);	
 
-			{	poly_upgrade_to_unique_lock uniq_l(l);	
+			{	upgrade_to_unique_lock up_l(l);	
 				trackers_.clear();
 			}
 		}
@@ -672,9 +671,9 @@ public:
 	
 	void set_trackers(const std::vector<tracker_detail>& tracker_details)
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
-		{	poly_upgrade_to_unique_lock uniq_l(l);	
+		{	upgrade_to_unique_lock up_l(l);	
 			
 			trackers_.clear();
 			trackers_.assign(tracker_details.begin(), tracker_details.end());
@@ -685,7 +684,7 @@ public:
 	
 	const std::vector<tracker_detail>& get_trackers()
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		if (trackers_.empty() && info_memory(l))
 		{
@@ -693,7 +692,7 @@ public:
 			
 			foreach (const libt::announce_entry& entry, trackers)
 			{
-				poly_upgrade_to_unique_lock uniq_l(l);	
+				upgrade_to_unique_lock up_l(l);	
 
 				trackers_.push_back(
 					tracker_detail(hal::from_utf8(entry.url), entry.tier));
@@ -706,7 +705,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		using boost::serialization::make_nvp;
 
@@ -806,7 +805,7 @@ public:
 
 		if (version < 3)
 		{
-			poly_upgrade_to_unique_lock uniq_l(l);	
+			upgrade_to_unique_lock up_l(l);	
 
 			uuid_ = boost::uuids::random_generator()();
 		}
@@ -814,14 +813,14 @@ public:
 
 	const std::vector<libt::peer_info>& peers() const
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		return peers_; 
 	}
 		
 	void get_peer_details(peer_details_vec& peer_details) const
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		if (in_session(l))
 		{
@@ -836,9 +835,9 @@ public:
 
 	void set_resolve_countries(bool b)
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
-		{	poly_upgrade_to_unique_lock uniq_l(l);	
+		{	upgrade_to_unique_lock up_l(l);	
 			resolve_countries_ = b;
 		}
 		apply_resolve_countries(l);
@@ -846,9 +845,9 @@ public:
 
 	void set_use_external_interface(std::wstring inter)
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
-		{	poly_upgrade_to_unique_lock uniq_l(l);	
+		{	upgrade_to_unique_lock up_l(l);	
 			external_interface_.reset(inter);
 		}
 		apply_external_interface(l);
@@ -856,9 +855,9 @@ public:
 
 	void set_no_external_interface()
 	{
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
-		{	poly_upgrade_to_unique_lock uniq_l(l);	
+		{	upgrade_to_unique_lock up_l(l);	
 			external_interface_.reset();
 		}
 		apply_external_interface(l);
@@ -877,71 +876,71 @@ public:
 	friend class torrent_manager;
 
 private:
-	void apply_settings(poly_lock_ptr);	
-	void apply_transfer_speed(poly_lock_ptr);
-	void apply_connection_limit(poly_lock_ptr);	
-	void apply_ratio(poly_lock_ptr);	
-	void apply_trackers(poly_lock_ptr);	
-	void apply_tracker_login(poly_lock_ptr);	
-	void apply_file_priorities(poly_lock_ptr);	
-	void apply_file_names(poly_lock_ptr);	
-	void apply_resolve_countries(poly_lock_ptr);	
-	void apply_superseeding(poly_lock_ptr);
+	void apply_settings(upgrade_lock& l);	
+	void apply_transfer_speed(upgrade_lock& l);
+	void apply_connection_limit(upgrade_lock& l);	
+	void apply_ratio(upgrade_lock& l);	
+	void apply_trackers(upgrade_lock& l);	
+	void apply_tracker_login(upgrade_lock& l);	
+	void apply_file_priorities(upgrade_lock& l);	
+	void apply_file_names(upgrade_lock& l);	
+	void apply_resolve_countries(upgrade_lock& l);	
+	void apply_superseeding(upgrade_lock& l);
 	void apply_queue_position();
-	void apply_queue_position(poly_lock_ptr);	
-	void apply_external_interface(poly_lock_ptr);	
+	void apply_queue_position(upgrade_lock& l);	
+	void apply_external_interface(upgrade_lock& l);	
 	
-	void extract_hash(poly_lock_ptr);
-	void extract_names(poly_lock_ptr);
-	void extract_filenames(poly_lock_ptr);	
-	void init_file_details(poly_lock_ptr l);
+	void extract_hash(upgrade_lock& l);
+	void extract_names(upgrade_lock& l);
+	void extract_filenames(upgrade_lock& l);	
+	void init_file_details(upgrade_lock& l);
 	
 	static boost::optional<libt::session>* the_session_;
-	bool in_session(poly_lock_ptr l) const;
+	bool in_session(upgrade_lock& l) const;
 
-	boost::intrusive_ptr<libt::torrent_info> info_memory(poly_lock_ptr) const;	
-	libt::torrent_status& status_cache(poly_lock_ptr l) const;
-	libt::torrent_status& renew_status_cache(poly_lock_ptr l) const;
+	boost::intrusive_ptr<libt::torrent_info> info_memory(upgrade_lock& l) const;	
+	libt::torrent_status& status_cache(upgrade_lock& l) const;
+	libt::torrent_status& renew_status_cache(upgrade_lock& l) const;
 
-	const wstring& name(poly_lock_ptr) const;	
-	const uuid& id(poly_lock_ptr) const;
-	const wpath& save_directory(poly_lock_ptr) const;
-	bool is_managed(poly_lock_ptr) const;	
-	bool is_active(poly_lock_ptr) const;	
+	const wstring& name(upgrade_lock& l) const;	
+	const uuid& id(upgrade_lock& l) const;
+	const wpath& save_directory(upgrade_lock& l) const;
+	bool is_managed(upgrade_lock& l) const;	
+	bool is_active(upgrade_lock& l) const;	
 
-	unsigned state(poly_lock_ptr) const;
-	void state(poly_lock_ptr, unsigned s);
+	unsigned state(upgrade_lock& l) const;
+	void state(upgrade_lock& l, unsigned s);
 
-	void prepare(poly_lock_ptr l) { prepare(l, info_memory(l)); }
-	void prepare(poly_lock_ptr l, boost::intrusive_ptr<libt::torrent_info> info);	
+	void prepare(upgrade_lock& l) { prepare(l, info_memory(l)); }
+	void prepare(upgrade_lock& l, boost::intrusive_ptr<libt::torrent_info> info);	
 
-	void write_torrent_info(poly_lock_ptr) const;
-	boost::tuple<size_t, size_t, size_t, size_t> update_peers(poly_lock_ptr) const;
-	void get_file_details(poly_lock_ptr l, file_details_vec& files_vec);
+	void write_torrent_info(upgrade_lock& l) const;
+	boost::tuple<size_t, size_t, size_t, size_t> update_peers(upgrade_lock& l) const;
+	void get_file_details(upgrade_lock& l, file_details_vec& files_vec);
 
-	void update_manager(poly_lock_ptr);
+	void update_manager(upgrade_lock& l);
 	void initialize_non_serialized(function<void (torrent_internal_ptr)>);
 	
-	wstring state_string(poly_lock_ptr l) const;
-	void output_torrent_debug_details(poly_lock_ptr l) const;
+	wstring state_string(upgrade_lock& l) const;
+	void output_torrent_debug_details(upgrade_lock& l) const;
 	
 	
-	void set_info_cache(boost::intrusive_ptr<libt::torrent_info> info, poly_lock_ptr l)
+	void set_info_cache(boost::intrusive_ptr<libt::torrent_info> info, upgrade_lock& l)
 	{
-		poly_upgrade_to_unique_lock uniq_l(l);
+		upgrade_to_unique_lock up_l(l);
 
-		{	poly_upgrade_to_unique_lock uniq_l(l);	
+		{	upgrade_to_unique_lock up_l(l);	
 			info_memory_ = info;
 		}
 	}
 
 	void set_file_priority_cb(size_t i, int p)
 	{		
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		if (i < file_priorities_.size())
 		{
-			poly_upgrade_to_unique_lock uniq_l(l);
+			upgrade_to_unique_lock up_l(l);
 
 			file_priorities_[i] = p;
 			file_details_memory_[i].priority = p;
@@ -950,13 +949,13 @@ private:
 	
 	void changed_file_filename_cb(size_t i)
 	{		
-		poly_lock_ptr l(new poly_upgrade_lock(mutex_));
+		upgrade_lock l(mutex_);
 
 		if (i < file_details_memory_.size())
 		{
 			torrent_file::split_path_pair_t split = torrent_file::split_root(files_[i].completed_name());
 
-			{	poly_upgrade_to_unique_lock uniq_l(l);
+			{	upgrade_to_unique_lock up_l(l);
 				file_details_memory_[i].filename = split.second.filename();
 				file_details_memory_[i].branch = split.second.parent_path();
 
@@ -967,7 +966,7 @@ private:
 	}
 
 	function<void ()> remove_callback_;
-	function<void (void)>& remove_callback(poly_lock_ptr) { return remove_callback_; }
+	function<void (void)>& remove_callback(upgrade_lock& l) { return remove_callback_; }
 
 	function<void (torrent_internal_ptr)> update_manager_;
 

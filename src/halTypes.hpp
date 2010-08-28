@@ -47,6 +47,7 @@ namespace hal
 	typedef boost::shared_lock<boost::shared_mutex> shared_lock;
 	typedef boost::unique_lock<boost::shared_mutex> unique_lock;
 	typedef boost::upgrade_lock<boost::shared_mutex> upgrade_lock;
+	typedef boost::upgrade_to_unique_lock<boost::shared_mutex> upgrade_to_unique_lock;
 
 	typedef boost::thread thread_t;
 
