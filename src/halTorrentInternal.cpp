@@ -298,91 +298,104 @@ bool torrent_internal::remove_from_session(bool write_data)
 
 torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 {	
-	upgrade_lock l(mutex_);
-
-	try
+	if (scoped_try_lock ll = scoped_try_lock(details_mutex_))
 	{
+		upgrade_lock l(mutex_);
 
-	renew_status_cache(l);	
-	wstring state_str = state_string(l);
-	
-	pt::time_duration td(pt::pos_infin);
-	
-	if (status_cache(l).download_payload_rate != 0)
-	{
-		td = boost::posix_time::seconds(	
-			long(float(status_cache(l).total_wanted-status_cache(l).total_wanted_done) / status_cache(l).download_payload_rate));
-	}
-	
-	{	upgrade_to_unique_lock up_l(l);
+		try
+		{
+
+		renew_status_cache(l);	
+		wstring state_str = state_string(l);
+		
+		pt::time_duration td(pt::pos_infin);
+		
+		if (status_cache(l).download_payload_rate != 0)
+		{
+			td = boost::posix_time::seconds(	
+				long(float(status_cache(l).total_wanted-status_cache(l).total_wanted_done) / status_cache(l).download_payload_rate));
+		}
+		
+		{	upgrade_to_unique_lock up_l(l);
+				
+			total_uploaded_ += (status_cache(l).total_payload_upload - total_base_);
+			total_base_ = status_cache(l).total_payload_upload;
 			
-		total_uploaded_ += (status_cache(l).total_payload_upload - total_base_);
-		total_base_ = status_cache(l).total_payload_upload;
+			uploaded_.update(status_cache(l).total_upload);
+			payload_uploaded_.update(status_cache(l).total_payload_upload);
+			downloaded_.update(status_cache(l).total_download);
+			payload_downloaded_.update(status_cache(l).total_payload_download);
+		}
 		
-		uploaded_.update(status_cache(l).total_upload);
-		payload_uploaded_.update(status_cache(l).total_payload_upload);
-		downloaded_.update(status_cache(l).total_download);
-		payload_downloaded_.update(status_cache(l).total_payload_download);
-	}
-	
-	if (is_active(l))
-	{
-		upgrade_to_unique_lock up_l(l);
+		if (is_active(l))
+		{
+			upgrade_to_unique_lock up_l(l);
 
-		active_duration_.update();
+			active_duration_.update();
+			
+			if (libt::torrent_status::seeding == status_cache(l).state)
+				seeding_duration_.update();
+		}	
 		
-		if (libt::torrent_status::seeding == status_cache(l).state)
-			seeding_duration_.update();
-	}	
-	
-	boost::tuple<size_t, size_t, size_t, size_t> connections = update_peers(l);	
+		boost::tuple<size_t, size_t, size_t, size_t> connections = update_peers(l);	
 
-	return torrent_details_ptr(new torrent_details(
-		name(l), filename_, 
-		save_directory(l).string(), 
-		state_str, 
-		id(l),
-		hal::from_utf8(status_cache(l).current_tracker), 
-		hash_str_,
-		std::pair<float, float>(
-			boost::numeric_cast<float>(status_cache(l).download_payload_rate), 
-			boost::numeric_cast<float>(status_cache(l).upload_payload_rate)),
-		progress_, 
-		status_cache(l).distributed_copies, 
-		status_cache(l).total_wanted_done, 
-		status_cache(l).total_wanted, 
-		uploaded_, payload_uploaded_,
-		downloaded_, payload_downloaded_, 
-		connections, 
-		ratio_, 
-		td, 
-		status_cache(l).next_announce, 
-		active_duration_, seeding_duration_, 
-		start_time_, finish_time_, 
-		queue_position_,
-		is_managed(l)));
+		details_ptr_.reset(new torrent_details(
+			name(l), filename_, 
+			save_directory(l).string(), 
+			state_str, 
+			id(l),
+			hal::from_utf8(status_cache(l).current_tracker), 
+			hash_str_,
+			std::pair<float, float>(
+				boost::numeric_cast<float>(status_cache(l).download_payload_rate), 
+				boost::numeric_cast<float>(status_cache(l).upload_payload_rate)),
+			progress_, 
+			status_cache(l).distributed_copies, 
+			status_cache(l).total_wanted_done, 
+			status_cache(l).total_wanted, 
+			uploaded_, payload_uploaded_,
+			downloaded_, payload_downloaded_, 
+			connections, 
+			ratio_, 
+			td, 
+			status_cache(l).next_announce, 
+			active_duration_, seeding_duration_, 
+			start_time_, finish_time_, 
+			queue_position_,
+			is_managed(l)));
 
+		}
+		catch (const libt::invalid_handle&)
+		{
+			event_log().post(shared_ptr<EventDetail>(
+				new EventInvalidTorrent(event_logger::critical, 
+					event_logger::invalid_torrent, id(l), "get_torrent_details_ptr")));
+
+			details_ptr_.reset(new torrent_details(
+				name(l), filename_, 
+				save_directory(l).string(), 
+				app().res_wstr(HAL_TORRENT_STOPPED), 
+				id(l), 
+				app().res_wstr(HAL_NA),
+				hash_str_));
+		}
+		catch (const std::exception& e)
+		{
+			event_log().post(shared_ptr<EventDetail>(
+				new EventTorrentException(event_logger::critical, 
+					event_logger::torrentException, e.what(), id(l), "get_torrent_details_ptr")));
+
+			details_ptr_.reset(new torrent_details(
+				name(l), filename_, 
+				save_directory(l).string(), 
+				app().res_wstr(HAL_TORRENT_STOPPED), 
+				id(l), 
+				app().res_wstr(HAL_NA),
+				hash_str_));
+		}		
 	}
-	catch (const libt::invalid_handle&)
-	{
-		event_log().post(shared_ptr<EventDetail>(
-			new EventInvalidTorrent(event_logger::critical, 
-				event_logger::invalid_torrent, id(l), "get_torrent_details_ptr")));
-	}
-	catch (const std::exception& e)
-	{
-		event_log().post(shared_ptr<EventDetail>(
-			new EventTorrentException(event_logger::critical, 
-				event_logger::torrentException, e.what(), id(l), "get_torrent_details_ptr")));
-	}
-	
-	return torrent_details_ptr(new torrent_details(
-		name(l), filename_, 
-		save_directory(l).string(), 
-		app().res_wstr(HAL_TORRENT_STOPPED), 
-		id(l), 
-		app().res_wstr(HAL_NA),
-		hash_str_));
+
+	return details_ptr_;
 }
 
 file_details_vec torrent_internal::get_file_details()
@@ -926,9 +939,17 @@ void torrent_internal::state(upgrade_lock& l, unsigned s)
 
 void torrent_internal::initialize_non_serialized(function<void (torrent_internal_ptr)> f)
 {
-	{	unique_lock l(mutex_);
+	{	upgrade_lock l(mutex_);
 
-		update_manager_ = f;
+		update_manager_ = f;		
+		
+		details_ptr_.reset(new torrent_details(
+			name(l), filename_, 
+			save_directory(l).string(), 
+			app().res_wstr(HAL_TORRENT_STOPPED), 
+			id(l), 
+			app().res_wstr(HAL_NA),
+			hash_str_));
 	}
 
 	initiate();

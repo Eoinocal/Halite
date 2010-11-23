@@ -41,7 +41,7 @@ namespace hal
 	typedef boost::int64_t size_type;
 
 	typedef boost::recursive_mutex mutex_t;
-//	typedef boost::mutex mutex_t;
+	typedef boost::mutex::scoped_try_lock scoped_try_lock;
 	typedef mutex_t::scoped_lock unique_lock_t;
 
 	typedef boost::shared_lock<boost::shared_mutex> shared_lock;

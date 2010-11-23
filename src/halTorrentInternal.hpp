@@ -931,6 +931,8 @@ private:
 	function<void (torrent_internal_ptr)> update_manager_;
 
 	mutable boost::shared_mutex mutex_;
+	mutable boost::mutex details_mutex_;
+	mutable torrent_details_ptr details_ptr_;
 	
 	std::pair<float, float> transfer_limit_;
 	

@@ -14,27 +14,7 @@
 
 #include "halEvent.hpp"
 #include "../res/resource.h"
-//#include "Halite.hpp"
 
-#include <iostream>
-#include <fstream>
-#include <iterator>
-#include <iomanip>
-#include <map>
-#include <algorithm>
-#include <string>
-#include <vector>
-
-#pragma warning (push, 1)
-#	include <libtorrent/file.hpp>
-#	include <libtorrent/hasher.hpp>
-#	include <libtorrent/entry.hpp>
-#	include <libtorrent/bencode.hpp>
-#	include <libtorrent/session.hpp>
-#	include <libtorrent/ip_filter.hpp>
-#	include <libtorrent/torrent_handle.hpp>
-#	include <libtorrent/peer_connection.hpp>
-#pragma warning (pop) 
 
 namespace hal
 {
@@ -86,7 +66,6 @@ void event_logger::dettach(const boost::signals::connection& c)
 		pimpl_->event_signal_.disconnect(c);
 	}
 }
-
 
 void event_logger::set_debug_logging(bool d)
 {
