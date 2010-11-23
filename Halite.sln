@@ -1,24 +1,17 @@
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halite", "sln\Halite\Halite.vcproj", "{ED987C84-FFF9-4656-8F27-2A65FC0847FD}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9EE1FB67-715D-406D-8777-1D54C29896AE} = {9EE1FB67-715D-406D-8777-1D54C29896AE}
-		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8} = {333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}
-	EndProjectSection
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halite", "sln\Halite\Halite.vcxproj", "{ED987C84-FFF9-4656-8F27-2A65FC0847FD}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libtorrent", "sln\libtorrent\libtorrent.vcproj", "{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libtorrent", "sln\libtorrent\libtorrent.vcxproj", "{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "HaliteWix", "sln\HaliteWix\HaliteWix.wixproj", "{96B9F803-98BB-4398-A0B6-77AB9143222F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{ED987C84-FFF9-4656-8F27-2A65FC0847FD} = {ED987C84-FFF9-4656-8F27-2A65FC0847FD}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientTest", "sln\libtorrent\ClientTest\ClientTest.vcproj", "{67F0629E-04ED-4CF3-BC02-4A49B4919F05}"
-	ProjectSection(ProjectDependencies) = postProject
-		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8} = {333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientTest", "sln\libtorrent\ClientTest\ClientTest.vcxproj", "{67F0629E-04ED-4CF3-BC02-4A49B4919F05}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "halTorrent", "sln\halTorrent\halTorrent.vcproj", "{9EE1FB67-715D-406D-8777-1D54C29896AE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "halTorrent", "sln\halTorrent\halTorrent.vcxproj", "{9EE1FB67-715D-406D-8777-1D54C29896AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
