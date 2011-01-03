@@ -65,7 +65,7 @@ public:
 		try
 		{
 
-		int err_code = (fn_(bind(&ProgressDialog::Callback, this, _1, _2, _3)) ? 1 : 0);
+		int err_code = (fn_(boost::bind(&ProgressDialog::Callback, this, _1, _2, _3)) ? 1 : 0);
 		
 		EndDialog(err_code);
 

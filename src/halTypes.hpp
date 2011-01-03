@@ -55,7 +55,7 @@ namespace hal
 
 	using boost::tuple;
 	using boost::shared_ptr;
-	using boost::bind;
+	//using boost::bind;
 	using boost::function;
 
 	using fs::wpath;

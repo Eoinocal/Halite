@@ -788,7 +788,7 @@ public:
 			boost::shared_ptr<file_details_vec> files = boost::shared_ptr<file_details_vec>(new file_details_vec());
 			pTI->get_file_details(*files);
 
-			boost::function<void ()> fn_wrapper = bind(fn, pTI->save_directory(), files);
+			boost::function<void ()> fn_wrapper = boost::bind(fn, pTI->save_directory(), files);
 			pTI->remove_files(bind(&bit_impl::remove_wrapper_function, this, id, fn_wrapper));
 
 			event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Removed, registered thread.")));

@@ -93,7 +93,7 @@ bool Config::settingsThread()
 	{
 		if (pdc_)
 		{
-			pdc_(L"Loading IP filters...", bind(
+			pdc_(L"Loading IP filters...", boost::bind(
 				&bit::ensure_ip_filter_on, &bittorrent::Instance(), _1));
 		}
 		else

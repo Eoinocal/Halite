@@ -608,7 +608,7 @@ const torrent_details_manager& bit::update_torrent_details_manager(const uuid& f
 {
 	try {
 
-	boost::thread t(bind(&bit::update_torrent_details_manager_thread, this, focused, selected));
+	boost::thread t(boost::bind(&bit::update_torrent_details_manager_thread, this, focused, selected));
 	t.join();
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uuid(), "updatetorrent_details_manager")

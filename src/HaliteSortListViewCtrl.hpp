@@ -652,7 +652,7 @@ protected:
 		std::copy(pair_container_.begin(), pair_container_.end(), std::back_inserter(sv));
 
 		std::stable_sort(sv.begin(), sv.end(), 
-			bind(&this_class_t::data_type_comparison, this, _1, _2, index, ascending));
+			boost::bind(&this_class_t::data_type_comparison, this, _1, _2, index, ascending));
 
 		pair_container_.rearrange(sv.begin());
 	}

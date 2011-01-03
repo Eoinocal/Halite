@@ -117,7 +117,7 @@ bit_impl::bit_impl() :
 	start_alert_handler();
 
 	service_threads_.push_back(shared_thread_ptr(new 
-		thread_t(bind(&boost::asio::io_service::run, &io_service_))));
+		thread_t(boost::bind(&boost::asio::io_service::run, &io_service_))));
 
 
 	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::bit_impl()")

@@ -375,7 +375,7 @@ LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND h
 		torrent_names.insert(val.hash());
 
 	foreach(const hal::uuid& id, torrent_names)
-		hal::bittorrent::Instance().remove_torrent_wipe_files(id, bind(&HaliteListViewCtrl::remove_to_bin, this, id, _1, _2));
+		hal::bittorrent::Instance().remove_torrent_wipe_files(id, boost::bind(&HaliteListViewCtrl::remove_to_bin, this, id, _1, _2));
 
 	return 0;
 }

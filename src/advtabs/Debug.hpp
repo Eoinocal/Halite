@@ -29,7 +29,7 @@ public:
 	END_MSG_MAP()
 
 	LogEdit() :
-		editLogger(hal::wlog().attach(bind(&LogEdit::log, this, _1)))
+		editLogger(hal::wlog().attach(boost::bind(&LogEdit::log, this, _1)))
 	{}
 
 	void log(const std::wstring& text)
@@ -50,7 +50,7 @@ public:
 	END_MSG_MAP()
 
 	LogList() :
-		listLogger(hal::wlog().attach(bind(&LogList::log, this, _1)))
+		listLogger(hal::wlog().attach(boost::bind(&LogList::log, this, _1)))
 	{}
 
 	void log(const std::wstring& text)

@@ -111,7 +111,7 @@ void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 		}
 		
 		std::set<std::wstring> ip_set;
-		foreach (hal::peer_detail& pd,  peer_details_)
+		foreach (const hal::peer_detail& pd,  peer_details_)
 			ip_set.insert(pd.ip_address);
 		
 		erase_based_on_set(ip_set, true);

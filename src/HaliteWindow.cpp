@@ -77,7 +77,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading Halite configuration ...")));
 	hal::config().load_from_ini();
-	hal::config().set_callback(bind(&HaliteWindow::runProgressCommand, this, _1, _2));
+	hal::config().set_callback(boost::bind(&HaliteWindow::runProgressCommand, this, _1, _2));
 
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"	... Done")));
@@ -155,7 +155,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 
 	//Set callback for completed torrents
 	hal::bittorrent::Instance().connect_torrent_completed_signal(
-					bind(&HaliteWindow::torrentCompletedCallback, this, _1));
+					boost::bind(&HaliteWindow::torrentCompletedCallback, this, _1));
 
 	// Add ToolBar and register it along with StatusBar for UIUpdates
 	UIAddToolBar(hWndToolBar);
@@ -684,7 +684,7 @@ void HaliteWindow::logoffCallback()
 {
 	HAL_DEV_MSG(L"In logoff callback");
 
-	post_halite_function_ = bind(boost::function<BOOL (UINT, DWORD)>(ExitWindowsEx), 
+	post_halite_function_ = boost::bind(boost::function<BOOL (UINT, DWORD)>(ExitWindowsEx), 
 		EWX_LOGOFF, SHTDN_REASON_MAJOR_OTHER | SHTDN_REASON_MINOR_OTHER | SHTDN_REASON_FLAG_PLANNED);
 
 	PostMessage(WM_HALITE_UNCONDITIONAL_SHUTDOWN, 0, 0);
@@ -694,7 +694,7 @@ void HaliteWindow::shutdownCallback()
 {
 	HAL_DEV_MSG(L"In shutdown callback");
 
-	post_halite_function_ = bind(boost::function<BOOL (UINT, DWORD)>(ExitWindowsEx), 
+	post_halite_function_ = boost::bind(boost::function<BOOL (UINT, DWORD)>(ExitWindowsEx), 
 		EWX_SHUTDOWN, SHTDN_REASON_MAJOR_OTHER | SHTDN_REASON_MINOR_OTHER | SHTDN_REASON_FLAG_PLANNED);
 
 	PostMessage(WM_HALITE_UNCONDITIONAL_SHUTDOWN, 0, 0);

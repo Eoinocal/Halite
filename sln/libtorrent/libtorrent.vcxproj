@@ -129,7 +129,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include\;$(SolutionDir)lib\Openssl\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0600;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_NO_DEPRECATE;TORRENT_USE_WSTRING;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_USE_WSTRING;TORRENT_NO_DEPRECATE;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -147,7 +147,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include\;$(SolutionDir)lib\Openssl\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;_DEBUG;WIN32;_WIN32;_WINDOWS;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_NO_DEPRECATE;TORRENT_USE_WSTRING;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_USE_WSTRING;TORRENT_NO_DEPRECATE;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;WIN64;_WIN64;_DEBUG</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -168,7 +168,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include\;$(SolutionDir)lib\Openssl\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;NDEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_NO_DEPRECATE;TORRENT_USE_WSTRING;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_USE_WSTRING;TORRENT_NO_DEPRECATE;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -189,7 +189,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include\;$(SolutionDir)lib\Openssl\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;NDEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_NO_DEPRECATE;TORRENT_USE_WSTRING;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_USE_WSTRING;TORRENT_NO_DEPRECATE;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;WIN64;_WIN64</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -207,7 +207,7 @@
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include\;$(SolutionDir)lib\Openssl\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;NDEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_LOGGING;TORRENT_VERBOSE_LOGGING;TORRENT_UPNP_LOGGING;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_USE_WSTRING;TORRENT_NO_DEPRECATE;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -224,7 +224,7 @@
     <ClCompile>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include\;$(SolutionDir)lib\Openssl\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;NDEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_USE_WSTRING;TORRENT_NO_DEPRECATE;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;WIN64;_WIN64</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -242,7 +242,7 @@
       <Optimization>MinSpace</Optimization>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include\;$(SolutionDir)lib\Openssl\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;NDEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_NO_DEPRECATE;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_USE_WSTRING;TORRENT_NO_DEPRECATE;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -259,7 +259,7 @@
     <ClCompile>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include\;$(SolutionDir)lib\Openssl\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;NDEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_USE_WSTRING;TORRENT_NO_DEPRECATE;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0500;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;WIN64;_WIN64</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
