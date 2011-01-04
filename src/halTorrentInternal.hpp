@@ -205,6 +205,27 @@ typedef shared_ptr<torrent_internal> torrent_internal_ptr;
 
 struct out_of_session;
 
+
+#define TORRENT_INTERNALS_DEFAULTS \
+		transfer_limit_(std::make_pair(-1.f, -1.f)), \
+		connections_(-1), \
+		uploads_(-1), \
+		ratio_(0), \
+		resolve_countries_(true), \
+		total_uploaded_(0), \
+		total_base_(0), \
+		progress_(0), \
+		managed_(false), \
+		start_time_(boost::posix_time::second_clock::universal_time()), \
+		in_session_(false), \
+		queue_position_(-1), \
+		hash_(0), \
+		superseeding_(false), \
+		files_(mutex_, \
+			bind(&torrent_internal::set_file_priority_cb, this, _1, _2, _3), \
+			bind(&torrent_internal::changed_file_filename_cb, this, _1, _2)) 
+		
+
 class torrent_internal :
 	public boost::enable_shared_from_this<torrent_internal>,
 	public sc::state_machine<torrent_internal, out_of_session>
@@ -226,27 +247,11 @@ class torrent_internal :
 	friend struct removing;
 
 private:
-	#define TORRENT_INTERNALS_DEFAULTS \
-		transfer_limit_(std::pair<float, float>(-1, -1)), \
-		connections_(-1), \
-		uploads_(-1), \
-		ratio_(0), \
-		resolve_countries_(true), \
-		total_uploaded_(0), \
-		total_base_(0), \
-		progress_(0), \
-		managed_(false), \
-		start_time_(boost::posix_time::second_clock::universal_time()), \
-		in_session_(false), \
-		queue_position_(-1), \
-		hash_(0), \
-		superseeding_(false), \
-		files_(mutex_, \
-			bind(&torrent_internal::set_file_priority_cb, this, _1, _2, _3), \
-			bind(&torrent_internal::changed_file_filename_cb, this, _1, _2))
-		
 	torrent_internal() :	
-		TORRENT_INTERNALS_DEFAULTS,
+#		pragma warning (push)
+#			pragma warning (disable : 4355)
+			TORRENT_INTERNALS_DEFAULTS,
+#		pragma warning (pop)
 		allocation_(bit::sparse_allocation)
 	{
 		upgrade_lock l(mutex_);
@@ -255,7 +260,10 @@ private:
 	}
 
 	torrent_internal(const wpath& filename, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"") :
-		TORRENT_INTERNALS_DEFAULTS,
+#		pragma warning (push)
+#			pragma warning (disable : 4355)
+			TORRENT_INTERNALS_DEFAULTS,
+#		pragma warning (pop)
 		uuid_(boost::uuids::random_generator()()),
 		save_directory_(save_directory.string()),
 		move_to_directory_(move_to_directory.string()),
@@ -270,7 +278,10 @@ private:
 	}
 
 	torrent_internal(const wstring& uri, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"") :
-		TORRENT_INTERNALS_DEFAULTS,
+#		pragma warning (push)
+#			pragma warning (disable : 4355)
+			TORRENT_INTERNALS_DEFAULTS,
+#		pragma warning (pop)
 		uuid_(boost::uuids::random_generator()()),
 		save_directory_(save_directory.string()),
 		move_to_directory_(move_to_directory.string()),
@@ -284,9 +295,7 @@ private:
 
 		extract_hash(l);
 	}
-
-	#undef TORRENT_INTERNALS_DEFAULTS
-
+			
 public:
 	~torrent_internal()
 	{
@@ -888,6 +897,7 @@ private:
 	
 	wstring state_string(upgrade_lock& l) const;
 	void output_torrent_debug_details(upgrade_lock& l) const;
+	wstring check_error(upgrade_lock& l) const;
 	
 	void set_info_cache(boost::intrusive_ptr<libt::torrent_info> info, upgrade_lock& l)
 	{
@@ -898,32 +908,8 @@ private:
 		}
 	}
 
-	void set_file_priority_cb(size_t i, int p, upgrade_lock& l)
-	{		
-		if (i < file_priorities_.size())
-		{
-			upgrade_to_unique_lock up_l(l);
-
-			file_priorities_[i] = p;
-			file_details_memory_[i].priority = p;
-		}
-	}
-	
-	void changed_file_filename_cb(size_t i, upgrade_lock& l)
-	{		
-		if (i < file_details_memory_.size())
-		{
-			torrent_file::split_path_pair_t split = torrent_file::split_root(files_[i].completed_name());
-
-			{	upgrade_to_unique_lock up_l(l);
-				file_details_memory_[i].filename = split.second.filename();
-				file_details_memory_[i].branch = split.second.parent_path();
-
-				if (files_[i].is_finished())
-					handle_.rename_file(i, files_[i].completed_name());
-			}
-		}
-	}
+	void set_file_priority_cb(size_t i, int p, upgrade_lock& l);	
+	void changed_file_filename_cb(size_t i, upgrade_lock& l);
 
 	function<void ()> remove_callback_;
 	function<void (void)>& remove_callback(upgrade_lock& l) { return remove_callback_; }
@@ -996,6 +982,8 @@ private:
 	mutable libt::torrent_status status_memory_;
 	file_details_vec file_details_memory_;
 };
+
+#undef TORRENT_INTERNALS_DEFAULTS
 
 } // namespace hal
 

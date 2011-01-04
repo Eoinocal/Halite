@@ -932,7 +932,7 @@ std::pair<float, float> bit::torrent::get_rate_limits() const
 	
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_rate_limits")
 	
-	return std::pair<float, float>(-1.0, -1.0);
+	return std::pair<float, float>(-1.f, -1.f);
 }
 
 void bit::torrent::set_rate_limits(const std::pair<float, float>& l)

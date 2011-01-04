@@ -577,6 +577,8 @@
     <ClInclude Include="..\..\src\AdvHaliteDialog.hpp" />
     <ClInclude Include="..\..\src\ConfigOptions.hpp" />
     <ClInclude Include="..\..\src\DebugDialog.hpp" />
+    <ClInclude Include="..\..\src\global\crtp_iarchive.hpp" />
+    <ClInclude Include="..\..\src\global\crtp_oarchive.hpp" />
     <ClInclude Include="..\..\src\Halite.hpp" />
     <ClInclude Include="..\..\src\HaliteDialog.hpp" />
     <ClInclude Include="..\..\src\HaliteDialogBase.hpp" />

@@ -248,7 +248,11 @@ bool torrent_internal::get_superseeding(bool actually, upgrade_lock& l) const
 wstring torrent_internal::check_error() const
 {		
 	upgrade_lock l(mutex_);
+	return check_error(l);
+}
 
+wstring torrent_internal::check_error(upgrade_lock& l) const
+{
 	if (in_session(l))
 	{ 
 		return from_utf8(renew_status_cache(l).error);
@@ -1130,6 +1134,36 @@ void torrent_internal::output_torrent_debug_details(upgrade_lock& l) const
 	HAL_DEV_MSG(wform(L" >> Paused in session	%1%") % handle_.is_paused());
 //	HAL_DEV_MSG(wform(L" >> Error state		%1%") % check_error());
 
+	}
+}
+
+void torrent_internal::set_file_priority_cb(size_t i, int p, upgrade_lock& l)
+{		
+	if (i < file_priorities_.size())
+	{
+		upgrade_to_unique_lock up_l(l);
+
+		file_priorities_[i] = p;
+		file_details_memory_[i].priority = p;
+	}
+}
+	
+void torrent_internal::changed_file_filename_cb(size_t i, upgrade_lock& l)
+{		
+	if (i < file_details_memory_.size())
+	{
+		torrent_file::split_path_pair_t split = torrent_file::split_root(files_[i].completed_name());
+
+		{	upgrade_to_unique_lock up_l(l);
+			file_details_memory_[i].filename = split.second.filename();
+			file_details_memory_[i].branch = split.second.parent_path();
+
+			if (files_[i].is_finished())
+			{				
+				HAL_DEV_MSG(wform(L"Renaming file %1% to %2%") % i % files_[i].completed_name());
+				handle_.rename_file(i, files_[i].completed_name());
+			}
+		}
 	}
 }
 

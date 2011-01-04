@@ -238,7 +238,7 @@ in_error::in_error(base_type::my_context ctx) :
 	torrent_internal& t_i = context<torrent_internal>();
 	upgrade_lock l(t_i.mutex_);
 
-	TORRENT_STATE_LOG(hal::wform(L"Entering in_error()() - %1%") % t_i.check_error());
+	TORRENT_STATE_LOG(hal::wform(L"Entering in_error()() - %1%") % t_i.check_error(l));
 
 	t_i.state(l, torrent_details::torrent_in_error);
 }

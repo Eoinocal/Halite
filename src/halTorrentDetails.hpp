@@ -139,7 +139,7 @@ public:
 			const boost::uuids::uuid& id, 
 			const std::wstring& cT, 
 			const std::wstring& hh, 
-			const std::pair<float,float>& sp=std::pair<float,float>(0,0),
+			const std::pair<float,float>& sp=std::make_pair(0.f,0.f),
 			float c=0, float d=0, 
 			size_type tWD=0, size_type tW=0, 
 			size_type tU=0, size_type tpU=0, 
