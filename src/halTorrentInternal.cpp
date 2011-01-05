@@ -513,6 +513,8 @@ void torrent_internal::update_manager(upgrade_lock& l)
 {
 	if (update_manager_)
 	{
+		l.unlock();
+
 		update_manager_(shared_from_this());
 	}
 }

@@ -21,6 +21,7 @@
 #define HAL_WINDOW_AUTOSHUTDOWN			ID_WINDOW_BEGIN + 13
 #define HAL_BALLOON_TORRENT_COMPLETE		ID_WINDOW_BEGIN + 14
 #define HAL_BALLOON_TITLE_COMPLETE			ID_WINDOW_BEGIN + 15
+#define HAL_FILE_OPEN_MAGNET				ID_WINDOW_BEGIN + 16
 
 
 #define WM_HALITE_UNCONDITIONAL_SHUTDOWN	WM_USER + 321
@@ -98,6 +99,7 @@ public:
 
 		COMMAND_ID_HANDLER(ID_FILE_NEW, OnFileNew)
 		COMMAND_ID_HANDLER(ID_FILE_OPEN, OnFileOpen)
+		COMMAND_ID_HANDLER(HAL_FILE_OPEN_MAGNET, OnFileOpenMagnet)
 		COMMAND_ID_HANDLER(ID_RESUME, OnResumeAll)
 		COMMAND_ID_HANDLER(ID_PAUSE, OnPauseAll)
 		COMMAND_ID_HANDLER(ID_SETTINGS, OnSettings)
@@ -190,6 +192,7 @@ protected:
 	LRESULT OnTrayExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnFileOpenMagnet(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnHelp(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
