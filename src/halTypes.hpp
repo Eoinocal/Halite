@@ -26,6 +26,8 @@
 
 #include <loki/Singleton.h>
 
+#include "global/string_conv.hpp"
+
 namespace hal
 {	
 	namespace fs = boost::filesystem;
@@ -69,6 +71,16 @@ namespace hal
 		fmter.exceptions(no_error_bits);
 
 		return fmter;
+	}
+	
+	inline path path_to_utf8(const wpath& wp)
+	{
+		return path(to_utf8(wp.string()));
+	}
+
+	inline wpath path_from_utf8(const path& p)
+	{
+		return wpath(from_utf8(p.string()));
 	}
 }
 

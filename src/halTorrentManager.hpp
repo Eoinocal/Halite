@@ -176,7 +176,7 @@ public:
 	void start_all()
 	{
 		for (torrent_by_uuid::iterator i= torrents_.get<by_uuid>().begin(), 
-			e = torrents_.get<by_uuid>().end(); i!=e; /**/)
+			e = torrents_.get<by_uuid>().end(); i != e; /**/)
 		{
 		//	wpath file = wpath(hal::app().get_working_directory())/L"torrents"/(*i).torrent->filename();
 			

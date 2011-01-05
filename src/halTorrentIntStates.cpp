@@ -12,10 +12,10 @@
 #	include <libtorrent/magnet_uri.hpp>
 #pragma warning (pop) 
 
+#include "halEvent.hpp"
 #ifndef HAL_TORRENT_STATE_LOGGING
 #	define TORRENT_STATE_LOG(s)
 #else
-#	include "../halEvent.hpp"
 #	define TORRENT_STATE_LOG(msg) \
 	hal::event_log().post(boost::shared_ptr<hal::EventDetail>( \
 			new hal::EventMsg(msg, hal::event_logger::torrent_dev))) 
@@ -330,14 +330,14 @@ sc::result not_started::react(const ev_start& evt)
 				upgrade_to_unique_lock up_l(l);
 
 				HAL_DEV_MSG(L"Using torrent info data");
-				t_i.info_memory_.reset(new libt::torrent_info(torrent_info_file.c_str()));
+				t_i.info_memory_reset(new libt::torrent_info(torrent_info_file.c_str()), l);
 			}
 			else if (fs::exists(torrent_file))
 			{
 				upgrade_to_unique_lock up_l(l);
 
 				HAL_DEV_MSG(L"Using torrent file");
-				t_i.info_memory_.reset(new libt::torrent_info(torrent_file.c_str()));
+				t_i.info_memory_reset(new libt::torrent_info(torrent_file.c_str()), l);
 			}
 		}
 

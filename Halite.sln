@@ -13,6 +13,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientTest", "sln\libtorren
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "halTorrent", "sln\halTorrent\halTorrent.vcxproj", "{9EE1FB67-715D-406D-8777-1D54C29896AE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DumpTorrent", "sln\libtorrent\DumpTorrent\DumpTorrent.vcxproj", "{1669B1B5-A048-440A-B868-DDD1DBAA47FD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{333ECB6F-575B-4B11-BDDA-3E7F7555BAD8} = {333ECB6F-575B-4B11-BDDA-3E7F7555BAD8}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -163,6 +168,30 @@ Global
 		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release|x64.ActiveCfg = Release|x64
 		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release|x64.Build.0 = Release|x64
 		{9EE1FB67-715D-406D-8777-1D54C29896AE}.Release|x86.ActiveCfg = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Debug|Win32.Build.0 = Debug|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Debug|x64.ActiveCfg = Debug|x64
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Debug|x86.ActiveCfg = Debug|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release Logging|Mixed Platforms.ActiveCfg = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release Logging|Mixed Platforms.Build.0 = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release Logging|Win32.ActiveCfg = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release Logging|Win32.Build.0 = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release Logging|x64.ActiveCfg = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release Logging|x86.ActiveCfg = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release Small|Mixed Platforms.ActiveCfg = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release Small|Mixed Platforms.Build.0 = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release Small|Win32.ActiveCfg = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release Small|Win32.Build.0 = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release Small|x64.ActiveCfg = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release Small|x86.ActiveCfg = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release|Win32.ActiveCfg = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release|Win32.Build.0 = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release|x64.ActiveCfg = Release|Win32
+		{1669B1B5-A048-440A-B868-DDD1DBAA47FD}.Release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

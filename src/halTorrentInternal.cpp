@@ -446,6 +446,9 @@ void torrent_internal::init_file_details(upgrade_lock& l)
 
 	if (info_memory(l) && !files_.empty(l))
 	{	
+		files_.set_hash(hash_str_);
+		files_.set_libt_files(handle_.get_torrent_info().files(), handle_.get_torrent_info().orig_files());
+
 		libt::torrent_info::file_iterator file_it = info_memory(l)->begin_files();
 
 		for(size_t i=0, e=files_.size(l); i<e; ++i)
@@ -586,13 +589,15 @@ void torrent_internal::extract_hash(upgrade_lock& l)
 		hash_str_ = from_utf8(libt::base32encode(std::string((char const*)&ih[0], 20)));
 	}
 
+	files_.set_hash(hash_str_);
+
 	HAL_DEV_MSG(hal::wform(L"    hash : %1%") % hash_str_);
 }
 
 void torrent_internal::extract_filenames(upgrade_lock& l)
 {			
 	if (info_memory(l) && files_.empty(l))
-	{		
+	{
 		for (libt::torrent_info::file_iterator i = info_memory(l)->begin_files(), e = info_memory(l)->end_files();
 			i != e; ++i)
 		{
@@ -634,6 +639,9 @@ void torrent_internal::extract_filenames(upgrade_lock& l)
 
 			files_.push_back(torrent_file(p_orig, using_hash, p), l);
 		}
+		
+		// Primes the Files manager with default names.
+		files_.set_libt_files(info_memory(l)->files(), info_memory(l)->orig_files());
 	}
 	else
 	{
@@ -653,7 +661,6 @@ void torrent_internal::write_torrent_info(upgrade_lock& l) const
 
 	if (info_memory(l))
 	{
-		wpath torrent_info_file = hal::app().get_working_directory() / L"resume" / (name(l) + L".torrent_info");
 		wpath resume_dir = hal::app().get_working_directory()/L"resume";
 		
 		if (!exists(resume_dir))
@@ -843,17 +850,19 @@ void torrent_internal::apply_file_names(upgrade_lock& l)
 	{
 		bool want_recheck = false;
 
+		int know = files_.size(l);
+
 		if (files_.size(l) != info_memory(l)->num_files())
 		{
 			extract_filenames(l);
 			want_recheck = true;
-		}
 
+		}
+		
+		// This shouldn't do any more than inform libtorrent about the hash subfolder
 		for (int i = 0; i < info_memory(l)->num_files(); ++i)
-		{
-			handle_.rename_file(i, files_[i].active_name(hash_str_).string());
-		}
-
+			handle_.rename_file(i, files_[i].active_name().string());
+		
 		if (want_recheck)
 			handle_.force_recheck();
 		
@@ -1065,9 +1074,9 @@ boost::intrusive_ptr<libt::torrent_info> torrent_internal::info_memory(upgrade_l
 
 	if (!info_memory_ && in_session(l)) 
 	{	
-		upgrade_to_unique_lock up_l(l);
-			
-		info_memory_.reset(new libt::torrent_info(handle_.get_torrent_info()));	
+		// Yes I know how ugly this is!!!!
+		HAL_DEV_MSG(L"That ugly const_cast happened!!!");
+		const_cast<torrent_internal*>(this)->info_memory_reset(new libt::torrent_info(handle_.get_torrent_info()), l);
 	}
 
 	}
@@ -1077,6 +1086,17 @@ boost::intrusive_ptr<libt::torrent_info> torrent_internal::info_memory(upgrade_l
 	}
 
 	return info_memory_;
+}
+
+void torrent_internal::info_memory_reset(libt::torrent_info* im, upgrade_lock& l)
+{	
+		upgrade_to_unique_lock up_l(l);
+
+		info_memory_.reset(im);
+
+		// This informs the Files manager about names loaded from a fast resume file.
+		files_.set_hash(hash_str_);	
+		files_.set_libt_files(info_memory_->orig_files());
 }
 
 void torrent_internal::output_torrent_debug_details() const
@@ -1136,6 +1156,9 @@ void torrent_internal::output_torrent_debug_details(upgrade_lock& l) const
 
 	}
 }
+
+
+// --- Callbacks ---
 
 void torrent_internal::set_file_priority_cb(size_t i, int p, upgrade_lock& l)
 {		

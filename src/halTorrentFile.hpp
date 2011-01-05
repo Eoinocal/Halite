@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <libtorrent/file_storage.hpp>
+
 #include "halTorrentDefines.hpp"
 #include "halTypes.hpp"
 
@@ -71,34 +73,29 @@ public:
 	{}
 
 	torrent_file(const wstring& on, bool h, int p=1) :
-		current_name_(on),
 		priority_(p),
 		finished_(false),
 		with_hash_(h)
 	{}
 
 	torrent_file(const fs::wpath& on, bool h, int p=1) :
-		current_name_(on),
 		priority_(p),
 		finished_(false),
 		with_hash_(h)
 	{}
 
-	void set_finished()
+	void set_finished(const fs::wpath& on)
 	{
 		finished_ = true;
 		with_hash_ = false;
 		
-		if (!completed_name_.empty())
-			current_name_ = completed_name_;
+		if (completed_name_.empty())
+			completed_name_ = on;
 	}
 
 	void change_filename(const fs::wpath& fn)
 	{
 		completed_name_ = fn;
-
-		if (finished_)
-			current_name_ = fn;
 	}
 
 	void set_priority(int p)
@@ -106,21 +103,12 @@ public:
 		priority_ = p;
 	}
 
-	fs::wpath active_name(const std::wstring& hash) const 
-	{ 
-		if (with_hash_)
-			return add_hash(current_name_, hash);
-		else
-			return current_name_; 
-	}
-
-	void change_root_name(const std::wstring& root)
+	void change_root_name(const std::wstring& root, const fs::wpath& on)
 	{
-		current_name_ = change_root_name(current_name_, root);
-		completed_name_ = change_root_name(completed_name_, root);
+		completed_name_ = change_root_name(on, root);
 	}
 
-	const fs::wpath& completed_name() const { return completed_name_.empty() ? current_name_ : completed_name_; }
+	const fs::wpath& completed_name() const { return completed_name_; }
 
 	int priority() const { return priority_; };
 	bool with_hash() const { return with_hash_; }
@@ -132,7 +120,14 @@ public:
 	{
 		using boost::serialization::make_nvp;
 
-		ar & make_nvp("current_name", current_name_);
+		if (version < 2)
+		{
+			// deprecated
+
+			fs::wpath current_name_dont_use_;
+			ar & make_nvp("current_name", current_name_dont_use_);
+		}
+
 		ar & make_nvp("completed_name", completed_name_);
 		ar & make_nvp("priority", priority_);
 		ar & make_nvp("finished", finished_);
@@ -140,12 +135,44 @@ public:
 	}	
 
 private:
-	fs::wpath current_name_;
 	fs::wpath completed_name_;
 
 	int priority_;
 	bool finished_;
 	bool with_hash_;
+};
+
+class torrent_file_proxy
+{
+public:
+	torrent_file_proxy(const torrent_file& f, const std::wstring& h, const fs::wpath& cn, const fs::wpath& on) :
+		file_(f),
+		hash_(h),
+		original_name_(on)
+	{}
+
+		
+	int priority() const { return file_.priority(); };
+	bool with_hash() const { return file_.with_hash(); }
+	bool is_finished() const { return file_.is_finished(); }
+
+	fs::wpath active_name() const 
+	{ 		
+		if (file_.is_finished())
+			return file_.completed_name();
+		else if (file_.with_hash())
+			return torrent_file::add_hash(original_name_, hash_);
+		else
+			return original_name_; 
+	}
+		
+	const fs::wpath& completed_name() const { return file_.completed_name().empty() ? original_name_ : file_.completed_name(); }
+		
+private:
+	const torrent_file& file_;
+	const std::wstring& hash_;
+	
+	fs::wpath original_name_;
 };
 
 class torrent_files
@@ -158,16 +185,11 @@ class torrent_files
 		mi::indexed_by<
 			mi::random_access<
 				mi::tag<by_random>
-			>,
-			mi::ordered_unique<
-				mi::tag<by_filename>,
-				mi::const_mem_fun<
-					torrent_file, const fs::wpath&, &torrent_file::completed_name> 
 			>
 		>
 	> torrent_file_index_impl_t;
 
-	typedef torrent_file_index_impl_t::index<by_filename>::type torrent_file_by_filename;
+	//typedef torrent_file_index_impl_t::index<by_filename>::type torrent_file_by_filename;
 	typedef torrent_file_index_impl_t::index<by_random>::type torrent_file_by_random;
 
 public:
@@ -199,6 +221,16 @@ public:
 			}
 		}
 	}
+	
+	void set_hash(const std::wstring& h)
+	{
+		hash_ = h;
+	}
+
+	void set_libt_files(const libt::file_storage& lofs)
+	{
+		libt_orig_files_ = lofs;
+	}
 
 	void set_root_name(const wstring& root, upgrade_lock& l)
 	{
@@ -208,7 +240,9 @@ public:
 			i != e; ++i)
 		{
 			torrent_file tmp_file = *(i);
-			tmp_file.change_root_name(root);
+			tmp_file.change_root_name(root, 
+				path_from_utf8(libt_orig_files_.at(
+					static_cast<int>(std::distance(files_.get<by_random>().begin(), i))).path));
 
 			new_files.push_back(tmp_file);
 		}
@@ -240,7 +274,7 @@ public:
 		torrent_file_by_random::iterator file_i = files_.get<by_random>().begin() + i; 
 
 		torrent_file tmp_file = *(file_i);
-		tmp_file.set_finished();
+		tmp_file.set_finished(path_from_utf8(libt_orig_files_.at(i).path));
 
 		{	upgrade_to_unique_lock up_l(l);
 			files_.get<by_random>().replace(file_i, tmp_file);
@@ -270,9 +304,10 @@ public:
 		changed_filename_fn_(i, l);
 	}
 
-	const torrent_file& operator[](size_t n) const
+	const torrent_file_proxy operator[](size_t n) const
 	{
-		return files_.get<by_random>()[n];
+		return torrent_file_proxy(files_.get<by_random>()[n], hash_, 
+			path_from_utf8(libt_orig_files_.at(n).path), path_from_utf8(libt_orig_files_.at(n).path));
 	}
 	
 	friend class boost::serialization::access;
@@ -288,9 +323,13 @@ private:
 
 	boost::shared_mutex& mutex_;
 	torrent_file_index_impl_t files_;
+
+	std::wstring hash_;
+	
+	libt::file_storage libt_orig_files_;
 };
 
 
 } // namespace hal
 
-BOOST_CLASS_VERSION(hal::torrent_file, 1)
+BOOST_CLASS_VERSION(hal::torrent_file, 2)

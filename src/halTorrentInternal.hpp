@@ -62,16 +62,6 @@ inline bool halencode(const wpath &file, const libt::entry &e)
 	return true;
 }
 
-inline path path_to_utf8(const wpath& wp)
-{
-	return path(to_utf8(wp.string()));
-}
-
-inline wpath path_from_utf8(const path& p)
-{
-	return wpath(from_utf8(p.string()));
-}
-
 inline std::pair<std::string, std::string> extract_names(const wpath &file)
 {
 	if (fs::exists(file)) 
@@ -871,6 +861,8 @@ private:
 	bool in_session(upgrade_lock& l) const;
 
 	boost::intrusive_ptr<libt::torrent_info> info_memory(upgrade_lock& l) const;	
+	void info_memory_reset(libt::torrent_info* im, upgrade_lock& l);
+
 	libt::torrent_status& status_cache(upgrade_lock& l) const;
 	libt::torrent_status& renew_status_cache(upgrade_lock& l) const;
 
