@@ -447,7 +447,7 @@ void torrent_internal::init_file_details(upgrade_lock& l)
 	if (info_memory(l) && !files_.empty(l))
 	{	
 		files_.set_hash(hash_str_);
-		files_.set_libt_files(handle_.get_torrent_info().files(), handle_.get_torrent_info().orig_files());
+		files_.set_libt_files(handle_.get_torrent_info().orig_files());
 
 		libt::torrent_info::file_iterator file_it = info_memory(l)->begin_files();
 
@@ -641,7 +641,7 @@ void torrent_internal::extract_filenames(upgrade_lock& l)
 		}
 		
 		// Primes the Files manager with default names.
-		files_.set_libt_files(info_memory(l)->files(), info_memory(l)->orig_files());
+		files_.set_libt_files(info_memory(l)->orig_files());
 	}
 	else
 	{

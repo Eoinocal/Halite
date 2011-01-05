@@ -88,9 +88,6 @@ public:
 	{
 		finished_ = true;
 		with_hash_ = false;
-		
-		if (completed_name_.empty())
-			completed_name_ = on;
 	}
 
 	void change_filename(const fs::wpath& fn)
@@ -159,8 +156,9 @@ public:
 	fs::wpath active_name() const 
 	{ 		
 		if (file_.is_finished())
-			return file_.completed_name();
-		else if (file_.with_hash())
+			return completed_name();
+
+		if (file_.with_hash())
 			return torrent_file::add_hash(original_name_, hash_);
 		else
 			return original_name_; 
