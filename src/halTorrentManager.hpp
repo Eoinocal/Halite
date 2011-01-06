@@ -185,7 +185,8 @@ public:
 				try 
 				{
 										
-				(*i).torrent->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1));
+				(*i).torrent->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1),
+					bind(&torrent_manager::erase_torrent, this, _1));
 				(*i).torrent->start();	
 				
 				++i;
@@ -234,7 +235,8 @@ public:
 		if (!p.second) // Torrent already present
 			t.reset();
 		else
-			t->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1));
+			t->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1),
+				bind(&torrent_manager::erase_torrent, this, _1));
 
 		return t;
 	}
@@ -249,7 +251,8 @@ public:
 		if (!p.second) // Torrent already present
 			t.reset();
 		else
-			t->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1));
+			t->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1),
+				bind(&torrent_manager::erase_torrent, this, _1));
 
 		return t;
 	}
@@ -342,6 +345,16 @@ public:
 		{
 			torrents_.get<by_uuid>().replace(it, torrent_holder(torrent));
 			display_holder(torrent_holder(torrent));
+		}
+	}
+
+	void erase_torrent(torrent_internal_ptr torrent)
+	{
+		torrent_by_uuid::iterator it = torrents_.get<by_uuid>().find(torrent->id());
+		
+		if (it != torrents_.get<by_uuid>().end() && (*it).torrent)
+		{
+			erase(it);
 		}
 	}
 	

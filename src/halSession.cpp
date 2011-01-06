@@ -620,6 +620,25 @@ void bit_impl::alert_handler()
 		bit_impl_.signals.torrent_completed(get(a.handle)->name());
 	}
 
+	void operator()(libt::storage_moved_alert  const& a) const
+	{
+		event_log().post(shared_ptr<EventDetail>(
+			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
+					% get(a.handle)->name()), 
+				event_logger::info, a.timestamp())));
+		
+		get(a.handle)->storage_moved(from_utf8(a.path));
+	}
+
+	void operator()(libt::storage_moved_failed_alert  const& a) const
+	{
+		event_log().post(shared_ptr<EventDetail>(
+			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_FILE_RENAME_ERR)) 
+					% get(a.handle)->name()
+					% a.error), 
+				event_logger::warning, a.timestamp())));
+	}
+
 	void operator()(libt::file_renamed_alert const& a) const
 	{
 		event_log().post(shared_ptr<EventDetail>(
@@ -636,7 +655,7 @@ void bit_impl::alert_handler()
 			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_FILE_RENAME_ERR)) 
 					% get(a.handle)->name()
 					% a.index), 
-				event_logger::info, a.timestamp())));
+				event_logger::warning, a.timestamp())));
 	}
 
 	void operator()(libt::file_completed_alert const& a) const

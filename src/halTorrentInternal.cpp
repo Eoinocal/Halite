@@ -128,11 +128,17 @@ void torrent_internal::finished()
 			upgrade_to_unique_lock up_l(l);
 
 			handle_.move_storage(move_to_directory_.string());
+
 			save_directory_ = move_to_directory_;
 		}
 
 		apply_superseeding(l);
 	}
+}
+
+void torrent_internal::storage_moved(const fs::wpath& p)
+{
+
 }
 
 bool torrent_internal::is_active() const 
@@ -298,6 +304,33 @@ bool torrent_internal::remove_from_session(bool write_data)
 	}
 
 	return true;
+}
+
+void torrent_internal::remove_files(function<void (wpath path, boost::shared_ptr<std::vector<std::wstring> > files)> fn)
+{		
+	boost::shared_ptr<std::vector<std::wstring> > files = boost::shared_ptr<std::vector<std::wstring> >(new std::vector<std::wstring> );
+
+	fs::wpath active_directory = save_directory();
+
+	{	upgrade_lock l(mutex_);
+	
+		for (int i = 0; i < info_memory(l)->num_files(); ++i)
+			files->push_back((save_directory(l)/files_[i].active_name()).file_string());
+
+		files->push_back((hal::app().get_working_directory() / L"resume" / (name(l) + L".fastresume")).file_string());
+		files->push_back((hal::app().get_working_directory() / L"resume" / (name(l) + L".torrent_info")).file_string());
+		
+		if (1 == files_.size(l))
+		{
+			active_directory /= hash_str_;
+		}
+		else
+		{
+			active_directory /= name(l);
+		}
+	}
+
+	process_event(ev_remove(boost::bind(fn, active_directory, files)));
 }
 
 torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
@@ -516,6 +549,16 @@ void torrent_internal::update_manager(upgrade_lock& l)
 		l.unlock();
 
 		update_manager_(shared_from_this());
+	}
+}
+
+void torrent_internal::erase_myself(upgrade_lock& l)
+{
+	if (erase_myself_)
+	{
+		l.unlock();
+
+		erase_myself_(shared_from_this());
 	}
 }
 
@@ -952,11 +995,12 @@ void torrent_internal::state(upgrade_lock& l, unsigned s)
 	}
 }
 
-void torrent_internal::initialize_non_serialized(function<void (torrent_internal_ptr)> f)
+void torrent_internal::initialize_non_serialized(function<void (torrent_internal_ptr)> f, function<void (torrent_internal_ptr)>em)
 {
 	{	upgrade_lock l(mutex_);
 
-		update_manager_ = f;		
+		update_manager_ = f;	
+		erase_myself_ = em;
 		
 		details_ptr_.reset(new torrent_details(
 			name(l), filename_, 

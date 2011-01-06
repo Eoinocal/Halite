@@ -573,6 +573,14 @@ LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnFileOpenMagnet(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
+	
+
+	/*	WTL::CFolderDialog fldDlg (NULL, 0,
+			BIF_RETURNONLYFSDIRS|BIF_NEWDIALOGSTYLE);
+
+		if (IDOK == fldDlg.DoModal())
+			hal::remove_empty_directories(wpath(fldDlg.m_szFolderPath));
+			*/
 	ProcessFile(L"magnet:?xt=urn:btih:08152215a724dc2ff23fc4065330913bdc23515d&dn=MythBusters+S08E29+Operation+Valkyrie+HDTV+XviD-FQM+%5Beztv%5D&tr=http%3A%2F%2Ftracker.prq.to%2Fannounce");
 	
 	return 0;	

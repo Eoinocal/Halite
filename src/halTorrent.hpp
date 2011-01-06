@@ -17,6 +17,10 @@
 namespace hal 
 {
 	
+
+bool remove_empty_directories(const fs::wpath& p);
+
+
 struct create_torrent_params
 {
 	create_torrent_params() {}
@@ -42,7 +46,8 @@ typedef boost::function<void (std::wstring, progress_callback_callback)> progres
 
 typedef boost::function<void ()> action_callback_t;
 typedef boost::function<void (int)> report_num_active;
-typedef boost::function<void (wpath path, boost::shared_ptr<file_details_vec> files)> remove_files;
+
+typedef boost::function<void (wpath path, boost::shared_ptr<std::vector<std::wstring> > files)> remove_files;
 
 class bit_impl;
 class torrent_internal;

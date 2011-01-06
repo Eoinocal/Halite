@@ -383,6 +383,8 @@ public:
 	void add_to_session(bool paused = false);
 	
 	bool remove_from_session(bool write_data=true);
+	
+	void remove_files(function<void (wpath, boost::shared_ptr<std::vector<std::wstring> >)> fn);
 
 	void resume()
 	{		
@@ -404,11 +406,6 @@ public:
 		process_event(ev_start());
 	}
 	
-	void remove_files(function<void (void)> fn)
-	{		
-		process_event(ev_remove(fn));
-	}
-
 	void set_state_stopped()
 	{
 		upgrade_lock l(mutex_);
@@ -794,6 +791,7 @@ public:
 	}
 
 	void metadata_completed();
+	void storage_moved(const fs::wpath& p);
 
 	void set_resolve_countries(bool b)
 	{
@@ -885,11 +883,12 @@ private:
 	void get_file_details(upgrade_lock& l, file_details_vec& files_vec);
 
 	void update_manager(upgrade_lock& l);
-	void initialize_non_serialized(function<void (torrent_internal_ptr)>);
+	void initialize_non_serialized(function<void (torrent_internal_ptr)>, function<void (torrent_internal_ptr)>);
 	
 	wstring state_string(upgrade_lock& l) const;
 	void output_torrent_debug_details(upgrade_lock& l) const;
 	wstring check_error(upgrade_lock& l) const;
+	void erase_myself(upgrade_lock& l);
 	
 	void set_info_cache(boost::intrusive_ptr<libt::torrent_info> info, upgrade_lock& l)
 	{
@@ -905,8 +904,9 @@ private:
 
 	function<void ()> remove_callback_;
 	function<void (void)>& remove_callback(upgrade_lock& l) { return remove_callback_; }
-
+	
 	function<void (torrent_internal_ptr)> update_manager_;
+	function<void (torrent_internal_ptr)> erase_myself_;
 
 	mutable boost::shared_mutex mutex_;
 	mutable boost::mutex details_mutex_;

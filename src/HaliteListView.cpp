@@ -331,22 +331,17 @@ LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 	return 0;
 }
 
-void HaliteListViewCtrl::remove_to_bin(const hal::uuid& id, hal::fs::wpath root, boost::shared_ptr<hal::file_details_vec> files)
+void HaliteListViewCtrl::remove_to_bin(const hal::uuid& id, hal::fs::wpath active_directory, boost::shared_ptr<std::vector<std::wstring> > files)
 {
 	std::vector<wchar_t> file_names_buffer;
 
-	foreach(hal::file_details file, *files)
+	foreach(std::wstring file, *files)
 	{
-		std::wstring file_location = (hal::wform(L"File %1%\\%2%\\%3%") 
-			% root.file_string() % file.branch % file.filename).str();
-
-		wstring full_file = hal::fs::wpath(root / file.branch / file.filename).file_string();
-
-		if (hal::fs::exists(full_file))
+		if (hal::fs::exists(file))
 		{
-			HAL_DEV_MSG(hal::wform(L"File %1%") % full_file);
+			HAL_DEV_MSG(hal::wform(L"File %1%") % file);
 
-			std::copy(full_file.begin(), full_file.end(), 
+			std::copy(file.begin(), file.end(), 
 				std::back_inserter(file_names_buffer));
 			file_names_buffer.push_back(L'\0');
 		}
@@ -361,9 +356,13 @@ void HaliteListViewCtrl::remove_to_bin(const hal::uuid& id, hal::fs::wpath root,
 	shf.pTo = 0;
 	shf.fFlags = FOF_ALLOWUNDO;
 
-	HAL_DEV_MSG(L"Calling SHFileOperation");
+	HAL_DEV_MSG(L"Calling SHFileOperation to remove files");
 	SHFileOperation(&shf);
+	
+	HAL_DEV_MSG(hal::wform(L"Clearing empty directories at %1%") % active_directory.file_string());
+	hal::remove_empty_directories(active_directory);
 
+	hal::bittorrent::Instance().remove_torrent(id);
 	erase_from_list(id);
 }
 

@@ -22,9 +22,43 @@
 #include "halSession.hpp"
 #include "halConfig.hpp"
 
+#include <algorithm>
 
 namespace hal 
 {
+
+bool remove_empty_directories_recur(const fs::wpath& p, std::vector<fs::wpath>& dirs)
+{
+	bool ret = true;
+
+	for (fs::wdirectory_iterator i = fs::wdirectory_iterator(p), e = fs::wdirectory_iterator(); i != e; ++i)
+	{
+		if (!fs::is_directory(*i))
+			ret = false;
+		else
+		{
+			if (!remove_empty_directories(*i))
+				ret = false;
+		}
+	}	
+	if (ret)
+	{
+		HAL_DEV_MSG(wform(L"Removing directory: %1%") % p.string());
+		dirs.push_back(p);
+	}
+	return ret;
+}
+	
+bool remove_empty_directories(const fs::wpath& p)
+{
+	std::vector<fs::wpath> dirs;
+
+	bool ret = remove_empty_directories_recur(p, dirs);
+
+	std::for_each(dirs.begin(), dirs.end(), fs::remove<fs::wpath>);
+
+	return ret;
+}
 
 bool file_details::less(const file_details& r, size_t index) const
 {	
