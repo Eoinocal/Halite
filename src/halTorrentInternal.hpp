@@ -196,26 +196,6 @@ typedef shared_ptr<torrent_internal> torrent_internal_ptr;
 struct out_of_session;
 
 
-#define TORRENT_INTERNALS_DEFAULTS \
-		transfer_limit_(std::make_pair(-1.f, -1.f)), \
-		connections_(-1), \
-		uploads_(-1), \
-		ratio_(0), \
-		resolve_countries_(true), \
-		total_uploaded_(0), \
-		total_base_(0), \
-		progress_(0), \
-		managed_(false), \
-		start_time_(boost::posix_time::second_clock::universal_time()), \
-		in_session_(false), \
-		queue_position_(-1), \
-		hash_(0), \
-		superseeding_(false), \
-		files_(mutex_, \
-			bind(&torrent_internal::set_file_priority_cb, this, _1, _2, _3), \
-			bind(&torrent_internal::changed_file_filename_cb, this, _1, _2)) 
-		
-
 class torrent_internal :
 	public boost::enable_shared_from_this<torrent_internal>,
 	public sc::state_machine<torrent_internal, out_of_session>
@@ -237,54 +217,9 @@ class torrent_internal :
 	friend struct removing;
 
 private:
-	torrent_internal() :	
-#		pragma warning (push)
-#			pragma warning (disable : 4355)
-			TORRENT_INTERNALS_DEFAULTS,
-#		pragma warning (pop)
-		allocation_(bit::sparse_allocation)
-	{
-		upgrade_lock l(mutex_);
-
-		state(l, torrent_details::torrent_stopped);
-	}
-
-	torrent_internal(const wpath& filename, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"") :
-#		pragma warning (push)
-#			pragma warning (disable : 4355)
-			TORRENT_INTERNALS_DEFAULTS,
-#		pragma warning (pop)
-		uuid_(boost::uuids::random_generator()()),
-		save_directory_(save_directory.string()),
-		move_to_directory_(move_to_directory.string()),
-		allocation_(alloc)
-	{
-		upgrade_lock l(mutex_);
-
-		state(l, torrent_details::torrent_stopped);
-		assert(the_session_);
-
-		prepare(l, new libt::torrent_info(filename.string()));
-	}
-
-	torrent_internal(const wstring& uri, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"") :
-#		pragma warning (push)
-#			pragma warning (disable : 4355)
-			TORRENT_INTERNALS_DEFAULTS,
-#		pragma warning (pop)
-		uuid_(boost::uuids::random_generator()()),
-		save_directory_(save_directory.string()),
-		move_to_directory_(move_to_directory.string()),
-		allocation_(alloc),
-		magnet_uri_(to_utf8(uri))
-	{
-		upgrade_lock l(mutex_);
-
-		state(l, torrent_details::torrent_stopped);
-		assert(the_session_);
-
-		extract_hash(l);
-	}
+	torrent_internal();
+	torrent_internal(const wpath& filename, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"");
+	torrent_internal(const wstring& uri, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"");
 			
 public:
 	~torrent_internal()
@@ -514,7 +449,6 @@ public:
 		apply_file_priorities(l);
 	}
 
-	void set_file_finished(int index);
 	void get_file_details(file_details_vec& files);
 
 	file_details_vec get_file_details();
@@ -569,8 +503,7 @@ public:
 		}
 	}
 
-	bool is_finished() const;	
-	void finished();
+	bool is_finished() const;
 	
 	bool is_active() const;
 
@@ -789,9 +722,11 @@ public:
 			}	
 		}
 	}
-
-	void metadata_completed();
-	void storage_moved(const fs::wpath& p);
+	
+	void alert_finished();
+	void alert_file_completed(int index);
+	void alert_metadata_completed();
+	void alert_storage_moved(const fs::wpath& p);
 
 	void set_resolve_countries(bool b)
 	{
@@ -972,8 +907,6 @@ private:
 	mutable libt::torrent_status status_memory_;
 	file_details_vec file_details_memory_;
 };
-
-#undef TORRENT_INTERNALS_DEFAULTS
 
 } // namespace hal
 

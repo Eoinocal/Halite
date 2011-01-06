@@ -19,6 +19,80 @@ namespace hal
 	
 boost::optional<libt::session>* torrent_internal::the_session_ = 0;	
 
+// Constructors
+
+#define TORRENT_INTERNALS_DEFAULTS \
+	transfer_limit_(std::make_pair(-1.f, -1.f)), \
+	connections_(-1), \
+	uploads_(-1), \
+	ratio_(0), \
+	resolve_countries_(true), \
+	total_uploaded_(0), \
+	total_base_(0), \
+	progress_(0), \
+	managed_(false), \
+	start_time_(boost::posix_time::second_clock::universal_time()), \
+	in_session_(false), \
+	queue_position_(-1), \
+	hash_(0), \
+	superseeding_(false), \
+	files_(mutex_, \
+		bind(&torrent_internal::set_file_priority_cb, this, _1, _2, _3), \
+		bind(&torrent_internal::changed_file_filename_cb, this, _1, _2)) 
+		
+
+torrent_internal::torrent_internal() :	
+#	pragma warning (push)
+#	pragma warning (disable : 4355)
+		TORRENT_INTERNALS_DEFAULTS,
+#	pragma warning (pop)
+	allocation_(bit::sparse_allocation)
+{
+	upgrade_lock l(mutex_);
+
+	state(l, torrent_details::torrent_stopped);
+}
+
+torrent_internal::torrent_internal(const wpath& filename, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory) :
+#	pragma warning (push)
+#	pragma warning (disable : 4355)
+		TORRENT_INTERNALS_DEFAULTS,
+#	pragma warning (pop)
+	uuid_(boost::uuids::random_generator()()),
+	save_directory_(save_directory.string()),
+	move_to_directory_(move_to_directory.string()),
+	allocation_(alloc)
+{
+	upgrade_lock l(mutex_);
+
+	state(l, torrent_details::torrent_stopped);
+	assert(the_session_);
+
+	prepare(l, new libt::torrent_info(filename.string()));
+}
+
+torrent_internal::torrent_internal(const wstring& uri, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory) :
+#	pragma warning (push)
+#	pragma warning (disable : 4355)
+		TORRENT_INTERNALS_DEFAULTS,
+#	pragma warning (pop)
+	uuid_(boost::uuids::random_generator()()),
+	save_directory_(save_directory.string()),
+	move_to_directory_(move_to_directory.string()),
+	allocation_(alloc),
+	magnet_uri_(to_utf8(uri))
+{
+	upgrade_lock l(mutex_);
+
+	state(l, torrent_details::torrent_stopped);
+	assert(the_session_);
+
+	extract_hash(l);
+}
+		
+#undef TORRENT_INTERNALS_DEFAULTS
+
+
 void torrent_internal::set_the_session(boost::optional<libt::session>* s)
 {
 	the_session_ = s;
@@ -109,7 +183,7 @@ bool torrent_internal::is_finished(upgrade_lock& l) const
 		return false;
 }
 
-void torrent_internal::finished()
+void torrent_internal::alert_finished()
 {
 	upgrade_lock l(mutex_);
 
@@ -136,9 +210,26 @@ void torrent_internal::finished()
 	}
 }
 
-void torrent_internal::storage_moved(const fs::wpath& p)
+void torrent_internal::alert_storage_moved(const fs::wpath& p)
 {
+	HAL_DEV_MSG(hal::wform(L"alert_storage_moved = %1%") % p.file_string());
+}
 
+void torrent_internal::alert_metadata_completed()
+{
+	upgrade_lock l(mutex_);
+
+	prepare(l);
+
+	apply_settings(l);
+	update_manager(l);
+}
+
+void torrent_internal::alert_file_completed(int i)
+{
+	upgrade_lock l(mutex_);
+
+	files_.set_file_finished(i, l);
 }
 
 bool torrent_internal::is_active() const 
@@ -500,13 +591,6 @@ void torrent_internal::init_file_details(upgrade_lock& l)
 	}
 }
 
-void torrent_internal::set_file_finished(int i)
-{
-	upgrade_lock l(mutex_);
-
-	files_.set_file_finished(i, l);
-}
-
 void torrent_internal::prepare(upgrade_lock& l, boost::intrusive_ptr<libt::torrent_info> info)
 {
 	if (info)
@@ -530,16 +614,6 @@ void torrent_internal::prepare(upgrade_lock& l, boost::intrusive_ptr<libt::torre
 		else if (state_ == torrent_details::torrent_pausing)
 			state(l, torrent_details::torrent_paused);
 	}
-}
-
-void torrent_internal::metadata_completed()
-{
-	upgrade_lock l(mutex_);
-
-	prepare(l);
-
-	apply_settings(l);
-	update_manager(l);
 }
 
 void torrent_internal::update_manager(upgrade_lock& l)

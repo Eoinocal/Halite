@@ -589,7 +589,6 @@
     <ClInclude Include="..\..\src\HaliteSortListViewCtrl.hpp" />
     <ClInclude Include="..\..\src\HaliteTabCtrl.hpp" />
     <ClInclude Include="..\..\src\HaliteTabPage.hpp" />
-    <ClInclude Include="..\..\src\HaliteUpdateLock.hpp" />
     <ClInclude Include="..\..\src\HaliteWindow.hpp" />
     <ClInclude Include="..\..\src\NewTorrentDialog.hpp" />
     <ClInclude Include="..\..\src\NewTorrentPeers.hpp" />

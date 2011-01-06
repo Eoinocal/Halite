@@ -615,7 +615,7 @@ void bit_impl::alert_handler()
 					% get(a.handle)->name()), 
 				event_logger::info, a.timestamp())));
 		
-		get(a.handle)->finished();
+		get(a.handle)->alert_finished();
 
 		bit_impl_.signals.torrent_completed(get(a.handle)->name());
 	}
@@ -627,7 +627,7 @@ void bit_impl::alert_handler()
 					% get(a.handle)->name()), 
 				event_logger::info, a.timestamp())));
 		
-		get(a.handle)->storage_moved(from_utf8(a.path));
+		get(a.handle)->alert_storage_moved(from_utf8(a.path));
 	}
 
 	void operator()(libt::storage_moved_failed_alert  const& a) const
@@ -666,7 +666,7 @@ void bit_impl::alert_handler()
 					% a.index), 
 				event_logger::info, a.timestamp())));
 		
-		get(a.handle)->set_file_finished(a.index);	
+		get(a.handle)->alert_file_completed(a.index);	
 	}
 
 	void operator()(libt::metadata_received_alert const& a) const
@@ -676,7 +676,7 @@ void bit_impl::alert_handler()
 					% get(a.handle)->name()), 
 				event_logger::info, a.timestamp())));
 		
-		get(a.handle)->metadata_completed();	
+		get(a.handle)->alert_metadata_completed();	
 	}
 
 	void operator()(libt::metadata_failed_alert const& a) const
@@ -974,7 +974,9 @@ void bit_impl::alert_handler()
 			libt::block_downloading_alert,
 			libt::listen_failed_alert,
 			libt::listen_succeeded_alert,
-			libt::peer_blocked_alert
+			libt::peer_blocked_alert,
+			libt::storage_moved_alert,
+			libt::storage_moved_failed_alert
 		>::handle_alert(p_alert, handler);			
 		
 		}
