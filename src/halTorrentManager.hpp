@@ -185,8 +185,7 @@ public:
 				try 
 				{
 										
-				(*i).torrent->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1),
-					bind(&torrent_manager::erase_torrent, this, _1));
+				(*i).torrent->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1));
 				(*i).torrent->start();	
 				
 				++i;
@@ -235,8 +234,7 @@ public:
 		if (!p.second) // Torrent already present
 			t.reset();
 		else
-			t->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1),
-				bind(&torrent_manager::erase_torrent, this, _1));
+			t->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1));
 
 		return t;
 	}
@@ -251,8 +249,7 @@ public:
 		if (!p.second) // Torrent already present
 			t.reset();
 		else
-			t->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1),
-				bind(&torrent_manager::erase_torrent, this, _1));
+			t->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1));
 
 		return t;
 	}

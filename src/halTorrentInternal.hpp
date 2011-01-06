@@ -883,12 +883,11 @@ private:
 	void get_file_details(upgrade_lock& l, file_details_vec& files_vec);
 
 	void update_manager(upgrade_lock& l);
-	void initialize_non_serialized(function<void (torrent_internal_ptr)>, function<void (torrent_internal_ptr)>);
+	void initialize_non_serialized(function<void (torrent_internal_ptr)>);
 	
 	wstring state_string(upgrade_lock& l) const;
 	void output_torrent_debug_details(upgrade_lock& l) const;
 	wstring check_error(upgrade_lock& l) const;
-	void erase_myself(upgrade_lock& l);
 	
 	void set_info_cache(boost::intrusive_ptr<libt::torrent_info> info, upgrade_lock& l)
 	{
@@ -906,7 +905,6 @@ private:
 	function<void (void)>& remove_callback(upgrade_lock& l) { return remove_callback_; }
 	
 	function<void (torrent_internal_ptr)> update_manager_;
-	function<void (torrent_internal_ptr)> erase_myself_;
 
 	mutable boost::shared_mutex mutex_;
 	mutable boost::mutex details_mutex_;

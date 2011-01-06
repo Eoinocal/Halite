@@ -552,16 +552,6 @@ void torrent_internal::update_manager(upgrade_lock& l)
 	}
 }
 
-void torrent_internal::erase_myself(upgrade_lock& l)
-{
-	if (erase_myself_)
-	{
-		l.unlock();
-
-		erase_myself_(shared_from_this());
-	}
-}
-
 void torrent_internal::extract_names(upgrade_lock& l)
 {
 	if (info_memory(l))
@@ -995,12 +985,11 @@ void torrent_internal::state(upgrade_lock& l, unsigned s)
 	}
 }
 
-void torrent_internal::initialize_non_serialized(function<void (torrent_internal_ptr)> f, function<void (torrent_internal_ptr)>em)
+void torrent_internal::initialize_non_serialized(function<void (torrent_internal_ptr)> f)
 {
 	{	upgrade_lock l(mutex_);
 
 		update_manager_ = f;	
-		erase_myself_ = em;
 		
 		details_ptr_.reset(new torrent_details(
 			name(l), filename_, 
