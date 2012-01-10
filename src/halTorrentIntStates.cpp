@@ -39,8 +39,9 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 
 	std::string resume_file = to_utf8((hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string());
 
+	boost::system::error_code ec;
 	std::vector<char> buf;
-	if (libt::load_file(resume_file.c_str(), buf) == 0)
+	if (libt::load_file(resume_file.c_str(), buf, ec) == 0)
 	{
 		HAL_DEV_MSG(L"Using resume data");
 		p.resume_data = &buf;

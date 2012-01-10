@@ -14,8 +14,6 @@
 #include "string_conv.hpp"
 #include "ini.hpp"
 
-#define foreach BOOST_FOREACH
-
 namespace hal 
 {
 
@@ -48,7 +46,7 @@ public:
 	
 	void load_data()
 	{
-		if (!xml_.load_file(working_file_.string()))
+		if (!boost::filesystem::exists(working_file_) || !xml_.load_file(working_file_.string()))
 		{
 			generate_default_file();
 		}
@@ -136,7 +134,7 @@ private:
 			xml_.link_end_child(data_node);
 		}
 		
-		foreach (std::string elem, location)
+		BOOST_FOREACH (std::string elem, location)
 		{
 			xml::node* child_node = data_node->first_child(elem);
 			

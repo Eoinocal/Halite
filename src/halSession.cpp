@@ -96,9 +96,10 @@ bit_impl::bit_impl() :
 	{
 		try
 		{
-			std::vector<char> in;
+			std::vector<char> in;			
+			boost::system::error_code ec;
 
-			if (libt::load_file(to_utf8((hal::app().get_working_directory()/L"DHTState.bin").string()), in) == 0)
+			if (libt::load_file(to_utf8((hal::app().get_working_directory()/L"DHTState.bin").string()), in, ec) == 0)
 				libt::lazy_bdecode(&in[0], &in[0] + in.size(), dht_state_);
 		}		
 		catch(const std::exception& e)

@@ -44,7 +44,6 @@ namespace hal
 	typedef boost::int64_t size_type;
 }
 
-#define foreach BOOST_FOREACH
 
 #include "global/wtl_app.hpp"
 #include "global/string_conv.hpp"

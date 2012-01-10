@@ -70,7 +70,7 @@ void FileListView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 
 	std::vector<int> indices;
 	
-	foreach(const list_value_type val, std::make_pair(is_selected_begin(), is_selected_end()))
+	BOOST_FOREACH (const list_value_type val, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
 		HAL_DEV_MSG(hal::wform(L"OnMenuPriority() = %1%, %2%, %3%") 
 				% std::wstring(winstl::c_str_ptr(val)) % val.index() % files_[val.index()].order());
@@ -456,7 +456,7 @@ void AdvFilesDialog::uiUpdate(const hal::torrent_details_manager& tD)
 			list_.SetItemCountEx(numeric_cast<int>(list_files->size()),LVSICF_NOSCROLL);
 		}
 
-		foreach (hal::file_details& file, *list_files)
+		BOOST_FOREACH (hal::file_details& file, *list_files)
 		{
 			file = all_files[file.order()];
 		}
@@ -509,7 +509,7 @@ void AdvFilesDialog::focusChanged(const hal::torrent_details_ptr pT)
 	
 		treeManager_.InvalidateAll();
 		
-		foreach (FileLink file, fileLinks_)
+		BOOST_FOREACH (FileLink file, fileLinks_)
 		{
 			treeManager_.EnsureValid(file.branch);
 		}

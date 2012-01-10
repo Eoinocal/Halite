@@ -47,7 +47,6 @@ xml::node* txml_ini_adapter::get_load_data_node()
 		++i;
 	}
 
-
 	return data_node;
 }
 

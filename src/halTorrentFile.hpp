@@ -204,7 +204,7 @@ public:
 	{
 		if (!files_.empty())
 		{
-			foreach(int i, file_indices)
+			BOOST_FOREACH (int i, file_indices)
 			{
 				torrent_file_by_random::iterator file_i = files_.get<by_random>().begin() + i; 
 

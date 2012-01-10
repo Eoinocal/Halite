@@ -321,7 +321,7 @@ void HaliteWindow::issueUiUpdate()
 	{
 	std::set<hal::uuid> s;
 
-	foreach(const HaliteListViewCtrl::list_value_type val, std::make_pair(haliteList.is_selected_begin(), haliteList.is_selected_end()))
+	BOOST_FOREACH (const HaliteListViewCtrl::list_value_type val, std::make_pair(haliteList.is_selected_begin(), haliteList.is_selected_end()))
 	{
 		s.insert(val.hash());
 	}

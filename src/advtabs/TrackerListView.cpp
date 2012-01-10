@@ -66,7 +66,7 @@ void TrackerListViewCtrl::uiUpdate(const hal::torrent_details_ptr pT)
 			std::vector<hal::tracker_detail> trackers = t.trackers;				
 			DeleteAllItems();
 			
-			foreach (const hal::tracker_detail& tracker, trackers)
+			BOOST_FOREACH (const hal::tracker_detail& tracker, trackers)
 			{
 				int itemPos = AddItem(0, 0, tracker.url.c_str(), 0);
 				SetItemText(itemPos, 1, lexical_cast<wstring>(tracker.tier).c_str());

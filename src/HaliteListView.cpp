@@ -223,7 +223,7 @@ void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 	selection_from_listview();
 		
 	std::set<hal::uuid> torrent_set;
-	foreach (hal::torrent_details_ptr t,  tD.torrents())
+	BOOST_FOREACH (hal::torrent_details_ptr t,  tD.torrents())
 	{
 		torrent_set.insert(t->uuid());
 	}
@@ -268,7 +268,7 @@ LRESULT HaliteListViewCtrl::OnSortChanged(int, LPNMHDR pnmh, BOOL&)
 
 LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
 		hal::bittorrent::Instance().resume_torrent(val.hash());
 	}
@@ -278,7 +278,7 @@ LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 
 LRESULT HaliteListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {	
-	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
 		hal::bittorrent::Instance().pause_torrent(val.hash());
 	}
@@ -288,7 +288,7 @@ LRESULT HaliteListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BO
 
 LRESULT HaliteListViewCtrl::OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
 		hal::bittorrent::Instance().stop_torrent(val.hash());
 	}
@@ -308,12 +308,12 @@ LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 {
 	std::set<hal::uuid> torrent_ids;
 
-	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
 		torrent_ids.insert(val.hash());
 	
 	erase_based_on_set(torrent_ids, false);
 
-	foreach(const hal::uuid& id, torrent_ids)
+	BOOST_FOREACH(const hal::uuid& id, torrent_ids)
 		hal::bittorrent::Instance().remove_torrent(id);
 
 	return 0;
@@ -321,7 +321,7 @@ LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 
 LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	foreach(const list_value_type& v, std::make_pair(is_selected_begin(), is_selected_end()))
+	BOOST_FOREACH(const list_value_type& v, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
 		//HAL_DEV_MSG(hal::wform(L"UUid: %1%") % v.text(hal::torrent_details::uuid_e-hal::torrent_details::name_e));
 
@@ -335,7 +335,7 @@ void HaliteListViewCtrl::remove_to_bin(const hal::uuid& id, hal::fs::wpath activ
 {
 	std::vector<wchar_t> file_names_buffer;
 
-	foreach(std::wstring file, *files)
+	BOOST_FOREACH(std::wstring file, *files)
 	{
 		if (hal::fs::exists(file))
 		{
@@ -370,10 +370,10 @@ LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND h
 {
 	std::set<hal::uuid> torrent_names;
 
-	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
 		torrent_names.insert(val.hash());
 
-	foreach(const hal::uuid& id, torrent_names)
+	BOOST_FOREACH(const hal::uuid& id, torrent_names)
 		hal::bittorrent::Instance().remove_torrent_wipe_files(id, boost::bind(&HaliteListViewCtrl::remove_to_bin, this, id, _1, _2));
 
 	return 0;
@@ -388,7 +388,7 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 
 	std::set<wpath> unique_paths;
 
-	foreach(const list_value_type& v, std::make_pair(is_selected_begin(), is_selected_end()))
+	BOOST_FOREACH(const list_value_type& v, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
 		hal::bit::torrent t = hal::bittorrent::Instance().get(v.hash());
 
@@ -469,10 +469,10 @@ LRESULT HaliteListViewCtrl::OnToggleSuperseeding(WORD wNotifyCode, WORD wID, HWN
 
 	std::set<hal::uuid> torrent_names;
 
-	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
 		torrent_names.insert(val.hash());
 
-	foreach(const hal::uuid& id, torrent_names)
+	BOOST_FOREACH(const hal::uuid& id, torrent_names)
 		if (hal::bit::torrent t = hal::bittorrent::Instance().get(id))
 		{
 			t.superseeding = !t.superseeding;
@@ -497,12 +497,12 @@ LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCt
 */
 	std::set<hal::uuid> torrent_names;
 
-	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
 		torrent_names.insert(val.hash());
 	
 //	erase_based_on_set(torrent_names, false);
 
-	foreach(const hal::uuid& id, torrent_names)
+	BOOST_FOREACH(const hal::uuid& id, torrent_names)
 		hal::bittorrent::Instance().get(id).managed = true;
 //	}
 
@@ -525,12 +525,12 @@ LRESULT HaliteListViewCtrl::OnSetUnmanaged(WORD wNotifyCode, WORD wID, HWND hWnd
 */
 	std::set<hal::uuid> torrent_names;
 
-	foreach(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
 		torrent_names.insert(val.hash());
 	
 //	erase_based_on_set(torrent_names, false);
 
-	foreach(const hal::uuid& id, torrent_names)
+	BOOST_FOREACH(const hal::uuid& id, torrent_names)
 		hal::bittorrent::Instance().get(id).managed = false;
 //	}
 
@@ -547,7 +547,7 @@ LRESULT HaliteListViewCtrl::OnAdjustQueuePosition(WORD wNotifyCode, WORD wID, HW
 	try
 	{
 
-	foreach(const list_value_type v, std::make_pair(is_selected_begin(), is_selected_end()))
+	BOOST_FOREACH (const list_value_type v, std::make_pair(is_selected_begin(), is_selected_end()))
 	{
 		hal::bit::torrent t = hal::bittorrent::Instance().get(v.hash());
 

@@ -578,7 +578,7 @@ protected:
 	template<typename T>
 	void set_keys(T s)
 	{
-		foreach (const DataType& key, s)
+		BOOST_FOREACH (const DataType& key, s)
 		{
 			set_key(key);
 		}
@@ -629,7 +629,7 @@ protected:
 
 	void selection_from_listview()
 	{
-		foreach(const list_value_type val, std::make_pair(const_begin(), const_end()))
+		BOOST_FOREACH(const list_value_type val, std::make_pair(const_begin(), const_end()))
 		{
 			const list_pair_t& i_pos = pair_container_.get<0>()[val.index()];
 

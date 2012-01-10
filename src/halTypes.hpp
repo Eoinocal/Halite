@@ -83,5 +83,3 @@ namespace hal
 		return wpath(from_utf8(p.string()));
 	}
 }
-
-#define foreach BOOST_FOREACH

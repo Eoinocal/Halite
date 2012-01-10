@@ -167,7 +167,7 @@ void FilesSheet::UpdateFileList()
 {
 	filesList_.DeleteAllItems();
 
-	foreach(wpath& file, files_)
+	BOOST_FOREACH (wpath& file, files_)
 	{
 		int itemPos = filesList_.AddItem(0, 0, file.filename().c_str(), 0);
 

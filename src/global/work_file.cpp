@@ -13,8 +13,6 @@
 #include "string_conv.hpp"
 #include "work_file.hpp"
 
-#define foreach BOOST_FOREACH
-
 namespace hal 
 {
 

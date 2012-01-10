@@ -100,7 +100,7 @@ void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 		
 		peer_details_.clear();
 		
-		foreach (const hal::uuid& id, tD.selected_uuids())
+		BOOST_FOREACH (const hal::uuid& id, tD.selected_uuids())
 		{
 			const hal::torrent_details_ptr t = tD.get(id);
 			if (t)
@@ -111,7 +111,7 @@ void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 		}
 		
 		std::set<std::wstring> ip_set;
-		foreach (const hal::peer_detail& pd,  peer_details_)
+		BOOST_FOREACH (const hal::peer_detail& pd,  peer_details_)
 			ip_set.insert(pd.ip_address);
 		
 		erase_based_on_set(ip_set, true);

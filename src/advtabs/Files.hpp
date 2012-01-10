@@ -287,7 +287,7 @@ public:
 			WTL::CTreeItem ti = tree_.GetRootItem();
 			
 			wpath branch;
-			foreach (wstring b, branchPath)
+			BOOST_FOREACH (wstring b, branchPath)
 			{
 				branch /= b;				
 				MapType::iterator j = map_.find(branch);

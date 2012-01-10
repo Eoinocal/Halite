@@ -7,9 +7,7 @@
 
 namespace hal { namespace xml
 {
-	
-#define foreach BOOST_FOREACH
-	
+		
 class txml_iarchive : 
 	public crtp_iarchive<txml_iarchive>
 {
@@ -43,23 +41,26 @@ public:
 	{
 		T type = T();
 
-		TXML_LOG(boost::wformat(L" << attribute_name: %1%\n") % from_utf8(attribute_name));
-
-		xml::element* e = current_node_->to_element();
-		if (!e) return type;
-
-		int result = e->query_value_attribute(attribute_name, &type);
-
-		if (result == xml::TIXML_NO_ATTRIBUTE && fallback_name != 0)
+		if (current_node_)
 		{
-			TXML_LOG(boost::wformat(L" << -- fallback_name: %1%") % from_utf8(fallback_name));
+			TXML_LOG(boost::wformat(L" << attribute_name: %1%\n") % from_utf8(attribute_name));
 
-			result = e->query_value_attribute(fallback_name, &type);
+			xml::element* e = current_node_->to_element();
+			if (!e) return type;
+
+			int result = e->query_value_attribute(attribute_name, &type);
+
+			if (result == xml::TIXML_NO_ATTRIBUTE && fallback_name != 0)
+			{
+				TXML_LOG(boost::wformat(L" << -- fallback_name: %1%") % from_utf8(fallback_name));
+
+				result = e->query_value_attribute(fallback_name, &type);
+			}
+
+			assert(result == xml::TIXML_SUCCESS);
+
+			TXML_LOG(boost::wformat(L" << -- value: %1%\n") % type);
 		}
-
-		assert(result == xml::TIXML_SUCCESS);
-
-		TXML_LOG(boost::wformat(L" << -- value: %1%\n") % type);
 		
 		return type;
 	}	
@@ -69,23 +70,26 @@ public:
 	{
 		std::string type;
 
-		TXML_LOG(boost::wformat(L" << attribute_name: %1%\n") % from_utf8(attribute_name));
-
-		xml::element* e = current_node_->to_element();
-		if (!e) return type;
-
-		int result = e->query_value_attribute(attribute_name, &type);
-
-		if (result == xml::TIXML_NO_ATTRIBUTE && fallback_name != 0)
+		if (current_node_)
 		{
-			TXML_LOG(boost::wformat(L" << -- fallback_name: %1%") % from_utf8(fallback_name));
+			TXML_LOG(boost::wformat(L" << attribute_name: %1%\n") % from_utf8(attribute_name));
 
-			result = e->query_value_attribute(fallback_name, &type);
+			xml::element* e = current_node_->to_element();
+			if (!e) return type;
+
+			int result = e->query_value_attribute(attribute_name, &type);
+
+			if (result == xml::TIXML_NO_ATTRIBUTE && fallback_name != 0)
+			{
+				TXML_LOG(boost::wformat(L" << -- fallback_name: %1%") % from_utf8(fallback_name));
+
+				result = e->query_value_attribute(fallback_name, &type);
+			}
+
+			assert(result == xml::TIXML_SUCCESS);
+
+			TXML_LOG(boost::wformat(L" << -- string value: %1%\n") % from_utf8(type));
 		}
-
-		assert(result == xml::TIXML_SUCCESS);
-
-		TXML_LOG(boost::wformat(L" << -- string value: %1%\n") % from_utf8(type));
 	
 		return type;
 	}
@@ -114,7 +118,7 @@ public:
 			}
 			else
 			{
-				foreach(std::string elem, location)
+				BOOST_FOREACH(std::string elem, location)
 				{
 					TXML_LOG(boost::wformat(L" >> >> %1%") % from_utf8(elem));
 

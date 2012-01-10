@@ -582,7 +582,7 @@ public:
 		{
 			std::vector<libt::announce_entry> trackers = info_memory(l)->trackers();
 			
-			foreach (const libt::announce_entry& entry, trackers)
+			BOOST_FOREACH (const libt::announce_entry& entry, trackers)
 			{
 				upgrade_to_unique_lock up_l(l);	
 
@@ -716,7 +716,7 @@ public:
 
 		if (in_session(l))
 		{
-			foreach (libt::peer_info peer, peers_) 
+			BOOST_FOREACH (libt::peer_info peer, peers_) 
 			{
 				peer_details.insert(peer);
 			}	

@@ -810,7 +810,7 @@ boost::tuple<size_t, size_t, size_t, size_t> torrent_internal::update_peers(upgr
 	size_t totalSeeds = 0;
 	size_t seedsConnected = 0;
 	
-	foreach (libt::peer_info& peer, peers_) 
+	BOOST_FOREACH (libt::peer_info& peer, peers_) 
 	{
 		float speedSum = boost::numeric_cast<float>(peer.down_speed + peer.up_speed);
 		
@@ -914,7 +914,7 @@ void torrent_internal::apply_trackers(upgrade_lock& l)
 		{
 			std::vector<libt::announce_entry> trackers;
 			
-			foreach (const tracker_detail& tracker, trackers_)
+			BOOST_FOREACH (const tracker_detail& tracker, trackers_)
 			{
 				trackers.push_back(
 					libt::announce_entry(hal::to_utf8(tracker.url)));

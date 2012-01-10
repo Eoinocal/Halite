@@ -12,9 +12,7 @@
 
 namespace hal { namespace xml
 {
-	
-#define foreach BOOST_FOREACH
-	
+		
 class txml_oarchive : 
 	public crtp_oarchive<txml_oarchive>
 {
@@ -72,7 +70,7 @@ public:
 		std::string leaf = branch.filename();
 		branch = branch.parent_path();
 
-		foreach(std::string elem, branch)
+		BOOST_FOREACH(std::string elem, branch)
 		{
 			TXML_LOG(boost::wformat(L" >> >> %1%") % from_utf8(elem));
 

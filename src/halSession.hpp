@@ -39,8 +39,8 @@ void write_range(fs::ofstream& ofs, const libt::ip_range<Addr>& range)
 { 
 	const typename Addr::bytes_type first = range.first.to_bytes();
 	const typename Addr::bytes_type last = range.last.to_bytes();
-	ofs.write((char*)first.elems, first.size());
-	ofs.write((char*)last.elems, last.size());
+	ofs.write((char*)first.data(), first.size());
+	ofs.write((char*)last.data(), last.size());
 }
 
 template<typename Addr>
@@ -60,8 +60,8 @@ void read_range_to_filter(fs::ifstream& ifs, libt::ip_filter& ip_filter)
 { 
 	typename Addr::bytes_type first;
 	typename Addr::bytes_type last;
-	ifs.read((char*)first.elems, first.size());
-	ifs.read((char*)last.elems, last.size());	
+	ifs.read((char*)first.data(), first.size());
+	ifs.read((char*)last.data(), last.size());	
 	
 	ip_filter.add_rule(Addr(first), Addr(last),
 		libt::ip_filter::blocked);
