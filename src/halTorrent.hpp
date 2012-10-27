@@ -193,8 +193,8 @@ public:
 
 		const uuid get_uuid() const;
 
-		float get_ratio() const;
-		void set_ratio(float new_ratio);
+//		float get_ratio() const;
+//		void set_ratio(float new_ratio);
 		
 		std::pair<int, int> get_connection_limits() const;
 		void set_connection_limits(const std::pair<int, int>&);
@@ -230,8 +230,8 @@ public:
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(const wstring, const wstring&, class_type, 
 			get_name, set_name, name);
 
-		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(float, float, class_type, 
-			get_ratio, set_ratio, ratio);
+//		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(float, float, class_type, 
+//			get_ratio, set_ratio, ratio);
 
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(int_pair, const int_pair&, class_type, 
 			get_connection_limits, set_connection_limits, connection_limits);

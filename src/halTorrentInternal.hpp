@@ -284,28 +284,6 @@ public:
 	}
 
 	const uuid& id() const;
-	
-	void set_ratio(float ratio) 
-	{ 
-		upgrade_lock l(mutex_);
-
-		if (ratio < 0)
-			ratio = 0;
-
-		{	upgrade_to_unique_lock up_l(l);
-			
-			ratio_ = ratio; 
-		}
-		
-		apply_ratio(l);
-	}
-	
-	float get_ratio() const
-	{
-		upgrade_lock l(mutex_);
-
-		return ratio_;
-	}
 
 	void set_managed(bool m);
 	bool is_managed() const;
@@ -628,7 +606,6 @@ public:
 			ar & make_nvp("name", name_);
 			ar & make_nvp("filename", filename_);	
 
-			ar & make_nvp("ratio", ratio_);	
 			ar & make_nvp("progress", progress_);
 			ar & make_nvp("state", state_);
 	//			ar & make_nvp("compact_storage", compact_storage_);	
@@ -680,8 +657,7 @@ public:
 			ar & make_nvp("payload_uploaded_", payload_uploaded_);
 			ar & make_nvp("payload_downloaded_", payload_downloaded_);
 			ar & make_nvp("uploaded_", uploaded_);
-			ar & make_nvp("downloaded_", downloaded_);	
-			ar & make_nvp("ratio", ratio_);	
+			ar & make_nvp("downloaded_", downloaded_);
 			ar & make_nvp("trackerUsername", tracker_username_);
 			ar & make_nvp("trackerPassword", tracker_password_);
 			
@@ -782,7 +758,6 @@ private:
 	void apply_settings(upgrade_lock& l);	
 	void apply_transfer_speed(upgrade_lock& l);
 	void apply_connection_limit(upgrade_lock& l);	
-	void apply_ratio(upgrade_lock& l);	
 	void apply_trackers(upgrade_lock& l);	
 	void apply_tracker_login(upgrade_lock& l);	
 	void apply_file_priorities(upgrade_lock& l);	
@@ -859,7 +834,6 @@ private:
 	int connections_;
 	int uploads_;
 	bool in_session_;
-	float ratio_;
 	bool resolve_countries_;
 
 	boost::optional<std::wstring> external_interface_;

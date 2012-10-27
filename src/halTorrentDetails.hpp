@@ -146,7 +146,6 @@ public:
 			size_type tD=0, size_type tpD=0, 
 			const boost::tuple<size_type, size_type, size_type, size_type>& connections = 
 				boost::tuple<size_type, size_type, size_type, size_type>(0,0,0,0), 
-			float r=0, 
 			const pt::time_duration& eta=pt::seconds(0), 
 			const pt::time_duration& uIn=pt::seconds(0),
 			const pt::time_duration& actve=pt::seconds(0), 
@@ -175,7 +174,6 @@ public:
 		connected_peers_(connections.get<1>()),
 		seeds_(connections.get<2>()),
 		connected_seeds_(connections.get<3>()),
-		ratio_(r),
 		estimated_time_left_(eta),
 		update_tracker_in_(uIn),
 		peer_details_filled_(false),
@@ -258,8 +256,6 @@ public:
 	size_type seeds() const { return seeds_; }
 	size_type seeds_connected() const { return connected_seeds_; }
 	
-	float ratio() { return ratio_; }
-	
 	const pt::time_duration& estimated_time_left() { return estimated_time_left_; }
 	const pt::time_duration& update_tracker_in() { return update_tracker_in_; }
 	
@@ -301,8 +297,6 @@ public:
 	size_type connected_peers_;
 	size_type seeds_;
 	size_type connected_seeds_;
-	
-	float ratio_;
 	
 	pt::time_duration estimated_time_left_;
 	pt::time_duration update_tracker_in_;

@@ -226,6 +226,7 @@
 "Port" --->  ??? 
 "Ports" --->  ??? 
 "Prefer RC4" --->  ??? 
+"Preparing" --->  ??? 
 "Priority" ---> "優先度"
 "Private" --->  ??? 
 "Progress" ---> "完了度"
@@ -317,6 +318,7 @@
 "Timeout (seconds) : " --->  ??? 
 "Toggle Superseeding" --->  ??? 
 "Toolbar2k.bmp" --->  ??? 
+"Torrent %1% added." --->  ??? 
 "Torrent %1% completed." --->  ??? 
 "Torrent %1% file %2% completed." --->  ??? 
 "Torrent %1% file %2% renamed failed." --->  ??? 

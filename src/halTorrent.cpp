@@ -914,27 +914,6 @@ const uuid bit::torrent::get_uuid() const
 	return hal::uuid();
 }
 
-
-float bit::torrent::get_ratio() const
-{
-	try {
-	
-	return ptr->get_ratio();
-	
-	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_ratio")
-	
-	return 0;
-}
-
-void bit::torrent::set_ratio(float r)
-{
-	try {
-
-	ptr->set_ratio(r);
-	
-	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_ratio")
-}
-
 bit::torrent::files_proxy bit::torrent::files()
 {
 	return bit::torrent::files_proxy(*this);

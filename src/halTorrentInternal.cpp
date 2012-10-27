@@ -25,7 +25,6 @@ boost::optional<libt::session>* torrent_internal::the_session_ = 0;
 	transfer_limit_(std::make_pair(-1.f, -1.f)), \
 	connections_(-1), \
 	uploads_(-1), \
-	ratio_(0), \
 	resolve_countries_(true), \
 	total_uploaded_(0), \
 	total_base_(0), \
@@ -484,7 +483,6 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 			uploaded_, payload_uploaded_,
 			downloaded_, payload_downloaded_, 
 			connections, 
-			ratio_, 
 			td, 
 			status_cache(l).next_announce, 
 			active_duration_, seeding_duration_, 
@@ -845,7 +843,6 @@ void torrent_internal::apply_settings(upgrade_lock& l)
 {		
 	apply_transfer_speed(l);
 	apply_connection_limit(l);
-	apply_ratio(l);
 	apply_trackers(l);
 	apply_tracker_login(l);
 	apply_file_priorities(l);
@@ -896,16 +893,6 @@ void torrent_internal::apply_connection_limit(upgrade_lock& l)
 		handle_.set_max_uploads(uploads_);
 
 		HAL_DEV_MSG(hal::wform(L"Applying Connection Limit %1% - %2%") % connections_ % uploads_);
-	}
-}
-
-void torrent_internal::apply_ratio(upgrade_lock& l)
-{ 
-	if (in_session(l))
-	{
-		handle_.set_ratio(ratio_);
-
-		HAL_DEV_MSG(hal::wform(L"Applying Ratio %1%") % ratio_);
 	}
 }
 
