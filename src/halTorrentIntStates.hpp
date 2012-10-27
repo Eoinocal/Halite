@@ -29,7 +29,8 @@ struct out_of_session : sc::state<out_of_session, torrent_internal, mpl::list< n
 	typedef mpl::list<
 		sc::custom_reaction< ev_add_to_session >,
 		sc::custom_reaction< ev_resume >,
-		sc::custom_reaction< ev_remove >
+		sc::custom_reaction< ev_remove >,
+		sc::custom_reaction< ev_added_alert >
 	> reactions;
 
 	out_of_session(base_type::my_context ctx);
@@ -38,6 +39,7 @@ struct out_of_session : sc::state<out_of_session, torrent_internal, mpl::list< n
 	sc::result react(const ev_add_to_session& evt);
 	sc::result react(const ev_resume& evt);
 	sc::result react(const ev_remove& evt);
+	sc::result react(const ev_added_alert& evt);
 };
 
 struct active;

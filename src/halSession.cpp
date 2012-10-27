@@ -555,15 +555,15 @@ void bit_impl::alert_handler()
 
 	void operator()(libt::add_torrent_alert const& a) const
 	{
-	/*	event_log().post(shared_ptr<EventDetail>(
-			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
-				hal::wform(hal::app().res_wstr(HAL_EXTERNAL_IP_ALERT))
-					% hal::from_utf8_safe(a.message())
-					% hal::from_utf8_safe(a.external_address.to_string()))
-		)	);		
+		event_log().post(shared_ptr<EventDetail>(
+			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_ADDED)) 
+					% get(a.handle)->name()), 
+				event_logger::debug, a.timestamp())));
+			
+		HAL_DEV_MSG(hal::wform(L"Torrent Added alert, %1%.") % get(a.handle)->name());
 
-		if (!bit_impl_.use_custom_interface_ || !bit_impl_.external_interface_) 
-			bit_impl_.external_interface_.reset(hal::from_utf8_safe(a.external_address.to_string()));*/
+		get(a.handle)->set_handle(a.handle);
+		get(a.handle)->process_event(ev_added_alert((a.params.flags & libt::add_torrent_params::flag_paused) != 0, a.error));
 	}
 
 	void operator()(libt::external_ip_alert const& a) const
@@ -959,6 +959,7 @@ void bit_impl::alert_handler()
 		//unique_lock_t l(mutex_);
 		
 		libt::handle_alert<
+			libt::add_torrent_alert,
 			libt::save_resume_data_alert,
 			libt::save_resume_data_failed_alert,
 			libt::metadata_failed_alert,

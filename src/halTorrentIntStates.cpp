@@ -34,41 +34,8 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 	torrent_internal& t_i = context<torrent_internal>();
 	upgrade_lock l(t_i.mutex_);
 
-	libt::add_torrent_params p;
-	p.ti = t_i.info_memory(l);
-
-	std::string resume_file = (hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string();
-
-	boost::system::error_code ec;
-	std::vector<char> buf;
-	if (libt::load_file(resume_file.c_str(), buf, ec) == 0)
-	{
-		HAL_DEV_MSG(L"Using resume data");
-		p.resume_data = &buf;
-	}
-
-	p.save_path = t_i.save_directory_.string();
-	p.storage_mode = hal_allocation_to_libt(t_i.allocation_);
-	p.flags = libt::add_torrent_params::flag_paused || 
-		(t_i.managed_ ? libt::add_torrent_params::flag_auto_managed : 0);
-	
 	{	upgrade_to_unique_lock up_l(l);
-
-		if (p.ti)
-		{
-			t_i.handle_ = (*t_i.the_session_)->add_torrent(p);
-		}
-		else if (!t_i.magnet_uri_.empty())
-		{
-			libt::error_code ec;
-			libt::parse_magnet_uri(t_i.magnet_uri_, p, ec);
-			
-			t_i.handle_ = (ec) ? libt::torrent_handle() :
-				(*t_i.the_session_)->add_torrent(p, ec);
-		}
-
 		assert(t_i.handle_.is_valid());
-
 		t_i.in_session_ = true;
 	}
 
@@ -123,11 +90,41 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 {
 	TORRENT_STATE_LOG(hal::wform(L"Adding to session, paused - %1%") % evt.pause());
 	torrent_internal& t_i = context<torrent_internal>();
+	upgrade_lock l(t_i.mutex_);
 
-	if (evt.pause())
-		return transit<paused>();
-	else
-		return transit<active>();
+	libt::add_torrent_params p;
+	p.ti = t_i.info_memory(l);
+
+	std::string resume_file = (hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string();
+
+	boost::system::error_code ec;
+	std::vector<char> buf;
+	if (libt::load_file(resume_file.c_str(), buf, ec) == 0)
+	{
+		HAL_DEV_MSG(L"Using resume data");
+		p.resume_data = &buf;
+	}
+
+	p.save_path = t_i.save_directory_.string();
+	p.storage_mode = hal_allocation_to_libt(t_i.allocation_);
+	p.flags = (evt.pause() ? libt::add_torrent_params::flag_paused : 0) | 
+		(t_i.managed_ ? libt::add_torrent_params::flag_auto_managed : 0);
+
+	if (p.ti)
+	{
+		(*t_i.the_session_)->async_add_torrent(p);
+	}
+	else if (!t_i.magnet_uri_.empty())
+	{
+		libt::error_code ec;
+		libt::parse_magnet_uri(t_i.magnet_uri_, p, ec);
+			
+		if (!ec)
+			(*t_i.the_session_)->async_add_torrent(p);
+	}
+
+	t_i.state(l, torrent_details::torrent_starting);
+	return discard_event();
 }
 
 sc::result out_of_session::react(const ev_resume& evt)
@@ -135,6 +132,19 @@ sc::result out_of_session::react(const ev_resume& evt)
 	post_event(ev_add_to_session(false));
 
 	return discard_event();
+}
+
+sc::result out_of_session::react(const ev_added_alert& evt)
+{
+	if (evt.ec)
+	{
+		HAL_DEV_MSG(L"Torrent add error");
+		return transit<in_error>();
+	}
+	else if (evt.paused)
+		return transit<paused>();
+	else
+		return transit<active>();
 }	
 
 sc::result out_of_session::react(const ev_remove& evt)

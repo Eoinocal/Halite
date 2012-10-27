@@ -103,7 +103,7 @@
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_serialize.hpp>
 
-#define TORRENT_MAX_ALERT_TYPES 32
+#define TORRENT_MAX_ALERT_TYPES 48
 
 #pragma warning (push, 1)
 #	include <libtorrent/file.hpp>

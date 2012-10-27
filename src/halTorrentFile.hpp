@@ -271,7 +271,7 @@ public:
 		torrent_file_by_random::iterator file_i = files_.get<by_random>().begin() + i; 
 
 		torrent_file tmp_file = *(file_i);
-		tmp_file.set_finished(path_from_utf8(libt_orig_files_.at(i).path));
+		tmp_file.set_finished(path_from_utf8(libt_orig_files_.at(static_cast<int>(i)).path));
 
 		{	upgrade_to_unique_lock up_l(l);
 			files_.get<by_random>().replace(file_i, tmp_file);
@@ -304,7 +304,7 @@ public:
 	const torrent_file_proxy operator[](size_t n) const
 	{
 		return torrent_file_proxy(files_.get<by_random>()[n], hash_, 
-			path_from_utf8(libt_orig_files_.at(n).path), path_from_utf8(libt_orig_files_.at(n).path));
+			path_from_utf8(libt_orig_files_.at(static_cast<int>(n)).path), path_from_utf8(libt_orig_files_.at(static_cast<int>(n)).path));
 	}
 	
 	friend class boost::serialization::access;

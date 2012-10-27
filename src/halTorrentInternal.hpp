@@ -539,6 +539,14 @@ public:
 
 		return original_filename_; 
 	}
+
+	const libt::torrent_handle& set_handle(const libt::torrent_handle& h)
+	{
+		upgrade_lock l(mutex_);
+		upgrade_to_unique_lock up_l(l);
+
+		return handle_ = h;
+	}
 	
 	const libt::torrent_handle& handle() const 
 	{ 

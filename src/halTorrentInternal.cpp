@@ -845,14 +845,14 @@ void torrent_internal::apply_settings(upgrade_lock& l)
 {		
 	apply_transfer_speed(l);
 	apply_connection_limit(l);
-//	apply_ratio(l);
+	apply_ratio(l);
 	apply_trackers(l);
-//	apply_tracker_login(l);
-//	apply_file_priorities(l);
-//	apply_resolve_countries(l);
-//	apply_superseeding(l);
-//	apply_file_names(l);
-//	apply_external_interface(l);
+	apply_tracker_login(l);
+	apply_file_priorities(l);
+	apply_resolve_countries(l);
+	apply_superseeding(l);
+	apply_file_names(l);
+	apply_external_interface(l);
 }
 
 void torrent_internal::apply_transfer_speed(upgrade_lock& l)
@@ -964,8 +964,7 @@ void torrent_internal::apply_file_names(upgrade_lock& l)
 	if (in_session(l) && info_memory(l))
 	{
 		bool want_recheck = false;
-
-		int know = files_.size(l);
+		int know = static_cast<int>(files_.size(l));
 
 		if (files_.size(l) != info_memory(l)->num_files())
 		{
@@ -1141,6 +1140,10 @@ wstring torrent_internal::state_string(upgrade_lock& l) const
 	case torrent_details::torrent_in_error:
 		state_str = app().res_wstr(HAL_TORRENT_IN_ERROR);
 		break;
+
+	case torrent_details::torrent_starting:
+		state_str = app().res_wstr(HAL_TORRENT_STARTING);
+		break;
 		
 	default:
 		switch (status_cache(l).state)
@@ -1255,6 +1258,10 @@ void torrent_internal::output_torrent_debug_details(upgrade_lock& l) const
 		state_str = app().res_wstr(HAL_TORRENT_STOPPING);
 		break;
 		
+	case torrent_details::torrent_starting:
+		state_str = app().res_wstr(HAL_TORRENT_STARTING);
+		break;
+		
 	case torrent_details::torrent_in_error:
 		state_str = app().res_wstr(HAL_TORRENT_IN_ERROR);
 		break;
@@ -1298,7 +1305,7 @@ void torrent_internal::changed_file_filename_cb(size_t i, upgrade_lock& l)
 			if (files_[i].is_finished())
 			{				
 				HAL_DEV_MSG(wform(L"Renaming file %1% to %2%") % i % files_[i].completed_name());
-				handle_.rename_file(i, files_[i].completed_name().string());
+				handle_.rename_file(static_cast<int>(i), files_[i].completed_name().string());
 			}
 		}
 	}

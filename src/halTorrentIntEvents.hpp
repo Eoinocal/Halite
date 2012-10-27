@@ -73,6 +73,16 @@ private:
 
 struct ev_pause : sc::event< ev_pause > {};
 struct ev_paused_alert : sc::event<ev_paused_alert> {};
+struct ev_added_alert : sc::event<ev_added_alert> 
+{
+	ev_added_alert(bool p, libt::error_code e) :
+		paused(p),
+		ec(e)
+	{}
+
+	bool paused;
+	libt::error_code ec;
+};
 
 struct ev_resume : sc::event<ev_resume> {};
 struct ev_resumed_alert : sc::event<ev_resumed_alert> {};
