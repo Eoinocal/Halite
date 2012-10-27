@@ -66,7 +66,7 @@ struct file_details
 		type_e
 	};
 
-	file_details(boost::filesystem::wpath p, 
+	file_details(boost::filesystem::path p, 
 			boost::int64_t s=0, 
 			boost::int64_t pg=0, 
 			int pr=1, 
@@ -102,8 +102,8 @@ struct file_details
 	
 	size_t order() const { return order_; }
 	
-	boost::filesystem::wpath branch;
-	std::wstring filename;
+	boost::filesystem::path branch;
+	boost::filesystem::path filename;
 	unsigned type;
 	boost::int64_t size;
 	boost::int64_t progress;

@@ -30,7 +30,7 @@ inline bool operator!=(const libt::dht_settings& lhs, const libt::dht_settings& 
 {
 	return lhs.max_peers_reply != rhs.max_peers_reply ||
 		   lhs.search_branching != rhs.search_branching ||
-		   lhs.service_port != rhs.service_port ||
+//		   lhs.service_port != rhs.service_port ||
            lhs.max_fail_count != rhs.max_fail_count;
 }
 
@@ -111,17 +111,23 @@ public:
 	{
 		try
 		{
+
+		boost::system::error_code ec;
 		
 		if (!session_->is_listening())
 		{
-			return session_->listen_on(range);
+			session_->listen_on(range, ec);
+			return !ec;
 		}
 		else
 		{
 			int port = session_->listen_port();
 			
 			if (port < range.first || port > range.second)
-				return session_->listen_on(range);	
+			{				
+				session_->listen_on(range, ec);
+				return !ec;
+			}
 			else
 			{
 				signals.successful_listen();
@@ -155,7 +161,8 @@ public:
 	void stop_listening()
 	{
 		ensure_dht_off();
-		session_->listen_on(std::make_pair(0, 0));
+		boost::system::error_code ec;
+		session_->listen_on(std::make_pair(0, 0), ec);
 	}
 
 	bool ensure_dht_on(const dht_settings& dht)
@@ -163,10 +170,10 @@ public:
 		libt::dht_settings settings;
 		settings.max_peers_reply = dht.max_peers_reply;
 		settings.search_branching = dht.search_branching;
-		settings.service_port = dht.service_port;
+	//	settings.service_port = dht.service_port;
 		settings.max_fail_count = dht.max_fail_count;
 		
-		HAL_DEV_MSG(hal::wform(L"Seleted DHT port = %1%") % settings.service_port);
+	//	HAL_DEV_MSG(hal::wform(L"Seleted DHT port = %1%") % settings.service_port);
 		
 		if (dht_settings_ != settings)
 		{
@@ -371,8 +378,12 @@ public:
 
 	void set_session_limits(int maxConn, int maxUpload)
 	{		
-		session_->set_max_uploads(maxUpload);
-		session_->set_max_connections(maxConn);
+		libt::session_settings s = session_->settings();
+
+		s.unchoke_slots_limit = maxUpload;
+		s.connections_limit = maxConn;
+
+		session_->set_settings(s);
 		
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(
 			hal::wform(L"Set connections totals %1% and uploads %2%.") 
@@ -381,14 +392,16 @@ public:
 
 	void set_session_speed(float download, float upload)
 	{
-		int down = (download > 0) ? static_cast<int>(download*1024) : -1;
-		session_->set_download_rate_limit(down);
-		int up = (upload > 0) ? static_cast<int>(upload*1024) : -1;
-		session_->set_upload_rate_limit(up);
+		libt::session_settings s = session_->settings();
+
+		s.download_rate_limit = (download > 0) ? static_cast<int>(download*1024) : -1;
+		s.upload_rate_limit = (upload > 0) ? static_cast<int>(upload*1024) : -1;
+
+		session_->set_settings(s);
 		
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(
 			hal::wform(L"Set session rates at download %1% and upload %2%.") 
-				% session_->download_rate_limit() % session_->upload_rate_limit())));
+				% s.download_rate_limit % s.upload_rate_limit)));
 	}
 
 	cache_details get_cache_details() const

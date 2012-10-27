@@ -37,7 +37,7 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 	libt::add_torrent_params p;
 	p.ti = t_i.info_memory(l);
 
-	std::string resume_file = to_utf8((hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string());
+	std::string resume_file = (hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string();
 
 	boost::system::error_code ec;
 	std::vector<char> buf;
@@ -47,23 +47,31 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 		p.resume_data = &buf;
 	}
 
-	p.save_path = path_to_utf8(t_i.save_directory_).string();
+	p.save_path = t_i.save_directory_.string();
 	p.storage_mode = hal_allocation_to_libt(t_i.allocation_);
-	p.paused = true;
-	p.duplicate_is_error = false;
-	p.auto_managed = t_i.managed_;
+	p.flags = libt::add_torrent_params::flag_paused || 
+		(t_i.managed_ ? libt::add_torrent_params::flag_auto_managed : 0);
 	
 	{	upgrade_to_unique_lock up_l(l);
 
 		if (p.ti)
+		{
 			t_i.handle_ = (*t_i.the_session_)->add_torrent(p);
+		}
 		else if (!t_i.magnet_uri_.empty())
-			t_i.handle_ = libt::add_magnet_uri(**t_i.the_session_, t_i.magnet_uri_, p);
+		{
+			libt::error_code ec;
+			libt::parse_magnet_uri(t_i.magnet_uri_, p, ec);
+			
+			t_i.handle_ = (ec) ? libt::torrent_handle() :
+				(*t_i.the_session_)->add_torrent(p, ec);
+		}
 
 		assert(t_i.handle_.is_valid());
 
 		t_i.in_session_ = true;
 	}
+
 	t_i.apply_settings(l);
 }
 
@@ -154,9 +162,7 @@ active::active(base_type::my_context ctx) :
 	upgrade_lock l(t_i.mutex_);
 
 	t_i.state(l, torrent_details::torrent_active);
-
-	if (t_i.handle_.is_paused())
-		t_i.handle_.resume();
+	t_i.handle_.resume();
 }
 
 active::~active()
@@ -323,8 +329,8 @@ sc::result not_started::react(const ev_start& evt)
 		if (!t_i.info_memory(l) && !t_i.name_.empty())
 		{		
 			std::string torrent_info_file = 
-				to_utf8((hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".torrent_info")).string());
-			string torrent_file = to_utf8((hal::app().get_working_directory()/L"torrents"/t_i.filename_).string());
+				(hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".torrent_info")).string();
+			string torrent_file = (hal::app().get_working_directory()/L"torrents"/t_i.filename_).string();
 
 			if (fs::exists(torrent_info_file))
 			{

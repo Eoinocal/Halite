@@ -34,7 +34,7 @@ struct FileLink
 
 	FileLink(const hal::file_details& f) :
 		branch(f.branch),
-		filename(f.filename),
+		filename(f.filename.wstring()),
 		order_(f.order())
 	{}
 	
@@ -56,7 +56,7 @@ struct FileLink
 	
 	size_t order() { return order_; }
 	
-	boost::filesystem::wpath branch;
+	boost::filesystem::path branch;
 	wstring filename;
 	unsigned type;
 	
@@ -287,7 +287,7 @@ public:
 			WTL::CTreeItem ti = tree_.GetRootItem();
 			
 			wpath branch;
-			BOOST_FOREACH (wstring b, branchPath)
+			BOOST_FOREACH (wpath b, branchPath)
 			{
 				branch /= b;				
 				MapType::iterator j = map_.find(branch);

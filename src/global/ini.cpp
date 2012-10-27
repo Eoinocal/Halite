@@ -134,13 +134,13 @@ private:
 			xml_.link_end_child(data_node);
 		}
 		
-		BOOST_FOREACH (std::string elem, location)
+		BOOST_FOREACH (boost::filesystem::path elem, location)
 		{
-			xml::node* child_node = data_node->first_child(elem);
+			xml::node* child_node = data_node->first_child(elem.string());
 			
 			if (!child_node)
 			{
-				child_node = new xml::element(elem);
+				child_node = new xml::element(elem.string());
 				data_node->link_end_child(child_node);
 			}
 			

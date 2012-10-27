@@ -67,10 +67,10 @@ public:
 
 		boost::filesystem::path branch(name);
 
-		std::string leaf = branch.filename();
+		boost::filesystem::path leaf = branch.filename().string();
 		branch = branch.parent_path();
 
-		BOOST_FOREACH(std::string elem, branch)
+		BOOST_FOREACH(boost::filesystem::path elem, branch)
 		{
 			TXML_LOG(boost::wformat(L" >> >> %1%") % from_utf8(elem));
 
@@ -82,11 +82,11 @@ public:
 			}
 			else
 			{
-				xml::node* child_node = current_node_->first_child(elem);
+				xml::node* child_node = current_node_->first_child(elem.string());
 					
 				if (!child_node)
 				{
-					child_node = new xml::element(elem);
+					child_node = new xml::element(elem.string().c_str());
 					current_node_->link_end_child(child_node);
 				}
 					
@@ -94,7 +94,7 @@ public:
 			}
 		}
 
-		xml::node* n = new xml::element(leaf);
+		xml::node* n = new xml::element(leaf.string().c_str());
 		current_node_ = current_node_->link_end_child(n);
 
 		TXML_LOG(boost::wformat(L" >> save_start: %1%\n") % from_utf8(name));

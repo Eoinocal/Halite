@@ -52,27 +52,27 @@ void load(Archive& ar, address_type& ip, const unsigned int version)
 }
 
 
-template<class Archive, class String, class Traits>
-void save(Archive& ar, const boost::filesystem::basic_path<String, Traits>& p, const unsigned int version)
+template<class Archive>
+void save(Archive& ar, const boost::filesystem::path& p, const unsigned int version)
 {	
-	String str = p.string();
+	std::wstring str = p.wstring();
 	ar & BOOST_SERIALIZATION_NVP(str);
 }
 
-template<class Archive, class String, class Traits>
-void load(Archive& ar, boost::filesystem::basic_path<String, Traits>& p, const unsigned int version)
+template<class Archive>
+void load(Archive& ar, boost::filesystem::path& p, const unsigned int version)
 {	
-	String str;
+	std::wstring str;
 	ar & BOOST_SERIALIZATION_NVP(str);
 
 	p = str;
 }
 
 
-template<class Archive, class String, class Traits>
+template<class Archive>
 inline void serialize(
         Archive & ar,
-        boost::filesystem::basic_path<String, Traits>& p,
+        boost::filesystem::path& p,
         const unsigned int file_version)
 {
         split_free(ar, p, file_version);            

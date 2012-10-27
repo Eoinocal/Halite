@@ -110,17 +110,17 @@ public:
 					previous_child_branch_ == location.parent_path())
 			{
 			//	TXML_LOG(boost::wformat(L" << previous_child: %1%") % previous_child_node_->to_element()->get_text());
-				failsafe_current = previous_child_node_->next_sibling(location.filename());
+				failsafe_current = previous_child_node_->next_sibling(location.filename().string().c_str());
 				previous_child_node_ = 0;
 				
 				if (!failsafe_current) 
-					failsafe_current = current_node_->first_child(location.filename());;
+					failsafe_current = current_node_->first_child(location.filename().string());
 			}
 			else
 			{
-				BOOST_FOREACH(std::string elem, location)
+				BOOST_FOREACH(boost::filesystem::path elem, location)
 				{
-					TXML_LOG(boost::wformat(L" >> >> %1%") % from_utf8(elem));
+					TXML_LOG(boost::wformat(L" >> >> %1%") % from_utf8(elem.string()));
 
 					if (elem == ".")
 					{}
@@ -130,7 +130,7 @@ public:
 					}
 					else
 					{
-						failsafe_current = failsafe_current->first_child(elem);
+						failsafe_current = failsafe_current->first_child(elem.string());
 						
 						if (!failsafe_current) return false;
 					}

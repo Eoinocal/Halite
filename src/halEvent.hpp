@@ -64,26 +64,6 @@
 #endif
 
 #define HAL_FILESYSTEM_EXCEPTION_CATCH(FN_MSG) \
-	catch (const boost::filesystem::wfilesystem_error& e) \
-	{ \
-		if (!e.path1().empty()) \
-		{ \
-			hal::event_log().post(shared_ptr<hal::EventDetail>( \
-				new hal::EventMsg(hal::wform(L"File related error %1%. %2% with %3%") \
-						% FN_MSG \
-						% hal::from_utf8(e.what()) \
-						% e.path1().string(), \
-					hal::event_logger::warning))); \
-		} \
-		else \
-		{ \
-			hal::event_log().post(shared_ptr<hal::EventDetail>( \
-				new hal::EventMsg(hal::wform(L"Filesystem related error %1%. %2%") \
-						% FN_MSG \
-						% hal::from_utf8(e.what()), \
-					hal::event_logger::warning))); \
-		} \
-	} \
 	catch (const boost::filesystem::filesystem_error& e) \
 	{ \
 		if (!e.path1().empty()) \
@@ -92,7 +72,7 @@
 				new hal::EventMsg(hal::wform(L"File related error %1%. %2% with %3%") \
 						% FN_MSG \
 						% hal::from_utf8(e.what()) \
-						% hal::from_utf8(e.path1().string()), \
+						% e.path1().wstring(), \
 					hal::event_logger::warning))); \
 		} \
 		else \
@@ -103,7 +83,7 @@
 						% hal::from_utf8(e.what()), \
 					hal::event_logger::warning))); \
 		} \
-	}
+	} 
 
 #define HAL_NUMERIC_EXCEPTION_CATCH(FN_MSG) \
 	catch (const boost::numeric::positive_overflow& e) \

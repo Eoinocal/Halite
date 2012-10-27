@@ -22,15 +22,14 @@ namespace mi = boost::multi_index;
 class torrent_file
 {
 public:
+	typedef std::pair<std::wstring, fs::path> split_path_pair_t;
 
-	typedef std::pair<std::wstring, fs::wpath> split_path_pair_t;
-
-	static split_path_pair_t split_root(const fs::wpath& p_orig)
+	static split_path_pair_t split_root(const fs::path& p_orig)
 	{
 		if (!p_orig.empty())
 		{
-		std::wstring root = *p_orig.begin();
-		fs::wpath p_new;
+		std::wstring root = (*p_orig.begin()).wstring();
+		fs::path p_new;
 
 		if (++p_orig.begin() != p_orig.end())
 		{			

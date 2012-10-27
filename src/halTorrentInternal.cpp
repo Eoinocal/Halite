@@ -197,7 +197,7 @@ void torrent_internal::alert_finished()
 	if (is_finished(l))
 	{
 		if (!move_to_directory_.empty() && 
-				move_to_directory_ !=  path_from_utf8(handle_.save_path()))
+				move_to_directory_ != path_from_utf8(handle_.save_path()))
 		{				
 			upgrade_to_unique_lock up_l(l);
 
@@ -210,9 +210,9 @@ void torrent_internal::alert_finished()
 	}
 }
 
-void torrent_internal::alert_storage_moved(const fs::wpath& p)
+void torrent_internal::alert_storage_moved(const fs::path& p)
 {
-	HAL_DEV_MSG(hal::wform(L"alert_storage_moved = %1%") % p.file_string());
+	HAL_DEV_MSG(hal::wform(L"alert_storage_moved = %1%") % p.wstring());
 }
 
 void torrent_internal::alert_metadata_completed()
@@ -274,7 +274,7 @@ void torrent_internal::set_name(const wstring& n)
 	}
 
 	init_file_details(l);
-	apply_file_names(l);
+	//apply_file_names(l);
 }
 
 const uuid& torrent_internal::id() const
@@ -401,15 +401,15 @@ void torrent_internal::remove_files(function<void (wpath path, boost::shared_ptr
 {		
 	boost::shared_ptr<std::vector<std::wstring> > files = boost::shared_ptr<std::vector<std::wstring> >(new std::vector<std::wstring> );
 
-	fs::wpath active_directory = save_directory();
+	fs::path active_directory = save_directory();
 
 	{	upgrade_lock l(mutex_);
 	
 		for (int i = 0; i < info_memory(l)->num_files(); ++i)
-			files->push_back((save_directory(l)/files_[i].active_name()).file_string());
+			files->push_back((save_directory(l)/files_[i].active_name()).wstring());
 
-		files->push_back((hal::app().get_working_directory() / L"resume" / (name(l) + L".fastresume")).file_string());
-		files->push_back((hal::app().get_working_directory() / L"resume" / (name(l) + L".torrent_info")).file_string());
+		files->push_back((hal::app().get_working_directory() / L"resume" / (name(l) + L".fastresume")).wstring());
+		files->push_back((hal::app().get_working_directory() / L"resume" / (name(l) + L".torrent_info")).wstring());
 		
 		if (1 == files_.size(l))
 		{
@@ -469,7 +469,7 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 
 		details_ptr_.reset(new torrent_details(
 			name(l), filename_, 
-			save_directory(l).string(), 
+			save_directory(l).wstring(), 
 			state_str, 
 			id(l),
 			hal::from_utf8(status_cache(l).current_tracker), 
@@ -501,7 +501,7 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 
 			details_ptr_.reset(new torrent_details(
 				name(l), filename_, 
-				save_directory(l).string(), 
+				save_directory(l).wstring(), 
 				app().res_wstr(HAL_TORRENT_STOPPED), 
 				id(l), 
 				app().res_wstr(HAL_NA),
@@ -515,7 +515,7 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 
 			details_ptr_.reset(new torrent_details(
 				name(l), filename_, 
-				save_directory(l).string(), 
+				save_directory(l).wstring(), 
 				app().res_wstr(HAL_TORRENT_STOPPED), 
 				id(l), 
 				app().res_wstr(HAL_NA),
@@ -669,11 +669,17 @@ void torrent_internal::extract_hash(upgrade_lock& l)
 		p.ti = info_memory(l);
 		p.save_path = path_to_utf8(save_directory_).string();
 		p.storage_mode = hal_allocation_to_libt(allocation_);
-		p.paused = true;
-		p.duplicate_is_error = false;
-		p.auto_managed = false;
 
-		libt::torrent_handle h = libt::add_magnet_uri(**the_session_, magnet_uri_, p);
+		p.flags = libt::add_torrent_params::flag_paused || 
+			libt::add_torrent_params::flag_update_subscribe;
+		
+		libt::error_code ec;		
+		libt::parse_magnet_uri(magnet_uri_, p, ec);
+			
+		libt::torrent_handle h = (ec) ? libt::torrent_handle() :
+			(*the_session_)->add_torrent(p, ec);
+
+	//	libt::torrent_handle h = libt::add_magnet_uri(**the_session_, magnet_uri_, p);
 			
 		{	upgrade_to_unique_lock up_l(l);
 
@@ -710,14 +716,14 @@ void torrent_internal::extract_filenames(upgrade_lock& l)
 		for (libt::torrent_info::file_iterator i = info_memory(l)->begin_files(), e = info_memory(l)->end_files();
 			i != e; ++i)
 		{
-			fs::wpath p_orig = path_from_utf8((*i).path);
+			fs::wpath p_orig = path_from_utf8((*i).filename());
 			fs::wpath p_new = torrent_file::add_hash(p_orig, hash_str_);
 
 			bool using_hash = true;
 
 			// Compensate for existing files outside HASHED subdir
 
-			if (save_directory_ != move_to_directory_)
+			if (!move_to_directory_.empty() && save_directory_ != move_to_directory_)
 			{
 				if (fs::exists(save_directory_/p_orig) && !fs::exists(save_directory_/p_new)) 	
 				{
@@ -757,7 +763,7 @@ void torrent_internal::extract_filenames(upgrade_lock& l)
 		for (libt::torrent_info::file_iterator i = info_memory(l)->begin_files(), e = info_memory(l)->end_files();
 			i != e; ++i)
 		{
-			fs::wpath p = path_from_utf8((*i).path);
+			fs::wpath p = path_from_utf8((*i).filename());
 
 //			assert(p == files_[std::distance(info_memory()->begin_files(), i)].original_name());
 		}
@@ -785,7 +791,7 @@ void torrent_internal::write_torrent_info(upgrade_lock& l) const
 	}
 
 	} 
-	catch (const boost::filesystem::wfilesystem_error&)
+	catch (const boost::filesystem::filesystem_error&)
 	{
 		event_log().post(shared_ptr<EventDetail>(
 			new EventMsg(L"Write torrent info error.", event_logger::warning)));
@@ -839,14 +845,14 @@ void torrent_internal::apply_settings(upgrade_lock& l)
 {		
 	apply_transfer_speed(l);
 	apply_connection_limit(l);
-	apply_ratio(l);
+//	apply_ratio(l);
 	apply_trackers(l);
-	apply_tracker_login(l);
-	apply_file_priorities(l);
-	apply_resolve_countries(l);
-	apply_superseeding(l);
-	apply_file_names(l);
-	apply_external_interface(l);
+//	apply_tracker_login(l);
+//	apply_file_priorities(l);
+//	apply_resolve_countries(l);
+//	apply_superseeding(l);
+//	apply_file_names(l);
+//	apply_external_interface(l);
 }
 
 void torrent_internal::apply_transfer_speed(upgrade_lock& l)
@@ -965,7 +971,6 @@ void torrent_internal::apply_file_names(upgrade_lock& l)
 		{
 			extract_filenames(l);
 			want_recheck = true;
-
 		}
 		
 		// This shouldn't do any more than inform libtorrent about the hash subfolder
@@ -1067,7 +1072,7 @@ void torrent_internal::initialize_non_serialized(function<void (torrent_internal
 		
 		details_ptr_.reset(new torrent_details(
 			name(l), filename_, 
-			save_directory(l).string(), 
+			save_directory(l).wstring(), 
 			app().res_wstr(HAL_TORRENT_STOPPED), 
 			id(l), 
 			app().res_wstr(HAL_NA),
@@ -1293,7 +1298,7 @@ void torrent_internal::changed_file_filename_cb(size_t i, upgrade_lock& l)
 			if (files_[i].is_finished())
 			{				
 				HAL_DEV_MSG(wform(L"Renaming file %1% to %2%") % i % files_[i].completed_name());
-				handle_.rename_file(i, files_[i].completed_name());
+				handle_.rename_file(i, files_[i].completed_name().string());
 			}
 		}
 	}

@@ -46,7 +46,7 @@ public:
 		
 		std::locale global_loc = std::locale();
 		std::locale loc(global_loc, new boost::filesystem::detail::utf8_codecvt_facet);
-		boost::filesystem::wpath_traits::imbue(loc);
+//		boost::filesystem::wpath_traits::imbue(loc);
 		
 		if (NULL == szArglist)
 		{

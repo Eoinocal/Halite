@@ -90,7 +90,7 @@ inline libt::storage_mode_t hal_allocation_to_libt(bit::allocations alloc)
 	case bit::full_allocation:
 		return libt::storage_mode_allocate;
 	case bit::compact_allocation:
-		return libt::storage_mode_compact;
+		return libt::internal_storage_mode_compact_deprecated;
 	case bit::sparse_allocation:
 	default:
 		return libt::storage_mode_sparse;
@@ -392,7 +392,7 @@ public:
 			remove(resume_file);
 
 		} 
-		catch (const boost::filesystem::wfilesystem_error&)
+		catch (const boost::filesystem::filesystem_error&)
 		{
 			event_log().post(shared_ptr<EventDetail>(
 				new EventMsg(L"Resume data removal error.", event_logger::warning)));
@@ -411,7 +411,7 @@ public:
 			remove(torrent_info_file);
 
 		} 
-		catch (const boost::filesystem::wfilesystem_error&)
+		catch (const boost::filesystem::filesystem_error&)
 		{
 			event_log().post(shared_ptr<EventDetail>(
 				new EventMsg(L"Torrent info removal error.", event_logger::warning)));
@@ -430,7 +430,7 @@ public:
 			remove(torrent_file);
 
 		}
-		catch (const boost::filesystem::wfilesystem_error&)
+		catch (const boost::filesystem::filesystem_error&)
 		{
 			event_log().post(shared_ptr<EventDetail>(
 				new EventMsg(L"Torrent file removal error.", event_logger::warning)));

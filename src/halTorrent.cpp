@@ -27,11 +27,11 @@
 namespace hal 
 {
 
-bool remove_empty_directories_recur(const fs::wpath& p, std::vector<fs::wpath>& dirs)
+bool remove_empty_directories_recur(const fs::path& p, std::vector<fs::path>& dirs)
 {
 	bool ret = true;
 
-	for (fs::wdirectory_iterator i = fs::wdirectory_iterator(p), e = fs::wdirectory_iterator(); i != e; ++i)
+	for (fs::directory_iterator i = fs::directory_iterator(p), e = fs::directory_iterator(); i != e; ++i)
 	{
 		if (!fs::is_directory(*i))
 			ret = false;
@@ -43,7 +43,7 @@ bool remove_empty_directories_recur(const fs::wpath& p, std::vector<fs::wpath>& 
 	}	
 	if (ret)
 	{
-		HAL_DEV_MSG(wform(L"Removing directory: %1%") % p.string());
+		HAL_DEV_MSG(wform(L"Removing directory: %1%") % p.wstring());
 		dirs.push_back(p);
 	}
 	return ret;
@@ -51,11 +51,11 @@ bool remove_empty_directories_recur(const fs::wpath& p, std::vector<fs::wpath>& 
 	
 bool remove_empty_directories(const fs::wpath& p)
 {
-	std::vector<fs::wpath> dirs;
+	std::vector<fs::path> dirs;
 
 	bool ret = remove_empty_directories_recur(p, dirs);
 
-	std::for_each(dirs.begin(), dirs.end(), fs::remove<fs::wpath>);
+	std::for_each(dirs.begin(), dirs.end(), (bool (*)(const fs::path&))fs::remove);
 
 	return ret;
 }
@@ -66,8 +66,8 @@ bool file_details::less(const file_details& r, size_t index) const
 	{
 	case branch_e: return branch < r.branch;
 	case filename_e: 
-		return (boost::algorithm::to_upper_copy(filename) 
-			< boost::algorithm::to_upper_copy(r.filename));
+		return (boost::algorithm::to_upper_copy(filename.wstring()) 
+			< boost::algorithm::to_upper_copy(r.filename.wstring()));
 
 	case type_e: return type < r.type;
 	case size_e: return size < r.size;
@@ -83,8 +83,8 @@ std::wstring file_details::to_wstring(size_t index)
 {
 	switch (index)
 	{
-	case branch_e: return branch.string();
-	case filename_e: return filename;
+	case branch_e: return branch.wstring();
+	case filename_e: return filename.wstring();
 
 	case type_e: return L"(Undefined)"; // ???
 
@@ -598,10 +598,12 @@ const SessionDetail bit::get_session_details()
 
 void bit::set_session_half_open_limit(int halfConn)
 {
-	pimpl()->session_->set_max_half_open_connections(halfConn);
+	libt::session_settings s = pimpl()->session_->settings();
+	s.half_open_limit = halfConn;
+	pimpl()->session_->set_settings(s);
 
 	event_log().post(shared_ptr<EventDetail>(new EventMsg(
-		hal::wform(L"Set half-open connections limit to %1%.") % pimpl()->session_->max_half_open_connections())));
+		hal::wform(L"Set half-open connections limit to %1%.") % s.half_open_limit)));
 }
 
 void bit::set_torrent_defaults(const connections& defaults)

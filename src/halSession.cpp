@@ -45,12 +45,16 @@ bit_impl::bit_impl() :
 	{
 
 	torrent_internal::set_the_session(&session_);
-
-	session_->session::set_alert_mask(libt::alert::all_categories);		
+		session_->session::set_alert_mask(libt::alert::all_categories);		
 	session_->add_extension(&libt::create_metadata_plugin);
 	session_->add_extension(&libt::create_ut_pex_plugin);
-	session_->set_max_half_open_connections(10);
+
 	
+	libt::session_settings s = session_->settings();
+	s.half_open_limit = 10;
+	s.user_agent = string("Halite ") + HALITE_VERSION_STRING;
+	session_->set_settings(s);
+
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading BitTorrent.xml.", hal::event_logger::info)));		
 	bittorrent_ini_.load_data();
@@ -98,20 +102,16 @@ bit_impl::bit_impl() :
 		{
 			std::vector<char> in;			
 			boost::system::error_code ec;
+			int pos;
 
-			if (libt::load_file(to_utf8((hal::app().get_working_directory()/L"DHTState.bin").string()), in, ec) == 0)
-				libt::lazy_bdecode(&in[0], &in[0] + in.size(), dht_state_);
+			if (libt::load_file((hal::app().get_working_directory()/L"DHTState.bin").string(), in, ec) == 0)
+				libt::lazy_bdecode(&in[0], &in[0] + in.size(), dht_state_, ec, &pos);
 		}		
 		catch(const std::exception& e)
 		{
 			event_log().post(shared_ptr<EventDetail>(
 				new EventStdException(event_logger::critical, e, L"Loading DHTState.bin")));
 		}
-	}
-	
-	{	libt::session_settings settings = session_->settings();
-		settings.user_agent = string("Halite ") + HALITE_VERSION_STRING;
-		session_->set_settings(settings);
 	}
 	
 	//acquire_work_object();
@@ -308,7 +308,7 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 			i != e; ++i)
 	{
 		HAL_DEV_MSG(hal::wform(L"file path: %1%, size: %2%") % (*i).first % (*i).second);
-		fs.add_file(to_utf8((*i).first.string()), (*i).second);
+		fs.add_file((*i).first.string(), (*i).second);
 	}
 
 	int piece_size = params.piece_size;
@@ -344,9 +344,9 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 		t.add_node(hal::make_pair(to_utf8((*i).url), (*i).port));
 	}
 
-	HAL_DEV_MSG(hal::wform(L"root_path: %1%") % params.root_path.string());
+	HAL_DEV_MSG(hal::wform(L"root_path: %1%") % params.root_path.wstring());
 
-	set_piece_hashes(t, to_utf8(params.root_path.string()),
+	set_piece_hashes(t, params.root_path.string(),
 		boost::bind(fn, _1, t.num_pieces(), hal::app().res_wstr(HAL_NEWT_HASHING_PIECES)));
 
 	t.set_creator(to_utf8(params.creator).c_str());
@@ -553,6 +553,19 @@ void bit_impl::alert_handler()
 		bit_impl_(bit_impl)
 	{}
 
+	void operator()(libt::add_torrent_alert const& a) const
+	{
+	/*	event_log().post(shared_ptr<EventDetail>(
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
+				hal::wform(hal::app().res_wstr(HAL_EXTERNAL_IP_ALERT))
+					% hal::from_utf8_safe(a.message())
+					% hal::from_utf8_safe(a.external_address.to_string()))
+		)	);		
+
+		if (!bit_impl_.use_custom_interface_ || !bit_impl_.external_interface_) 
+			bit_impl_.external_interface_.reset(hal::from_utf8_safe(a.external_address.to_string()));*/
+	}
+
 	void operator()(libt::external_ip_alert const& a) const
 	{
 		event_log().post(shared_ptr<EventDetail>(
@@ -571,7 +584,7 @@ void bit_impl::alert_handler()
 		event_log().post(shared_ptr<EventDetail>(
 			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_PORTMAP_ERROR_ALERT))
-				% (a.type == 0 ? 
+				% (a.type() == 0 ? 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_PMP) : 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_UPNP)))
 		)	);				
@@ -582,7 +595,7 @@ void bit_impl::alert_handler()
 		event_log().post(shared_ptr<EventDetail>(
 			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_PORTMAP_ALERT))
-				% (a.type == 0 ? 
+				% (a.type() == 0 ? 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_PMP) : 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_UPNP))
 				% a.external_port)

@@ -359,7 +359,7 @@ void HaliteListViewCtrl::remove_to_bin(const hal::uuid& id, hal::fs::wpath activ
 	HAL_DEV_MSG(L"Calling SHFileOperation to remove files");
 	SHFileOperation(&shf);
 	
-	HAL_DEV_MSG(hal::wform(L"Clearing empty directories at %1%") % active_directory.file_string());
+	HAL_DEV_MSG(hal::wform(L"Clearing empty directories at %1%") % active_directory.wstring());
 	hal::remove_empty_directories(active_directory);
 
 	hal::bittorrent::Instance().remove_torrent(id);
@@ -394,7 +394,7 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 
 		wpath save_dir = t.save_directory;
 		if (boost::filesystem::is_directory(save_dir/wpath(t.name)))
-			save_dir /= t.name;
+			save_dir /= wpath(t.name);
 		HAL_DEV_MSG(hal::wform(L"Name %1%, Save dir: %2%.") % v.text() % save_dir);
 
 		unique_paths.insert(save_dir);
@@ -405,7 +405,7 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 	for (std::set<wpath>::const_iterator i=unique_paths.begin(), e=unique_paths.end();
 		i != e; ++i)
 	{	
-		wstring p = (*i).file_string();
+		wstring p = (*i).wstring();
 
 		HAL_DEV_MSG(hal::wform(L"Unique Save dir: %1%.") % p);
 
@@ -435,8 +435,8 @@ LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndC
 
 	if (hal::bit::torrent t = hal::bittorrent::Instance().get(list_value_type(*is_selected_begin()).hash()))
 	{
-		wstring saveDirectory = static_cast<wpath>(t.save_directory).native_file_string();
-		wstring moveToDirectory = static_cast<wpath>(t.move_to_directory).native_file_string();
+		wstring saveDirectory = static_cast<path>(t.save_directory).wstring();
+		wstring moveToDirectory = static_cast<path>(t.move_to_directory).wstring();
 
 		bool useMoveTo = !moveToDirectory.empty();
 		bool disableSaveDir = !t.in_session;

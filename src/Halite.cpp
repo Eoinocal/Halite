@@ -121,7 +121,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	try 
 	{
 	
-	boost::filesystem::path::default_name_check(boost::filesystem::native);
+//	boost::filesystem::path::default_name_check(boost::filesystem::native);
 
 	try
 	{

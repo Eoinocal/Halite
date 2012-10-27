@@ -95,17 +95,17 @@ void FilesListViewCtrl::saveSettings()
 	save_to_ini();
 }
 
-void recurseDirectory(std::vector<wpath>& files, wpath baseDir, wpath relDir)
+void recurseDirectory(std::vector<path>& files, path baseDir, path relDir)
 {	
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(hal::wform(L"recursing %1%  /  %2%") % baseDir.file_string() % relDir.file_string())));		
+		new hal::EventMsg(hal::wform(L"recursing %1%  /  %2%") % baseDir.wstring() % relDir.wstring())));		
 
-	wpath currentDir(baseDir / relDir);
+	path currentDir(baseDir / relDir);
 
 	if (hal::fs::is_directory(currentDir))
     {
-		for (hal::fs::wdirectory_iterator i(currentDir), end; i != end; ++i)
-			recurseDirectory(files, baseDir, relDir / i->filename());
+		for (hal::fs::directory_iterator i(currentDir), end; i != end; ++i)
+			recurseDirectory(files, baseDir, relDir / i->path().filename());
     }
     else
     {
@@ -167,11 +167,11 @@ void FilesSheet::UpdateFileList()
 {
 	filesList_.DeleteAllItems();
 
-	BOOST_FOREACH (wpath& file, files_)
+	BOOST_FOREACH (path& file, files_)
 	{
 		int itemPos = filesList_.AddItem(0, 0, file.filename().c_str(), 0);
 
-		filesList_.SetItemText(itemPos, 1, file.parent_path().file_string().c_str());
+		filesList_.SetItemText(itemPos, 1, file.parent_path().wstring().c_str());
 		filesList_.SetItemText(itemPos, 2, lexical_cast<wstring>(
 			hal::fs::file_size(fileRoot_/file)).c_str());
 	}
@@ -198,8 +198,8 @@ hal::file_size_pairs_t FilesSheet::FileSizePairs() const
 		filesList_.GetItemText(i, 1, path_buf, numeric_cast<int>(path_buf.size()));
 
 		filePairs.push_back(hal::make_pair(
-			wpath(wpath(path_buf.str()) / name_buf).string(), 
-			hal::fs::file_size(fileRoot_ / path_buf / name_buf)));
+			wpath(path(path_buf.str()) / path(name_buf.str())).string(), 
+			hal::fs::file_size(fileRoot_ / path(path_buf.str()) / path(name_buf.str()))));
 	}
 
 	}

@@ -75,11 +75,11 @@ namespace hal
 	
 	inline path path_to_utf8(const wpath& wp)
 	{
-		return path(to_utf8(wp.string()));
+		return path(wp.string());
 	}
 
 	inline wpath path_from_utf8(const path& p)
 	{
-		return wpath(from_utf8(p.string()));
+		return wpath(p.string());
 	}
 }

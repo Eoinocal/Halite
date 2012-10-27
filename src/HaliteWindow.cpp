@@ -363,8 +363,8 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 {
 	try
 	{	
-	wstring default_save_folder = wpath(hal::config().default_save_folder_).native_file_string();
-	wstring default_move_folder = wpath(hal::config().default_move_folder_).native_file_string();
+	wstring default_save_folder = wpath(hal::config().default_save_folder_).wstring();
+	wstring default_move_folder = wpath(hal::config().default_move_folder_).wstring();
 	bool use_move_to = hal::config().use_move_to_;
 	bool startPaused = false;
 	bool managed = false;
