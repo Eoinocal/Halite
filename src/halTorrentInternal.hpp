@@ -286,7 +286,6 @@ public:
 	const uuid& id() const;
 
 	void set_managed(bool m);
-	bool is_managed() const;
 
 	void set_superseeding(bool ss);
 	bool get_superseeding(bool actually=false) const;

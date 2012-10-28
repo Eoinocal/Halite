@@ -1088,17 +1088,6 @@ void bit::torrent::adjust_queue_position(bit::queue_adjustments adjust)
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::adjust_queue_position")
 }
 
-bool bit::torrent::get_managed() const
-{
-	try {
-	
-	return ptr->is_managed();
-	
-	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_managed")
-	
-	return false;
-}
-
 void bit::torrent::set_managed(bool m)
 {
 	try {

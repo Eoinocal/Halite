@@ -108,7 +108,7 @@ void torrent_internal::adjust_queue_position(bit::queue_adjustments adjust)
 {
 	upgrade_lock l(mutex_);
 
-	if (in_session(l) && is_managed(l))
+	if (in_session(l) && managed_)
 	{
 		switch (adjust)
 		{
@@ -141,25 +141,6 @@ void torrent_internal::set_managed(bool m)
 	managed_ = m;
 	
 	if (in_session(l)) handle_.auto_managed(managed_);
-}
-
-bool torrent_internal::is_managed() const
-{
-	upgrade_lock l(mutex_);
-
-	return is_managed(l);
-}
-
-bool torrent_internal::is_managed(upgrade_lock& l) const
-{
-	if (in_session(l))
-	{
-		upgrade_to_unique_lock up_l(l);
-			
-		managed_ = handle_.is_auto_managed();
-	}
-
-	return managed_;
 }
 
 bool torrent_internal::is_finished() const
@@ -488,7 +469,7 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 			active_duration_, seeding_duration_, 
 			start_time_, finish_time_, 
 			queue_position_,
-			is_managed(l)));
+			status_cache(l).auto_managed));
 
 		}
 		catch (const libt::invalid_handle&)

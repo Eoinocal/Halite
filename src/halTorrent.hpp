@@ -218,7 +218,6 @@ public:
 		void set_file_priorities(const vec_int_pair&);
 
 		void set_managed(bool);
-		bool get_managed() const;
 
 		void set_superseeding(bool);
 		bool get_superseeding() const;
@@ -254,8 +253,8 @@ public:
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(std::vector<tracker_detail>, const std::vector<tracker_detail>&, 
 			class_type, get_trackers, set_trackers, trackers);
 
-		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(bool, bool, class_type, 
-			get_managed, set_managed, managed);
+		STLSOFT_METHOD_PROPERTY_SET_EXTERNAL(bool, class_type, 
+			set_managed, managed);
 
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(bool, bool, class_type, 
 			get_superseeding, set_superseeding, superseeding);
