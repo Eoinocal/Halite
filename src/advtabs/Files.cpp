@@ -230,20 +230,21 @@ LRESULT FileTreeView::OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&)
 	HAL_DEV_MSG(hal::wform(L"OnEndLabelEdit(int i = %1%)") % i);
 
 	NMTVDISPINFO* pdi = (NMTVDISPINFO*)pnmh;
-	wstring str;
 
-/*	if (pdi->item.iItem < static_cast<int>(files_.size()))
-	{
-		if (pdi->item.mask & LVIF_TEXT)
+	if (pdi->item.pszText)
+	{	
+		wstring str;
+
+	/*	if (pdi->item.iItem < static_cast<int>(files_.size()))
 		{
-			str = files_[pdi->item.iItem].to_wstring(pdi->item.iSubItem);
+			if (pdi->item.mask & LVIF_TEXT)
+			{
+				str = files_[pdi->item.iItem].to_wstring(pdi->item.iSubItem);
+			}
 		}
+	*/	
+		HAL_DEV_MSG(hal::wform(L"state: %1%, text: %2%-%3%") % pdi->item.state % str % pdi->item.pszText);
 	}
-*/	
-	HAL_DEV_MSG(hal::wform(L"state: %1%, text: %2%-%3%") % pdi->item.state % str % pdi->item.pszText);
-
-
-
 	lock_ptr_.reset();
 
 	return false;

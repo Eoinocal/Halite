@@ -29,6 +29,8 @@ namespace hal
 
 bool remove_empty_directories_recur(const fs::path& p, std::vector<fs::path>& dirs)
 {
+	if (!fs::exists(p)) return false;
+
 	bool ret = true;
 
 	for (fs::directory_iterator i = fs::directory_iterator(p), e = fs::directory_iterator(); i != e; ++i)
@@ -41,11 +43,13 @@ bool remove_empty_directories_recur(const fs::path& p, std::vector<fs::path>& di
 				ret = false;
 		}
 	}	
+
 	if (ret)
 	{
 		HAL_DEV_MSG(wform(L"Removing directory: %1%") % p.wstring());
 		dirs.push_back(p);
 	}
+
 	return ret;
 }
 	

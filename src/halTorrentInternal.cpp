@@ -254,7 +254,7 @@ void torrent_internal::set_name(const wstring& n)
 	}
 
 	init_file_details(l);
-	//apply_file_names(l);
+	apply_file_names(l);
 }
 
 const uuid& torrent_internal::id() const
@@ -1239,7 +1239,7 @@ void torrent_internal::output_torrent_debug_details(upgrade_lock& l) const
 	};
 	
 	HAL_DEV_MSG(wform(L" >> State			%1%") % state_str);
-	HAL_DEV_MSG(wform(L" >> Paused in session	%1%") % handle_.is_paused());
+//	HAL_DEV_MSG(wform(L" >> Paused in session	%1%") % handle_.is_paused());
 //	HAL_DEV_MSG(wform(L" >> Error state		%1%") % check_error());
 
 	}
