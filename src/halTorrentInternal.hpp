@@ -288,7 +288,7 @@ public:
 	void set_managed(bool m);
 
 	void set_superseeding(bool ss);
-	bool get_superseeding(bool actually=false) const;
+	bool get_superseeding() const;
 	
 	const wpath& save_directory() const;
 	
@@ -787,7 +787,7 @@ private:
 	bool is_managed(upgrade_lock& l) const;	
 	bool is_active(upgrade_lock& l) const;	
 	bool is_finished(upgrade_lock& l) const;
-	bool get_superseeding(bool actually, upgrade_lock& l) const;
+	bool get_superseeding(upgrade_lock& l) const;
 
 	unsigned state(upgrade_lock& l) const;
 	void state(upgrade_lock& l, unsigned s);
@@ -862,12 +862,8 @@ private:
 
 	boost::uuids::uuid uuid_;
 	libt::sha1_hash hash_;
-	wstring hash_str_;
-
-	bool superseeding_;
-	
+	wstring hash_str_;	
 	std::string magnet_uri_;
-
 
 	// Cached values	
 	mutable boost::int64_t total_uploaded_;
@@ -883,6 +879,7 @@ private:
 	mutable float progress_;	
 	mutable int queue_position_;
 	mutable bool managed_;
+	mutable bool superseeding_;
 	
 	mutable boost::intrusive_ptr<libt::torrent_info> info_memory_;
 	mutable libt::torrent_status status_memory_;

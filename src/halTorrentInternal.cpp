@@ -304,22 +304,16 @@ void torrent_internal::set_superseeding(bool ss)
 	apply_superseeding(l);
 }
 
-bool torrent_internal::get_superseeding(bool actually) const
+bool torrent_internal::get_superseeding() const
 {
 	upgrade_lock l(mutex_);
 
-	return get_superseeding(actually, l);
+	return get_superseeding(l);
 }
 
-bool torrent_internal::get_superseeding(bool actually, upgrade_lock& l) const
+bool torrent_internal::get_superseeding(upgrade_lock& l) const
 {
-	if (actually)
-		if (in_session(l))
-			return handle_.super_seeding();
-		else
-			return false;
-	else
-		return superseeding_;
+	return superseeding_;
 }
 
 wstring torrent_internal::check_error() const
@@ -433,6 +427,11 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 			payload_uploaded_.update(status_cache(l).total_payload_upload);
 			downloaded_.update(status_cache(l).total_download);
 			payload_downloaded_.update(status_cache(l).total_payload_download);
+
+			// just in case these were wrong
+
+			managed_ = status_cache(l).auto_managed;
+			superseeding_ = status_cache(l).super_seeding;
 		}
 		
 		if (is_active(l))
@@ -1135,7 +1134,7 @@ wstring torrent_internal::state_string(upgrade_lock& l) const
 			state_str = app().res_wstr(HAL_TORRENT_FINISHED);
 			break;
 		case libt::torrent_status::seeding:
-			if (!get_superseeding(true, l))
+			if (!get_superseeding(l))
 				state_str = app().res_wstr(HAL_TORRENT_SEEDING);
 			else
 				state_str = app().res_wstr(HAL_TORRENT_SUPERSEEDING);
