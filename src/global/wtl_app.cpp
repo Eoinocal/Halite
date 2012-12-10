@@ -187,7 +187,7 @@ std::wstring app_module::res_wstr(unsigned uID)
 	size_t size = ::LoadString(_Module.GetResourceInstance(), uID, str, static_cast<int>(str.size()));
 	assert(size != 0);
 	
-	return str;
+	return str.str();
 }
 
 std::pair<void*,size_t> app_module::res_find_lock(unsigned name, unsigned type)

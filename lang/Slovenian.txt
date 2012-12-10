@@ -358,7 +358,7 @@
 "URL Seed %2%, %3%. (%1%)" ---> "URL sejalca %2%, %3%. (%1%)"
 "URL" ---> "URL"
 "UnPlug and Play" ---> "UPNP"
-"Unicode exception: %1%." ---> "Unicode izjema: %1%."
+"Unicode exception: %1%." --->  ??? 
 "Unmanaged" --->  ??? 
 "Up" --->  ??? 
 "Update in:" --->  ??? 

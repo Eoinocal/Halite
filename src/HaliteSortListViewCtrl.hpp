@@ -562,7 +562,7 @@ protected:
 		>
 	> pair_container;
 
-	typedef typename pair_container::index_iterator<by_key>::type key_iterator;
+//	typedef typename pair_container::index_iterator<by_key>::type key_iterator;
 
 	int set_key(DataType key)
 	{
@@ -588,7 +588,7 @@ protected:
 	{
 		ATLASSERT(::IsWindow(m_hWnd));
 
-		key_iterator i = pair_container_.get<by_key>().find(key);
+		auto i = pair_container_.get<by_key>().find(key);
 		boost::optional<size_t> index = index_from_key(key);
 
 		if (index)
@@ -666,7 +666,7 @@ protected:
 
 	boost::optional<size_t> index_from_key(const DataType& key)
 	{
-		key_iterator i = pair_container_.get<by_key>().find(key);	
+		auto i = pair_container_.get<by_key>().find(key);	
 		
 		if (i != pair_container_.get<by_key>().end())
 		{
@@ -690,7 +690,7 @@ protected:
 	
 	void erase_from_list(const DataType& str)
 	{
-		key_iterator i = pair_container_.get<by_key>().find(str);
+		auto i = pair_container_.get<by_key>().find(str);
 		pair_container::iterator i_pos = pair_container_.project<0>(i);
 
 		if (i != pair_container_.get<by_key>().end())
