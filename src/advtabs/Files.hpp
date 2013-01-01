@@ -119,15 +119,11 @@ public:
 		try
 		{
 		MSG_WM_DESTROY(OnDestroy)
-		MSG_WM_LBUTTONUP(OnLButtonUp)
 
 		COMMAND_RANGE_HANDLER_EX(ID_HAL_FILE_PRIORITY_0, ID_HAL_FILE_PRIORITY_7, OnMenuPriority)
 
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_GETDISPINFO, OnGetDispInfo)
 		REFLECTED_NOTIFY_CODE_HANDLER(SLVN_SORTCHANGED, OnSortChanged)
-		REFLECTED_NOTIFY_CODE_HANDLER(LVN_BEGINLABELEDIT, OnBeginLabelEdit)
-		REFLECTED_NOTIFY_CODE_HANDLER(LVN_ENDLABELEDIT, OnEndLabelEdit)
-		REFLECTED_NOTIFY_CODE_HANDLER(LVN_BEGINDRAG, OnBeginDrag)
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in FileListView MSG_MAP")
 
@@ -170,10 +166,6 @@ public:
 protected:	
 	LRESULT OnGetDispInfo(int, LPNMHDR pnmh, BOOL&);
 	LRESULT OnSortChanged(int, LPNMHDR pnmh, BOOL&);
-	LRESULT OnBeginLabelEdit(int i, LPNMHDR pnmh, BOOL&);
-	LRESULT OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&);
-	LRESULT OnBeginDrag(int i, LPNMHDR pnmh, BOOL&);
-	void OnLButtonUp(UINT nFlags, WTL::CPoint point);
 
 private:
 	boost::shared_ptr<hal::try_update_lock<list_class_t> > lock_ptr_;
@@ -213,9 +205,7 @@ public:
 
 		REFLECTED_NOTIFY_CODE_HANDLER(NM_RCLICK, OnRClick)
 		REFLECTED_NOTIFY_CODE_HANDLER(TVN_SELCHANGED, OnSelChanged)
-		REFLECTED_NOTIFY_CODE_HANDLER(TVN_BEGINLABELEDIT, OnBeginLabelEdit)
-		REFLECTED_NOTIFY_CODE_HANDLER(TVN_ENDLABELEDIT, OnEndLabelEdit)
-		
+
 		COMMAND_RANGE_HANDLER_EX(ID_HAL_FILE_PRIORITY_0, ID_HAL_FILE_PRIORITY_7, OnMenuPriority)
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in FileTreeView MSG_MAP")
@@ -228,11 +218,8 @@ public:
 	
 	LRESULT OnRClick(int i, LPNMHDR pnmh, BOOL&);
 	void OnMenuPriority(UINT, int, HWND);
-	LRESULT OnBeginLabelEdit(int i, LPNMHDR pnmh, BOOL&);
-	LRESULT OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&);
 	
-	wpath focused() { return focused_; }
-		
+	wpath focused() { return focused_; }		
 	void determineFocused();
 	
 protected:

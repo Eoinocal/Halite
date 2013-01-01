@@ -816,7 +816,6 @@ private:
 	}
 
 	void set_file_priority_cb(size_t i, int p, upgrade_lock& l);	
-	void changed_file_filename_cb(size_t i, upgrade_lock& l);
 
 	function<void ()> remove_callback_;
 	function<void (void)>& remove_callback(upgrade_lock& l) { return remove_callback_; }

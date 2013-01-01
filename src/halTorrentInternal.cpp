@@ -36,8 +36,7 @@ boost::optional<libt::session>* torrent_internal::the_session_ = 0;
 	hash_(0), \
 	superseeding_(false), \
 	files_(mutex_, \
-		bind(&torrent_internal::set_file_priority_cb, this, _1, _2, _3), \
-		bind(&torrent_internal::changed_file_filename_cb, this, _1, _2)) 
+		bind(&torrent_internal::set_file_priority_cb, this, _1, _2, _3)) 
 		
 
 torrent_internal::torrent_internal() :	
@@ -695,42 +694,10 @@ void torrent_internal::extract_filenames(upgrade_lock& l)
 			i != e; ++i)
 		{
 			fs::wpath p_orig = path_from_utf8((*i).filename());
-			fs::wpath p_new = torrent_file::add_hash(p_orig, hash_str_);
-
-			bool using_hash = true;
-
-			// Compensate for existing files outside HASHED subdir
-
-			if (!move_to_directory_.empty() && save_directory_ != move_to_directory_)
-			{
-				if (fs::exists(save_directory_/p_orig) && !fs::exists(save_directory_/p_new)) 	
-				{
-					if (!fs::exists((save_directory_/p_new).parent_path()))
-						fs::create_directories((save_directory_/p_new).parent_path());
-
-					fs::rename(save_directory_/p_orig, save_directory_/p_new);
-
-					event_log().post(shared_ptr<EventDetail>(new EventMsg(
-						wform(L"Existing File renamed: %1%") % p_orig, event_logger::info)));
-				}
-				else	 if (fs::exists(save_directory_/p_orig) && fs::exists(save_directory_/p_new)) 
-				{
-					HAL_DEV_MSG(wform(L"Two files exists, defaulting to using the new style"));
-				}
-			}
-			else
-			{
-				if (fs::exists(save_directory_/p_orig) && p_orig != p_new) 	
-				{
-					using_hash = false;
-
-					HAL_DEV_MSG(wform(L"Not using hashed directory") % p_orig);
-				}
-			}	
 
 			int p = file_priorities_.empty() ? 1 : file_priorities_[std::distance(info_memory(l)->begin_files(), i)];
 
-			files_.push_back(torrent_file(p_orig, using_hash, p), l);
+			files_.push_back(torrent_file(path_from_utf8((*i).filename()), false, p), l);
 		}
 		
 		// Primes the Files manager with default names.
@@ -938,11 +905,7 @@ void torrent_internal::apply_file_names(upgrade_lock& l)
 			extract_filenames(l);
 			want_recheck = true;
 		}
-		
-		// This shouldn't do any more than inform libtorrent about the hash subfolder
-		for (int i = 0; i < info_memory(l)->num_files(); ++i)
-			handle_.rename_file(i, files_[i].active_name().string());
-		
+				
 		if (want_recheck)
 			handle_.force_recheck();
 		
@@ -1259,23 +1222,4 @@ void torrent_internal::set_file_priority_cb(size_t i, int p, upgrade_lock& l)
 	}
 }
 	
-void torrent_internal::changed_file_filename_cb(size_t i, upgrade_lock& l)
-{		
-	if (i < file_details_memory_.size())
-	{
-		torrent_file::split_path_pair_t split = torrent_file::split_root(files_[i].completed_name());
-
-		{	upgrade_to_unique_lock up_l(l);
-			file_details_memory_[i].filename = split.second.filename();
-			file_details_memory_[i].branch = split.second.parent_path();
-
-			if (files_[i].is_finished())
-			{				
-				HAL_DEV_MSG(wform(L"Renaming file %1% to %2%") % i % files_[i].completed_name());
-				handle_.rename_file(static_cast<int>(i), files_[i].completed_name().string());
-			}
-		}
-	}
-}
-
 };

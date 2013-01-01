@@ -47,13 +47,13 @@ public:
 			return split_path_pair_t(); 
 	}
 
-	static fs::wpath add_hash(const fs::wpath& p_orig, const std::wstring& hash)
+/*	static fs::wpath add_hash(const fs::wpath& p_orig, const std::wstring& hash)
 	{
 		split_path_pair_t split = split_root(p_orig);
 
 		return fs::wpath(split.first) / hash / split.second;
 	}	
-	
+*/	
 	static fs::wpath change_root_name(const fs::wpath& p_orig, const std::wstring& root)
 	{
 		split_path_pair_t split = split_root(p_orig);
@@ -157,10 +157,7 @@ public:
 		if (file_.is_finished())
 			return completed_name();
 
-		if (file_.with_hash())
-			return torrent_file::add_hash(original_name_, hash_);
-		else
-			return original_name_; 
+		return original_name_; 
 	}
 		
 	const fs::wpath& completed_name() const { return file_.completed_name().empty() ? original_name_ : file_.completed_name(); }
@@ -193,10 +190,9 @@ public:
 	typedef function<void (size_t, int, upgrade_lock&)> set_priority_fn;
 	typedef function<void (size_t, upgrade_lock&)> changed_filename_fn;
 
-	torrent_files(boost::shared_mutex& m, set_priority_fn sp, changed_filename_fn cf) :
+	torrent_files(boost::shared_mutex& m, set_priority_fn sp) :
 		mutex_(m),
-		set_priority_fn_(sp),
-		changed_filename_fn_(cf)
+		set_priority_fn_(sp)
 	{}
 
 	void set_file_priorities(std::vector<int> file_indices, int priority, upgrade_lock& l)
@@ -267,7 +263,9 @@ public:
 	}
 
 	void set_file_finished(size_t i, upgrade_lock& l)
-	{
+	{		
+		HAL_DEV_MSG(hal::wform(L"Setting file finished"));
+
 		torrent_file_by_random::iterator file_i = files_.get<by_random>().begin() + i; 
 
 		torrent_file tmp_file = *(file_i);
@@ -277,7 +275,7 @@ public:
 			files_.get<by_random>().replace(file_i, tmp_file);
 		}
 
-		changed_filename_fn_(i, l);
+//		changed_filename_fn_(i, l);
 	}
 
 	void change_filename(size_t i, const fs::wpath& fn)
@@ -289,7 +287,7 @@ public:
 
 	void change_filename(size_t i, const fs::wpath& fn, upgrade_lock& l)
 	{
-		torrent_file_by_random::iterator file_i = files_.get<by_random>().begin() + i; 
+/*		torrent_file_by_random::iterator file_i = files_.get<by_random>().begin() + i; 
 
 		torrent_file tmp_file = *(file_i);
 		tmp_file.change_filename(fn);
@@ -299,10 +297,12 @@ public:
 		}
 
 		changed_filename_fn_(i, l);
-	}
+*/	}
 
 	const torrent_file_proxy operator[](size_t n) const
 	{
+		HAL_DEV_MSG(hal::wform(L"Returning file proxy"));
+
 		return torrent_file_proxy(files_.get<by_random>()[n], hash_, 
 			path_from_utf8(libt_orig_files_.at(static_cast<int>(n)).path), path_from_utf8(libt_orig_files_.at(static_cast<int>(n)).path));
 	}
@@ -316,7 +316,6 @@ public:
 
 private:
 	set_priority_fn set_priority_fn_;
-	changed_filename_fn changed_filename_fn_;
 
 	boost::shared_mutex& mutex_;
 	torrent_file_index_impl_t files_;

@@ -25,7 +25,7 @@ HWND FileListView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowNa
 	DWORD dwStyle, DWORD dwExStyle,
 	ATL::_U_MENUorID MenuOrID, LPVOID lpCreateParam)
 {
-	HWND hwnd = list_class_t::Create(hWndParent, rect.m_lpRect, szWindowName, dwStyle|LVS_OWNERDATA|LVS_EDITLABELS, dwExStyle, MenuOrID.m_hMenu, lpCreateParam);
+	HWND hwnd = list_class_t::Create(hWndParent, rect.m_lpRect, szWindowName, dwStyle|LVS_OWNERDATA, dwExStyle, MenuOrID.m_hMenu, lpCreateParam);
 	assert(hwnd);
 	
 	WTL::CMenuHandle menu;
@@ -113,77 +113,6 @@ LRESULT FileListView::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 	return 0;
 }
 
-LRESULT FileListView::OnBeginLabelEdit(int i, LPNMHDR pnmh, BOOL&)
-{		
-	HAL_DEV_MSG(hal::wform(L"OnBeginLabelEdit(int i = %1%)") % i);
-
-	lock_ptr_.reset(new hal::try_update_lock<list_class_t>(this));
-	if (*lock_ptr_) 
-	{	
-		NMLVDISPINFO* nmlv = (NMLVDISPINFO*)pnmh;
-		
-		HAL_DEV_MSG(hal::wform(L"LabelEdit Locked!") % i);
-	}
-
-	return false;
-}
-
-LRESULT FileListView::OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&)
-{	
-	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
-
-	if (pdi->item.iItem < static_cast<int>(files_.size()) && pdi->item.mask & LVIF_TEXT)
-	{
-		wstring str = files_[pdi->item.iItem].to_wstring(pdi->item.iSubItem);
-		
-		HAL_DEV_MSG(hal::wform(L"iItem: %1%, Order: %2%, text: %3%, orig: %4%") 
-			% pdi->item.iItem % files_[pdi->item.iItem].order() % pdi->item.pszText % str);
-
-		if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused()))
-		{
-			wpath old_name = t.files()[files_[pdi->item.iItem].order()].name;
-			t.files()[files_[pdi->item.iItem].order()].name = old_name.parent_path()/wstring(pdi->item.pszText);
-		}
-	}
-
-	lock_ptr_.reset();
-	HAL_DEV_MSG(hal::wform(L"OnEndLabelEdit(int i = %1%) Unlocked!") % i);
-
-	return false;
-}
-
-LRESULT FileListView::OnBeginDrag(int i, LPNMHDR pnmh, BOOL&)
-{		
-	HAL_DEV_MSG(hal::wform(L"OnBeginDrag(int i = %1%)") % i);
-
-	lock_ptr_.reset(new hal::try_update_lock<list_class_t>(this));
-	if (*lock_ptr_) 
-	{	
-		NMLVDISPINFO* nmlv = (NMLVDISPINFO*)pnmh;
-		
-		HAL_DEV_MSG(hal::wform(L"OnBeginDrag(int i = %1%)") % i);
-		
-		cursor_.Attach(::SetCursor(::LoadCursor(NULL, IDC_HAND)));
-
-		SetCapture();
-	}
-
-	return false;
-}
-
-void FileListView::OnLButtonUp(UINT nFlags, WTL::CPoint point)
-{	
-	HAL_DEV_MSG(hal::wform(L"OnLButtonUp(int p = %1%, %2%)") % point.x % point.y);
-
-//	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
-
-	if (!cursor_.IsNull())
-		::SetCursor(cursor_.Detach());
-
-	lock_ptr_.reset();
-	ReleaseCapture();
-}
-
 LRESULT FileListView::OnSortChanged(int, LPNMHDR pnmh, BOOL&)
 {
 	do_ui_update_();
@@ -194,7 +123,7 @@ LRESULT FileListView::OnSortChanged(int, LPNMHDR pnmh, BOOL&)
 HWND FileTreeView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowName, DWORD dwStyle, DWORD dwExStyle,
 	ATL::_U_MENUorID MenuOrID, LPVOID lpCreateParam)
 {
-	HWND hwnd = treeClass::Create(hWndParent, (RECT&)rect.m_lpRect, szWindowName, dwStyle|TVS_EDITLABELS, dwExStyle, (UINT)MenuOrID.m_hMenu, lpCreateParam);
+	HWND hwnd = treeClass::Create(hWndParent, (RECT&)rect.m_lpRect, szWindowName, dwStyle, dwExStyle, (UINT)MenuOrID.m_hMenu, lpCreateParam);
 	assert(hwnd);
 	
 	WTL::CMenuHandle menu;
@@ -204,50 +133,6 @@ HWND FileTreeView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowNa
 	menu_.Attach(menu.GetSubMenu(0));
 	
 	return hwnd;
-}
-
-LRESULT FileTreeView::OnBeginLabelEdit(int i, LPNMHDR pnmh, BOOL&)
-{		
-	HAL_DEV_MSG(hal::wform(L"OnBeginLabelEdit(int i = %1%)") % i);
-
-	lock_ptr_.reset(new hal::try_update_lock<this_class_t>(this));
-	if (*lock_ptr_) 
-	{	
-		NMTVDISPINFO* pdi = (NMTVDISPINFO*)pnmh;;
-		
-		HAL_DEV_MSG(hal::wform(L"OnBeginLabelEdit(int i = %1%)") % i);
-
-		return false;
-	}
-
-	//
-
-	return false;
-}
-
-LRESULT FileTreeView::OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&)
-{	
-	HAL_DEV_MSG(hal::wform(L"OnEndLabelEdit(int i = %1%)") % i);
-
-	NMTVDISPINFO* pdi = (NMTVDISPINFO*)pnmh;
-
-	if (pdi->item.pszText)
-	{	
-		wstring str;
-
-	/*	if (pdi->item.iItem < static_cast<int>(files_.size()))
-		{
-			if (pdi->item.mask & LVIF_TEXT)
-			{
-				str = files_[pdi->item.iItem].to_wstring(pdi->item.iSubItem);
-			}
-		}
-	*/	
-		HAL_DEV_MSG(hal::wform(L"state: %1%, text: %2%-%3%") % pdi->item.state % str % pdi->item.pszText);
-	}
-	lock_ptr_.reset();
-
-	return false;
 }
 
 LRESULT FileTreeView::OnRClick(int i, LPNMHDR pnmh, BOOL&)

@@ -634,10 +634,10 @@ void bit_impl::alert_handler()
 		bit_impl_.signals.torrent_completed(get(a.handle)->name());
 	}
 
-	void operator()(libt::storage_moved_alert  const& a) const
+	void operator()(libt::storage_moved_alert const& a) const
 	{
 		event_log().post(shared_ptr<EventDetail>(
-			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED)) 
+			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_STOREAGE_MOVED)) 
 					% get(a.handle)->name()), 
 				event_logger::info, a.timestamp())));
 		
