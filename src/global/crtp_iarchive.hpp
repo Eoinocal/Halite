@@ -121,12 +121,19 @@ public:
 	void load(T& t)
 	{		
 		Base* ptr = static_cast<Base*>(this);
-		stream_ << ptr->load_value();
+		stream_.str(ptr->load_value());
 
 		basic_text_iprimitive<std::istream>::load(t);
 
 		stream_.clear();
 		stream_ << std::noboolalpha;
+	}
+	
+	template<>
+	void load(std::string& t)
+	{		
+		Base* ptr = static_cast<Base*>(this);
+		t = ptr->load_value();
 	}
 
 #	ifndef BOOST_NO_STD_WSTRING	
