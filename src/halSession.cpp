@@ -39,22 +39,45 @@ bit_impl::bit_impl() :
 	ip_filter_count_(0),
 	dht_on_(false)
 {
-	session_ = boost::in_place(libt::fingerprint(HALITE_FINGERPRINT));
+	session_ = boost::in_place(libt::fingerprint(HALITE_FINGERPRINT), 0, libt::alert::all_categories);
 
 	try
 	{
 
-	torrent_internal::set_the_session(&session_);
-		session_->session::set_alert_mask(libt::alert::all_categories);		
-	session_->add_extension(&libt::create_metadata_plugin);
-	session_->add_extension(&libt::create_ut_pex_plugin);
+	if (exists(hal::app().get_working_directory()/L"libtorrent.state"))
+	{
+		try
+		{
+			std::vector<char> in;			
+			boost::system::error_code ec;
+			int pos;
 
+			if (libt::load_file((hal::app().get_working_directory()/L"libtorrent.state").string(), in, ec) == 0)
+			{
+				libt::lazy_entry state;
+				libt::lazy_bdecode(&in[0], &in[0] + in.size(), state, ec, &pos);
+
+				session_->load_state(state);
+
+				hal::event_log().post(shared_ptr<hal::EventDetail>(
+					new hal::EventMsg(L"Loaded libtorrent State", hal::event_logger::info)));		
+			}
+		}		
+		catch(const std::exception& e)
+		{
+			event_log().post(shared_ptr<EventDetail>(
+				new EventStdException(event_logger::critical, e, L"Loading libtorrent State")));
+		}
+	}
 	
 	libt::session_settings s = session_->settings();
 	s.half_open_limit = 10;
+	s.ssl_listen = 0;
 	s.user_agent = string("Halite ") + HALITE_VERSION_STRING;
 	session_->set_settings(s);
-
+	
+	torrent_internal::set_the_session(&session_);
+	
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading BitTorrent.xml.", hal::event_logger::info)));		
 	bittorrent_ini_.load_data();
@@ -63,57 +86,7 @@ bit_impl::bit_impl() :
 	the_torrents_.load_from_ini();
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading done!", hal::event_logger::info)));
-	
-#	if 0
-	try
-	{						
-	if (fs::exists(hal::app().get_working_directory()/L"Torrents.xml"))
-	{
-		assert(false);
-		{
-		fs::wifstream ifs(hal::app().get_working_directory()/L"Torrents.xml");
-	
-		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Loading old Torrents.xml")));
-	
-		TorrentMap torrents;
-		boost::archive::xml_wiarchive ia(ifs);	
-		ia >> boost::serialization::make_nvp("torrents", torrents);
-		
-		the_torrents_ = torrents;
-		}
-		
-		event_log().post(shared_ptr<EventDetail>(new EventMsg(
-			hal::wform(L"Total %1%.") % the_torrents_.size())));				
-		
-		fs::rename(hal::app().get_working_directory()/L"Torrents.xml", hal::app().get_working_directory()/L"Torrents.xml.safe.to.delete");
 
-	}			
-	}
-	catch(const std::exception& e)
-	{
-		event_log().post(shared_ptr<EventDetail>(
-			new EventStdException(event_logger::fatal, e, L"Loading Old Torrents.xml")));
-	}		
-#	endif
-
-	if (exists(hal::app().get_working_directory()/L"DHTState.bin"))
-	{
-		try
-		{
-			std::vector<char> in;			
-			boost::system::error_code ec;
-			int pos;
-
-			if (libt::load_file((hal::app().get_working_directory()/L"DHTState.bin").string(), in, ec) == 0)
-				libt::lazy_bdecode(&in[0], &in[0] + in.size(), dht_state_, ec, &pos);
-		}		
-		catch(const std::exception& e)
-		{
-			event_log().post(shared_ptr<EventDetail>(
-				new EventStdException(event_logger::critical, e, L"Loading DHTState.bin")));
-		}
-	}
-	
 	//acquire_work_object();
 	start_alert_handler();
 
@@ -159,6 +132,352 @@ bit_impl::~bit_impl()
 	}	
 
 	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"~BitTorrent_impl")
+}
+
+bool bit_impl::listen_on(std::pair<int, int> const& range)
+{
+	try
+	{
+
+	boost::system::error_code ec;
+		
+	if (!session_->is_listening())
+	{
+		session_->listen_on(range, ec);
+		return !ec;
+	}
+	else
+	{
+		int port = session_->listen_port();
+			
+		if (port < range.first || port > range.second)
+		{				
+			session_->listen_on(range, ec);
+			return !ec;
+		}
+		else
+		{
+			signals.successful_listen();
+				
+			return true;
+		}
+	}
+		
+	}
+	catch (const std::exception& e)
+	{
+		event_log().post(shared_ptr<EventDetail>(
+			new EventStdException(event_logger::fatal, e, L"From bit::listen_on.")));
+
+		return false;
+	}
+	catch (...)
+	{
+		return false;
+	}
+}
+
+int bit_impl::is_listening_on() 
+{
+	if (!session_->is_listening())
+		return -1;	
+	else
+		return session_->listen_port();
+}
+
+void bit_impl::stop_listening()
+{
+	ensure_dht_off();
+	boost::system::error_code ec;
+	session_->listen_on(std::make_pair(0, 0), ec);
+}
+
+bool bit_impl::ensure_dht_on(const dht_settings& dht)
+{		
+	libt::dht_settings settings;
+	settings.max_peers_reply = dht.max_peers_reply;
+	settings.search_branching = dht.search_branching;
+//	settings.service_port = dht.service_port;
+	settings.max_fail_count = dht.max_fail_count;
+		
+//	HAL_DEV_MSG(hal::wform(L"Seleted DHT port = %1%") % settings.service_port);
+		
+	if (dht_settings_ != settings)
+	{
+		dht_settings_ = settings;
+		session_->set_dht_settings(dht_settings_);
+	}
+
+	if (!dht_on_)
+	{		
+		try
+		{
+		session_->start_dht();
+
+		// DTH state no longer saved!!!!!
+
+		//session_->load_state(dht_state_);
+
+		dht_on_ = true;
+		}
+		catch(...)
+		{}
+	}
+		return dht_on_;
+}
+
+void bit_impl::ensure_dht_off()
+{
+	if (dht_on_)
+	{
+		session_->stop_dht();		
+		dht_on_ = false;
+	}
+}
+
+void bit_impl::set_mapping(bool upnp, bool nat_pmp)
+{
+	upnp = true;
+
+	if (upnp)
+	{
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Starting UPnP mapping.")));
+
+		upnp_ = session_->start_upnp();
+	}
+	else
+	{
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Stopping UPnP mapping.")));
+
+		session_->stop_upnp();
+		upnp_ = NULL;
+	}
+
+	if (nat_pmp)
+	{
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Starting NAT-PMP mapping.")));
+
+		natpmp_ = session_->start_natpmp();
+	}
+	else
+	{
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Stopping NAT-PMP mapping.")));
+
+		session_->stop_natpmp();
+		natpmp_ = NULL;
+	}
+}
+
+std::wstring bit_impl::upnp_router_model()
+{
+	if (upnp_)
+		return to_wstr_shim(upnp_->router_model());
+	else
+		return L"UPnP not started";
+}
+
+void bit_impl::set_timeouts(int peers, int tracker)
+{
+	libt::session_settings settings = session_->settings();
+	settings.peer_connect_timeout = peers;
+	settings.tracker_completion_timeout = tracker;
+
+	session_->set_settings(settings);
+
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(
+		hal::wform(L"Set Timeouts, peer %1%, tracker %2%.") % peers % tracker)));
+}
+
+cache_settings bit_impl::get_cache_settings()
+{
+	libt::session_settings settings = session_->settings();
+	cache_settings cache;
+
+	cache.cache_size = settings.cache_size;
+	cache.cache_expiry = settings.cache_expiry;
+
+	return cache;
+}
+
+void bit_impl::set_cache_settings(const cache_settings& cache)
+{
+	libt::session_settings settings = session_->settings();
+
+	settings.cache_size = cache.cache_size;
+	settings.cache_expiry = cache.cache_expiry;
+
+	session_->set_settings(settings);
+
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(
+		hal::wform(L"Set cache parameters, %1% size and %2% expiry.") 
+			% settings.cache_size % settings.cache_expiry)));
+}
+
+queue_settings bit_impl::get_queue_settings()
+{		
+	libt::session_settings settings = session_->settings();
+	queue_settings queue;
+
+	queue.auto_manage_interval = settings.auto_manage_interval;
+	queue.active_downloads = settings.active_downloads;
+	queue.active_seeds = settings.active_seeds;
+	queue.seeds_hard_limit = settings.active_limit;
+	queue.seed_ratio_limit = settings.share_ratio_limit;
+	queue.seed_ratio_time_limit = settings.seed_time_ratio_limit;
+	queue.seed_time_limit = settings.seed_time_limit;
+	queue.dont_count_slow_torrents = settings.dont_count_slow_torrents;
+	queue.auto_scrape_min_interval = settings.auto_scrape_min_interval;
+	queue.auto_scrape_interval = settings.auto_scrape_interval;
+	queue.close_redundant_connections = settings.close_redundant_connections;
+
+	return queue;
+}
+
+void bit_impl::set_queue_settings(const queue_settings& queue)
+{
+	libt::session_settings settings = session_->settings();
+
+	settings.auto_manage_interval = queue.auto_manage_interval;
+	settings.active_downloads = queue.active_downloads;
+	settings.active_seeds = queue.active_seeds;
+	settings.active_limit = queue.seeds_hard_limit;
+	settings.share_ratio_limit = queue.seed_ratio_limit;
+	settings.seed_time_ratio_limit = queue.seed_ratio_time_limit;
+	settings.seed_time_limit = queue.seed_time_limit;
+	settings.dont_count_slow_torrents = queue.dont_count_slow_torrents;
+	settings.auto_scrape_min_interval = queue.auto_scrape_min_interval;
+	settings.auto_scrape_interval = queue.auto_scrape_interval;
+	settings.close_redundant_connections = queue.close_redundant_connections;
+
+	session_->set_settings(settings);
+
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(
+		hal::wform(L"Set queue parameters, %1% downloads and %2% active seeds.") 
+			% settings.active_downloads % settings.active_seeds)));
+}
+
+timeouts bit_impl::get_timeouts()
+{		
+	libt::session_settings settings = session_->settings();
+	timeouts times;
+
+	times.tracker_completion_timeout = settings.tracker_completion_timeout;
+	times.tracker_receive_timeout = settings.tracker_receive_timeout;
+	times.stop_tracker_timeout = settings.stop_tracker_timeout;
+
+	times.request_queue_time = boost::numeric_cast<float>(settings.request_queue_time);
+	times.piece_timeout = settings.piece_timeout;
+	times.min_reconnect_time = settings.min_reconnect_time;		
+
+	times.peer_timeout = settings.peer_timeout;
+	times.urlseed_timeout = settings.urlseed_timeout;
+	times.peer_connect_timeout = settings.peer_connect_timeout;
+	times.inactivity_timeout = settings.inactivity_timeout;
+	times.handshake_timeout = settings.handshake_timeout;
+
+	return times;
+}
+
+void bit_impl::set_timeouts(const timeouts& times)
+{
+	libt::session_settings settings = session_->settings();
+
+	settings.tracker_completion_timeout = times.tracker_completion_timeout;
+	settings.tracker_receive_timeout = times.tracker_receive_timeout;
+	settings.stop_tracker_timeout = times.stop_tracker_timeout;
+
+	settings.request_queue_time = boost::numeric_cast<int>(times.request_queue_time);
+	settings.piece_timeout = times.piece_timeout;
+	settings.min_reconnect_time = times.min_reconnect_time;		
+
+	settings.peer_timeout = times.peer_timeout;
+	settings.urlseed_timeout = times.urlseed_timeout;
+	settings.peer_connect_timeout = times.peer_connect_timeout;
+	settings.inactivity_timeout = times.inactivity_timeout;
+	settings.handshake_timeout = times.handshake_timeout;
+
+	session_->set_settings(settings);
+
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(
+		hal::wform(L"Set timeouts, peers- %1% secs, tracker- %2% secs.") 
+			% settings.peer_timeout % settings.tracker_receive_timeout)));
+}
+
+void bit_impl::set_session_limits(int maxConn, int maxUpload)
+{		
+	libt::session_settings s = session_->settings();
+
+	s.unchoke_slots_limit = maxUpload;
+	s.connections_limit = maxConn;
+
+	session_->set_settings(s);
+		
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(
+		hal::wform(L"Set connections totals %1% and uploads %2%.") 
+			% maxConn % maxUpload)));
+}
+
+void bit_impl::set_session_speed(float download, float upload)
+{
+	libt::session_settings s = session_->settings();
+
+	s.download_rate_limit = (download > 0) ? static_cast<int>(download*1024) : -1;
+	s.upload_rate_limit = (upload > 0) ? static_cast<int>(upload*1024) : -1;
+
+	session_->set_settings(s);
+		
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(
+		hal::wform(L"Set session rates at download %1% and upload %2%.") 
+			% s.download_rate_limit % s.upload_rate_limit)));
+}
+
+cache_details bit_impl::get_cache_details() const
+{
+	libt::cache_status cs = session_->get_cache_status();
+
+	return cache_details(cs.blocks_written, cs.writes, 
+		cs.blocks_read, cs.blocks_read_hit, cs.reads,
+		cs.cache_size, cs.read_cache_size);
+}
+
+bool bit_impl::ensure_ip_filter_on(progress_callback fn)
+{
+	try
+	{
+		
+	if (!ip_filter_loaded_)
+	{
+		ip_filter_load(fn);
+		ip_filter_loaded_ = true;
+	}
+		
+	if (!ip_filter_on_)
+	{
+		session_->set_ip_filter(ip_filter_);
+		ip_filter_on_ = true;
+		ip_filter_count();
+	}
+		
+	}
+	catch(const std::exception& e)
+	{		
+		hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
+			new hal::EventStdException(event_logger::critical, e, L"ensure_ip_filter_on"))); 
+
+		ensure_ip_filter_off();
+	}
+
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(L"IP filters on.")));	
+
+	return false;
+}
+
+void bit_impl::ensure_ip_filter_off()
+{
+	session_->set_ip_filter(libt::ip_filter());
+	ip_filter_on_ = false;
+		
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(L"IP filters off.")));	
 }
 
 void bit_impl::ip_filter_count()
