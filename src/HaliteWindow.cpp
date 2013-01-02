@@ -39,8 +39,8 @@ HaliteWindow::HaliteWindow(unsigned areYouMe = 0) :
 {
 	rect.top = 10;
 	rect.left = 10;
-	rect.bottom = 430;
-	rect.right = 620;
+	rect.bottom = 440;
+	rect.right = 744;
 	
 	load_from_ini();
 }

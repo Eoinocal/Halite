@@ -197,7 +197,10 @@ public:
 	
 	LRESULT onInitDialog(HWND, LPARAM)
 	{	
-		filesList_.Attach(GetDlgItem(HAL_NEWT_LISTFILES));	
+		filesList_.Attach(GetDlgItem(HAL_NEWT_LISTFILES));			
+
+		CtrlsInitialize();
+		CtrlsArrange();
 
 		return 0;
 	}
@@ -261,6 +264,9 @@ public:
 	{	
 		trackerList_.Attach(GetDlgItem(HAL_NEWT_LISTTRACKERS));	
 
+		CtrlsInitialize();
+		CtrlsArrange();
+
 		return 0;
 	}
 
@@ -307,6 +313,9 @@ public:
 	LRESULT onInitDialog(HWND, LPARAM)
 	{	
 		peersList_.Attach(GetDlgItem(HAL_NEWT_LISTPEERS));	
+
+		CtrlsInitialize();
+		CtrlsArrange();
 
 		return 0;
 	}
@@ -423,7 +432,7 @@ private:
 		::SendMessage(propTabs, TCM_ADJUSTRECT, false, (LPARAM)&rect);
 
 		::MoveWindow(GetActivePage(), rect.left, rect.top,
-		rect.right-rect.left, rect.bottom-rect.top, true);
+			rect.right-rect.left, rect.bottom-rect.top, true);
 	}
 
 	DetailsSheet fileSheet_;

@@ -29,8 +29,11 @@ LRESULT DetailsSheet::onInitDialog(HWND, LPARAM)
 	creator_ = L"Halite " + hal::app().res_wstr(HAL_VERSION_STRING);
 
 	pieceSize_ = 256;
+	
+	CtrlsInitialize();
+	CtrlsArrange();
 
-	BOOL retval =  DoDataExchange(false);
+	BOOL retval = DoDataExchange(false);
 	return 0;
 }
 
