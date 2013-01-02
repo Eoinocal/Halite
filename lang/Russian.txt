@@ -327,6 +327,7 @@
 "Torrent %1% metadata failed!" --->  ??? 
 "Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." ---> "Торрент %1% в паузе."
+"Torrent %1% storage moved." --->  ??? 
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Получено Торрент исключение (%1%): %2% от %3%."
 "Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Установки торрента по умолчанию"

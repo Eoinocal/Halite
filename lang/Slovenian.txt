@@ -327,6 +327,7 @@
 "Torrent %1% metadata failed!" --->  ??? 
 "Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." ---> "Torrent %1% je na pavzi."
+"Torrent %1% storage moved." --->  ??? 
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) zaznana izjema: %2% od %3%."
 "Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Privzete nastavitve torrenta:"
@@ -356,8 +357,8 @@
 "UPnP router model (if recognised)." --->  ??? 
 "UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" ---> "URL sejalca %2%, %3%. (%1%)"
-"URL" ---> "URL"
-"UnPlug and Play" ---> "UPNP"
+"URL" --->  ??? 
+"UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." --->  ??? 
 "Unmanaged" --->  ??? 
 "Up" --->  ??? 

@@ -327,6 +327,7 @@
 "Torrent %1% metadata failed!" --->  ??? 
 "Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." ---> "Torrent %1% en pause."
+"Torrent %1% storage moved." --->  ??? 
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent %1%, levée d'exception : %2% dans %3%."
 "Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Torrent par défaut"

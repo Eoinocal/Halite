@@ -327,6 +327,7 @@
 "Torrent %1% metadata failed!" --->  ??? 
 "Torrent %1% metadata recieved." --->  ??? 
 "Torrent %1% paused." ---> "Торент %1% паузира."
+"Torrent %1% storage moved." --->  ??? 
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Торент (%1%) изузетак успешно поправлјен: (%2%) у (%3%)."
 "Torrent Completed!" --->  ??? 
 "Torrent Defaults" ---> "Стандардна подешавања"

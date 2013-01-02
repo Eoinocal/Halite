@@ -90,9 +90,13 @@
                 <Control Id="InstallTitle" Type="Text" X="15" Y="15" Width="300" Height="15" Transparent="yes" NoPrefix="yes" Hidden="yes" Text="!(loc.VerifyReadyDlgInstallTitle)">
                     <Condition Action="show">NOT Installed</Condition>
                 </Control>
-                <Control Id="InstallText" Type="Text" X="25" Y="70" Width="320" Height="80" Hidden="yes" Text="!(loc.VerifyReadyDlgInstallText)">
+                <Control Id="InstallText" Type="Text" X="25" Y="70" Width="320" Height="60" Hidden="yes" Text="!(loc.VerifyReadyDlgInstallText)">
                     <Condition Action="show">NOT Installed</Condition>
                 </Control>
+
+              <Control Id="BackupConfigFiles" Type="CheckBox" X="20" Y="142" Width="290" Height="17" Hidden="yes" Property="BACKUPCONFIGFILES" CheckBoxValue="1" Text="Backup configuration files." >
+                <Condition Action="show">NOT Installed AND PRECONFIGCHANGESVERSION</Condition>
+              </Control>
 
               <Control Id="RegisterMagnetProtocol" Type="CheckBox" X="20" Y="160" Width="290" Height="17" Hidden="yes" Property="REGISTERMAGNETPROTOCOL" CheckBoxValue="1" Text="Register Halite as the magnet protocol handler." >
                 <Condition Action="show">NOT Installed</Condition>
@@ -102,13 +106,13 @@
                 <Condition Action="show">NOT Installed</Condition>
               </Control>
 		  
-		  <Control Id="DesktopShortcutCheckBox" Type="CheckBox" X="20" Y="196" Width="290" Height="17" Hidden="yes" Property="INSTALLDESKTOPSHORTCUT" CheckBoxValue="1" Text="Create a shortcut for this program on the desktop." >
-			  <Condition Action="show">NOT Installed</Condition>
-		  </Control>
+		          <Control Id="DesktopShortcutCheckBox" Type="CheckBox" X="20" Y="196" Width="290" Height="17" Hidden="yes" Property="INSTALLDESKTOPSHORTCUT" CheckBoxValue="1" Text="Create a shortcut for this program on the desktop." >
+			          <Condition Action="show">NOT Installed</Condition>
+		          </Control>
 
-		  <Control Id="AssociateTorrentCheckBox" Type="CheckBox" X="20" Y="214" Width="290" Height="17" Hidden="yes" Property="ASSOCIATETORRENTFILES" CheckBoxValue="1" Text="Associate '.torrent' files with Halite." >
-			  <Condition Action="show">NOT Installed</Condition>
-		  </Control>
+              <Control Id="AssociateTorrentCheckBox" Type="CheckBox" X="20" Y="214" Width="290" Height="17" Hidden="yes" Property="ASSOCIATETORRENTFILES" CheckBoxValue="1" Text="Associate '.torrent' files with Halite." >
+                <Condition Action="show">NOT Installed</Condition>
+              </Control>
 
 		  <Control Id="ChangeTitle" Type="Text" X="15" Y="15" Width="300" Height="15" Transparent="yes" NoPrefix="yes" Hidden="yes" Text="!(loc.VerifyReadyDlgChangeTitle)">
                     <Condition Action="show">WixUI_InstallMode = "Change"</Condition>
