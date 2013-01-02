@@ -153,6 +153,7 @@
 "Interesting" ---> "Интересиран"
 "Invalid torrent (%1%) from %2%." ---> "Неисправан торент (%1%) од (%2%)"
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Сачекај мало док се халите затвори, Кад се ова порука склони, онда је и халите затворен."
+"LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Језик (после промене, покрени халите наново)"
 "Limit the no. of half-open connections" ---> "Ограничи број полу отворених мрежних повеза"
 "List of Trackers." ---> "Листа свих трекера"
@@ -167,7 +168,7 @@
 "Managed Seeding" ---> "Нуди уређене торенте"
 "Managed Torrent" ---> "уређен торент"
 "Managed" ---> "Уређен"
-"Match the listen port number (recommended)." ---> "Користи стандартни порт (предложено)"
+"Match the listen port (now mandatory)" --->  ??? 
 "Max Size (MiB) :" ---> "Максимална величина (Миб)"
 "Max failures : " ---> "Максимално грешака"
 "Max replies : " ---> "Максималних одговора"

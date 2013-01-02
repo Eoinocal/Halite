@@ -153,6 +153,7 @@
 "Interesting" ---> "Zanimam"
 "Invalid torrent (%1%) from %2%." ---> "Neveljaven torrent (%1%) od %2%."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Prosimo počakajte nekaj sekund, da se program zapre."
+"LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Jezik (potrebuje ponovni zagon)"
 "Limit the no. of half-open connections" ---> "Omejitev števila pol-odprtih povezav"
 "List of Trackers." ---> "Seznam trackerjev"
@@ -167,7 +168,7 @@
 "Managed Seeding" --->  ??? 
 "Managed Torrent" --->  ??? 
 "Managed" --->  ??? 
-"Match the listen port number (recommended)." --->  ??? 
+"Match the listen port (now mandatory)" --->  ??? 
 "Max Size (MiB) :" --->  ??? 
 "Max failures : " --->  ??? 
 "Max replies : " --->  ??? 

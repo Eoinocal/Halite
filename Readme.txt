@@ -1,6 +1,6 @@
 ﻿Halite: A Free Open-Source BitTorrent client
 
-Version: 0.3.3.0 dev 1205 released 16th August 2010
+Version: 0.3.4 dev 1250 released 2nd January 2013
 
 WWW:   http://www.binarynotions.com/halite-bittorrent-client 
 Forum: http://www.binarynotions.com/forum.php
@@ -23,7 +23,7 @@ That said, it supports:
   + 'Managed torrent' queue system.
   + Disk cache support.
   + Trackerless torrents (using the Mainline kademlia DHT protocol).
-  + Support Magnet URIs.
+  + Magnet URIs.
   + Super-seeding.
   + uTorrent style multi-tracker announcement. 
   + IP filtering with eMule style ipfilter.dat import.
@@ -41,37 +41,26 @@ That said, it supports:
   + Compatible with UAC.
   + Shutdown scheduler.
 
-Requirements: Windows 2000, XP, Server 2003, Vista, Server 2008 or Win7*
-
-* I run Win 7 myself but still support is not 100%. Notably ipfilter 
-cause the UI to appear to freeze briefly after just starting Halite. 
-Also the shutdown scheduler can't actually switch off the PC unless 
-started with Admin privileges which isn't necessarily recommended 
-unless the feature is really needed.
+Requirements: 32 bit supports Windows XP and higher
+              64 bit supports Vista and higher
 
 Important note for people upgrading!
 
-When installing through the MSI file download, Halite will make a
-registry entry pointing it to use the local Application Data directory
-for all configuration files. Users should manually copy any existing
-files from an older Halite version to that directory. The recommended
-files and folder to copy are:
-
-Halite.xml
-BitTorrent.xml
-IPFilter.bin
-DHTState.bin
-resume/*
-torrents/*
-
-These changes were necessary to make Halite fully compatible with User
-Account Control. To revert to 'portable mode' whereby all config
-information will be saved alongside the executable simply delete that
-registry key (HKEY_CURRENT_USER\Software\Halite\path). If you only
-ever used the standalone 'zipped' download then this will not be 
-necessary.
+Old configuration files need to be reset. They will be backup by the 
+installer, unless you choose not too.
 
 Changes:
+
+ + from v 0.3.3 to 0.3.4:
+   1) Updated to libtorrent 0.16.6
+      - This is basically the monster change! Full credits to Arvid 
+        Norberg here for all the real work .
+   2) Dropped file renaming and those "hash" folders as they were
+      causing undue trouble.
+   3) Added support for LT Trackers
+   4) Updated to OpenSSL 1.0.1c
+   5) Updated to Boot 1.52
+   6) Compiled with Visual C++ 2012
 
  + from v 0.3.2.1 to 0.3.3.0:
    1) Announce to all trackers.

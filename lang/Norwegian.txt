@@ -153,6 +153,7 @@
 "Interesting" ---> "Interessant"
 "Invalid torrent (%1%) from %2%." ---> "Ugyldig torrent (%1%) fra %2%."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Det vil ta BitTorrent sesjonen et øyeblikk å stenges korrekt. Denne meldingen vil da forsvinne og programmet vil lukkes."
+"LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" --->  ??? 
 "Limit the no. of half-open connections" --->  ??? 
 "List of Trackers." ---> "Liste over trackere."
@@ -167,7 +168,7 @@
 "Managed Seeding" --->  ??? 
 "Managed Torrent" --->  ??? 
 "Managed" --->  ??? 
-"Match the listen port number (recommended)." --->  ??? 
+"Match the listen port (now mandatory)" --->  ??? 
 "Max Size (MiB) :" --->  ??? 
 "Max failures : " --->  ??? 
 "Max replies : " --->  ??? 

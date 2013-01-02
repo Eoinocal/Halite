@@ -153,6 +153,7 @@
 "Interesting" ---> "Ενδιαφέρον"
 "Invalid torrent (%1%) from %2%." ---> "Άκυρω torrent (%1%) από %2%."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Θα χρειαστεί λίγος χρόνος για να τερματίσουν οι συνδέσεις του BitTorrent. Αμέσως μετά, αυτό το μήνυμα θα εξαφανιστεί και το πρόγραμμα θα κλείσει."
+"LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Γλώσσα (χρειάζεται επανεκκίνηση)"
 "Limit the no. of half-open connections" ---> "Περιορισμός των μισο-ανοιγμένων συνδέσεων"
 "List of Trackers." ---> "Λίστα των Trackers."
@@ -167,7 +168,7 @@
 "Managed Seeding" --->  ??? 
 "Managed Torrent" --->  ??? 
 "Managed" --->  ??? 
-"Match the listen port number (recommended)." --->  ??? 
+"Match the listen port (now mandatory)" --->  ??? 
 "Max Size (MiB) :" --->  ??? 
 "Max failures : " --->  ??? 
 "Max replies : " --->  ??? 

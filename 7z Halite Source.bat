@@ -1,1 +1,1 @@
-"C:\Program Files\7-Zip\7zG.exe" a -r -t7z Halite.src.7z -mx=7 ./* -x!test -x!bin -x!.svn -x!.git* -x!*.msi -x!tools -x!*.7z -x!*.suo -x!*.ncb -x!*x64 -x!debug -x!Debug -x!release -x!"release logging" -x!"Release Small" -x!Release
+"C:\Program Files\7-Zip\7zG.exe" a -r -t7z Halite.src.7z -mx=7 ./* -x!test -x!bin -x!.svn -x!.git* -x!*.msi -x!*.sdf -x!tools -x!*.7z -x!*.suo -x!*.ncb -x!*x64 -x!debug -x!Debug -x!ipch -x!release -x!libx86_xp -x!libx64 -x!"release logging" -x!"Release Small" -x!Release

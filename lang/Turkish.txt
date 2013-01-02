@@ -153,6 +153,7 @@
 "Interesting" ---> "İlgileniyor"
 "Invalid torrent (%1%) from %2%." ---> "Geçersiz torrent (%1%) 'den %2%'ye."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Bu mesaj kaybolduktan ve program kapandıktan sonra Bittorrent oturumunun düzgün bir biçimde kapatılması biraz zaman alacaktır."
+"LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Dil (yeniden başlatma gerektirir)"
 "Limit the no. of half-open connections" --->  ??? 
 "List of Trackers." ---> "İzleyici Listesi."
@@ -167,7 +168,7 @@
 "Managed Seeding" --->  ??? 
 "Managed Torrent" --->  ??? 
 "Managed" --->  ??? 
-"Match the listen port number (recommended)." --->  ??? 
+"Match the listen port (now mandatory)" --->  ??? 
 "Max Size (MiB) :" --->  ??? 
 "Max failures : " --->  ??? 
 "Max replies : " --->  ??? 

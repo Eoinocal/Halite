@@ -72,7 +72,7 @@ public:
 
 		BOOST_FOREACH(boost::filesystem::path elem, branch)
 		{
-			TXML_LOG(boost::wformat(L" >> >> %1%") % from_utf8(elem));
+			TXML_LOG(boost::wformat(L" >> >> %1%") % elem.wstring());
 
 			if (elem == ".")
 			{}

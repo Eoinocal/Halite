@@ -153,6 +153,7 @@
 "Interesting" ---> "Interessante"
 "Invalid torrent (%1%) from %2%." ---> "Torrent inválido (%1%) do %2%."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Levará um momento até que a sessão de BitTorrent encerre completamente, essa mensagem desapareça e o programa encerre por completo."
+"LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Idioma (necessita reiniciar)"
 "Limit the no. of half-open connections" ---> "Limite o número de conexões meio-abertas"
 "List of Trackers." ---> "Lista de rastreadores."
@@ -167,7 +168,7 @@
 "Managed Seeding" --->  ??? 
 "Managed Torrent" --->  ??? 
 "Managed" --->  ??? 
-"Match the listen port number (recommended)." --->  ??? 
+"Match the listen port (now mandatory)" --->  ??? 
 "Max Size (MiB) :" --->  ??? 
 "Max failures : " --->  ??? 
 "Max replies : " --->  ??? 

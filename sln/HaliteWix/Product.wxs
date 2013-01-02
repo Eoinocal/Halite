@@ -3,7 +3,7 @@
 <?define VerGeneration = "0" ?>
 <?define VerMajor = "3" ?>
 <?define VerMinor = "4" ?>
-<?define VerBuild = "1231" ?>
+<?define VerBuild = "1250" ?>
 
 <?define FullGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor) Build $(var.VerBuild)" ?>
 <?define ShortGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor)" ?>
@@ -51,13 +51,12 @@
 			Platform="$(var.Platforms)"/>
 		
 		<Upgrade Id="$(var.UpgradeCode)">
-			<UpgradeVersion 
-				Minimum="0.3.0"
-				IncludeMinimum="yes"
-				Maximum="$(var.ShortGMmbVersion)"
+      <UpgradeVersion
+				Maximum="0.3.4"
 				IncludeMaximum="yes"
+				OnlyDetect="yes"
 				Language="1033"
-				Property="OLDERVERSIONBEINGUPGRADED"
+				Property="PRECONFIGCHANGESVERSION"
 			/>
 			<UpgradeVersion
 				Minimum="$(var.ShortGMmbVersion)"
@@ -65,13 +64,6 @@
 				OnlyDetect="yes"
 				Language="1033"
 				Property="NEWPRODUCTFOUND"
-			/>
-      <UpgradeVersion
-				Maximum="0.3.5"
-				IncludeMaximum="yes"
-				OnlyDetect="yes"
-				Language="1033"
-				Property="PRECONFIGCHANGESVERSION"
 			/>
 			<UpgradeVersion
 				Minimum="$(var.ShortGMmbVersion)"

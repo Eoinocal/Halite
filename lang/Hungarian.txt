@@ -153,6 +153,7 @@
 "Interesting" ---> "Érdekes"
 "Invalid torrent (%1%) from %2%." ---> "Invalid torrent (%1%) from %2%."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Kérlek várj, amíg a program szabályosan leáll. Ez pár pillanatig tart, utána ez az ablak is eltűnik."
+"LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Nyelv (újraindítást igényel)"
 "Limit the no. of half-open connections" ---> "Félig nyitott kapcsolatok maximális száma"
 "List of Trackers." ---> "Tracker Lista."
@@ -167,7 +168,7 @@
 "Managed Seeding" --->  ??? 
 "Managed Torrent" --->  ??? 
 "Managed" --->  ??? 
-"Match the listen port number (recommended)." --->  ??? 
+"Match the listen port (now mandatory)" --->  ??? 
 "Max Size (MiB) :" --->  ??? 
 "Max failures : " --->  ??? 
 "Max replies : " --->  ??? 

@@ -74,6 +74,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 //		MARGINS m = {20, 20, 0, 100};
 //		SetMargins(m);
 
+	hal::event_log().set_debug_logging(true);
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading Halite configuration ...")));
 	hal::config().load_from_ini();

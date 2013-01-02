@@ -153,6 +153,7 @@
 "Interesting" ---> "Zajímá nás"
 "Invalid torrent (%1%) from %2%." ---> "Neplatný torrent (%1%) z %2%."
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Program zůstane spuštěn a tato zpráva zobrazena, dokud nedojde k čistému ukončení BitTorrent relace, což může chvíli trvat."
+"LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Language (requires restart)"
 "Limit the no. of half-open connections" ---> "Omezit počet polootevřených spojení na:"
 "List of Trackers." ---> "Sezna trackerů."
@@ -167,7 +168,7 @@
 "Managed Seeding" ---> "Spravovaná sdílení"
 "Managed Torrent" ---> "Spravovaný torrent"
 "Managed" ---> "Spravováno"
-"Match the listen port number (recommended)." ---> "Stejný jako port naslouchání (doporučeno)"
+"Match the listen port (now mandatory)" --->  ??? 
 "Max Size (MiB) :" ---> "Max. velikost (MiB):"
 "Max failures : " ---> "Max. selhání:"
 "Max replies : " ---> "Max. odpovědí:"
