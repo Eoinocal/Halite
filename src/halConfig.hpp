@@ -225,8 +225,8 @@ struct cache_settings
 struct pe_settings
 {
 	pe_settings() :
-		encrypt_level(0),
-		prefer_rc4(false),
+		encrypt_level(2),
+		prefer_rc4(true),
 		conn_in_policy(1),
 		conn_out_policy(1)
 	{}
@@ -250,8 +250,8 @@ struct pe_settings
 struct connections
 {
 	connections() :
-		total(50),
-		uploads(10),
+		total(500),
+		uploads(100),
 		download_rate(-1),
 		upload_rate(-1)
 	{}
@@ -336,8 +336,7 @@ public:
 		using boost::serialization::make_nvp;
 		switch (version)
 		{
-		case 7:
-			
+		case 7:			
 		ar	& make_nvp("announce_all/trackers", announce_all_trackers_)
 			& make_nvp("announce_all/tiers", announce_all_tiers_)
 			& make_nvp("custom_interface/use", use_custom_interface_)
@@ -372,9 +371,13 @@ public:
 			& make_nvp("plugins/metadata", metadata_plugin_)
 			& make_nvp("plugins/ut_metadata", ut_metadata_plugin_)
 			& make_nvp("plugins/ut_pex", ut_pex_plugin_)
-			& make_nvp("plugins/smart_ban", smart_ban_plugin_);
+			& make_nvp("plugins/smart_ban", smart_ban_plugin_)
+			& make_nvp("plugins/lt_trackers", lt_trackers_plugin_);
 		break;
 
+		default:
+			break;
+			/*
 		case 4:
 		ar	& make_nvp("defaultMoveToFolder", default_move_folder_)
 			& make_nvp("useMoveTo", use_move_to_);
@@ -415,7 +418,7 @@ public:
 			& make_nvp("torrentDownRate", torrent_defaults_.download_rate)
 			& make_nvp("torrentUpRate", torrent_defaults_.upload_rate)
 			& make_nvp("defaultSaveFolder", default_save_folder_)
-			& make_nvp("savePrompt", save_prompt_);
+			& make_nvp("savePrompt", save_prompt_);*/
 		}
 	}
 	
@@ -476,6 +479,7 @@ private:
 	bool ut_metadata_plugin_;
 	bool ut_pex_plugin_;
 	bool smart_ban_plugin_;
+	bool lt_trackers_plugin_;
 
 	bool announce_all_trackers_;
 	bool announce_all_tiers_;	

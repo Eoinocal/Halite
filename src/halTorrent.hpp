@@ -309,6 +309,7 @@ public:
 	void start_ut_pex_plugin();
 	void start_ut_metadata_plugin();
 	void start_metadata_plugin();
+	void start_lt_trackers_plugin();
 
 	void set_mapping(bool upnp, bool nat_pmp);
 	std::wstring upnp_router_model();

@@ -603,6 +603,12 @@ public:
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Started metadata plugin.")));
 	}
 
+	void start_lt_trackers_plugin()
+	{
+		session_->add_extension(&libt::create_lt_trackers_plugin);
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Started lt tracker plugin.")));
+	}
+
 	void ip_v4_filter_block(boost::asio::ip::address_v4 first, boost::asio::ip::address_v4 last)
 	{
 		ip_filter_.add_rule(first, last, libt::ip_filter::blocked);

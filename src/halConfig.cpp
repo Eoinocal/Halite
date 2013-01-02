@@ -23,9 +23,9 @@ Config::Config() :
 	hal::IniBase<Config>("globals/bittorrent", "Config"),
 	globals_(),
 	torrent_defaults_(),
-	port_range_(6881,6881),
-	use_port_range_(false),
-	randomize_port_(false),
+	port_range_(10000,30000),
+	use_port_range_(true),
+	randomize_port_(true),
 	enable_dht_(true),
 	dht_settings_(),
 	dht_random_port_(0),
@@ -36,19 +36,20 @@ Config::Config() :
 	proxyPort(0),
 	use_move_to_(false),
 	save_prompt_(true),
-	enable_pe_(false),
+	enable_pe_(true),
 	pe_settings_(),
 	half_connections_(true),
 	half_connections_limit_(10),
 	mapping_upnp_(true),
 	mapping_nat_pmp_(false),
 	resolve_countries_(false),
-	metadata_plugin_(false),
+	metadata_plugin_(true),
 	announce_all_trackers_(true),
 	announce_all_tiers_(true),
-	ut_metadata_plugin_(false),
-	ut_pex_plugin_(false),
-	smart_ban_plugin_(false),
+	ut_metadata_plugin_(true),
+	ut_pex_plugin_(true),
+	smart_ban_plugin_(true),
+	lt_trackers_plugin_(true),
 	queue_settings_(bind(&hal::bit::set_queue_settings, &bittorrent::Instance(), _1))
 {
 	if (hal::app().get_my_documents())
@@ -148,6 +149,8 @@ bool Config::settingsThread()
 		bittorrent::Instance().start_ut_pex_plugin();
 	if (smart_ban_plugin_)
 		bittorrent::Instance().start_smart_ban_plugin();
+	if (lt_trackers_plugin_)
+		bittorrent::Instance().start_lt_trackers_plugin();
 
 	try
 	{		

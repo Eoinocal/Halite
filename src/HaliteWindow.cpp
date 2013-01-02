@@ -367,7 +367,7 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 	wstring default_move_folder = wpath(hal::config().default_move_folder_).wstring();
 	bool use_move_to = hal::config().use_move_to_;
 	bool startPaused = false;
-	bool managed = false;
+	bool managed = true;
 	hal::bit::allocations allocation_type = hal::bit::sparse_allocation;
 	
 	if (!boost::filesystem::exists(default_save_folder))

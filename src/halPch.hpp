@@ -129,6 +129,7 @@
 #	include <libtorrent/extensions/ut_pex.hpp>
 #	include <libtorrent/extensions/ut_metadata.hpp>
 #	include <libtorrent/extensions/smart_ban.hpp>
+#	include <libtorrent/extensions/lt_trackers.hpp>
 #pragma warning (pop) 
 
 #include "halTypes.hpp"

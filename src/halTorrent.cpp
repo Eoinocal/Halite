@@ -520,6 +520,11 @@ void bit::start_ut_metadata_plugin()
 	pimpl()->start_ut_metadata_plugin();
 }
 
+void bit::start_lt_trackers_plugin()
+{
+	pimpl()->start_lt_trackers_plugin();
+}
+
 void bit::start_metadata_plugin()
 {
 	pimpl()->start_metadata_plugin();
