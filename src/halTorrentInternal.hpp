@@ -434,7 +434,7 @@ public:
 	{
 		upgrade_lock l(mutex_);
 
-		if (in_session(l) && !is_finished() &&
+		if (in_session(l) && !is_finished(l) &&
 				s != path_from_utf8(handle_.save_path()))
 		{
 			upgrade_to_unique_lock up_l(l);
@@ -462,7 +462,7 @@ public:
 	{
 		upgrade_lock l(mutex_);
 
-		if (is_finished() && !m.empty())
+		if (is_finished(l) && !m.empty())
 		{
 			if (m != path_from_utf8(handle_.save_path()))
 			{

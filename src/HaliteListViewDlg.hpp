@@ -92,17 +92,26 @@ public:
 	void OnMoveTo(UINT, int, HWND hWnd)
 	{
 		LRESULT result = ::SendMessage(hWnd, BM_GETCHECK, 0, 0);
+		DoDataExchange(true);
 
 		if (result == BST_CHECKED)
 		{
 			::EnableWindow(GetDlgItem(HAL_ADDT_MOVETO_FOLDER), true);
 			::EnableWindow(GetDlgItem(HAL_ADDT_MOVETO_BROWSE), true);
+
+			if (moveToDirectory_.empty())
+			{
+				moveToDirectory_ = saveDirectory_;
+				
+				DoDataExchange(false);
+			}
 		}
 		else
 		{
 			::EnableWindow(GetDlgItem(HAL_ADDT_MOVETO_FOLDER), false);
 			::EnableWindow(GetDlgItem(HAL_ADDT_MOVETO_BROWSE), false);
 		}
+		
 	}
 	
 	void OnBrowse(UINT, int, HWND hWnd)
