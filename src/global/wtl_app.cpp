@@ -8,27 +8,17 @@
 
 #include <boost/array.hpp>
 #include <boost/optional.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/fstream.hpp>
 
 #include "wtl_app.hpp"
 #include "string_conv.hpp"
 
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/fstream.hpp>
-
 #define BOOST_UTF8_BEGIN_NAMESPACE \
     namespace boost { namespace filesystem { namespace detail {
-
 #define BOOST_UTF8_END_NAMESPACE }}}
 #define BOOST_UTF8_DECL BOOST_FILESYSTEM_DECL
-
 #include <boost/detail/utf8_codecvt_facet.hpp>
-
-#include <winstl/error/error_desc.hpp>
-#include <winstl/filesystem/current_directory.hpp>
-#include <winstl/shell/browse_for_folder.hpp>
-#include <winstl/shell/file_operations.hpp>
-#include <stlsoft/smartptr/scoped_handle.hpp>
-#include <winstl/shell/memory/functions.h>
 
 namespace hal
 {
@@ -110,25 +100,29 @@ void app_module::set_working_directory(const boost::filesystem::wpath& p)
 	pimpl_->working_directory_ = p; 
 }
 
+boost::optional<boost::filesystem::wpath> get_special_directory(DWORD csidl)
+{
+	LPITEMIDLIST iil;
+	HRESULT hr = ::SHGetSpecialFolderLocation(NULL, csidl, &iil);
+	std::wstring directory(MAX_PATH+1, L'\0');
+	  
+	if (FAILED(hr))
+	{
+		return boost::optional<boost::filesystem::wpath>();
+	}
+	else
+	{
+		::SHGetPathFromIDList(iil, &directory[0]);
+		::CoTaskMemFree(iil);
+		directory.resize(wcslen(directory.c_str()));
+		return directory;
+	}
+}
+
 const boost::optional<boost::filesystem::wpath>& app_module::get_local_appdata() const 
 { 
 	if (!pimpl_->local_appdata_)
-	{
-		wchar_t displayName[_MAX_PATH + 1];
-		LPITEMIDLIST iil;
-		HRESULT hr = ::SHGetSpecialFolderLocation(NULL, CSIDL_LOCAL_APPDATA, &iil);
-	  
-		if(FAILED(hr))
-		{
-		}
-		else
-		{
-			stlsoft::scoped_handle<void*> iil_(iil, winstl::SHMemFree);
-
-			::SHGetPathFromIDList(iil, displayName);
-			pimpl_->local_appdata_ = std::wstring(displayName);
-		}
-	}
+		pimpl_->local_appdata_ = get_special_directory(CSIDL_LOCAL_APPDATA);
 
 	return pimpl_->local_appdata_; 
 }
@@ -136,22 +130,7 @@ const boost::optional<boost::filesystem::wpath>& app_module::get_local_appdata()
 const boost::optional<boost::filesystem::wpath>& app_module::get_my_documents() const 
 { 
 	if (!pimpl_->local_my_doc_)
-	{
-		wchar_t displayName[_MAX_PATH + 1];
-		LPITEMIDLIST iil;
-		HRESULT hr = ::SHGetSpecialFolderLocation(NULL, CSIDL_MYDOCUMENTS, &iil);
-	  
-		if(FAILED(hr))
-		{
-		}
-		else
-		{
-			stlsoft::scoped_handle<void*> iil_(iil, winstl::SHMemFree);
-
-			::SHGetPathFromIDList(iil, displayName);
-			pimpl_->local_my_doc_ = std::wstring(displayName);
-		}
-	}
+		pimpl_->local_my_doc_ = get_special_directory(CSIDL_MYDOCUMENTS);
 
 	return pimpl_->local_my_doc_; 
 }
