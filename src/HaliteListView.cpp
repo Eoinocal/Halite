@@ -392,9 +392,9 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 	{
 		hal::bit::torrent t = hal::bittorrent::Instance().get(v.hash());
 
-		wpath save_dir = t.save_directory;
-		if (boost::filesystem::is_directory(save_dir/wpath(t.name)))
-			save_dir /= wpath(t.name);
+		auto save_dir = t.save_directory();
+		if (boost::filesystem::is_directory(save_dir/wpath(t.name())))
+			save_dir /= wpath(t.name());
 		HAL_DEV_MSG(hal::wform(L"Name %1%, Save dir: %2%.") % v.text() % save_dir);
 
 		unique_paths.insert(save_dir);
@@ -435,23 +435,20 @@ LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndC
 
 	if (hal::bit::torrent t = hal::bittorrent::Instance().get(list_value_type(*is_selected_begin()).hash()))
 	{
-		wstring saveDirectory = static_cast<path>(t.save_directory).wstring();
-		wstring moveToDirectory = static_cast<path>(t.move_to_directory).wstring();
+		auto saveDirectory = static_cast<path>(t.save_directory()).wstring();
+		auto moveToDirectory = static_cast<path>(t.move_to_directory()).wstring();
 
 		bool useMoveTo = !moveToDirectory.empty();
-		bool disableSaveDir = !t.in_session;
+		bool disableSaveDir = !t.in_session();
 
 		HaliteListViewAdjustDlg addTorrent(hal::app().res_wstr(HAL_ADDT_TITLE), saveDirectory, moveToDirectory, 
 			useMoveTo, disableSaveDir);	
 		
 		if (IDOK == addTorrent.DoModal())
 		{
-			if (!disableSaveDir) t.save_directory = saveDirectory;
+			if (!disableSaveDir) t.set_save_directory(saveDirectory);
 
-			if (useMoveTo)
-				t.move_to_directory = moveToDirectory;
-			else
-				t.move_to_directory = wstring();
+			t.set_move_to_directory(useMoveTo ? moveToDirectory : wstring());
 		}
 	}
 
@@ -475,7 +472,7 @@ LRESULT HaliteListViewCtrl::OnToggleSuperseeding(WORD wNotifyCode, WORD wID, HWN
 	BOOST_FOREACH(const hal::uuid& id, torrent_names)
 		if (hal::bit::torrent t = hal::bittorrent::Instance().get(id))
 		{
-			t.superseeding = !t.superseeding;
+			t.set_superseeding(!t.superseeding());
 		}
 
 	halite_window_.issueUiUpdate();
@@ -503,7 +500,7 @@ LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCt
 //	erase_based_on_set(torrent_names, false);
 
 	BOOST_FOREACH(const hal::uuid& id, torrent_names)
-		hal::bittorrent::Instance().get(id).managed = true;
+		hal::bittorrent::Instance().get(id).set_managed(true);
 //	}
 
 	halite_window_.issueUiUpdate();
@@ -531,7 +528,7 @@ LRESULT HaliteListViewCtrl::OnSetUnmanaged(WORD wNotifyCode, WORD wID, HWND hWnd
 //	erase_based_on_set(torrent_names, false);
 
 	BOOST_FOREACH(const hal::uuid& id, torrent_names)
-		hal::bittorrent::Instance().get(id).managed = false;
+		hal::bittorrent::Instance().get(id).set_managed(false);
 //	}
 
 	halite_window_.issueUiUpdate();

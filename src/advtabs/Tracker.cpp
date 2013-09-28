@@ -62,7 +62,7 @@ LRESULT AdvTrackerDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl
 	setLoginUiState();
 
 	if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused_torrent()))
-		t.tracker_login = make_pair(username_, password_);
+		t.set_tracker_login(username_, password_);
 	
 	return 0;
 }
@@ -74,7 +74,7 @@ void AdvTrackerDialog::focusChanged(const hal::torrent_details_ptr pT)
 		::EnableWindow(GetDlgItem(HAL_TRACKER_LOGINCHECK), true);
 		::EnableWindow(GetDlgItem(HAL_TRACKERLIST), true);
 
-		std::pair<wstring, wstring> details = hal::bittorrent::Instance().get(pT).tracker_login;
+		auto details = hal::bittorrent::Instance().get(pT).tracker_login();
 		
 		username_ = details.first;
 		password_ = details.second;
@@ -141,7 +141,7 @@ void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
 		password_.clear();
 		
 		if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused_torrent()))
-			t.tracker_login = make_pair(username_, password_);
+			t.set_tracker_login(username_, password_);
 		
 		DoDataExchange(false);		
 	}
@@ -154,7 +154,7 @@ void AdvTrackerDialog::onLoginApply(UINT, int, HWND)
 	HAL_DEV_MSG(hal::wform(L"Apply Tracker Login User: %1%, Pass: %2%") % username_ % password_ );
 
 	if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused_torrent()))
-		t.tracker_login = make_pair(username_, password_);
+		t.set_tracker_login(username_, password_);
 }
 
 void AdvTrackerDialog::onReannounce(UINT, int, HWND)
@@ -183,7 +183,7 @@ void AdvTrackerDialog::onReset(UINT, int, HWND)
 	{
 		t.reset_trackers();
 		
-		std::vector<hal::tracker_detail> trackers=t.trackers;
+		auto trackers = t.trackers();
 		m_list.DeleteAllItems();
 		
 		BOOST_FOREACH (const hal::tracker_detail& tracker, trackers)
@@ -214,7 +214,7 @@ void AdvTrackerDialog::onApply(UINT, int, HWND)
 	std::sort(trackers.begin(), trackers.end());
 		
 	if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused_torrent()))
-		t.trackers = trackers;
+		t.set_trackers(trackers);
 	
 	::EnableWindow(GetDlgItem(HAL_TRACKER_APPLY), false);
 }

@@ -892,7 +892,7 @@ bit::torrent::exec_around_ptr::proxy::~proxy()
 //	HAL_DEV_MSG(L"Dtor proxy");
 }
 
-const std::wstring bit::torrent::get_name() const
+const std::wstring bit::torrent::name() const
 {
 	try {
 	
@@ -921,7 +921,7 @@ void bit::torrent::add_web_seed(const wstring& url, bit::web_seed type)
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::add_web_seed()")
 }
 
-const uuid bit::torrent::get_uuid() const
+const uuid bit::torrent::uuid() const
 {
 	try {
 	
@@ -937,7 +937,7 @@ bit::torrent::files_proxy bit::torrent::files()
 	return bit::torrent::files_proxy(*this);
 }
 
-std::pair<int, int> bit::torrent::get_connection_limits() const
+std::pair<int, int> bit::torrent::connection_limits() const
 {
 	try {
 	
@@ -957,7 +957,7 @@ void bit::torrent::set_connection_limits(const std::pair<int, int>& l)
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_connection_limits")
 }
 
-std::pair<float, float> bit::torrent::get_rate_limits() const
+std::pair<float, float> bit::torrent::rate_limits() const
 {
 	try {
 	
@@ -977,7 +977,7 @@ void bit::torrent::set_rate_limits(const std::pair<float, float>& l)
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_rate_limits")
 }
 
-wpath bit::torrent::get_save_directory() const
+wpath bit::torrent::save_directory() const
 {
 	try {
 	
@@ -997,7 +997,7 @@ void bit::torrent::set_save_directory(const wpath& s)
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_save_directory")
 }
 
-wpath bit::torrent::get_move_to_directory() const
+wpath bit::torrent::move_to_directory() const
 {
 	try {
 	
@@ -1017,7 +1017,7 @@ void bit::torrent::set_move_to_directory(const wpath& m)
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_move_to_directory")
 }
 
-std::pair<wstring, wstring> bit::torrent::get_tracker_login() const
+std::pair<wstring, wstring> bit::torrent::tracker_login() const
 {
 	try {
 	
@@ -1037,7 +1037,7 @@ void bit::torrent::set_tracker_login(const std::pair<wstring, wstring>& p)
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_tracker_login")
 }
 
-bool bit::torrent::get_is_active() const
+bool bit::torrent::is_active() const
 {
 	try {
 	
@@ -1048,7 +1048,7 @@ bool bit::torrent::get_is_active() const
 	return L"";
 }
 
-bool bit::torrent::get_in_session() const
+bool bit::torrent::in_session() const
 {
 	try {
 	
@@ -1059,7 +1059,7 @@ bool bit::torrent::get_in_session() const
 	return L"";
 }
 
-std::vector<tracker_detail> bit::torrent::get_trackers() const
+std::vector<tracker_detail> bit::torrent::trackers() const
 {
 	try {
 	
@@ -1115,7 +1115,7 @@ void bit::torrent::set_managed(bool m)
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_managed")
 }
 
-bool bit::torrent::get_superseeding() const
+bool bit::torrent::superseeding() const
 {
 	try {
 	

@@ -49,7 +49,7 @@ void NewTorrent_TrackerListViewCtrl::uiUpdate(const hal::torrent_details_ptr pT)
 	{			
 		if (hal::try_update_lock<list_class_t> lock = hal::try_update_lock<list_class_t>(this)) 
 		{			
-			std::vector<hal::tracker_detail> trackers = t.trackers;
+			auto trackers = t.trackers();
 			DeleteAllItems();
 			
 			BOOST_FOREACH (const hal::tracker_detail& tracker, trackers)

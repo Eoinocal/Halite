@@ -10,7 +10,7 @@
 catch (const libt::invalid_handle&) \
 {\
 	event_log().post(shared_ptr<EventDetail>( \
-		new EventInvalidTorrent(event_logger::info, event_logger::invalid_torrent, get_uuid(), std::string(FUNCTION)))); \
+		new EventInvalidTorrent(event_logger::info, event_logger::invalid_torrent, uuid(), std::string(FUNCTION)))); \
 }\
 catch (const invalid_torrent& t) \
 { \
@@ -32,7 +32,7 @@ catch (const win32_exception& e) \
 catch (const std::exception& e) \
 { \
 	event_log().post(shared_ptr<EventDetail>( \
-		new EventTorrentException(event_logger::critical, event_logger::torrentException, std::string(e.what()), get_uuid(), std::string(FUNCTION)))); \
+		new EventTorrentException(event_logger::critical, event_logger::torrentException, std::string(e.what()), uuid(), std::string(FUNCTION)))); \
 } \
 catch(...) \
 { \

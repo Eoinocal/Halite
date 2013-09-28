@@ -48,6 +48,7 @@ extern WTL::CAppModule _Module;
 #	include <atldwm.h>
 
 #	include "AtlAutosizeDlg.h"
+#	include "CSSFileDialog.hpp"
 #pragma warning (pop)
 
 //#include <stlsoft/util/nulldef.h>

@@ -194,44 +194,49 @@ public:
 		torrent();
 		torrent(boost::shared_ptr<torrent_internal> p);
 
-		const std::wstring get_name() const;
+		const std::wstring name() const;
 		void set_name(const wstring&);
 
-		const uuid get_uuid() const;
+		const uuid uuid() const;
 
 //		float get_ratio() const;
 //		void set_ratio(float new_ratio);
 		
-		std::pair<int, int> get_connection_limits() const;
+		std::pair<int, int> connection_limits() const;
 		void set_connection_limits(const std::pair<int, int>&);
-		std::pair<float, float> get_rate_limits() const;
-		void set_rate_limits(const std::pair<float, float>&);
+		void set_connection_limits(int u, int d) { set_connection_limits(std::make_pair(u, d)); }
 
-		wpath get_save_directory() const;
+		std::pair<float, float> rate_limits() const;
+		void set_rate_limits(const std::pair<float, float>&);
+		void set_rate_limits(float u, float d) { set_rate_limits(std::make_pair(u, d)); }
+
+		wpath save_directory() const;
 		void set_save_directory(const wpath&);
-		wpath get_move_to_directory() const;
+		wpath move_to_directory() const;
 		void set_move_to_directory(const wpath&);
 
-		std::pair<wstring, wstring> get_tracker_login() const;
+		std::pair<wstring, wstring> tracker_login() const;
 		void set_tracker_login(const std::pair<wstring, wstring>&);
+		void set_tracker_login(const wstring& u, const wstring& p) { set_tracker_login(std::make_pair(u, p)); }
 
-		std::vector<tracker_detail> get_trackers() const;
+		std::vector<tracker_detail> trackers() const;
 		void set_trackers(const std::vector<tracker_detail>&);
 
-		bool get_is_active() const;
-		bool get_in_session() const;
-
+		bool is_active() const;
+		bool in_session() const;
+		
 		void set_file_priorities(const vec_int_pair&);
+		void set_file_priorities(const std::vector<int>& i, int p) { set_file_priorities(std::make_pair(i, p)); }
 
 		void set_managed(bool);
 
 		void set_superseeding(bool);
-		bool get_superseeding() const;
+		bool superseeding() const;
 
 		void add_web_seed(const wstring&, web_seed type);
 		
 	public:
-		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(const uuid, class_type, 
+/*		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(const uuid, class_type, 
 			get_uuid, uuid);
 
 		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(const wstring, const wstring&, class_type, 
@@ -269,7 +274,7 @@ public:
 
 		STLSOFT_METHOD_PROPERTY_SET_EXTERNAL(const vec_int_pair&, class_type, 
 			set_file_priorities, file_priorities);
-
+*/
 		void reset_trackers();
 		bool is_open() const;
 		void adjust_queue_position(bit::queue_adjustments adjust);

@@ -121,6 +121,8 @@ public:
 
 	bool IsEnhancedWinVer()
 	{
+#	pragma warning (push)
+#	pragma warning (disable : 4996)
 		OSVERSIONINFO ver;
 		ver.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 		if (! ::GetVersionEx(&ver) )
@@ -140,7 +142,9 @@ public:
 				 (ver.dwMinorVersion >= 90) )
 				return true;
 		}
-		return false;
+		return false;		
+
+#	pragma warning (pop)
 	}
 
 	INT_PTR DoModal(HWND hWndParent = ::GetActiveWindow())

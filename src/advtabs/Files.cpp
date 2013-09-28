@@ -80,7 +80,7 @@ void FileListView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;	
 
 	if (hal::bit::torrent t = hal::bittorrent::Instance().get(hal::bittorrent::Instance().torrentDetails().focused_torrent()))
-		t.file_priorities = std::pair<std::vector<int>, int>(indices, priority);
+		t.set_file_priorities(indices, priority);
 
 	do_ui_update_();
 }
@@ -198,7 +198,7 @@ void FileTreeView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;
 	
 	if (hal::bit::torrent t = hal::bittorrent::Instance().get(hal::bittorrent::Instance().torrentDetails().focused_torrent()))
-		t.file_priorities = std::pair<std::vector<int>, int>(indices, priority);
+		t.set_file_priorities(indices, priority);
 	
 	if (hal::try_update_lock<this_class_t> lock = hal::try_update_lock<this_class_t>(this)) 
 		do_ui_update_();
