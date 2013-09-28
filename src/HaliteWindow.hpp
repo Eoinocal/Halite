@@ -38,8 +38,6 @@
 #include "halIni.hpp"
 #include "halTorrent.hpp"
 
-#include <boost/signals.hpp>
-
 class HaliteDialog;
 class AdvHaliteDialog;
 

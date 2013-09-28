@@ -61,8 +61,7 @@ public:
 				
 			working_directory_ = exe_path_.parent_path();
 		}		
-		LocalFree(szArglist);	
-
+		LocalFree(szArglist);
 	}
 
 	friend class app_module;

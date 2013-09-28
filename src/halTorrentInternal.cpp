@@ -256,6 +256,24 @@ void torrent_internal::set_name(const wstring& n)
 	apply_file_names(l);
 }
 
+void torrent_internal::add_web_seed(const wstring& url, bit::web_seed type)
+{
+	upgrade_lock l(mutex_);
+	
+	if (type == bit::web_seed::url)
+	{
+		handle_.add_url_seed(hal::to_utf8(url));
+		
+		HAL_DEV_MSG(hal::wform(L"add_url_seed(%1%)") % url);
+	}
+	else if (type == bit::web_seed::http)
+	{
+		handle_.add_http_seed(hal::to_utf8(url));
+		
+		HAL_DEV_MSG(hal::wform(L"add_http_seed(%1%)") % url);
+	}
+}
+
 const uuid& torrent_internal::id() const
 { 
 	upgrade_lock l(mutex_);

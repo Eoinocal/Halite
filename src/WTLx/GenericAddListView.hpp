@@ -13,9 +13,6 @@
 
 #ifndef RC_INVOKED
 
-#include <boost/signals.hpp>
-#include <boost/function.hpp>
-
 #include "stdAfx.hpp"
 
 namespace WTLx

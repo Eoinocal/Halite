@@ -11,7 +11,6 @@
 #include <vector>
 #include <sstream>
 
-#include <boost/signals.hpp>
 #include <boost/function.hpp>
 
 #include <boost/static_assert.hpp>

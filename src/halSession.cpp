@@ -1189,25 +1189,25 @@ void bit_impl::alert_handler()
 	
 	void operator()(libt::block_finished_alert const& a) const
 	{
-		event_log().post(shared_ptr<EventDetail>(
+/*		event_log().post(shared_ptr<EventDetail>(
 			new EventGeneral(event_logger::debug, a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_BLOCK_FINISHED_ALERT))
 					% get(a.handle)->name()
 					% a.block_index
 					% a.piece_index)
 		)	);				
-	}
+*/	}
 	
 	void operator()(libt::block_downloading_alert const& a) const
 	{
-		event_log().post(shared_ptr<EventDetail>(
+/*		event_log().post(shared_ptr<EventDetail>(
 			new EventGeneral(event_logger::debug, a.timestamp(),
 				hal::wform(hal::app().res_wstr(HAL_BLOCK_DOWNLOADING_ALERT))
 					% get(a.handle)->name()
 					% a.block_index
 					% a.piece_index)
 		)	);				
-	}
+*/	}
 	
 	void operator()(libt::listen_failed_alert const& a) const
 	{

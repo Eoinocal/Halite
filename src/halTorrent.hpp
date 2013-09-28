@@ -102,6 +102,12 @@ public:
 		action_callback
 	};
 
+	enum web_seed
+	{
+		url = 0,
+		http
+	};
+
 	class null_torrent : public std::exception
 	{
 	public:
@@ -221,6 +227,8 @@ public:
 
 		void set_superseeding(bool);
 		bool get_superseeding() const;
+
+		void add_web_seed(const wstring&, web_seed type);
 		
 	public:
 		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(const uuid, class_type, 

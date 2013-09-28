@@ -18,7 +18,9 @@ bool PeerListView::SubclassWindow(HWND hwnd)
 	if(!list_class_t::SubclassWindow(hwnd))
 		return false;
 
-	InitialSetup();	
+	WTL::CMenuHandle menu;
+	BOOL menu_created = menu.LoadMenu(HAL_PEERS_MENU);
+	InitialSetup(menu);	
 	
 	std::vector<wstring> names;	
 	wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
@@ -26,13 +28,10 @@ bool PeerListView::SubclassWindow(HWND hwnd)
 	boost::split(names, column_names, boost::is_any_of(L";"));
 
 	//	Peer;			Country;			Download;		Upload;			Type;			Client,			Status"
-
 	array<int, 7> widths = {
 		100,				20,				70,				70,				70,				100,				200};
-
 	array<int, 7> order = {
 		0,				1,				2,				3,				4,				5,				6};
-
 	array<bool, 7> visible = {
 		true,			true,			true,			true,			true,			true,			true};
 
@@ -145,6 +144,12 @@ LRESULT PeerListView::OnSortChanged(int, LPNMHDR pnmh, BOOL&)
 	return 0;
 }
 
+LRESULT PeerListView::OnAddUrl(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{	
+	addUrl_();
+	return 0;
+}
+
 void AdvPeerDialog::uiUpdate(const hal::torrent_details_manager& tD)
 {
 	peerList_.uiUpdate(tD);
@@ -155,6 +160,62 @@ LRESULT AdvPeerDialog::OnInitDialog(HWND, LPARAM)
 	peerList_.SubclassWindow(GetDlgItem(HAL_PEERLIST));
 	
 	resize_class_t::DlgResize_Init(false, true, WS_CLIPCHILDREN);	
+
+	peerList_.attachAddUrlConnection([this] ()
+		{
+			if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused_torrent()))
+			{
+				t.add_web_seed(L"http://seeder.gaijin.lan/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seeder.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seedfr2.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seedfr3.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seednl.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seednl2.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seednl3.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seedrum.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seedrum2.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seedrum3.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seedrum3-1.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seeduk.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seeduk2.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seeduk3.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seeduk4.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seeduk5.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seeduk6.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seeduk7.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seeduk8.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seedus2.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seedus3.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seedus4.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seedus5.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				t.add_web_seed(L"http://seedus6.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::http);
+				
+				t.add_web_seed(L"http://seeder.gaijin.lan/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seeder.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seedfr2.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seedfr3.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seednl.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seednl2.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seednl3.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seedrum.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seedrum2.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seedrum3.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seedrum3-1.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seeduk.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seeduk2.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seeduk3.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seeduk4.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seeduk5.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seeduk6.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seeduk7.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seeduk8.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seedus2.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seedus3.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seedus4.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seedus5.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+				t.add_web_seed(L"http://seedus6.gaijinent.com/content/warthunder/1.35.32.3", hal::bit::web_seed::url);
+			}
+		});
 	
 	return 0;
 }

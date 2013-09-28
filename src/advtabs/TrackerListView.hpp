@@ -5,15 +5,12 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #define ID_TLVM_BEGIN	 		17000
-#define ID_TLVM_NEW 			ID_TLVM_BEGIN +	1
+#define ID_TLVM_NEW 			ID_TLVM_BEGIN + 1
 #define ID_TLVM_EDIT 			ID_TLVM_BEGIN + 2
-#define ID_TLVM_DELETE	 		ID_TLVM_BEGIN +	3
-#define ID_TLVM_PRIMARY 		ID_TLVM_BEGIN +	4
+#define ID_TLVM_DELETE	 		ID_TLVM_BEGIN + 3
+#define ID_TLVM_PRIMARY 		ID_TLVM_BEGIN + 4
 
 #ifndef RC_INVOKED
-
-#include <boost/signals.hpp>
-#include <boost/function.hpp>
 
 #include "../stdAfx.hpp"
 #include "../global/string_conv.hpp"

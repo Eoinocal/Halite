@@ -11,7 +11,6 @@
 #include <functional>
 
 #include <boost/array.hpp>
-#include <boost/signals.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/ptr_container/ptr_map.hpp>
 

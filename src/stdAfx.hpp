@@ -84,6 +84,8 @@ extern WTL::CAppModule _Module;
 #include <boost/smart_ptr.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <boost/signals.hpp>
+#include <boost/function.hpp>
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>

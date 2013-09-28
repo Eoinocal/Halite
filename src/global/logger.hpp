@@ -11,7 +11,7 @@
 #include <sstream>
 #include <fstream>
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/function.hpp>
 
 namespace hal 

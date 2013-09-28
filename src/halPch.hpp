@@ -35,6 +35,8 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/bind.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/signals.hpp>
+#include <boost/function.hpp>
 
 #include <boost/utility/in_place_factory.hpp>
 #include <boost/none.hpp>

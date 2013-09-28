@@ -6,6 +6,11 @@
 
 #pragma once
 
+#define HAL_PEERS_BEGIN			 	21500
+#define HAL_PEERS_MENU_ADD_URL		HAL_PEERS_BEGIN + 1
+
+#ifndef RC_INVOKED
+
 #include "stdAfx.hpp"
 #include "Halite.hpp"
 
@@ -39,6 +44,7 @@ public:
 		try
 		{
 		MSG_WM_DESTROY(OnDestroy)
+		COMMAND_ID_HANDLER(HAL_PEERS_MENU_ADD_URL, OnAddUrl)
 
 		REFLECTED_NOTIFY_CODE_HANDLER(SLVN_SORTCHANGED, OnSortChanged)
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_GETDISPINFO, OnGetDispInfo)
@@ -70,7 +76,9 @@ public:
 	LRESULT OnGetDispInfo(int, LPNMHDR pnmh, BOOL&);
 	LRESULT OnSortChanged(int, LPNMHDR pnmh, BOOL&);
 
-	bool sort_list_comparison(std::wstring l,  std::wstring r, size_t index, bool ascending);
+	LRESULT OnAddUrl(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+	bool sort_list_comparison(std::wstring l, std::wstring r, size_t index, bool ascending);
 	
 	friend class boost::serialization::access;
 	template<class Archive>
@@ -81,10 +89,14 @@ public:
 	}
 
 	void uiUpdate(const hal::torrent_details_manager& tD);
+
+	template<typename T>
+	void attachAddUrlConnection(T&& fn) { addUrl_.connect(fn); }
 	
 private:
 	hal::peer_details_vec peer_details_;
 	HaliteWindow& halite_window_;
+	boost::signal<void ()> addUrl_;
 };
 
 class AdvPeerDialog :
@@ -116,6 +128,7 @@ public:
 		{
 		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_CLOSE(OnClose)
+
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in AdvPeerDialog MSG_MAP")
 	
@@ -139,3 +152,5 @@ public:
 protected:
 	PeerListView peerList_;
 };
+
+#endif

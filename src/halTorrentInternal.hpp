@@ -275,6 +275,8 @@ public:
 	
 	void set_name(const wstring& n);
 	const wstring& name() const;
+
+	void add_web_seed(const wstring& url, bit::web_seed type);
 	
 	const libt::sha1_hash& hash() const
 	{
