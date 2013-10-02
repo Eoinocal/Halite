@@ -22,14 +22,14 @@ template<>
 inline const std::wstring hal::to_wstr_shim<const HaliteListViewCtrl::list_value_type>
 	(const HaliteListViewCtrl::list_value_type& v)
 {
-	return std::wstring(v.pszText);
+	return std::wstring(v.text());
 }
 
 template<>
 inline const std::wstring hal::to_wstr_shim<HaliteListViewCtrl::list_value_type>
 	(HaliteListViewCtrl::list_value_type& v)
 {
-	return std::wstring(v.pszText);
+	return std::wstring(v.text());
 }
 
 HaliteListViewCtrl::ex_list_value_type::ex_list_value_type(const list_class_t::list_value_type& l) :
@@ -382,7 +382,7 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 		if (boost::filesystem::is_directory(save_dir/wpath(t.name())))
 			save_dir /= wpath(t.name());
 
-		HAL_DEV_MSG(hal::wform(L"Name %1%, Save dir: %2%.") % i->pszText % save_dir);
+		HAL_DEV_MSG(hal::wform(L"Name %1%, Save dir: %2%.") % i->text() % save_dir);
 
 		unique_paths.insert(save_dir);
 	}

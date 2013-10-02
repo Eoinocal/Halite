@@ -93,7 +93,7 @@ public:
 		ListClass* pT = static_cast<ListClass*>(this);
 
 		if (pT->begin_selected() != pT->begin_selected())
-			pT->editItem(pT->begin_selected()->iItem);
+			pT->editItem(pT->begin_selected()->index());
 
 		return 0;
 	}
@@ -103,7 +103,7 @@ public:
 		ListClass* pT = static_cast<ListClass*>(this);	
 
 		if (pT->begin_selected() != pT->begin_selected())
-			pT->deleteItem(pT->begin_selected()->iItem);
+			pT->deleteItem(pT->begin_selected()->index());
 
 		return 0;
 	}

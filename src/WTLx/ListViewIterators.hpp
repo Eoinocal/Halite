@@ -17,44 +17,66 @@ template<typename List>
 class ListViewIterators
 {
 public:
+	class item
+	{
+	public:
+		item(List* l) :
+			list_(l),
+			item_({0})
+		{}
+
+		wstring text(int si = 0) const
+		{		
+			wstring str;
+
+			for (int nLen = 256; ; nLen *= 2)
+			{
+				str = wstring (nLen, L'\0');
+
+				if (list_->GetItemText(item_.iItem, si, const_cast<LPTSTR>(str.data()), static_cast<int>(str.capacity())) < nLen - 1)
+					return str;
+			}
+		}
+
+		int index() const
+		{
+			return item_.iItem;
+		}
+
+		UINT state(UINT mask) const
+		{
+			return list_->GetItemState(index(), mask);
+		}
+		
+		void set_index(LVITEMINDEX index) const
+		{
+			item_.iItem = index.iItem;
+			item_.iGroupId = index.iGroup;
+		}
+
+		List* list() const { return list_; }
+
+	private:		
+		List* list_;
+		mutable LVITEM item_;
+	};
+
 	template<typename Value, WORD Flag=LVNI_ALL>
 	class list_item_iterator : public boost::iterator_facade<list_item_iterator<Value, Flag>, Value, boost::forward_traversal_tag>
 	{
 	public:
+		typedef Value value_type;
+
 		list_item_iterator() : 
-			list_(nullptr),
-			index_({-1, -1})
+			index_({-1, -1}),
+			item_(nullptr)
 		{}
 
 		explicit list_item_iterator(List* l) : 
-			list_(l),
-			index_({-1, -1})
+			index_({-1, -1}),
+			item_(l)
 		{
 			increment();
-		}
-
-		Value sub_item(int si) const 
-		{ 
-			LVITEM i;
-			i.iItem = index_.iItem;
-			i.iSubItem = si;
-			i.iGroupId = index_.iGroup;
-			i.mask = LVIF_STATE;
-
-			list_->GetItem(&i);
-
-			return i; 
-		}
-
-		std::wstring text(int si = 0) const
-		{
-			for (int nLen = 256; ; nLen *= 2)
-			{
-				wstring str(nLen, L'\0');
-
-				if (list_->GetItemText(index_.iItem, si, const_cast<LPTSTR>(str.data()), static_cast<int>(str.capacity())) < nLen - 1)
-					return str;
-			}
 		}
 
 	 private:
@@ -62,46 +84,48 @@ public:
 
 		void increment() 
 		{ 
-			if (!list_->GetNextItemIndex(&index_, Flag))
+			if (!item_.list()->GetNextItemIndex(&index_, Flag))
 				index_ = {-1, -1};
 		}
 
 		bool equal(const list_item_iterator& other) const
 		{			
 			return (index_.iItem == -1 && other.index_.iItem == -1) || 
-				(list_ == other.list_ && index_.iItem == other.index_.iItem && index_.iGroup == other.index_.iGroup);
+				(item_.list() == other.item_.list() && index_.iItem == other.index_.iItem && index_.iGroup == other.index_.iGroup);
 		}
 
-		Value dereference() const 
+		Value& dereference() const 
 		{ 
-			return sub_item(0); 
+			item_.set_index(index_);
+
+			return item_; 
 		}
 		
-		List* list_;
 		LVITEMINDEX index_;
+		item item_;
 	};
 
-	list_item_iterator<const LVITEM> begin()
+	list_item_iterator<const item> begin()
 	{
-		return list_item_iterator<const LVITEM>((static_cast<List*>(this)));
+		return list_item_iterator<const item>((static_cast<List*>(this)));
 	}
 
-	list_item_iterator<const LVITEM> end()
+	list_item_iterator<const item> end()
 	{
-		return list_item_iterator<const LVITEM>();
+		return list_item_iterator<const item>();
 	}
 
-	list_item_iterator<const LVITEM, LVNI_SELECTED> begin_selected()
+	list_item_iterator<const item, LVNI_SELECTED> begin_selected()
 	{
-		return list_item_iterator<const LVITEM, LVNI_SELECTED>((static_cast<List*>(this)));
+		return list_item_iterator<const item, LVNI_SELECTED>((static_cast<List*>(this)));
 	}
 
-	list_item_iterator<const LVITEM, LVNI_SELECTED> end_selected()
+	list_item_iterator<const item, LVNI_SELECTED> end_selected()
 	{
-		return list_item_iterator<const LVITEM, LVNI_SELECTED>();
+		return list_item_iterator<const item, LVNI_SELECTED>();
 	}
 
-	typedef LVITEM list_value_type;
+	typedef item list_value_type;
 };
 
 }

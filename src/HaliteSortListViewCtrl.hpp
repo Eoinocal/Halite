@@ -625,15 +625,15 @@ protected:
 	{
 		for (auto val : *this)
 		{
-			const list_pair_t& i_pos = pair_container_.get<0>()[val.iItem];
+			const list_pair_t& i_pos = pair_container_.get<0>()[val.index()];
 
-			if (val.state & LVIS_SELECTED)
+			if (val.state(LVIS_SELECTED) & LVIS_SELECTED)
 				i_pos.first = true;
 			else
 				i_pos.first = false;
 
 			
-			HAL_DEV_SORT_MSG(hal::wform(L" Name %1%, index %2%, selected %3%") % key_from_index(val.iItem) % val.iItem % i_pos.first);
+			HAL_DEV_SORT_MSG(hal::wform(L" Name %1%, index %2%, selected %3%") % key_from_index(val.index()) % val.index() % i_pos.first);
 		}
 		
 		HAL_DEV_SORT_MSG(hal::wform(L" -----"));
@@ -673,7 +673,7 @@ protected:
 
 	void erase_from_list(const list_value_type& val)
 	{
-		erase_from_list(val.iItem);
+		erase_from_list(val.index());
 	}
 
 	void erase_from_list(size_t index)
