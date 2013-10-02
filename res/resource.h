@@ -40,6 +40,7 @@
 #define	HAL_GENERIC_ADD_LV_MENU			136
 #define	HAL_PEEREDIT					137
 #define HAL_NEWT_FILES					138
+#define HAL_ADVWEBPEERS                 139
 #define HAL_TRANS_SES                   1004
 #define HAL_TRANS_ETA                   1005
 #define HAL_PEERPROXY                   1000

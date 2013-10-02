@@ -14,7 +14,7 @@
 
 
 bool PeerListView::SubclassWindow(HWND hwnd)
-	{
+{
 	if(!list_class_t::SubclassWindow(hwnd))
 		return false;
 

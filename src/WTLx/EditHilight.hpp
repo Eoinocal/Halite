@@ -31,8 +31,7 @@ public:
 	BEGIN_MSG_MAP_EX(this_class_t)
 		MSG_OCM_CTLCOLOREDIT(OnReflectedCtlColorEdit)
 		REFLECTED_COMMAND_CODE_HANDLER_EX(EN_CHANGE, OnChange)
-		
-		DEFAULT_REFLECTION_HANDLER()
+		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
 
 	void SubclassWindow(HWND hWndNew)
@@ -55,7 +54,7 @@ public:
 		{
 			unapplied_ = false;
 		}
-		
+
 		return 0;
 	}
 
