@@ -92,8 +92,8 @@ public:
 	{
 		ListClass* pT = static_cast<ListClass*>(this);
 
-		if (pT->is_selected_begin() != pT->is_selected_end())
-			pT->editItem(pT->is_selected_begin()->index());
+		if (pT->begin_selected() != pT->begin_selected())
+			pT->editItem(pT->begin_selected()->iItem);
 
 		return 0;
 	}
@@ -102,8 +102,8 @@ public:
 	{
 		ListClass* pT = static_cast<ListClass*>(this);	
 
-		if (pT->is_selected_begin() != pT->is_selected_end())
-			pT->deleteItem(pT->is_selected_begin()->index());
+		if (pT->begin_selected() != pT->begin_selected())
+			pT->deleteItem(pT->begin_selected()->iItem);
 
 		return 0;
 	}

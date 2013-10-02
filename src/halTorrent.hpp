@@ -115,7 +115,7 @@ public:
 		virtual ~null_torrent() throw () {}
 	};
 
-	class torrent : public stlsoft::operator_bool_adaptor<torrent>
+	class torrent
 	{
 		typedef torrent class_type;
 
@@ -150,7 +150,7 @@ public:
 				return proxy(&(*ptr));
 			}
 
-			operator bool() const { return ptr; }
+			explicit operator bool() const { return ptr; }
 
 
 		private:
@@ -169,10 +169,8 @@ public:
 				{}
 
 				void set_name(const wpath& new_ratio);
-				wpath get_name() const;
+				wpath name() const;
 
-				STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(wpath, const wpath&, file_proxy, 
-					get_name, set_name, name);
 			private:
 				class_type& t_;
 				size_t n_;
@@ -278,7 +276,9 @@ public:
 		void reset_trackers();
 		bool is_open() const;
 		void adjust_queue_position(bit::queue_adjustments adjust);
-		files_proxy files();
+		files_proxy files();				
+
+		explicit operator bool() const { return bool(ptr); }
 
 		friend class files_proxy::file_proxy;
 		typedef files_proxy::file_proxy file;

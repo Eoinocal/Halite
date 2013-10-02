@@ -17,9 +17,6 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 
-#include <stlsoft/properties/method_properties.hpp>
-#include <stlsoft/util/operator_bool_adaptor.hpp>
-
 namespace hal
 {
 
@@ -50,15 +47,6 @@ public:
 #	endif // (_ATL_VER > 0x0700)
 	
 	friend app_module& app();
-
-	STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(const boost::optional<boost::filesystem::wpath>&, app_module, 
-		get_local_appdata, local_appdata);
-
-	STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(const boost::optional<boost::filesystem::wpath>&, app_module, 
-		get_my_documents, local_my_doc_);
-
-	STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(const boost::filesystem::wpath&, const boost::filesystem::wpath&, 
-		app_module, get_working_directory, set_working_directory, working_directory);
 	
 private:
 	boost::scoped_ptr<app_impl> pimpl_;

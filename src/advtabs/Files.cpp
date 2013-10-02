@@ -70,11 +70,11 @@ void FileListView::OnMenuPriority(UINT uCode, int nCtrlID, HWND hwndCtrl)
 
 	std::vector<int> indices;
 	
-	BOOST_FOREACH (const list_value_type val, std::make_pair(is_selected_begin(), is_selected_end()))
+	for (auto i = begin_selected(), e = end_selected(); i != e; ++i)
 	{
 		HAL_DEV_MSG(hal::wform(L"OnMenuPriority() = %1%, %2%, %3%") 
-				% std::wstring(winstl::c_str_ptr(val)) % val.index() % files_[val.index()].order());
-		indices.push_back(numeric_cast<int>(files_[val.index()].order()));
+				% std::wstring(i->pszText) % i->iItem % files_[i->iItem].order());
+		indices.push_back(numeric_cast<int>(files_[i->iItem].order()));
 	}
 	
 	int priority = nCtrlID-ID_HAL_FILE_PRIORITY_0;	

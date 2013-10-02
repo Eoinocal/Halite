@@ -7,10 +7,6 @@
 #include "stdAfx.hpp"
 
 #include <boost/iterator/filter_iterator.hpp>
-#pragma warning (push)
-#pragma warning (disable : 4244)
-#	include <winstl/controls/listview_sequence.hpp>
-#pragma warning (pop)
 
 #include "Halite.hpp"
 
@@ -26,29 +22,19 @@ template<>
 inline const std::wstring hal::to_wstr_shim<const HaliteListViewCtrl::list_value_type>
 	(const HaliteListViewCtrl::list_value_type& v)
 {
-	return std::wstring(v.text().c_str());
+	return std::wstring(v.pszText);
 }
 
 template<>
 inline const std::wstring hal::to_wstr_shim<HaliteListViewCtrl::list_value_type>
 	(HaliteListViewCtrl::list_value_type& v)
 {
-	return std::wstring(v.text().c_str());
+	return std::wstring(v.pszText);
 }
 
 HaliteListViewCtrl::ex_list_value_type::ex_list_value_type(const list_class_t::list_value_type& l) :
 	list_class_t::list_value_type(l)
 {}
-
-hal::uuid HaliteListViewCtrl::ex_list_value_type::hash() const
-{
-	std::wstringstream ss(wstring(text(hal::torrent_details::uuid_e-hal::torrent_details::name_e).c_str()));
-	hal::uuid id;
-
-	ss >> id;
-
-	return id;
-}	
 
 HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	halite_window_(HalWindow),
@@ -268,9 +254,9 @@ LRESULT HaliteListViewCtrl::OnSortChanged(int, LPNMHDR pnmh, BOOL&)
 
 LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	for (auto i = begin_selected(), e = end_selected(); i != e; ++i)
 	{
-		hal::bittorrent::Instance().resume_torrent(val.hash());
+		hal::bittorrent::Instance().resume_torrent(item_hash(i));
 	}
 	
 	return 0;
@@ -278,9 +264,9 @@ LRESULT HaliteListViewCtrl::OnResume(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 
 LRESULT HaliteListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {	
-	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	for (auto i = begin_selected(), e = end_selected(); i != e; ++i)
 	{
-		hal::bittorrent::Instance().pause_torrent(val.hash());
+		hal::bittorrent::Instance().pause_torrent(item_hash(i));
 	}
 	
 	return 0;
@@ -288,9 +274,9 @@ LRESULT HaliteListViewCtrl::OnPause(WORD wNotifyCode, WORD wID, HWND hWndCtl, BO
 
 LRESULT HaliteListViewCtrl::OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
+	for (auto i = begin_selected(), e = end_selected(); i != e; ++i)
 	{
-		hal::bittorrent::Instance().stop_torrent(val.hash());
+		hal::bittorrent::Instance().stop_torrent(item_hash(i));
 	}
 
 	return 0;
@@ -298,8 +284,8 @@ LRESULT HaliteListViewCtrl::OnStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
 
 LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	hal::bittorrent::Instance().remove_torrent(list_value_type(*is_selected_begin()).hash());
-	erase_from_list(*is_selected_begin());
+	hal::bittorrent::Instance().remove_torrent(item_hash(begin_selected()));
+	erase_from_list(*begin_selected());
 
 	return 0;
 }
@@ -307,9 +293,9 @@ LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWn
 LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::set<hal::uuid> torrent_ids;
-
-	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
-		torrent_ids.insert(val.hash());
+	
+	for (auto i = begin_selected(), e = end_selected(); i != e; ++i)
+		torrent_ids.insert(item_hash(i));
 	
 	erase_based_on_set(torrent_ids, false);
 
@@ -321,11 +307,11 @@ LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 
 LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	BOOST_FOREACH(const list_value_type& v, std::make_pair(is_selected_begin(), is_selected_end()))
+	for (auto i = begin_selected(), e = end_selected(); i != e; ++i)
 	{
 		//HAL_DEV_MSG(hal::wform(L"UUid: %1%") % v.text(hal::torrent_details::uuid_e-hal::torrent_details::name_e));
 
-		hal::bittorrent::Instance().recheck_torrent(v.hash());
+		hal::bittorrent::Instance().recheck_torrent(item_hash(i));
 	}
 
 	return 0;
@@ -369,9 +355,9 @@ void HaliteListViewCtrl::remove_to_bin(const hal::uuid& id, hal::fs::wpath activ
 LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 	std::set<hal::uuid> torrent_names;
-
-	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
-		torrent_names.insert(val.hash());
+	
+	for (auto i = begin_selected(), e = end_selected(); i != e; ++i)
+		torrent_names.insert(item_hash(i));
 
 	BOOST_FOREACH(const hal::uuid& id, torrent_names)
 		hal::bittorrent::Instance().remove_torrent_wipe_files(id, boost::bind(&HaliteListViewCtrl::remove_to_bin, this, id, _1, _2));
@@ -387,15 +373,16 @@ LRESULT HaliteListViewCtrl::OnDownloadFolder(WORD wNotifyCode, WORD wID, HWND hW
 	HAL_DEV_MSG(L"OnDownloadFolder");
 
 	std::set<wpath> unique_paths;
-
-	BOOST_FOREACH(const list_value_type& v, std::make_pair(is_selected_begin(), is_selected_end()))
+	
+	for (auto i = begin_selected(), e = end_selected(); i != e; ++i)
 	{
-		hal::bit::torrent t = hal::bittorrent::Instance().get(v.hash());
+		hal::bit::torrent t = hal::bittorrent::Instance().get(item_hash(i));
 
 		auto save_dir = t.save_directory();
 		if (boost::filesystem::is_directory(save_dir/wpath(t.name())))
 			save_dir /= wpath(t.name());
-		HAL_DEV_MSG(hal::wform(L"Name %1%, Save dir: %2%.") % v.text() % save_dir);
+
+		HAL_DEV_MSG(hal::wform(L"Name %1%, Save dir: %2%.") % i->pszText % save_dir);
 
 		unique_paths.insert(save_dir);
 	}
@@ -433,7 +420,7 @@ LRESULT HaliteListViewCtrl::OnEditFolders(WORD wNotifyCode, WORD wID, HWND hWndC
 
 	HAL_DEV_MSG(L"OnEditFolders");
 
-	if (hal::bit::torrent t = hal::bittorrent::Instance().get(list_value_type(*is_selected_begin()).hash()))
+	if (hal::bit::torrent t = hal::bittorrent::Instance().get(item_hash(begin_selected())))
 	{
 		auto saveDirectory = static_cast<path>(t.save_directory()).wstring();
 		auto moveToDirectory = static_cast<path>(t.move_to_directory()).wstring();
@@ -465,9 +452,9 @@ LRESULT HaliteListViewCtrl::OnToggleSuperseeding(WORD wNotifyCode, WORD wID, HWN
 	{
 
 	std::set<hal::uuid> torrent_names;
-
-	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
-		torrent_names.insert(val.hash());
+	
+	for (auto i = begin_selected(), e = end_selected(); i != e; ++i)
+		torrent_names.insert(item_hash(i));
 
 	BOOST_FOREACH(const hal::uuid& id, torrent_names)
 		if (hal::bit::torrent t = hal::bittorrent::Instance().get(id))
@@ -493,9 +480,9 @@ LRESULT HaliteListViewCtrl::OnSetManaged(WORD wNotifyCode, WORD wID, HWND hWndCt
 	{		
 */
 	std::set<hal::uuid> torrent_names;
-
-	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
-		torrent_names.insert(val.hash());
+	
+	for (auto i = begin_selected(), e = end_selected(); i != e; ++i)
+		torrent_names.insert(item_hash(i));
 	
 //	erase_based_on_set(torrent_names, false);
 
@@ -521,9 +508,9 @@ LRESULT HaliteListViewCtrl::OnSetUnmanaged(WORD wNotifyCode, WORD wID, HWND hWnd
 	{		
 */
 	std::set<hal::uuid> torrent_names;
-
-	BOOST_FOREACH(const list_value_type& val, std::make_pair(is_selected_begin(), is_selected_end()))
-		torrent_names.insert(val.hash());
+	
+	for (auto i = begin_selected(), e = end_selected(); i != e; ++i)
+		torrent_names.insert(item_hash(i));
 	
 //	erase_based_on_set(torrent_names, false);
 
@@ -543,10 +530,10 @@ LRESULT HaliteListViewCtrl::OnAdjustQueuePosition(WORD wNotifyCode, WORD wID, HW
 {
 	try
 	{
-
-	BOOST_FOREACH (const list_value_type v, std::make_pair(is_selected_begin(), is_selected_end()))
+	
+	for (auto i = begin_selected(), e = end_selected(); i != e; ++i)
 	{
-		hal::bit::torrent t = hal::bittorrent::Instance().get(v.hash());
+		hal::bit::torrent t = hal::bittorrent::Instance().get(item_hash(i));
 
 		switch (wID)
 		{
@@ -642,13 +629,3 @@ void HaliteListViewCtrl::queue_view_mode()
 	
 	menu_.SetMenuItemInfo(HAL_LVM_QUEUE_VIEW, false, &minfo);
 }
-
-//LRESULT HaliteListViewCtrl::OnDeleteItem(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHandled*/)
-//{
-//	LPNMLISTVIEW pnmv=(LPNMLISTVIEW)pnmh;
-//	T* pItem=(T*)GetItemData(pnmv->iItem);
-//	ATLASSERT(pItem);
-//	if (pItem)	// Delete attached structure
-//		delete pItem;
-//	return 0;
-//}

@@ -21,11 +21,6 @@
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/random_access_index.hpp>
 
-#pragma warning (push)
-#pragma warning (disable : 4244)
-#	include <winstl/controls/listview_sequence.hpp>
-#pragma warning (pop)
-
 #include "Halite.hpp"
 #include "halTorrent.hpp"
 #include "halEvent.hpp"
@@ -507,11 +502,11 @@ public:
 	
 	bool AutoSort() { return auto_sort_; }
 	
-	static bool is_selected (const winstl::listview_sequence::sequence_value_type& v) 
+/*	static bool is_selected (const winstl::listview_sequence::sequence_value_type& v) 
 	{ 
 		return (v.state() & LVIS_SELECTED) != 0; 
 	}
-
+*/
 protected:		
 	mutable hal::mutex_t mutex_;
 
@@ -628,17 +623,17 @@ protected:
 
 	void selection_from_listview()
 	{
-		BOOST_FOREACH(const list_value_type val, std::make_pair(const_begin(), const_end()))
+		for (auto val : *this)
 		{
-			const list_pair_t& i_pos = pair_container_.get<0>()[val.index()];
+			const list_pair_t& i_pos = pair_container_.get<0>()[val.iItem];
 
-			if (val.state() & LVIS_SELECTED)
+			if (val.state & LVIS_SELECTED)
 				i_pos.first = true;
 			else
 				i_pos.first = false;
 
 			
-			HAL_DEV_SORT_MSG(hal::wform(L" Name %1%, index %2%, selected %3%") % key_from_index(val.index()) % val.index() % i_pos.first);
+			HAL_DEV_SORT_MSG(hal::wform(L" Name %1%, index %2%, selected %3%") % key_from_index(val.iItem) % val.iItem % i_pos.first);
 		}
 		
 		HAL_DEV_SORT_MSG(hal::wform(L" -----"));
@@ -678,7 +673,7 @@ protected:
 
 	void erase_from_list(const list_value_type& val)
 	{
-		erase_from_list(val.index());
+		erase_from_list(val.iItem);
 	}
 
 	void erase_from_list(size_t index)
@@ -749,17 +744,15 @@ private:
 };
 
 template<>
-inline const std::wstring hal::to_wstr_shim<const winstl::listview_sequence::sequence_value_type>
-	(const winstl::listview_sequence::sequence_value_type& v)
+inline const std::wstring hal::to_wstr_shim<const LVITEM>(const LVITEM& v)
 {
-	return std::wstring(v.text().c_str());
+	return std::wstring(v.pszText);
 }
 
 template<>
-inline const std::wstring hal::to_wstr_shim<winstl::listview_sequence::sequence_value_type>
-	(winstl::listview_sequence::sequence_value_type& v)
+inline const std::wstring hal::to_wstr_shim<LVITEM>(LVITEM& v)
 {
-	return std::wstring(v.text().c_str());
+	return std::wstring(v.pszText);
 }
 
 namespace boost {

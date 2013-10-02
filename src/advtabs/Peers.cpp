@@ -22,7 +22,7 @@ bool PeerListView::SubclassWindow(HWND hwnd)
 	BOOL menu_created = menu.LoadMenu(HAL_PEERS_MENU);
 	InitialSetup(menu);	
 	
-	std::vector<wstring> names;	
+	std::vector<wstring> names;
 	wstring column_names = hal::app().res_wstr(LISTVIEW_ID_COLUMNNAMES);
 
 	boost::split(names, column_names, boost::is_any_of(L";"));

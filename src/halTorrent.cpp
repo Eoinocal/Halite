@@ -878,7 +878,7 @@ bit::torrent::torrent(boost::shared_ptr<torrent_internal> p) :
 
 bool bit::torrent::is_open() const
 {
-	return ptr;
+	return bool(ptr);
 }
 
 bit::torrent::exec_around_ptr::proxy::proxy(torrent_internal* t) : 
@@ -1146,7 +1146,7 @@ files_proxy bit::torrent::set_files()
 	return files_proxy(*this);
 }*/
 
-wpath bit::torrent::files_proxy::file_proxy::get_name() const
+wpath bit::torrent::files_proxy::file_proxy::name() const
 {
 	try {
 
