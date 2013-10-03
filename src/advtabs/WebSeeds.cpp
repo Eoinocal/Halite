@@ -12,12 +12,88 @@
 
 #include "WebSeeds.hpp"
 
+void WebSeedListViewCtrl::OnAttach()
+{
+	WTL::CMenuHandle menu;
+	BOOL menu_created = menu.LoadMenu(LISTVIEW_ID_MENU);
+	InitialSetup(menu);	
+
+	std::vector<wstring> names;	
+	wstring column_names = hal::app().res_wstr(HAL_TRACKER_LISTVIEW_COLUMNS);
+	boost::split(names, column_names, boost::is_any_of(L";"));
+	
+	array<int, 2> widths = {		512,				64 };
+	array<int, 2> order = {		0,				1 };
+	array<bool, 2> visible = {	true,			true };
+	array<int, 5> formats = {		LVCFMT_LEFT,		LVCFMT_RIGHT };	
+
+	for (int i=0, e=2; i < e; ++i)
+	{
+		AddColumn(names[i].c_str(), i, visible[i], widths[i], formats[i]);
+	}	
+
+	load_from_ini();	
+	
+	SetColumnSortType(1, WTL::LVCOLSORT_LONG);
+}
+
+void WebSeedListViewCtrl::OnDestroy()
+{
+	saveSettings();
+}
+
+void WebSeedListViewCtrl::saveSettings()
+{		
+	GetListViewDetails();
+	save_to_ini();
+}
+
+void WebSeedListViewCtrl::uiUpdate(const hal::torrent_details_ptr pT)
+{
+	if (hal::bit::torrent t = hal::bittorrent::Instance().get(pT))
+	{			
+		if (auto lock = hal::try_update_lock<list_class_t>(this)) 
+		{		
+			auto web_seeds = t.web_seeds();
+			DeleteAllItems();
+			
+			for (auto& web_seed : web_seeds)
+			{
+				int itemPos = AddItem(0, 0, web_seed.url.c_str(), 0);
+				SetItemText(itemPos, 1,
+					web_seed.type == hal::web_seed_detail::types::url ? hal::app().res_wstr(HAL_WEB_SEED_TYPE_URL).c_str() : hal::app().res_wstr(HAL_WEB_SEED_TYPE_HTTP).c_str());
+			}
+		}
+	}
+	else
+	{		
+		DeleteAllItems();
+	}
+}
+
+LRESULT WebSeedListViewCtrl::OnDelete(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	for (auto i = begin_selected(), e = end_selected(); i != e; ++i)
+	{
+		seedDeleted_(hal::web_seed_detail(i->text(), 
+			i->text(1) == hal::app().res_wstr(HAL_WEB_SEED_TYPE_URL) ? hal::web_seed_detail::types::url : hal::web_seed_detail::types::http));
+
+		DeleteItem(i->index());
+	}
+
+	return 0;
+}
+
 LRESULT AdvWebSeedsDialog::onInitDialog(HWND, LPARAM)
 {
 	dlg_base_class_t::InitializeHalDialogBase();	
 	
-//	m_list.Attach(GetDlgItem(HAL_TRACKERLIST));	
-//	m_list.attachEditedConnection(bind(&AdvTrackerDialog::trackerListEdited, this));
+	list_.Attach(GetDlgItem(HAL_WEB_SEEDS_LISTVIEW));	
+	list_.attachDeletedConnection([this] (hal::web_seed_detail seed)
+		{					
+			if (auto t = hal::bittorrent::Instance().get(focused_torrent()))
+				t.delete_web_seed(seed.url, seed.type);
+		});
 
 	::EnableWindow(GetDlgItem(HAL_TRACKER_LOGINCHECK), false);
 	::EnableWindow(GetDlgItem(HAL_TRACKERLIST), false);
@@ -65,7 +141,7 @@ void AdvWebSeedsDialog::focusChanged(const hal::torrent_details_ptr pT)
 		::EnableWindow(GetDlgItem(HAL_SEED_URL_TEXT), false);
 	}
 	
-//	m_list.uiUpdate(pT);
+	list_.uiUpdate(pT);
 
 	DoDataExchange(false);
 }
@@ -89,6 +165,12 @@ void AdvWebSeedsDialog::onAddHttp(UINT, int, HWND)
 	if (url_.empty()) return;
 
 	HAL_DEV_MSG(hal::wform(L"Adding HTTP seed: %1%") % url_);
+	
+	if (auto t = hal::bittorrent::Instance().get(focused_torrent()))
+		t.add_web_seed(url_, hal::web_seed_detail::types::http);
+
+	int itemPos = list_.AddItem(0, 0, url_.c_str(), 0);
+	list_.SetItemText(itemPos, 1, hal::app().res_wstr(HAL_WEB_SEED_TYPE_HTTP).c_str());
 }
 
 void AdvWebSeedsDialog::onAddUrl(UINT, int, HWND)
@@ -97,4 +179,11 @@ void AdvWebSeedsDialog::onAddUrl(UINT, int, HWND)
 	if (url_.empty()) return;
 
 	HAL_DEV_MSG(hal::wform(L"Adding URL seed: %1%") % url_);
+	
+	if (auto t = hal::bittorrent::Instance().get(focused_torrent()))
+		t.add_web_seed(url_, hal::web_seed_detail::types::url);
+
+	int itemPos = list_.AddItem(0, 0, url_.c_str(), 0);
+	list_.SetItemText(itemPos, 1, hal::app().res_wstr(HAL_WEB_SEED_TYPE_URL).c_str());
+
 }

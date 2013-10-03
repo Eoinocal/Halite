@@ -648,13 +648,13 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 	}
 
 	HAL_DEV_MSG(L"Web Seeds");
-	for (web_seed_details_t::const_iterator i = params.web_seeds.begin(), e = params.web_seeds.end();
+/*	for (web_seed_details_t::const_iterator i = params.web_seeds.begin(), e = params.web_seeds.end();
 			i != e; ++i)
 	{
 		HAL_DEV_MSG(hal::wform(L"URL: %1%") % (*i).url);
 		t.add_url_seed(to_utf8((*i).url));
 	}
-
+*/
 	HAL_DEV_MSG(L"DHT Nodes");
 	for (dht_node_details_t::const_iterator i = params.dht_nodes.begin(), e = params.dht_nodes.end();
 			i != e; ++i)

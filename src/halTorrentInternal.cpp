@@ -256,22 +256,61 @@ void torrent_internal::set_name(const wstring& n)
 	apply_file_names(l);
 }
 
-void torrent_internal::add_web_seed(const wstring& url, bit::web_seed type)
+void torrent_internal::add_web_seed(const wstring& url, web_seed_detail::types type)
 {
 	upgrade_lock l(mutex_);
 	
-	if (type == bit::web_seed::url)
+	if (type == web_seed_detail::types::url)
 	{
 		handle_.add_url_seed(hal::to_utf8(url));
 		
 		HAL_DEV_MSG(hal::wform(L"add_url_seed(%1%)") % url);
 	}
-	else if (type == bit::web_seed::http)
+	else if (type == web_seed_detail::types::http)
 	{
 		handle_.add_http_seed(hal::to_utf8(url));
 		
 		HAL_DEV_MSG(hal::wform(L"add_http_seed(%1%)") % url);
 	}
+
+	web_seeds_.clear();
+}
+
+void torrent_internal::delete_web_seed(const wstring& url, web_seed_detail::types type)
+{
+	upgrade_lock l(mutex_);
+	
+	if (type == web_seed_detail::types::url)
+	{
+		handle_.remove_url_seed(hal::to_utf8(url));
+		
+		HAL_DEV_MSG(hal::wform(L"delete_web_seed(%1%)") % url);
+	}
+	else if (type == web_seed_detail::types::http)
+	{
+		handle_.remove_http_seed(hal::to_utf8(url));
+		
+		HAL_DEV_MSG(hal::wform(L"delete_http_seed(%1%)") % url);
+	}
+
+	web_seeds_.clear();
+}
+
+const std::vector<web_seed_detail>& torrent_internal::get_web_seeds()
+{	
+	upgrade_lock l(mutex_);
+
+	if (web_seeds_.empty() && info_memory(l))
+	{
+		upgrade_to_unique_lock up_l(l);	
+		
+		for (auto& url : handle_.url_seeds())
+			web_seeds_.emplace_back(hal::from_utf8(url), web_seed_detail::types::url);
+		for (auto& url : handle_.http_seeds())
+			web_seeds_.emplace_back(hal::from_utf8(url), web_seed_detail::types::http);
+	}
+
+	return web_seeds_;
 }
 
 const uuid& torrent_internal::id() const

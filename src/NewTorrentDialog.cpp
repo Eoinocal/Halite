@@ -262,9 +262,9 @@ hal::dht_node_details_t PeersSheet::DhtNodes() const
 	return dht_nodes;
 }
 
-hal::web_seed_details_t PeersSheet::WebSeeds() const
+std::vector<hal::web_seed_detail> PeersSheet::WebSeeds() const
 {
-	hal::web_seed_details_t web_seeds;
+	std::vector<hal::web_seed_detail> web_seeds;
 
 	if (peersList_)
 	{
@@ -277,7 +277,7 @@ hal::web_seed_details_t PeersSheet::WebSeeds() const
 			peersList_.GetItemText(i, 2, str_type, numeric_cast<int>(str_type.size()));
 
 			if (hal::app().res_wstr(HAL_NEWT_ADD_PEERS_WEB) == str_type.str())
-				web_seeds.push_back(hal::web_seed_detail(str_url.str()));
+				web_seeds.emplace_back(str_url.str(), hal::web_seed_detail::types::http);
 		}
 	}
 

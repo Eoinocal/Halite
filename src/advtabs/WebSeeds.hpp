@@ -4,18 +4,21 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#define ID_WEB_SEEDS_BEGIN	16100
-#define HAL_WEB_SEEDS_LISTVIEW	 	ID_WEB_SEEDS_BEGIN + 1
-#define HAL_SEED_URL_TEXT	 		ID_WEB_SEEDS_BEGIN + 2
-#define HAL_ADD_SEED_AS			 	ID_WEB_SEEDS_BEGIN + 3
-#define HAL_HTTP_SEED		 		ID_WEB_SEEDS_BEGIN + 4
-#define HAL_URL_SEED			 	ID_WEB_SEEDS_BEGIN + 5
-#define HAL_SEED_URL			 	ID_WEB_SEEDS_BEGIN + 6
-#define HAL_WEB_SEED_TAB	 		ID_WEB_SEEDS_BEGIN + 7
-#define HAL_WEB_SEED_URL_HDR		ID_WEB_SEEDS_BEGIN + 8
-#define HAL_WEB_SEED_TYPE_HDR		ID_WEB_SEEDS_BEGIN + 9
-#define HAL_WEB_SEED_TYPE_URL		ID_WEB_SEEDS_BEGIN + 10
-#define HAL_WEB_SEED_TYPE_HTTP		ID_WEB_SEEDS_BEGIN + 11	 
+#define ID_WEB_SEEDS_BEGIN				16101
+#define HAL_WEB_SEED_MENU	 			16100
+#define HAL_WEB_SEEDS_LISTVIEW			ID_WEB_SEEDS_BEGIN + 1
+#define HAL_SEED_URL_TEXT	 			ID_WEB_SEEDS_BEGIN + 2
+#define HAL_ADD_SEED_AS					ID_WEB_SEEDS_BEGIN + 3
+#define HAL_HTTP_SEED		 			ID_WEB_SEEDS_BEGIN + 4
+#define HAL_URL_SEED					ID_WEB_SEEDS_BEGIN + 5
+#define HAL_SEED_URL					ID_WEB_SEEDS_BEGIN + 6
+#define HAL_WEB_SEED_TAB	 			ID_WEB_SEEDS_BEGIN + 7
+#define HAL_WEB_SEED_URL_HDR			ID_WEB_SEEDS_BEGIN + 8
+#define HAL_WEB_SEED_TYPE_HDR			ID_WEB_SEEDS_BEGIN + 9
+#define HAL_WEB_SEED_TYPE_URL			ID_WEB_SEEDS_BEGIN + 10
+#define HAL_WEB_SEED_TYPE_HTTP			ID_WEB_SEEDS_BEGIN + 11	
+#define HAL_WEB_SEED_LISTVIEW_COLUMNS 	ID_WEB_SEEDS_BEGIN + 12
+#define HAL_WEB_SEED_DELETE	 			ID_WEB_SEEDS_BEGIN + 13
 
 #ifndef RC_INVOKED
 
@@ -31,6 +34,67 @@
 #include "../HaliteTabPage.hpp"
 #include "../HaliteListManager.hpp"
 #include "../HaliteDialogBase.hpp"
+#include "../halIni.hpp"
+
+#include "../HaliteSortListViewCtrl.hpp"
+
+class WebSeedListViewCtrl :
+	public CHaliteSortListViewCtrl<WebSeedListViewCtrl>,
+	public hal::IniBase<WebSeedListViewCtrl>,
+	private boost::noncopyable
+{
+	typedef WebSeedListViewCtrl this_class_t;
+	typedef CHaliteSortListViewCtrl<this_class_t> list_class_t;
+	typedef hal::IniBase<this_class_t> ini_class_t;
+
+	friend class list_class_t;
+	
+public:
+	enum { 
+		LISTVIEW_ID_MENU = HAL_WEB_SEED_MENU,
+		LISTVIEW_ID_COLUMNNAMES = HAL_WEB_SEED_LISTVIEW_COLUMNS,
+		LISTVIEW_ID_COLUMNWIDTHS = HAL_TRACKER_LISTVIEW_DEFAULTS
+	};
+	
+	WebSeedListViewCtrl(boost::filesystem::path location, std::string name) :
+		ini_class_t(location, name)
+	{}
+
+	BEGIN_MSG_MAP_EX(WebSeedListViewCtrl)
+		try
+		{
+		MSG_WM_DESTROY(OnDestroy)
+		COMMAND_ID_HANDLER(HAL_WEB_SEED_DELETE, OnDelete)
+		}
+		HAL_ALL_EXCEPTION_CATCH(L"in WebSeedListViewCtrl MSG_MAP")
+
+		CHAIN_MSG_MAP(list_class_t)
+		DEFAULT_REFLECTION_HANDLER()
+	END_MSG_MAP()
+
+	void uiUpdate(const hal::torrent_details_ptr pT);
+	void enterNewTracker();
+	void saveSettings();
+	LRESULT OnDelete(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
+		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
+	}
+	
+	template<typename F>
+	void attachDeletedConnection(F&& fn) { seedDeleted_.connect(fn); }
+
+private:
+	void OnAttach();
+	void OnDestroy();
+
+	boost::signal<void (hal::web_seed_detail)> seedDeleted_;
+};
+
+typedef WebSeedListViewCtrl::SelectionManager WebSeedListViewManager;
 
 class AdvWebSeedsDialog :
 	public CHalTabPageImpl<AdvWebSeedsDialog>,
@@ -48,8 +112,8 @@ public:
 	enum { IDD = HAL_ADVWEBPEERS };
 
 	AdvWebSeedsDialog(HaliteWindow& HalWindow) :
-		dlg_base_class_t(HalWindow)//,
-		//m_list("listviews/tracker", "TrackerListView")
+		dlg_base_class_t(HalWindow),
+		list_("listviews/web_seeds", "WebSeedListView")
 	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)
@@ -97,7 +161,7 @@ public:
 
 protected:
 	string current_torrent_name_;
-//	TrackerListViewCtrl m_list;
+	WebSeedListViewCtrl list_;
 
 	wstring url_;
 	WTLx::EditHilight urlEdit_;

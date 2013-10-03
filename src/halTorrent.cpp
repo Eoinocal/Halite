@@ -912,13 +912,33 @@ void bit::torrent::set_name(const std::wstring& n)
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::set_name()")
 }
 
-void bit::torrent::add_web_seed(const wstring& url, bit::web_seed type)
+void bit::torrent::add_web_seed(const wstring& url, web_seed_detail::types type)
 {
 	try {
 	
 	ptr->add_web_seed(url, type);
 	
 	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::add_web_seed()")
+}
+
+void bit::torrent::delete_web_seed(const wstring& url, web_seed_detail::types type)
+{
+	try {
+	
+	ptr->delete_web_seed(url, type);
+	
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::delete_web_seed()")
+}
+
+std::vector<web_seed_detail> bit::torrent::web_seeds() const
+{
+	try {
+	
+	return ptr->get_web_seeds();
+	
+	} HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH("torrent::get_web_seeds")
+	
+	return std::vector<web_seed_detail>();
 }
 
 const uuid bit::torrent::uuid() const

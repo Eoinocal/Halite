@@ -323,7 +323,7 @@ public:
 	void OnDestroy() {}
 	
 	hal::dht_node_details_t DhtNodes() const;	
-	hal::web_seed_details_t WebSeeds() const;
+	std::vector<hal::web_seed_detail> WebSeeds() const;
 	
 private:
 	NewTorrent_PeersListViewCtrl peersList_;

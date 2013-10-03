@@ -32,9 +32,13 @@ public:
 			for (int nLen = 256; ; nLen *= 2)
 			{
 				str = wstring (nLen, L'\0');
+				auto size = list_->GetItemText(item_.iItem, si, const_cast<LPTSTR>(str.data()), static_cast<int>(str.capacity()));
 
-				if (list_->GetItemText(item_.iItem, si, const_cast<LPTSTR>(str.data()), static_cast<int>(str.capacity())) < nLen - 1)
+				if (size < nLen - 1)
+				{
+					str.resize(size);
 					return str;
+				}
 			}
 		}
 

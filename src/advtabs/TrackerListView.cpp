@@ -61,7 +61,7 @@ void TrackerListViewCtrl::uiUpdate(const hal::torrent_details_ptr pT)
 {
 	if (hal::bit::torrent t = hal::bittorrent::Instance().get(pT))
 	{			
-		if (hal::try_update_lock<this_class_t> lock = hal::try_update_lock<this_class_t>(this)) 
+		if (auto lock = hal::try_update_lock<list_class_t>(this)) 
 		{			
 			auto trackers = t.trackers();
 			DeleteAllItems();

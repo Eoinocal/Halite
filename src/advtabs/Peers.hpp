@@ -44,7 +44,6 @@ public:
 		try
 		{
 		MSG_WM_DESTROY(OnDestroy)
-		COMMAND_ID_HANDLER(HAL_PEERS_MENU_ADD_URL, OnAddUrl)
 
 		REFLECTED_NOTIFY_CODE_HANDLER(SLVN_SORTCHANGED, OnSortChanged)
 		REFLECTED_NOTIFY_CODE_HANDLER(LVN_GETDISPINFO, OnGetDispInfo)
@@ -75,8 +74,6 @@ public:
 
 	LRESULT OnGetDispInfo(int, LPNMHDR pnmh, BOOL&);
 	LRESULT OnSortChanged(int, LPNMHDR pnmh, BOOL&);
-
-	LRESULT OnAddUrl(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
 	bool sort_list_comparison(std::wstring l, std::wstring r, size_t index, bool ascending);
 	

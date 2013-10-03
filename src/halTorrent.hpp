@@ -35,7 +35,7 @@ struct create_torrent_params
 
 	tracker_details_t trackers;
 	dht_node_details_t dht_nodes;
-	web_seed_details_t web_seeds;
+	std::vector<web_seed_detail> web_seeds;
 };
 
 typedef boost::function<bool (size_t, size_t, size_t)> filter_callback;
@@ -100,12 +100,6 @@ public:
 		action_pause = 0,
 		action_resume,
 		action_callback
-	};
-
-	enum web_seed
-	{
-		url = 0,
-		http
 	};
 
 	class null_torrent : public std::exception
@@ -230,49 +224,11 @@ public:
 
 		void set_superseeding(bool);
 		bool superseeding() const;
-
-		void add_web_seed(const wstring&, web_seed type);
 		
-	public:
-/*		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(const uuid, class_type, 
-			get_uuid, uuid);
-
-		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(const wstring, const wstring&, class_type, 
-			get_name, set_name, name);
-
-//		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(float, float, class_type, 
-//			get_ratio, set_ratio, ratio);
-
-		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(int_pair, const int_pair&, class_type, 
-			get_connection_limits, set_connection_limits, connection_limits);
-		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(float_pair, const float_pair&, class_type, 
-			get_rate_limits, set_rate_limits, rate_limits);
+		void add_web_seed(const wstring&, web_seed_detail::types type);
+		void delete_web_seed(const wstring&, web_seed_detail::types type);
+		std::vector<web_seed_detail> web_seeds() const;
 		
-		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(wpath, const wpath&, class_type, 
-			get_save_directory, set_save_directory, save_directory);
-		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(wpath, const wpath&, class_type, 
-			get_move_to_directory, set_move_to_directory, move_to_directory);
-
-		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(wstring_pair, const wstring_pair&, 
-			class_type, get_tracker_login, set_tracker_login, tracker_login);
-
-		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(bool, class_type, 
-			get_is_active, is_active);
-		STLSOFT_METHOD_PROPERTY_GET_EXTERNAL(bool, class_type, 
-			get_in_session, in_session);
-
-		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(std::vector<tracker_detail>, const std::vector<tracker_detail>&, 
-			class_type, get_trackers, set_trackers, trackers);
-
-		STLSOFT_METHOD_PROPERTY_SET_EXTERNAL(bool, class_type, 
-			set_managed, managed);
-
-		STLSOFT_METHOD_PROPERTY_GETSET_EXTERNAL(bool, bool, class_type, 
-			get_superseeding, set_superseeding, superseeding);
-
-		STLSOFT_METHOD_PROPERTY_SET_EXTERNAL(const vec_int_pair&, class_type, 
-			set_file_priorities, file_priorities);
-*/
 		void reset_trackers();
 		bool is_open() const;
 		void adjust_queue_position(bit::queue_adjustments adjust);

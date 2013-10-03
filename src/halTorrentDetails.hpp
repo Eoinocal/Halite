@@ -393,6 +393,25 @@ struct tracker_detail
 typedef std::vector<tracker_detail> tracker_details_t;
 
 
+struct web_seed_detail
+{
+	enum class types
+	{
+		url = 0,
+		http
+	};
+
+	web_seed_detail() {}
+	web_seed_detail(std::wstring u, types t) : url(u), type(t) {}
+	
+	bool operator<(const web_seed_detail& t) const
+	{
+		return (url < t.url);
+	}
+	
+	std::wstring url;
+	types type;
+};
 
 struct web_seed_or_dht_node_detail
 {
@@ -419,19 +438,6 @@ struct dht_node_detail
 };
 
 typedef std::vector<dht_node_detail> dht_node_details_t;
-
-
-
-struct web_seed_detail
-{
-	web_seed_detail() {}
-	web_seed_detail(std::wstring u) : url(u) {}
-	
-	std::wstring url;
-};
-
-typedef std::vector<web_seed_detail> web_seed_details_t;
-
 
 
 class EventDetail;

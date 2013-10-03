@@ -275,8 +275,9 @@ public:
 	
 	void set_name(const wstring& n);
 	const wstring& name() const;
-
-	void add_web_seed(const wstring& url, bit::web_seed type);
+	
+	void add_web_seed(const wstring& url, web_seed_detail::types type);
+	void delete_web_seed(const wstring& url, web_seed_detail::types type);
 	
 	const libt::sha1_hash& hash() const
 	{
@@ -580,6 +581,8 @@ public:
 		return trackers_;
 	}
 
+	const std::vector<web_seed_detail>& get_web_seeds();
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
@@ -854,6 +857,7 @@ private:
 	
 	std::vector<tracker_detail> trackers_;
 	std::vector<libt::announce_entry> torrent_trackers_;
+	std::vector<web_seed_detail> web_seeds_;
 	std::vector<int> file_priorities_;
 
 	torrent_files files_;
