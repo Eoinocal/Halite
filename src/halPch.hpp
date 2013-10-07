@@ -35,7 +35,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/bind.hpp>
 #include <boost/noncopyable.hpp>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/function.hpp>
 
 #include <boost/utility/in_place_factory.hpp>
@@ -58,6 +58,7 @@
 #pragma warning (push)
 #pragma warning (disable : 4099)
 #pragma warning (disable : 4267)
+#pragma warning (disable : 4244)
 #	include <boost/archive/text_woarchive.hpp>
 #	include <boost/archive/text_wiarchive.hpp>
 #	include <boost/archive/binary_woarchive.hpp>

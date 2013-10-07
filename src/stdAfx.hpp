@@ -85,7 +85,7 @@ extern WTL::CAppModule _Module;
 #include <boost/smart_ptr.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/tuple/tuple.hpp>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/function.hpp>
 
 #include <boost/filesystem/path.hpp>
@@ -98,6 +98,7 @@ extern WTL::CAppModule _Module;
 #pragma warning (push)
 #pragma warning (disable : 4099)
 #pragma warning (disable : 4267)
+#pragma warning (disable : 4244)
 #	include <boost/archive/text_woarchive.hpp>
 #	include <boost/archive/text_wiarchive.hpp>
 #	include <boost/archive/binary_woarchive.hpp>

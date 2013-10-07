@@ -21,7 +21,7 @@ template<class _string_type, class _stream_type>
 class Logger
 {
 public:
-	boost::signals::scoped_connection attach(boost::function<void (const _string_type& text)> fn)
+	boost::signals2::connection attach(boost::function<void (const _string_type& text)> fn)
 	{
 		return logger_.connect(fn);
 	}
@@ -49,7 +49,7 @@ private:
 	Logger() {}
 	Logger(const Logger& rhs) {}
 	
-	boost::signal<void (const _string_type& text)> logger_;
+	boost::signals2::signal<void (const _string_type& text)> logger_;
 };
 
 #ifdef _UNICODE

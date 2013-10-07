@@ -72,13 +72,14 @@ public:
 	void editItem(int);
 	void deleteItem(int);
 
-	void attachEditedConnection(boost::function<void ()> fn) { listEdited_.connect(fn); }
+	template<typename F>
+	void attachEditedConnection(F&& fn) { listEdited_.connect(fn); }
 
 private:
 	void OnAttach();
 	void OnDestroy();
 
-	boost::signal<void ()> listEdited_;
+	boost::signals2::signal<void ()> listEdited_;
 };
 
 typedef TrackerListViewCtrl::SelectionManager TrackerListViewManager;

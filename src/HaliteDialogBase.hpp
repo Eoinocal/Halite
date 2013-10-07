@@ -21,10 +21,11 @@ class CHaliteDialogBase
 	
 public:
 	CHaliteDialogBase(HaliteWindow& haliteWindow) :
-		haliteWindow_(haliteWindow)
+		haliteWindow_(haliteWindow),
+		sc_block_(connection_)
 	{		
 		connection_ = haliteWindow.connectUiUpdate(bind(&this_class_t::handleUiUpdate, this, _1));
-		connection_.block();
+		sc_block_.block();
 	}
 	
 	BEGIN_MSG_MAP_EX(this_class_t)
@@ -36,11 +37,11 @@ public:
 	{
 		if (show)
 		{
-			connection_.unblock();
+			sc_block_.unblock();
 		}
 		else
 		{
-			connection_.block();
+			sc_block_.block();
 		}
 		
 		SetMsgHandled(false);
@@ -114,6 +115,7 @@ protected:
 
 private:
 	HaliteWindow& haliteWindow_;
-	boost::signals::scoped_connection connection_;
+	boost::signals2::scoped_connection connection_;
+	boost::signals2::shared_connection_block sc_block_;
 };
 

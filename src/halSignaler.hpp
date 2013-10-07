@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <boost/signal.hpp>
+#include <boost/signals2.hpp>
 
 #include "halEvent.hpp"
 
@@ -9,7 +9,7 @@ namespace hal
 {
 
 template<typename F=boost::function<bool ()> >
-struct signaler_wrapper : public boost::signals::trackable
+struct signaler_wrapper : public boost::signals2::trackable
 {
 	signaler_wrapper(F f) :
 		f_(f)
@@ -30,8 +30,8 @@ private:
 
 struct once
 {
-	template<typename S>
-	once(S& s, boost::function<void ()> f) :
+	template<typename S, typename F>
+	once(S& s, F&& f) :
 		f_(f)
 	{
 		c_ = s.connect(*this);
@@ -50,10 +50,10 @@ struct once
 	}
 
 	boost::function<void ()> f_;
-	boost::signals::connection c_;
+	boost::signals2::connection c_;
 };
 
-template<typename S=boost::signal<void()> >
+template<typename S=boost::signals2::signal<void()>>
 class signaler
 {
 public:

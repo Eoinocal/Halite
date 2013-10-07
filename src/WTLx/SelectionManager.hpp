@@ -207,7 +207,8 @@ public:
 		sync_list(true);		
 	}
 	
-	void attach(boost::function<void (param_type)> fn) const { selection_.connect(fn); }
+	template<typename F>
+	void attach(F&& fn) const { selection_.connect(fn); }
 	
 	void signal() 
 	{ 
@@ -218,7 +219,7 @@ private:
 	string_t selected_;
 	std::set<string_t> all_selected_;
 	
-	mutable boost::signal<void (param_type)> selection_;
+	mutable boost::signals2::signal<void (param_type)> selection_;
 	L& list_;
 };
 

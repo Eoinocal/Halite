@@ -192,8 +192,8 @@ public:
 	bool is_active() { return pimpl_; }
 	void set_debug_logging(bool d);
 
-	boost::signals::connection attach(boost::function<void (boost::shared_ptr<EventDetail>)> fn);
-	void dettach(const boost::signals::connection& c);
+	boost::signals2::connection attach(boost::function<void (boost::shared_ptr<EventDetail>)> fn);
+	void dettach(const boost::signals2::connection& c);
 
 	void post(boost::shared_ptr<EventDetail> e);
 	

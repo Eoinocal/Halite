@@ -40,7 +40,7 @@ public:
 	}
 
 private:
-	boost::signals::scoped_connection editLogger;
+	boost::signals2::scoped_connection editLogger;
 };
 
 class LogList : public ATL::CWindowImpl<LogList, WTL::CListBox>
@@ -59,7 +59,7 @@ public:
 	}
 
 private:
-	boost::signals::scoped_connection listLogger;
+	boost::signals2::scoped_connection listLogger;
 };
 
 class LogListViewCtrl :
@@ -200,7 +200,7 @@ private:
 	}
 
 	mutable hal::mutex_t mutex_;
-	boost::signals::connection conn_;
+	boost::signals2::connection conn_;
 	std::deque<shared_ptr<hal::EventDetail> > events_;
 };
 

@@ -44,11 +44,12 @@ class AdvHaliteDialog;
 class ui_signal : noncopyable
 {
 public:
-	void attach(boost::function<void ()> fn) { ui_.connect(fn); }
+	template<typename F>
+	void attach(F&& fn) { ui_.connect(fn); }
 	void update() {  }
 
 private:
-	boost::signal<void ()> ui_;
+	boost::signals2::signal<void ()> ui_;
 };
 
 class HaliteWindow :
@@ -134,19 +135,20 @@ public:
 
 	void ProcessFile(LPCTSTR lpszPath);
 	
-	boost::signals::connection connectUiUpdate(boost::function<void (const hal::torrent_details_manager& allTorrents)> fn) 
+	boost::signals2::connection connectUiUpdate(boost::function<void (const hal::torrent_details_manager& allTorrents)> fn) 
 	{ 
 		return ui_update_signal_.connect(fn); 
 	}
 	
-	boost::signal<void (const hal::torrent_details_manager& allTorrents)> & ui_sig()
+	boost::signals2::signal<void (const hal::torrent_details_manager& allTorrents)> & ui_sig()
 	{ 
 		return ui_update_signal_; 
 	}
 	
 	void issueUiUpdate();
 	
-	void connectSaveState(boost::function<void ()> fn) 
+	template<typename F>
+	void connectSaveState(F&& fn) 
 	{ 
 		save_state_signal_.connect(fn); 
 	}
@@ -255,8 +257,8 @@ private:
 	void TryToCloseWithConfirmation();
 
 	// These two gotta be first!!!
-	boost::signal<void (const hal::torrent_details_manager& tD)> ui_update_signal_;
-	boost::signal<void ()> save_state_signal_;	
+	boost::signals2::signal<void (const hal::torrent_details_manager& tD)> ui_update_signal_;
+	boost::signals2::signal<void ()> save_state_signal_;	
 
 	boost::function<void ()> post_halite_function_;
 	

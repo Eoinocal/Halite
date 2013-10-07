@@ -91,7 +91,7 @@ private:
 	void OnAttach();
 	void OnDestroy();
 
-	boost::signal<void (hal::web_seed_detail)> seedDeleted_;
+	boost::signals2::signal<void (hal::web_seed_detail)> seedDeleted_;
 };
 
 typedef WebSeedListViewCtrl::SelectionManager WebSeedListViewManager;

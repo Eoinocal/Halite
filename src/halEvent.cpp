@@ -26,7 +26,7 @@ struct event_impl
 	mutable mutex_t mutex_;
 
 	bool debug_;
-	boost::signal<void (boost::shared_ptr<EventDetail>)> event_signal_;
+	boost::signals2::signal<void (boost::shared_ptr<EventDetail>)> event_signal_;
 };
 
 event_logger::event_logger()
@@ -47,7 +47,7 @@ void event_logger::init()
 event_logger::~event_logger()
 {}
 
-boost::signals::connection event_logger::attach(boost::function<void (boost::shared_ptr<EventDetail>)> fn)
+boost::signals2::connection event_logger::attach(boost::function<void (boost::shared_ptr<EventDetail>)> fn)
 {
 	if (pimpl_)
 	{
@@ -55,10 +55,10 @@ boost::signals::connection event_logger::attach(boost::function<void (boost::sha
 		return pimpl_->event_signal_.connect(fn);
 	}
 	else
-		return boost::signals::connection();
+		return boost::signals2::connection();
 }
 
-void event_logger::dettach(const boost::signals::connection& c)
+void event_logger::dettach(const boost::signals2::connection& c)
 {
 	if (pimpl_)
 	{

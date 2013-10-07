@@ -53,7 +53,7 @@ namespace fs = boost::filesystem;
 using fs::ifstream;
 using fs::ofstream;
 	
-static class halite_log_file : public boost::signals::trackable
+static class halite_log_file : public boost::signals2::trackable
 {
 public:	
 	void operator()(shared_ptr<hal::EventDetail> event)
@@ -81,7 +81,7 @@ public:
 	
 private:
 	fs::wofstream wofs;
-	boost::signals::connection conn_;
+	boost::signals2::connection conn_;
 	
 } halite_log_file_;
 

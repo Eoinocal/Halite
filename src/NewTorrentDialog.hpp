@@ -94,7 +94,7 @@ private:
 	void OnDestroy();
 	void saveSettings();
 
-	boost::signal<void ()> listEdited_;
+	boost::signals2::signal<void ()> listEdited_;
 };
 
 typedef FilesListViewCtrl::SelectionManager FilesListViewManager;

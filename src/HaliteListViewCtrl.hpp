@@ -6,11 +6,11 @@
 
 #pragma once
 
+#include "stdAfx.hpp"
+
 #include <boost/array.hpp>
-#include <boost/signals.hpp>
 #include <boost/algorithm/string/split.hpp>
 
-#include "stdAfx.hpp"
 #include "halTorrent.hpp"
 
 template <class TBase>
@@ -187,7 +187,7 @@ protected:
 		S selected_;
 		std::vector<S> all_selected_;
 		
-		boost::signal<void (param_type)> selection_;
+		boost::signals2::signal<void (param_type)> selection_;
 		L& m_list_;
 	};
 	
@@ -233,8 +233,8 @@ protected:
 	class column_type
 	{
 	public:
-		virtual ~column_type() = 0		
-		virtual bool less(cont T&, const T&) = 0
+		virtual ~column_type() = 0;
+		virtual bool less(const T&, const T&) = 0;
 		virtual std::string str() = 0;
 	};
 	

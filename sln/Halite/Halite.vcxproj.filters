@@ -1,0 +1,361 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{e68fb169-3835-491c-9f77-4a558dd95a44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{1cbd6490-58cd-4220-8ed2-19bc24ab5fc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{9b64e8c0-57d2-414a-8918-6efc61a20bed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Advanced Tabs">
+      <UniqueIdentifier>{1956462a-9af4-40aa-ab23-43d25b0b3446}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Advanced Tabs">
+      <UniqueIdentifier>{90de4fb9-eae3-44fa-bd93-09ce1bfa85a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Auxiliary">
+      <UniqueIdentifier>{f81ed78b-4a00-4314-b369-8dccfd1effe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Auxiliary">
+      <UniqueIdentifier>{7737e1e7-57de-458d-9f99-a1ea07538b3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\WTLx">
+      <UniqueIdentifier>{e8cddbd6-36d2-4886-b91b-f09b1a43003f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\WTLx">
+      <UniqueIdentifier>{9f975936-d490-4ae2-8534-9c515455e629}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\TimePickerDlg.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\UxthemeWrapper.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\win32_exception.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WinAPIMutex.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WinAPIWaitableTimer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\AddTorrentDialog.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\AdvHaliteDialog.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ConfigOptions.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\DebugDialog.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Halite.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\HaliteDialog.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\HaliteDialogBase.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\HaliteEditCtrl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\HaliteListManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\HaliteListView.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\HaliteListViewDlg.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\HaliteSortListViewCtrl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\HaliteTabCtrl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\HaliteTabPage.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\HaliteWindow.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\NewTorrentDialog.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\NewTorrentPeers.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\NewTorrentTracker.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ProgressDialog.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\SplashDialog.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\stdAfx.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\advtabs\Debug.hpp">
+      <Filter>Header Files\Advanced Tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\advtabs\Files.hpp">
+      <Filter>Header Files\Advanced Tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\advtabs\Peers.hpp">
+      <Filter>Header Files\Advanced Tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\advtabs\ThemeTestDialog.hpp">
+      <Filter>Header Files\Advanced Tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\advtabs\Torrent.hpp">
+      <Filter>Header Files\Advanced Tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\advtabs\Tracker.hpp">
+      <Filter>Header Files\Advanced Tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\advtabs\TrackerAddDialog.hpp">
+      <Filter>Header Files\Advanced Tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\advtabs\TrackerListView.hpp">
+      <Filter>Header Files\Advanced Tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\global\crtp_iarchive.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\global\crtp_oarchive.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\global\ini.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\global\logger.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\global\string_conv.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\global\tinyxml.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\global\txml.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\global\txml_iarchive.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\global\txml_ini_adapter.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\global\txml_oarchive.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\global\unicode.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\global\utf8.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\global\versioned_file.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\global\work_file.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\global\wtl_app.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\ListViewEdit.hpp">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\ListViewIterators.hpp">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\ListViewSortMixin.hpp">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\NTray.hpp">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\RadioPaneDlg.hpp">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\SelectionManager.hpp">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\SimpleHtml.h">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\SSFileDialog.hpp">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\UpdateLockable.hpp">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\UpdateLocks.hpp">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\Aero.h">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\AtlAutosizeDlg.h">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\atldlgx.h">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\CSSFileDialog.hpp">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\DdxEx.hpp">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\DropFileTarget.h">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\EditHilight.hpp">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\GenericAddDialog.hpp">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\WTLx\GenericAddListView.hpp">
+      <Filter>Header Files\WTLx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\res\resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\res\afxres.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\advtabs\WebSeeds.hpp">
+      <Filter>Header Files\Advanced Tabs</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\AdvHaliteDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ConfigOptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Halite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\HaliteDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\HaliteListView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\HaliteWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\NewTorrentDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\NewTorrentPeers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\NewTorrentTracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\stdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UxthemeWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\win32_exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\advtabs\Debug.cpp">
+      <Filter>Source Files\Advanced Tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\advtabs\Files.cpp">
+      <Filter>Source Files\Advanced Tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\advtabs\Peers.cpp">
+      <Filter>Source Files\Advanced Tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\advtabs\Torrent.cpp">
+      <Filter>Source Files\Advanced Tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\advtabs\Tracker.cpp">
+      <Filter>Source Files\Advanced Tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\advtabs\TrackerListView.cpp">
+      <Filter>Source Files\Advanced Tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\global\ini.cpp">
+      <Filter>Source Files\Auxiliary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\global\logger.cpp">
+      <Filter>Source Files\Auxiliary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\global\string_conv.cpp">
+      <Filter>Source Files\Auxiliary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\global\work_file.cpp">
+      <Filter>Source Files\Auxiliary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\global\wtl_app.cpp">
+      <Filter>Source Files\Auxiliary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\WTLx\NTray.cpp">
+      <Filter>Source Files\WTLx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\global\txml_parser.cpp">
+      <Filter>Source Files\Auxiliary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\global\tinyxml.cpp">
+      <Filter>Source Files\Auxiliary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\global\tinyxmlerror.cpp">
+      <Filter>Source Files\Auxiliary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\global\tinyxmlparser.cpp">
+      <Filter>Source Files\Auxiliary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\global\txml.cpp">
+      <Filter>Source Files\Auxiliary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\global\txml_error.cpp">
+      <Filter>Source Files\Auxiliary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\global\txml_ini_adapter.cpp">
+      <Filter>Source Files\Auxiliary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\advtabs\WebSeeds.cpp">
+      <Filter>Source Files\Advanced Tabs</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\res\Halite.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\res\toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\res\Manifest.xml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\res\Halite.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

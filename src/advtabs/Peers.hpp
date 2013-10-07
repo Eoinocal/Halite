@@ -93,7 +93,7 @@ public:
 private:
 	hal::peer_details_vec peer_details_;
 	HaliteWindow& halite_window_;
-	boost::signal<void ()> addUrl_;
+	boost::signals2::signal<void ()> addUrl_;
 };
 
 class AdvPeerDialog :

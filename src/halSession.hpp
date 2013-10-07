@@ -363,8 +363,8 @@ public:
 		signaler<> successful_listen;
 		signaler<> torrent_finished;
 
-		boost::signal<bool()> torrent_paused;
-		boost::signal<void (wstring torrent_name)> torrent_completed;
+		boost::signals2::signal<bool()> torrent_paused;
+		boost::signals2::signal<void (wstring torrent_name)> torrent_completed;
 	} 
 	signals;
 

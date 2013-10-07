@@ -19,7 +19,7 @@
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 class HaliteDialog;
 class AdvHaliteDialog;

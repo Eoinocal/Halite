@@ -1,6 +1,12 @@
 /lib
-/x64
-/Release
-/Halite.sdf
-/Halite.v11.suo
-/Debug
+
+*Release*
+*Debug*
+/ipch*
+
+*.user
+*.log
+*.sdf
+*.suo
+*.aps
+*.opensdf
