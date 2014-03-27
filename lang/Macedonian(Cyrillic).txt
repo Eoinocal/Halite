@@ -26,6 +26,7 @@
 "Add New Tracker" ---> "Внесете име за нов tracker"
 "Add New Web Seed or DHT Node" ---> "Додај нови 'webseed' или ДХТ-јазол"
 "Add Torrent" ---> "Додај торент"
+"Add as " --->  ??? 
 "Add" ---> "Додај"
 "Adjust Queue Position" ---> "Обработка на твоето место во линија"
 "Advanced GUI" ---> "Продолжена"
@@ -131,6 +132,8 @@
 "Generated Torrent Name (Cannot change)" ---> "Генерирано име торента (непроменљиво)"
 "Global Limits" ---> "Глобално лимитирање"
 "Globals" ---> "Апарат поврзан за се "
+"HTTP seed" --->  ??? 
+"HTTP" --->  ??? 
 "Halite BitTorrent Client" ---> "Халите битторент клијент"
 "Halite Debug Dialog" ---> "Халите, диалог 'debug'-а"
 "Halite importing IP ranges..." ---> "Халите импортира делове ИП-а"
@@ -266,6 +269,7 @@
 "Saving Torrent" ---> "Апхивирај фајл"
 "Search branching : " ---> "Поделена претраг ДХТ-а : "
 "Security" ---> "Сигурности"
+"Seed URL" --->  ??? 
 "Seeding Limits" ---> "Граница нушења"
 "Seeding" ---> "Нудиш"
 "Seeds" ---> "Извори"
@@ -358,7 +362,9 @@
 "UPnP router model (if recognised)." ---> "Модел УПнП-роутера (ако је познато)."
 "UPnP" ---> "УПнП"
 "URL Seed %2%, %3%. (%1%)" ---> "УРЛ извор %2%, %3%. (%1%)"
+"URL seed" --->  ??? 
 "URL" ---> "УРЛ"
+"URL: " --->  ??? 
 "UnPlug and Play" ---> "Издвоји и покажи"
 "Unicode exception: %1%." ---> "Уницоде изузетак: %1%."
 "Unmanaged" ---> "Неуређивано"
@@ -376,6 +382,7 @@
 "Warning" ---> "Предупредување"
 "Web Seed" ---> "'Webseed'"
 "Web Seeds and DHT Nodes" ---> "'Webseed' и ДХТ чвори"
+"Web Seeds" --->  ??? 
 "Write Cache Hit Ratio :" ---> "Рад писања у 'cache'-у"
 "Xml Exception (%1%) with %2%." ---> "XML Грешка (%1%) код (%2%)"
 "\r\0" ---> "\r\0"

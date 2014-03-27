@@ -56,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <WixExtension Include="WixSystemToolsExtension">
-      <HintPath>..\..\..\..\Libraries\msiext\msiext-1.3\WixExtensions\WixSystemToolsExtension.dll</HintPath>
+      <HintPath>WixExtensions\WixSystemToolsExtension.dll</HintPath>
       <Name>WixSystemToolsExtension</Name>
     </WixExtension>
     <WixExtension Include="WixFirewallExtension">

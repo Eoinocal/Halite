@@ -26,6 +26,7 @@
 "Add New Tracker" ---> "Přidat tracker"
 "Add New Web Seed or DHT Node" ---> "Přidat web seed nebo DHT uzel"
 "Add Torrent" ---> "Přidat torrent"
+"Add as " --->  ??? 
 "Add" ---> "Přidat"
 "Adjust Queue Position" ---> "Seřadit frontu"
 "Advanced GUI" ---> "Rozšířené GUI"
@@ -131,6 +132,8 @@
 "Generated Torrent Name (Cannot change)" ---> "Vygenerovaný název torrentu (nelze změnit)"
 "Global Limits" ---> "Globální limity"
 "Globals" ---> "Globální"
+"HTTP seed" --->  ??? 
+"HTTP" --->  ??? 
 "Halite BitTorrent Client" ---> "Halite BitTorrent klient"
 "Halite Debug Dialog" ---> "Halite - dialog ladění"
 "Halite importing IP ranges..." ---> "Halite importuje rozsahy IP..."
@@ -266,6 +269,7 @@
 "Saving Torrent" ---> "Uložení torrentu"
 "Search branching : " ---> "Větvení hledání:"
 "Security" ---> "Bezpečnost"
+"Seed URL" --->  ??? 
 "Seeding Limits" ---> "Limity sdílení"
 "Seeding" ---> "Sdílení"
 "Seeds" ---> "Seedy"
@@ -358,7 +362,9 @@
 "UPnP router model (if recognised)." ---> "UPnP model routeru (pokud rozeznán)."
 "UPnP" ---> "UPnP"
 "URL Seed %2%, %3%. (%1%)" ---> "URL seed %2%, %3%. (%1%)"
+"URL seed" --->  ??? 
 "URL" ---> "URL"
+"URL: " --->  ??? 
 "UnPlug and Play" ---> "UnPlug and Play"
 "Unicode exception: %1%." ---> "Unicode vyjímka: %1%."
 "Unmanaged" ---> "Nespravovaný"
@@ -376,6 +382,7 @@
 "Warning" ---> "Varování"
 "Web Seed" ---> "Web seed"
 "Web Seeds and DHT Nodes" ---> "Web seedy a DHT uzly"
+"Web Seeds" --->  ??? 
 "Write Cache Hit Ratio :" ---> "Využití pro zápis:"
 "Xml Exception (%1%) with %2%." ---> "Xml vyjímka (%1%) s %2%."
 "\r\0" ---> "\r\0"

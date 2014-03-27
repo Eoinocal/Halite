@@ -26,6 +26,7 @@
 "Add New Tracker" ---> "Προσθήκη νέου Tracker"
 "Add New Web Seed or DHT Node" ---> "Προσθήκη νέου Web Seed ή DHT κόμβου"
 "Add Torrent" ---> "Προσθήκη torrent"
+"Add as " --->  ??? 
 "Add" ---> "Προσθήκη"
 "Adjust Queue Position" --->  ??? 
 "Advanced GUI" ---> "Προχωρημένο γραφικό περιβάλλον"
@@ -131,6 +132,8 @@
 "Generated Torrent Name (Cannot change)" ---> "Παραγόμενο όνομα Torrent (Αδυναμία αλλαγής)"
 "Global Limits" ---> "Ολοκληρωτικά όρια"
 "Globals" --->  ??? 
+"HTTP seed" --->  ??? 
+"HTTP" --->  ??? 
 "Halite BitTorrent Client" ---> "Halite BitTorrent Client"
 "Halite Debug Dialog" ---> "Halite Debug Dialog"
 "Halite importing IP ranges..." ---> "Το Halite εισάγει IP ranges..."
@@ -266,6 +269,7 @@
 "Saving Torrent" ---> "Αποθήκευση Torrent"
 "Search branching : " --->  ??? 
 "Security" ---> "Ασφάλεια"
+"Seed URL" --->  ??? 
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Τροφοδοσία"
 "Seeds" ---> "Τροφοδότες"
@@ -358,7 +362,9 @@
 "UPnP router model (if recognised)." --->  ??? 
 "UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" ---> "URL Αποδοχέα %2%, %3%. (%1%)"
+"URL seed" --->  ??? 
 "URL" ---> "URL"
+"URL: " --->  ??? 
 "UnPlug and Play" ---> "UnPlug and Play"
 "Unicode exception: %1%." ---> "Unicode εξαίρεση: %1%."
 "Unmanaged" --->  ??? 
@@ -376,6 +382,7 @@
 "Warning" ---> "Προειδοπείηση"
 "Web Seed" ---> "Web Seed"
 "Web Seeds and DHT Nodes" ---> "Web Seeds και DHT κόμβοι"
+"Web Seeds" --->  ??? 
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml εξεραίσεις (%1%) με %2%."
 "\r\0" --->  ??? 

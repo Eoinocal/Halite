@@ -189,7 +189,7 @@ public:
 
 	void init();
 
-	bool is_active() { return pimpl_; }
+	bool is_active() { return static_cast<bool>(pimpl_); }
 	void set_debug_logging(bool d);
 
 	boost::signals2::connection attach(boost::function<void (boost::shared_ptr<EventDetail>)> fn);

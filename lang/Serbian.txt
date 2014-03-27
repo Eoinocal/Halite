@@ -26,6 +26,7 @@
 "Add New Tracker" ---> "Unesi novog trekera"
 "Add New Web Seed or DHT Node" ---> "Dodaj novi 'webseed' ili DHT-čvor"
 "Add Torrent" ---> "Dodaj torent"
+"Add as " --->  ??? 
 "Add" ---> "Dodaj"
 "Adjust Queue Position" ---> "Obradi svoje mesto u redu"
 "Advanced GUI" ---> "Produženi"
@@ -131,6 +132,8 @@
 "Generated Torrent Name (Cannot change)" ---> "Generirano ime torenta (nepromenljivo)"
 "Global Limits" ---> "Globalno limitiranje"
 "Globals" ---> "Uređaj vezan za sve"
+"HTTP seed" --->  ??? 
+"HTTP" --->  ??? 
 "Halite BitTorrent Client" ---> "Halite bittorent klijent"
 "Halite Debug Dialog" ---> "Halite, dialog 'debug'-a"
 "Halite importing IP ranges..." ---> "Halite importira delove IP-a"
@@ -266,6 +269,7 @@
 "Saving Torrent" ---> "Arhiviraj fajl"
 "Search branching : " ---> "Podelena pretraga DHT-a : "
 "Security" ---> "Sigurnosti"
+"Seed URL" --->  ??? 
 "Seeding Limits" ---> "Granica nuđenja"
 "Seeding" ---> "Nudiš"
 "Seeds" ---> "Izvori"
@@ -358,7 +362,9 @@
 "UPnP router model (if recognised)." ---> "Model UPnP-routera (ako je poznato)."
 "UPnP" ---> "UPnP"
 "URL Seed %2%, %3%. (%1%)" ---> "URL izvor %2%, %3%. (%1%)"
+"URL seed" --->  ??? 
 "URL" ---> "URL"
+"URL: " --->  ??? 
 "UnPlug and Play" ---> "Izdvoji i pokaži"
 "Unicode exception: %1%." ---> "Unicode izuzetak: %1%."
 "Unmanaged" ---> "Neuređivano"
@@ -376,6 +382,7 @@
 "Warning" ---> "Upozorenje"
 "Web Seed" ---> "'Webseed'"
 "Web Seeds and DHT Nodes" ---> "'Weebseed' i DHT-čvori"
+"Web Seeds" --->  ??? 
 "Write Cache Hit Ratio :" ---> "Rad pisanja u 'cache'-u"
 "Xml Exception (%1%) with %2%." ---> "XML Greška (%1%) kod (%2%)"
 "\r\0" ---> "\r\0"

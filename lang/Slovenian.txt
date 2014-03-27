@@ -26,6 +26,7 @@
 "Add New Tracker" ---> "Dodaj nov sledilnik"
 "Add New Web Seed or DHT Node" ---> "Dodaj Web Seed ali DHT Node"
 "Add Torrent" ---> "Dodaj torrent"
+"Add as " --->  ??? 
 "Add" ---> "Dodaj"
 "Adjust Queue Position" --->  ??? 
 "Advanced GUI" ---> "Dodatno o vmesniku"
@@ -131,6 +132,8 @@
 "Generated Torrent Name (Cannot change)" ---> "Naključno ime torrenta (se ne da spremenjati)"
 "Global Limits" ---> "Omejitev:"
 "Globals" --->  ??? 
+"HTTP seed" --->  ??? 
+"HTTP" --->  ??? 
 "Halite BitTorrent Client" ---> "Halite"
 "Halite Debug Dialog" ---> "Halite Debug"
 "Halite importing IP ranges..." ---> "Uvažam IP naslove..."
@@ -266,6 +269,7 @@
 "Saving Torrent" ---> "Shranjujem torrent"
 "Search branching : " --->  ??? 
 "Security" ---> "Varnost"
+"Seed URL" --->  ??? 
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Sejem"
 "Seeds" ---> "Sejalcev"
@@ -357,8 +361,10 @@
 "Type" ---> "Katgorija"
 "UPnP router model (if recognised)." --->  ??? 
 "UPnP" --->  ??? 
-"URL Seed %2%, %3%. (%1%)" ---> "URL sejalca %2%, %3%. (%1%)"
+"URL Seed %2%, %3%. (%1%)" --->  ??? 
+"URL seed" --->  ??? 
 "URL" --->  ??? 
+"URL: " --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." --->  ??? 
 "Unmanaged" --->  ??? 
@@ -376,6 +382,7 @@
 "Warning" --->  ??? 
 "Web Seed" --->  ??? 
 "Web Seeds and DHT Nodes" --->  ??? 
+"Web Seeds" --->  ??? 
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." --->  ??? 
 "\r\0" --->  ??? 

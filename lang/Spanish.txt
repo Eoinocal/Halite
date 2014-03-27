@@ -26,6 +26,7 @@
 "Add New Tracker" ---> "Añadir nuevo Tracker"
 "Add New Web Seed or DHT Node" ---> "Añadir nueva semilla web o nodo DHT"
 "Add Torrent" ---> "Añadir Torrent"
+"Add as " --->  ??? 
 "Add" ---> "Añadir"
 "Adjust Queue Position" --->  ??? 
 "Advanced GUI" ---> "Interfaz avanzada"
@@ -131,6 +132,8 @@
 "Generated Torrent Name (Cannot change)" ---> "Nombre del torrent generado (no se puede cambiar)"
 "Global Limits" ---> "Límites globales"
 "Globals" --->  ??? 
+"HTTP seed" --->  ??? 
+"HTTP" --->  ??? 
 "Halite BitTorrent Client" --->  ??? 
 "Halite Debug Dialog" ---> "Diálogo de depuración de Halite"
 "Halite importing IP ranges..." ---> "Halite está importando rangos de IPs..."
@@ -266,6 +269,7 @@
 "Saving Torrent" ---> "Guardando Torrent"
 "Search branching : " --->  ??? 
 "Security" ---> "Seguridad"
+"Seed URL" --->  ??? 
 "Seeding Limits" --->  ??? 
 "Seeding" --->  ??? 
 "Seeds" ---> "Semillas"
@@ -358,7 +362,9 @@
 "UPnP router model (if recognised)." --->  ??? 
 "UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
+"URL seed" --->  ??? 
 "URL" --->  ??? 
+"URL: " --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." ---> "Excepción unicode: %1%."
 "Unmanaged" --->  ??? 
@@ -376,6 +382,7 @@
 "Warning" ---> "Advertencia"
 "Web Seed" ---> "Semilla web"
 "Web Seeds and DHT Nodes" ---> "Semillas web y nodos DHT"
+"Web Seeds" --->  ??? 
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Excepción Xml (%1%) con %2%."
 "\r\0" --->  ??? 

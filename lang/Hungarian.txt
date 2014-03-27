@@ -26,6 +26,7 @@
 "Add New Tracker" ---> "Új Tracker"
 "Add New Web Seed or DHT Node" ---> "Új Web Seed vagy DHT Csomópont"
 "Add Torrent" ---> "Új Torrent"
+"Add as " --->  ??? 
 "Add" ---> "Új"
 "Adjust Queue Position" --->  ??? 
 "Advanced GUI" ---> "Haladó GUI"
@@ -131,6 +132,8 @@
 "Generated Torrent Name (Cannot change)" ---> "Generált Torrent Név (Nem módosítható)"
 "Global Limits" ---> "Globális Korlátok"
 "Globals" --->  ??? 
+"HTTP seed" --->  ??? 
+"HTTP" --->  ??? 
 "Halite BitTorrent Client" ---> "Halite BitTorrent Kliens"
 "Halite Debug Dialog" ---> "Halite Debug Üzenet"
 "Halite importing IP ranges..." ---> "IP tartományok betöltése..."
@@ -266,6 +269,7 @@
 "Saving Torrent" ---> "Torrent Mentése"
 "Search branching : " --->  ??? 
 "Security" ---> "Biztonság"
+"Seed URL" --->  ??? 
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Seed"
 "Seeds" ---> "Seedek"
@@ -358,7 +362,9 @@
 "UPnP router model (if recognised)." --->  ??? 
 "UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" ---> "URL Seed %2%, %3%. (%1%)"
+"URL seed" --->  ??? 
 "URL" ---> "URL"
+"URL: " --->  ??? 
 "UnPlug and Play" ---> "UnPlug and Play"
 "Unicode exception: %1%." ---> "Unicode exception: %1%."
 "Unmanaged" --->  ??? 
@@ -376,6 +382,7 @@
 "Warning" ---> "Figyelmeztetés"
 "Web Seed" ---> "Web Seed"
 "Web Seeds and DHT Nodes" ---> "Web Seeds és DHT Csomópontok"
+"Web Seeds" --->  ??? 
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml Exception (%1%) with %2%."
 "\r\0" --->  ??? 

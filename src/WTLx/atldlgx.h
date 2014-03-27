@@ -1222,8 +1222,7 @@ class CVSplitDialog :
 		/*this_class_t*/CVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
 		t_uIDD, 
 		/*TSplitImpl*/CSplitterImpl<
-			/*this_class_t*/CVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>,
-			true
+			/*this_class_t*/CVSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>
 			>, // CSplitterImpl
 		TLeft, TRight, TLeftTraits, TRightTraits,
 		/*TDlgImpl*/CEmptyDialogImpl< 
@@ -1259,8 +1258,7 @@ class CHSplitDialog :
 		/*this_class_t*/CHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
 		t_uIDD, 
 		/*TSplitImpl*/CSplitterImpl<
-			/*this_class_t*/CHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>, 
-			false
+			/*this_class_t*/CHSplitDialog<t_uIDD, TLeft, TRight, TLeftTraits, TRightTraits, TSplitDialogTraits>
 			>, // CSplitterImpl
 		TLeft, TRight, TLeftTraits, TRightTraits,
 		/*TDlgImpl*/CEmptyDialogImpl< 

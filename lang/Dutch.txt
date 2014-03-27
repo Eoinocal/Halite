@@ -26,6 +26,7 @@
 "Add New Tracker" ---> "Voeg nieuwe Tracker toe"
 "Add New Web Seed or DHT Node" ---> "Voeg nieuwe Webseed of DHT knoop toe"
 "Add Torrent" ---> "Torrent toevoegen"
+"Add as " --->  ??? 
 "Add" ---> "Voeg toe"
 "Adjust Queue Position" --->  ??? 
 "Advanced GUI" ---> "Geavanceerde GUI"
@@ -131,6 +132,8 @@
 "Generated Torrent Name (Cannot change)" ---> "Gegenereerde Torrent naam (Kan niet veranderen)"
 "Global Limits" ---> "Globale Limieten"
 "Globals" --->  ??? 
+"HTTP seed" --->  ??? 
+"HTTP" --->  ??? 
 "Halite BitTorrent Client" --->  ??? 
 "Halite Debug Dialog" ---> "Halite Debug Venster"
 "Halite importing IP ranges..." ---> "Halite importeert IP bereiken..."
@@ -266,6 +269,7 @@
 "Saving Torrent" ---> "Torrent opslaan"
 "Search branching : " --->  ??? 
 "Security" ---> "Beveiliging"
+"Seed URL" --->  ??? 
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Bezig met Seeden"
 "Seeds" --->  ??? 
@@ -358,7 +362,9 @@
 "UPnP router model (if recognised)." --->  ??? 
 "UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
+"URL seed" --->  ??? 
 "URL" --->  ??? 
+"URL: " --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." --->  ??? 
 "Unmanaged" --->  ??? 
@@ -376,6 +382,7 @@
 "Warning" ---> "Waarschuwing"
 "Web Seed" --->  ??? 
 "Web Seeds and DHT Nodes" ---> "Web Seeds en DHT Knopen"
+"Web Seeds" --->  ??? 
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." --->  ??? 
 "\r\0" --->  ??? 

@@ -26,6 +26,7 @@
 "Add New Tracker" ---> "Yeni İzleyici Ekle"
 "Add New Web Seed or DHT Node" ---> "Yeni Web Kaynağı ya da DHT Nod Ekle"
 "Add Torrent" ---> "Torrent Ekle"
+"Add as " --->  ??? 
 "Add" ---> "Ekle"
 "Adjust Queue Position" --->  ??? 
 "Advanced GUI" ---> "Gelişmiş GUI"
@@ -131,6 +132,8 @@
 "Generated Torrent Name (Cannot change)" --->  ??? 
 "Global Limits" ---> "Genel Sınırlar"
 "Globals" ---> "Ge el"
+"HTTP seed" --->  ??? 
+"HTTP" --->  ??? 
 "Halite BitTorrent Client" ---> "Halite BitTorrent Aracı"
 "Halite Debug Dialog" ---> "Halite Hata Ayıklama Penceresi"
 "Halite importing IP ranges..." ---> "Halite IP aralığını içeri aktarıyor..."
@@ -266,6 +269,7 @@
 "Saving Torrent" ---> "Torrent Kaydediliyor"
 "Search branching : " --->  ??? 
 "Security" ---> "Güvenlik"
+"Seed URL" --->  ??? 
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Gönderiliyor"
 "Seeds" ---> "Kaynaklar:"
@@ -358,7 +362,9 @@
 "UPnP router model (if recognised)." --->  ??? 
 "UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
+"URL seed" --->  ??? 
 "URL" ---> "URL"
+"URL: " --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." ---> "Unicode istisnası: %1%."
 "Unmanaged" --->  ??? 
@@ -376,6 +382,7 @@
 "Warning" ---> "Uyarı"
 "Web Seed" ---> "Web Kaynağı"
 "Web Seeds and DHT Nodes" ---> "Web Kaynakları ve DHT Nodları"
+"Web Seeds" --->  ??? 
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml İstisnası (%1%) ile %2%."
 "\r\0" --->  ??? 

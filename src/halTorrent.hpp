@@ -144,7 +144,7 @@ public:
 				return proxy(&(*ptr));
 			}
 
-			explicit operator bool() const { return ptr; }
+			explicit operator bool() const { return static_cast<bool>(ptr); }
 
 
 		private:

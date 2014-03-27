@@ -26,6 +26,7 @@
 "Add New Tracker" ---> "Добавить новый трэкер"
 "Add New Web Seed or DHT Node" ---> "Добавить нового сида либо DHT узол"
 "Add Torrent" ---> "Добавить торрент"
+"Add as " --->  ??? 
 "Add" ---> "Добавить"
 "Adjust Queue Position" --->  ??? 
 "Advanced GUI" ---> "Расширенный интерфейс"
@@ -131,6 +132,8 @@
 "Generated Torrent Name (Cannot change)" ---> "Сгенерованое имя торрента (Нельзя изменить)"
 "Global Limits" ---> "Глобальные лимиты"
 "Globals" --->  ??? 
+"HTTP seed" --->  ??? 
+"HTTP" --->  ??? 
 "Halite BitTorrent Client" ---> "Халита БитТоррент Клиент"
 "Halite Debug Dialog" ---> "Диалог отладки Халита"
 "Halite importing IP ranges..." ---> "Халит импортирует IP адреса"
@@ -266,6 +269,7 @@
 "Saving Torrent" ---> "Сохранение торрента"
 "Search branching : " --->  ??? 
 "Security" ---> "Безопасность"
+"Seed URL" --->  ??? 
 "Seeding Limits" --->  ??? 
 "Seeding" ---> "Сидовать"
 "Seeds" ---> "Сиды"
@@ -358,7 +362,9 @@
 "UPnP router model (if recognised)." --->  ??? 
 "UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" ---> "Адрес сида %2%, %3%. (%1%)"
+"URL seed" --->  ??? 
 "URL" ---> "Адрес"
+"URL: " --->  ??? 
 "UnPlug and Play" ---> "UnPlug and Play"
 "Unicode exception: %1%." ---> "Исключение юникода: %1%."
 "Unmanaged" --->  ??? 
@@ -376,6 +382,7 @@
 "Warning" ---> "Предупреждение"
 "Web Seed" ---> "Сид"
 "Web Seeds and DHT Nodes" ---> "Сиды и DHT узлы"
+"Web Seeds" --->  ??? 
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "XML исключение (%1%) с %2%."
 "\r\0" --->  ??? 
