@@ -67,7 +67,6 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\..\Dependants\Dependants Windows Libraries.props" />
-    <Import Project="..\..\..\..\Dependants\include\DependantsIncludes.props" />
     <Import Project="..\..\..\..\Dependants\Dependants Includes.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
