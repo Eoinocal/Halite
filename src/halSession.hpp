@@ -384,10 +384,10 @@ public:
 		if (TIp)
 		{
 			TIp->set_managed(managed);
-			TIp->set_transfer_speed(bittorrent::Instance().default_torrent_download(), 
-				bittorrent::Instance().default_torrent_upload());
-			TIp->set_connection_limit(bittorrent::Instance().default_torrent_max_connections(), 
-				bittorrent::Instance().default_torrent_max_uploads());
+			TIp->set_transfer_speed(bittorrent().default_torrent_download(), 
+				bittorrent().default_torrent_upload());
+			TIp->set_connection_limit(bittorrent().default_torrent_max_connections(), 
+				bittorrent().default_torrent_max_uploads());
 			TIp->set_resolve_countries(resolve_countries_);
 
 			if (use_custom_interface_ && external_interface_)
@@ -419,11 +419,11 @@ public:
 		HAL_DEV_MSG(hal::wform(L"URI Torrent: Managed"));
 			TIp->set_managed(managed);
 		HAL_DEV_MSG(hal::wform(L"URI Torrent: Speeds"));
-			TIp->set_transfer_speed(bittorrent::Instance().default_torrent_download(), 
-				bittorrent::Instance().default_torrent_upload());
+			TIp->set_transfer_speed(bittorrent().default_torrent_download(), 
+				bittorrent().default_torrent_upload());
 		HAL_DEV_MSG(hal::wform(L"URI Torrent: Limits"));
-			TIp->set_connection_limit(bittorrent::Instance().default_torrent_max_connections(), 
-				bittorrent::Instance().default_torrent_max_uploads());
+			TIp->set_connection_limit(bittorrent().default_torrent_max_connections(), 
+				bittorrent().default_torrent_max_uploads());
 			TIp->set_resolve_countries(resolve_countries_);
 
 			if (use_custom_interface_ && external_interface_)

@@ -50,7 +50,7 @@ void WebSeedListViewCtrl::saveSettings()
 
 void WebSeedListViewCtrl::uiUpdate(const hal::torrent_details_ptr pT)
 {
-	if (hal::bit::torrent t = hal::bittorrent::Instance().get(pT))
+	if (hal::bit::torrent t = hal::bittorrent().get(pT))
 	{			
 		if (auto lock = hal::try_update_lock<list_class_t>(this)) 
 		{		
@@ -91,7 +91,7 @@ LRESULT AdvWebSeedsDialog::onInitDialog(HWND, LPARAM)
 	list_.Attach(GetDlgItem(HAL_WEB_SEEDS_LISTVIEW));	
 	list_.attachDeletedConnection([this] (hal::web_seed_detail seed)
 		{					
-			if (auto t = hal::bittorrent::Instance().get(focused_torrent()))
+			if (auto t = hal::bittorrent().get(focused_torrent()))
 				t.delete_web_seed(seed.url, seed.type);
 		});
 
@@ -118,7 +118,7 @@ LRESULT AdvWebSeedsDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtr
 {
 	DoDataExchange(true);
 
-//	if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused_torrent()))
+//	if (hal::bit::torrent t = hal::bittorrent().get(focused_torrent()))
 //		t.set_tracker_login(username_, password_);
 	
 	return 0;
@@ -166,7 +166,7 @@ void AdvWebSeedsDialog::onAddHttp(UINT, int, HWND)
 
 	HAL_DEV_MSG(hal::wform(L"Adding HTTP seed: %1%") % url_);
 	
-	if (auto t = hal::bittorrent::Instance().get(focused_torrent()))
+	if (auto t = hal::bittorrent().get(focused_torrent()))
 		t.add_web_seed(url_, hal::web_seed_detail::types::http);
 
 	int itemPos = list_.AddItem(0, 0, url_.c_str(), 0);
@@ -180,7 +180,7 @@ void AdvWebSeedsDialog::onAddUrl(UINT, int, HWND)
 
 	HAL_DEV_MSG(hal::wform(L"Adding URL seed: %1%") % url_);
 	
-	if (auto t = hal::bittorrent::Instance().get(focused_torrent()))
+	if (auto t = hal::bittorrent().get(focused_torrent()))
 		t.add_web_seed(url_, hal::web_seed_detail::types::url);
 
 	int itemPos = list_.AddItem(0, 0, url_.c_str(), 0);

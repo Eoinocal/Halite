@@ -21,8 +21,6 @@
 #include <boost/asio/ip/udp.hpp>
 #include <boost/asio/deadline_timer.hpp>
 
-#include <loki/Singleton.h>
-
 #include "global/string_conv.hpp"
 
 namespace hal

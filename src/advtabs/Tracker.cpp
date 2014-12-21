@@ -61,7 +61,7 @@ LRESULT AdvTrackerDialog::OnEditKillFocus(UINT uCode, int nCtrlID, HWND hwndCtrl
 		
 	setLoginUiState();
 
-	if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused_torrent()))
+	if (hal::bit::torrent t = hal::bittorrent().get(focused_torrent()))
 		t.set_tracker_login(username_, password_);
 	
 	return 0;
@@ -74,7 +74,7 @@ void AdvTrackerDialog::focusChanged(const hal::torrent_details_ptr pT)
 		::EnableWindow(GetDlgItem(HAL_TRACKER_LOGINCHECK), true);
 		::EnableWindow(GetDlgItem(HAL_TRACKERLIST), true);
 
-		auto details = hal::bittorrent::Instance().get(pT).tracker_login();
+		auto details = hal::bittorrent().get(pT).tracker_login();
 		
 		username_ = details.first;
 		password_ = details.second;
@@ -140,7 +140,7 @@ void AdvTrackerDialog::onLoginCheck(UINT, int, HWND hWnd)
 		username_.clear();	
 		password_.clear();
 		
-		if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused_torrent()))
+		if (hal::bit::torrent t = hal::bittorrent().get(focused_torrent()))
 			t.set_tracker_login(username_, password_);
 		
 		DoDataExchange(false);		
@@ -153,21 +153,21 @@ void AdvTrackerDialog::onLoginApply(UINT, int, HWND)
 
 	HAL_DEV_MSG(hal::wform(L"Apply Tracker Login User: %1%, Pass: %2%") % username_ % password_ );
 
-	if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused_torrent()))
+	if (hal::bit::torrent t = hal::bittorrent().get(focused_torrent()))
 		t.set_tracker_login(username_, password_);
 }
 
 void AdvTrackerDialog::onReannounce(UINT, int, HWND)
 {
-	if (hal::bittorrent::Instance().torrentDetails().focused_torrent())
+	if (hal::bittorrent().torrentDetails().focused_torrent())
 	{
-		if (!hal::bittorrent::Instance().is_torrent_active(focused_torrent()->uuid()))
+		if (!hal::bittorrent().is_torrent_active(focused_torrent()->uuid()))
 		{
-			hal::bittorrent::Instance().resume_torrent(focused_torrent()->uuid());
+			hal::bittorrent().resume_torrent(focused_torrent()->uuid());
 		}
 		else
 		{
-			hal::bittorrent::Instance().reannounce_torrent(focused_torrent()->uuid());
+			hal::bittorrent().reannounce_torrent(focused_torrent()->uuid());
 		}
 	}
 }
@@ -179,7 +179,7 @@ void AdvTrackerDialog::trackerListEdited()
 
 void AdvTrackerDialog::onReset(UINT, int, HWND)
 {
-	if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused_torrent()))
+	if (hal::bit::torrent t = hal::bittorrent().get(focused_torrent()))
 	{
 		t.reset_trackers();
 		
@@ -213,7 +213,7 @@ void AdvTrackerDialog::onApply(UINT, int, HWND)
 	
 	std::sort(trackers.begin(), trackers.end());
 		
-	if (hal::bit::torrent t = hal::bittorrent::Instance().get(focused_torrent()))
+	if (hal::bit::torrent t = hal::bittorrent().get(focused_torrent()))
 		t.set_trackers(trackers);
 	
 	::EnableWindow(GetDlgItem(HAL_TRACKER_APPLY), false);

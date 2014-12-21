@@ -50,7 +50,7 @@ Config::Config() :
 	ut_pex_plugin_(true),
 	smart_ban_plugin_(true),
 	lt_trackers_plugin_(true),
-	queue_settings_(bind(&hal::bit::set_queue_settings, &bittorrent::Instance(), _1))
+	queue_settings_(bind(&hal::bit::set_queue_settings, &bittorrent(), _1))
 {
 	if (hal::app().get_my_documents())
 	{
@@ -63,8 +63,8 @@ Config::Config() :
 		default_move_folder_ = (hal::app().exe_path().parent_path()/L"Completed").wstring();
 	}
 
-	queue_settings_.set_no_action(hal::bittorrent::Instance().get_queue_settings());
-	timeouts_ = hal::bittorrent::Instance().get_timeouts();
+	queue_settings_.set_no_action(hal::bittorrent().get_queue_settings());
+	timeouts_ = hal::bittorrent().get_timeouts();
 }
 
 bool Config::settingsChanged()
@@ -84,9 +84,9 @@ bool Config::settingsThread()
 	event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Applying BitTorrent session settings.")));
 
 	unsigned listen_port = port_range_.first;
-	int current_port = bittorrent::Instance().is_listening_on();
+	int current_port = bittorrent().is_listening_on();
 
-	bittorrent::Instance().set_mapping(false, false);
+	bittorrent().set_mapping(false, false);
 	
 	try
 	{
@@ -95,13 +95,13 @@ bool Config::settingsThread()
 		if (pdc_)
 		{
 			pdc_(L"Loading IP filters...", boost::bind(
-				&bit::ensure_ip_filter_on, &bittorrent::Instance(), _1));
+				&bit::ensure_ip_filter_on, &bittorrent(), _1));
 		}
 		else
-			bittorrent::Instance().ensure_ip_filter_on(progress_callback());
+			bittorrent().ensure_ip_filter_on(progress_callback());
 	}
 	else
-		bittorrent::Instance().ensure_ip_filter_off();
+		bittorrent().ensure_ip_filter_off();
 	}
 	catch(const std::exception& e)
 	{
@@ -113,10 +113,10 @@ bool Config::settingsThread()
 	{
 	if (enable_pe_)
 	{
-		bittorrent::Instance().ensure_pe_on(pe_settings_);
+		bittorrent().ensure_pe_on(pe_settings_);
 	}
 	else
-		bittorrent::Instance().ensure_pe_off();
+		bittorrent().ensure_pe_off();
 	}
 	catch(const std::exception& e)
 	{
@@ -124,33 +124,33 @@ bool Config::settingsThread()
 			new hal::EventStdException(event_logger::critical, e, L"settingsThread, Protocol Encryption"))); 
 	}
 	
-	bittorrent::Instance().set_session_half_open_limit(half_connections_limit_);	
+	bittorrent().set_session_half_open_limit(half_connections_limit_);	
 	
-	bittorrent::Instance().set_session_limits(globals_.total, globals_.uploads);
-	bittorrent::Instance().set_session_speed(globals_.download_rate, globals_.upload_rate);
+	bittorrent().set_session_limits(globals_.total, globals_.uploads);
+	bittorrent().set_session_speed(globals_.download_rate, globals_.upload_rate);
 		
-	bittorrent::Instance().set_torrent_defaults(torrent_defaults_);
+	bittorrent().set_torrent_defaults(torrent_defaults_);
 
-	bittorrent::Instance().set_timeouts(timeouts_);	
-//	bittorrent::Instance().set_queue_settings(queue_settings_);
-	bittorrent::Instance().set_resolve_countries(resolve_countries_);
-	bittorrent::Instance().set_announce_to_all(announce_all_trackers_, announce_all_tiers_);
+	bittorrent().set_timeouts(timeouts_);	
+//	bittorrent().set_queue_settings(queue_settings_);
+	bittorrent().set_resolve_countries(resolve_countries_);
+	bittorrent().set_announce_to_all(announce_all_trackers_, announce_all_tiers_);
 
 	if (use_custom_interface_)
-		bittorrent::Instance().set_external_interface(custom_interface_);
+		bittorrent().set_external_interface(custom_interface_);
 	else
-		bittorrent::Instance().set_external_interface();
+		bittorrent().set_external_interface();
 
 	if (metadata_plugin_)
-		bittorrent::Instance().start_metadata_plugin();
+		bittorrent().start_metadata_plugin();
 	if (ut_metadata_plugin_)
-		bittorrent::Instance().start_ut_metadata_plugin();
+		bittorrent().start_ut_metadata_plugin();
 	if (ut_pex_plugin_)
-		bittorrent::Instance().start_ut_pex_plugin();
+		bittorrent().start_ut_pex_plugin();
 	if (smart_ban_plugin_)
-		bittorrent::Instance().start_smart_ban_plugin();
+		bittorrent().start_smart_ban_plugin();
 	if (lt_trackers_plugin_)
-		bittorrent::Instance().start_lt_trackers_plugin();
+		bittorrent().start_lt_trackers_plugin();
 
 	try
 	{		
@@ -165,7 +165,7 @@ bool Config::settingsThread()
 			event_log().post(shared_ptr<EventDetail>(new EventMsg(
 					hal::wform(L"Attempting port %1%.") % listen_port)));
 
-			bool success = bittorrent::Instance().listen_on(std::make_pair(listen_port, listen_port));
+			bool success = bittorrent().listen_on(std::make_pair(listen_port, listen_port));
 			if (success) break;
 		}
 	}
@@ -174,7 +174,7 @@ bool Config::settingsThread()
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(
 				hal::wform(L"Trying port in range %1% - %2%.") % port_range_.first % port_range_.second)));
 
-		bool success = bittorrent::Instance().listen_on(port_range_);
+		bool success = bittorrent().listen_on(port_range_);
 		if (!success)
 		{
 			hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
@@ -195,7 +195,7 @@ bool Config::settingsThread()
 
 
 	event_log().post(shared_ptr<EventDetail>(
-		new EventMsg(hal::wform(L"Opened listen port; %1%.") % bittorrent::Instance().is_listening_on())));
+		new EventMsg(hal::wform(L"Opened listen port; %1%.") % bittorrent().is_listening_on())));
 
 	
 	if (enable_dht_)
@@ -209,12 +209,12 @@ bool Config::settingsThread()
 		}
 		else if (dht_radio_ == 1)
 		{
-			dht_settings_.service_port = bittorrent::Instance().is_listening_on();
+			dht_settings_.service_port = bittorrent().is_listening_on();
 		}
 
-		if (!bittorrent::Instance().ensure_dht_on(dht_settings_))
+		if (!bittorrent().ensure_dht_on(dht_settings_))
 		{
-			bittorrent::Instance().ensure_dht_off();
+			bittorrent().ensure_dht_off();
 			
 			hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
 				new hal::EventDebug(event_logger::critical, L"settingsThread, DHT Error"))); 
@@ -223,10 +223,10 @@ bool Config::settingsThread()
 		dht_settings_.service_port = old_port;
 	}
 	else
-		bittorrent::Instance().ensure_dht_off();
+		bittorrent().ensure_dht_off();
 
 	
-	bittorrent::Instance().set_mapping(mapping_upnp_, mapping_nat_pmp_);
+	bittorrent().set_mapping(mapping_upnp_, mapping_nat_pmp_);
 
 		
 	// Settings seem to have applied ok!

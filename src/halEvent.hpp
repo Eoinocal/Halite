@@ -36,8 +36,6 @@
 #include <string>
 #include <vector>
 
-#include <loki/Singleton.h>
-
 #include "global/wtl_app.hpp"
 #include "global/string_conv.hpp"
 
@@ -203,11 +201,12 @@ private:
 	boost::shared_ptr<event_impl> pimpl_;
 };
 
-typedef Loki::SingletonHolder<event_logger, Loki::CreateUsingNew, Loki::PhoenixSingleton> event_log_single;
+//typedef Loki::SingletonHolder<event_logger, Loki::CreateUsingNew, Loki::PhoenixSingleton> event_log_single;
 
 inline event_logger& event_log()
 {
-	return event_log_single::Instance();
+	static event_logger event_logger_;
+	return event_logger_;
 }
 
 class EventDetail

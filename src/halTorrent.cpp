@@ -134,7 +134,7 @@ const peer_details_vec& torrent_details::get_peer_details() const
 {
 	if (!peer_details_filled_)
 	{
-		bittorrent::Instance().get_all_peer_details(uuid_, peer_details_);
+		bittorrent().get_all_peer_details(uuid_, peer_details_);
 		peer_details_filled_ = true;
 	}
 	
@@ -145,7 +145,7 @@ const file_details_vec& torrent_details::get_file_details() const
 {
 	if (!file_details_filled_)
 	{
-		bittorrent::Instance().get_all_file_details(uuid_, file_details_);
+		bittorrent().get_all_file_details(uuid_, file_details_);
 		file_details_filled_ = true;
 	}
 	
@@ -865,6 +865,16 @@ void bit::schedual_cancel()
 void bit::connect_torrent_completed_signal(function<void (wstring torrent_name)> fn)
 {
 	pimpl()->signals.torrent_completed.connect(fn);
+}
+
+std::vector<char> bit::load_file(fs::path const& filename)
+{
+	fs::ifstream testFile(filename, std::ios::binary);
+
+	if (!testFile)
+		return std::vector<char>{};
+	else
+		return std::vector<char>{(std::istreambuf_iterator<char>(testFile)), std::istreambuf_iterator<char>()};
 }
 
 bit::torrent::torrent() //:

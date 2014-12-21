@@ -363,6 +363,8 @@ public:
 
 	void connect_torrent_completed_signal(function<void (wstring torrent_name)> fn);
 	
+	static std::vector<char> load_file(fs::path const& filename);
+	
 	bit();
 	~bit();
 
@@ -378,6 +380,10 @@ private:
 	torrent_details_manager torrent_details_;
 };
 
-typedef Loki::SingletonHolder<bit, Loki::CreateUsingNew, Loki::PhoenixSingleton> bittorrent;
+inline bit& bittorrent()
+{
+	static bit bittorrent_;
+	return bittorrent_;
+}
 
 };

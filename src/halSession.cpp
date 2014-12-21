@@ -48,11 +48,11 @@ bit_impl::bit_impl() :
 	{
 		try
 		{
-			std::vector<char> in;			
+			std::vector<char> in{bit::load_file((hal::app().get_working_directory()/L"libtorrent.state").string())};			
 			boost::system::error_code ec;
 			int pos;
 
-			if (libt::load_file((hal::app().get_working_directory()/L"libtorrent.state").string(), in, ec) == 0)
+			if (!in.empty())
 			{
 				libt::lazy_entry state;
 				libt::lazy_bdecode(&in[0], &in[0] + in.size(), state, ec, &pos);
@@ -243,7 +243,7 @@ void bit_impl::set_mapping(bool upnp, bool nat_pmp)
 	{
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Starting UPnP mapping.")));
 
-		upnp_ = session_->start_upnp();
+		session_->start_upnp();
 	}
 	else
 	{
@@ -257,7 +257,7 @@ void bit_impl::set_mapping(bool upnp, bool nat_pmp)
 	{
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Starting NAT-PMP mapping.")));
 
-		natpmp_ = session_->start_natpmp();
+		session_->start_natpmp();
 	}
 	else
 	{

@@ -51,23 +51,19 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\..\Dependants\Dependants Windows Libraries.props" />
-    <Import Project="..\..\..\..\Dependants\Dependants Includes.props" />
+    <Import Project="..\Halite Dependencies.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\..\Dependants\Dependants Windows Libraries.props" />
-    <Import Project="..\..\..\..\Dependants\Dependants Includes.props" />
+    <Import Project="..\Halite Dependencies.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\..\Dependants\Dependants Windows Libraries.props" />
-    <Import Project="..\..\..\..\Dependants\Dependants Includes.props" />
+    <Import Project="..\Halite Dependencies.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\..\Dependants\Dependants Windows Libraries.props" />
-    <Import Project="..\..\..\..\Dependants\Dependants Includes.props" />
+    <Import Project="..\Halite Dependencies.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -90,7 +86,6 @@
       <AdditionalOptions>/Zm200 /bigobj</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\WTLx;$(SolutionDir)lib\boost_ex;$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include;$(SolutionDir)lib\OpenSSL\inc;$(SolutionDir)lib\STLSoft\include;$(SolutionDir)lib\loki\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_USE_WSTRING;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -102,7 +97,6 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libeay32-vc110-mt-sgd.lib;libssleay32-vc110-mt-sgd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>uxtheme.dll; dwmapi.dll; ws2_32.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -110,6 +104,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>libeay32-vc120-mt-sgd.lib;libssleay32-vc120-mt-sgd.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,7 +115,6 @@
       <AdditionalOptions>/Zm200 /bigobj</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\WTLx;$(SolutionDir)lib\boost_ex;$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include;$(SolutionDir)lib\OpenSSL\inc;$(SolutionDir)lib\STLSoft\include;$(SolutionDir)lib\loki\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;__USE_W32_SOCKETS;WIN32;_WIN32;WIN64;_WIN64;_WINDOWS;_DEBUG;BOOST_ASIO_SEPARATE_COMPILATION;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_USE_WSTRING;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -131,7 +125,6 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libeay32-vc120-mt-sgd.lib;libssleay32-vc120-mt-sgd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>uxtheme.dll; dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -140,6 +133,7 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
       <AdditionalLibraryDirectories>$(solutionDir)lib\openssl\libx64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libeay32-vc120-mt-sgd.lib;libssleay32-vc120-mt-sgd.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -150,7 +144,6 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\WTLx;$(SolutionDir)lib\boost_ex;$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include;$(SolutionDir)lib\OpenSSL\inc;$(SolutionDir)lib\STLSoft\include;$(SolutionDir)lib\loki\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;NDEBUG;BOOST_ASIO_ENABLE_CANCELIO;BOOST_ASIO_SEPARATE_COMPILATION;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_NO_DEPRECATE;TORRENT_USE_WSTRING;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -160,7 +153,6 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libeay32-vc110-mt-s.lib;libssleay32-vc110-mt-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>uxtheme.dll; dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -171,6 +163,7 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <AdditionalDependencies>libeay32-vc120-mt-s.lib;libssleay32-vc120-mt-s.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -185,7 +178,6 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\WTLx;$(SolutionDir)lib\boost_ex;$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include;$(SolutionDir)lib\OpenSSL\inc;$(SolutionDir)lib\STLSoft\include;$(SolutionDir)lib\loki\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;__USE_W32_SOCKETS;WIN32;_WIN32;WIN64;_WIN64;_WINDOWS;NDEBUG;BOOST_ASIO_ENABLE_CANCELIO;BOOST_ASIO_SEPARATE_COMPILATION;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_USE_WSTRING;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -195,7 +187,6 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libeay32-vc120-mt-s.lib;libssleay32-vc120-mt-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>LinkVerboseLib</ShowProgress>
       <DelayLoadDLLs>uxtheme.dll; dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -208,6 +199,7 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
       <AdditionalLibraryDirectories>$(solutionDir)lib\openssl\libx64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libeay32-vc120-mt-s.lib;libssleay32-vc120-mt-s.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

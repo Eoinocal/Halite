@@ -158,7 +158,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	trayIcon_.Hide();
 
 	//Set callback for completed torrents
-	hal::bittorrent::Instance().connect_torrent_completed_signal(
+	hal::bittorrent().connect_torrent_completed_signal(
 					boost::bind(&HaliteWindow::torrentCompletedCallback, this, _1));
 
 	// Add ToolBar and register it along with StatusBar for UIUpdates
@@ -191,11 +191,11 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Starting BitTorrent event reciever ...")));
-	hal::bittorrent::Instance().start_event_receiver();
+	hal::bittorrent().start_event_receiver();
 
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Restoring torrent states ...")));
-	hal::bittorrent::Instance().resume_all();
+	hal::bittorrent().resume_all();
 
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Initial setup complete!")));
@@ -248,7 +248,7 @@ void HaliteWindow::updateWindow()
 	try
 	{
 	
-	hal::SessionDetail details = hal::bittorrent::Instance().get_session_details();
+	hal::SessionDetail details = hal::bittorrent().get_session_details();
 	
 	if (details.port > -1)
 		UISetText(0, 
@@ -307,7 +307,7 @@ void HaliteWindow::OnTimer(UINT_PTR uTimerID)
 		{
 
 		hal::ini().save_data();
-		hal::bittorrent::Instance().save_torrent_data();	
+		hal::bittorrent().save_torrent_data();	
 	
 		} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::OnTimer(ID_SAVE_TIMER)")
 	}
@@ -330,7 +330,7 @@ void HaliteWindow::issueUiUpdate()
 		s.insert(item_hash(i));
 	}
 	
-	const hal::torrent_details_manager& torrents = hal::bittorrent::Instance().update_torrent_details_manager(
+	const hal::torrent_details_manager& torrents = hal::bittorrent().update_torrent_details_manager(
 		s.empty() ? hal::uuid() : item_hash(haliteList.begin_selected()), 
 		s);
 
@@ -393,20 +393,20 @@ void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
 		file_identifer = L"magnet:" + file_identifer;
 
 		if (use_move_to)
-			hal::bittorrent::Instance().add_torrent(file_identifer, wpath(default_save_folder), startPaused, managed, allocation_type, 
+			hal::bittorrent().add_torrent(file_identifer, wpath(default_save_folder), startPaused, managed, allocation_type, 
 				wpath(default_move_folder));
 		else
-			hal::bittorrent::Instance().add_torrent(file_identifer, wpath(default_save_folder), startPaused, managed, allocation_type);
+			hal::bittorrent().add_torrent(file_identifer, wpath(default_save_folder), startPaused, managed, allocation_type);
 	}
 	else
 	{
 		wpath file(file_identifer, boost::filesystem::native);
 
 		if (use_move_to)
-			hal::bittorrent::Instance().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type, 
+			hal::bittorrent().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type, 
 				wpath(default_move_folder));
 		else
-			hal::bittorrent::Instance().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type);
+			hal::bittorrent().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type);
 	}
 
 	issueUiUpdate();
@@ -444,19 +444,19 @@ void HaliteWindow::ShutdownThread()
 	{
 	win32_exception::install_handler();
 
-	hal::bittorrent::Instance().close_all(0);
+	hal::bittorrent().close_all(0);
 
-	hal::bittorrent::Instance().stop_event_receiver();
+	hal::bittorrent().stop_event_receiver();
 	Sleep(500);
 
-	hal::bittorrent::Instance().shutdown_session();
+	hal::bittorrent().shutdown_session();
 
 	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::ShutdownThread()")
 }
 
 void HaliteWindow::TryToCloseWithConfirmation()
 {
-	bool noTorrentsAreActive = !hal::bittorrent::Instance().is_any_torrent_active();
+	bool noTorrentsAreActive = !hal::bittorrent().is_any_torrent_active();
 	
 	if (noTorrentsAreActive || !confirmClose || (confirmClose && 
 		MessageBox(hal::app().res_wstr(HAL_WINDOW_CLOSECONFRIM).c_str(), 
@@ -633,7 +633,7 @@ LRESULT HaliteWindow::OnSettings(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	hal::bittorrent::Instance().pause_all_torrents();
+	hal::bittorrent().pause_all_torrents();
 	
 	issueUiUpdate();
 	return 0;
@@ -641,7 +641,7 @@ LRESULT HaliteWindow::OnPauseAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnResumeAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	hal::bittorrent::Instance().unpause_all_torrents();
+	hal::bittorrent().unpause_all_torrents();
 	
 	issueUiUpdate();
 	return 0;
@@ -757,30 +757,30 @@ LRESULT HaliteWindow::OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 			switch(action)
 			{
 			case TimePickerDlg::action_pause:
-				hal::bittorrent::Instance().schedual_action(time, hal::bit::action_pause);
+				hal::bittorrent().schedual_action(time, hal::bit::action_pause);
 				break;
 
 			case TimePickerDlg::action_exit:
-				hal::bittorrent::Instance().schedual_callback(
+				hal::bittorrent().schedual_callback(
 					time, bind(&HaliteWindow::exitCallback, this));
 				break;
 
 			case TimePickerDlg::action_logoff:
 
-				hal::bittorrent::Instance().schedual_callback(
+				hal::bittorrent().schedual_callback(
 					time, bind(&HaliteWindow::logoffCallback, this));
 				break;
 
 			case TimePickerDlg::action_shutdown:
 
-				hal::bittorrent::Instance().schedual_callback(
+				hal::bittorrent().schedual_callback(
 					time, bind(&HaliteWindow::shutdownCallback, this));
 				break;
 
 			case TimePickerDlg::action_na:
 			default:
 				action_time_ = boost::posix_time::not_a_date_time;
-				hal::bittorrent::Instance().schedual_cancel();
+				hal::bittorrent().schedual_cancel();
 				return 0;
 			}
 
@@ -790,7 +790,7 @@ LRESULT HaliteWindow::OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 		else
 		{
 			action_time_ = boost::posix_time::not_a_date_time;
-			hal::bittorrent::Instance().schedual_cancel();
+			hal::bittorrent().schedual_cancel();
 		}
 	}
 	else

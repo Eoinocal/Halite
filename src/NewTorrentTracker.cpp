@@ -45,7 +45,7 @@ void NewTorrent_TrackerListViewCtrl::saveSettings()
 
 void NewTorrent_TrackerListViewCtrl::uiUpdate(const hal::torrent_details_ptr pT)
 {
-	if (hal::bit::torrent t = hal::bittorrent::Instance().get(pT))
+	if (hal::bit::torrent t = hal::bittorrent().get(pT))
 	{			
 		if (hal::try_update_lock<list_class_t> lock = hal::try_update_lock<list_class_t>(this)) 
 		{			

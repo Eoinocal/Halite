@@ -98,12 +98,10 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	std::string resume_file = (hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string();
 
 	boost::system::error_code ec;
-	std::vector<char> buf;
-	if (libt::load_file(resume_file.c_str(), buf, ec) == 0)
-	{
+	p.resume_data = bit::load_file(resume_file.c_str());
+
+	if (!p.resume_data.empty())
 		HAL_DEV_MSG(L"Using resume data");
-		p.resume_data = &buf;
-	}
 
 	p.save_path = t_i.save_directory_.string();
 	p.storage_mode = hal_allocation_to_libt(t_i.allocation_);

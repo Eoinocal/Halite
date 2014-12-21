@@ -51,23 +51,19 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\..\Dependants\Dependants Includes.props" />
-    <Import Project="..\..\..\..\Dependants\Dependants Windows Libraries.props" />
+    <Import Project="..\Halite Dependencies.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\..\Dependants\Dependants Includes.props" />
-    <Import Project="..\..\..\..\Dependants\Dependants Windows Libraries.props" />
+    <Import Project="..\Halite Dependencies.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\..\Dependants\Dependants Includes.props" />
-    <Import Project="..\..\..\..\Dependants\Dependants Windows Libraries.props" />
+    <Import Project="..\Halite Dependencies.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\..\Dependants\Dependants Windows Libraries.props" />
-    <Import Project="..\..\..\..\Dependants\Dependants Includes.props" />
+    <Import Project="..\Halite Dependencies.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -86,7 +82,7 @@
       <AdditionalOptions>/Zm200 /bigobj</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\WTLx;$(SolutionDir)lib\boost_ex;$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include;$(SolutionDir)lib\OpenSSL\inc;$(SolutionDir)lib\STLSoft\include;$(SolutionDir)lib\loki\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_LIB;BOOST_SIGNALS_NO_DEPRECATION_WARNING;BOOST_ASIO_ENABLE_CANCELIO;BOOST_ASIO_SEPARATE_COMPILATION;HALTORRENT_PCH;WIN32_LEAN_AND_MEAN;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_USE_WSTRING;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HALTORRENT_PCH;WIN32_LEAN_AND_MEAN;_LIB;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_WIN32_WINNT=_WIN32_WINNT_VISTA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -105,7 +101,7 @@
       <AdditionalOptions>/Zm200 /bigobj</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\WTLx;$(SolutionDir)lib\boost_ex;$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include;$(SolutionDir)lib\OpenSSL\inc;$(SolutionDir)lib\STLSoft\include;$(SolutionDir)lib\loki\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_LIB;BOOST_SIGNALS_NO_DEPRECATION_WARNING;BOOST_ASIO_ENABLE_CANCELIO;BOOST_ASIO_SEPARATE_COMPILATION;HALTORRENT_PCH;WIN32_LEAN_AND_MEAN;__USE_W32_SOCKETS;WIN32;_WIN32;WIN64;_WIN64;_WINDOWS;_DEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_USE_WSTRING;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HALTORRENT_PCH;WIN32_LEAN_AND_MEAN;_LIB;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_WIN32_WINNT=_WIN32_WINNT_VISTA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -122,7 +118,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\WTLx;$(SolutionDir)lib\boost_ex;$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include;$(SolutionDir)lib\OpenSSL\inc;$(SolutionDir)lib\STLSoft\include;$(SolutionDir)lib\loki\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_LIB;BOOST_SIGNALS_NO_DEPRECATION_WARNING;BOOST_ASIO_ENABLE_CANCELIO;BOOST_ASIO_SEPARATE_COMPILATION;HALTORRENT_PCH;WIN32_LEAN_AND_MEAN;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;NDEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_NO_DEPRECATE;TORRENT_USE_WSTRING;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HALTORRENT_PCH;WIN32_LEAN_AND_MEAN;_LIB;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_WIN32_WINNT=_WIN32_WINNT_VISTA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -130,6 +126,8 @@
       <PrecompiledHeaderFile>halPch.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -141,7 +139,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\WTLx;$(SolutionDir)lib\boost_ex;$(SolutionDir)lib\libtorrent\include;$(SolutionDir)lib\libtorrent\zlib;$(SolutionDir)lib\Asio\include;$(SolutionDir)lib\OpenSSL\inc;$(SolutionDir)lib\STLSoft\include;$(SolutionDir)lib\loki\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_LIB;BOOST_SIGNALS_NO_DEPRECATION_WARNING;BOOST_ASIO_ENABLE_CANCELIO;BOOST_ASIO_SEPARATE_COMPILATION;HALTORRENT_PCH;WIN32_LEAN_AND_MEAN;__USE_W32_SOCKETS;WIN32;_WIN32;WIN64;_WIN64;_WINDOWS;NDEBUG;TORRENT_USE_BOOST_DATE_TIME;TORRENT_USE_OPENSSL;TORRENT_USE_WSTRING;TORRENT_USE_IOSTREAM;WITH_SHIPPED_GEOIP_H;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HALTORRENT_PCH;WIN32_LEAN_AND_MEAN;_LIB;__USE_W32_SOCKETS;WIN32;_WIN32;_WINDOWS;_WIN32_WINNT=_WIN32_WINNT_VISTA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -149,6 +147,8 @@
       <PrecompiledHeaderFile>halPch.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>

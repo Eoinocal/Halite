@@ -437,7 +437,7 @@ LRESULT NewTorrentDialog::OnSave(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 	params.web_seeds = detailsSheet_.WebSeeds();
 
 	ProgressDialog progDlg(hal::app().res_wstr(HAL_NEWT_SAVING_TORRENT), boost::bind(
-		&hal::bit::create_torrent, &hal::bittorrent::Instance(), params, fileSheet_.OutputFile(), _1));
+		&hal::bit::create_torrent, &hal::bittorrent(), params, fileSheet_.OutputFile(), _1));
 
 	INT_PTR err_code = progDlg.DoModal();
 
