@@ -237,7 +237,7 @@ void bit_impl::ensure_dht_off()
 
 void bit_impl::set_mapping(bool upnp, bool nat_pmp)
 {
-	upnp = true;
+//	upnp = true;
 
 	if (upnp)
 	{
@@ -1249,13 +1249,6 @@ void bit_impl::alert_handler()
 		)	);				
 	}
 	
-/*	void operator()(libt::alert const& a) const
-	{
-		event_log().post(shared_ptr<EventDetail>(
-				new EventLibtorrent(lbtAlertToHalEvent(a.severity()), 
-					a.timestamp(), event_logger::unclassified, hal::from_utf8_safe(a.message()))));		
-	}*/
-	
 	private:
 		bit_impl& bit_impl_;
 		
@@ -1273,6 +1266,14 @@ void bit_impl::alert_handler()
 	
 	while (p_alert.get())
 	{	
+	
+	/*	event_log().post(shared_ptr<EventDetail>(
+			new EventGeneral(event_logger::debug, p_alert->timestamp(), 
+				hal::wform(L"Generic Alert %1% - %2%")
+					% p_alert->type()
+					% hal::from_utf8_safe(p_alert->message()
+				))));	
+	*/	
 		try
 		{
 		//unique_lock_t l(mutex_);
@@ -1316,7 +1317,7 @@ void bit_impl::alert_handler()
 		}
 		catch(const libt::unhandled_alert&)
 		{
-//			handler(*p_alert);
+		//	HAL_DEV_MSG(hal::wform(L"unhandled_alert() - %1%") % e.what());
 		}
 		catch(const bit::null_torrent&)
 		{

@@ -1039,6 +1039,12 @@ void torrent_internal::state(upgrade_lock& l, unsigned s)
 	case torrent_details::torrent_in_error:
 		HAL_DEV_MSG(L"state() - in error");
 		break;
+	case torrent_details::torrent_not_started:
+		HAL_DEV_MSG(L"state() - not_started");
+		break;
+	case torrent_details::torrent_starting:
+		HAL_DEV_MSG(L"state() - starting");
+		break;
 	default:
 		HAL_DEV_MSG(L"state() - unknown");
 		break;

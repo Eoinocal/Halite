@@ -175,8 +175,8 @@ public:
 
 	void start_all()
 	{
-		for (torrent_by_uuid::iterator i= torrents_.get<by_uuid>().begin(), 
-			e = torrents_.get<by_uuid>().end(); i != e; /**/)
+		for (torrent_by_uuid::iterator i= torrents_.get<by_uuid>().begin(), e = torrents_.get<by_uuid>().end(); i != e; /**/)
+	//	for (const torrent_holder& t : torrents_)
 		{
 		//	wpath file = wpath(hal::app().get_working_directory())/L"torrents"/(*i).torrent->filename();
 			
@@ -184,6 +184,8 @@ public:
 		//	{		
 				try 
 				{
+
+				const torrent_holder& t = *i;
 										
 				(*i).torrent->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1));
 				(*i).torrent->start();	

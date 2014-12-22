@@ -331,6 +331,8 @@ not_started::~not_started()
 
 sc::result not_started::react(const ev_start& evt)
 {
+	TORRENT_STATE_LOG(L"React not_started::react(const ev_start& evt)");
+
 	{	torrent_internal& t_i = context<torrent_internal>();
 		upgrade_lock l(t_i.mutex_);
 
@@ -366,6 +368,7 @@ sc::result not_started::react(const ev_start& evt)
 	switch (stored_state_)
 	{
 	case torrent_details::torrent_active:
+	case torrent_details::torrent_starting:
 		post_event(ev_add_to_session(false));
 		break;
 
@@ -377,6 +380,7 @@ sc::result not_started::react(const ev_start& evt)
 	case torrent_details::torrent_stopped:
 	case torrent_details::torrent_stopping:		
 	case torrent_details::torrent_in_error:
+	case torrent_details::torrent_not_started:		
 		return transit< stopped >();
 	};
 

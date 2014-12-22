@@ -22,9 +22,6 @@
 #include "ConfigOptions.hpp"
 #include "halConfig.hpp"
 
-#include <boost/preprocessor/stringize.hpp>
-#pragma message("BOOST_MSVC=" BOOST_PP_STRINGIZE(BOOST_MSVC))
-
 HaliteWindow::HaliteWindow(unsigned areYouMe = 0) :
 	ini_class_t("HaliteWindow", "HaliteWindow"),
 	haliteList(*this),

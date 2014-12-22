@@ -1,6 +1,6 @@
 # This ruby script ... has very little in the way of error checking ;-)
 
-require "iconv"
+# require "iconv"
 require "yaml"
 
 exit if Object.const_defined?(:Ocra)
@@ -11,10 +11,10 @@ def compile_dlls(arg)
 	
 	puts "\n - - Compiling resource file\n\n"
 	
-	system "call tools\\rc /I \"..\\src\" \"..\\res\\"+arg+".rc\""
+	system "call rc /I \"..\\src\" \"..\\res\\"+arg+".rc\""
 
-	system "call tools\\cvtres /MACHINE:X86 \"..\\res\\"+arg+".res\""
-	system "call tools\\link /NOENTRY /DLL /MACHINE:X86 /OUT:\".\\bin\\"+arg+".dll\" \"..\\res\\"+arg+".obj\""
+	system "call cvtres /MACHINE:X86 \"..\\res\\"+arg+".res\""
+	system "call link /NOENTRY /DLL /MACHINE:X86 /OUT:\".\\bin\\"+arg+".dll\" \"..\\res\\"+arg+".obj\""
 
 	puts " - - Cleaning temp files\n"
 	
@@ -42,8 +42,10 @@ begin
 	if resource_original_file = res_language_file.gets(nil)
 		
 		begin
-			resource_original_file = Iconv.iconv('UTF-8', 'UTF-16LE', 
-				resource_original_file).join
+		#	resource_original_file = Iconv.iconv('UTF-8', 'UTF-16LE', 
+		#		resource_original_file).join
+				
+			resource_original_file.encode!('UTF-8', 'UTF-16LE')
 				
 			puts " - loaded base resource file."	
 		rescue
@@ -161,8 +163,8 @@ ARGV.each do |arg|
 			
 			begin
 				local_file = File.new(resource_dir+arg+'.rc', "w+b")
-				local_file.print(Iconv.iconv('UTF-16LE', 'UTF-8', 
-					res_lang.force_encoding("utf-8")).join)
+				res_lang.encode!('UTF-16LE', 'UTF-8')
+				local_file.print(res_lang)
 				local_file.close
 				puts " - - Constructed localized resource file"		
 			rescue
