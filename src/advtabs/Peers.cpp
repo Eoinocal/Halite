@@ -37,11 +37,9 @@ bool PeerListView::SubclassWindow(HWND hwnd)
 		LVCFMT_CENTER,	LVCFMT_CENTER,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_CENTER,	LVCFMT_CENTER,	LVCFMT_LEFT};
 
 	for (int i=0, e=7; i < e; ++i)
-	{
 		AddColumn(names[i].c_str(), i, visible[i], widths[i], formats[i]);
-	}	
-				
-	load_from_ini();		
+
+	safe_load_from_ini();	
 
 	for (unsigned i=0, e = hal::peer_detail::status_e-hal::peer_detail::ip_address_e; i <= e; ++i)
 		SetColumnSortType(i, i + (WTL::LVCOLSORT_LAST+1+hal::peer_detail::ip_address_e));		
@@ -163,3 +161,9 @@ void AdvPeerDialog::OnClose()
 		::DestroyWindow(m_hWnd);
 	}
 }
+
+void AdvPeerDialog::OnDestroy()
+{	 
+	peerList_.saveSettings();
+}
+

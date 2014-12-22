@@ -27,8 +27,9 @@ void NewTorrent_TrackerListViewCtrl::OnAttach()
 	
 	for (int i=0, e=2; i < e; ++i)
 		AddColumn(names[i].c_str(), i, visible[i], widths[i]);	
-	
-	load_from_ini();	
+
+	safe_load_from_ini();
+
 	SetColumnSortType(1, WTL::LVCOLSORT_LONG);
 }
 

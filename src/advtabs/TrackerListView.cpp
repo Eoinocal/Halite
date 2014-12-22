@@ -35,14 +35,13 @@ void TrackerListViewCtrl::OnAttach()
 	array<int, 5> formats = {
 		LVCFMT_LEFT,		LVCFMT_RIGHT};	
 
-
 	for (int i=0, e=2; i < e; ++i)
 	{
 		AddColumn(names[i].c_str(), i, visible[i], widths[i], formats[i]);
 	}	
 
-	load_from_ini();	
-	
+	safe_load_from_ini();
+
 	SetColumnSortType(1, WTL::LVCOLSORT_LONG);
 }
 

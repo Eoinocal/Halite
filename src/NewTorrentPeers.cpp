@@ -29,9 +29,9 @@ void NewTorrent_PeersListViewCtrl::OnAttach()
 	{
 		AddColumn(names[i].c_str(), i, visible[i], widths[i]);
 	}	
-
-	load_from_ini();	
 	
+	safe_load_from_ini();
+
 	SetColumnSortType(1, WTL::LVCOLSORT_LONG);
 }
 

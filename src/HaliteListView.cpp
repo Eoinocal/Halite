@@ -83,8 +83,8 @@ void HaliteListViewCtrl::OnShowWindow(UINT, INT)
 	{
 		AddColumn(names[i].c_str(), i, visible[i], widths[i], formats[i]);
 	}	
-
-	SafeLoadFromIni();
+	
+	safe_load_from_ini();
 
 	for (unsigned i=0, e = hal::torrent_details::hash_e-hal::torrent_details::name_e; i <= e; ++i)
 		SetColumnSortType(i, i + (WTL::LVCOLSORT_LAST+1+hal::torrent_details::name_e));

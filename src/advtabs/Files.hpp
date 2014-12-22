@@ -394,6 +394,8 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
+		using boost::serialization::make_nvp;
+
 		ar & BOOST_SERIALIZATION_NVP(splitterPos);
 	}
 

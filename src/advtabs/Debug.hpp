@@ -182,11 +182,9 @@ private:
 		array<bool, 3> visible = {true,true,true};
 
 		for (int i=0, e=3; i < e; ++i)
-		{
 			AddColumn(names[i].c_str(), i, visible[i], widths[i]);
-		}	
 	
-		load_from_ini();
+		safe_load_from_ini();
 		
 		conn_ = hal::event_log().attach(bind(&LogListViewCtrl::operator(), this, _1));
 	}

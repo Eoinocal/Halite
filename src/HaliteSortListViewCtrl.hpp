@@ -166,7 +166,7 @@ public:
 		return true;
 	}		
 	
-	void SafeLoadFromIni()
+	void safe_load_from_ini()
 	{
 		std::vector<wstring> listNames;
 		std::vector<int> listWidths;
@@ -179,7 +179,8 @@ public:
 		listVisible.assign(list_visible_.begin(), list_visible_.end());
 
 		TBase* pT = static_cast<TBase*>(this);
-		if (!pT->load_from_ini() || !vector_size_pre_conditions())
+		pT->load_from_ini();
+		if (!vector_size_pre_conditions())
 		{
 			list_names_.assign(listNames.begin(), listNames.end());
 			list_widths_.assign(listWidths.begin(), listWidths.end());

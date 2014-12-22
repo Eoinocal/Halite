@@ -125,6 +125,7 @@ public:
 		{
 		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_CLOSE(OnClose)
+		MSG_WM_DESTROY(OnDestroy)
 
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in AdvPeerDialog MSG_MAP")
@@ -144,6 +145,7 @@ public:
 
 	LRESULT OnInitDialog(HWND, LPARAM);
 	void OnClose();
+	void OnDestroy();
 	void uiUpdate(const hal::torrent_details_manager& tD);
 
 protected:

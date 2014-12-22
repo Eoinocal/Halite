@@ -41,25 +41,20 @@ HWND FileListView::Create(HWND hWndParent, ATL::_U_RECT rect, LPCTSTR szWindowNa
 	
 	array<int, 5> widths = {
 		100,				70,				70,				70,				70};
-
 	array<int, 5> order = {
 		0,				1,				2,				3,				4};
-
 	array<bool, 5> visible = {
 		true,			true,			true,			true,			true};
-
 	array<int, 5> formats = {
 		0,				0,				LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_RIGHT};	
 
 	for (int i=0, e=5; i < e; ++i)
-	{
 		AddColumn(names[i].c_str(), i, visible[i], widths[i], formats[i]);
-	}	
+
+	safe_load_from_ini();
 	
 	for (unsigned i=0, e = hal::file_details::priority_e-hal::file_details::filename_e; i <= e; ++i)
 		SetColumnSortType(i, i + (WTL::LVCOLSORT_LAST+1+hal::file_details::filename_e), NULL);
-
-	load_from_ini();
 
 	return hwnd;
 }
@@ -437,6 +432,7 @@ void AdvFilesDialog::onClose()
 }
 
 void AdvFilesDialog::OnDestroy()
-{	 	
+{
+	splitterPos = splitter_.GetSplitterPos();
 	save_to_ini(); 
 }
