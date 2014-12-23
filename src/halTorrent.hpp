@@ -277,7 +277,6 @@ public:
 	void start_smart_ban_plugin();
 	void start_ut_pex_plugin();
 	void start_ut_metadata_plugin();
-	void start_metadata_plugin();
 	void start_lt_trackers_plugin();
 
 	void set_mapping(bool upnp, bool nat_pmp);
@@ -362,8 +361,6 @@ public:
 		const uuid& id, const std::set<uuid>& selected);
 
 	void connect_torrent_completed_signal(function<void (wstring torrent_name)> fn);
-	
-	static std::vector<char> load_file(fs::path const& filename);
 	
 	bit();
 	~bit();

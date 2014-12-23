@@ -301,7 +301,7 @@ public:
 
 	const torrent_file_proxy operator[](size_t n) const
 	{
-		HAL_DEV_MSG(hal::wform(L"Returning file proxy"));
+	//	HAL_DEV_MSG(hal::wform(L"Returning file proxy"));
 
 		return torrent_file_proxy(files_.get<by_random>()[n], hash_, 
 			path_from_utf8(libt_orig_files_.at(static_cast<int>(n)).path), path_from_utf8(libt_orig_files_.at(static_cast<int>(n)).path));

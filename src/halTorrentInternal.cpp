@@ -19,6 +19,20 @@ namespace hal
 	
 boost::optional<libt::session>* torrent_internal::the_session_ = 0;	
 
+template<typename F>
+void iterate_info_files(const libt::torrent_info& info, F&& f)
+{
+	for (size_t i = 0, e = info.num_files(); i<e; ++i)
+		f(info.file_at(i), i);
+}
+
+template<typename F>
+void iterate_handle_files(const libt::torrent_handle& handle, F&& f)
+{
+	if (auto pt = handle_.torrent_file())
+		iterate_info_files(*pt, std::forward<F>(f));
+}
+
 // Constructors
 
 #define TORRENT_INTERNALS_DEFAULTS \
@@ -176,7 +190,7 @@ void torrent_internal::alert_finished()
 	if (is_finished(l))
 	{
 		if (!move_to_directory_.empty() && 
-				move_to_directory_ != path_from_utf8(handle_.save_path()))
+				move_to_directory_ != path_from_utf8(handle_.status(libt::torrent_handle::query_save_path).save_path))
 		{				
 			upgrade_to_unique_lock up_l(l);
 
@@ -236,7 +250,7 @@ const wstring& torrent_internal::name(upgrade_lock& l) const
 	{
 		upgrade_to_unique_lock up_l(l);
 			
-		name_ = hal::from_utf8_safe(handle_.name());
+		name_ = hal::from_utf8_safe(handle_.status(libt::torrent_handle::query_name).name);
 	}
 	
 	return name_; 
@@ -583,7 +597,7 @@ void torrent_internal::get_file_details(upgrade_lock& l, file_details_vec& files
 	if (in_session(l))
 	{	
 		std::vector<libt::size_type> file_progress;			
-		handle_.file_progress(file_progress);
+		handle_.file_progress(file_progress, libt::torrent_handle::piece_granularity);
 		
 		{	upgrade_to_unique_lock up_l(l);
 
@@ -603,29 +617,30 @@ void torrent_internal::init_file_details(upgrade_lock& l)
 	file_priorities_.clear();
 
 	if (info_memory(l) && !files_.empty(l))
-	{	
-		files_.set_hash(hash_str_);
-		files_.set_libt_files(handle_.get_torrent_info().orig_files());
+		if (auto pt = handle_.torrent_file())
+		{	
+			const auto& info = *pt;
 
-		libt::torrent_info::file_iterator file_it = info_memory(l)->begin_files();
+			files_.set_hash(hash_str_);
+			files_.set_libt_files(info.files());
 
-		for(size_t i=0, e=files_.size(l); i<e; ++i)
-		{
-			if (file_it == info_memory(l)->end_files()) break;
-
-			boost::int64_t size = static_cast<boost::int64_t>(file_it->size);
-
-			torrent_file::split_path_pair_t split = torrent_file::split_root(files_[i].completed_name());
+			assert(files_.size(l) == info.num_files());
 			
-			file_details_memory_.push_back(file_details(split.second, size, 0, files_[i].priority(), i));
-			file_priorities_.push_back(files_[i].priority());
+			file_details_memory_.reserve(info.num_files());
+			file_priorities_.reserve(info.num_files());
 
-			++file_it;
-		}	
-	}
+			iterate_info_files(info, [&](libt::file_entry file, size_t i)
+			{
+				boost::int64_t size = static_cast<boost::int64_t>(file.size);
+				torrent_file::split_path_pair_t split = torrent_file::split_root(files_[i].completed_name());
+			
+				file_details_memory_.push_back(file_details(split.second, size, 0, files_[i].priority(), i));
+				file_priorities_.push_back(files_[i].priority());
+			});
+		}
 }
 
-void torrent_internal::prepare(upgrade_lock& l, boost::intrusive_ptr<libt::torrent_info> info)
+void torrent_internal::prepare(upgrade_lock& l, torrent_info_ptr info)
 {
 	if (info)
 	{				
@@ -700,12 +715,11 @@ void torrent_internal::extract_hash(upgrade_lock& l)
 		HAL_DEV_MSG(L"    from magnet uri");
 		libt::add_torrent_params p;
 
-		p.ti = info_memory(l);
+	//	p.ti = info_memory(l);
 		p.save_path = path_to_utf8(save_directory_).string();
 		p.storage_mode = hal_allocation_to_libt(allocation_);
 
-		p.flags = libt::add_torrent_params::flag_paused || 
-			libt::add_torrent_params::flag_update_subscribe;
+		p.flags = libt::add_torrent_params::flag_paused || libt::add_torrent_params::flag_update_subscribe;
 		
 		libt::error_code ec;		
 		libt::parse_magnet_uri(magnet_uri_, p, ec);
@@ -745,38 +759,37 @@ void torrent_internal::extract_hash(upgrade_lock& l)
 
 void torrent_internal::extract_filenames(upgrade_lock& l)
 {			
-	if (info_memory(l) && files_.empty(l))
-	{
-		for (libt::torrent_info::file_iterator i = info_memory(l)->begin_files(), e = info_memory(l)->end_files();
-			i != e; ++i)
+	if (auto info_ptr = info_memory(l))
+		if (files_.empty(l))
 		{
-			fs::wpath p_orig = path_from_utf8((*i).filename());
+			iterate_info_files(*info_ptr, [&](libt::file_entry file, size_t i)
+			{
+				fs::wpath p_orig = path_from_utf8(file.path);
 
-			int p = file_priorities_.empty() ? 1 : file_priorities_[std::distance(info_memory(l)->begin_files(), i)];
+				int p = file_priorities_.empty() ? 1 : file_priorities_[i];
 
-			files_.push_back(torrent_file(path_from_utf8((*i).filename()), false, p), l);
-		}
+				files_.push_back(torrent_file(path_from_utf8(file.path), false, p), l);
+			});
 		
-		// Primes the Files manager with default names.
-		files_.set_libt_files(info_memory(l)->orig_files());
-	}
-	else
-	{
-		for (libt::torrent_info::file_iterator i = info_memory(l)->begin_files(), e = info_memory(l)->end_files();
-			i != e; ++i)
-		{
-			fs::wpath p = path_from_utf8((*i).filename());
-
-//			assert(p == files_[std::distance(info_memory()->begin_files(), i)].original_name());
+			// Primes the Files manager with default names.
+			files_.set_libt_files(info_ptr->orig_files());
 		}
-	}
+		else
+		{
+			iterate_info_files(*info_ptr, [&](libt::file_entry file, size_t i)
+			{
+				fs::wpath p = path_from_utf8(file.path);
+
+	//			assert(p == files_[std::distance(info_memory()->begin_files(), i)].original_name());
+			});
+		}
 }
 
 void torrent_internal::write_torrent_info(upgrade_lock& l) const
 {
 	try {
 
-	if (info_memory(l))
+	if (auto info_ptr = info_memory(l))
 	{
 		wpath resume_dir = hal::app().get_working_directory()/L"resume";
 		
@@ -786,11 +799,18 @@ void torrent_internal::write_torrent_info(upgrade_lock& l) const
 		boost::filesystem::ofstream out(resume_dir/(name(l) + L".torrent_info"), std::ios_base::binary);
 		out.unsetf(std::ios_base::skipws);
 
-		libt::create_torrent t(*info_memory(l));
-		bencode(std::ostream_iterator<char>(out), t.generate());
+		if (info_ptr->metadata())
+		{
+			libt::create_torrent t(*info_ptr);
+			bencode(std::ostream_iterator<char>(out), t.generate());
 
-		HAL_DEV_MSG(L"Torrent info written!");
+			HAL_DEV_MSG(L"Torrent info written!");
+		}
+		else
+			{HAL_DEV_MSG(L"Skipping torrent with no meta data");}
 	}
+	else
+		{HAL_DEV_MSG(L"Skipping torrent with no info");}
 
 	} 
 	catch (const boost::filesystem::filesystem_error&)
@@ -1177,7 +1197,7 @@ wstring torrent_internal::state_string(upgrade_lock& l) const
 	return state_str;
 }
 
-boost::intrusive_ptr<libt::torrent_info> torrent_internal::info_memory(upgrade_lock& l) const
+torrent_internal::torrent_info_ptr torrent_internal::info_memory(upgrade_lock& l) const
 {
 	try 
 	{
@@ -1186,7 +1206,13 @@ boost::intrusive_ptr<libt::torrent_info> torrent_internal::info_memory(upgrade_l
 	{	
 		// Yes I know how ugly this is!!!!
 		HAL_DEV_MSG(L"That ugly const_cast happened!!!");
-		const_cast<torrent_internal*>(this)->info_memory_reset(new libt::torrent_info(handle_.get_torrent_info()), l);
+
+		torrent_info_ptr iptr;
+
+		if (auto ip = handle_.status(libt::torrent_handle::query_torrent_file).torrent_file)
+			const_cast<torrent_internal*>(this)->info_memory_reset(ip, l);
+		else
+			return torrent_info_ptr();
 	}
 
 	}
@@ -1198,11 +1224,11 @@ boost::intrusive_ptr<libt::torrent_info> torrent_internal::info_memory(upgrade_l
 	return info_memory_;
 }
 
-void torrent_internal::info_memory_reset(libt::torrent_info* im, upgrade_lock& l)
+void torrent_internal::info_memory_reset(torrent_info_ptr im, upgrade_lock& l)
 {	
 		upgrade_to_unique_lock up_l(l);
 
-		info_memory_.reset(im);
+		info_memory_ = im;
 
 		// This informs the Files manager about names loaded from a fast resume file.
 		files_.set_hash(hash_str_);	

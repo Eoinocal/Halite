@@ -44,24 +44,17 @@ bit_impl::bit_impl() :
 	try
 	{
 
-	if (exists(hal::app().get_working_directory()/L"libtorrent.state"))
+	auto state_file = hal::app().get_working_directory()/L"libtorrent.state";
+	if (exists(state_file))
 	{
 		try
 		{
-			std::vector<char> in{bit::load_file((hal::app().get_working_directory()/L"libtorrent.state").string())};			
-			boost::system::error_code ec;
-			int pos;
+			libt::lazy_entry state;
+			lazy_bdecode_file(state_file, state);
+			session_->load_state(state);
 
-			if (!in.empty())
-			{
-				libt::lazy_entry state;
-				libt::lazy_bdecode(&in[0], &in[0] + in.size(), state, ec, &pos);
-
-				session_->load_state(state);
-
-				hal::event_log().post(shared_ptr<hal::EventDetail>(
-					new hal::EventMsg(L"Loaded libtorrent State", hal::event_logger::info)));		
-			}
+			hal::event_log().post(shared_ptr<hal::EventDetail>(
+				new hal::EventMsg(L"Loaded libtorrent State", hal::event_logger::info)));		
 		}		
 		catch(const std::exception& e)
 		{
@@ -768,7 +761,7 @@ void bit_impl::schedual_callback(boost::posix_time::time_duration duration, acti
 void bit_impl::schedual_cancel()
 {
 	if (action_timer_.cancel() > 0)
-		HAL_DEV_MSG(L"Schedualed action canceled");
+		{HAL_DEV_MSG(L"Schedualed action canceled");}
 }
 
 void bit_impl::start_alert_handler()

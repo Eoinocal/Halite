@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Peers. (%1%)"
 "&Pause All" ---> "&Tout Suspendre"
 "&Resume All" ---> "&Tout Reprendre"
-"(C) Eoin O'Callaghan 2010" --->  ??? 
+"(C) Eoin O'Callaghan 2014" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(R-E) %1$.2fKo/s - %2$.2fKo/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(R-E) 0000.000Ko/s - 0000.000Ko/s"
 "About" ---> "A propos"

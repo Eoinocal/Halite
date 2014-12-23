@@ -127,7 +127,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	if (hal::app().get_local_appdata())
 	{
 #	ifndef NDEBUG
-		hal::app().set_working_directory(hal::app().get_local_appdata().get()/L"Halite.Backup");
+		hal::app().set_working_directory(hal::app().get_local_appdata().get()/L"Halite.Backups");
 #	else
 		hal::app().set_working_directory(hal::app().get_local_appdata().get()/L"Halite");
 #	endif

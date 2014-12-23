@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" --->  ??? 
 "&Resume All" --->  ??? 
-"(C) Eoin O'Callaghan 2010" --->  ??? 
+"(C) Eoin O'Callaghan 2014" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "About" ---> "Haliteについて"

@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% peerů. (%1%)"
 "&Pause All" ---> "&Pozastavit vše"
 "&Resume All" ---> "&Obnovit vše"
-"(C) Eoin O'Callaghan 2010" ---> "© Eoin O'Callaghan 2010"
+"(C) Eoin O'Callaghan 2014" --->  ??? 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(S-O) %1$.2fkB/s - %2$.2fkB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(S-O) 0000.000kB/s - 0000.000kB/s"
 "About" ---> "O programu"

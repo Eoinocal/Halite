@@ -43,10 +43,9 @@ Config::Config() :
 	mapping_upnp_(true),
 	mapping_nat_pmp_(false),
 	resolve_countries_(false),
-	metadata_plugin_(true),
+	ut_metadata_plugin_(true),
 	announce_all_trackers_(true),
 	announce_all_tiers_(true),
-	ut_metadata_plugin_(true),
 	ut_pex_plugin_(true),
 	smart_ban_plugin_(true),
 	lt_trackers_plugin_(true),
@@ -141,8 +140,6 @@ bool Config::settingsThread()
 	else
 		bittorrent().set_external_interface();
 
-	if (metadata_plugin_)
-		bittorrent().start_metadata_plugin();
 	if (ut_metadata_plugin_)
 		bittorrent().start_ut_metadata_plugin();
 	if (ut_pex_plugin_)

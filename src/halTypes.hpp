@@ -22,6 +22,7 @@
 #include <boost/asio/deadline_timer.hpp>
 
 #include "global/string_conv.hpp"
+#include "global/load_file.hpp"
 
 namespace hal
 {	

@@ -33,13 +33,13 @@ peer_detail::peer_detail(libt::peer_info& peerInfo) :
 	
 #ifndef TORRENT_DISABLE_RESOLVE_COUNTRIES
 	if (peerInfo.country[0] != 0 && peerInfo.country[1] != 0)
-		country = (hal::wform(L"(%1%)") % hal::from_utf8_safe(string(peerInfo.country, 2))).str().c_str();
+		country = hal::from_utf8_safe(string(peerInfo.country, 2));
 #endif	
 
 	if (peerInfo.flags & libt::peer_info::handshake)
 	{
 		status_vec.push_back(app().res_wstr(HAL_PEER_HANDSHAKE));
-	}		
+	}
 	else if (peerInfo.flags & libt::peer_info::connecting)
 	{
 		status_vec.push_back(app().res_wstr(HAL_PEER_CONNECTING));

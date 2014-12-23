@@ -222,6 +222,8 @@ private:
 	torrent_internal(const wstring& uri, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"");
 			
 public:
+	using torrent_info_ptr = boost::intrusive_ptr<libt::torrent_info const>;
+
 	~torrent_internal()
 	{
 		terminate();
@@ -437,8 +439,8 @@ public:
 	{
 		upgrade_lock l(mutex_);
 
-		if (in_session(l) && !is_finished(l) &&
-				s != path_from_utf8(handle_.save_path()))
+		if (in_session(l) && !is_finished(l) && 
+			s != path_from_utf8(handle_.status(libt::torrent_handle::query_save_path).save_path))
 		{
 			upgrade_to_unique_lock up_l(l);
 
@@ -467,7 +469,7 @@ public:
 
 		if (is_finished(l) && !m.empty())
 		{
-			if (m != path_from_utf8(handle_.save_path()))
+			if (m != path_from_utf8(handle_.status(libt::torrent_handle::query_save_path).save_path))
 			{
 				upgrade_to_unique_lock up_l(l);
 
@@ -780,8 +782,8 @@ private:
 	static boost::optional<libt::session>* the_session_;
 	bool in_session(upgrade_lock& l) const;
 
-	boost::intrusive_ptr<libt::torrent_info> info_memory(upgrade_lock& l) const;	
-	void info_memory_reset(libt::torrent_info* im, upgrade_lock& l);
+	torrent_info_ptr info_memory(upgrade_lock& l) const;	
+	void info_memory_reset(torrent_info_ptr im, upgrade_lock& l);
 
 	libt::torrent_status& status_cache(upgrade_lock& l) const;
 	libt::torrent_status& renew_status_cache(upgrade_lock& l) const;
@@ -798,7 +800,7 @@ private:
 	void state(upgrade_lock& l, unsigned s);
 
 	void prepare(upgrade_lock& l) { prepare(l, info_memory(l)); }
-	void prepare(upgrade_lock& l, boost::intrusive_ptr<libt::torrent_info> info);	
+	void prepare(upgrade_lock& l, torrent_info_ptr info);	
 
 	void write_torrent_info(upgrade_lock& l) const;
 	boost::tuple<size_t, size_t, size_t, size_t> update_peers(upgrade_lock& l) const;
@@ -811,7 +813,7 @@ private:
 	void output_torrent_debug_details(upgrade_lock& l) const;
 	wstring check_error(upgrade_lock& l) const;
 	
-	void set_info_cache(boost::intrusive_ptr<libt::torrent_info> info, upgrade_lock& l)
+	void set_info_cache(torrent_info_ptr info, upgrade_lock& l)
 	{
 		upgrade_to_unique_lock up_l(l);
 
@@ -886,7 +888,7 @@ private:
 	mutable bool managed_;
 	mutable bool superseeding_;
 	
-	mutable boost::intrusive_ptr<libt::torrent_info> info_memory_;
+	mutable torrent_info_ptr info_memory_;
 	mutable libt::torrent_status status_memory_;
 	file_details_vec file_details_memory_;
 };

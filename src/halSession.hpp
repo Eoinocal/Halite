@@ -26,6 +26,20 @@ namespace hal
 
 namespace libt = libtorrent;
 
+template<typename T>
+void lazy_bdecode_file(T&& file, libt::lazy_entry& state)
+{
+	auto data(load_file<std::vector<char>>(file));
+
+	boost::system::error_code ec;
+	int pos;
+
+	libt::lazy_bdecode(&data[0], &data[0] + data.size(), state, ec, &pos);
+
+	if (ec)
+		throw boost::system::system_error(ec);
+}
+
 inline bool operator!=(const libt::dht_settings& lhs, const libt::dht_settings& rhs)
 {
 	return lhs.max_peers_reply != rhs.max_peers_reply ||
@@ -277,12 +291,6 @@ public:
 	{
 		session_->add_extension(&libt::create_ut_metadata_plugin);
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Started uTorrent metadata plugin.")));
-	}
-
-	void start_metadata_plugin()
-	{
-		session_->add_extension(&libt::create_metadata_plugin);
-		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Started metadata plugin.")));
 	}
 
 	void start_lt_trackers_plugin()

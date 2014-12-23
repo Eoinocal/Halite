@@ -93,12 +93,13 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	upgrade_lock l(t_i.mutex_);
 
 	libt::add_torrent_params p;
-	p.ti = t_i.info_memory(l);
+	if (t_i.info_memory(l))
+		p.ti = boost::intrusive_ptr<libt::torrent_info>(new libt::torrent_info(*t_i.info_memory(l)));
 
 	std::string resume_file = (hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string();
 
 	boost::system::error_code ec;
-	p.resume_data = bit::load_file(resume_file.c_str());
+	p.resume_data = load_file<std::vector<char>>(resume_file.c_str(), ec);
 
 	if (!p.resume_data.empty())
 		HAL_DEV_MSG(L"Using resume data");
@@ -119,6 +120,10 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 			
 		if (!ec)
 			(*t_i.the_session_)->async_add_torrent(p);
+	}
+	else
+	{
+
 	}
 
 	t_i.state(l, torrent_details::torrent_starting);
@@ -346,8 +351,16 @@ sc::result not_started::react(const ev_start& evt)
 			{
 				upgrade_to_unique_lock up_l(l);
 
-				HAL_DEV_MSG(L"Using torrent info data");
+				try {
+
+				HAL_DEV_MSG(hal::wform(L"Using torrent info data file %1%") % from_utf8(torrent_info_file));
 				t_i.info_memory_reset(new libt::torrent_info(torrent_info_file.c_str()), l);
+
+				}
+				catch (const libt::libtorrent_exception&)
+				{
+					HAL_DEV_MSG(L"   invalid torrent file!");
+				}
 			}
 			else if (fs::exists(torrent_file))
 			{
@@ -364,6 +377,8 @@ sc::result not_started::react(const ev_start& evt)
 			t_i.update_manager(l);
 		}
 	}
+	
+	HAL_DEV_MSG(hal::wform(L"Stored state %1%") % stored_state_);
 
 	switch (stored_state_)
 	{
@@ -381,7 +396,7 @@ sc::result not_started::react(const ev_start& evt)
 	case torrent_details::torrent_stopping:		
 	case torrent_details::torrent_in_error:
 	case torrent_details::torrent_not_started:		
-		return transit< stopped >();
+		return transit<stopped>();
 	};
 
 	return discard_event();

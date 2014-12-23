@@ -10,3 +10,5 @@
 *.suo
 *.aps
 *.opensdf
+/lang/bin/*.dll
+*.dll

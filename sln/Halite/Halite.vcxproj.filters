@@ -243,6 +243,9 @@
     <ClInclude Include="..\..\src\advtabs\WebSeeds.hpp">
       <Filter>Header Files\Advanced Tabs</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\global\load_file.hpp">
+      <Filter>Header Files\Auxiliary</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdvHaliteDialog.cpp">

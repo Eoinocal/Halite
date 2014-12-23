@@ -154,6 +154,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <DelayLoadDLLs>uxtheme.dll; dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
@@ -189,6 +190,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <ShowProgress>LinkVerboseLib</ShowProgress>
@@ -330,6 +332,7 @@
     <ClInclude Include="..\..\src\DebugDialog.hpp" />
     <ClInclude Include="..\..\src\global\crtp_iarchive.hpp" />
     <ClInclude Include="..\..\src\global\crtp_oarchive.hpp" />
+    <ClInclude Include="..\..\src\global\load_file.hpp" />
     <ClInclude Include="..\..\src\Halite.hpp" />
     <ClInclude Include="..\..\src\HaliteDialog.hpp" />
     <ClInclude Include="..\..\src\HaliteDialogBase.hpp" />

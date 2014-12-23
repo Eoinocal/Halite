@@ -525,11 +525,6 @@ void bit::start_lt_trackers_plugin()
 	pimpl()->start_lt_trackers_plugin();
 }
 
-void bit::start_metadata_plugin()
-{
-	pimpl()->start_metadata_plugin();
-}
-
 #ifndef TORRENT_DISABLE_ENCRYPTION	
 
 void bit::ensure_pe_on(const pe_settings& pe)
@@ -865,16 +860,6 @@ void bit::schedual_cancel()
 void bit::connect_torrent_completed_signal(function<void (wstring torrent_name)> fn)
 {
 	pimpl()->signals.torrent_completed.connect(fn);
-}
-
-std::vector<char> bit::load_file(fs::path const& filename)
-{
-	fs::ifstream testFile(filename, std::ios::binary);
-
-	if (!testFile)
-		return std::vector<char>{};
-	else
-		return std::vector<char>{(std::istreambuf_iterator<char>(testFile)), std::istreambuf_iterator<char>()};
 }
 
 bit::torrent::torrent() //:

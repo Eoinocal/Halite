@@ -368,7 +368,6 @@ public:
 			& make_nvp("mapping_nat_pmp", mapping_nat_pmp_)
 			& make_nvp("cache_settings", cache_settings_)
 			& make_nvp("resolve_countries", resolve_countries_)
-			& make_nvp("plugins/metadata", metadata_plugin_)
 			& make_nvp("plugins/ut_metadata", ut_metadata_plugin_)
 			& make_nvp("plugins/ut_pex", ut_pex_plugin_)
 			& make_nvp("plugins/smart_ban", smart_ban_plugin_)
@@ -475,7 +474,6 @@ private:
 	bool mapping_nat_pmp_;
 
 	bool resolve_countries_;
-	bool metadata_plugin_;
 	bool ut_metadata_plugin_;
 	bool ut_pex_plugin_;
 	bool smart_ban_plugin_;
