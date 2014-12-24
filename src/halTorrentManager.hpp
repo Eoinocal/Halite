@@ -134,6 +134,15 @@ public:
 		boost::archive::text_woarchive ot(*ofs);
 
 		ot << boost::serialization::make_nvp("BitTorrent", *this);
+
+		{
+			std::ofstream ofs(work_file_.main_file().string()+".xml");
+			boost::archive::xml_oarchive ot(ofs);
+
+			ot << boost::serialization::make_nvp("BitTorrent", *this);
+
+			ofs.flush();
+		}
 	}	
 
 	bool load_from_ini()

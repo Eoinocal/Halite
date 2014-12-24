@@ -93,9 +93,6 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	upgrade_lock l(t_i.mutex_);
 
 	libt::add_torrent_params p;
-	if (t_i.info_memory(l))
-		p.ti = boost::intrusive_ptr<libt::torrent_info>(new libt::torrent_info(*t_i.info_memory(l)));
-
 	std::string resume_file = (hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string();
 
 	boost::system::error_code ec;
@@ -109,21 +106,35 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	p.flags = (evt.pause() ? libt::add_torrent_params::flag_paused : 0) | 
 		(t_i.managed_ ? libt::add_torrent_params::flag_auto_managed : 0);
 
-	if (p.ti)
+	// This ordering is important
+
+	if (t_i.info_memory(l))
 	{
+		HAL_DEV_MSG(L"We have saved torrent info to use");
+		p.ti = boost::intrusive_ptr<libt::torrent_info>(new libt::torrent_info(*t_i.info_memory(l)));
+
 		(*t_i.the_session_)->async_add_torrent(p);
 	}
 	else if (!t_i.magnet_uri_.empty())
 	{
+		HAL_DEV_MSG(L"We have a magnet uri to use");
+
 		libt::error_code ec;
 		libt::parse_magnet_uri(t_i.magnet_uri_, p, ec);
 			
 		if (!ec)
 			(*t_i.the_session_)->async_add_torrent(p);
 	}
+	else if (!t_i.hash_.is_all_zeros())
+	{
+		HAL_DEV_MSG(L"We have a saved hash to use");
+		p.ti = boost::intrusive_ptr<libt::torrent_info>(new libt::torrent_info(t_i.hash_));		
+
+		(*t_i.the_session_)->async_add_torrent(p);
+	}
 	else
 	{
-
+		HAL_DEV_MSG(L"We do not have any information with which to resume the torrent.");
 	}
 
 	t_i.state(l, torrent_details::torrent_starting);

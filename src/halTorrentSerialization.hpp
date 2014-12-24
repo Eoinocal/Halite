@@ -102,7 +102,9 @@ void save(Archive& ar, const libtorrent::big_number& num, const unsigned int ver
 	std::stringstream hex_number;
 	hex_number << num;
 
-	ar & BOOST_SERIALIZATION_NVP(hex_number.str());
+	std::string hex_string = hex_number.str();
+
+	ar & BOOST_SERIALIZATION_NVP(hex_string);
 }
 
 template<class Archive>

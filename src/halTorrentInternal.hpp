@@ -30,7 +30,7 @@ class torrent_manager;
 }
 
 BOOST_CLASS_VERSION(hal::TorrentInternalOld, 9)
-BOOST_CLASS_VERSION(hal::torrent_internal, 3)
+BOOST_CLASS_VERSION(hal::torrent_internal, 4)
 
 namespace hal 
 {
@@ -597,6 +597,9 @@ public:
 
 			switch (version)
 			{
+			case 4:
+			ar & make_nvp("magnet_uri", magnet_uri_);
+
 			case 3:
 			ar & make_nvp("super_seeding", superseeding_);
 			ar & make_nvp("files", files_);
