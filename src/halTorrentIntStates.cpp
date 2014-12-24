@@ -99,7 +99,7 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	p.resume_data = load_file<std::vector<char>>(resume_file.c_str(), ec);
 
 	if (!p.resume_data.empty())
-		HAL_DEV_MSG(L"Using resume data");
+		HAL_DEV_MSG(L" -- Using resume data");
 
 	p.save_path = t_i.save_directory_.string();
 	p.storage_mode = hal_allocation_to_libt(t_i.allocation_);
@@ -110,14 +110,14 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 
 	if (t_i.info_memory(l))
 	{
-		HAL_DEV_MSG(L"We have saved torrent info to use");
+		HAL_DEV_MSG(L" -- We have saved torrent info to use");
 		p.ti = boost::intrusive_ptr<libt::torrent_info>(new libt::torrent_info(*t_i.info_memory(l)));
 
 		(*t_i.the_session_)->async_add_torrent(p);
 	}
 	else if (!t_i.magnet_uri_.empty())
 	{
-		HAL_DEV_MSG(L"We have a magnet uri to use");
+		HAL_DEV_MSG(L" -- We have a magnet uri to use");
 
 		libt::error_code ec;
 		libt::parse_magnet_uri(t_i.magnet_uri_, p, ec);
@@ -127,14 +127,14 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	}
 	else if (!t_i.hash_.is_all_zeros())
 	{
-		HAL_DEV_MSG(L"We have a saved hash to use");
+		HAL_DEV_MSG(L" -- We have a saved hash to use");
 		p.ti = boost::intrusive_ptr<libt::torrent_info>(new libt::torrent_info(t_i.hash_));		
 
 		(*t_i.the_session_)->async_add_torrent(p);
 	}
 	else
 	{
-		HAL_DEV_MSG(L"We do not have any information with which to resume the torrent.");
+		HAL_DEV_MSG(L" -- We do not have any information with which to resume the torrent.");
 	}
 
 	t_i.state(l, torrent_details::torrent_starting);

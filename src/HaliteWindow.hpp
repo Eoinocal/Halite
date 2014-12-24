@@ -133,7 +133,7 @@ public:
 		UPDATE_ELEMENT(3, UPDUI_STATUSBAR)
 	END_UPDATE_UI_MAP()
 
-	void ProcessFile(LPCTSTR lpszPath);
+	void ProcessFile(wstring path_or_uri);
 	
 	boost::signals2::connection connectUiUpdate(boost::function<void (const hal::torrent_details_manager& allTorrents)> fn) 
 	{ 

@@ -417,32 +417,34 @@ public:
 		try 
 		{	
 
-		torrent_internal_ptr TIp =
-			the_torrents_.create_torrent(uri, save_directory, alloc, move_to_directory);
+		torrent_internal_ptr TIp = the_torrents_.create_torrent(uri, save_directory, alloc, move_to_directory);
 		
 		HAL_DEV_MSG(hal::wform(L"URI Torrent: Created"));
 
 		if (TIp)
 		{
-		HAL_DEV_MSG(hal::wform(L"URI Torrent: Managed"));
+			HAL_DEV_MSG(hal::wform(L" -- Managed"));
 			TIp->set_managed(managed);
-		HAL_DEV_MSG(hal::wform(L"URI Torrent: Speeds"));
+		
+			HAL_DEV_MSG(hal::wform(L" -- Speeds"));
 			TIp->set_transfer_speed(bittorrent().default_torrent_download(), 
 				bittorrent().default_torrent_upload());
-		HAL_DEV_MSG(hal::wform(L"URI Torrent: Limits"));
-			TIp->set_connection_limit(bittorrent().default_torrent_max_connections(), 
-				bittorrent().default_torrent_max_uploads());
+			
+			HAL_DEV_MSG(hal::wform(L" -- Limits"));
+			TIp->set_connection_limit(bittorrent().default_torrent_max_connections(), bittorrent().default_torrent_max_uploads());
+			
 			TIp->set_resolve_countries(resolve_countries_);
 
 			if (use_custom_interface_ && external_interface_)
 				TIp->set_use_external_interface(*external_interface_);
 
-		HAL_DEV_MSG(hal::wform(L"URI Torrent: Starting"));
+			HAL_DEV_MSG(hal::wform(L" -- Starting"));
 			TIp->start();
 
-		HAL_DEV_MSG(hal::wform(L"URI Torrent: Resuming"));
+			HAL_DEV_MSG(hal::wform(L" -- Resuming"));
 			if (!start_stopped) TIp->resume();
-		HAL_DEV_MSG(hal::wform(L"URI Torrent: Done"));
+				
+			HAL_DEV_MSG(hal::wform(L" -- Done"));
 		}
 		
 		} 
@@ -552,6 +554,8 @@ public:
 				if (	(*i).torrent 
 					&& 
 					(*i).torrent->state() != torrent_details::torrent_in_error
+					&& 
+					(*i).torrent->state() != torrent_details::torrent_starting
 					&& 
 					(	(	(*i).torrent->state() != torrent_details::torrent_stopped 
 							&& 

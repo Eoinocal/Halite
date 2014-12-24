@@ -35,6 +35,10 @@ class torrent_manager :
 		explicit torrent_holder(torrent_internal_ptr t) :
 			torrent(t), id(torrent->id()), name(torrent->name()), hash(torrent->hash())
 		{}
+		
+		explicit torrent_holder(const libt::big_number& h) :
+			hash(h)
+		{}
 
 		friend class boost::serialization::access;
 		template<class Archive>
@@ -78,6 +82,26 @@ class torrent_manager :
 			ar & make_nvp("torrent", torrent);
 			ar & make_nvp("name", name);
 			}
+		}
+
+		bool operator==(const torrent_holder& right) const
+		{
+			return hash == right.hash;
+		}
+
+		bool operator<(const torrent_holder& right) const
+		{
+			return hash < right.hash;
+		}
+
+		bool operator==(const libt::big_number& right) const
+		{
+			return hash == right;
+		}
+
+		bool operator<(const libt::big_number& right) const
+		{
+			return hash < right;
 		}
 
 		BOOST_SERIALIZATION_SPLIT_MEMBER()
@@ -195,6 +219,16 @@ public:
 				{
 
 				const torrent_holder& t = *i;
+
+				if (!t.hash.is_all_zeros())
+					if (std::count(torrents_.get<by_hash>().begin(), torrents_.get<by_hash>().end(), t) > 1)
+					{
+						hal::event_log().post(shared_ptr<hal::EventDetail>(
+							new hal::EventDebug(hal::event_logger::debug, L"Erasing duplicate torrent")));
+
+						erase(i++);
+						continue;
+					}
 										
 				(*i).torrent->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1));
 				(*i).torrent->start();	
@@ -202,14 +236,14 @@ public:
 				++i;
 				
 				}
-				catch(const libt::duplicate_torrent&)
+		/*		catch(const libt::duplicate_torrent&)
 				{
 					hal::event_log().post(shared_ptr<hal::EventDetail>(
 						new hal::EventDebug(hal::event_logger::debug, L"Encountered duplicate torrent")));
 					
 					++i; // Harmless, don't worry about it.
 				}
-				catch(const std::exception& e) 
+		*/		catch(const std::exception& e) 
 				{
 					hal::event_log().post(shared_ptr<hal::EventDetail>(
 						new hal::EventStdException(hal::event_logger::warning, e, L"torrent_manager::start_all")));
@@ -296,14 +330,7 @@ public:
 	
 	torrent_internal_ptr get_by_hash(const libt::big_number& hash)
 	{
-		torrent_by_hash::iterator it = torrents_.get<by_hash>().find(hash);
-		
-		if (it != torrents_.get<by_hash>().end() && (*it).torrent)
-		{
-			return (*it).torrent;
-		}
-		
-		throw invalid_torrent(uuid());
+		return erase_duplicates_by_hash(hash);
 	}
 	
 	torrent_internal_ptr get_by_uuid(const uuid& id)
@@ -371,6 +398,11 @@ public:
 		return torrents_.get<by_uuid>().erase(where);
 	}
 	
+	torrent_by_hash::iterator erase(torrent_by_hash::iterator where)
+	{
+		return torrents_.get<by_hash>().erase(where);
+	}
+	
 	size_t size()
 	{
 		return torrents_.size();
@@ -397,12 +429,36 @@ public:
 	}	
 	
 private:
+	torrent_internal_ptr erase_duplicates_by_hash(const libt::big_number& hash)
+	{
+		auto p = std::equal_range(torrents_.get<by_hash>().begin(), torrents_.get<by_hash>().end(), torrent_holder(hash));
+		auto d = std::distance(p.first, p.second);
+				
+		hal::event_log().post(shared_ptr<hal::EventDetail>(
+			new hal::EventDebug(hal::event_logger::debug, (hal::wform(L"%1% matching torrents for hash %2%") 
+				% d
+				% from_utf8(libt::base32encode(std::string((char const*)&hash[0], 20)))).str())));
+
+		if (d == 0)
+		{			
+			throw invalid_torrent(uuid());
+		}
+		else if (d > 1)
+		{
+			for (auto i = ++p.first, e = p.second; i != e; /* */)
+				erase(i++);
+							
+			return p.first->torrent;
+		}
+		
+		return p.first->torrent;
+	}
 
 	void display_holder(const torrent_holder& t)
 	{
 		HAL_DEV_MSG(hal::wform(L"Holder name : %1%") % t.name);
-		HAL_DEV_MSG(hal::wform(L"       uuid : %1%") % t.id);
-		HAL_DEV_MSG(hal::wform(L"       hash : %1%") % from_utf8(libt::base32encode(std::string((char const*)&t.hash[0], 20))));
+		HAL_DEV_MSG(hal::wform(L" -- uuid : %1%") % t.id);
+		HAL_DEV_MSG(hal::wform(L" -- hash : %1%") % from_utf8(libt::base32encode(std::string((char const*)&t.hash[0], 20))));
 	}
 
 	versioned_file work_file_;

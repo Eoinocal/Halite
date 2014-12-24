@@ -361,43 +361,43 @@ LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
 	return 0;
 }
 
-void HaliteWindow::ProcessFile(LPCTSTR lpszPath)
+void HaliteWindow::ProcessFile(wstring path_or_uri)
 {
 	try
 	{	
+
 	wstring default_save_folder = wpath(hal::config().default_save_folder_).wstring();
 	wstring default_move_folder = wpath(hal::config().default_move_folder_).wstring();
 	bool use_move_to = hal::config().use_move_to_;
 	bool startPaused = false;
 	bool managed = true;
 	hal::bit::allocations allocation_type = hal::bit::sparse_allocation;
+	bool is_magnet = boost::find_first(path_or_uri, L"magnet:");
 	
 	if (!boost::filesystem::exists(default_save_folder))
 		boost::filesystem::create_directories(default_save_folder);
 
 	if (hal::config().save_prompt_)
 	{
-		AddTorrentDialog addTorrent(default_save_folder, default_move_folder, use_move_to, startPaused, managed, allocation_type);	
+		AddTorrentDialog addTorrent(path_or_uri, false, default_save_folder, default_move_folder, use_move_to, startPaused, managed, allocation_type);	
 		
 		if (IDOK != addTorrent.DoModal())
 			return;
-	}	
+	}
 
-	wstring file_identifer(lpszPath);
-
-	if (boost::find_first(file_identifer, L"?xt=urn:")) 
+	if (is_magnet) 
 	{
-		file_identifer = L"magnet:" + file_identifer;
+		path_or_uri = L"magnet:" + path_or_uri;
 
 		if (use_move_to)
-			hal::bittorrent().add_torrent(file_identifer, wpath(default_save_folder), startPaused, managed, allocation_type, 
+			hal::bittorrent().add_torrent(path_or_uri, wpath(default_save_folder), startPaused, managed, allocation_type, 
 				wpath(default_move_folder));
 		else
-			hal::bittorrent().add_torrent(file_identifer, wpath(default_save_folder), startPaused, managed, allocation_type);
+			hal::bittorrent().add_torrent(path_or_uri, wpath(default_save_folder), startPaused, managed, allocation_type);
 	}
 	else
 	{
-		wpath file(file_identifer, boost::filesystem::native);
+		wpath file(path_or_uri, boost::filesystem::native);
 
 		if (use_move_to)
 			hal::bittorrent().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type, 
@@ -577,6 +577,7 @@ LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnFileOpenMagnet(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {	
+
 	OpenClipboard();
 
 	if (IsClipboardFormatAvailable(CF_UNICODETEXT))
@@ -586,10 +587,10 @@ LRESULT HaliteWindow::OnFileOpenMagnet(WORD wNotifyCode, WORD wID, HWND hWndCtl,
 		{
 			LPTSTR uri_lp = (LPTSTR) GlobalLock(data);
 
-		//	std::wstring uri(uri_lp);
+			std::wstring uri(uri_lp);
 
 			if (boost::find_first(uri_lp, L"magnet:")) 
-				ProcessFile(uri_lp);
+				ProcessFile(uri);
 		}
 
 	}
@@ -754,10 +755,12 @@ LRESULT HaliteWindow::OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 			switch(action)
 			{
 			case TimePickerDlg::action_pause:
+
 				hal::bittorrent().schedual_action(time, hal::bit::action_pause);
 				break;
 
 			case TimePickerDlg::action_exit:
+
 				hal::bittorrent().schedual_callback(
 					time, bind(&HaliteWindow::exitCallback, this));
 				break;
