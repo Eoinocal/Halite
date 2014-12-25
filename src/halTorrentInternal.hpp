@@ -198,13 +198,14 @@ struct out_of_session;
 
 class torrent_internal :
 	public boost::enable_shared_from_this<torrent_internal>,
-	public sc::state_machine<torrent_internal, out_of_session>
+	public sc::state_machine<torrent_internal, out_of_session, std::allocator<void>, sc::exception_translator<>>
 {
 	friend class bit::torrent::exec_around_ptr::proxy;
 
 	friend struct out_of_session;	
 	friend struct in_the_session;
 	
+	friend struct invalid;
 	friend struct active;
 	friend struct pausing;
 	friend struct paused;

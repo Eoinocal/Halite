@@ -24,6 +24,25 @@
 namespace hal
 {
 
+class torrent_state_exception : public std::runtime_error
+{
+public:
+	torrent_state_exception(const uuid& who, const std::string& what) :
+		runtime_error(what),
+		who_(who)
+	{}
+	
+	virtual ~torrent_state_exception() throw () {}
+
+	uuid who() const throw ()
+	{
+		return who_;
+	}       
+	
+private:
+	uuid who_;	
+};
+
 // -------- in_the_session --------
 
 in_the_session::in_the_session(base_type::my_context ctx) :
@@ -35,7 +54,10 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 	upgrade_lock l(t_i.mutex_);
 
 	{	upgrade_to_unique_lock up_l(l);
-		assert(t_i.handle_.is_valid());
+
+		if (!t_i.handle_.is_valid())
+			throw torrent_state_exception(t_i.id(l), "Handle is invalid");
+
 		t_i.in_session_ = true;
 	}
 
@@ -99,7 +121,7 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	p.resume_data = load_file<std::vector<char>>(resume_file.c_str(), ec);
 
 	if (!p.resume_data.empty())
-		HAL_DEV_MSG(L" -- Using resume data");
+		{HAL_DEV_MSG(L" -- Using resume data");}
 
 	p.save_path = t_i.save_directory_.string();
 	p.storage_mode = hal_allocation_to_libt(t_i.allocation_);
@@ -107,7 +129,9 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 		(t_i.managed_ ? libt::add_torrent_params::flag_auto_managed : 0);
 
 	// This ordering is important
-
+	
+	//throw torrent_state_exception(t_i.id(l), "We do not have any information with which to resume the torrent");
+	
 	if (t_i.info_memory(l))
 	{
 		HAL_DEV_MSG(L" -- We have saved torrent info to use");
@@ -135,10 +159,29 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 	else
 	{
 		HAL_DEV_MSG(L" -- We do not have any information with which to resume the torrent.");
+		throw torrent_state_exception(t_i.id(l), "We do not have any information with which to resume the torrent");
 	}
 
 	t_i.state(l, torrent_details::torrent_starting);
 	return discard_event();
+}
+
+sc::result out_of_session::react(const sc::exception_thrown& e)
+{
+	try
+	{
+		throw;
+	}
+	catch (const torrent_state_exception& e)
+	{
+		HAL_DEV_MSG(wform(L"Torrent State Exception: %1%") % e.what());
+	}
+	catch (const std::exception& e)
+	{
+		HAL_DEV_MSG(wform(L"Torrent Std Exception: %1%") % e.what());
+	}
+	
+	return transit<invalid>();
 }
 
 sc::result out_of_session::react(const ev_resume& evt)
@@ -173,8 +216,24 @@ sc::result out_of_session::react(const ev_remove& evt)
 
 		evt.clear_callback();
 	}
-
+	
 	return discard_event();
+}
+
+invalid::invalid(base_type::my_context ctx) :
+	base_type::my_base(ctx)
+{
+	TORRENT_STATE_LOG(L"Entering invalid()");
+
+	torrent_internal& t_i = context<torrent_internal>();
+	upgrade_lock l(t_i.mutex_);
+
+	t_i.state(l, torrent_details::torrent_invalid);
+}
+
+invalid::~invalid()
+{
+	TORRENT_STATE_LOG(L"Exiting ~invalid()");
 }
 
 active::active(base_type::my_context ctx) :
@@ -407,6 +466,7 @@ sc::result not_started::react(const ev_start& evt)
 	case torrent_details::torrent_stopping:		
 	case torrent_details::torrent_in_error:
 	case torrent_details::torrent_not_started:		
+	case torrent_details::torrent_invalid:		
 		return transit<stopped>();
 	};
 

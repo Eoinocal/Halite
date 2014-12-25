@@ -361,6 +361,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\..\Readme.md" />
-    <None Include="Todo.md" />
+    <None Include="..\..\Todo.md" />
   </ItemGroup>
 </Project>

@@ -146,7 +146,7 @@
 					</Component>
 
 					<Component Id='ReadMeText'  Guid="*">
-						<File Id='Readme' Name='readme.txt' DiskId='1' Source='..\..\Readme.txt' />
+						<File Id='Readme' Name='readme.md' DiskId='1' Source='..\..\Readme.md' />
 					</Component>
 
 					<Component Id='HaliteExe' Win64='$(var.Is64)' Guid='*'>

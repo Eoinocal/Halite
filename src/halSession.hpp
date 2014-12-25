@@ -557,6 +557,8 @@ public:
 					&& 
 					(*i).torrent->state() != torrent_details::torrent_starting
 					&& 
+					(*i).torrent->state() != torrent_details::torrent_invalid
+					&& 
 					(	(	(*i).torrent->state() != torrent_details::torrent_stopped 
 							&& 
 							(*i).torrent->state() != torrent_details::torrent_paused

@@ -27,10 +27,11 @@ struct out_of_session : sc::state<out_of_session, torrent_internal, mpl::list< n
 	typedef sc::state<out_of_session, torrent_internal, mpl::list< not_started > > base_type;
 
 	typedef mpl::list<
-		sc::custom_reaction< ev_add_to_session >,
-		sc::custom_reaction< ev_resume >,
-		sc::custom_reaction< ev_remove >,
-		sc::custom_reaction< ev_added_alert >
+		sc::custom_reaction<ev_add_to_session>,
+		sc::custom_reaction<ev_resume>,
+		sc::custom_reaction<ev_remove>,
+		sc::custom_reaction<ev_added_alert>,		
+		sc::custom_reaction<sc::exception_thrown>
 	> reactions;
 
 	out_of_session(base_type::my_context ctx);
@@ -40,6 +41,21 @@ struct out_of_session : sc::state<out_of_session, torrent_internal, mpl::list< n
 	sc::result react(const ev_resume& evt);
 	sc::result react(const ev_remove& evt);
 	sc::result react(const ev_added_alert& evt);
+	sc::result react(const sc::exception_thrown& e);
+};
+
+
+struct invalid : sc::state<invalid, out_of_session>
+{
+	typedef sc::state<invalid, out_of_session> base_type;
+
+/*	typedef mpl::list<
+		sc::transition< ev_stop, stopped >,
+		sc::transition< ev_resumed_alert, active >
+	> reactions;
+*/
+	invalid(base_type::my_context ctx);
+	~invalid();
 };
 
 struct active;

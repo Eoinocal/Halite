@@ -16,6 +16,7 @@
 
 namespace hal 
 {
+
 	
 boost::optional<libt::session>* torrent_internal::the_session_ = 0;	
 
@@ -23,7 +24,7 @@ template<typename F>
 void iterate_info_files(const libt::torrent_info& info, F&& f)
 {
 	for (size_t i = 0, e = info.num_files(); i<e; ++i)
-		f(info.file_at(i), i);
+		f(info.file_at(static_cast<int>(i)), i);
 }
 
 template<typename F>
@@ -1157,6 +1158,10 @@ wstring torrent_internal::state_string(upgrade_lock& l) const
 	case torrent_details::torrent_starting:
 		state_str = app().res_wstr(HAL_TORRENT_STARTING);
 		break;
+
+	case torrent_details::torrent_invalid:
+		state_str = app().res_wstr(HAL_TORRENT_INVALID);
+		break;
 		
 	default:
 		switch (status_cache(l).state)
@@ -1285,8 +1290,12 @@ void torrent_internal::output_torrent_debug_details(upgrade_lock& l) const
 		state_str = app().res_wstr(HAL_TORRENT_IN_ERROR);
 		break;
 		
+	case torrent_details::torrent_invalid:
+		state_str = app().res_wstr(HAL_TORRENT_INVALID);
+		break;
+		
 	default:
-		state_str = L"Bad State!";
+		state_str = L"Unknown State!";
 		break;
 	};
 	

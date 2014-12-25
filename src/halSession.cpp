@@ -633,8 +633,7 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 			f_pool));
 */
 	HAL_DEV_MSG(L"Trackers");
-	for (tracker_details_t::const_iterator i = params.trackers.begin(), e = params.trackers.end();
-			i != e; ++i)
+	for (auto i = params.trackers.begin(), e = params.trackers.end(); i != e; ++i)
 	{
 		HAL_DEV_MSG(hal::wform(L"URL: %1%, Tier: %2%") % (*i).url % (*i).tier);
 		t.add_tracker(to_utf8((*i).url), (*i).tier);
@@ -649,8 +648,7 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 	}
 */
 	HAL_DEV_MSG(L"DHT Nodes");
-	for (dht_node_details_t::const_iterator i = params.dht_nodes.begin(), e = params.dht_nodes.end();
-			i != e; ++i)
+	for (auto i = params.dht_nodes.begin(), e = params.dht_nodes.end(); i != e; ++i)
 	{
 		HAL_DEV_MSG(hal::wform(L"URL: %1%, port: %2%") % (*i).url % (*i).port);
 		t.add_node(hal::make_pair(to_utf8((*i).url), (*i).port));
@@ -673,7 +671,8 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 	fs::ofstream out(out_file, std::ios_base::binary);
 	libt::bencode(std::ostream_iterator<char>(out), t.generate());
 
-	} HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::create_torrent()")
+	} 
+	HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::create_torrent()")
 	
 	HAL_DEV_MSG(L"Torrent creation completed!");
 

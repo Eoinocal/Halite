@@ -1,18 +1,18 @@
-﻿#Halite: A Free Open-Source BitTorrent client
+# Halite: A Free Open-Source BitTorrent client
 
 Version: 0.3.4 dev 1250 released 2nd January 2013
 
-WWW: http://www.binarynotions.com/halite-bittorrent-client 
+WWW: [http://www.binarynotions.com/halite-bittorrent-client]() 
 
-Forum: http://www.binarynotions.com/forum.php
+Forum: [http://www.binarynotions.com/forum.php]()
 
-##Developer: Eóin O'Callaghan
+## Developer: Eóin O'Callaghan
 
 Halite (named after the mineral) is a BitTorrent client based on Arvid
 Norberg's excellent libtorrent library from Rasterbar Software. The
 program also relies on the Boost libraries.
 
-##Features:
+## Features:
 
 While still at an early state of development Halite is a functional
 BitTorrent client. So far its list of features is pretty standard but
@@ -198,7 +198,7 @@ Subversion: svn://svn.geekisp.com/halite
 In addition you can check out the Trac site (trac.geekisp.com/halite)
 but I haven't really done much with it ...yet.
 
-##Thanks
+## Thanks
 
 It can be hard to remember to thank everyone but that is no excuse for
 leaving someone out. If I have done so let me know.

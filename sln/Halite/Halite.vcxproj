@@ -401,7 +401,7 @@
     <None Include="..\..\res\Halite.ico" />
     <None Include="..\..\res\Manifest.xml" />
     <None Include="..\..\res\toolbar.bmp" />
-    <None Include="Todo.md" />
+    <None Include="..\..\Todo.md" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\res\Halite.rc">

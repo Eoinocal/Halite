@@ -101,6 +101,7 @@
 #include <boost/statechart/transition.hpp>
 #include <boost/statechart/state.hpp>
 #include <boost/statechart/custom_reaction.hpp>
+#include <boost/statechart/exception_translator.hpp>
 
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_serialize.hpp>
