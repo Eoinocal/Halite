@@ -148,6 +148,12 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 			
 		if (!ec)
 			(*t_i.the_session_)->async_add_torrent(p);
+		else
+		{
+			HAL_DEV_MSG(wstring(L" -- Saved magnet URI was invalid: ") + from_utf8(ec.message()));
+			throw torrent_state_exception(t_i.id(l), string("Saved magnet URI was invalid: ) " + ec.message()));
+		}
+
 	}
 	else if (!t_i.hash_.is_all_zeros())
 	{
