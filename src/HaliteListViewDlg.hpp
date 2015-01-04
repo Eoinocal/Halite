@@ -162,7 +162,7 @@ public:
 	
 public:
 	HaliteListViewAdjustDlg(wstring title, wstring& s, wstring& m, bool& u, bool d=false) :
-		generic_dlg_class_t(title, "genericAddDlgs/HaliteListViewAdjustDlg", "HaliteListViewAdjustDlg", dlg_),
+		generic_dlg_class_t(title, L"genericAddDlgs/HaliteListViewAdjustDlg", L"HaliteListViewAdjustDlg", dlg_),
 		dlg_(s, m, u, d)
 	{}
 

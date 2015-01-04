@@ -138,7 +138,7 @@ public:
 	typedef torrent_multi_index::index<by_hash>::type torrent_by_hash;
 
 	torrent_manager(ini_file& ini) :
-		ini_class_t("bittorrent", "torrent_manager", ini),
+		ini_class_t(L"bittorrent", L"torrent_manager", ini),
 		work_file_(L"BitTorrent.data", boost::lexical_cast<boost::uuids::uuid>("7246289F-C92C-4781-A574-A1E944FD1183"), 1),
 		ini_(ini)
 	{}

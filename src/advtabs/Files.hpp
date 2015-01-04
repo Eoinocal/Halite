@@ -194,7 +194,7 @@ protected:
 	
 public:	
 	FileTreeView(do_ui_update_fn uiu) :
-		ini_class_t("treeviews/advFiles", "FileTreeView"),
+		ini_class_t(L"treeviews/advFiles", L"FileTreeView"),
 		do_ui_update_(uiu)
 	{}
 	

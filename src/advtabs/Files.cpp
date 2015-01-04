@@ -16,7 +16,7 @@
 #define TVS_EX_DOUBLEBUFFER 0x0004
 
 FileListView::FileListView(do_ui_update_fn uiu, HWND hwnd) :
-	ini_class_t("listviews/advFiles", "FileListView"),
+	ini_class_t(L"listviews/advFiles", L"FileListView"),
 	do_ui_update_(uiu),
 	treeview_(hwnd)
 {}
@@ -234,7 +234,7 @@ LRESULT FileTreeView::OnSelChanged(int, LPNMHDR pnmh, BOOL&)
 AdvFilesDialog::AdvFilesDialog(HaliteWindow& halWindow) :
 	dlg_base_class_t(halWindow),
 	treeManager_(tree_),
-	ini_class_t("AdvFilesDlg", "settings"),
+	ini_class_t(L"AdvFilesDlg", L"settings"),
 	splitterPos(150),
 	tree_(boost::bind(&AdvFilesDialog::doUiUpdate, this)),
 	list_(boost::bind(&AdvFilesDialog::doUiUpdate, this), tree_)

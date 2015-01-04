@@ -29,7 +29,7 @@ public:
 	
 public:
 	TrackerAddDialog(wstring title, hal::tracker_detail& tracker) :
-		generic_dlg_class_t(title, "genericAddDlgs/AddTracker", "AddTracker"),
+		generic_dlg_class_t(title, L"genericAddDlgs/AddTracker", L"AddTracker"),
 		tracker_(tracker)
 	{}
 

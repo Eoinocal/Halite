@@ -23,7 +23,7 @@
 #include "halConfig.hpp"
 
 HaliteWindow::HaliteWindow(unsigned areYouMe = 0) :
-	ini_class_t("HaliteWindow", "HaliteWindow"),
+	ini_class_t(L"HaliteWindow", L"HaliteWindow"),
 	haliteList(*this),
 	WM_AreYouMe_(areYouMe),
 	splitterPos(100),

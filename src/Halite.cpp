@@ -34,7 +34,7 @@ Halite& halite()
 }
 
 Halite::Halite() :
-	hal::IniBase<Halite>("globals/halite", "Halite"),
+	hal::IniBase<Halite>(L"globals/halite", L"Halite"),
 	oneInst(true),
 #	ifdef TORRENT_LOGGING
 		logDebug_(true),

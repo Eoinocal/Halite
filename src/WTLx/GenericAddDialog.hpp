@@ -24,7 +24,7 @@ class GenericAddDialog :
 	typedef hal::IniBase<this_class_t> ini_class_t;
 	
 public:
-	GenericAddDialog(std::wstring title, boost::filesystem::path location, std::string name) :
+	GenericAddDialog(std::wstring title, boost::filesystem::wpath location, std::wstring name) :
 		title_(title),
 		ini_class_t(location, name),
 		rect_(0,0,0,0)
@@ -126,7 +126,7 @@ class GenericAddContainerDialog :
 	typedef hal::IniBase<this_class_t> ini_class_t;
 	
 public:
-	GenericAddContainerDialog(std::wstring title, boost::filesystem::path location, std::string name, dlgClass& dlg) :
+	GenericAddContainerDialog(std::wstring title, boost::filesystem::wpath location, std::wstring name, dlgClass& dlg) :
 		dlg_(dlg),
 		title_(title),
 		ini_class_t(location, name),

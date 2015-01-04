@@ -42,7 +42,7 @@ public:
 	
 public:
 	NewTorrent_TrackerAddDialog(wstring title, hal::tracker_detail& tracker) :
-		generic_dlg_class_t(title, "genericAddDlgs/NewTorrentAddTracker", "NewTorrentAddTracker"),
+		generic_dlg_class_t(title, L"genericAddDlgs/NewTorrentAddTracker", L"NewTorrentAddTracker"),
 		tracker_(tracker)
 	{}
 
@@ -91,7 +91,7 @@ public:
 	};
 	
 	NewTorrent_TrackerListViewCtrl() :
-		ini_class_t("listviews/NewTorrent", "NewTorrentListView")
+		ini_class_t(L"listviews/NewTorrent", L"NewTorrentListView")
 	{}
 
 	BEGIN_MSG_MAP_EX(TrackerListViewCtrl)

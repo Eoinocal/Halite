@@ -42,7 +42,7 @@ public:
 
 	AdvTrackerDialog(HaliteWindow& HalWindow) :
 		dlg_base_class_t(HalWindow),
-		m_list("listviews/tracker", "TrackerListView")
+		m_list(L"listviews/tracker", L"TrackerListView")
 	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)

@@ -56,7 +56,7 @@ public:
 		LISTVIEW_ID_COLUMNWIDTHS = HAL_TRACKER_LISTVIEW_DEFAULTS
 	};
 	
-	WebSeedListViewCtrl(boost::filesystem::path location, std::string name) :
+	WebSeedListViewCtrl(boost::filesystem::wpath location, std::wstring name) :
 		ini_class_t(location, name)
 	{}
 
@@ -113,7 +113,7 @@ public:
 
 	AdvWebSeedsDialog(HaliteWindow& HalWindow) :
 		dlg_base_class_t(HalWindow),
-		list_("listviews/web_seeds", "WebSeedListView")
+		list_(L"listviews/web_seeds", L"WebSeedListView")
 	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)

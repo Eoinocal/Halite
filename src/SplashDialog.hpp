@@ -46,7 +46,7 @@ public:
 	enum { IDD = HAL_CLOSESPLASH };
 
 	SplashDialog() :	
-		ini_class_t("SplashDialog", "dialog"),	
+		ini_class_t(L"SplashDialog", L"dialog"),	
 		rect_(0,0,0,0)
 	{
 		load_from_ini();

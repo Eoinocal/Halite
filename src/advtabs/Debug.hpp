@@ -93,7 +93,7 @@ public:
 	END_MSG_MAP()
 
 	LogListViewCtrl() :
-		ini_class_t("listviews/eventLog", "LogListView")
+		ini_class_t(L"listviews/eventLog", L"LogListView")
 	{}
 	
 	~LogListViewCtrl()

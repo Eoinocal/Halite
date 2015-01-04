@@ -55,7 +55,7 @@ public:
 	END_MSG_MAP()
 
 	PeerListView(HaliteWindow& halWindow) :
-		ini_class_t("listviews/advPeers", "PeerListView"),
+		ini_class_t(L"listviews/advPeers", L"PeerListView"),
 		halite_window_(halWindow)
 	{}
 	

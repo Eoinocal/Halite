@@ -48,7 +48,7 @@ public:
 	
 public:
 	NewTorrent_PeersAddDialog(wstring title, hal::web_seed_or_dht_node_detail& peer) :
-		generic_dlg_class_t(title, "genericAddDlgs/NewTorrentAddPeers", "NewTorrentAddPeers"),
+		generic_dlg_class_t(title, L"genericAddDlgs/NewTorrentAddPeers", L"NewTorrentAddPeers"),
 		peer_(peer)
 	{}
 
@@ -148,7 +148,7 @@ public:
 	};
 	
 	NewTorrent_PeersListViewCtrl() :
-		ini_class_t("listviews/NewTorrentPeers", "NewPeersListView")
+		ini_class_t(L"listviews/NewTorrentPeers", L"NewPeersListView")
 	{}
 
 	BEGIN_MSG_MAP_EX(this_class_t)

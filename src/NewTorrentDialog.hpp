@@ -66,7 +66,7 @@ public:
 	};
 	
 	FilesListViewCtrl() :
-		ini_class_t("listviews/new_files", "NewFilesListView")
+		ini_class_t(L"listviews/new_files", L"NewFilesListView")
 	{}
 
 	BEGIN_MSG_MAP_EX(FilesListViewCtrl)
@@ -342,7 +342,7 @@ public:
     NewTorrentDialog(LPCTSTR title = (LPCTSTR)NULL,
 			UINT uStartPage = 0, HWND hWndParent = NULL) :
         CPropertySheet(title, uStartPage, hWndParent),
-		ini_class_t("NewTorrentDialog", "Dialog"),
+		ini_class_t(L"NewTorrentDialog", L"Dialog"),
 		inited_(false),
 		rect_(0,0,0,0),
 		fileSheet_(bind(&NewTorrentDialog::EnableSave, this, _1))
