@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>C:\Craftwork\C++\Libraries\Boost\boost_1_55_0\;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Craftwork\C++\Libraries\Boost\boost_1_55_0\libs-windows-$(PlatformShortName)\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Craftwork\C++\Libraries\Boost\boost_1_57_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Craftwork\C++\Libraries\Boost\boost_1_57_0\libs-windows-$(PlatformShortName)\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>

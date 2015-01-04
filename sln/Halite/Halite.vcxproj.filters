@@ -132,34 +132,10 @@
     <ClInclude Include="..\..\src\advtabs\TrackerListView.hpp">
       <Filter>Header Files\Advanced Tabs</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\global\crtp_iarchive.hpp">
-      <Filter>Header Files\Auxiliary</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\global\crtp_oarchive.hpp">
-      <Filter>Header Files\Auxiliary</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\global\ini.hpp">
-      <Filter>Header Files\Auxiliary</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\global\logger.hpp">
       <Filter>Header Files\Auxiliary</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\global\string_conv.hpp">
-      <Filter>Header Files\Auxiliary</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\global\tinyxml.hpp">
-      <Filter>Header Files\Auxiliary</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\global\txml.hpp">
-      <Filter>Header Files\Auxiliary</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\global\txml_iarchive.hpp">
-      <Filter>Header Files\Auxiliary</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\global\txml_ini_adapter.hpp">
-      <Filter>Header Files\Auxiliary</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\global\txml_oarchive.hpp">
       <Filter>Header Files\Auxiliary</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\global\unicode.hpp">
@@ -302,9 +278,6 @@
     <ClCompile Include="..\..\src\advtabs\TrackerListView.cpp">
       <Filter>Source Files\Advanced Tabs</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\global\ini.cpp">
-      <Filter>Source Files\Auxiliary</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\global\logger.cpp">
       <Filter>Source Files\Auxiliary</Filter>
     </ClCompile>
@@ -319,27 +292,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\WTLx\NTray.cpp">
       <Filter>Source Files\WTLx</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\global\txml_parser.cpp">
-      <Filter>Source Files\Auxiliary</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\global\tinyxml.cpp">
-      <Filter>Source Files\Auxiliary</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\global\tinyxmlerror.cpp">
-      <Filter>Source Files\Auxiliary</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\global\tinyxmlparser.cpp">
-      <Filter>Source Files\Auxiliary</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\global\txml.cpp">
-      <Filter>Source Files\Auxiliary</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\global\txml_error.cpp">
-      <Filter>Source Files\Auxiliary</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\global\txml_ini_adapter.cpp">
-      <Filter>Source Files\Auxiliary</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\advtabs\WebSeeds.cpp">
       <Filter>Source Files\Advanced Tabs</Filter>

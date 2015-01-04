@@ -137,10 +137,10 @@ public:
 	typedef torrent_multi_index::index<by_name>::type torrent_by_name;
 	typedef torrent_multi_index::index<by_hash>::type torrent_by_hash;
 
-	torrent_manager(ini_file& ini) :
-		ini_class_t(L"bittorrent", L"torrent_manager", ini),
-		work_file_(L"BitTorrent.data", boost::lexical_cast<boost::uuids::uuid>("7246289F-C92C-4781-A574-A1E944FD1183"), 1),
-		ini_(ini)
+	torrent_manager() :
+		ini_class_t(L"bittorrent", L"torrent_manager"),
+		work_file_(L"BitTorrent.data", boost::lexical_cast<boost::uuids::uuid>("7246289F-C92C-4781-A574-A1E944FD1183"), 1)
+//		ini_(ini)
 	{}
 
 	~torrent_manager()
@@ -174,7 +174,7 @@ public:
 		try 
 		{
 
-		if (!boost::filesystem::exists(work_file_.working_file()) &&
+/*		if (!boost::filesystem::exists(work_file_.working_file()) &&
 			boost::filesystem::exists(ini_.main_file()))
 		{	
 			ini_class_t::load_from_ini();
@@ -183,7 +183,7 @@ public:
 			return true;
 		}
 		else
-		{			
+*/		{			
 			if (boost::optional<shared_wistream_ptr> ifs = work_file_.wistream())
 			{
 				boost::archive::text_wiarchive it(**ifs);
@@ -462,7 +462,7 @@ private:
 	}
 
 	versioned_file work_file_;
-	ini_file& ini_;
+//	ini_file& ini_;
 	torrent_multi_index torrents_;
 };
 

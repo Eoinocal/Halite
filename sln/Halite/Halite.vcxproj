@@ -236,79 +236,8 @@
     <ClCompile Include="..\..\src\advtabs\Torrent.cpp" />
     <ClCompile Include="..\..\src\advtabs\Tracker.cpp" />
     <ClCompile Include="..\..\src\advtabs\TrackerListView.cpp" />
-    <ClCompile Include="..\..\src\global\ini.cpp" />
     <ClCompile Include="..\..\src\global\logger.cpp" />
     <ClCompile Include="..\..\src\global\string_conv.cpp" />
-    <ClCompile Include="..\..\src\global\tinyxml.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\..\src\global\tinyxmlerror.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\..\src\global\tinyxmlparser.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\..\src\global\txml.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\..\src\global\txml_error.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\..\src\global\txml_ini_adapter.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\..\src\global\txml_parser.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="..\..\src\global\work_file.cpp" />
     <ClCompile Include="..\..\src\global\wtl_app.cpp" />
     <ClCompile Include="..\..\src\WTLx\NTray.cpp">
@@ -328,8 +257,6 @@
     <ClInclude Include="..\..\src\advtabs\WebSeeds.hpp" />
     <ClInclude Include="..\..\src\ConfigOptions.hpp" />
     <ClInclude Include="..\..\src\DebugDialog.hpp" />
-    <ClInclude Include="..\..\src\global\crtp_iarchive.hpp" />
-    <ClInclude Include="..\..\src\global\crtp_oarchive.hpp" />
     <ClInclude Include="..\..\src\global\load_file.hpp" />
     <ClInclude Include="..\..\src\Halite.hpp" />
     <ClInclude Include="..\..\src\HaliteDialog.hpp" />
@@ -361,14 +288,8 @@
     <ClInclude Include="..\..\src\advtabs\Tracker.hpp" />
     <ClInclude Include="..\..\src\advtabs\TrackerAddDialog.hpp" />
     <ClInclude Include="..\..\src\advtabs\TrackerListView.hpp" />
-    <ClInclude Include="..\..\src\global\ini.hpp" />
     <ClInclude Include="..\..\src\global\logger.hpp" />
     <ClInclude Include="..\..\src\global\string_conv.hpp" />
-    <ClInclude Include="..\..\src\global\tinyxml.hpp" />
-    <ClInclude Include="..\..\src\global\txml.hpp" />
-    <ClInclude Include="..\..\src\global\txml_iarchive.hpp" />
-    <ClInclude Include="..\..\src\global\txml_ini_adapter.hpp" />
-    <ClInclude Include="..\..\src\global\txml_oarchive.hpp" />
     <ClInclude Include="..\..\src\global\unicode.hpp" />
     <ClInclude Include="..\..\src\global\utf8.hpp" />
     <ClInclude Include="..\..\src\global\versioned_file.hpp" />

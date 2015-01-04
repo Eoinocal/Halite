@@ -10,7 +10,7 @@
 
 #include "global/wtl_app.hpp"
 #include "global/string_conv.hpp"
-#include "global/ini_adapter.hpp"
+//#include "global/ini_adapter.hpp"
 
 #include "halIni.hpp"
 #include "halTypes.hpp"
@@ -23,8 +23,6 @@ namespace hal
 {
 
 bit_impl::bit_impl() :
-	bittorrent_ini_(L"BitTorrent.xml"),
-	the_torrents_(bittorrent_ini_),
 	action_timer_(io_service_),
 	alert_timer_(io_service_),
 	keep_checking_(false),
@@ -73,7 +71,6 @@ bit_impl::bit_impl() :
 	
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading BitTorrent.xml.", hal::event_logger::info)));		
-	bittorrent_ini_.load_data();
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
 		new hal::EventMsg(L"Loading torrent parameters.", hal::event_logger::info)));	
 	the_torrents_.load_from_ini();

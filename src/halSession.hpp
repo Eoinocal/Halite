@@ -594,8 +594,7 @@ public:
 		try
 		{
 		
-		the_torrents_.save_to_ini();
-		bittorrent_ini_.save_data();			
+		the_torrents_.save_to_ini();	
 		
 		{	libt::entry state;
 			session_->save_state(state);
@@ -652,7 +651,7 @@ private:
 
 	mutable mutex_t mutex_;
 	
-	ini_file bittorrent_ini_;
+//	ini_file bittorrent_ini_;
 	torrent_manager the_torrents_;	
 
 	boost::asio::io_service io_service_;

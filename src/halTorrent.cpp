@@ -10,7 +10,6 @@
 
 #include "global/wtl_app.hpp"
 #include "global/string_conv.hpp"
-#include "global/ini_adapter.hpp"
 
 #include "halTorrent.hpp"
 #include "halTypes.hpp"

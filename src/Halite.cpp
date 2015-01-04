@@ -20,7 +20,6 @@
 
 #include "WinAPIMutex.hpp"
 
-#include "global/ini.hpp"
 #include "global/logger.hpp"
 #include "halConfig.hpp"
 
@@ -150,7 +149,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	HRESULT hRes = _Module.Init(NULL, hInstance);
 	assert (SUCCEEDED(hRes));	
 	
-	hal::ini().load_data();
+//	hal::ini().load_data();
 	halite_log_file_.connect();
 	
 	{ WinAPIMutex oneInstance(HALITE_GUID);
@@ -185,7 +184,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	else
 	{
 		hal::event_log().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(hal::wform(L"App Data Path: %1%.") % hal::app().get_local_appdata())));		
+			new hal::EventMsg(hal::wform(L"App Data Path: %1%.") % *hal::app().get_local_appdata())));		
 
 		hal::event_log().post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(hal::wform(L"Exe Path: %1%.") % hal::app().exe_path())));		
@@ -219,7 +218,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		_Module.RemoveMessageLoop();
 
 		halite().save_to_ini();
-		hal::ini().save_data();		
+//		hal::ini().save_data();		
 	}
 	}
 

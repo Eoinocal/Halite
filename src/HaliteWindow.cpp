@@ -303,7 +303,6 @@ void HaliteWindow::OnTimer(UINT_PTR uTimerID)
 		try
 		{
 
-		hal::ini().save_data();
 		hal::bittorrent().save_torrent_data();	
 	
 		} HAL_GENERIC_FN_EXCEPTION_CATCH(L"HaliteWindow::OnTimer(ID_SAVE_TIMER)")
@@ -476,7 +475,6 @@ void HaliteWindow::OnDestroy()
 	splitterPos = m_Split.GetSplitterPos();
 
 	save_to_ini();
-	hal::ini().save_data();
 	
 	if (halite().showMessage())
 	{
@@ -498,7 +496,6 @@ void HaliteWindow::OnDestroy()
 	// Resave for sake of your health.
 	save_to_ini();
 	halite().save_to_ini();
-	hal::ini().save_data();
 
 	if (post_halite_function_) post_halite_function_();
 		

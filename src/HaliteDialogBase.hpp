@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include "global/ini_adapter.hpp"
 #include "halEvent.hpp"
 #include "HaliteWindow.hpp"
 #include "HaliteListView.hpp"

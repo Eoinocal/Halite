@@ -13,10 +13,10 @@
 #endif
 
 #include "global/wtl_app.hpp"
-#include "global/txml_ini_adapter.hpp"
+/*#include "global/txml_ini_adapter.hpp"
 #include "global/txml_oarchive.hpp"
 #include "global/txml_iarchive.hpp"
-
+*/
 #include "halEvent.hpp"
 
 namespace hal 
@@ -26,7 +26,7 @@ template <class T>
 class IniBase
 {
 public:
-	IniBase(boost::filesystem::wpath location, std::wstring name, hal::ini_file& ini = hal::ini()) :
+	IniBase(boost::filesystem::wpath location, std::wstring name) :
 	//	adapter_(location, ini),
 		name_(name),
 		directory_(app().get_working_directory() / L"config" / location)
@@ -41,7 +41,7 @@ public:
 */	
 	~IniBase()
 	{
-		TXML_LOG(L"~IniBase()");
+//		TXML_LOG(L"~IniBase()");
 	}
 
 	void initialise()
@@ -65,7 +65,7 @@ public:
 
 		adapter_.save_stream_data(xml_data);
 */		
-		TXML_LOG(L"Saving xml");
+//		TXML_LOG(L"Saving xml");
 
 		{	fs::wofstream ofs(directory_ / (name_ + L".xml"));
 			boost::archive::text_woarchive woa(ofs);
