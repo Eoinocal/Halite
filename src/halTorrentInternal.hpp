@@ -24,13 +24,11 @@
 
 namespace hal 
 {
-class TorrentInternalOld;
 class torrent_internal;
 class torrent_manager;
 }
 
-BOOST_CLASS_VERSION(hal::TorrentInternalOld, 9)
-BOOST_CLASS_VERSION(hal::torrent_internal, 4)
+BOOST_CLASS_VERSION(hal::torrent_internal, 5)
 
 namespace hal 
 {
@@ -612,107 +610,49 @@ public:
 
 		using boost::serialization::make_nvp;
 
-		if (version > 1) {
-
-			switch (version)
-			{
-			case 4:
+		switch (version)
+		{
+		default:
+		case 5:
 			ar & make_nvp("magnet_uri", magnet_uri_);
-
-			case 3:
 			ar & make_nvp("super_seeding", superseeding_);
 			ar & make_nvp("files", files_);
 			ar & make_nvp("uuid", uuid_);
 			ar & make_nvp("hash", hash_);
 			ar & make_nvp("hash_string", hash_str_);
-
-			case 2:
 			ar & make_nvp("transfer_limits", transfer_limit_);
 			ar & make_nvp("connection_limits", connections_);
 			ar & make_nvp("upload_limits", uploads_);	
-
 			ar & make_nvp("name", name_);
 			ar & make_nvp("filename", filename_);	
-
 			ar & make_nvp("progress", progress_);
 			ar & make_nvp("state", state_);
-	//			ar & make_nvp("compact_storage", compact_storage_);	
 			ar & make_nvp("allocation_type", allocation_);	
 			ar & make_nvp("resolve_countries", resolve_countries_);	
-
 			ar & make_nvp("tracker_username", tracker_username_);
 			ar & make_nvp("tracker_password", tracker_password_);
 			ar & make_nvp("trackers", trackers_);
-
 			ar & make_nvp("save_directory", save_directory_);
-			ar & make_nvp("move_to_directory", move_to_directory_);
-			
+			ar & make_nvp("move_to_directory", move_to_directory_);			
 			ar & make_nvp("payload_uploaded", payload_uploaded_);
 			ar & make_nvp("queue_position", queue_position_);
 			ar & make_nvp("payload_downloaded", payload_downloaded_);
 			ar & make_nvp("uploaded", uploaded_);
-			ar & make_nvp("downloaded", downloaded_);			
-			
-			if (version == 2)
-				ar & make_nvp("file_priorities", file_priorities_);
-			
+			ar & make_nvp("downloaded", downloaded_);				
 			ar & make_nvp("start_time", start_time_);
 			ar & make_nvp("finish_time", finish_time_);
 			ar & make_nvp("active_duration", active_duration_);
 			ar & make_nvp("seeding_duration", seeding_duration_);
 			ar & make_nvp("managed", managed_);		
-			}
-		} 
-		else 
-		{
-			ar & make_nvp("transferLimit", transfer_limit_);
-			ar & make_nvp("connections", connections_);
-			ar & make_nvp("uploads", uploads_);			
-			ar & make_nvp("filename", filename_);	
+			break;
 
-			wstring s;
-			ar & make_nvp("saveDirectory", s);
-			save_directory_ = s;
-
-			if (version == 2) {
-				wstring m;
-				ar & make_nvp("moveToDirectory", m);
-				move_to_directory_ = m;
-			} else {
-				move_to_directory_ = save_directory_;
-			}
-			
-			ar & make_nvp("payload_uploaded_", payload_uploaded_);
-			ar & make_nvp("payload_downloaded_", payload_downloaded_);
-			ar & make_nvp("uploaded_", uploaded_);
-			ar & make_nvp("downloaded_", downloaded_);
-			ar & make_nvp("trackerUsername", tracker_username_);
-			ar & make_nvp("trackerPassword", tracker_password_);
-			
-			ar & make_nvp("state", state_);
-			ar & make_nvp("trackers", trackers_);
-			
-			ar & make_nvp("resolve_countries", resolve_countries_);
-			
-			ar & make_nvp("file_priorities", file_priorities_);
-			
-			ar & make_nvp("start_time", start_time_);
-			ar & make_nvp("activeDuration", active_duration_);
-			ar & make_nvp("seedingDuration", seeding_duration_);
-			
-			ar & make_nvp("name", name_);
-			ar & make_nvp("compactStorage", compact_storage_);
-			ar & make_nvp("finish_time", finish_time_);
-			
-			ar & make_nvp("progress", progress_);
+		case 4:
+		case 3:
+		case 2:
+		case 1:
+			assert(false);
 		}
 
-		if (version < 3)
-		{
-			upgrade_to_unique_lock up_l(l);	
-
-			uuid_ = boost::uuids::random_generator()();
-		}
 	}
 
 	const std::vector<libt::peer_info>& peers() const
@@ -780,9 +720,12 @@ public:
 
 	torrent_files& files() { return files_; }
 
-	sc::fifo_scheduler<>::processor_handle& state_handle()
+	boost::optional<sc::fifo_scheduler<>::processor_handle&> state_handle()
 	{
-		return state_handle_;
+		if (post_torrent_event_)
+			return state_handle_;
+		else
+			return {};
 	}
 
 	friend class torrent_manager;

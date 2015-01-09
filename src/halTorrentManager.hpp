@@ -146,7 +146,7 @@ public:
 
 	~torrent_manager()
 	{
-		for (torrent_by_name::iterator i= torrents_.get<by_name>().begin(), 
+/*		for (torrent_by_name::iterator i= torrents_.get<by_name>().begin(), 
 			e = torrents_.get<by_name>().end(); i!=e; ++i)
 		{
 			(*i).torrent->stop();
@@ -155,7 +155,7 @@ public:
 		}
 
 		scheduler_.terminate();
-	}
+*/	}
 
 	void save_to_ini()
 	{
@@ -213,6 +213,8 @@ public:
 
 	void start_all()
 	{
+		HAL_DEV_MSG(wform(L"Manager start all %1%") % torrents_.size());
+
 		for (torrent_by_uuid::iterator i= torrents_.get<by_uuid>().begin(), e = torrents_.get<by_uuid>().end(); i != e; /**/)
 	//	for (const torrent_holder& t : torrents_)
 		{
@@ -234,6 +236,15 @@ public:
 						erase(i++);
 						continue;
 					}
+
+				if (t.torrent && t.torrent->id() != t.id)
+				{
+					hal::event_log().post(shared_ptr<hal::EventDetail>(
+						new hal::EventDebug(hal::event_logger::debug, L"ID mismatch, Erasing torrent")));
+					
+					erase(i++);
+					continue;
+				}
 										
 				initiate_torrent((*i).torrent, bind(&torrent_manager::update_torrent, this, _1));
 				(*i).torrent->start();	
@@ -267,13 +278,13 @@ public:
 
 	void terminate_all()
 	{	
-		for (torrent_by_uuid::iterator i= torrents_.get<by_uuid>().begin(), 
+		HAL_DEV_MSG(wform(L"Manager terminate all %1%") % torrents_.size());
+
+		for (torrent_by_uuid::iterator i = torrents_.get<by_uuid>().begin(), 
 			e = torrents_.get<by_uuid>().end(); i!=e; ++i)
 		{
 		//	assert(i->torrent->state() == torrent_details::torrent_stopped);
-
-			scheduler_.terminate_processor((*i).torrent->state_handle());
-			scheduler_.destroy_processor((*i).torrent->state_handle());
+			terminate_torrent(i->torrent);
 		}
 
 		scheduler_();
@@ -319,9 +330,12 @@ public:
 		return t;
 	}
 	
-	size_t remove_torrent(const uuid& name)
+	void remove_torrent(const uuid& id)
 	{		
-		return torrents_.get<by_uuid>().erase(name);
+		torrent_by_uuid::iterator it = torrents_.get<by_uuid>().find(id);
+		
+		if (it != torrents_.get<by_uuid>().end())
+			erase(it);
 	}
 
 /*	torrent_internal_ptr get_by_file(const wstring& filename)
@@ -420,26 +434,43 @@ public:
 			f,
 			bind(&torrent_manager::process_torrent_event, this, _1, _2));
 
-		scheduler_.initiate_processor(t->state_handle());
+		scheduler_.initiate_processor(*t->state_handle());
 	}
 
-	void erase_torrent(torrent_internal_ptr torrent)
+/*	void erase_torrent(torrent_internal_ptr torrent)
 	{
 		torrent_by_uuid::iterator it = torrents_.get<by_uuid>().find(torrent->id());
+		
+		
+		HAL_DEV_MSG(wform(L"Manager erase torrent %1%") % torrent->name());
 		
 		if (it != torrents_.get<by_uuid>().end() && (*it).torrent)
 		{
 			erase(it);
 		}
 	}
-	
+	*/
+
+	void terminate_torrent(torrent_internal_ptr torrent)
+	{
+		if (auto handle = torrent->state_handle())
+		{
+			HAL_DEV_MSG(wform(L"Manager terminate torrent %1%") % torrent->name());
+
+			scheduler_.terminate_processor(*handle);
+			scheduler_.destroy_processor(*handle);
+		}
+	}
+
 	torrent_by_uuid::iterator erase(torrent_by_uuid::iterator where)
 	{
+		terminate_torrent(where->torrent);
 		return torrents_.get<by_uuid>().erase(where);
 	}
 	
 	torrent_by_hash::iterator erase(torrent_by_hash::iterator where)
 	{
+		terminate_torrent(where->torrent);
 		return torrents_.get<by_hash>().erase(where);
 	}
 	
