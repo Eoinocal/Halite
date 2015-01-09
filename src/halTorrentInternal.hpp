@@ -194,11 +194,18 @@ class torrent_internal;
 typedef shared_ptr<torrent_internal> torrent_internal_ptr;
 
 struct out_of_session;
+class torrent_internal;
 
+struct torrent_internal_sm : public sc::asynchronous_state_machine<torrent_internal_sm, out_of_session, sc::fifo_scheduler<>, std::allocator<void>, sc::exception_translator<>>
+{
+	torrent_internal_sm(my_context ctx, torrent_internal_ptr ptr);
+	~torrent_internal_sm();
+
+	boost::weak_ptr<torrent_internal> ptr_;
+};
 
 class torrent_internal :
-	public boost::enable_shared_from_this<torrent_internal>,
-	public sc::state_machine<torrent_internal, out_of_session, std::allocator<void>, sc::exception_translator<>>
+	public boost::enable_shared_from_this<torrent_internal>
 {
 	friend class bit::torrent::exec_around_ptr::proxy;
 
@@ -225,10 +232,7 @@ private:
 public:
 	using torrent_info_ptr = boost::intrusive_ptr<libt::torrent_info const>;
 
-	~torrent_internal()
-	{
-		terminate();
-	}
+	~torrent_internal() {}
 
 	static void set_the_session(boost::optional<libt::session>*);
 	bool in_session() const;
@@ -304,24 +308,38 @@ public:
 	
 	void remove_files(function<void (wpath, boost::shared_ptr<std::vector<std::wstring> >)> fn);
 
+	void process_event(sc::fifo_scheduler<>::event_ptr_type e)
+	{
+		if (post_torrent_event_)
+			post_torrent_event_(state_handle_, e);
+	}
+
 	void resume()
 	{		
-		process_event(ev_resume());
+		HAL_DEV_MSG(L"process_event(ev_resume())");
+		process_event(new ev_resume());
+		HAL_DEV_MSG(L" ... ev_resume done");
 	}
 	
 	void pause()
 	{		
-		process_event(ev_pause());		
+		HAL_DEV_MSG(L"process_event(ev_pause())");
+		process_event(new ev_pause());		
+		HAL_DEV_MSG(L" ... ev_pause done");
 	}
 	
 	void stop()
 	{		
-		process_event(ev_stop());
+		HAL_DEV_MSG(L"process_event(ev_stop())");
+		process_event(new ev_stop());
+		HAL_DEV_MSG(L" ... ev_stop done");
 	}
 	
 	void start()
 	{		
-		process_event(ev_start());
+		HAL_DEV_MSG(L"process_event(ev_start())");
+		process_event(new ev_start());
+		HAL_DEV_MSG(L" ... ev_start done");
 	}
 	
 	void set_state_stopped()
@@ -333,7 +351,7 @@ public:
 
 	void force_recheck()
 	{		
-		process_event(ev_force_recheck());	
+		process_event(new ev_force_recheck());	
 	}
 	
 	void write_resume_data(const libt::entry& ent)
@@ -756,11 +774,16 @@ public:
 
 	wstring check_error() const;
 
-	bool awaiting_resume_data() { return (state_downcast<const resume_data_waiting*>() != 0); }
+	bool awaiting_resume_data() { return awaiting_resume_data_; }
 
 	void output_torrent_debug_details() const;
 
-	torrent_files& files() { return files_; }		
+	torrent_files& files() { return files_; }
+
+	sc::fifo_scheduler<>::processor_handle& state_handle()
+	{
+		return state_handle_;
+	}
 
 	friend class torrent_manager;
 
@@ -811,7 +834,9 @@ private:
 	void get_file_details(upgrade_lock& l, file_details_vec& files_vec);
 
 	void update_manager(upgrade_lock& l);
-	void initialize_non_serialized(function<void (torrent_internal_ptr)>);
+	void initialize_non_serialized(sc::fifo_scheduler<>::processor_handle h, 
+		function<void (torrent_internal_ptr)>,
+		function<void (sc::fifo_scheduler<>::processor_handle, sc::fifo_scheduler<>::event_ptr_type)>);
 	
 	wstring state_string(upgrade_lock& l) const;
 	void output_torrent_debug_details(upgrade_lock& l) const;
@@ -832,6 +857,7 @@ private:
 	function<void (void)>& remove_callback(upgrade_lock& l) { return remove_callback_; }
 	
 	function<void (torrent_internal_ptr)> update_manager_;
+	function<void (sc::fifo_scheduler<>::processor_handle, sc::fifo_scheduler<>::event_ptr_type)> post_torrent_event_;
 
 	mutable boost::shared_mutex mutex_;
 	mutable boost::mutex details_mutex_;
@@ -870,11 +896,13 @@ private:
 	
 	bool compact_storage_;
 	bit::allocations allocation_;
+	bool awaiting_resume_data_;
 
 	boost::uuids::uuid uuid_;
 	libt::sha1_hash hash_;
 	wstring hash_str_;	
 	std::string magnet_uri_;
+	sc::fifo_scheduler<>::processor_handle state_handle_;
 
 	// Cached values	
 	mutable boost::int64_t total_uploaded_;

@@ -139,7 +139,8 @@ public:
 
 	torrent_manager() :
 		ini_class_t(L"bittorrent", L"torrent_manager"),
-		work_file_(L"BitTorrent.data", boost::lexical_cast<boost::uuids::uuid>("7246289F-C92C-4781-A574-A1E944FD1183"), 1)
+		work_file_(L"BitTorrent.data", boost::lexical_cast<boost::uuids::uuid>("7246289F-C92C-4781-A574-A1E944FD1183"), 1),
+		scheduler_(false)
 //		ini_(ini)
 	{}
 
@@ -149,7 +150,11 @@ public:
 			e = torrents_.get<by_name>().end(); i!=e; ++i)
 		{
 			(*i).torrent->stop();
+			scheduler_.terminate_processor((*i).torrent->state_handle());
+			scheduler_.destroy_processor((*i).torrent->state_handle());
 		}
+
+		scheduler_.terminate();
 	}
 
 	void save_to_ini()
@@ -230,7 +235,7 @@ public:
 						continue;
 					}
 										
-				(*i).torrent->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1));
+				initiate_torrent((*i).torrent, bind(&torrent_manager::update_torrent, this, _1));
 				(*i).torrent->start();	
 				
 				++i;
@@ -260,6 +265,21 @@ public:
 		apply_queue_positions();
 	}
 
+	void terminate_all()
+	{	
+		for (torrent_by_uuid::iterator i= torrents_.get<by_uuid>().begin(), 
+			e = torrents_.get<by_uuid>().end(); i!=e; ++i)
+		{
+		//	assert(i->torrent->state() == torrent_details::torrent_stopped);
+
+			scheduler_.terminate_processor((*i).torrent->state_handle());
+			scheduler_.destroy_processor((*i).torrent->state_handle());
+		}
+
+		scheduler_();
+		scheduler_.terminate();
+	}
+
 	void apply_queue_positions()
 	{
 		for (torrent_by_uuid::iterator i= torrents_.get<by_uuid>().begin(), 
@@ -279,7 +299,7 @@ public:
 		if (!p.second) // Torrent already present
 			t.reset();
 		else
-			t->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1));
+			initiate_torrent(t, bind(&torrent_manager::update_torrent, this, _1));
 
 		return t;
 	}
@@ -294,7 +314,7 @@ public:
 		if (!p.second) // Torrent already present
 			t.reset();
 		else
-			t->initialize_non_serialized(bind(&torrent_manager::update_torrent, this, _1));
+			initiate_torrent(t, bind(&torrent_manager::update_torrent, this, _1));
 
 		return t;
 	}
@@ -383,6 +403,26 @@ public:
 		}
 	}
 
+	void process_torrent_event(sc::fifo_scheduler<>::processor_handle h, sc::fifo_scheduler<>::event_ptr_type e)
+	{
+		scheduler_.queue_event(h, e);
+	}
+
+	void process_events()
+	{
+		scheduler_();
+	}
+
+	template<typename F>
+	void initiate_torrent(torrent_internal_ptr t, F&& f)
+	{
+		t->initialize_non_serialized(scheduler_.create_processor<torrent_internal_sm>(t), 
+			f,
+			bind(&torrent_manager::process_torrent_event, this, _1, _2));
+
+		scheduler_.initiate_processor(t->state_handle());
+	}
+
 	void erase_torrent(torrent_internal_ptr torrent)
 	{
 		torrent_by_uuid::iterator it = torrents_.get<by_uuid>().find(torrent->id());
@@ -434,11 +474,11 @@ private:
 		auto p = std::equal_range(torrents_.get<by_hash>().begin(), torrents_.get<by_hash>().end(), torrent_holder(hash));
 		auto d = std::distance(p.first, p.second);
 				
-		hal::event_log().post(shared_ptr<hal::EventDetail>(
+/*		hal::event_log().post(shared_ptr<hal::EventDetail>(
 			new hal::EventDebug(hal::event_logger::debug, (hal::wform(L"%1% matching torrents for hash %2%") 
 				% d
 				% from_utf8(libt::base32encode(std::string((char const*)&hash[0], 20)))).str())));
-
+*/
 		if (d == 0)
 		{			
 			throw invalid_torrent(uuid());
@@ -464,6 +504,7 @@ private:
 	versioned_file work_file_;
 //	ini_file& ini_;
 	torrent_multi_index torrents_;
+	sc::fifo_scheduler<> scheduler_;
 };
 
 };

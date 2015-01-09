@@ -22,9 +22,9 @@ namespace sc = boost::statechart;
 
 struct not_started;
 
-struct out_of_session : sc::state<out_of_session, torrent_internal, mpl::list< not_started > > 
+struct out_of_session : sc::state<out_of_session, torrent_internal_sm, mpl::list< not_started > > 
 {
-	typedef sc::state<out_of_session, torrent_internal, mpl::list< not_started > > base_type;
+	typedef sc::state<out_of_session, torrent_internal_sm, mpl::list< not_started > > base_type;
 
 	typedef mpl::list<
 		sc::custom_reaction<ev_add_to_session>,
@@ -67,9 +67,9 @@ struct removing;
 struct resume_data_waiting;
 struct resume_data_idling;
 
-struct in_the_session : sc::state<in_the_session, torrent_internal, mpl::list< resume_data_idling, paused > > 
+struct in_the_session : sc::state<in_the_session, torrent_internal_sm, mpl::list< resume_data_idling, paused > > 
 {
-	typedef sc::state<in_the_session, torrent_internal, mpl::list< resume_data_idling, paused > > base_type;
+	typedef sc::state<in_the_session, torrent_internal_sm, mpl::list< resume_data_idling, paused > > base_type;
 
 	typedef mpl::list<
 		sc::custom_reaction< ev_remove >

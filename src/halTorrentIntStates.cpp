@@ -43,6 +43,18 @@ private:
 	uuid who_;	
 };
 
+torrent_internal_sm::torrent_internal_sm(my_context ctx, torrent_internal_ptr ptr) :
+	my_base(ctx),
+	ptr_(ptr)
+{
+	TORRENT_STATE_LOG(L"Creating torrent_internal_sm");
+}
+
+torrent_internal_sm::~torrent_internal_sm()
+{
+	TORRENT_STATE_LOG(L"Destroying torrent_internal_sm");
+}
+
 // -------- in_the_session --------
 
 in_the_session::in_the_session(base_type::my_context ctx) :
@@ -50,45 +62,54 @@ in_the_session::in_the_session(base_type::my_context ctx) :
 {
 	TORRENT_STATE_LOG(L"Entering in_the_session()");
 
-	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+	{
+		torrent_internal& t_i = *tp.get();
+		upgrade_lock l(t_i.mutex_);
 
-	{	upgrade_to_unique_lock up_l(l);
+		{	upgrade_to_unique_lock up_l(l);
 
-		if (!t_i.handle_.is_valid())
-			throw torrent_state_exception(t_i.id(l), "Handle is invalid");
+			if (!t_i.handle_.is_valid())
+				throw torrent_state_exception(t_i.id(l), "Handle is invalid");
 
-		t_i.in_session_ = true;
+			t_i.in_session_ = true;
+		}
+
+		t_i.apply_settings(l);
 	}
-
-	t_i.apply_settings(l);
 }
 
 in_the_session::~in_the_session()
 {
-	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+	{
+		torrent_internal& t_i = *tp.get();
+		upgrade_lock l(t_i.mutex_);
 
-	TORRENT_STATE_LOG(L"Removing handle from session");
-	(*t_i.the_session_)->remove_torrent(t_i.handle_);
+		TORRENT_STATE_LOG(L"Removing handle from session");
+		(*t_i.the_session_)->remove_torrent(t_i.handle_);
 
-	TORRENT_STATE_LOG(L"Exiting ~in_the_session()");
+		TORRENT_STATE_LOG(L"Exiting ~in_the_session()");
+	}
 }
 
 sc::result in_the_session::react(const ev_remove& evt)
 {	
-	TORRENT_STATE_LOG(L"in_the_session ev_remove()");
+	TORRENT_STATE_LOG(L"in_the_session ev_remove()");	
 
-	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+	{
+		torrent_internal& t_i = *tp.get();
+		upgrade_lock l(t_i.mutex_);
 
-	if (!evt.remove_callback().empty())
-	{	
-		upgrade_to_unique_lock up_l(l);
-		t_i.remove_callback(l) = evt.remove_callback();
+		if (!evt.remove_callback().empty())
+		{	
+			upgrade_to_unique_lock up_l(l);
+			t_i.remove_callback(l) = evt.remove_callback();
+		}
+
+		post_event(ev_stop());
 	}
-
-	post_event(ev_stop());
 
 	return discard_event();
 }
@@ -100,7 +121,8 @@ out_of_session::out_of_session(base_type::my_context ctx) :
 {
 	TORRENT_STATE_LOG(L"Entering out_of_session()");
 
-	context<torrent_internal>().in_session_ = false;
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+		tp->in_session_ = false;
 }
 
 out_of_session::~out_of_session()
@@ -111,64 +133,68 @@ out_of_session::~out_of_session()
 sc::result out_of_session::react(const ev_add_to_session& evt)
 {
 	TORRENT_STATE_LOG(hal::wform(L"Adding to session, paused - %1%") % evt.pause());
-	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
-
-	libt::add_torrent_params p;
-	std::string resume_file = (hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string();
-
-	boost::system::error_code ec;
-	p.resume_data = load_file<std::vector<char>>(resume_file.c_str(), ec);
-
-	if (!p.resume_data.empty())
-		{HAL_DEV_MSG(L" -- Using resume data");}
-
-	p.save_path = t_i.save_directory_.string();
-	p.storage_mode = hal_allocation_to_libt(t_i.allocation_);
-	p.flags = (evt.pause() ? libt::add_torrent_params::flag_paused : 0) | 
-		(t_i.managed_ ? libt::add_torrent_params::flag_auto_managed : 0);
-
-	// This ordering is important
-	
-	//throw torrent_state_exception(t_i.id(l), "We do not have any information with which to resume the torrent");
-	
-	if (t_i.info_memory(l))
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
 	{
-		HAL_DEV_MSG(L" -- We have saved torrent info to use");
-		p.ti = boost::intrusive_ptr<libt::torrent_info>(new libt::torrent_info(*t_i.info_memory(l)));
+		torrent_internal& t_i = *tp.get();
+		upgrade_lock l(t_i.mutex_);
 
-		(*t_i.the_session_)->async_add_torrent(p);
-	}
-	else if (!t_i.magnet_uri_.empty())
-	{
-		HAL_DEV_MSG(L" -- We have a magnet uri to use");
+		libt::add_torrent_params p;
+		std::string resume_file = (hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string();
 
-		libt::error_code ec;
-		libt::parse_magnet_uri(t_i.magnet_uri_, p, ec);
-			
-		if (!ec)
+		boost::system::error_code ec;
+		p.resume_data = load_file<std::vector<char>>(resume_file.c_str(), ec);
+
+		if (!p.resume_data.empty())
+			{HAL_DEV_MSG(L" -- Using resume data");}
+
+		p.save_path = t_i.save_directory_.string();
+		p.storage_mode = hal_allocation_to_libt(t_i.allocation_);
+		p.flags = (evt.pause() ? libt::add_torrent_params::flag_paused : 0) | 
+			(t_i.managed_ ? libt::add_torrent_params::flag_auto_managed : 0);
+
+		// This ordering is important
+	
+		//throw torrent_state_exception(t_i.id(l), "We do not have any information with which to resume the torrent");
+	
+		if (t_i.info_memory(l))
+		{
+			HAL_DEV_MSG(L" -- We have saved torrent info to use");
+			p.ti = boost::intrusive_ptr<libt::torrent_info>(new libt::torrent_info(*t_i.info_memory(l)));
+
 			(*t_i.the_session_)->async_add_torrent(p);
+		}
+		else if (!t_i.magnet_uri_.empty())
+		{
+			HAL_DEV_MSG(L" -- We have a magnet uri to use");
+
+			libt::error_code ec;
+			libt::parse_magnet_uri(t_i.magnet_uri_, p, ec);
+			
+			if (!ec)
+				(*t_i.the_session_)->async_add_torrent(p);
+			else
+			{
+				HAL_DEV_MSG(wstring(L" -- Saved magnet URI was invalid: ") + from_utf8(ec.message()));
+				throw torrent_state_exception(t_i.id(l), string("Saved magnet URI was invalid: ) " + ec.message()));
+			}
+
+		}
+		else if (!t_i.hash_.is_all_zeros())
+		{
+			HAL_DEV_MSG(L" -- We have a saved hash to use");
+			p.ti = boost::intrusive_ptr<libt::torrent_info>(new libt::torrent_info(t_i.hash_));		
+
+			(*t_i.the_session_)->async_add_torrent(p);
+		}
 		else
 		{
-			HAL_DEV_MSG(wstring(L" -- Saved magnet URI was invalid: ") + from_utf8(ec.message()));
-			throw torrent_state_exception(t_i.id(l), string("Saved magnet URI was invalid: ) " + ec.message()));
+			HAL_DEV_MSG(L" -- We do not have any information with which to resume the torrent.");
+			throw torrent_state_exception(t_i.id(l), "We do not have any information with which to resume the torrent");
 		}
 
-	}
-	else if (!t_i.hash_.is_all_zeros())
-	{
-		HAL_DEV_MSG(L" -- We have a saved hash to use");
-		p.ti = boost::intrusive_ptr<libt::torrent_info>(new libt::torrent_info(t_i.hash_));		
-
-		(*t_i.the_session_)->async_add_torrent(p);
-	}
-	else
-	{
-		HAL_DEV_MSG(L" -- We do not have any information with which to resume the torrent.");
-		throw torrent_state_exception(t_i.id(l), "We do not have any information with which to resume the torrent");
+		t_i.state(l, torrent_details::torrent_starting);
 	}
 
-	t_i.state(l, torrent_details::torrent_starting);
 	return discard_event();
 }
 
@@ -212,17 +238,20 @@ sc::result out_of_session::react(const ev_added_alert& evt)
 
 sc::result out_of_session::react(const ev_remove& evt)
 {	
-	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+	{
+		torrent_internal& t_i = *tp.get();
+		upgrade_lock l(t_i.mutex_);
 
-	if (!evt.remove_callback().empty())
+		if (!evt.remove_callback().empty())
 
-	{	TORRENT_STATE_LOG(L"Calling remove_callback");
-		thread_t t(evt.remove_callback());
+		{	TORRENT_STATE_LOG(L"Calling remove_callback");
+			thread_t t(evt.remove_callback());
 
-		evt.clear_callback();
+			evt.clear_callback();
+		}
 	}
-	
+
 	return discard_event();
 }
 
@@ -230,11 +259,14 @@ invalid::invalid(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
 	TORRENT_STATE_LOG(L"Entering invalid()");
+	
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+	{
+		torrent_internal& t_i = *tp.get();
+		upgrade_lock l(t_i.mutex_);
 
-	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
-
-	t_i.state(l, torrent_details::torrent_invalid);
+		t_i.state(l, torrent_details::torrent_invalid);
+	}
 }
 
 invalid::~invalid()
@@ -246,17 +278,21 @@ active::active(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
 	TORRENT_STATE_LOG(L"Entering active()");
+	
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+	{
+		torrent_internal& t_i = *tp.get();
+		upgrade_lock l(t_i.mutex_);
 
-	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
-
-	t_i.state(l, torrent_details::torrent_active);
-	t_i.handle_.resume();
+		t_i.state(l, torrent_details::torrent_active);
+		t_i.handle_.resume();
+	}
 }
 
 active::~active()
 {
-	context<torrent_internal>().handle_.pause();
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+		tp->handle_.pause();
 
 	TORRENT_STATE_LOG(L"Exiting ~active()");
 }
@@ -265,7 +301,8 @@ sc::result active::react(const ev_force_recheck& evt)
 {
 	TORRENT_STATE_LOG(L"React active::react(const ev_force_recheck& evt)");
 
-	context<torrent_internal>().handle_.force_recheck();
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+		tp->handle_.force_recheck();
 
 	return discard_event();
 }
@@ -274,11 +311,14 @@ pausing::pausing(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
 	TORRENT_STATE_LOG(L"Entering pausing()");
+	
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+	{
+		torrent_internal& t_i = *tp.get();
+		upgrade_lock l(t_i.mutex_);
 
-	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
-
-	t_i.state(l, torrent_details::torrent_pausing);
+		t_i.state(l, torrent_details::torrent_pausing);
+	}
 }
 
 pausing::~pausing()
@@ -290,13 +330,16 @@ paused::paused(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
 	TORRENT_STATE_LOG(L"Entering paused()");
+	
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+	{
+		torrent_internal& t_i = *tp.get();
+		upgrade_lock l(t_i.mutex_);
 
-	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+		t_i.state(l, torrent_details::torrent_paused);
 
-	t_i.state(l, torrent_details::torrent_paused);
-
-	post_event(ev_write_resume_data());
+		post_event(ev_write_resume_data());
+	}
 }
 
 paused::~paused()
@@ -314,7 +357,8 @@ sc::result paused::react(const ev_stop& evt)
 
 sc::result paused::react(const ev_resume& evt)
 {
-	context<torrent_internal>().handle_.resume();
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+		tp->handle_.resume();
 
 	return transit<active>();
 }
@@ -323,7 +367,8 @@ sc::result paused::react(const ev_force_recheck& evt)
 {
 	TORRENT_STATE_LOG(L"React paused::react(const ev_force_recheck& evt)");
 
-	context<torrent_internal>().handle_.force_recheck();
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+		tp->handle_.force_recheck();
 
 	return discard_event();
 }
@@ -331,12 +376,15 @@ sc::result paused::react(const ev_force_recheck& evt)
 in_error::in_error(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
-	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+	{
+		torrent_internal& t_i = *tp.get();
+		upgrade_lock l(t_i.mutex_);
 
-	TORRENT_STATE_LOG(hal::wform(L"Entering in_error()() - %1%") % t_i.check_error(l));
+		TORRENT_STATE_LOG(hal::wform(L"Entering in_error()() - %1%") % t_i.check_error(l));
 
-	t_i.state(l, torrent_details::torrent_in_error);
+		t_i.state(l, torrent_details::torrent_in_error);
+	}
 }
 
 in_error::~in_error()
@@ -349,10 +397,13 @@ stopping::stopping(base_type::my_context ctx) :
 {
 	TORRENT_STATE_LOG(L"Entering stopping()");
 
-	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+	{
+		torrent_internal& t_i = *tp.get();
+		upgrade_lock l(t_i.mutex_);
 
-	t_i.state(l, torrent_details::torrent_stopping);
+		t_i.state(l, torrent_details::torrent_stopping);
+	}
 }
 
 stopping::~stopping()
@@ -373,18 +424,21 @@ stopped::stopped(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
 	TORRENT_STATE_LOG(L"Entering stopped()");
+	
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+	{
+		torrent_internal& t_i = *tp.get();
+		upgrade_lock l(t_i.mutex_);
 
-	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+		t_i.state(l, torrent_details::torrent_stopped);
 
-	t_i.state(l, torrent_details::torrent_stopped);
+		if (!t_i.remove_callback(l).empty())
+		{	
+			TORRENT_STATE_LOG(L"Calling removed_callback_");
+			thread_t t(t_i.remove_callback(l));
 
-	if (!t_i.remove_callback(l).empty())
-	{	
-		TORRENT_STATE_LOG(L"Calling removed_callback_");
-		thread_t t(t_i.remove_callback(l));
-
-		t_i.remove_callback(l).clear();
+			t_i.remove_callback(l).clear();
+	}
 	}
 }
 
@@ -396,13 +450,16 @@ stopped::~stopped()
 not_started::not_started(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
-	torrent_internal& t_i = context<torrent_internal>();
-	upgrade_lock l(t_i.mutex_);
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+	{
+		torrent_internal& t_i = *tp.get();
+		upgrade_lock l(t_i.mutex_);
 
-	stored_state_ = t_i.state(l);
-	t_i.state(l, torrent_details::torrent_not_started);
+		stored_state_ = t_i.state(l);
+		t_i.state(l, torrent_details::torrent_not_started);
 
-	TORRENT_STATE_LOG(hal::wform(L"Entering not_started() - %1%") % stored_state_);
+		TORRENT_STATE_LOG(hal::wform(L"Entering not_started() - %1%") % stored_state_);
+	}
 }
 
 not_started::~not_started()
@@ -413,68 +470,72 @@ not_started::~not_started()
 sc::result not_started::react(const ev_start& evt)
 {
 	TORRENT_STATE_LOG(L"React not_started::react(const ev_start& evt)");
-
-	{	torrent_internal& t_i = context<torrent_internal>();
-		upgrade_lock l(t_i.mutex_);
-
-		if (!t_i.info_memory(l) && !t_i.name_.empty())
-		{		
-			std::string torrent_info_file = 
-				(hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".torrent_info")).string();
-			string torrent_file = (hal::app().get_working_directory()/L"torrents"/t_i.filename_).string();
-
-			if (fs::exists(torrent_info_file))
-			{
-				upgrade_to_unique_lock up_l(l);
-
-				try {
-
-				HAL_DEV_MSG(hal::wform(L"Using torrent info data file %1%") % from_utf8(torrent_info_file));
-				t_i.info_memory_reset(new libt::torrent_info(torrent_info_file.c_str()), l);
-
-				}
-				catch (const libt::libtorrent_exception&)
-				{
-					HAL_DEV_MSG(L"   invalid torrent file!");
-				}
-			}
-			else if (fs::exists(torrent_file))
-			{
-				upgrade_to_unique_lock up_l(l);
-
-				HAL_DEV_MSG(L"Using torrent file");
-				t_i.info_memory_reset(new libt::torrent_info(torrent_file.c_str()), l);
-			}
-		}
-
-		if (t_i.hash_str_.empty())
-		{
-			t_i.extract_hash(l);
-			t_i.update_manager(l);
-		}
-	}
 	
-	HAL_DEV_MSG(hal::wform(L"Stored state %1%") % stored_state_);
-
-	switch (stored_state_)
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
 	{
-	case torrent_details::torrent_active:
-	case torrent_details::torrent_starting:
-		post_event(ev_add_to_session(false));
-		break;
+		torrent_internal& t_i = *tp.get();
+		{	upgrade_lock l(t_i.mutex_);
 
-	case torrent_details::torrent_paused:
-	case torrent_details::torrent_pausing:
-		post_event(ev_add_to_session(true));
-		break;
+			if (!t_i.info_memory(l) && !t_i.name_.empty())
+			{		
+				std::string torrent_info_file = 
+					(hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".torrent_info")).string();
+				string torrent_file = (hal::app().get_working_directory()/L"torrents"/t_i.filename_).string();
+
+				if (fs::exists(torrent_info_file))
+				{
+					upgrade_to_unique_lock up_l(l);
+
+					try {
+
+					HAL_DEV_MSG(hal::wform(L"Using torrent info data file %1%") % from_utf8(torrent_info_file));
+					t_i.info_memory_reset(new libt::torrent_info(torrent_info_file.c_str()), l);
+
+					}
+					catch (const libt::libtorrent_exception&)
+					{
+						HAL_DEV_MSG(L"   invalid torrent file!");
+					}
+				}
+				else if (fs::exists(torrent_file))
+				{
+					upgrade_to_unique_lock up_l(l);
+
+					HAL_DEV_MSG(L"Using torrent file");
+					t_i.info_memory_reset(new libt::torrent_info(torrent_file.c_str()), l);
+				}
+			}
+
+			if (t_i.hash_str_.empty())
+			{
+				t_i.extract_hash(l);
+				t_i.update_manager(l);
+			}
+		}
+	
+		HAL_DEV_MSG(hal::wform(L"Stored state %1%") % stored_state_);
+
+		switch (stored_state_)
+		{
+		case torrent_details::torrent_active:
+		case torrent_details::torrent_starting:
+			post_event(ev_add_to_session(false));
+			break;
+
+		case torrent_details::torrent_paused:
+		case torrent_details::torrent_pausing:
+			post_event(ev_add_to_session(true));
+			break;
 		
-	case torrent_details::torrent_stopped:
-	case torrent_details::torrent_stopping:		
-	case torrent_details::torrent_in_error:
-	case torrent_details::torrent_not_started:		
-	case torrent_details::torrent_invalid:		
-		return transit<stopped>();
-	};
+		case torrent_details::torrent_stopped:
+		case torrent_details::torrent_stopping:		
+		case torrent_details::torrent_in_error:
+		case torrent_details::torrent_not_started:		
+		case torrent_details::torrent_invalid:		
+			return transit<stopped>();
+		};
+
+	}
 
 	return discard_event();
 }
@@ -483,13 +544,20 @@ resume_data_waiting::resume_data_waiting(base_type::my_context ctx) :
 	base_type::my_base(ctx)
 {
 	TORRENT_STATE_LOG(L"Entering resume_data_waiting()");
-
-	context<torrent_internal>().save_resume_and_info_data();
+	
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+	{
+		tp->save_resume_and_info_data();
+		tp->awaiting_resume_data_ = true;
+	}
 }
 
 resume_data_waiting::~resume_data_waiting()
 {
 	TORRENT_STATE_LOG(L"Exiting ~resume_data_waiting()");
+	
+	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+		tp->awaiting_resume_data_ = false;
 }
 
 resume_data_idling::resume_data_idling()

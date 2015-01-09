@@ -21,6 +21,8 @@
 #include "halSignaler.hpp"
 #include "halCatchDefines.hpp"
 
+#include <agents.h>
+
 namespace hal
 {
 
@@ -548,10 +550,9 @@ public:
 		{
 			num_active = 0;
 
-			for (torrent_manager::torrent_by_name::iterator i=the_torrents_.begin(), e=the_torrents_.end(); 
-					i != e; ++i)
+			for (auto i=the_torrents_.begin(), e=the_torrents_.end(); i != e; ++i)
 			{
-				if (	(*i).torrent 
+	/*			if (	(*i).torrent 
 					&& 
 					(*i).torrent->state() != torrent_details::torrent_in_error
 					&& 
@@ -567,6 +568,12 @@ public:
 						(*i).torrent->awaiting_resume_data()
 					)
 				)
+*/
+				if (i->torrent && (
+					i->torrent->state() == torrent_details::torrent_active ||
+					i->torrent->state() == torrent_details::torrent_pausing ||
+					i->torrent->state() == torrent_details::torrent_stopping ||
+					i->torrent->awaiting_resume_data()))
 				{
 #					ifdef HAL_TORRENT_DEV_MSGES
 //						(*i).torrent->output_torrent_debug_details();
@@ -621,7 +628,6 @@ private:
 	bool create_torrent(const create_torrent_params& params, fs::wpath out_file, progress_callback fn);
 
 	void service_thread(size_t);
-	void alert_handler_wait(const boost::system::error_code&);
 
 	void execute_action(const boost::system::error_code&, bit::timeout_actions action);
 	void execute_callback(const boost::system::error_code&, action_callback_t action);
@@ -659,8 +665,8 @@ private:
 
 	boost::asio::deadline_timer action_timer_;
 
-	boost::asio::deadline_timer alert_timer_;
-	bool keep_checking_;
+	concurrency::call<void*> alert_caller_;
+	concurrency::timer<void*> alert_timer_;
 
 	typedef boost::shared_ptr<thread_t> shared_thread_ptr;
 

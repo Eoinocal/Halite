@@ -49,6 +49,7 @@ void iterate_handle_files(const libt::torrent_handle& handle, F&& f)
 	in_session_(false), \
 	queue_position_(-1), \
 	hash_(0), \
+	awaiting_resume_data_(false), \
 	superseeding_(false), \
 	files_(mutex_, \
 		bind(&torrent_internal::set_file_priority_cb, this, _1, _2, _3)) 
@@ -102,7 +103,7 @@ torrent_internal::torrent_internal(const wstring& uri, const wpath& save_directo
 
 	extract_hash(l);
 }
-		
+
 #undef TORRENT_INTERNALS_DEFAULTS
 
 
@@ -411,7 +412,7 @@ void torrent_internal::add_to_session(bool paused)
 
 	HAL_DEV_MSG(hal::wform(L"add_to_session() paused=%1%") % paused);
 
-	process_event(ev_add_to_session(paused));
+	process_event(new ev_add_to_session(paused));
 
 	}
 	catch(std::exception& e)
@@ -429,7 +430,7 @@ bool torrent_internal::remove_from_session(bool write_data)
 
 	HAL_DEV_MSG(hal::wform(L"remove_from_session() write_data=%1%") % write_data);
 	
-	process_event(ev_remove_from_session(write_data));
+	process_event(new ev_remove_from_session(write_data));
 
 	}
 	catch(std::exception& e)
@@ -466,7 +467,7 @@ void torrent_internal::remove_files(function<void (wpath path, boost::shared_ptr
 		}
 	}
 
-	process_event(ev_remove(boost::bind(fn, active_directory, files)));
+	process_event(new ev_remove(boost::bind(fn, active_directory, files)));
 }
 
 torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
@@ -1077,11 +1078,15 @@ void torrent_internal::state(upgrade_lock& l, unsigned s)
 	}
 }
 
-void torrent_internal::initialize_non_serialized(function<void (torrent_internal_ptr)> f)
+void torrent_internal::initialize_non_serialized(sc::fifo_scheduler<>::processor_handle h, 
+	function<void (torrent_internal_ptr)> um,
+	function<void (sc::fifo_scheduler<>::processor_handle, sc::fifo_scheduler<>::event_ptr_type)> pte)
 {
 	{	upgrade_lock l(mutex_);
-
-		update_manager_ = f;	
+	
+		state_handle_ = h;
+		update_manager_ = um;	
+		post_torrent_event_ =pte;
 		
 		details_ptr_.reset(new torrent_details(
 			name(l), filename_, 
@@ -1091,8 +1096,6 @@ void torrent_internal::initialize_non_serialized(function<void (torrent_internal
 			app().res_wstr(HAL_NA),
 			hash_str_));
 	}
-
-	initiate();
 }
 
 libt::torrent_status& torrent_internal::status_cache(upgrade_lock& l) const

@@ -24,8 +24,6 @@ namespace hal
 
 bit_impl::bit_impl() :
 	action_timer_(io_service_),
-	alert_timer_(io_service_),
-	keep_checking_(false),
 	default_torrent_max_connections_(-1),
 	default_torrent_max_uploads_(-1),
 	default_torrent_download_(-1),
@@ -35,7 +33,12 @@ bit_impl::bit_impl() :
 	ip_filter_loaded_(false),
 	ip_filter_changed_(false),
 	ip_filter_count_(0),
-	dht_on_(false)
+	dht_on_(false),
+	alert_caller_([this](void*)
+		{
+			alert_handler();
+		}),
+	alert_timer_(100, nullptr, &alert_caller_, 	true	)
 {
 	session_ = boost::in_place(libt::fingerprint(HALITE_FINGERPRINT), 0, libt::alert::all_categories);
 
@@ -96,6 +99,7 @@ bit_impl::~bit_impl()
 //	discard_work_object();
 
 	stop_alert_handler();
+//	alert_timer_.wait();
 
 	io_service_.stop();
 	for (std::vector<shared_thread_ptr>::iterator i=service_threads_.begin(), e=service_threads_.end(); i != e; ++i)
@@ -763,48 +767,22 @@ void bit_impl::schedual_cancel()
 void bit_impl::start_alert_handler()
 {
 	unique_lock_t l(mutex_);
-
-	keep_checking_ = true;
-
-	if (!alert_timer_.expires_at().is_special())
-	{
-		HAL_DEV_MSG(hal::wform(L"Alert handler already active"));
-
-		return;
-	}
-	else
-	{
-		alert_timer_.expires_from_now(pt::milliseconds(100));
-
-		HAL_DEV_MSG(L"Beginning timer async_wait");
-		alert_timer_.async_wait(bind(&bit_impl::alert_handler_wait, this, _1));
-	}
-
-
-
-/*	if (alert_checker_ == boost::none)
-	{	
-		HAL_DEV_MSG(hal::wform(L"start_alert_handler"));
-
-		boost::function<void (void)> f = bind(&bit_impl::alert_handler, this);
-
-		keepChecking_ = true;
-		alert_checker_ = boost::in_place<boost::function<void (void)> >(bind(&bit_impl::alert_handler, this));
-	}	*/
+	
+	HAL_DEV_MSG(L"Start alert handler");
+	alert_timer_.start();
 }
 	
 void bit_impl::stop_alert_handler()
 {
 	unique_lock_t l(mutex_);
+		
+	HAL_DEV_MSG(L"Stop alert handler...");
 
-	if (keep_checking_ = false)
-	{
-		HAL_DEV_MSG(hal::wform(L"Stopped alert handler..."));
-	}
-	else
-	{
-		HAL_DEV_MSG(hal::wform(L"Alert handler already stopped"));
-	}
+	alert_timer_.stop();
+	alert_handler();
+	the_torrents_.terminate_all();
+
+	HAL_DEV_MSG(L" ... stopped");
 }
 	
 void bit_impl::service_thread(size_t id)
@@ -829,26 +807,10 @@ void bit_impl::service_thread(size_t id)
 	HAL_DEV_MSG(hal::wform(L"Service thread id %1% exiting normally") % id);
 }
 
-void bit_impl::alert_handler_wait(const boost::system::error_code& e)
-{	
-	if (e != boost::asio::error::operation_aborted)
-	{		
-		if (keep_checking_)
-		{
-			alert_timer_.expires_from_now(pt::seconds(2));
-			alert_timer_.async_wait(bind(&bit_impl::alert_handler_wait, this, _1));			
-		}
-
-		alert_handler();
-	}
-	else
-	{
-		HAL_DEV_MSG(L"Alert deadline canceled");
-	}
-}
-
 void bit_impl::alert_handler()
 {
+//	HAL_DEV_MSG(L" *** Alert Handler ***");
+
 	try
 	{
 	
@@ -871,7 +833,7 @@ void bit_impl::alert_handler()
 		HAL_DEV_MSG(hal::wform(L"Torrent Added alert, %1%.") % get(a.handle)->name());
 
 		get(a.handle)->set_handle(a.handle);
-		get(a.handle)->process_event(ev_added_alert((a.params.flags & libt::add_torrent_params::flag_paused) != 0, a.error));
+		get(a.handle)->process_event(new ev_added_alert((a.params.flags & libt::add_torrent_params::flag_paused) != 0, a.error));
 	}
 
 	void operator()(libt::external_ip_alert const& a) const
@@ -1011,8 +973,6 @@ void bit_impl::alert_handler()
 	
 	void operator()(libt::torrent_paused_alert const& a) const
 	{
-	//	get(a.handle)->signals().torrent_paused();
-
 		wstring err = get(a.handle)->check_error();
 
 		if (err.empty())
@@ -1024,7 +984,7 @@ void bit_impl::alert_handler()
 			
 			HAL_DEV_MSG(hal::wform(L"Torrent Paused alert, %1%.") % get(a.handle)->name());
 
-			get(a.handle)->process_event(ev_paused_alert());
+			get(a.handle)->process_event(new ev_paused_alert());
 		}
 		else
 		{
@@ -1036,7 +996,7 @@ void bit_impl::alert_handler()
 						% get(a.handle)->name()), 
 					event_logger::warning, a.timestamp())));
 
-			get(a.handle)->process_event(ev_error_alert(err));
+			get(a.handle)->process_event(new ev_error_alert(err));
 		}
 	}
 	
@@ -1047,7 +1007,9 @@ void bit_impl::alert_handler()
 					% get(a.handle)->name()), 
 				event_logger::debug, a.timestamp())));
 
-		get(a.handle)->process_event(ev_resumed_alert());
+		HAL_DEV_MSG(hal::wform(L"Torrent Resumed alert, %1%.") % get(a.handle)->name());
+
+		get(a.handle)->process_event(new ev_resumed_alert());
 	}
 	
 	void operator()(libt::save_resume_data_alert const& a) const
@@ -1061,7 +1023,7 @@ void bit_impl::alert_handler()
 			get(a.handle)->write_resume_data(*a.resume_data);
 
 	//	get(a.handle)->signals().resume_data();
-		get(a.handle)->process_event(ev_resume_data_alert());
+		get(a.handle)->process_event(new ev_resume_data_alert());
 	}
 	
 	void operator()(libt::save_resume_data_failed_alert const& a) const
@@ -1071,7 +1033,7 @@ void bit_impl::alert_handler()
 					% get(a.handle)->name()), 
 				event_logger::warning, a.timestamp())));
 
-		get(a.handle)->process_event(ev_resume_data_failed_alert());
+		get(a.handle)->process_event(new ev_resume_data_failed_alert());
 	}
 	
 	void operator()(libt::peer_error_alert const& a) const
@@ -1323,6 +1285,8 @@ void bit_impl::alert_handler()
 		
 		p_alert = session_->pop_alert();
 	}	
+		
+	the_torrents_.process_events();
 			
 	} 
 	HAL_GENERIC_FN_EXCEPTION_CATCH(L"bit_impl::alert_handler()")
