@@ -23,7 +23,7 @@
 #include "halConfig.hpp"
 
 HaliteWindow::HaliteWindow(unsigned areYouMe = 0) :
-	ini_class_t(L"HaliteWindow", L"HaliteWindow"),
+	ini_class_t(L"halite_window", L"halite_window"),
 	haliteList(*this),
 	WM_AreYouMe_(areYouMe),
 	splitterPos(100),
@@ -740,7 +740,7 @@ LRESULT HaliteWindow::OnAutoShutdown(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 	unsigned action = action_action_;
 
 	TimePickerDlg dd(time, action);
-
+	
 	if (dd.DoModal() == 1)
 	{		
 		if (!time.is_not_a_date_time())

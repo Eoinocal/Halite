@@ -28,8 +28,6 @@ class torrent_internal;
 class torrent_manager;
 }
 
-BOOST_CLASS_VERSION(hal::torrent_internal, 5)
-
 namespace hal 
 {
 
@@ -141,7 +139,17 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("total", total_);
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & make_nvp("total", total_);
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 	
 private:
@@ -178,7 +186,17 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("total", total_);
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & make_nvp("total", total_);
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 	
 	operator boost::posix_time::time_duration() const { return total_; }
@@ -609,10 +627,8 @@ public:
 		upgrade_lock l(mutex_);
 
 		using boost::serialization::make_nvp;
-
 		switch (version)
 		{
-		default:
 		case 5:
 			ar & make_nvp("magnet_uri", magnet_uri_);
 			ar & make_nvp("super_seeding", superseeding_);
@@ -650,6 +666,7 @@ public:
 		case 3:
 		case 2:
 		case 1:
+		default:
 			assert(false);
 		}
 
@@ -869,5 +886,19 @@ private:
 };
 
 } // namespace hal
+
+BOOST_CLASS_VERSION(hal::torrent_internal, 5)
+BOOST_CLASS_VERSION(hal::duration_tracker, 2)
+
+namespace boost {
+namespace serialization {
+	template<typename T> 
+	struct version<hal::transfer_tracker<T>>
+	{
+		typedef mpl::int_<2> type;
+		typedef mpl::integral_c_tag tag;
+		BOOST_STATIC_CONSTANT(unsigned int, value = version::type::value);                                                             
+	};
+}}
 
 #include "halTorrentIntStates.hpp"

@@ -20,7 +20,7 @@ namespace hal
 {
 
 Config::Config() :
-	hal::IniBase<Config>(L"globals/bittorrent", L"Config"),
+	hal::IniBase<Config>(L"globals/bittorrent", L"config"),
 	globals_(),
 	torrent_defaults_(),
 	port_range_(10000,30000),

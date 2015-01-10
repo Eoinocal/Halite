@@ -55,7 +55,7 @@ public:
 	END_MSG_MAP()
 
 	PeerListView(HaliteWindow& halWindow) :
-		ini_class_t(L"listviews/advPeers", L"PeerListView"),
+		ini_class_t(L"listviews/adv_peers", L"peer_listview"),
 		halite_window_(halWindow)
 	{}
 	
@@ -81,8 +81,17 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("listview", 
-			boost::serialization::base_object<list_class_t>(*this));
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 
 	void uiUpdate(const hal::torrent_details_manager& tD);
@@ -151,5 +160,7 @@ public:
 protected:
 	PeerListView peerList_;
 };
+
+BOOST_CLASS_VERSION(PeerListView, 2)
 
 #endif

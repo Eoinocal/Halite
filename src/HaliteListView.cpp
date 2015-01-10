@@ -38,7 +38,7 @@ HaliteListViewCtrl::ex_list_value_type::ex_list_value_type(const list_class_t::l
 
 HaliteListViewCtrl::HaliteListViewCtrl(HaliteWindow& HalWindow) :
 	halite_window_(HalWindow),
-	ini_class_t(L"listviews/halite", L"HaliteListView"),
+	ini_class_t(L"listviews/halite", L"halite_listview"),
 	editing_lock_(false),
 	queue_view_(false)
 {		

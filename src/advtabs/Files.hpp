@@ -154,8 +154,17 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("listview", 
-			boost::serialization::base_object<list_class_t>(*this));
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 	
 	void setFocused(const hal::torrent_details_ptr& f) { focused_ = f; }
@@ -194,7 +203,7 @@ protected:
 	
 public:	
 	FileTreeView(do_ui_update_fn uiu) :
-		ini_class_t(L"treeviews/advFiles", L"FileTreeView"),
+		ini_class_t(L"treeviews/adv_files", L"file_treeview"),
 		do_ui_update_(uiu)
 	{}
 	
@@ -395,8 +404,16 @@ public:
 	void serialize(Archive& ar, const unsigned int version)
 	{
 		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & make_nvp("splitter_position", splitterPos);
+			break;
 
-		ar & BOOST_SERIALIZATION_NVP(splitterPos);
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 
 	LRESULT onInitDialog(HWND, LPARAM);
@@ -425,3 +442,6 @@ protected:
 	hal::file_details_vec file_details_;
 	std::pair<std::vector<FileLink>::iterator, std::vector<FileLink>::iterator> range_;
 };
+
+BOOST_CLASS_VERSION(FileListView, 2)
+BOOST_CLASS_VERSION(AdvFilesDialog, 2)

@@ -223,30 +223,31 @@ protected:
 
 		switch (version)
 		{
+		case 4:
+			ar & make_nvp("torrent_complete_balloon", torrent_complete_balloon_);
+			ar & make_nvp("balloons_timout", balloons_timout_);
+			ar & make_nvp("close_to_tray", closeToTray);
+			ar & make_nvp("use_tray", use_tray);
+			ar & make_nvp("confirm_close", confirmClose);
+			ar & make_nvp("splitter_pos", splitterPos);
+			ar & make_nvp("advanced_ui", advancedUI);
+			ar & make_nvp("active_tab", activeTab);
+			ar & make_nvp("rect", rect);
+			ar & make_nvp("close_to_tray", closeToTray);
+			ar & make_nvp("confirmClose", confirmClose);
+			ar & make_nvp("rect", rect);
+			ar & make_nvp("splitter_position", splitterPos);
+			ar & make_nvp("use_tray", use_tray);
+			ar & make_nvp("advanced_ui", advancedUI);
+			ar & make_nvp("active_tab", activeTab);
+			break;
+
 		case 3:
-		ar	& make_nvp("torrent_complete_balloon", torrent_complete_balloon_)
-			& make_nvp("balloons_timout", balloons_timout_);
-
 		case 2:
-		ar	& make_nvp("close_to_tray", closeToTray)
-			& make_nvp("use_tray", use_tray)
-			& make_nvp("confirm_close", confirmClose)
-			& make_nvp("splitter_pos", splitterPos)
-			& make_nvp("advanced_ui", advancedUI)
-			& make_nvp("active_tab", activeTab)
-			& make_nvp("rect", rect);
-		break;
-
-		case 1:
-		ar	& make_nvp("closeToTray", closeToTray)
-			& make_nvp("confirmClose", confirmClose);
-			
+		case 1:			
 		case 0:
-		ar	& make_nvp("rect", rect)
-			& make_nvp("splitterPos", splitterPos)
-			& make_nvp("use_tray", use_tray)
-			& make_nvp("advancedUI", advancedUI)
-			& make_nvp("activeTab", activeTab);
+		default:
+			assert(false);
 		}
 	}
 	
@@ -292,6 +293,6 @@ private:
 	unsigned action_action_;
 };
 
-BOOST_CLASS_VERSION(HaliteWindow, 3)
+BOOST_CLASS_VERSION(HaliteWindow, 4)
 
 #endif // RC_INVOKED

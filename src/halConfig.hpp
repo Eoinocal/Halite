@@ -94,17 +94,27 @@ struct queue_settings
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{	
-		ar & BOOST_SERIALIZATION_NVP(auto_manage_interval);
-		ar & BOOST_SERIALIZATION_NVP(active_downloads);
-		ar & BOOST_SERIALIZATION_NVP(active_seeds);
-		ar & BOOST_SERIALIZATION_NVP(seeds_hard_limit);
-		ar & BOOST_SERIALIZATION_NVP(seed_ratio_limit);
-		ar & BOOST_SERIALIZATION_NVP(seed_ratio_time_limit);
-		ar & BOOST_SERIALIZATION_NVP(seed_time_limit);
-		ar & BOOST_SERIALIZATION_NVP(dont_count_slow_torrents);
-		ar & BOOST_SERIALIZATION_NVP(auto_scrape_min_interval);
-		ar & BOOST_SERIALIZATION_NVP(auto_scrape_interval);
-		ar & BOOST_SERIALIZATION_NVP(close_redundant_connections);
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & make_nvp("auto_manage_interval", auto_manage_interval);
+			ar & make_nvp("active_downloads", active_downloads);
+			ar & make_nvp("active_seeds", active_seeds);
+			ar & make_nvp("seeds_hard_limit", seeds_hard_limit);
+			ar & make_nvp("seed_ratio_limit", seed_ratio_limit);
+			ar & make_nvp("seed_ratio_time_limit", seed_ratio_time_limit);
+			ar & make_nvp("seed_time_limit", seed_time_limit);
+			ar & make_nvp("dont_count_slow_torrents", dont_count_slow_torrents);
+			ar & make_nvp("auto_scrape_min_interval", auto_scrape_min_interval);
+			ar & make_nvp("auto_scrape_interval", auto_scrape_interval);
+			ar & make_nvp("close_redundant_connections", close_redundant_connections);
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 
 	bool operator==(const queue_settings& s) const
@@ -148,19 +158,27 @@ struct timeouts
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{	
-		ar & BOOST_SERIALIZATION_NVP(tracker_completion_timeout);
-		ar & BOOST_SERIALIZATION_NVP(tracker_receive_timeout);
-		ar & BOOST_SERIALIZATION_NVP(stop_tracker_timeout);
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & make_nvp("tracker_completion_timeout", tracker_completion_timeout);
+			ar & make_nvp("tracker_receive_timeout", tracker_receive_timeout);
+			ar & make_nvp("stop_tracker_timeout", stop_tracker_timeout);
+			ar & make_nvp("request_queue_time", request_queue_time);
+			ar & make_nvp("piece_timeout", piece_timeout);
+			ar & make_nvp("min_reconnect_time", min_reconnect_time);
+			ar & make_nvp("peer_timeout", peer_timeout);
+			ar & make_nvp("urlseed_timeout", urlseed_timeout);
+			ar & make_nvp("peer_connect_timeout", peer_connect_timeout);
+			ar & make_nvp("inactivity_timeout", inactivity_timeout);
+			ar & make_nvp("handshake_timeout", handshake_timeout);
+			break;
 
-		ar & BOOST_SERIALIZATION_NVP(request_queue_time);
-		ar & BOOST_SERIALIZATION_NVP(piece_timeout);
-		ar & BOOST_SERIALIZATION_NVP(min_reconnect_time);
-
-		ar & BOOST_SERIALIZATION_NVP(peer_timeout);
-		ar & BOOST_SERIALIZATION_NVP(urlseed_timeout);
-		ar & BOOST_SERIALIZATION_NVP(peer_connect_timeout);
-		ar & BOOST_SERIALIZATION_NVP(inactivity_timeout);
-		ar & BOOST_SERIALIZATION_NVP(handshake_timeout);
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 
 	int tracker_completion_timeout;
@@ -186,15 +204,25 @@ struct dht_settings
 		service_port(6881),
 		max_fail_count(20)
 	{}
-
+	
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{	
-		ar & BOOST_SERIALIZATION_NVP(max_peers_reply);
-		ar & BOOST_SERIALIZATION_NVP(search_branching);
-		ar & BOOST_SERIALIZATION_NVP(service_port);
-		ar & BOOST_SERIALIZATION_NVP(max_fail_count);
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & make_nvp("max_peers_reply", max_peers_reply);
+			ar & make_nvp("search_branching", search_branching);
+			ar & make_nvp("service_port", service_port);
+			ar & make_nvp("max_fail_count", max_fail_count);
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 
 	int max_peers_reply;
@@ -214,8 +242,18 @@ struct cache_settings
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{	
-		ar & BOOST_SERIALIZATION_NVP(cache_size);
-		ar & BOOST_SERIALIZATION_NVP(cache_expiry);
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & make_nvp("cache_size", cache_size);
+			ar & make_nvp("cache_expiry", cache_expiry);
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 
 	int cache_size;
@@ -234,11 +272,21 @@ struct pe_settings
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
-	{	
-		ar & BOOST_SERIALIZATION_NVP(encrypt_level);
-		ar & BOOST_SERIALIZATION_NVP(prefer_rc4);
-		ar & BOOST_SERIALIZATION_NVP(conn_in_policy);
-		ar & BOOST_SERIALIZATION_NVP(conn_out_policy);
+	{			
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & make_nvp("encrypt_level", encrypt_level);
+			ar & make_nvp("prefer_rc4", prefer_rc4);
+			ar & make_nvp("conn_in_policy", conn_in_policy);
+			ar & make_nvp("conn_out_policy", conn_out_policy);
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 
     int encrypt_level;
@@ -260,10 +308,20 @@ struct connections
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{	
-		ar & BOOST_SERIALIZATION_NVP(total);
-		ar & BOOST_SERIALIZATION_NVP(uploads);
-		ar & BOOST_SERIALIZATION_NVP(download_rate);
-		ar & BOOST_SERIALIZATION_NVP(upload_rate);
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & make_nvp("total", total);
+			ar & make_nvp("uploads", uploads);
+			ar & make_nvp("download_rate", download_rate);
+			ar & make_nvp("upload_rate", upload_rate);
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 
     int total;
@@ -336,88 +394,51 @@ public:
 		using boost::serialization::make_nvp;
 		switch (version)
 		{
-		case 7:			
-		ar	& make_nvp("announce_all/trackers", announce_all_trackers_)
-			& make_nvp("announce_all/tiers", announce_all_tiers_)
-			& make_nvp("custom_interface/use", use_custom_interface_)
-			& make_nvp("custom_interface/interface", custom_interface_);
-
-		case 6:
-		ar	& make_nvp("globals", globals_)
-			& make_nvp("default_save_folder", default_save_folder_)
-			& make_nvp("default_move_folder", default_move_folder_)
-			& make_nvp("use_move_to", use_move_to_)
-			& make_nvp("save_prompt", save_prompt_)
-			& make_nvp("randomize_port", randomize_port_)			
-			& make_nvp("torrent_defaults", torrent_defaults_)
-			& make_nvp("queue_settings", queue_settings_)
-			& make_nvp("timeouts", timeouts_)
-			& make_nvp("enable_dht", enable_dht_)
-			& make_nvp("dht_settings", dht_settings_)
-			& make_nvp("dht_settings/random_port", dht_random_port_)
-			& make_nvp("dht_settings/upper_port", dht_upper_port_)
-			& make_nvp("dht_radio", dht_radio_)
-			& make_nvp("enable_pe", enable_pe_)
-			& make_nvp("enable_ip_filter", enable_ip_filter_)
-			& make_nvp("pe_settings", pe_settings_)
-			& make_nvp("port_range", port_range_)
-			& make_nvp("use_port_range", use_port_range_)
-			& make_nvp("half_connections", half_connections_)
-			& make_nvp("half_connections_limit", half_connections_limit_)
-			& make_nvp("mapping_upnp", mapping_upnp_)
-			& make_nvp("mapping_nat_pmp", mapping_nat_pmp_)
-			& make_nvp("cache_settings", cache_settings_)
-			& make_nvp("resolve_countries", resolve_countries_)
-			& make_nvp("plugins/ut_metadata", ut_metadata_plugin_)
-			& make_nvp("plugins/ut_pex", ut_pex_plugin_)
-			& make_nvp("plugins/smart_ban", smart_ban_plugin_)
-			& make_nvp("plugins/lt_trackers", lt_trackers_plugin_);
-		break;
-
-		default:
+		case 8:			
+			ar & make_nvp("announce_all_trackers", announce_all_trackers_);
+			ar & make_nvp("announce_all_tiers", announce_all_tiers_);
+			ar & make_nvp("custom_interface_use", use_custom_interface_);
+			ar & make_nvp("custom_interface_interface", custom_interface_);
+			ar & make_nvp("globals", globals_);
+			ar & make_nvp("default_save_folder", default_save_folder_);
+			ar & make_nvp("default_move_folder", default_move_folder_);
+			ar & make_nvp("use_move_to", use_move_to_);
+			ar & make_nvp("save_prompt", save_prompt_);
+			ar & make_nvp("randomize_port", randomize_port_);
+			ar & make_nvp("torrent_defaults", torrent_defaults_);
+			ar & make_nvp("queue_settings", queue_settings_);
+			ar & make_nvp("timeouts", timeouts_);
+			ar & make_nvp("enable_dht", enable_dht_);
+			ar & make_nvp("dht_settings", dht_settings_);
+			ar & make_nvp("dht_settings_random_port", dht_random_port_);
+			ar & make_nvp("dht_settings_upper_port", dht_upper_port_);
+			ar & make_nvp("dht_radio", dht_radio_);
+			ar & make_nvp("enable_pe", enable_pe_);
+			ar & make_nvp("enable_ip_filter", enable_ip_filter_);
+			ar & make_nvp("pe_settings", pe_settings_);
+			ar & make_nvp("port_range", port_range_);
+			ar & make_nvp("use_port_range", use_port_range_);
+			ar & make_nvp("half_connections", half_connections_);
+			ar & make_nvp("half_connections_limit", half_connections_limit_);
+			ar & make_nvp("mapping_upnp", mapping_upnp_);
+			ar & make_nvp("mapping_nat_pmp", mapping_nat_pmp_);
+			ar & make_nvp("cache_settings", cache_settings_);
+			ar & make_nvp("resolve_countries", resolve_countries_);
+			ar & make_nvp("plugins_ut_metadata", ut_metadata_plugin_);
+			ar & make_nvp("plugins_ut_pex", ut_pex_plugin_);
+			ar & make_nvp("plugins_smart_ban", smart_ban_plugin_);
+			ar & make_nvp("plugins_lt_trackers", lt_trackers_plugin_);
 			break;
-			/*
+		
+		case 7:
+		case 6:
+		case 5:
 		case 4:
-		ar	& make_nvp("defaultMoveToFolder", default_move_folder_)
-			& make_nvp("useMoveTo", use_move_to_);
-
 		case 3:
 		case 2:
-		ar	& make_nvp("halfConn", half_connections_)
-			& make_nvp("halfConnLimit", half_connections_limit_);
-
 		case 1:
-		ar	& make_nvp("enablePe", enable_pe_)
-			& make_nvp("peEncLevel", pe_settings_.encrypt_level)
-			& make_nvp("pePerferRc4", pe_settings_.prefer_rc4)
-			& make_nvp("peConInPolicy", pe_settings_.conn_in_policy)
-			& make_nvp("peConOutPolicy", pe_settings_.conn_out_policy);
-
-		case 0:
-		ar	& make_nvp("maxConnections", globals_.total)
-			& make_nvp("maxUploads", globals_.uploads)
-			& make_nvp("downRate", globals_.download_rate)
-			& make_nvp("upRate", globals_.upload_rate)
-			& make_nvp("portFrom", port_range_.first)
-			& make_nvp("portTo", port_range_.second);
-		
-		ar	& make_nvp("enableDHT", enable_dht_)
-			& make_nvp("dhtMaxPeersReply", dht_settings_.max_peers_reply)
-			& make_nvp("dhtSearchBranching", dht_settings_.search_branching)
-			& make_nvp("dhtServicePort", dht_settings_.service_port)
-			& make_nvp("dhtMaxFailCount", dht_settings_.max_fail_count);
-		
-		ar	& make_nvp("peerTimeout", timeouts_.peer_connect_timeout)
-			& make_nvp("trackerTimeout", timeouts_.tracker_receive_timeout);
-
-		ar	& make_nvp("enableIPFilter", enable_ip_filter_)
-			& make_nvp("portRange", use_port_range_)
-			& make_nvp("torrentMaxConnections", torrent_defaults_.total)
-			& make_nvp("torrentMaxUploads", torrent_defaults_.uploads)
-			& make_nvp("torrentDownRate", torrent_defaults_.download_rate)
-			& make_nvp("torrentUpRate", torrent_defaults_.upload_rate)
-			& make_nvp("defaultSaveFolder", default_save_folder_)
-			& make_nvp("savePrompt", save_prompt_);*/
+		default:
+			assert(false);
 		}
 	}
 	
@@ -495,7 +516,13 @@ Config& config();
 
 } // namespace hal
 
-BOOST_CLASS_VERSION(hal::Config, 7)
+BOOST_CLASS_VERSION(hal::Config, 8)
+BOOST_CLASS_VERSION(hal::queue_settings, 2)
+BOOST_CLASS_VERSION(hal::timeouts, 2)
+BOOST_CLASS_VERSION(hal::dht_settings, 2)
+BOOST_CLASS_VERSION(hal::cache_settings, 2)
+BOOST_CLASS_VERSION(hal::pe_settings, 2)
+BOOST_CLASS_VERSION(hal::connections, 2)
 
 /*namespace boost {
 namespace serialization {

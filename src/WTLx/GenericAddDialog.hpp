@@ -96,7 +96,17 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("rect", rect_);
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & boost::serialization::make_nvp("rect", rect_);
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 
 private:
@@ -216,7 +226,17 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("rect", rect_);
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & boost::serialization::make_nvp("rect", rect_);
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 
 private:
@@ -236,5 +256,24 @@ private:
 };
 
 }
+
+namespace boost {
+namespace serialization {
+	template<class TBase, int dialogIDD> 
+	struct version<WTLx::GenericAddDialog<TBase, dialogIDD>>
+	{
+		typedef mpl::int_<2> type;
+		typedef mpl::integral_c_tag tag;
+		BOOST_STATIC_CONSTANT(unsigned int, value = version::type::value);                                                             
+	};
+	
+	template<class TBase, class dlgClass, int dialogIDD> 
+	struct version<WTLx::GenericAddContainerDialog<TBase, dlgClass, dialogIDD>>
+	{
+		typedef mpl::int_<2> type;
+		typedef mpl::integral_c_tag tag;
+		BOOST_STATIC_CONSTANT(unsigned int, value = version::type::value);                                                             
+	};
+}}
 
 #endif

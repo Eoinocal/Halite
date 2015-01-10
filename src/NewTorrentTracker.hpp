@@ -91,7 +91,7 @@ public:
 	};
 	
 	NewTorrent_TrackerListViewCtrl() :
-		ini_class_t(L"listviews/NewTorrent", L"NewTorrentListView")
+		ini_class_t(L"listviews/new_torrent", L"new_torrent_listview")
 	{}
 
 	BEGIN_MSG_MAP_EX(TrackerListViewCtrl)
@@ -113,7 +113,17 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 
 	void newItem();
@@ -126,5 +136,7 @@ private:
 };
 
 typedef NewTorrent_TrackerListViewCtrl::SelectionManager NewTorrent_TrackerListViewManager;
+
+BOOST_CLASS_VERSION(NewTorrent_TrackerListViewCtrl, 2)
 
 #endif

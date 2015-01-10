@@ -448,10 +448,10 @@ public:
 		ar & make_nvp("width", list_widths_);
 		ar & make_nvp("order", list_order_);
 		ar & make_nvp("visible", list_visible_);
-		ar & make_nvp("autoSort", auto_sort_);
+		ar & make_nvp("auto_sort", auto_sort_);
 
 		ar & make_nvp("descending", descending_);
-		ar & make_nvp("sortCol", sortCol_);
+		ar & make_nvp("sort_column", sortCol_);
 
 		ar & make_nvp("secondary_descending", list_class_t::bSecondaryDescending);
 		ar & make_nvp("secondary_sort_column", list_class_t::iSecondarySort);		
@@ -465,10 +465,10 @@ public:
 		ar & make_nvp("width", list_widths_);
 		ar & make_nvp("order", list_order_);
 		ar & make_nvp("visible", list_visible_);
-		ar & make_nvp("autoSort", auto_sort_);
+		ar & make_nvp("auto_sort", auto_sort_);
 
 		ar & make_nvp("descending", descending_);
-		ar & make_nvp("sortCol", sortCol_);
+		ar & make_nvp("sort_column", sortCol_);
 
 		ar & make_nvp("secondary_descending", list_class_t::bSecondaryDescending);
 		ar & make_nvp("secondary_sort_column", list_class_t::iSecondarySort);		

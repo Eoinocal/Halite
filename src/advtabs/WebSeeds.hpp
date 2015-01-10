@@ -81,7 +81,17 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 	
 	template<typename F>
@@ -113,7 +123,7 @@ public:
 
 	AdvWebSeedsDialog(HaliteWindow& HalWindow) :
 		dlg_base_class_t(HalWindow),
-		list_(L"listviews/web_seeds", L"WebSeedListView")
+		list_(L"listviews/web_seeds", L"web_seed_listview")
 	{}
 
 	BOOL PreTranslateMessage(MSG* pMsg)
@@ -166,5 +176,7 @@ protected:
 	wstring url_;
 	WTLx::EditHilight urlEdit_;
 };
+
+BOOST_CLASS_VERSION(WebSeedListViewCtrl, 2)
 
 #endif // RC_INVOKED

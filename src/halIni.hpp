@@ -68,7 +68,7 @@ public:
 //		TXML_LOG(L"Saving xml");
 
 		{	fs::wofstream ofs(directory_ / (name_ + L".xml"));
-			boost::archive::text_woarchive woa(ofs);
+			boost::archive::xml_woarchive woa(ofs);
 
 			T* pT = static_cast<T*>(this);	
 			woa << boost::serialization::make_nvp(to_utf8(name_).c_str(), *pT);
@@ -126,7 +126,7 @@ public:
 	//	TXML_LOG(L"Saving xml");
 
 		fs::wifstream ifs(directory_ / (name_ + L".xml"));
-		boost::archive::text_wiarchive wia(ifs);
+		boost::archive::xml_wiarchive wia(ifs);
 
 		T* pT = static_cast<T*>(this);	
 		wia >> boost::serialization::make_nvp(to_utf8(name_).c_str(), *pT);

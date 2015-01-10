@@ -66,7 +66,7 @@ public:
 	};
 	
 	FilesListViewCtrl() :
-		ini_class_t(L"listviews/new_files", L"NewFilesListView")
+		ini_class_t(L"listviews/new_files", L"new_files_listview")
 	{}
 
 	BEGIN_MSG_MAP_EX(FilesListViewCtrl)
@@ -86,7 +86,17 @@ public:
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
     }
 
 private:
@@ -342,7 +352,7 @@ public:
     NewTorrentDialog(LPCTSTR title = (LPCTSTR)NULL,
 			UINT uStartPage = 0, HWND hWndParent = NULL) :
         CPropertySheet(title, uStartPage, hWndParent),
-		ini_class_t(L"NewTorrentDialog", L"Dialog"),
+		ini_class_t(L"new_torrent_dialog", L"dialog"),
 		inited_(false),
 		rect_(0,0,0,0),
 		fileSheet_(bind(&NewTorrentDialog::EnableSave, this, _1))
@@ -414,7 +424,17 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & BOOST_SERIALIZATION_NVP(rect_);
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & boost::serialization::make_nvp("rect", rect_);
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 
 private:
@@ -440,5 +460,8 @@ private:
 	TrackerSheet trackerSheet_;
 	PeersSheet detailsSheet_;
 };
+
+BOOST_CLASS_VERSION(FilesListViewCtrl, 2)
+BOOST_CLASS_VERSION(NewTorrentDialog, 2)
 
 #endif // RC_INVOKED

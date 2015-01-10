@@ -63,7 +63,17 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 
 	LRESULT OnPrimary(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
@@ -83,5 +93,7 @@ private:
 };
 
 typedef TrackerListViewCtrl::SelectionManager TrackerListViewManager;
+
+BOOST_CLASS_VERSION(TrackerListViewCtrl, 2)
 
 #endif // RC_INVOKED

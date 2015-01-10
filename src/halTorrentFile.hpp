@@ -115,19 +115,20 @@ public:
 	void serialize(Archive& ar, const unsigned int version)
 	{
 		using boost::serialization::make_nvp;
-
-		if (version < 2)
+		switch (version)
 		{
-			// deprecated
-
-			fs::wpath current_name_dont_use_;
-			ar & make_nvp("current_name", current_name_dont_use_);
+		case 3:			
+			ar & make_nvp("completed_name", completed_name_);
+			ar & make_nvp("priority", priority_);
+			ar & make_nvp("finished", finished_);
+			ar & make_nvp("with_hash", with_hash_);
+			break;
+			
+		case 2:
+		case 1:
+		default:
+			assert(false);
 		}
-
-		ar & make_nvp("completed_name", completed_name_);
-		ar & make_nvp("priority", priority_);
-		ar & make_nvp("finished", finished_);
-		ar & make_nvp("with_hash", with_hash_);
 	}	
 
 private:
@@ -311,7 +312,17 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("files", files_);
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & make_nvp("files", files_);
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}	
 
 private:
@@ -328,4 +339,5 @@ private:
 
 } // namespace hal
 
-BOOST_CLASS_VERSION(hal::torrent_file, 2)
+BOOST_CLASS_VERSION(hal::torrent_file, 3)
+BOOST_CLASS_VERSION(hal::torrent_files, 2)

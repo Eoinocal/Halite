@@ -148,7 +148,7 @@ public:
 	};
 	
 	NewTorrent_PeersListViewCtrl() :
-		ini_class_t(L"listviews/NewTorrentPeers", L"NewPeersListView")
+		ini_class_t(L"listviews/new_torrent_peers", L"new_peers_listview")
 	{}
 
 	BEGIN_MSG_MAP_EX(this_class_t)
@@ -170,7 +170,17 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 
 	void newItem();
@@ -183,5 +193,7 @@ private:
 };
 
 typedef NewTorrent_PeersListViewCtrl::SelectionManager NewTorrent_PeersListViewManager;
+
+BOOST_CLASS_VERSION(NewTorrent_PeersListViewCtrl, 2)
 
 #endif

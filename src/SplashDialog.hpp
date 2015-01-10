@@ -46,7 +46,7 @@ public:
 	enum { IDD = HAL_CLOSESPLASH };
 
 	SplashDialog() :	
-		ini_class_t(L"SplashDialog", L"dialog"),	
+		ini_class_t(L"splash_dialog", L"dialog"),	
 		rect_(0,0,0,0)
 	{
 		load_from_ini();
@@ -78,7 +78,17 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & BOOST_SERIALIZATION_NVP(rect_);
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & boost::serialization::make_nvp("rect", rect_);
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 	
 	LRESULT onInitDialog(HWND, LPARAM)
@@ -158,5 +168,7 @@ private:
 
 	WTL::CRect rect_;
 };
+
+BOOST_CLASS_VERSION(SplashDialog, 2)
 
 #endif // RC_INVOKED

@@ -93,7 +93,7 @@ public:
 	END_MSG_MAP()
 
 	LogListViewCtrl() :
-		ini_class_t(L"listviews/eventLog", L"LogListView")
+		ini_class_t(L"listviews/event_log", L"log_listview")
 	{}
 	
 	~LogListViewCtrl()
@@ -113,8 +113,17 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("listview", 
-			boost::serialization::base_object<list_class_t>(*this));
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}
 
 	void operator()(shared_ptr<hal::EventDetail> event)
@@ -268,3 +277,5 @@ protected:
 	LogListViewCtrl logList;
 	int debugLevel;
 };
+
+BOOST_CLASS_VERSION(LogListViewCtrl, 2)

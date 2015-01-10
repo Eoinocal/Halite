@@ -92,25 +92,28 @@ public:
 
 		switch (version)
 		{
-		case 4:
-		ar	& make_nvp("one_inst", oneInst)
-			& make_nvp("show_message", showMessage_)
-			& make_nvp("log_debug", logDebug_)
-			& make_nvp("log_list_length", logListLen_)
-			& make_nvp("log_to_file", logToFile_)
-			& make_nvp("lang_dll", dll_);
-		break;
+		case 5:
+			ar & make_nvp("one_inst", oneInst);
+			ar & make_nvp("show_message", showMessage_);
+			ar & make_nvp("log_debug", logDebug_);
+			ar & make_nvp("log_list_length", logListLen_);
+			ar & make_nvp("log_to_file", logToFile_);
+			ar & make_nvp("lang_dll", dll_);
+			ar & make_nvp("dll", dll_);
+			ar & make_nvp("log_list_length", logListLen_);
+			ar & make_nvp("one_instance", oneInst);
+			ar & make_nvp("log_debug", logDebug_);
+			ar & make_nvp("show_message", showMessage_);
+			ar & make_nvp("log_to_file", logToFile_);
+			break;
 
+		case 4:
 		case 3:
 		case 2:
-		ar	& make_nvp("dll_", dll_);
 		case 1:
-		ar	& make_nvp("logListLen_", logListLen_);
 		case 0:
-		ar	& make_nvp("oneInst", oneInst)
-			& make_nvp("logDebug_", logDebug_)
-			& make_nvp("showMessage", showMessage_)
-			& make_nvp("logToFile_", logToFile_);
+		default:
+			assert(false);
 		}
 	}	
 	
@@ -138,4 +141,4 @@ private:
 
 Halite& halite();
 
-BOOST_CLASS_VERSION(Halite, 4)
+BOOST_CLASS_VERSION(Halite, 5)

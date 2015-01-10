@@ -20,7 +20,7 @@ class torrent_manager :
 {
 	typedef torrent_manager this_class_t;
 	typedef hal::IniBase<this_class_t> ini_class_t;
-
+	
 	struct torrent_holder
 	{
 		mutable torrent_internal_ptr torrent;
@@ -39,48 +39,26 @@ class torrent_manager :
 		explicit torrent_holder(const libt::big_number& h) :
 			hash(h)
 		{}
-
+		
 		friend class boost::serialization::access;
 		template<class Archive>
-		void load(Archive& ar, const unsigned int version)
+		void serialize(Archive& ar, const unsigned int version)
 		{
 			using boost::serialization::make_nvp;
 
-			wstring filename;
-
 			switch (version)
 			{
-			case 2:
-			ar & make_nvp("hash", hash);
-			ar & make_nvp("uuid", id);
-
-			case 1:
-			ar & make_nvp("torrent", torrent);
-
-			if (version == 1)
-				ar & make_nvp("filename", filename);
-
-			ar & make_nvp("name", name);
-			}
+			case 3:
+				ar & make_nvp("hash", hash);
+				ar & make_nvp("uuid", id);
+				ar & make_nvp("torrent", torrent);
+				ar & make_nvp("name", name);
+				break;
 			
-			if (version == 1)
-				id = torrent->id();
-		}
-
-		template<class Archive>
-		void save(Archive& ar, const unsigned int version) const
-		{
-			using boost::serialization::make_nvp;
-
-			switch (version)
-			{
 			case 2:
-			ar & make_nvp("hash", hash);
-			ar & make_nvp("uuid", id);
-
 			case 1:
-			ar & make_nvp("torrent", torrent);
-			ar & make_nvp("name", name);
+			default:
+				assert(false);
 			}
 		}
 
@@ -103,8 +81,6 @@ class torrent_manager :
 		{
 			return hash < right;
 		}
-
-		BOOST_SERIALIZATION_SPLIT_MEMBER()
 	};
 	
 	struct by_uuid{};
@@ -162,13 +138,13 @@ public:
 		shared_wostream_ptr ofs = work_file_.wostream();		
 		boost::archive::text_woarchive ot(*ofs);
 
-		ot << boost::serialization::make_nvp("BitTorrent", *this);
+		ot << boost::serialization::make_nvp("bittorrent", *this);
 
 		{
 			std::ofstream ofs(work_file_.main_file().string()+".xml");
 			boost::archive::xml_oarchive ot(ofs);
 
-			ot << boost::serialization::make_nvp("BitTorrent", *this);
+			ot << boost::serialization::make_nvp("bittorrent", *this);
 
 			ofs.flush();
 		}
@@ -496,7 +472,17 @@ public:
 	template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-		ar & boost::serialization::make_nvp("torrents", torrents_);
+		using boost::serialization::make_nvp;
+		switch (version)
+		{
+		case 2:			
+			ar & make_nvp("torrents", torrents_);
+			break;
+
+		case 1:
+		default:
+			assert(false);
+		}
 	}	
 	
 private:
@@ -540,4 +526,5 @@ private:
 
 };
 
-BOOST_CLASS_VERSION(hal::torrent_manager::torrent_holder, 2)
+BOOST_CLASS_VERSION(hal::torrent_manager, 2)
+BOOST_CLASS_VERSION(hal::torrent_manager::torrent_holder, 3)
