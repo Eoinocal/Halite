@@ -115,7 +115,7 @@ public:
 
 	torrent_manager() :
 		ini_class_t(L"bittorrent", L"torrent_manager"),
-		work_file_(L"BitTorrent.data", boost::lexical_cast<boost::uuids::uuid>("7246289F-C92C-4781-A574-A1E944FD1183"), 1),
+		work_file_(L"bittorrent.xml", boost::lexical_cast<boost::uuids::uuid>("7246289F-C92C-4781-A574-A1E944FD1183"), 1),
 		scheduler_(false)
 //		ini_(ini)
 	{}
@@ -136,18 +136,9 @@ public:
 	void save_to_ini()
 	{
 		shared_wostream_ptr ofs = work_file_.wostream();		
-		boost::archive::text_woarchive ot(*ofs);
+		boost::archive::xml_woarchive ot(*ofs);
 
 		ot << boost::serialization::make_nvp("bittorrent", *this);
-
-		{
-			std::ofstream ofs(work_file_.main_file().string()+".xml");
-			boost::archive::xml_oarchive ot(ofs);
-
-			ot << boost::serialization::make_nvp("bittorrent", *this);
-
-			ofs.flush();
-		}
 	}	
 
 	bool load_from_ini()
@@ -167,9 +158,9 @@ public:
 */		{			
 			if (boost::optional<shared_wistream_ptr> ifs = work_file_.wistream())
 			{
-				boost::archive::text_wiarchive it(**ifs);
+				boost::archive::xml_wiarchive it(**ifs);
 
-				it >> boost::serialization::make_nvp("BitTorrent", *this);
+				it >> boost::serialization::make_nvp("bittorrent", *this);
 
 				return true;
 			}

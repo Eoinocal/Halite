@@ -101,17 +101,16 @@ void save(Archive& ar, const libtorrent::big_number& num, const unsigned int ver
 {	
 	std::stringstream hex_number;
 	hex_number << num;
-
 	std::string hex_string = hex_number.str();
 
-	ar & BOOST_SERIALIZATION_NVP(hex_string);
+	ar & boost::serialization::make_nvp("hex", hex_string);
 }
 
 template<class Archive>
 void load(Archive& ar, libtorrent::big_number& num, const unsigned int version)
 {	
 	std::string hex_number;
-	ar & BOOST_SERIALIZATION_NVP(hex_number);	
+	ar & boost::serialization::make_nvp("hex", hex_number);	
 
 	std::stringstream hex_stream(hex_number);
 	hex_stream >> num;
