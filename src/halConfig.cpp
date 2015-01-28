@@ -53,8 +53,8 @@ Config::Config() :
 {
 	if (hal::app().get_my_documents())
 	{
-		default_save_folder_ = (hal::app().get_my_documents()->parent_path()/L"Halite Downloads"/L"Incoming").wstring();
-		default_move_folder_ = (hal::app().get_my_documents()->parent_path()/L"Halite Downloads"/L"Completed").wstring();
+		default_save_folder_ = (hal::app().get_my_documents()->parent_path()/L"Downloads"/L"Incoming").wstring();
+		default_move_folder_ = (hal::app().get_my_documents()->parent_path()/L"Downloads").wstring();
 	}
 	else
 	{

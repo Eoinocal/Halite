@@ -825,15 +825,18 @@ void bit_impl::alert_handler()
 
 	void operator()(libt::add_torrent_alert const& a) const
 	{
-		event_log().post(shared_ptr<EventDetail>(
-			new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_ADDED)) 
-					% get(a.handle)->name()), 
-				event_logger::debug, a.timestamp())));
+//		if (a.handle.is_valid())
+		{
+			event_log().post(shared_ptr<EventDetail>(
+				new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_ADDED)) 
+						% get(a.handle)->name()), 
+					event_logger::debug, a.timestamp())));
 			
 		HAL_DEV_MSG(hal::wform(L"Torrent Added alert, %1%.") % get(a.handle)->name());
 
 		get(a.handle)->set_handle(a.handle);
 		get(a.handle)->process_event(new ev_added_alert((a.params.flags & libt::add_torrent_params::flag_paused) != 0, a.error));
+		}
 	}
 
 	void operator()(libt::external_ip_alert const& a) const
@@ -1205,6 +1208,9 @@ void bit_impl::alert_handler()
 		
 		torrent_internal_ptr get(libt::torrent_handle h) const 
 		{ 
+//			if (!h.is_valid())
+//				throw bit::null_torrent();
+
 			torrent_internal_ptr p = bit_impl_.the_torrents_.get_by_hash(h.info_hash()); 
 
 			if (p)
@@ -1279,8 +1285,8 @@ void bit_impl::alert_handler()
 		catch(const std::exception& e)
 		{
 			// These are logged as debug because they are rarely important to act on!
-			event_log().post(shared_ptr<EventDetail>(\
-				new EventStdException(event_logger::debug, e, L"bit_impl::alert_handler()")));
+	//		event_log().post(shared_ptr<EventDetail>(\
+	//			new EventStdException(event_logger::debug, e, L"bit_impl::alert_handler()")));
 		}
 		
 		p_alert = session_->pop_alert();

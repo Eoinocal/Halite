@@ -13,10 +13,6 @@
 #endif
 
 #include "global/wtl_app.hpp"
-/*#include "global/txml_ini_adapter.hpp"
-#include "global/txml_oarchive.hpp"
-#include "global/txml_iarchive.hpp"
-*/
 #include "halEvent.hpp"
 
 namespace hal 
@@ -27,26 +23,15 @@ class IniBase
 {
 public:
 	IniBase(boost::filesystem::wpath location, std::wstring name) :
-	//	adapter_(location, ini),
 		name_(name),
 		directory_(app().get_working_directory() / L"config" / location)
 	{
 		initialise();
 	}
-	
-/*	IniBase(std::string name, hal::ini_file& ini = hal::ini()) :
-		adapter_(boost::filesystem::path(""), ini),
-		name_(name)
-	{}
-*/	
-	~IniBase()
-	{
-//		TXML_LOG(L"~IniBase()");
-	}
 
 	void initialise()
 	{
-		HAL_DEV_MSG(hal::wform(L"Ini directory is %1%") % directory_);
+//		HAL_DEV_MSG(hal::wform(L"Ini directory is %1%") % directory_);
 		
 		if (!fs::exists(directory_))
 			fs::create_directories(directory_);
@@ -54,76 +39,18 @@ public:
 	
 	void save_to_ini()
 	{
-	
-/*		TXML_LOG(L"Saving");
-		std::stringstream xml_data;	
-		{
-		xml::txml_oarchive oxml(xml_data);	
+		fs::wofstream ofs(directory_ / (name_ + L".xml"));
+		boost::archive::xml_woarchive woa(ofs);
+
 		T* pT = static_cast<T*>(this);	
-		oxml << boost::serialization::make_nvp(name_.c_str(), *pT);
-		}
-
-		adapter_.save_stream_data(xml_data);
-*/		
-//		TXML_LOG(L"Saving xml");
-
-		{	fs::wofstream ofs(directory_ / (name_ + L".xml"));
-			boost::archive::xml_woarchive woa(ofs);
-
-			T* pT = static_cast<T*>(this);	
-			woa << boost::serialization::make_nvp(to_utf8(name_).c_str(), *pT);
-		}
-	}
-
-/*	template<typename P>
-	void save_standalone(const P& location)
-	{
-		fs::ofstream ofs(location);
+		woa << boost::serialization::make_nvp(to_utf8(name_).c_str(), *pT);
 		
-		xml::txml_oarchive oxml(ofs);
-		T* pT = static_cast<T*>(this);	
-		oxml << boost::serialization::make_nvp(name_.c_str(), *pT);
 	}
-	
-	template<typename P>
-	bool load_standalone(const P& location)
-	{
-		try 
-		{		
-		fs::ifstream ifs(location);
-
-		xml::txml_iarchive ixml(ifs);
-
-		T* pT = static_cast<T*>(this);	
-		ixml >> boost::serialization::make_nvp(name_.c_str(), *pT);
-
-		return true;
 		
-		}
-		catch (const std::exception& e)
-		{			
-			hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventXmlException(hal::from_utf8(e.what()), L"load_standalone"))); 
-
-			return false;
-		}
-	}
-*/	
 	bool load_from_ini()
 	{
-	//	std::stringstream xml_data;		
-	//	adapter_.load_stream_data(xml_data);
-
 		try 
 		{
-
-	/*	xml::txml_iarchive ixml(xml_data);	
-		
-		T* pT = static_cast<T*>(this);	
-		ixml >> boost::serialization::make_nvp(name_.c_str(), *pT);
-
-	*/	
-	//	TXML_LOG(L"Saving xml");
 
 		fs::wifstream ifs(directory_ / (name_ + L".xml"));
 		boost::archive::xml_wiarchive wia(ifs);
@@ -144,7 +71,6 @@ public:
 	}
 	
 private:
-//	hal::txml_ini_adapter adapter_;
 	std::wstring name_;	
 	fs::wpath directory_;
 };

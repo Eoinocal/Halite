@@ -105,7 +105,8 @@ public:
 			ar & make_nvp("log_debug", logDebug_);
 			ar & make_nvp("show_message", showMessage_);
 			ar & make_nvp("log_to_file", logToFile_);
-			break;
+		
+		break;
 
 		case 4:
 		case 3:

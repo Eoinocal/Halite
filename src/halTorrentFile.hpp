@@ -122,7 +122,8 @@ public:
 			ar & make_nvp("priority", priority_);
 			ar & make_nvp("finished", finished_);
 			ar & make_nvp("with_hash", with_hash_);
-			break;
+		
+		break;
 			
 		case 2:
 		case 1:
@@ -317,7 +318,8 @@ public:
 		{
 		case 2:			
 			ar & make_nvp("files", files_);
-			break;
+		
+		break;
 
 		case 1:
 		default:

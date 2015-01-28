@@ -159,7 +159,8 @@ public:
 		{
 		case 2:			
 			ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
-			break;
+		
+		break;
 
 		case 1:
 		default:
@@ -408,7 +409,8 @@ public:
 		{
 		case 2:			
 			ar & make_nvp("splitter_position", splitterPos);
-			break;
+			
+		break;
 
 		case 1:
 		default:

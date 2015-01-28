@@ -109,7 +109,8 @@ struct queue_settings
 			ar & make_nvp("auto_scrape_min_interval", auto_scrape_min_interval);
 			ar & make_nvp("auto_scrape_interval", auto_scrape_interval);
 			ar & make_nvp("close_redundant_connections", close_redundant_connections);
-			break;
+		
+		break;
 
 		case 1:
 		default:
@@ -173,7 +174,8 @@ struct timeouts
 			ar & make_nvp("peer_connect_timeout", peer_connect_timeout);
 			ar & make_nvp("inactivity_timeout", inactivity_timeout);
 			ar & make_nvp("handshake_timeout", handshake_timeout);
-			break;
+		
+		break;
 
 		case 1:
 		default:
@@ -217,7 +219,8 @@ struct dht_settings
 			ar & make_nvp("search_branching", search_branching);
 			ar & make_nvp("service_port", service_port);
 			ar & make_nvp("max_fail_count", max_fail_count);
-			break;
+		
+		break;
 
 		case 1:
 		default:
@@ -248,7 +251,8 @@ struct cache_settings
 		case 2:			
 			ar & make_nvp("cache_size", cache_size);
 			ar & make_nvp("cache_expiry", cache_expiry);
-			break;
+		
+		break;
 
 		case 1:
 		default:
@@ -281,7 +285,8 @@ struct pe_settings
 			ar & make_nvp("prefer_rc4", prefer_rc4);
 			ar & make_nvp("conn_in_policy", conn_in_policy);
 			ar & make_nvp("conn_out_policy", conn_out_policy);
-			break;
+		
+		break;
 
 		case 1:
 		default:
@@ -316,7 +321,8 @@ struct connections
 			ar & make_nvp("uploads", uploads);
 			ar & make_nvp("download_rate", download_rate);
 			ar & make_nvp("upload_rate", upload_rate);
-			break;
+		
+		break;
 
 		case 1:
 		default:
@@ -428,7 +434,8 @@ public:
 			ar & make_nvp("plugins_ut_pex", ut_pex_plugin_);
 			ar & make_nvp("plugins_smart_ban", smart_ban_plugin_);
 			ar & make_nvp("plugins_lt_trackers", lt_trackers_plugin_);
-			break;
+		
+		break;
 		
 		case 7:
 		case 6:

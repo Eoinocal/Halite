@@ -88,17 +88,27 @@ static const unsigned WMU_ARE_YOU_ME = ::RegisterWindowMessage(WMU_ARE_YOU_ME_ST
 
 static BOOL CALLBACK hwndSearcher(HWND hWnd, LPARAM lParam)
 {
+	wchar_t name[256];
+	::GetWindowText(hWnd, name, 256);
+
+	HAL_DEV_MSG(hal::wform(L"    - Checking window - %s") % name);
+	
 	ULONG_PTR result;
-	LRESULT ok = ::SendMessageTimeout(hWnd, WMU_ARE_YOU_ME,
-		0, 0, SMTO_BLOCK | SMTO_ABORTIFHUNG, 200, &result);
+	LRESULT ok = ::SendMessageTimeout(hWnd, WMU_ARE_YOU_ME, 0, 0, SMTO_BLOCK | SMTO_ABORTIFHUNG, 200, &result);
 	
 	if (ok == 0)
-		return false;
+	{
+		HAL_DEV_MSG(hal::wform(L"    - Send Message Timed out - %s") % GetLastError());
+		return true;
+	}
 	
 	if (result == WMU_ARE_YOU_ME)
 	{
+		HAL_DEV_MSG(L"    - Are you me found");
+
 		HWND* target = (HWND*)lParam;
 		*target = hWnd;
+
 		return false;
 	}
 	
@@ -136,7 +146,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	catch(...)
 	{
 		hal::event_log().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(L"No registry entry found, using portable mode", hal::event_logger::info)));		
+			new hal::EventMsg(L"No registry entry found, using portable mode", hal::event_logger::info)));
 	}
 	
 	if (!boost::filesystem::is_directory(hal::app().get_working_directory()))
@@ -156,13 +166,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	
 	if (!oneInstance.owner() && halite().oneInst)
 	{
+		HAL_DEV_MSG(L"There are other instances");
 		WinAPIMutexLock lock(oneInstance, 5000L);
 		
 		HWND hOther = NULL;
+		HAL_DEV_MSG(L" -- enumerating windows...");
 		::EnumWindows(static_cast<WNDENUMPROC>(hwndSearcher), (LPARAM)&hOther);
 		
 		if (hOther != NULL)
 		{
+			HAL_DEV_MSG(L" -- found other window");
 			::SetForegroundWindow(hOther);
 			
 			if (::IsIconic(hOther))
@@ -170,12 +183,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			
 			if (!hal::app().command_args().empty())
 			{
+				HAL_DEV_MSG(L" -- sending data");
+
 				COPYDATASTRUCT cmdLine; 
 				cmdLine.dwData = HALITE_SENDING_CMD; 
-				cmdLine.cbData = 
-					numeric_cast<DWORD>(hal::app().command_args().front().length())*sizeof(wchar_t); 
-				cmdLine.lpData = const_cast<wchar_t*>(
-					hal::app().command_args().front().c_str());
+				cmdLine.cbData = numeric_cast<DWORD>(hal::app().command_args().front().length())*sizeof(wchar_t); 
+				cmdLine.lpData = const_cast<wchar_t*>(hal::app().command_args().front().c_str());
 				
 				::SendMessage(hOther, WM_COPYDATA, 0, (LPARAM)(LPVOID)&cmdLine);
 			}
@@ -183,17 +196,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	}
 	else
 	{
+		HAL_DEV_MSG(hal::wform(L"App Data Path: %1%.") % *hal::app().get_local_appdata());
+		HAL_DEV_MSG(hal::wform(L"Exe Path: %1%.") % hal::app().exe_path());
+		HAL_DEV_MSG(hal::wform(L"Initial Path: %1%.") % hal::app().initial_path());
+				
 		hal::event_log().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(hal::wform(L"App Data Path: %1%.") % *hal::app().get_local_appdata())));		
-
-		hal::event_log().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(hal::wform(L"Exe Path: %1%.") % hal::app().exe_path())));		
-		
-		hal::event_log().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg(hal::wform(L"Initial Path: %1%.") % hal::app().initial_path())));		
-		
-		hal::event_log().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg((hal::wform(L"Working Directory: %1%.") % hal::app().get_working_directory()), hal::event_logger::info)));		
+			new hal::EventMsg((hal::wform(L"Working Diretory: %1%.") % hal::app().get_working_directory()), hal::event_logger::info)));		
 		
 		WTL::CMessageLoop theLoop;
 		_Module.AddMessageLoop(&theLoop);

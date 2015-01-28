@@ -821,8 +821,7 @@ LRESULT HaliteWindow::OnPaint(HDC dc)
 
 LRESULT HaliteWindow::OnAreYouMe(UINT, WPARAM, LPARAM, BOOL&) 
 {
-	hal::event_log().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"I tried to contact me.")));		
+	hal::event_log().post(shared_ptr<hal::EventDetail>(new hal::EventMsg(L"I tried to contact me.", hal::event_logger::info)));		
 
 	return WM_AreYouMe_; 
 }

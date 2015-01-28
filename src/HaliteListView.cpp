@@ -147,6 +147,9 @@ LRESULT HaliteListViewCtrl::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 	if (hal::try_update_lock<list_class_t> lock = hal::try_update_lock<list_class_t>(this)) 
 	{	
 
+	if (pnmh == 0)
+		return 0;
+	
 	NMLVDISPINFO* pdi = (NMLVDISPINFO*)pnmh;
 	hal::torrent_details_ptr td = hal::bittorrent().torrentDetails().get(key_from_index(pdi->item.iItem));
 

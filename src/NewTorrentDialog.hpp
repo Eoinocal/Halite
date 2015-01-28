@@ -429,7 +429,8 @@ public:
 		{
 		case 2:			
 			ar & boost::serialization::make_nvp("rect", rect_);
-			break;
+		
+		break;
 
 		case 1:
 		default:

@@ -144,7 +144,8 @@ public:
 		{
 		case 2:			
 			ar & make_nvp("total", total_);
-			break;
+		
+		break;
 
 		case 1:
 		default:
@@ -191,7 +192,8 @@ public:
 		{
 		case 2:			
 			ar & make_nvp("total", total_);
-			break;
+		
+		break;
 
 		case 1:
 		default:
@@ -660,7 +662,8 @@ public:
 			ar & make_nvp("active_duration", active_duration_);
 			ar & make_nvp("seeding_duration", seeding_duration_);
 			ar & make_nvp("managed", managed_);		
-			break;
+		
+		break;
 
 		case 4:
 		case 3:

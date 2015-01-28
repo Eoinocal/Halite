@@ -68,7 +68,8 @@ public:
 		{
 		case 2:			
 			ar & boost::serialization::make_nvp("listview", boost::serialization::base_object<list_class_t>(*this));
-			break;
+		
+		break;
 
 		case 1:
 		default:

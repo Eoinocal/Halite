@@ -240,7 +240,8 @@ protected:
 			ar & make_nvp("use_tray", use_tray);
 			ar & make_nvp("advanced_ui", advancedUI);
 			ar & make_nvp("active_tab", activeTab);
-			break;
+		
+		break;
 
 		case 3:
 		case 2:

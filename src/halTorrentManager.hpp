@@ -49,14 +49,15 @@ class torrent_manager :
 			switch (version)
 			{
 			case 3:
+			case 2:
 				ar & make_nvp("hash", hash);
 				ar & make_nvp("uuid", id);
+
+			case 1:
 				ar & make_nvp("torrent", torrent);
 				ar & make_nvp("name", name);
-				break;
-			
-			case 2:
-			case 1:
+
+			break;
 			default:
 				assert(false);
 			}
@@ -146,27 +147,16 @@ public:
 		try 
 		{
 
-/*		if (!boost::filesystem::exists(work_file_.working_file()) &&
-			boost::filesystem::exists(ini_.main_file()))
-		{	
-			ini_class_t::load_from_ini();
-			ini_.clear();
+		if (boost::optional<shared_wistream_ptr> ifs = work_file_.wistream())
+		{
+			boost::archive::xml_wiarchive it(**ifs);
+
+			it >> boost::serialization::make_nvp("bittorrent", *this);
 
 			return true;
 		}
 		else
-*/		{			
-			if (boost::optional<shared_wistream_ptr> ifs = work_file_.wistream())
-			{
-				boost::archive::xml_wiarchive it(**ifs);
-
-				it >> boost::serialization::make_nvp("bittorrent", *this);
-
-				return true;
-			}
-			else
-				return false;
-		}
+			return false;
 		
 		}
 		catch (const std::exception& e)
@@ -468,7 +458,8 @@ public:
 		{
 		case 2:			
 			ar & make_nvp("torrents", torrents_);
-			break;
+		
+		break;
 
 		case 1:
 		default:
@@ -482,19 +473,19 @@ private:
 		auto p = std::equal_range(torrents_.get<by_hash>().begin(), torrents_.get<by_hash>().end(), torrent_holder(hash));
 		auto d = std::distance(p.first, p.second);
 				
-/*		hal::event_log().post(shared_ptr<hal::EventDetail>(
+		hal::event_log().post(shared_ptr<hal::EventDetail>(
 			new hal::EventDebug(hal::event_logger::debug, (hal::wform(L"%1% matching torrents for hash %2%") 
 				% d
 				% from_utf8(libt::base32encode(std::string((char const*)&hash[0], 20)))).str())));
-*/
+
 		if (d == 0)
 		{			
 			throw invalid_torrent(uuid());
 		}
 		else if (d > 1)
 		{
-			for (auto i = ++p.first, e = p.second; i != e; /* */)
-				erase(i++);
+			auto i = p.first;
+			torrents_.get<by_hash>().erase(++i, p.second);
 							
 			return p.first->torrent;
 		}
