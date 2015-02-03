@@ -43,6 +43,7 @@
 "Are you sure you wish to delete all downloaded data?" ---> "Sunteti siguri ca vreti să ştergeţi toate datele descărcate?"
 "Auto Sort" ---> "Ordine Automatică"
 "Auto-managed" ---> "Gestionare automatică"
+"Binary Notions" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." ---> "Eveniment Bittorrent: %1%."
 "Block %2% of piece %3% downloading. (%1%)" ---> "Blocul %2% din piesa %3% se descarcă. (%1%)"
@@ -134,6 +135,7 @@
 "Globals" ---> "Globale"
 "HTTP seed" --->  ??? 
 "HTTP" --->  ??? 
+"Halite BitTorrent Client based on libTorrrent" --->  ??? 
 "Halite BitTorrent Client" ---> "Halite Client BitTorrent"
 "Halite Debug Dialog" ---> "Halite Fereastra de Debug"
 "Halite importing IP ranges..." ---> "Halite importează intervale de IP..."
@@ -155,6 +157,7 @@
 "Interested in us" ---> "Interesat în noi"
 "Interesting" ---> "Interesant"
 "Invalid torrent (%1%) from %2%." ---> "Torrent invalid (%1%) de la %2%."
+"Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Vor trece câteva momente până la închiderea sesiunii Bittorrent după care acest mesaj va dispare şi programul se va închide."
 "LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Limba (necesită restart)"
@@ -177,7 +180,6 @@
 "Max replies : " ---> "Număr maxim de răspunsuri"
 "Maximum" ---> "Maximum"
 "Message" ---> "Mesaj"
-"Metadata Plugin" ---> "Pluginul Metadata"
 "Minimize to tray." ---> "Minimizează în sertar"
 "Move Down" ---> "Mută Jos"
 "Move To Bottom" ---> "Mută în Josul Cozii"
@@ -386,7 +388,6 @@
 "Write Cache Hit Ratio :" ---> "Raportul Succesului în Caşul de Scris :"
 "Xml Exception (%1%) with %2%." ---> "Xml Exception (%1%) with %2%."
 "\r\0" ---> "\r\0"
-"libTorrrent based client" --->  ??? 
 "random up to" ---> "aleator până la"
 "resource.h\0" ---> "resource.h\0"
 "to" ---> "până la"

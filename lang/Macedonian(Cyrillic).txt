@@ -43,6 +43,7 @@
 "Are you sure you wish to delete all downloaded data?" ---> "Дали сте сигурни дека сакате да ја избришете сите преземени?"
 "Auto Sort" ---> "Аутоматско сортирање"
 "Auto-managed" ---> "Автоматско уредување на"
+"Binary Notions" --->  ??? 
 "BitTorrent" ---> "БитТорент"
 "Bittorrent Event: %1%." ---> "Битторент настан: %1%."
 "Block %2% of piece %3% downloading. (%1%)" ---> "Секција %2% од дела %3% моментално се презема. (%1%)"
@@ -134,6 +135,7 @@
 "Globals" ---> "Апарат поврзан за се "
 "HTTP seed" --->  ??? 
 "HTTP" --->  ??? 
+"Halite BitTorrent Client based on libTorrrent" --->  ??? 
 "Halite BitTorrent Client" ---> "Халите битторент клијент"
 "Halite Debug Dialog" ---> "Халите, диалог 'debug'-а"
 "Halite importing IP ranges..." ---> "Халите импортира делове ИП-а"
@@ -155,6 +157,7 @@
 "Interested in us" ---> "Интересује се за нас"
 "Interesting" ---> "Интересиран"
 "Invalid torrent (%1%) from %2%." ---> "Неисправан торент (%1%) од (%2%)"
+"Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Ве молиме почекајте малку haliti блиски, Кога оваа порака се сокрија, а потоа затворен haliti."
 "LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Језик (после промени, покрени халите наново)"
@@ -177,7 +180,6 @@
 "Max replies : " ---> "Максималних одговора"
 "Maximum" ---> "Максимално"
 "Message" ---> "Порука"
-"Metadata Plugin" ---> "'Metadata' додатак"
 "Minimize to tray." ---> "Смањи = пребаци у 'tray'."
 "Move Down" ---> "Спусти"
 "Move To Bottom" ---> "Према надолу"
@@ -386,7 +388,6 @@
 "Write Cache Hit Ratio :" ---> "Рад писања у 'cache'-у"
 "Xml Exception (%1%) with %2%." ---> "XML Грешка (%1%) код (%2%)"
 "\r\0" ---> "\r\0"
-"libTorrrent based client" ---> "На либТорренту базирани клијент"
 "random up to" ---> "Случајно до"
 "resource.h\0" ---> "ресурси.h\0"
 "to" ---> "До"

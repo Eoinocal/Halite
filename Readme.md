@@ -1,6 +1,6 @@
 # Halite: A Free Open-Source BitTorrent client
 
-Version: 0.3.4 dev 1250 released 2nd January 2013
+Version: 0.4.0.1 dev 1278 released 3rd February 2015
 
 WWW: [http://www.binarynotions.com/halite-bittorrent-client]() 
 
@@ -41,6 +41,7 @@ That said, it supports:
   + Port randomisation and forwarding (UnPlug and Play or NAT-PMP)
   + Compatible with UAC.
   + Shutdown scheduler.
+  + Webseeds
 
 Requirements: 32 bit supports Windows XP and higher
               64 bit supports Vista and higher
@@ -52,6 +53,21 @@ installer, unless you choose not too.
 
 Changes:
 
+ + from v 0.4.0 to 0.4.0.1:
+
+   1. Fixed a bug with portable mode.
+
+ + from v 0.3.4 to 0.4.0:
+
+   1. Updated to libtorrent 1.03
+      - This is basically the monster change! Full credits to Arvid 
+        Norberg here for all the real work.
+   3. Added support for Web seeds
+   4. Updated to OpenSSL 1.0.1j
+   5. Updated to Boot 1.57
+   6. Compiled with Visual C++ 2013 
+   7. Lots of bug fixes
+
  + from v 0.3.3 to 0.3.4:
 
    1. Updated to libtorrent 0.16.6
@@ -62,6 +78,7 @@ Changes:
    4. Updated to OpenSSL 1.0.1c
    5. Updated to Boot 1.52
    6. Compiled with Visual C++ 2012 
+   
  + from v 0.3.2.1 to 0.3.3.0:
 
    1. Announce to all trackers.

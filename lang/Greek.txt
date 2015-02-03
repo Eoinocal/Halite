@@ -43,6 +43,7 @@
 "Are you sure you wish to delete all downloaded data?" ---> "Είστε σίγουρος ότι θέλετε να διαγράψεται όλα τα στοιχεία?"
 "Auto Sort" ---> "Αυτόματη Ταξινόμηση"
 "Auto-managed" --->  ??? 
+"Binary Notions" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." ---> "Bittorrent συμβάν: %1%."
 "Block %2% of piece %3% downloading. (%1%)" ---> "Εμπόδιση %2% απο κομμάτια %3% λήψη. (%1%)"
@@ -134,6 +135,7 @@
 "Globals" --->  ??? 
 "HTTP seed" --->  ??? 
 "HTTP" --->  ??? 
+"Halite BitTorrent Client based on libTorrrent" --->  ??? 
 "Halite BitTorrent Client" ---> "Halite BitTorrent Client"
 "Halite Debug Dialog" ---> "Halite Debug Dialog"
 "Halite importing IP ranges..." ---> "Το Halite εισάγει IP ranges..."
@@ -155,6 +157,7 @@
 "Interested in us" ---> "Ενδιαφέρεσται για εμάς"
 "Interesting" ---> "Ενδιαφέρον"
 "Invalid torrent (%1%) from %2%." ---> "Άκυρω torrent (%1%) από %2%."
+"Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Θα χρειαστεί λίγος χρόνος για να τερματίσουν οι συνδέσεις του BitTorrent. Αμέσως μετά, αυτό το μήνυμα θα εξαφανιστεί και το πρόγραμμα θα κλείσει."
 "LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Γλώσσα (χρειάζεται επανεκκίνηση)"
@@ -177,7 +180,6 @@
 "Max replies : " --->  ??? 
 "Maximum" ---> "Μέγιστο"
 "Message" ---> "Μήνυμα"
-"Metadata Plugin" --->  ??? 
 "Minimize to tray." ---> "Ελαχιστοποίηση στο tray."
 "Move Down" --->  ??? 
 "Move To Bottom" --->  ??? 
@@ -386,7 +388,6 @@
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml εξεραίσεις (%1%) με %2%."
 "\r\0" --->  ??? 
-"libTorrrent based client" --->  ??? 
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "μέχρι"

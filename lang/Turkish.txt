@@ -43,6 +43,7 @@
 "Are you sure you wish to delete all downloaded data?" --->  ??? 
 "Auto Sort" ---> "Otomatik Sırala"
 "Auto-managed" --->  ??? 
+"Binary Notions" --->  ??? 
 "BitTorrent" ---> "Bittorrent"
 "Bittorrent Event: %1%." ---> "Bittorrent ile İlgili Durum: %1%."
 "Block %2% of piece %3% downloading. (%1%)" --->  ??? 
@@ -134,6 +135,7 @@
 "Globals" ---> "Ge el"
 "HTTP seed" --->  ??? 
 "HTTP" --->  ??? 
+"Halite BitTorrent Client based on libTorrrent" --->  ??? 
 "Halite BitTorrent Client" ---> "Halite BitTorrent Aracı"
 "Halite Debug Dialog" ---> "Halite Hata Ayıklama Penceresi"
 "Halite importing IP ranges..." ---> "Halite IP aralığını içeri aktarıyor..."
@@ -155,6 +157,7 @@
 "Interested in us" ---> "Bizle ilgilendi"
 "Interesting" ---> "İlgileniyor"
 "Invalid torrent (%1%) from %2%." ---> "Geçersiz torrent (%1%) 'den %2%'ye."
+"Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Bu mesaj kaybolduktan ve program kapandıktan sonra Bittorrent oturumunun düzgün bir biçimde kapatılması biraz zaman alacaktır."
 "LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Dil (yeniden başlatma gerektirir)"
@@ -177,7 +180,6 @@
 "Max replies : " --->  ??? 
 "Maximum" ---> "Maksimum"
 "Message" ---> "Mesaj"
-"Metadata Plugin" --->  ??? 
 "Minimize to tray." ---> "Simge Durumuna Küçült"
 "Move Down" --->  ??? 
 "Move To Bottom" --->  ??? 
@@ -386,7 +388,6 @@
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "Xml İstisnası (%1%) ile %2%."
 "\r\0" --->  ??? 
-"libTorrrent based client" --->  ??? 
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "-"

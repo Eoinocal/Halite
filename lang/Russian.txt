@@ -43,6 +43,7 @@
 "Are you sure you wish to delete all downloaded data?" ---> "Вы уверены что хотите удалить все скачаные данные?"
 "Auto Sort" ---> "Автоматическая сортировка"
 "Auto-managed" --->  ??? 
+"Binary Notions" --->  ??? 
 "BitTorrent" ---> "БитТоррент"
 "Bittorrent Event: %1%." ---> "Событие битторрента: %1%."
 "Block %2% of piece %3% downloading. (%1%)" ---> "Блок %2% части %3% скачивается. (%1%)"
@@ -134,6 +135,7 @@
 "Globals" --->  ??? 
 "HTTP seed" --->  ??? 
 "HTTP" --->  ??? 
+"Halite BitTorrent Client based on libTorrrent" --->  ??? 
 "Halite BitTorrent Client" ---> "Халита БитТоррент Клиент"
 "Halite Debug Dialog" ---> "Диалог отладки Халита"
 "Halite importing IP ranges..." ---> "Халит импортирует IP адреса"
@@ -155,6 +157,7 @@
 "Interested in us" ---> "Заинтересован в нас"
 "Interesting" ---> "Интересен"
 "Invalid torrent (%1%) from %2%." ---> "Бракованый торрент (%1%) от %2%."
+"Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Чтобы корректно завершить сессию, Битторренту потребуется несколько мгновений и данное сообщение исчезнет, как только программа закроется."
 "LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Язык (необходим перезапуск)"
@@ -177,7 +180,6 @@
 "Max replies : " --->  ??? 
 "Maximum" ---> "Максимум"
 "Message" ---> "Сообщение"
-"Metadata Plugin" --->  ??? 
 "Minimize to tray." ---> "Свернуть в трей"
 "Move Down" --->  ??? 
 "Move To Bottom" --->  ??? 
@@ -386,7 +388,6 @@
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." ---> "XML исключение (%1%) с %2%."
 "\r\0" --->  ??? 
-"libTorrrent based client" --->  ??? 
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "в"

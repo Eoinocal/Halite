@@ -43,6 +43,7 @@
 "Are you sure you wish to delete all downloaded data?" ---> "Sind Sie sich sicher, dass Sie alle heruntergeladenen Daten löschen möchten?"
 "Auto Sort" ---> "autom. Sortierung"
 "Auto-managed" ---> "autom. verwaltet"
+"Binary Notions" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." ---> "Bittorrent-Ereignis: %1%."
 "Block %2% of piece %3% downloading. (%1%)" ---> "Block %2% des Teils %3% runterladend. (%1%)"
@@ -134,6 +135,7 @@
 "Globals" ---> "Globale Einstellungen"
 "HTTP seed" --->  ??? 
 "HTTP" --->  ??? 
+"Halite BitTorrent Client based on libTorrrent" --->  ??? 
 "Halite BitTorrent Client" ---> "Halite BitTorrent Client"
 "Halite Debug Dialog" ---> "Halite-Debugdialog"
 "Halite importing IP ranges..." ---> "Halite importiert IP-Bereiche..."
@@ -155,6 +157,7 @@
 "Interested in us" ---> "Interessiert an uns"
 "Interesting" ---> "Interessiert"
 "Invalid torrent (%1%) from %2%." ---> "fehlerhafter Torrent (%1%) von (%2%)"
+"Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Es wird einen Moment dauern, bis die BitTorrent-Sitzung sauber geschlossen wurde. Diese Mitteilung verschwindet dann, und das Programm wird beendet."
 "LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Sprache (Neustart erforderlich)"
@@ -177,7 +180,6 @@
 "Max replies : " ---> "Max. Antworten:"
 "Maximum" ---> "Maximum"
 "Message" ---> "Meldung"
-"Metadata Plugin" ---> "Metadaten-Plugin"
 "Minimize to tray." ---> "Ins Tray minimieren"
 "Move Down" ---> "Abwärts"
 "Move To Bottom" ---> "Nach unten"
@@ -386,7 +388,6 @@
 "Write Cache Hit Ratio :" ---> "Schreibzugriffe:"
 "Xml Exception (%1%) with %2%." ---> "XML-Fehler (%1%) bei %2%."
 "\r\0" ---> "\r\0"
-"libTorrrent based client" ---> "libTorrent-basierter Client"
 "random up to" ---> "zufällig bis"
 "resource.h\0" ---> "resource.h\0"
 "to" ---> "bis"

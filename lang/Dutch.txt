@@ -43,6 +43,7 @@
 "Are you sure you wish to delete all downloaded data?" --->  ??? 
 "Auto Sort" ---> "Auto Sorteren"
 "Auto-managed" --->  ??? 
+"Binary Notions" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." --->  ??? 
 "Block %2% of piece %3% downloading. (%1%)" ---> "Blok %2% van deel %3% aan het downloaden. (%1%)"
@@ -134,6 +135,7 @@
 "Globals" --->  ??? 
 "HTTP seed" --->  ??? 
 "HTTP" --->  ??? 
+"Halite BitTorrent Client based on libTorrrent" --->  ??? 
 "Halite BitTorrent Client" --->  ??? 
 "Halite Debug Dialog" ---> "Halite Debug Venster"
 "Halite importing IP ranges..." ---> "Halite importeert IP bereiken..."
@@ -155,6 +157,7 @@
 "Interested in us" ---> "Geinteresseerd in ons"
 "Interesting" ---> "Geinteresseerd"
 "Invalid torrent (%1%) from %2%." ---> "Ongeldige torrent (%1%) van %2%."
+"Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." --->  ??? 
 "LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Taal (herstart vereist)"
@@ -177,7 +180,6 @@
 "Max replies : " --->  ??? 
 "Maximum" ---> "Maximaal"
 "Message" ---> "Bericht"
-"Metadata Plugin" --->  ??? 
 "Minimize to tray." ---> "Minimaliseer naar systeemvak."
 "Move Down" --->  ??? 
 "Move To Bottom" --->  ??? 
@@ -386,7 +388,6 @@
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." --->  ??? 
 "\r\0" --->  ??? 
-"libTorrrent based client" --->  ??? 
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" ---> "tot"

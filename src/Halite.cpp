@@ -126,12 +126,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	try 
 	{
 	
-//	boost::filesystem::path::default_name_check(boost::filesystem::native);
 
 	try
 	{
-//	winstl::reg_key_w reg_path(HKEY_CURRENT_USER, L"SOFTWARE\\Halite");
-//	winstl::reg_value_w reg_path_value = reg_path.get_value(L"path");
+
+	ATL::CRegKey RegKey;
+
+	if (RegKey.Open(HKEY_CURRENT_USER, L"Software\\Halite") != ERROR_SUCCESS)
+		throw std::runtime_error("No registry path found, using portable mode");
+	if (RegKey.Close() != ERROR_SUCCESS)
+		throw std::runtime_error("Reg key close error, using portable mode");
 
 	if (hal::app().get_local_appdata())
 	{
@@ -140,10 +144,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 #	else
 		hal::app().set_working_directory(hal::app().get_local_appdata().get()/L"Halite");
 #	endif
+
+		halite().oneInst = true; // Only portable Halite supports multiple instances.
 	}
 
 	}
-	catch(...)
+	catch (...)
 	{
 		hal::event_log().post(shared_ptr<hal::EventDetail>(
 			new hal::EventMsg(L"No registry entry found, using portable mode", hal::event_logger::info)));
@@ -159,7 +165,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	HRESULT hRes = _Module.Init(NULL, hInstance);
 	assert (SUCCEEDED(hRes));	
 	
-//	hal::ini().load_data();
 	halite_log_file_.connect();
 	
 	{ WinAPIMutex oneInstance(HALITE_GUID);
@@ -226,7 +231,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		_Module.RemoveMessageLoop();
 
 		halite().save_to_ini();
-//		hal::ini().save_data();		
 	}
 	}
 

@@ -43,6 +43,7 @@
 "Are you sure you wish to delete all downloaded data?" ---> "Želite izbrisati vse prenešene podatke?"
 "Auto Sort" ---> "Avtomatsko razvrsti"
 "Auto-managed" --->  ??? 
+"Binary Notions" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." ---> "Bittorrent dogodek: %1%."
 "Block %2% of piece %3% downloading. (%1%)" ---> "Del %2% od skupaj %3% se trenutno prenaša. (%1%)"
@@ -134,6 +135,7 @@
 "Globals" --->  ??? 
 "HTTP seed" --->  ??? 
 "HTTP" --->  ??? 
+"Halite BitTorrent Client based on libTorrrent" --->  ??? 
 "Halite BitTorrent Client" ---> "Halite"
 "Halite Debug Dialog" ---> "Halite Debug"
 "Halite importing IP ranges..." ---> "Uvažam IP naslove..."
@@ -155,6 +157,7 @@
 "Interested in us" ---> "Zainteresiran"
 "Interesting" ---> "Zanimam"
 "Invalid torrent (%1%) from %2%." ---> "Neveljaven torrent (%1%) od %2%."
+"Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Prosimo počakajte nekaj sekund, da se program zapre."
 "LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Jezik (potrebuje ponovni zagon)"
@@ -177,7 +180,6 @@
 "Max replies : " --->  ??? 
 "Maximum" ---> "Največja"
 "Message" ---> "Sporočilo"
-"Metadata Plugin" --->  ??? 
 "Minimize to tray." ---> "Pomanjšaj v orodno vrstico"
 "Move Down" --->  ??? 
 "Move To Bottom" --->  ??? 
@@ -357,8 +359,8 @@
 "Tracker" ---> "Sledilnik"
 "Tracker:" ---> "Sledilnik:"
 "Trackers" ---> "Sledilniki"
-"Transferred:" ---> "Prenešeno:"
-"Type" ---> "Katgorija"
+"Transferred:" --->  ??? 
+"Type" --->  ??? 
 "UPnP router model (if recognised)." --->  ??? 
 "UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
@@ -386,7 +388,6 @@
 "Write Cache Hit Ratio :" --->  ??? 
 "Xml Exception (%1%) with %2%." --->  ??? 
 "\r\0" --->  ??? 
-"libTorrrent based client" --->  ??? 
 "random up to" --->  ??? 
 "resource.h\0" --->  ??? 
 "to" --->  ??? 
