@@ -174,7 +174,7 @@
 "Managed Seeding" ---> "Verwaltetes Verteilen"
 "Managed Torrent" ---> "Verwaltetes Torrent"
 "Managed" ---> "Verwaltet"
-"Match the listen port (now mandatory)" ---> "Entspricht dem  
+"Match the listen port (now mandatory)" ---> "Entspricht dem überwachten Port (Jetzt verpflichtend)"  
 "Max Size (MiB) :" ---> "Max. Größe (MiB):"
 "Max failures : " ---> "Max. Fehler:"
 "Max replies : " ---> "Max. Antworten:"
@@ -377,7 +377,7 @@
 "Upload" ---> "Upload"
 "Uploaded" ---> "Hinaufgeladen"
 "Use a proxy." ---> "Proxy verwenden"
-"Use this network interface" ---> "" 
+"Use this network interface" ---> "Dieses Netzwerk-Interface verwenden" 
 "User cancelled Torrent file creation" ---> "Benutzer hat Torrenterstellung abgebrochen"
 "Username : " ---> "Benutzer:"
 "Uuid" --->  "Uuid" 
