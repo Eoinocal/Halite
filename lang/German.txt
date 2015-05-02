@@ -13,7 +13,7 @@
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% Peers. (%1%)"
 "&Pause All" ---> "Alle &pausieren"
 "&Resume All" ---> "Alle fo&rtsetzen"
-"(C) Eoin O'Callaghan 2014" --->  ??? 
+"(C) Eoin O'Callaghan 2014" --->  "(C) Eoin O'Callaghan 2014" 
 "(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(D-U) %1$.2fKB/s - %2$.2fKB/s"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(D-U) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "Über"
@@ -26,7 +26,7 @@
 "Add New Tracker" ---> "Tracker hinzufügen"
 "Add New Web Seed or DHT Node" ---> "Neuen Webseed oder DHT-Node hinzufügen"
 "Add Torrent" ---> "Torrent hinzufügen"
-"Add as " --->  ??? 
+"Add as " --->  "Hinzufügen als " 
 "Add" ---> "Hinzufügen"
 "Adjust Queue Position" ---> "Warteschlangenposition anpassen"
 "Advanced GUI" ---> "Erweiterte GUI"
@@ -36,14 +36,14 @@
 "Allow only one instance to run" ---> "Nur eine Instanz erlauben"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Eine ungültige Verbindungsstrategie, %1%, wurde als Verschlüsselungseinstellung verwendet."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Ein ungültiges Verschlüsselungslevel, %1%, wurde als Verschlüsselungseinstellung verwendet."
-"Announce on all tiers" --->  ??? 
-"Announce to all trackers" --->  ??? 
+"Announce on all tiers" --->  "Allen Rängen bekannt geben" 
+"Announce to all trackers" --->  "Allen Trackern bekannt geben" 
 "Apply" ---> "Anwenden"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Sind Sie sich sicher, dass Sie Halite beenden möchten? Dies wird alle aktiven Torrents anhalten."
 "Are you sure you wish to delete all downloaded data?" ---> "Sind Sie sich sicher, dass Sie alle heruntergeladenen Daten löschen möchten?"
 "Auto Sort" ---> "autom. Sortierung"
 "Auto-managed" ---> "autom. verwaltet"
-"Binary Notions" --->  ??? 
+"Binary Notions" --->  "Binary Notions" 
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." ---> "Bittorrent-Ereignis: %1%."
 "Block %2% of piece %3% downloading. (%1%)" ---> "Block %2% des Teils %3% runterladend. (%1%)"
@@ -51,10 +51,10 @@
 "Both" ---> "Beide"
 "Cache Status, Current Total Size : %1.2f MiB" ---> "Cachestatus, derz. Gesamtgröße: %1.2f MiB"
 "Cache Write Size :" ---> "Cache-Schreibgröße:"
-"Calculating Piece Hashes..." ---> "Berechne Teilhashes..."
+"Calculating Piece Hashes..." ---> "Berechne Teilprüfsummen..."
 "Cancel" ---> "Abbrechen"
 "Checking Files" ---> "Prüfe Dateien"
-"Checking Resume Data" --->  ??? 
+"Checking Resume Data" ---> "Überprüfe Wiederherstellungsdaten" 
 "Choked" ---> "Gedrosselt"
 "Clear IP database" ---> "IP-Datenbank löschen"
 "Client" ---> "Client"
@@ -133,9 +133,9 @@
 "Generated Torrent Name (Cannot change)" ---> "Generierter Torrent-Name (nicht änderbar)"
 "Global Limits" ---> "Globale Grenzen"
 "Globals" ---> "Globale Einstellungen"
-"HTTP seed" --->  ??? 
-"HTTP" --->  ??? 
-"Halite BitTorrent Client based on libTorrrent" --->  ??? 
+"HTTP seed" --->  "HTTP Seed" 
+"HTTP" --->  "HTTP" 
+"Halite BitTorrent Client based on libTorrrent" --->  "Halite BitTorrent Client basiert auf libTorrrent" 
 "Halite BitTorrent Client" ---> "Halite BitTorrent Client"
 "Halite Debug Dialog" ---> "Halite-Debugdialog"
 "Halite importing IP ranges..." ---> "Halite importiert IP-Bereiche..."
@@ -144,7 +144,7 @@
 "Handshake" ---> "Handschlag"
 "Has choked us" ---> "Hat uns gedrosselt"
 "Hash failed for piece %2% of %1%." ---> "Hash für Teil %2% von %1% fehlgeschlagen."
-"Hash" --->  ??? 
+"Hash" --->  "Prüfsumme" 
 "IP Filter blocked %1%, %2%." ---> "IP-Filter blockiert %1%, %2%."
 "IP Filtering" ---> "IP-Filterung"
 "IP filter disabled" ---> "IP-Filter deaktiviert"
@@ -157,9 +157,9 @@
 "Interested in us" ---> "Interessiert an uns"
 "Interesting" ---> "Interessiert"
 "Invalid torrent (%1%) from %2%." ---> "fehlerhafter Torrent (%1%) von (%2%)"
-"Invalid" --->  ??? 
+"Invalid" --->  "Ungültig" 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Es wird einen Moment dauern, bis die BitTorrent-Sitzung sauber geschlossen wurde. Diese Mitteilung verschwindet dann, und das Programm wird beendet."
-"LT Trackers Plugin" --->  ??? 
+"LT Trackers Plugin" --->  "LT Trackers Erweiterung" 
 "Language (requires restart)" ---> "Sprache (Neustart erforderlich)"
 "Limit the no. of half-open connections" ---> "Anzahl der halboffenen Verbindungen begrenzen"
 "List of Trackers." ---> "Liste der Tracker"
@@ -174,7 +174,7 @@
 "Managed Seeding" ---> "Verwaltetes Verteilen"
 "Managed Torrent" ---> "Verwaltetes Torrent"
 "Managed" ---> "Verwaltet"
-"Match the listen port (now mandatory)" --->  ??? 
+"Match the listen port (now mandatory)" ---> "Entspricht dem  
 "Max Size (MiB) :" ---> "Max. Größe (MiB):"
 "Max failures : " ---> "Max. Fehler:"
 "Max replies : " ---> "Max. Antworten:"
@@ -194,13 +194,13 @@
 "New" ---> "Neu"
 "None" ---> "Keine"
 "Normal" ---> "Normal"
-"Not Started" --->  ??? 
+"Not Started" --->  "Nicht gestartet" 
 "Not currently set to take any action" ---> "Derzeit ist keine Aktion festgelegt"
 "Note. Compact Allocation is incompatible with File Selection" ---> "Info: kompakte Zuweisung ist mit der Dateiauswahl nicht möglich"
 "OK" ---> "OK"
 "OS reported error for file '%1%'" ---> "BS meldete Fehler für Datei '%1%'"
 "Ok" ---> "Ok"
-"On parole" --->  ??? 
+"On parole" --->  "Auf Bewährung"
 "Open &Halite" ---> "&Halite öffnen"
 "Open Download Folder" ---> "Downloadverz. öffnen"
 "Open a (single) port between : " ---> "Öffne einen (einzelnen) Port zwischen: "
@@ -232,7 +232,7 @@
 "Port" ---> "Port"
 "Ports" ---> "Ports"
 "Prefer RC4" ---> "RC4 bevorzugen"
-"Preparing" --->  ??? 
+"Preparing" --->  "Vorbereitung" 
 "Priority" ---> "Priorität"
 "Private" ---> "Privat"
 "Progress" ---> "Fortschritt"
@@ -271,7 +271,7 @@
 "Saving Torrent" ---> "Speichere Torrent"
 "Search branching : " ---> "Parallele Suchanfr.:"
 "Security" ---> "Sicherheit"
-"Seed URL" --->  ??? 
+"Seed URL" --->  "Seed URL" 
 "Seeding Limits" ---> "Uploadgrenzen"
 "Seeding" ---> "Verteile"
 "Seeds" ---> "Seeds"
@@ -294,7 +294,7 @@
 "Shutting down session" ---> "Beende Sitzung"
 "Size" ---> "Größe"
 "Smart Ban Plugin" ---> "Erweitertes Bannen"
-"Snubbed" --->  ??? 
+"Snubbed" --->  "abgewiesen" 
 "Standard exception (%1%) thrown from %2%." ---> "Standardausnahme (%1%) aufgetreten bei %2%."
 "Start Time" ---> "Startzeit"
 "Status" ---> "Status"
@@ -304,9 +304,9 @@
 "Stopped" ---> "Angehalten"
 "Stopping Torrents" ---> "Stoppe Torrents"
 "Stopping" ---> "Anhalten"
-"Subject to an optimistic unchoke" --->  ??? 
+"Subject to an optimistic unchoke" --->  "Unter Vorbehalt entdrosselt" 
 "Successfully %1%." ---> "%1% erfolgreich."
-"Super-seeding" --->  ??? 
+"Super-seeding" ---> "Superseeding" 
 "Supports extensions" ---> "unterstützt Erweiterungen"
 "SysDateTimePick32" ---> "SysDateTimePick32"
 "Take no action" ---> "Keine Aktion"
@@ -322,26 +322,26 @@
 "Time ratio limit:" ---> "Zeit-Ratio-Grenze:"
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" ---> "Restzeit: %1% Stunde(n), %2% Minute(n) und %3% Sekunde(n)"
 "Time" ---> "Zeit"
-"Timeout (seconds) : " --->  ??? 
-"Toggle Superseeding" --->  ??? 
+"Timeout (seconds) : " --->  "Timeout (Sekunden)" 
+"Toggle Superseeding" --->  "Superseeding Umschalter" 
 "Toolbar2k.bmp" ---> "Toolbar2k.bmp"
-"Torrent %1% added." --->  ??? 
-"Torrent %1% completed." --->  ??? 
-"Torrent %1% file %2% completed." --->  ??? 
-"Torrent %1% file %2% renamed failed." --->  ??? 
-"Torrent %1% file %2% renamed to %3%." --->  ??? 
+"Torrent %1% added." ---> "Torrent %1% hinzugefügt."  
+"Torrent %1% completed." ---> "Torrent %1% abgeschlossen." 
+"Torrent %1% file %2% completed." ---> "Torrent %1% Datei %2% abgeschlossen." 
+"Torrent %1% file %2% renamed failed." ---> "Torrent %1% Datei %2% umbenennen fehlgeschlagen." 
+"Torrent %1% file %2% renamed to %3%." ---> "Torrent %1% Datei %2% umbenannt zu %3%."
 "Torrent %1% finished." ---> "Torrent %1% fertiggestellt."
-"Torrent %1% metadata failed!" --->  ??? 
-"Torrent %1% metadata recieved." --->  ??? 
+"Torrent %1% metadata failed!" ---> "Torrent %1% metadata fehlgeschlagen!" 
+"Torrent %1% metadata recieved." ---> "Torrent %1% metadata empfangen." 
 "Torrent %1% paused." ---> "Torrent %1% pausiert."
-"Torrent %1% storage moved." --->  ??? 
+"Torrent %1% storage moved." --->  "Torrent %1% verschoben." 
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent-(%1%-)Ausnahme abgefangen: %2% in %3%."
-"Torrent Completed!" --->  ??? 
+"Torrent Completed!" --->  "Torrent abgeschlossen!" 
 "Torrent Defaults" ---> "Torrent-Standards"
 "Torrent File" ---> "Torrentdatei"
 "Torrent Root" ---> "Torrent-Root"
 "Torrent and Data" ---> "Torrent und Daten"
-"Torrent completed balloon" --->  ??? 
+"Torrent completed balloon" --->  "Torrent abgeschlossen Meldung" 
 "Torrent connection limits:" ---> "Verbindungslimits:"
 "Torrent error: %1% (%2%)" ---> "Torrentfehler: %1% (%2%)"
 "Torrent save folder:" ---> "Torrent-Speicherordner:"
@@ -364,27 +364,27 @@
 "UPnP router model (if recognised)." ---> "UPnP-Routermodell (falls erkannt)."
 "UPnP" ---> "UPnP"
 "URL Seed %2%, %3%. (%1%)" ---> "URL-Seed %2%, %3%. (%1%)"
-"URL seed" --->  ??? 
+"URL seed" --->  "URL seed" 
 "URL" ---> "URL"
-"URL: " --->  ??? 
+"URL: " --->  "URL: " 
 "UnPlug and Play" ---> "UPnP"
 "Unicode exception: %1%." ---> "Unicode-Ausnahmefehler: %1%."
 "Unmanaged" ---> "Unverwaltet"
 "Up" ---> "Hoch"
 "Update in:" ---> "Update in:"
 "Upload Rate (KB/s) :" ---> "Uploadrate (KB/s):"
-"Upload only" --->  ??? 
+"Upload only" --->  "Nur hochladen" 
 "Upload" ---> "Upload"
 "Uploaded" ---> "Hinaufgeladen"
 "Use a proxy." ---> "Proxy verwenden"
-"Use this network interface" --->  ??? 
+"Use this network interface" ---> "" 
 "User cancelled Torrent file creation" ---> "Benutzer hat Torrenterstellung abgebrochen"
 "Username : " ---> "Benutzer:"
-"Uuid" --->  ??? 
+"Uuid" --->  "Uuid" 
 "Warning" ---> "Warnung"
 "Web Seed" ---> "Webseed"
 "Web Seeds and DHT Nodes" ---> "Webseeds und DHT-Nodes"
-"Web Seeds" --->  ??? 
+"Web Seeds" --->  "Webseeds" 
 "Write Cache Hit Ratio :" ---> "Schreibzugriffe:"
 "Xml Exception (%1%) with %2%." ---> "XML-Fehler (%1%) bei %2%."
 "\r\0" ---> "\r\0"
@@ -393,4 +393,4 @@
 "to" ---> "bis"
 "uTorrent Metadata Plugin" ---> "μTorrent-Metadaten"
 "uTorrent Peer Exchange Plugin" ---> "μTorrent-Quellenaustausch"
-"∞" --->  ??? 
+"∞" --->  "∞" 
