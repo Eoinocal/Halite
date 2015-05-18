@@ -187,7 +187,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	setCorrectDialog();
 	
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"Starting BitTorrent event reciever ...")));
+		new hal::EventMsg(L"Starting BitTorrent event receiver ...")));
 	hal::bittorrent().start_event_receiver();
 
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
@@ -340,7 +340,7 @@ void HaliteWindow::issueUiUpdate()
 LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
 {
 	hal::event_log().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"I recieved data.")));
+		new hal::EventMsg(L"I received data.")));
 		
 	switch (pCSD->dwData)
 	{
@@ -349,7 +349,7 @@ LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
 			wstring filename(static_cast<wchar_t*>(pCSD->lpData), pCSD->cbData/sizeof(wchar_t));
 			
 			hal::event_log().post(shared_ptr<hal::EventDetail>(
-				new hal::EventMsg((hal::wform(L"Recieved data: %1%.") % filename), hal::event_logger::info)));
+				new hal::EventMsg((hal::wform(L"Received data: %1%.") % filename), hal::event_logger::info)));
 		
 			ProcessFile(filename.c_str());
 			break;

@@ -206,7 +206,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		HAL_DEV_MSG(hal::wform(L"Initial Path: %1%.") % hal::app().initial_path());
 				
 		hal::event_log().post(shared_ptr<hal::EventDetail>(
-			new hal::EventMsg((hal::wform(L"Working Diretory: %1%.") % hal::app().get_working_directory()), hal::event_logger::info)));		
+			new hal::EventMsg((hal::wform(L"Working Directory: %1%.") % hal::app().get_working_directory()), hal::event_logger::info)));		
 		
 		WTL::CMessageLoop theLoop;
 		_Module.AddMessageLoop(&theLoop);

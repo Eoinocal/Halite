@@ -223,4 +223,4 @@ private:
 	L& list_;
 };
 
-} // anmespace WTLx
+} // namespace WTLx
