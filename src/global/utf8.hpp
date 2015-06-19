@@ -63,7 +63,7 @@ wchar_t decode_utf8(InputIterator &iter, InputIterator last)
 		ret = (byte1 << 12) | (byte2 << 6) | byte3;
 	}
 	// TODO: support surrogate pairs
-	else throw std::runtime_error("UTF-8 not convertable to UTF-16");
+	else throw std::runtime_error("UTF-8 not convertible to UTF-16");
 
 	return ret;
 }

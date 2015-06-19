@@ -47,7 +47,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	RECT rc; GetClientRect(&rc);
 	SetMenu(0);	
 	
-	//Init ToolBar
+	// Init ToolBar
 	HWND hWndToolBar = CreateSimpleToolBarCtrl(m_hWnd, IDR_MAINFRAME, FALSE, ATL_SIMPLE_TOOLBAR_PANE_STYLE);
 	
 	// Init ReBar
@@ -218,7 +218,7 @@ void HaliteWindow::issueUiUpdate()
 LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
 {
 	hal::event().post(shared_ptr<hal::EventDetail>(
-		new hal::EventMsg(L"I recieved data.", hal::Event::info)));
+		new hal::EventMsg(L"I received data.", hal::Event::info)));
 		
 	switch (pCSD->dwData)
 	{
@@ -227,7 +227,7 @@ LRESULT HaliteWindow::OnCopyData(HWND, PCOPYDATASTRUCT pCSD)
 			wstring filename(static_cast<wchar_t*>(pCSD->lpData), pCSD->cbData/sizeof(wchar_t));
 			
 			hal::event().post(shared_ptr<hal::EventDetail>(
-				new hal::EventMsg((wformat(L"Recieved data: %1%.") % filename), hal::Event::info)));
+				new hal::EventMsg((wformat(L"Received data: %1%.") % filename), hal::Event::info)));
 		
 			ProcessFile(filename.c_str());
 			break;
@@ -357,7 +357,7 @@ LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 LRESULT HaliteWindow::OnFileNew(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 /*	MessageBox(L"This feature is under development and currently disabled", 
-		L"Feature not availible", 0);
+		L"Feature not available", 0);
 	return 0;
 	
 	CSSFileDialog dlgOpen(TRUE, NULL, NULL, OFN_HIDEREADONLY, L"All Files|*.*|", m_hWnd);

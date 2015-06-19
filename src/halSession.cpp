@@ -720,7 +720,7 @@ void bit_impl::execute_callback(const boost::system::error_code& e, action_callb
 
 void bit_impl::schedual_action(boost::posix_time::ptime time, bit::timeout_actions action)
 {
-	HAL_DEV_MSG(hal::wform(L"Schedual absolute action %1% at %2%") % action % time);
+	HAL_DEV_MSG(hal::wform(L"Schedule absolute action %1% at %2%") % action % time);
 
 	boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
 	assert(time > now);
@@ -730,7 +730,7 @@ void bit_impl::schedual_action(boost::posix_time::ptime time, bit::timeout_actio
 
 void bit_impl::schedual_action(boost::posix_time::time_duration duration, bit::timeout_actions action)
 {
-	HAL_DEV_MSG(hal::wform(L"Schedual relative action %1% in %2%") % action % duration);
+	HAL_DEV_MSG(hal::wform(L"Schedule relative action %1% in %2%") % action % duration);
 
 	schedual_cancel();
 
@@ -740,7 +740,7 @@ void bit_impl::schedual_action(boost::posix_time::time_duration duration, bit::t
 
 void bit_impl::schedual_callback(boost::posix_time::ptime time, action_callback_t action)
 {
-	HAL_DEV_MSG(hal::wform(L"Schedual absolute callback %1%") % time);
+	HAL_DEV_MSG(hal::wform(L"Schedule absolute callback %1%") % time);
 
 	boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
 	assert(time > now);
@@ -750,7 +750,7 @@ void bit_impl::schedual_callback(boost::posix_time::ptime time, action_callback_
 
 void bit_impl::schedual_callback(boost::posix_time::time_duration duration, action_callback_t action)
 {
-	HAL_DEV_MSG(hal::wform(L"Schedual relative callback %1%") % duration);
+	HAL_DEV_MSG(hal::wform(L"Schedule relative callback %1%") % duration);
 
 	schedual_cancel();
 
@@ -761,7 +761,7 @@ void bit_impl::schedual_callback(boost::posix_time::time_duration duration, acti
 void bit_impl::schedual_cancel()
 {
 	if (action_timer_.cancel() > 0)
-		{HAL_DEV_MSG(L"Schedualed action canceled");}
+		{HAL_DEV_MSG(L"Scheduled action canceled");}
 }
 
 void bit_impl::start_alert_handler()
@@ -789,7 +789,7 @@ void bit_impl::service_thread(size_t id)
 {
 	win32_exception::install_handler();
 
-	HAL_DEV_MSG(hal::wform(L"Begining a service thread, id %1%") % id);
+	HAL_DEV_MSG(hal::wform(L"Beginning a service thread, id %1%") % id);
 
 	for ( ; ; )
 	{

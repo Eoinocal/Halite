@@ -332,7 +332,7 @@
 "Torrent %1% file %2% renamed to %3%." --->  ??? 
 "Torrent %1% finished." --->  ??? 
 "Torrent %1% metadata failed!" --->  ??? 
-"Torrent %1% metadata recieved." --->  ??? 
+"Torrent %1% metadata received." --->  ??? 
 "Torrent %1% paused." --->  ??? 
 "Torrent %1% storage moved." --->  ??? 
 "Torrent (%1%) exception caught: %2% from %3%." ---> "Torrent (%1%) exceção detectada: %2% do %3%."

@@ -75,7 +75,7 @@ begin
 			if (not ignore_array.include?(text_string))				
 				
 				if text_string.include?(';')
-					# Split semicolon deliminated strings
+					# Split semicolon delimited strings
 					text_string.delete('"').split(';').each {|s| resource_array.push('"'+s+'"') }					
 				else
 					resource_array.push(text_string)					
@@ -110,7 +110,7 @@ ARGV.each do |arg|
 			lang_line.scan(/(\".*?\")\s*--->\s*(\".*?\")/) do |original, trans| 
 				
 				if original.include?(';')
-					# Split semicolon deliminated strings
+					# Split semicolon delimited strings
 					
 					o = original.delete('"').split(';')
 					t = trans.delete('"').split(';')
@@ -135,7 +135,7 @@ ARGV.each do |arg|
 			res_lang.gsub!(/\".*?\"/) do |text_string|
 
 				if text_string.include?(';')
-					# Rebuild semicolon deliminated strings
+					# Rebuild semicolon delimited strings
 				
 					tmp = ''
 					
@@ -201,7 +201,7 @@ ARGV.each do |arg|
 			lang_file.print('"English.rtf"' + " --->  ??? \n")
 		end	
 		
-		# Process rest alphabeticially [sic].
+		# Process rest alphabetically [sic].
 
 		resource_array.sort.each do |value| 
 			if lang_map.has_key?(value)	
@@ -218,4 +218,4 @@ ARGV.each do |arg|
 	compile_dlls(arg)
 end
 
-puts " - Completed sucessfully"	
+puts " - Completed successfully"	
