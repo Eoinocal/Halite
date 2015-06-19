@@ -69,9 +69,9 @@ namespace hal
 		return fmter;
 	}
 	
-	inline path path_to_utf8(const wpath& wp)
+	inline string path_to_utf8(const wpath& wp)
 	{
-		return path(wp.string());
+		return hal::to_utf8(wp.wstring());
 	}
 
 	inline wpath path_from_utf8(const path& p)

@@ -147,9 +147,11 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 		if (!p.resume_data.empty())
 			{HAL_DEV_MSG(L" -- Using resume data");}
 
-		p.save_path = t_i.save_directory_.string();
+		p.save_path = path_to_utf8(t_i.save_directory_);
 		p.storage_mode = hal_allocation_to_libt(t_i.allocation_);
-		p.flags = (evt.pause() ? libt::add_torrent_params::flag_paused : 0) | 
+
+		p.flags = 
+			(evt.pause() ? libt::add_torrent_params::flag_paused : 0) | 
 			(t_i.managed_ ? libt::add_torrent_params::flag_auto_managed : 0);
 
 		// This ordering is important
@@ -486,7 +488,7 @@ sc::result not_started::react(const ev_start& evt)
 					try {
 
 					HAL_DEV_MSG(hal::wform(L"Using torrent info data file %1%") % torrent_info_file);
-					t_i.info_memory_reset(new libt::torrent_info(hal::to_utf8(torrent_info_file.wstring())), l);
+					t_i.info_memory_reset(new libt::torrent_info(path_to_utf8(torrent_info_file)), l);
 
 					}
 					catch (const libt::libtorrent_exception&)
@@ -499,7 +501,7 @@ sc::result not_started::react(const ev_start& evt)
 					upgrade_to_unique_lock up_l(l);
 
 					HAL_DEV_MSG(L"Using torrent file");
-					t_i.info_memory_reset(new libt::torrent_info(hal::to_utf8(torrent_file.wstring())), l);
+					t_i.info_memory_reset(new libt::torrent_info(path_to_utf8(torrent_file)), l);
 				}
 			}
 

@@ -400,6 +400,8 @@ public:
 		using boost::serialization::make_nvp;
 		switch (version)
 		{
+		case 9:	
+			ar & make_nvp("default_allocation_type", default_allocation_type_);
 		case 8:			
 			ar & make_nvp("announce_all_trackers", announce_all_trackers_);
 			ar & make_nvp("announce_all_tiers", announce_all_tiers_);
@@ -473,6 +475,7 @@ private:
 
 	hal::connections torrent_defaults_;
 
+	hal::bit::allocations default_allocation_type_;
 	std::wstring default_save_folder_;
 	std::wstring default_move_folder_;
 	bool use_move_to_;
@@ -523,7 +526,7 @@ Config& config();
 
 } // namespace hal
 
-BOOST_CLASS_VERSION(hal::Config, 8)
+BOOST_CLASS_VERSION(hal::Config, 9)
 BOOST_CLASS_VERSION(hal::queue_settings, 2)
 BOOST_CLASS_VERSION(hal::timeouts, 2)
 BOOST_CLASS_VERSION(hal::dht_settings, 2)

@@ -73,8 +73,8 @@ torrent_internal::torrent_internal(const wpath& filename, const wpath& save_dire
 		TORRENT_INTERNALS_DEFAULTS,
 #	pragma warning (pop)
 	uuid_(boost::uuids::random_generator()()),
-	save_directory_(save_directory.string()),
-	move_to_directory_(move_to_directory.string()),
+	save_directory_(save_directory),
+	move_to_directory_(move_to_directory),
 	allocation_(alloc)
 {
 	upgrade_lock l(mutex_);
@@ -84,7 +84,7 @@ torrent_internal::torrent_internal(const wpath& filename, const wpath& save_dire
 	state(l, torrent_details::torrent_stopped);
 	assert(the_session_);
 
-	prepare(l, new libt::torrent_info(hal::to_utf8(filename.wstring())));
+	prepare(l, new libt::torrent_info(path_to_utf8(filename)));
 }
 
 torrent_internal::torrent_internal(const wstring& uri, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory) :
@@ -93,8 +93,8 @@ torrent_internal::torrent_internal(const wstring& uri, const wpath& save_directo
 		TORRENT_INTERNALS_DEFAULTS,
 #	pragma warning (pop)
 	uuid_(boost::uuids::random_generator()()),
-	save_directory_(save_directory.string()),
-	move_to_directory_(move_to_directory.string()),
+	save_directory_(save_directory),
+	move_to_directory_(move_to_directory),
 	allocation_(alloc),
 	magnet_uri_(to_utf8(uri))
 {
@@ -198,7 +198,7 @@ void torrent_internal::alert_finished()
 		{				
 			upgrade_to_unique_lock up_l(l);
 
-			handle_.move_storage(move_to_directory_.string());
+			handle_.move_storage(path_to_utf8(move_to_directory_));
 
 			save_directory_ = move_to_directory_;
 		}
@@ -720,9 +720,8 @@ void torrent_internal::extract_hash(upgrade_lock& l)
 	{
 		HAL_DEV_MSG(L"    from magnet uri");
 		libt::add_torrent_params p;
-
-	//	p.ti = info_memory(l);
-		p.save_path = path_to_utf8(save_directory_).string();
+		
+		p.save_path = path_to_utf8(save_directory_);
 		p.storage_mode = hal_allocation_to_libt(allocation_);
 
 		p.flags = libt::add_torrent_params::flag_paused || libt::add_torrent_params::flag_update_subscribe;
@@ -730,8 +729,7 @@ void torrent_internal::extract_hash(upgrade_lock& l)
 		libt::error_code ec;		
 		libt::parse_magnet_uri(magnet_uri_, p, ec);
 			
-		libt::torrent_handle h = (ec) ? libt::torrent_handle() :
-			(*the_session_)->add_torrent(p, ec);
+		libt::torrent_handle h = (ec) ? libt::torrent_handle() : (*the_session_)->add_torrent(p, ec);
 
 	//	libt::torrent_handle h = libt::add_magnet_uri(**the_session_, magnet_uri_, p);
 			
@@ -939,8 +937,7 @@ void torrent_internal::apply_trackers(upgrade_lock& l)
 			
 			BOOST_FOREACH (const tracker_detail& tracker, trackers_)
 			{
-				trackers.push_back(
-					libt::announce_entry(hal::to_utf8(tracker.url)));
+				trackers.push_back(libt::announce_entry(hal::to_utf8(tracker.url)));
 				trackers.back().tier = tracker.tier;
 			}
 			handle_.replace_trackers(trackers);
@@ -955,13 +952,9 @@ void torrent_internal::apply_tracker_login(upgrade_lock& l)
 	if (in_session(l))
 	{
 		if (!tracker_username_.empty())
-		{
-			handle_.set_tracker_login(hal::to_utf8(tracker_username_),
-				hal::to_utf8(tracker_password_));
-		}
+			handle_.set_tracker_login(hal::to_utf8(tracker_username_), hal::to_utf8(tracker_password_));
 
-		HAL_DEV_MSG(hal::wform(L"Applying Tracker Login User: %1% with password")
-			% tracker_username_);
+		HAL_DEV_MSG(hal::wform(L"Applying Tracker Login User: %1% with password") % tracker_username_);
 	}
 }
 

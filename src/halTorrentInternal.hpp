@@ -62,7 +62,7 @@ inline std::pair<std::string, std::string> extract_names(const wpath &file)
 {
 	if (fs::exists(file)) 
 	{	
-		libt::torrent_info info(file.string());
+		libt::torrent_info info(path_to_utf8(file));
 
 		std::string name = info.name();	
 		std::string filename = name;
@@ -481,7 +481,7 @@ public:
 		{
 			upgrade_to_unique_lock up_l(l);
 
-			handle_.move_storage(s.string());
+			handle_.move_storage(path_to_utf8(s));
 			
 			save_directory_ = s;
 		}
@@ -510,7 +510,7 @@ public:
 			{
 				upgrade_to_unique_lock up_l(l);
 
-				handle_.move_storage(m.string());
+				handle_.move_storage(path_to_utf8(m));
 				save_directory_ = move_to_directory_ = m;
 			}
 		}

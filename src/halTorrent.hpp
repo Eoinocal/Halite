@@ -82,9 +82,9 @@ public:
 
 	enum allocations
 	{
-		sparse_allocation = 1,
-		compact_allocation,
-		full_allocation
+		compact_allocation = 0,
+		full_allocation = 1,
+		sparse_allocation = 2
 	};
 
 	enum queue_adjustments

@@ -370,7 +370,7 @@ void HaliteWindow::ProcessFile(wstring path_or_uri)
 	bool use_move_to = hal::config().use_move_to_;
 	bool startPaused = false;
 	bool managed = true;
-	hal::bit::allocations allocation_type = hal::bit::sparse_allocation;
+	hal::bit::allocations allocation_type = hal::config().default_allocation_type_;
 	bool is_magnet = boost::find_first(path_or_uri, L"magnet:");
 	
 	if (!boost::filesystem::exists(default_save_folder))
@@ -389,8 +389,7 @@ void HaliteWindow::ProcessFile(wstring path_or_uri)
 	if (is_magnet) 
 	{
 		if (use_move_to)
-			hal::bittorrent().add_torrent(path_or_uri, wpath(default_save_folder), startPaused, managed, allocation_type, 
-				wpath(default_move_folder));
+			hal::bittorrent().add_torrent(path_or_uri, wpath(default_save_folder), startPaused, managed, allocation_type, wpath(default_move_folder));
 		else
 			hal::bittorrent().add_torrent(path_or_uri, wpath(default_save_folder), startPaused, managed, allocation_type);
 	}
@@ -399,8 +398,7 @@ void HaliteWindow::ProcessFile(wstring path_or_uri)
 		wpath file(path_or_uri, boost::filesystem::native);
 
 		if (use_move_to)
-			hal::bittorrent().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type, 
-				wpath(default_move_folder));
+			hal::bittorrent().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type, wpath(default_move_folder));
 		else
 			hal::bittorrent().add_torrent(file, wpath(default_save_folder), startPaused, managed, allocation_type);
 	}

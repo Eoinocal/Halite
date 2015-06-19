@@ -23,6 +23,7 @@ Config::Config() :
 	hal::IniBase<Config>(L"globals/bittorrent", L"config"),
 	globals_(),
 	torrent_defaults_(),
+	default_allocation_type_(hal::bit::allocations::sparse_allocation),
 	port_range_(10000,30000),
 	use_port_range_(true),
 	randomize_port_(true),

@@ -621,7 +621,7 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 			i != e; ++i)
 	{
 		HAL_DEV_MSG(hal::wform(L"file path: %1%, size: %2%") % (*i).first % (*i).second);
-		fs.add_file((*i).first.string(), (*i).second);
+		fs.add_file(path_to_utf8((*i).first), (*i).second);
 	}
 
 	int piece_size = params.piece_size;
@@ -630,7 +630,7 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 	libt::create_torrent t(fs, piece_size);
 	
 /*	boost::scoped_ptr<libt::storage_interface> store(
-		libt::default_storage_constructor(t_info, to_utf8(params.root_path.string()),
+		libt::default_storage_constructor(t_info, path_to_utf8(params.root_path),
 			f_pool));
 */
 	HAL_DEV_MSG(L"Trackers");
@@ -657,7 +657,7 @@ bool bit_impl::create_torrent(const create_torrent_params& params, fs::wpath out
 
 	HAL_DEV_MSG(hal::wform(L"root_path: %1%") % params.root_path.wstring());
 
-	set_piece_hashes(t, params.root_path.string(),
+	set_piece_hashes(t, path_to_utf8(params.root_path),
 		boost::bind(fn, _1, t.num_pieces(), hal::app().res_wstr(HAL_NEWT_HASHING_PIECES)));
 
 	t.set_creator(to_utf8(params.creator).c_str());
@@ -1282,7 +1282,7 @@ void bit_impl::alert_handler()
 			event_log().post(shared_ptr<EventDetail>(\
 				new EventMsg(L"null_torrent exception", event_logger::info)));
 		}
-		catch(const std::exception& e)
+		catch(const std::exception& /* e */)
 		{
 			// These are logged as debug because they are rarely important to act on!
 	//		event_log().post(shared_ptr<EventDetail>(\
