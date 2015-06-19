@@ -60,6 +60,7 @@
 "Client" ---> "Client"
 "Close to tray" ---> "Fermer dans la barre de notifications"
 "Comment" ---> "Commentaire"
+"Compact Allocation" --->  ??? 
 "Completed" ---> "Complété"
 "Completed:" ---> "Complété:"
 "Confirm on close" ---> "Confirmer en quittant"
@@ -128,6 +129,7 @@
 "Finished" ---> "Terminé"
 "Force Close" ---> "Forcer la Fermeture"
 "Forced" ---> "Forcé"
+"Full Allocation" --->  ??? 
 "General Settings" ---> "Paramètres généraux"
 "General" ---> "Général"
 "Generated Torrent Name (Cannot change)" ---> "Nom généré pour le torrent (non editable)"
@@ -295,6 +297,7 @@
 "Size" ---> "Taille"
 "Smart Ban Plugin" --->  ??? 
 "Snubbed" --->  ??? 
+"Sparse Allocation" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Levée d'exception standard (%1%) dans (%2%)."
 "Start Time" ---> "Heure Démarr."
 "Status" ---> "Statut"
@@ -393,4 +396,3 @@
 "to" ---> "à"
 "uTorrent Metadata Plugin" --->  ??? 
 "uTorrent Peer Exchange Plugin" --->  ??? 
-"∞" --->  ??? 

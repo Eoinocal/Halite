@@ -318,7 +318,7 @@ public:
 	void get_all_file_details(const uuid&, file_details_vec&);
 	
 	void resume_all();
-	void close_all(boost::optional<report_num_active> fn);
+	void close_all(boost::optional<report_num_active> fn = boost::optional<report_num_active>{});
 	
 	bool is_torrent(const uuid&);
 	

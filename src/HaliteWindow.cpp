@@ -438,7 +438,7 @@ void HaliteWindow::ShutdownThread()
 	{
 	win32_exception::install_handler();
 
-	hal::bittorrent().close_all(0);
+	hal::bittorrent().close_all();
 
 	hal::bittorrent().stop_event_receiver();
 	Sleep(500);

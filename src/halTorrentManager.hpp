@@ -118,7 +118,6 @@ public:
 		ini_class_t(L"bittorrent", L"torrent_manager"),
 		work_file_(L"bittorrent.xml", boost::lexical_cast<boost::uuids::uuid>("7246289F-C92C-4781-A574-A1E944FD1183"), 1),
 		scheduler_(false)
-//		ini_(ini)
 	{}
 
 	~torrent_manager()
@@ -170,7 +169,7 @@ public:
 
 	void start_all()
 	{
-		HAL_DEV_MSG(wform(L"Manager start all %1%") % torrents_.size());
+		HAL_DEBUG_MSG(wform(L"Manager start all %1%") % torrents_.size());
 
 		for (torrent_by_uuid::iterator i= torrents_.get<by_uuid>().begin(), e = torrents_.get<by_uuid>().end(); i != e; /**/)
 	//	for (const torrent_holder& t : torrents_)
@@ -187,19 +186,17 @@ public:
 				if (!t.hash.is_all_zeros())
 					if (std::count(torrents_.get<by_hash>().begin(), torrents_.get<by_hash>().end(), t) > 1)
 					{
-						hal::event_log().post(shared_ptr<hal::EventDetail>(
-							new hal::EventDebug(hal::event_logger::debug, L"Erasing duplicate torrent")));
-
+						HAL_DEV_MSG(L"Erasing duplicate torrent");
 						erase(i++);
+
 						continue;
 					}
 
 				if (t.torrent && t.torrent->id() != t.id)
 				{
-					hal::event_log().post(shared_ptr<hal::EventDetail>(
-						new hal::EventDebug(hal::event_logger::debug, L"ID mismatch, Erasing torrent")));
-					
+					HAL_DEV_MSG(L"ID mismatch, Erasing torrent");					
 					erase(i++);
+
 					continue;
 				}
 										
@@ -235,7 +232,7 @@ public:
 
 	void terminate_all()
 	{	
-		HAL_DEV_MSG(wform(L"Manager terminate all %1%") % torrents_.size());
+		HAL_DEBUG_MSG(wform(L"Manager terminate all %1%") % torrents_.size());
 
 		for (torrent_by_uuid::iterator i = torrents_.get<by_uuid>().begin(), 
 			e = torrents_.get<by_uuid>().end(); i!=e; ++i)
@@ -473,10 +470,9 @@ private:
 		auto p = std::equal_range(torrents_.get<by_hash>().begin(), torrents_.get<by_hash>().end(), torrent_holder(hash));
 		auto d = std::distance(p.first, p.second);
 				
-		hal::event_log().post(shared_ptr<hal::EventDetail>(
-			new hal::EventDebug(hal::event_logger::debug, (hal::wform(L"%1% matching torrents for hash %2%") 
+		HAL_DEV_MSG(hal::wform(L"%1% matching torrents for hash %2%") 
 				% d
-				% from_utf8(libt::base32encode(std::string((char const*)&hash[0], 20)))).str())));
+				% from_utf8(libt::base32encode(std::string((char const*)&hash[0], 20))));
 
 		if (d == 0)
 		{			

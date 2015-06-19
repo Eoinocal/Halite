@@ -60,6 +60,7 @@
 "Client" --->  ??? 
 "Close to tray" ---> "Sluit naar systeemvak"
 "Comment" ---> "Commentaar"
+"Compact Allocation" --->  ??? 
 "Completed" ---> "Voltooid"
 "Completed:" ---> "Voltooid:"
 "Confirm on close" ---> "Bevestig bij sluiten"
@@ -128,6 +129,7 @@
 "Finished" ---> "Voltooid"
 "Force Close" ---> "Forceer sluiten"
 "Forced" ---> "Forceren"
+"Full Allocation" --->  ??? 
 "General Settings" ---> "Algemene Opties"
 "General" ---> "Algemeen"
 "Generated Torrent Name (Cannot change)" ---> "Gegenereerde Torrent naam (Kan niet veranderen)"
@@ -295,6 +297,7 @@
 "Size" ---> "Grootte"
 "Smart Ban Plugin" --->  ??? 
 "Snubbed" --->  ??? 
+"Sparse Allocation" --->  ??? 
 "Standard exception (%1%) thrown from %2%." --->  ??? 
 "Start Time" ---> "Start Tijd"
 "Status" ---> "Status"
@@ -393,4 +396,3 @@
 "to" ---> "tot"
 "uTorrent Metadata Plugin" --->  ??? 
 "uTorrent Peer Exchange Plugin" --->  ??? 
-"∞" --->  ??? 

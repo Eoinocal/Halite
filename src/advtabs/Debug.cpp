@@ -42,6 +42,8 @@ BOOL AdvDebugDialog::DoDataExchange(BOOL bSaveAndValidate, UINT nCtlID)
 	DDX_CHECK(HAL_DEBUGFILECHECK, halite().logToFile_)
 	DDX_CHECK(HAL_DEBUGDEBUGCHECK, halite().logDebug_)
 
+	hal::event_log().set_debug_logging(halite().logDebug_);
+
 	return TRUE;
 }
 
@@ -53,9 +55,3 @@ void AdvDebugDialog::onClose()
 	}
 }
 
-void AdvDebugDialog::onDebugOption(UINT, int, HWND)
-{
-	DoDataExchange(true);
-
-	hal::event_log().set_debug_logging(halite().logDebug_);
-}

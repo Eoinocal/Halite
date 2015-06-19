@@ -150,14 +150,10 @@ public:
 		{
 		shared_ptr<hal::EventDetail> event(*events_.begin());
 
-		wstring timeStamp = lexical_cast<wstring>(event->timeStamp());
+		int itemPos = AddItem(0, 0, lexical_cast<wstring>(event->timeStamp()).c_str());
+		SetItemText(itemPos, 1, event->msg().c_str());
 
-		int itemPos = AddItem(0, 0, timeStamp.c_str());
-
-		SetItemText(itemPos, 1,	event->msg().c_str());
-
-		SetItemText(itemPos, 2,
-			hal::event_logger::eventLevelToStr(event->level()).c_str());
+		SetItemText(itemPos, 2, hal::event_logger::eventLevelToStr(event->level()).c_str());
 			
 		if (halite().logListLen() <= GetItemCount())
 			DeleteItem(halite().logListLen());
@@ -271,8 +267,6 @@ public:
 	void onLoginCheck(UINT, int, HWND hWnd);
 	void onFileCheck(UINT, int, HWND hWnd) { DoDataExchange(true); }
 	void onDebugCheck(UINT, int, HWND hWnd) { DoDataExchange(true); }
-
-	void onDebugOption(UINT, int, HWND);
 
 protected:
 	LogListViewCtrl logList;

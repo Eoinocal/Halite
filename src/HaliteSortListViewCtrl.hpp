@@ -632,12 +632,9 @@ protected:
 				i_pos.first = true;
 			else
 				i_pos.first = false;
-
-			
-			HAL_DEV_SORT_MSG(hal::wform(L" Name %1%, index %2%, selected %3%") % key_from_index(val.index()) % val.index() % i_pos.first);
+							
+			HAL_DEV_SORT_MSG(hal::wform(L"Name %1%, index %2%, selected %3%") % key_from_index(val.index()) % val.index() % i_pos.first);
 		}
-		
-		HAL_DEV_SORT_MSG(hal::wform(L" -----"));
 	}
 
 	void sort(size_t index, bool ascending)

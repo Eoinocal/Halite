@@ -47,19 +47,23 @@
 
 #ifdef HAL_TORRENT_DEV_MSGES
 #	define HAL_DEV_MSG(msg) \
-	hal::event_log().post(boost::shared_ptr<hal::EventDetail>( \
-			new hal::EventMsg(msg, hal::event_logger::dev))) 
+	hal::event_log().post(boost::shared_ptr<hal::EventDetail>(new hal::EventMsg(msg, hal::event_logger::dev))) 
 #else
 #	define HAL_DEV_MSG(msg)
 #endif
 
+
+#define HAL_DEBUG_MSG(msg) \
+	hal::event_log().post(boost::shared_ptr<hal::EventDetail>(new hal::EventMsg(msg, hal::event_logger::debug))) 
+
+
 #ifdef HAL_SORT_LOGGING
 #	define HAL_DEV_SORT_MSG(msg) \
-	hal::event_log().post(boost::shared_ptr<hal::EventDetail>( \
-			new hal::EventMsg(msg, hal::event_logger::dev))) 
+	hal::event_log().post(boost::shared_ptr<hal::EventDetail>(new hal::EventMsg(msg, hal::event_logger::dev))) 
 #else
 #	define HAL_DEV_SORT_MSG(msg)
 #endif
+
 
 #define HAL_FILESYSTEM_EXCEPTION_CATCH(FN_MSG) \
 	catch (const boost::filesystem::filesystem_error& e) \

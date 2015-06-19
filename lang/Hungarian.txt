@@ -60,6 +60,7 @@
 "Client" ---> "Kliens"
 "Close to tray" ---> "Lezárás a tálcára"
 "Comment" ---> "Kommentár"
+"Compact Allocation" --->  ??? 
 "Completed" ---> "Kész"
 "Completed:" ---> "Kész:"
 "Confirm on close" ---> "Bezáráskor megerősítés"
@@ -128,6 +129,7 @@
 "Finished" ---> "Befejezve"
 "Force Close" ---> "Bezárás"
 "Forced" ---> "Kényszerített"
+"Full Allocation" --->  ??? 
 "General Settings" ---> "Általános Beállítások"
 "General" ---> "Általános"
 "Generated Torrent Name (Cannot change)" ---> "Generált Torrent Név (Nem módosítható)"
@@ -295,6 +297,7 @@
 "Size" ---> "Méret"
 "Smart Ban Plugin" --->  ??? 
 "Snubbed" --->  ??? 
+"Sparse Allocation" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Standard exception (%1%) thrown from %2%."
 "Start Time" ---> "Kezdési Idő"
 "Status" ---> "Állapot"
@@ -393,4 +396,3 @@
 "to" ---> "-tól"
 "uTorrent Metadata Plugin" --->  ??? 
 "uTorrent Peer Exchange Plugin" --->  ??? 
-"∞" --->  ??? 

@@ -60,6 +60,7 @@
 "Client" ---> "BT odjemalec"
 "Close to tray" ---> "Zapri v orodno vrstico"
 "Comment" ---> "Komentar"
+"Compact Allocation" --->  ??? 
 "Completed" ---> "Končano"
 "Completed:" ---> "Končano:"
 "Confirm on close" ---> "Potrdi ob izhodu"
@@ -128,6 +129,7 @@
 "Finished" ---> "Končan"
 "Force Close" ---> "Zapri"
 "Forced" ---> "Prisiljeno"
+"Full Allocation" --->  ??? 
 "General Settings" ---> "Splošne nastavitve"
 "General" ---> "Splošno"
 "Generated Torrent Name (Cannot change)" ---> "Naključno ime torrenta (se ne da spremenjati)"
@@ -295,6 +297,7 @@
 "Size" ---> "Velikost"
 "Smart Ban Plugin" --->  ??? 
 "Snubbed" --->  ??? 
+"Sparse Allocation" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Standardna izjema (%1%) prejeta od %2%."
 "Start Time" ---> "Datum pričetka"
 "Status" ---> "Stanje"
@@ -356,9 +359,9 @@
 "Tracker Announce. (%1%)" ---> "Sledilnikov Announce. (%1%)"
 "Tracker Event: %1%." ---> "Tracker dogodek: %1%."
 "Tracker warning: %2%! (%1%)" ---> "Opozorilo sledilnika: %2%! (%1%)"
-"Tracker" ---> "Sledilnik"
-"Tracker:" ---> "Sledilnik:"
-"Trackers" ---> "Sledilniki"
+"Tracker" --->  ??? 
+"Tracker:" --->  ??? 
+"Trackers" --->  ??? 
 "Transferred:" --->  ??? 
 "Type" --->  ??? 
 "UPnP router model (if recognised)." --->  ??? 
@@ -393,4 +396,3 @@
 "to" --->  ??? 
 "uTorrent Metadata Plugin" --->  ??? 
 "uTorrent Peer Exchange Plugin" --->  ??? 
-"∞" --->  ??? 

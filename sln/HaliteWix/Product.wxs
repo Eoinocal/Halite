@@ -2,8 +2,8 @@
 
 <?define VerGeneration = "0" ?>
 <?define VerMajor = "4" ?>
-<?define VerMinor = "01" ?>
-<?define VerBuild = "1278" ?>
+<?define VerMinor = "02" ?>
+<?define VerBuild = "1285" ?>
 
 <?define FullGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor) Build $(var.VerBuild)" ?>
 <?define ShortGMmbVersion = "$(var.VerGeneration).$(var.VerMajor).$(var.VerMinor)" ?>

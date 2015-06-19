@@ -60,6 +60,7 @@
 "Client" ---> "Клијент"
 "Close to tray" ---> "Затвори = пребаци у 'tray'"
 "Comment" ---> "Коментар"
+"Compact Allocation" --->  ??? 
 "Completed" ---> "Комплетирано"
 "Completed:" ---> "Завршено:"
 "Confirm on close" ---> "Потврди пред затварањем"
@@ -128,6 +129,7 @@
 "Finished" ---> "Завршено"
 "Force Close" ---> "Насилно затварање"
 "Forced" ---> "Натеран"
+"Full Allocation" --->  ??? 
 "General Settings" ---> "Опште"
 "General" ---> "Опште"
 "Generated Torrent Name (Cannot change)" ---> "Генерирано име торента (непроменљиво)"
@@ -295,6 +297,7 @@
 "Size" ---> "Величина"
 "Smart Ban Plugin" ---> "Опширено кажнавања"
 "Snubbed" --->  ??? 
+"Sparse Allocation" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Стандартни изузетак (%1%) десио се код (%2%)"
 "Start Time" ---> "Почето преузимање"
 "Status" ---> "Акција"
@@ -393,4 +396,3 @@
 "to" ---> "До"
 "uTorrent Metadata Plugin" ---> "'μTorrent'-додатак за 'meta'-фајлове"
 "uTorrent Peer Exchange Plugin" ---> "'μTorrent'-додатак за боље циркулирања извора"
-"∞" --->  ??? 

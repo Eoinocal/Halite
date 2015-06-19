@@ -60,6 +60,7 @@
 "Client" ---> "Klient"
 "Close to tray" ---> "Zavírat do oznamovací oblasti"
 "Comment" ---> "Komentář"
+"Compact Allocation" --->  ??? 
 "Completed" ---> "Dokončeno"
 "Completed:" ---> "Dokončeno:"
 "Confirm on close" ---> "Při ukončení vyžadovat potvrzení"
@@ -128,6 +129,7 @@
 "Finished" ---> "Dokončeno"
 "Force Close" ---> "Vynutit zavření"
 "Forced" ---> "Vynucené"
+"Full Allocation" --->  ??? 
 "General Settings" ---> "Obecná nastavení"
 "General" ---> "Obecné"
 "Generated Torrent Name (Cannot change)" ---> "Vygenerovaný název torrentu (nelze změnit)"
@@ -295,6 +297,7 @@
 "Size" ---> "Velikost"
 "Smart Ban Plugin" ---> "Smart Ban"
 "Snubbed" ---> "Omezený"
+"Sparse Allocation" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Běžná vyjímka (%1%) způsobena %2%"
 "Start Time" ---> "Čas spuštění"
 "Status" ---> "Stav"
@@ -393,4 +396,3 @@
 "to" ---> "až"
 "uTorrent Metadata Plugin" ---> "uTorrent Metadata"
 "uTorrent Peer Exchange Plugin" ---> "uTorrent Peer Exchange"
-"∞" --->  ??? 

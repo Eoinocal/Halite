@@ -206,11 +206,11 @@ sc::result out_of_session::react(const sc::exception_thrown& e)
 	}
 	catch (const torrent_state_exception& e)
 	{
-		HAL_DEV_MSG(wform(L"Torrent State Exception: %1%") % e.what());
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(wform(L"Torrent State Exception: %1%") % e.what())));
 	}
 	catch (const std::exception& e)
 	{
-		HAL_DEV_MSG(wform(L"Torrent Std Exception: %1%") % e.what());
+		event_log().post(shared_ptr<EventDetail>(new EventMsg(wform(L"Torrent Std Exception: %1%") % e.what())));
 	}
 	
 	return transit<invalid>();

@@ -86,6 +86,8 @@ std::wstring event_logger::eventLevelToStr(eventLevel event)
 {
 	switch (event)
 	{
+	case dev:
+		return L"Dev";
 	case debug:
 		return hal::app().res_wstr(HAL_EVENTDEBUG);
 	case info:

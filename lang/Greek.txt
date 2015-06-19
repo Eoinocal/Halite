@@ -60,6 +60,7 @@
 "Client" ---> "Πρόγραμμα"
 "Close to tray" ---> "Κλείσιμο στο tray"
 "Comment" ---> "Σχόλιο"
+"Compact Allocation" --->  ??? 
 "Completed" ---> "Ολοκληρωμένα"
 "Completed:" ---> "Ολοκληρώθηκαν:"
 "Confirm on close" ---> "Επιβεβαίωση για κλείσιμο"
@@ -128,6 +129,7 @@
 "Finished" ---> "Τελείωσε"
 "Force Close" ---> "Εξαναγκάστε κλείσιμο"
 "Forced" ---> "Εξαναγκασμένο"
+"Full Allocation" --->  ??? 
 "General Settings" ---> "Γενικές Επιλογές"
 "General" ---> "Γενικά"
 "Generated Torrent Name (Cannot change)" ---> "Παραγόμενο όνομα Torrent (Αδυναμία αλλαγής)"
@@ -295,6 +297,7 @@
 "Size" ---> "Μέγεθος"
 "Smart Ban Plugin" --->  ??? 
 "Snubbed" --->  ??? 
+"Sparse Allocation" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Πρότυπη εξαίρεση (%1%) ερχόμενα από %2%."
 "Start Time" ---> "Ώρα έναρξης"
 "Status" ---> "Κατάσταση"
@@ -393,4 +396,3 @@
 "to" ---> "μέχρι"
 "uTorrent Metadata Plugin" --->  ??? 
 "uTorrent Peer Exchange Plugin" --->  ??? 
-"∞" --->  ??? 

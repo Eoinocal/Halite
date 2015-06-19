@@ -60,6 +60,7 @@
 "Client" ---> "Client"
 "Close to tray" ---> "Închide în sertar"
 "Comment" ---> "Comment"
+"Compact Allocation" --->  ??? 
 "Completed" ---> "Terminat"
 "Completed:" ---> "Terminat:"
 "Confirm on close" ---> "Confirmă la închidere"
@@ -128,6 +129,7 @@
 "Finished" ---> "Terminat"
 "Force Close" ---> "Forţează Închiderea"
 "Forced" ---> "Forţat"
+"Full Allocation" --->  ??? 
 "General Settings" ---> "Opţiuni Generale"
 "General" ---> "General"
 "Generated Torrent Name (Cannot change)" ---> "Numele Torrentului Generat (nu se poate modifica)"
@@ -295,6 +297,7 @@
 "Size" ---> "Mărime"
 "Smart Ban Plugin" ---> "Pluginul Smart Ban"
 "Snubbed" --->  ??? 
+"Sparse Allocation" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Excepţia Standard (%1%) aruncat de la %2%."
 "Start Time" ---> "Timpul pornirii"
 "Status" ---> "Stare"
@@ -393,4 +396,3 @@
 "to" ---> "până la"
 "uTorrent Metadata Plugin" ---> "Pluginul Metadata de la uTorrent"
 "uTorrent Peer Exchange Plugin" ---> "Pluginul  Peer Exchange de la uTorrent"
-"∞" --->  ??? 

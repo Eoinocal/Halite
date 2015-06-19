@@ -60,6 +60,7 @@
 "Client" ---> "Клиент"
 "Close to tray" ---> "Минимизировать в трей"
 "Comment" ---> "Коментарий"
+"Compact Allocation" --->  ??? 
 "Completed" ---> "Завершено"
 "Completed:" ---> "Завершено:"
 "Confirm on close" ---> "Подтверждать пры закрытии"
@@ -128,6 +129,7 @@
 "Finished" ---> "Завершено"
 "Force Close" ---> "Принудительное закрытие"
 "Forced" ---> "Принужденный"
+"Full Allocation" --->  ??? 
 "General Settings" ---> "Общие установки"
 "General" ---> "Общие"
 "Generated Torrent Name (Cannot change)" ---> "Сгенерованое имя торрента (Нельзя изменить)"
@@ -295,6 +297,7 @@
 "Size" ---> "Размер"
 "Smart Ban Plugin" --->  ??? 
 "Snubbed" --->  ??? 
+"Sparse Allocation" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Стандартное исключение (%1%) подброшено от %2%."
 "Start Time" ---> "Время старта"
 "Status" ---> "Статус"
@@ -393,4 +396,3 @@
 "to" ---> "в"
 "uTorrent Metadata Plugin" --->  ??? 
 "uTorrent Peer Exchange Plugin" --->  ??? 
-"∞" --->  ??? 

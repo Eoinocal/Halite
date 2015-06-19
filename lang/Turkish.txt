@@ -60,6 +60,7 @@
 "Client" ---> "İstemci"
 "Close to tray" ---> "Sistem Tepsisine Küçült"
 "Comment" ---> "Yorum"
+"Compact Allocation" --->  ??? 
 "Completed" ---> "Tamamlanan"
 "Completed:" ---> "Tamamlanan:"
 "Confirm on close" ---> "Kapanırken Onay İste"
@@ -128,6 +129,7 @@
 "Finished" ---> "Tamamlandı"
 "Force Close" ---> "Zorla Kapat"
 "Forced" ---> "Zorlanmış"
+"Full Allocation" --->  ??? 
 "General Settings" ---> "Genel Ayarlar"
 "General" ---> "Genel"
 "Generated Torrent Name (Cannot change)" --->  ??? 
@@ -295,6 +297,7 @@
 "Size" ---> "Boyut"
 "Smart Ban Plugin" --->  ??? 
 "Snubbed" --->  ??? 
+"Sparse Allocation" --->  ??? 
 "Standard exception (%1%) thrown from %2%." ---> "Standart istisna (%1%) , %2% 'den."
 "Start Time" ---> "Başlangıç Zamanı"
 "Status" ---> "Durum"
@@ -393,4 +396,3 @@
 "to" ---> "-"
 "uTorrent Metadata Plugin" --->  ??? 
 "uTorrent Peer Exchange Plugin" --->  ??? 
-"∞" --->  ??? 

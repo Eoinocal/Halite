@@ -73,7 +73,7 @@ public:
 		catch(std::exception& e)
 		{
 			hal::event_log().post(shared_ptr<hal::EventDetail>(\
-				new hal::EventStdException(hal::event_logger::debug, e, L"ProgressThread()")));
+				new hal::EventStdException(hal::event_logger::warning, e, L"ProgressThread()")));
 		}
 		catch(...)
 		{

@@ -88,16 +88,7 @@ static event_logger::eventLevel lbt_category_to_event(int category)
 	switch (category)
 	{
 	case libt::alert::debug_notification:
-		return event_logger::debug;
-	
-	case libt::alert::peer_notification:
-	case libt::alert::port_mapping_notification:
-	case libt::alert::storage_notification:
-	case libt::alert::tracker_notification:
-	case libt::alert::status_notification:
-	case libt::alert::progress_notification:
-	case libt::alert::ip_block_notification:
-		return event_logger::info;
+		return event_logger::debug;	
 	
 	case libt::alert::performance_warning:
 		return event_logger::warning;
@@ -106,7 +97,7 @@ static event_logger::eventLevel lbt_category_to_event(int category)
 		return event_logger::critical;
 	
 	default:
-		return event_logger::none;
+		return event_logger::info;
 	}
 }
 
