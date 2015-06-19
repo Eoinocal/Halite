@@ -542,7 +542,7 @@ public:
 
 		session_->pause();		
 
-		// Ok this polling loop here is a bit curde, but a blocking wait is actually appropiate.		
+		// Ok this polling loop here is a bit crude, but a blocking wait is actually appropriate.		
 		{ 
 		int num_active = 1;
 

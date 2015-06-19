@@ -134,7 +134,7 @@ bool HaliteListViewCtrl::sort_list_comparison(list_class_data_t l, list_class_da
 	}
 	else
 		return false;	// Huh also?  Well these two being opposite means an 
-						// invalid entry always comapres as greater. Unless
+						// invalid entry always compares as greater. Unless
 						// are two invalids!!
 	}
 	HAL_GENERIC_FN_EXCEPTION_CATCH(L"in HaliteListViewCtrl::sort_list_comparison")

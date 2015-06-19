@@ -83,7 +83,7 @@ public:
    LPCTSTR Convert(LPCTSTR pstrHTML, LOGFONT lf, COLORREF& clrText, COLORREF& clrBack)
    {
       // Create a new output buffer
-      // We assume that we can create a corretly sized output
+      // We assume that we can create a correctly sized output
       // buffer before we convert HTML to RTF...
       const int SIZE_FACTOR = 2;
       unsigned int nTextSize = _tcslen(pstrHTML);
@@ -446,7 +446,7 @@ public:
             AddOutput(pstrDest, szAppendScope);
          }
          // If context change, we match any changes in rendering and
-         // and RTF comamnds...
+         // and RTF commands...
          if( bNewContext ) {
             bool bChanged = false;
             if( OldContext.lTextColor != Context.lTextColor ) {
@@ -744,7 +744,7 @@ public:
       es.dwCookie = (DWORD) &st;
       es.dwError = 0;
       es.pfnCallback = _StreamReadCallback;
-      // NOTE: If execption handling is enabled for the app, the little ATLTRY macro
+      // NOTE: If exception handling is enabled for the app, the little ATLTRY macro
       //       might catch catastrophic errors (GPFs) from the RichEdit control
       //       when streaming in malformed RTF.
       ATLTRY( StreamIn(SF_RTF, es) );
