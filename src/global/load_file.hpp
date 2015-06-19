@@ -20,10 +20,10 @@ namespace hal
 {
 
 template<typename C>
-C load_file(const char *filename, boost::system::error_code& ec)
+C load_file(const boost::filesystem::path file, boost::system::error_code& ec)
 {	
 	C contents;
-	std::ifstream in(filename, std::ios::in | std::ios::binary);
+	fs::ifstream in(file, std::ios::in | std::ios::binary);
 
 	if (in)
 	{
@@ -40,10 +40,10 @@ C load_file(const char *filename, boost::system::error_code& ec)
 }
 
 template<typename C>
-C load_file(const char *filename)
+C load_file(const boost::filesystem::path file)
 {	
 	boost::system::error_code ec;
-	C contents(load_file<C>(filename, ec));
+	C contents(load_file<C>(file, ec));
 
 	if (ec)
 		throw boost::system::system_error(ec);
@@ -52,9 +52,9 @@ C load_file(const char *filename)
 }
 
 template<typename C>
-C load_file(const boost::filesystem::path path)
+C load_file(const wchar_t* file)
 {
-	return load_file<C>(path.string().c_str());
+	return load_file<C>(path(file));
 }
 
 } // namespace hal

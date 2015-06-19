@@ -78,11 +78,13 @@ torrent_internal::torrent_internal(const wpath& filename, const wpath& save_dire
 	allocation_(alloc)
 {
 	upgrade_lock l(mutex_);
+		
+	HAL_DEV_MSG(hal::wform(L"torrent_internal filename = %1%") % filename);
 
 	state(l, torrent_details::torrent_stopped);
 	assert(the_session_);
 
-	prepare(l, new libt::torrent_info(filename.string()));
+	prepare(l, new libt::torrent_info(hal::to_utf8(filename.wstring())));
 }
 
 torrent_internal::torrent_internal(const wstring& uri, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory) :
@@ -643,7 +645,9 @@ void torrent_internal::init_file_details(upgrade_lock& l)
 }
 
 void torrent_internal::prepare(upgrade_lock& l, torrent_info_ptr info)
-{
+{	
+	HAL_DEV_MSG(hal::wform(L"Prepare torrent %s") % (info ? L"true" : L"false"));
+
 	if (info)
 	{				
 		set_info_cache(info, l);

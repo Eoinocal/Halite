@@ -383,11 +383,11 @@ void HaliteWindow::ProcessFile(wstring path_or_uri)
 		if (IDOK != addTorrent.DoModal())
 			return;
 	}
+		
+	HAL_DEV_MSG(hal::wform(L"Path : %s, Is magnet : %s") % path_or_uri.c_str() % is_magnet);
 
 	if (is_magnet) 
 	{
-		path_or_uri = L"magnet:" + path_or_uri;
-
 		if (use_move_to)
 			hal::bittorrent().add_torrent(path_or_uri, wpath(default_save_folder), startPaused, managed, allocation_type, 
 				wpath(default_move_folder));
@@ -574,7 +574,6 @@ LRESULT HaliteWindow::OnFileOpen(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
 
 LRESULT HaliteWindow::OnFileOpenMagnet(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {	
-
 	OpenClipboard();
 
 	if (IsClipboardFormatAvailable(CF_UNICODETEXT))

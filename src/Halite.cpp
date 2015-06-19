@@ -126,7 +126,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	try 
 	{
 	
-
 	try
 	{
 

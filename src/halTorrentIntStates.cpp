@@ -139,10 +139,10 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 		upgrade_lock l(t_i.mutex_);
 
 		libt::add_torrent_params p;
-		std::string resume_file = (hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).string();
+		path resume_file = (hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".fastresume")).wstring();
 
 		boost::system::error_code ec;
-		p.resume_data = load_file<std::vector<char>>(resume_file.c_str(), ec);
+		p.resume_data = load_file<std::vector<char>>(resume_file, ec);
 
 		if (!p.resume_data.empty())
 			{HAL_DEV_MSG(L" -- Using resume data");}
@@ -153,9 +153,7 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 			(t_i.managed_ ? libt::add_torrent_params::flag_auto_managed : 0);
 
 		// This ordering is important
-	
-		//throw torrent_state_exception(t_i.id(l), "We do not have any information with which to resume the torrent");
-	
+		
 		if (t_i.info_memory(l))
 		{
 			HAL_DEV_MSG(L" -- We have saved torrent info to use");
@@ -478,9 +476,8 @@ sc::result not_started::react(const ev_start& evt)
 
 			if (!t_i.info_memory(l) && !t_i.name_.empty())
 			{		
-				std::string torrent_info_file = 
-					(hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".torrent_info")).string();
-				string torrent_file = (hal::app().get_working_directory()/L"torrents"/t_i.filename_).string();
+				path torrent_info_file = (hal::app().get_working_directory()/L"resume" / (t_i.name_ + L".torrent_info"));
+				path torrent_file = (hal::app().get_working_directory()/L"torrents"/t_i.filename_);
 
 				if (fs::exists(torrent_info_file))
 				{
@@ -488,8 +485,8 @@ sc::result not_started::react(const ev_start& evt)
 
 					try {
 
-					HAL_DEV_MSG(hal::wform(L"Using torrent info data file %1%") % from_utf8(torrent_info_file));
-					t_i.info_memory_reset(new libt::torrent_info(torrent_info_file.c_str()), l);
+					HAL_DEV_MSG(hal::wform(L"Using torrent info data file %1%") % torrent_info_file);
+					t_i.info_memory_reset(new libt::torrent_info(hal::to_utf8(torrent_info_file.wstring())), l);
 
 					}
 					catch (const libt::libtorrent_exception&)
@@ -502,7 +499,7 @@ sc::result not_started::react(const ev_start& evt)
 					upgrade_to_unique_lock up_l(l);
 
 					HAL_DEV_MSG(L"Using torrent file");
-					t_i.info_memory_reset(new libt::torrent_info(torrent_file.c_str()), l);
+					t_i.info_memory_reset(new libt::torrent_info(hal::to_utf8(torrent_file.wstring())), l);
 				}
 			}
 
