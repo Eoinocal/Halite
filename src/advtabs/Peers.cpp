@@ -25,18 +25,18 @@ bool PeerListView::SubclassWindow(HWND hwnd)
 
 	boost::split(names, column_names, boost::is_any_of(L";"));
 
-	//	Peer;			Country;			Download;		Upload;			Type;			Client,			Status"
-	array<int, 7> widths = {
-		100,				20,				70,				70,				70,				100,				200};
-	array<int, 7> order = {
-		0,				1,				2,				3,				4,				5,				6};
-	array<bool, 7> visible = {
-		true,			true,			true,			true,			true,			true,			true};
+	//	Peer;			Port;			Country;			Download;		Upload;			Type;			Client,			Status"
+	array<int, 8> widths = {
+		100,				50,				50,				70,				70,				70,				100,				200};
+	array<int, 8> order = {
+		0,				1,				2,				3,				4,				5,				6,				7};
+	array<bool, 8> visible = {
+		true,			true,			true,			true,			true,			true,			true,			true};
 
-	array<int, 7> formats = {
-		LVCFMT_CENTER,	LVCFMT_CENTER,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_CENTER,	LVCFMT_CENTER,	LVCFMT_LEFT};
+	array<int, 8> formats = {
+		LVCFMT_CENTER,	LVCFMT_CENTER,	LVCFMT_CENTER,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_CENTER,	LVCFMT_CENTER,	LVCFMT_LEFT};
 
-	for (int i=0, e=7; i < e; ++i)
+	for (int i=0, e=8; i < e; ++i)
 		AddColumn(names[i].c_str(), i, visible[i], widths[i], formats[i]);
 
 	safe_load_from_ini();	

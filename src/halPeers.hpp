@@ -22,6 +22,7 @@ struct peer_detail
 	enum details
 	{
 		ip_address_e = 0,
+		port_e,
 		country_e,
 		speed_down_e,
 		speed_up_e,
@@ -49,6 +50,7 @@ struct peer_detail
 	std::wstring to_wstring(size_t index = 0) const;
 	
 	std::wstring ip_address;
+	unsigned short port;
 	std::wstring country;
 	std::pair<float,float> speed;
 	bool seed;
