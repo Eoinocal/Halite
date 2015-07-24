@@ -846,7 +846,7 @@ void bit_impl::alert_handler()
 				hal::wform(hal::app().res_wstr(HAL_EXTERNAL_IP_ALERT))
 					% hal::from_utf8_safe(a.message())
 					% hal::from_utf8_safe(a.external_address.to_string()))
-		)	);		
+		));		
 
 		if (!bit_impl_.use_custom_interface_ || !bit_impl_.external_interface_) 
 			bit_impl_.external_interface_.reset(hal::from_utf8_safe(a.external_address.to_string()));
@@ -860,7 +860,7 @@ void bit_impl::alert_handler()
 				% (a.type() == 0 ? 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_PMP) : 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_UPNP)))
-		)	);				
+		));				
 	}
 
 	void operator()(libt::portmap_alert const& a) const
@@ -872,7 +872,7 @@ void bit_impl::alert_handler()
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_PMP) : 
 					hal::app().res_wstr(HAL_PORTMAP_TYPE_UPNP))
 				% a.external_port)
-		)	);				
+		));				
 	}
 	
 	void operator()(libt::file_error_alert const& a) const
@@ -882,7 +882,7 @@ void bit_impl::alert_handler()
 				hal::wform(hal::app().res_wstr(HAL_FILE_ERROR_ALERT))
 				% hal::from_utf8_safe(a.file)
 				% hal::from_utf8_safe(a.message()))
-		)	);				
+		));				
 	}
 	
 	void operator()(libt::dht_reply_alert const& a) const
@@ -892,7 +892,7 @@ void bit_impl::alert_handler()
 				hal::wform(hal::app().res_wstr(HAL_DHT_REPLY_ALERT))
 					% a.num_peers
 					% get(a.handle)->name())
-		)	);				
+		));				
 	}
 
 	void operator()(libt::torrent_finished_alert const& a) const
@@ -1046,7 +1046,7 @@ void bit_impl::alert_handler()
 				hal::wform(hal::app().res_wstr(HAL_PEER_ALERT))
 					% hal::from_utf8_safe(a.message())
 					% hal::from_utf8_safe(a.ip.address().to_string()))
-		)	);				
+		));				
 	}
 		
 	void operator()(libt::peer_ban_alert const& a) const
@@ -1056,7 +1056,7 @@ void bit_impl::alert_handler()
 				hal::wform(hal::app().res_wstr(HAL_PEER_BAN_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.ip.address().to_string()))
-		)	);				
+		));				
 	}
 		
 	void operator()(libt::hash_failed_alert const& a) const
@@ -1066,7 +1066,7 @@ void bit_impl::alert_handler()
 				hal::wform(hal::app().res_wstr(HAL_HASH_FAIL_ALERT))
 					% get(a.handle)->name()
 					% a.piece_index)
-		)	);				
+		));				
 	}
 		
 	void operator()(libt::url_seed_alert const& a) const
@@ -1077,7 +1077,7 @@ void bit_impl::alert_handler()
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.url)
 					% hal::from_utf8_safe(a.message()))
-		)	);				
+		));				
 	}
 	
 	void operator()(libt::tracker_warning_alert const& a) const
@@ -1087,7 +1087,7 @@ void bit_impl::alert_handler()
 				hal::wform(hal::app().res_wstr(HAL_TRACKER_WARNING_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.message()))
-		)	);				
+		));				
 	}
 	
 	void operator()(libt::tracker_announce_alert const& a) const
@@ -1107,7 +1107,26 @@ void bit_impl::alert_handler()
 					% hal::from_utf8_safe(a.message())
 					% a.times_in_row
 					% a.status_code)
-		)	);				
+		));				
+
+		hal::peer_details_vec peers;
+		get(a.handle)->get_peer_details(peers);
+
+		HAL_DEV_MSG(hal::wform(L"Recieved %1% peers") % peers.size());
+		for (const auto& peer : peers)
+		{			
+			HAL_DEV_MSG(hal::wform(L"  --  %1% : %2%") % peer.ip_address % peer.port);
+		}
+	}
+	
+	void operator()(libt::scrape_failed_alert const& a) const
+	{
+		event_log().post(shared_ptr<EventDetail>(
+			new EventGeneral(lbt_category_to_event(a.category()), a.timestamp(),
+				hal::wform(hal::app().res_wstr(HAL_TRACKER_SCRAPE_FAILED_ALERT))
+					% get(a.handle)->name()
+					% hal::from_utf8_safe(a.message()))
+		));				
 	}
 	
 	void operator()(libt::tracker_reply_alert const& a) const
@@ -1118,7 +1137,7 @@ void bit_impl::alert_handler()
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.message())
 					% a.num_peers)
-		)	);				
+		));				
 	}
 	
 	void operator()(libt::fastresume_rejected_alert const& a) const
@@ -1128,7 +1147,7 @@ void bit_impl::alert_handler()
 				hal::wform(hal::app().res_wstr(HAL_FAST_RESUME_ALERT))
 					% get(a.handle)->name()
 					% hal::from_utf8_safe(a.message()))
-		)	);				
+		));				
 	}
 	
 	void operator()(libt::piece_finished_alert const& a) const
@@ -1138,7 +1157,7 @@ void bit_impl::alert_handler()
 				hal::wform(hal::app().res_wstr(HAL_PIECE_FINISHED_ALERT))
 					% get(a.handle)->name()
 					% a.piece_index)
-		)	);				
+		));				
 	}
 	
 	void operator()(libt::block_finished_alert const& a) const
@@ -1149,7 +1168,7 @@ void bit_impl::alert_handler()
 					% get(a.handle)->name()
 					% a.block_index
 					% a.piece_index)
-		)	);				
+		));				
 */	}
 	
 	void operator()(libt::block_downloading_alert const& a) const
@@ -1160,7 +1179,7 @@ void bit_impl::alert_handler()
 					% get(a.handle)->name()
 					% a.block_index
 					% a.piece_index)
-		)	);				
+		));				
 */	}
 	
 	void operator()(libt::listen_failed_alert const& a) const
@@ -1170,7 +1189,7 @@ void bit_impl::alert_handler()
 			event_log().post(shared_ptr<EventDetail>(
 				new EventGeneral(event_logger::info, a.timestamp(),
 					hal::app().res_wstr(HAL_LISTEN_V6_FAILED_ALERT))
-			)	);		
+			));		
 		}
 		else
 		{
@@ -1178,7 +1197,7 @@ void bit_impl::alert_handler()
 				new EventGeneral(event_logger::info, a.timestamp(),
 					hal::wform(hal::app().res_wstr(HAL_LISTEN_FAILED_ALERT))
 						% hal::from_utf8_safe(a.message()))
-			)	);
+			));
 		}
 	}
 	

@@ -94,6 +94,7 @@ bool peer_detail::less(const peer_detail& r, size_t index) const
 	switch (index)
 	{
 	case ip_address_e: return ip_address < r.ip_address;
+	case port_e: return port < r.port;
 	case country_e: return country < r.country;
 
 	case speed_down_e: return speed.first < r.speed.first;

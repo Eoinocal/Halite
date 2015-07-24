@@ -76,9 +76,10 @@ void event_logger::post(boost::shared_ptr<EventDetail> e)
 {
 	if (pimpl_)
 	{
-	unique_lock_t l(pimpl_->mutex_);
-	if (e->level() != hal::event_logger::debug || pimpl_->debug_)
-		pimpl_->event_signal_(e);
+		unique_lock_t l(pimpl_->mutex_);
+
+		if (pimpl_->debug_ || !(e->level() == hal::event_logger::debug || e->level() == hal::event_logger::dev))
+			pimpl_->event_signal_(e);
 	}
 }
 	
