@@ -6,9 +6,9 @@
 "%1$.2fMB of %2$.2fMB" ---> "%1$.2fМб из %2$.2fМб"
 "%1% DHT node(s)" ---> "%1% нодов DHT"
 "%1% active torrent(s)" ---> "%1% активных торрентов"
-"%1% peers from DHT for %2%." --->  ??? 
-"%1% port %2% mapping succeeded." --->  ??? 
-"%1% port mapping request failed." --->  ??? 
+"%1% peers from DHT for %2%." --->  "%1% пиров из DHT для %2%." 
+"%1% port %2% mapping succeeded." --->  "Присвоение %2% порту %1% завершено." 
+"%1% port mapping request failed." --->  "Запрос присвоения порта %1% неудачен." 
 "%1%, %2%." ---> "%1%, %2%."
 "%2%. %3% Peers. (%1%)" ---> "%2%. %3% пиров. (%1%)"
 "&Pause All" ---> "&Приостановить все"
@@ -18,49 +18,49 @@
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(З-В) 0000.000KB/s - 0000.000KB/s"
 "About" ---> "Информация"
 "Above Normal" ---> "Выше нормы"
-"Active downloads :" --->  ??? 
-"Active seeds :" --->  ??? 
-"Active seeds hard limit:" --->  ??? 
+"Active downloads :" --->  "Активных загрузок :" 
+"Active seeds :" --->  "Активных раздач :" 
+"Active seeds hard limit:" --->  "Жёсткое ограничение активных раздач:" 
 "Active" ---> "Активные"
 "Add New Peer" ---> "Добавить нового пира"
 "Add New Tracker" ---> "Добавить новый трэкер"
 "Add New Web Seed or DHT Node" ---> "Добавить нового сида либо DHT узол"
 "Add Torrent" ---> "Добавить торрент"
-"Add as " --->  ??? 
+"Add as " --->  "Добавить  как " 
 "Add" ---> "Добавить"
-"Adjust Queue Position" --->  ??? 
+"Adjust Queue Position" --->  "Изменить позицию очереди" 
 "Advanced GUI" ---> "Расширенный интерфейс"
 "Alert %2%, Status code: %4%, Times %3%. (%1%)" ---> "Тревога %2%, Статус: %4%, Количество раз %3%. (%1%)"
 "Allocating" ---> "Размещаем"
-"Allocation Mode:" --->  ??? 
+"Allocation Mode:" --->  "Режим размещения:" 
 "Allow only one instance to run" ---> "Разрешить работать только одному запросу"
 "An invalid connection policy, %1%, was passed as an encryption setting." ---> "Неверный стандарт соединения, %1%, прошло как настройки кодирования."
 "An invalid encoding level, %1%, was passed as an encryption setting." ---> "Неверный уровень кодирования, %1%, прошло как настройки кодирования."
-"Announce on all tiers" --->  ??? 
-"Announce to all trackers" --->  ??? 
+"Announce on all tiers" --->  "Анонсировать на всех уровнях" 
+"Announce to all trackers" --->  "Анонсировать на все трекеры" 
 "Apply" ---> "Применить"
 "Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "Вы уверены что хотите закрить Halite? Все активные торренты остановляться"
 "Are you sure you wish to delete all downloaded data?" ---> "Вы уверены что хотите удалить все скачаные данные?"
 "Auto Sort" ---> "Автоматическая сортировка"
-"Auto-managed" --->  ??? 
-"Binary Notions" --->  ??? 
+"Auto-managed" --->  "Автоматическое управление" 
+"Binary Notions" --->  "Бинарные понятия" 
 "BitTorrent" ---> "БитТоррент"
 "Bittorrent Event: %1%." ---> "Событие битторрента: %1%."
 "Block %2% of piece %3% downloading. (%1%)" ---> "Блок %2% части %3% скачивается. (%1%)"
 "Block %2% of piece %3% finished. (%1%)" ---> "Блок %2% части %3% завершен. (%1%)"
 "Both" ---> "Оба"
-"Cache Status, Current Total Size : %1.2f MiB" --->  ??? 
-"Cache Write Size :" --->  ??? 
-"Calculating Piece Hashes..." ---> "Calculating Piece Hashes..."
+"Cache Status, Current Total Size : %1.2f MiB" --->  "Статус кеша, текущий общий размер : %1.2f MiB" 
+"Cache Write Size :" --->  "Размер кеша записи :" 
+"Calculating Piece Hashes..." ---> "Расчёт блоков хеша..."
 "Cancel" ---> "Отменить"
 "Checking Files" ---> "Проверка файлов"
-"Checking Resume Data" --->  ??? 
+"Checking Resume Data" --->  "Проверка данных для продолжения" 
 "Choked" ---> "Заглушен"
 "Clear IP database" ---> "Очистить базу данных IP"
 "Client" ---> "Клиент"
 "Close to tray" ---> "Минимизировать в трей"
 "Comment" ---> "Коментарий"
-"Compact Allocation" --->  ??? 
+"Compact Allocation" --->  "Компактное размещение" 
 "Completed" ---> "Завершено"
 "Completed:" ---> "Завершено:"
 "Confirm on close" ---> "Подтверждать пры закрытии"
@@ -74,9 +74,9 @@
 "Creating a New Torrent File" ---> "Создать новый торрент файл"
 "Creator" ---> "Создатель"
 "Critical" ---> "Критическая"
-"Current Cache Status" --->  ??? 
-"Currently set to '%1%' at %2%" --->  ??? 
-"DHT Node" ---> "DHT узол"
+"Current Cache Status" --->  "Текущий статус кеша" 
+"Currently set to '%1%' at %2%" --->  "В текущий момент установлен на '%1%' для %2%" 
+"DHT Node" ---> "DHT узел"
 "DHT disabled" ---> "DHT отключён"
 "DHT session could not start. Try selecting another port in the settings." ---> "DHT сессия не смогла запуститься. Попробуйте выбрать другой порт в установках."
 "DHT" ---> "DHT"
@@ -88,9 +88,9 @@
 "Dev Msg: %1%." ---> "Dev Msg: %1%."
 "Dir." ---> "Dir."
 "Disabled" ---> "Отключено"
-"Distributed Hash Tables" ---> "Distributed Hash Tables"
-"Don't Manage Torrent(s)" --->  ??? 
-"Don't count slow torrents." --->  ??? 
+"Distributed Hash Tables" ---> "Распределённые таблицы хеша"
+"Don't Manage Torrent(s)" --->  "Не управлять торрентами" 
+"Don't count slow torrents." --->  "Не считать медленные торренты." 
 "Don't download" ---> "Не закачивать"
 "Down" ---> "Вниз"
 "Download Rate (KB/s) :" ---> "Скорость закачки (KB/s) :"
@@ -102,23 +102,23 @@
 "E&xit" ---> "В&ыйти"
 "ETA" ---> "ETA"
 "ETA:" ---> "ETA:"
-"Edit Download Folders" ---> "Редактировать закачеваеміе папки"
+"Edit Download Folders" ---> "Редактировать закачеваемые папки"
 "Edit Peer" ---> "Редактировать пира"
 "Edit Torrent Save Folders" ---> "Редактировать папки сохранения торрента"
 "Edit Tracker" ---> "Редактировать сервер"
 "Edit" ---> "Редактировать"
-"Enable DHT (will not apply to private torrents)" --->  ??? 
+"Enable DHT (will not apply to private torrents)" --->  "Включить DHT (не будет применено к приватным торрентам)" 
 "Enable IP filtering." ---> "Включить фильтрацию IP"
-"Enable Options or libtorrent Plugins" --->  ??? 
+"Enable Options or libtorrent Plugins" --->  "Включить опции или плагины libtorrent" 
 "Enable Protocol Encryption." ---> "Включить протокол кодировки."
 "Enable Remote Control" ---> "Включить удалённый контроль"
 "Enabled" ---> "Включено"
 "Encoding Level" ---> "Уровень кодировки"
 "Enter any Web Seed URLs and DHT Nodes." ---> "Введите любые адреса сидов и DHT узлов."
 "Enter the tracker URLs for the torrent." ---> "Ввести адрес трэкера для торрента."
-"Error!" --->  ??? 
+"Error!" --->  "Ошибка!" 
 "Exception caught: %1%, from %2%." ---> "Исключение поймано: %1%, от %2%."
-"Exit Halite" --->  ??? 
+"Exit Halite" --->  "Выйти из Halite" 
 "Failed, %1%" ---> "Неудача, %1%"
 "Fast resume failed: %2%. (%1%)" ---> "Быстрое возобновление потерпело неудачу: %2%. (%1%)"
 "File" ---> "Файл"
@@ -129,81 +129,81 @@
 "Finished" ---> "Завершено"
 "Force Close" ---> "Принудительное закрытие"
 "Forced" ---> "Принужденный"
-"Full Allocation" --->  ??? 
+"Full Allocation" --->  "Полное распределение" 
 "General Settings" ---> "Общие установки"
 "General" ---> "Общие"
 "Generated Torrent Name (Cannot change)" ---> "Сгенерованое имя торрента (Нельзя изменить)"
 "Global Limits" ---> "Глобальные лимиты"
-"Globals" --->  ??? 
-"HTTP seed" --->  ??? 
-"HTTP" --->  ??? 
+"Globals" --->  "Глобальные" 
+"HTTP seed" --->  "HTTP раздача" 
+"HTTP" --->  "HTTP" 
 "Halite BitTorrent Client based on libTorrrent" --->  ??? 
-"Halite BitTorrent Client" ---> "Халита БитТоррент Клиент"
-"Halite Debug Dialog" ---> "Диалог отладки Халита"
-"Halite importing IP ranges..." ---> "Халит импортирует IP адреса"
-"Halite not listening!" ---> "Халит не ожидает!"
-"Halite shutting down..." ---> "Халит выключается..."
+"Halite BitTorrent Client" ---> "Halite БитТоррент Клиент"
+"Halite Debug Dialog" ---> "Диалог отладки Halite"
+"Halite importing IP ranges..." ---> "Halite импортирует IP адреса"
+"Halite not listening!" ---> "Halite не слушает!"
+"Halite shutting down..." ---> "Halite выключается..."
 "Handshake" ---> "Рукопожатие"
 "Has choked us" ---> "Заглушил нас"
-"Hash failed for piece %2% of %1%." ---> "Hash failed for piece %2% of %1%."
-"Hash" --->  ??? 
+"Hash failed for piece %2% of %1%." ---> "Хеш неудачен для блока %2% из %1%."
+"Hash" --->  "Хеш" 
 "IP Filter blocked %1%, %2%." ---> "IP фильтер блокирован %1%, %2%."
 "IP Filtering" ---> "Фильтрация IP"
 "IP filter disabled" ---> "IP фильт отключён"
-"IP version 6 listen attempt failed. Not serious." ---> ""
+"IP version 6 listen attempt failed. Not serious." ---> "Попытка слушать IP версии 6 неудачна. Не серьёзно"
 "Import ipfilter.dat" ---> "Импортировать ipfilter.dat"
 "Importing IP Filters..." ---> "Импортирование IP фильтров"
 "Incoming" ---> "Входящий"
 "Info" ---> "Информация"
-"Informed of external IP address: %1%." --->  ??? 
+"Informed of external IP address: %1%." --->  "Проинформирован о внешнем IP адресе: %1%." 
 "Interested in us" ---> "Заинтересован в нас"
 "Interesting" ---> "Интересен"
 "Invalid torrent (%1%) from %2%." ---> "Бракованый торрент (%1%) от %2%."
-"Invalid" --->  ??? 
+"Invalid" --->  "Неверный" 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Чтобы корректно завершить сессию, Битторренту потребуется несколько мгновений и данное сообщение исчезнет, как только программа закроется."
-"LT Trackers Plugin" --->  ??? 
+"LT Trackers Plugin" --->  "LT Trackers Plugin" 
 "Language (requires restart)" ---> "Язык (необходим перезапуск)"
 "Limit the no. of half-open connections" ---> "Предельный размер номеров полу-открытых соединений"
 "List of Trackers." ---> "Список трэкеров."
 "Loading IP filters..." ---> "Загрузка IP фильтров..."
 "Local connection" ---> "Локальное соединение"
 "Log debug events." ---> "Вести журнал сообщений отладки."
-"Log off Windows" --->  ??? 
+"Log off Windows" --->  "Вылогиниться из Windows" 
 "Log to file." ---> "Вести журнал в файл."
 "Logging" ---> "Лог"
-"Manage Torrent(s)" --->  ??? 
-"Managed Downloading" --->  ??? 
-"Managed Seeding" --->  ??? 
-"Managed Torrent" --->  ??? 
-"Managed" --->  ??? 
-"Match the listen port (now mandatory)" --->  ??? 
-"Max Size (MiB) :" --->  ??? 
-"Max failures : " --->  ??? 
-"Max replies : " --->  ??? 
+"Manage Torrent(s)" --->  "Управление торрентами" 
+"Managed Downloading" --->  "Управляемая загрузка" 
+"Managed Seeding" --->  "Управляемая раздача" 
+"Managed Torrent" --->  "Управляемый торрент" 
+"Managed" --->  "Управляемый"
+"Match the listen port (now mandatory)" --->  "Соответствовать порту прослушки (теперь обязательно)" 
+"Max Size (MiB) :" --->  "Макс. размер (MiB) :" 
+"Max failures : " --->  "Макс. ошибок : " 
+"Max replies : " --->  "Макс. ответов : " 
 "Maximum" ---> "Максимум"
 "Message" ---> "Сообщение"
 "Minimize to tray." ---> "Свернуть в трей"
-"Move Down" --->  ??? 
-"Move To Bottom" --->  ??? 
-"Move To Top" --->  ??? 
-"Move Up" --->  ??? 
+"Move Down" --->  "Переместить ниже" 
+"Move To Bottom" --->  "Переместить вниз" 
+"Move To Top" --->  "Переместить вверх" 
+"Move Up" --->  "Переместить выше" 
 "Move finished torrents to :" ---> "Переместить законченые торренты в:"
 "Move the completed torrent to:" ---> "Переместить завершеные торренты в:"
 "N/A" ---> "Нет доступа"
-"NAT-PMP" --->  ??? 
+"NAT-PMP" --->  "NAT-PMP" 
 "Name" ---> "Имя"
 "Name:" ---> "Имя:"
 "New" ---> "Новый"
 "None" ---> "Никакой"
 "Normal" ---> "Нормальный"
-"Not Started" --->  ??? 
-"Not currently set to take any action" --->  ??? 
-"Note. Compact Allocation is incompatible with File Selection" ---> "Note. Compact Allocation is incompatible with File Selection"
+"Not Started" --->  "Не запущен" 
+"Not currently set to take any action" --->  "В данный момент действие не настроено" 
+"Note. Compact Allocation is incompatible with File Selection" ---> "Примечение: компактное размещение несовместимо с выделением файлов"
 "OK" ---> "ОК"
-"OS reported error for file '%1%'" --->  ??? 
+"OS reported error for file '%1%'" --->  Операционная система сообщила об ошибке в файле '%1%'" 
 "Ok" ---> "Ок"
 "On parole" --->  ??? 
-"Open &Halite" ---> "Открыть &Халит"
+"Open &Halite" ---> "Открыть &Halite"
 "Open Download Folder" ---> "Открыть папку закачки"
 "Open a (single) port between : " ---> "Открыть (единственный) порт между : "
 "Outgoing" ---> "Уходящий"
@@ -211,7 +211,7 @@
 "Overhead:" ---> "Накладный"
 "Password : " ---> "Пароль : "
 "Path" ---> "Путь"
-"Pause all torrents" --->  ??? 
+"Pause all torrents" --->  "Поставить на паузу все торренты" 
 "Pause" ---> "Пауза"
 "Paused" ---> "В паузе"
 "Pausing" ---> "Переход в состояние паузы"
@@ -222,19 +222,19 @@
 "Peers" ---> "Пиры"
 "Peers:" ---> "Пиры:"
 "Piece %2% finished. (%1%)" ---> "Часть %2% завершена. (%1%)"
-"Piece Expiry (sec) :" --->  ??? 
+"Piece Expiry (sec) :" --->  "Истечение срока части (sec) :"
 "Piece Size (KBs)" ---> "Размер части (KBs)"
 "Plaintext Encrypted" ---> "Кодированый прямой текст"
 "Plaintext" ---> "Прямой текст"
 "Port %1% open" ---> "Порт %1% открыт"
-"Port (UDP)" --->  ??? 
+"Port (UDP)" --->  "Порт (UDP)" 
 "Port : " ---> "Порт : "
-"Port Forwarding" ---> "Port Forwarding"
+"Port Forwarding" ---> "Перенаправление порта"
 "Port to listen on : " ---> "Порт ожидания : "
 "Port" ---> "Порт"
-"Ports" --->  ??? 
+"Ports" --->  "Порты" 
 "Prefer RC4" ---> "Prefer RC4"
-"Preparing" --->  ??? 
+"Preparing" --->  "Подготовка" 
 "Priority" ---> "Приоритет"
 "Private" ---> "Персональный"
 "Progress" ---> "Прогресс"
@@ -242,19 +242,19 @@
 "Proxies" ---> "Прокси"
 "Proxy Host/IP : " ---> "Прокси Хост/IP"
 "Proxy Settings" ---> "Настройки прокси"
-"Queue Position" --->  ??? 
-"Queue System" --->  ??? 
-"Queue View" --->  ??? 
+"Queue Position" --->  "Позиция очереди" 
+"Queue System" --->  "Система очереди" 
+"Queue View" --->  "Просмотр очереди" 
 "Queued for Checking" ---> "На очереди к проверке"
 "Queued" ---> "Добавлено в очередь"
-"RC4 Encrypted" ---> "RC4 Encrypted"
+"RC4 Encrypted" ---> "Зашифровано RC4"
 "RC4" ---> "RC4"
-"Rates:" ---> "Скорость:"
+"Rates:" ---> "Коэффициент:"
 "Ratio (this session):" ---> "Соотношение (в эту сессию):"
 "Ratio" ---> "Соотношение"
 "Ratio:" ---> "Соотношение:"
-"Read Cache Hit Ratio :" --->  ??? 
-"Read Size :" --->  ??? 
+"Read Cache Hit Ratio :" --->  "Кеш чтения достиг соотношения :" 
+"Read Size :" --->  "Размер чтения :" 
 "Reannounce" ---> "Reannounce"
 "Recheck Files" ---> "Переверить файлы"
 "Remaining" ---> "Остаётся"
@@ -263,41 +263,41 @@
 "Remote Control" ---> "Удалённый контроль"
 "Remove" ---> "Убрать"
 "Reset" ---> "Стереть"
-"Resolve Countries from IP" --->  ??? 
-"Resume data generated. (%1%)" --->  ??? 
-"Resume data generation failed. (%1%)" --->  ??? 
+"Resolve Countries from IP" --->  "Узнать страну по IP" 
+"Resume data generated. (%1%)" --->  "Сгенерировано возобновление данных. (%1%)" 
+"Resume data generation failed. (%1%)" --->  "Ошибка при генерации возобновлении данных. (%1%)" 
 "Resume" ---> "Запустить"
-"Resuming torrent. (%1%)" --->  ??? 
+"Resuming torrent. (%1%)" --->  "Возобновить торрент. (%1%)" 
 "Review settings when adding torrent." ---> "Переглядывать настройки при добавления торрента"
 "Save" ---> "Сохранить"
 "Saving Torrent" ---> "Сохранение торрента"
-"Search branching : " --->  ??? 
+"Search branching : " --->  "Искать ответвление : " 
 "Security" ---> "Безопасность"
-"Seed URL" --->  ??? 
-"Seeding Limits" --->  ??? 
+"Seed URL" --->  "URL раздачи" 
+"Seeding Limits" --->  "Ограничение раздач" 
 "Seeding" ---> "Сидовать"
 "Seeds" ---> "Сиды"
 "Seeds:" ---> "Сиды:"
-"Select Timed Action" --->  ??? 
+"Select Timed Action" --->  "Выберите своевременное действие" 
 "Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "Выберите папку для сохранения закачек. Выберите отменить, чтобы принят размещение по умолчанию."
 "Select a directory to save the files to or cancel to not download torrent at all." ---> "Выберите папку для сохранения файлов или отмените, чтобы вообще не загружать торрент."
 "Select a file or directory from which to construct the torrent." ---> "Выберите файл или папку с которых конструировать торрент."
-"Select a random port within this range." --->  ??? 
-"Select action to take :" --->  ??? 
-"Select the (TCP) port (or range) on which to listen for incoming connections." --->  ??? 
-"Send login info to trackers." ---> "Послать информацию связи трэкерам"
+"Select a random port within this range." --->  "Выбрать случайный порт в этом диапазоне." 
+"Select action to take :" --->  "Выберите действие :" 
+"Select the (TCP) port (or range) on which to listen for incoming connections." --->  "Выберите (TCP) порт (или диапазон) на котором слушать входящие соединения." 
+"Send login info to trackers." ---> "Послать информацию связи трекерам"
 "Set Priority" ---> "Установить приоритет"
 "Set as Primary" ---> "Установить первым"
-"Set time :" --->  ??? 
+"Set time :" --->  "Установить время :"  
 "Severity" ---> "Важность"
-"Share ratio limit:" --->  ??? 
+"Share ratio limit:" --->  "Разделять ограничение соотношения:" 
 "Show this message in future" ---> "Показывать это сообщение вдальнейшем"
-"Shutdown Windows" --->  ??? 
+"Shutdown Windows" --->  "Выключитб Windows" 
 "Shutting down session" ---> "Закрытие сесии"
 "Size" ---> "Размер"
-"Smart Ban Plugin" --->  ??? 
-"Snubbed" --->  ??? 
-"Sparse Allocation" --->  ??? 
+"Smart Ban Plugin" --->  "Smart Ban Plugin" 
+"Snubbed" --->  "пренебрежительно" 
+"Sparse Allocation" --->  "Редкое распределение" 
 "Standard exception (%1%) thrown from %2%." ---> "Стандартное исключение (%1%) подброшено от %2%."
 "Start Time" ---> "Время старта"
 "Status" ---> "Статус"
@@ -307,12 +307,12 @@
 "Stopped" ---> "Остановлен"
 "Stopping Torrents" ---> "Остановление торрентов"
 "Stopping" ---> "Остановление"
-"Subject to an optimistic unchoke" --->  ??? 
+"Subject to an optimistic unchoke" --->  "Сучётом оптимистичного анчокинга" 
 "Successfully %1%." ---> "Успешно %1%."
-"Super-seeding" --->  ??? 
+"Super-seeding" --->  "Супер-раздача" 
 "Supports extensions" ---> "Поддерживает расширения"
 "SysDateTimePick32" --->  ??? 
-"Take no action" --->  ??? 
+"Take no action" --->  "Не предпринимать действий" 
 "Test" ---> "Тест"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Сессия БитТоррента не смогла запуститься. Попробуйте выбрать другой порт в установках."
 "The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." ---> "Инфраструктура сокетов отказалась стартовать потому Халит вынужден закрытся. Пожалуйста, проверте не блокирует ли Халит какаято прорамма."
@@ -321,32 +321,32 @@
 "This Session Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "Эта сесия Закачано %1$.2fMB, Выкачано %2$.2fMB, Соотношение %3$.2f."
 "Tier" ---> "Связь"
 "Time left:" ---> "Осталось времени:"
-"Time limit (sec):" --->  ??? 
-"Time ratio limit:" --->  ??? 
-"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  ??? 
+"Time limit (sec):" --->  "Ограничение временим (сек):" 
+"Time ratio limit:" --->  "Ограничение временим соотношения:" 
+"Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" --->  "Осталось времени: %1% час., %2% мин. и %3% сек." 
 "Time" ---> "Время"
-"Timeout (seconds) : " --->  ??? 
-"Toggle Superseeding" --->  ??? 
+"Timeout (seconds) : " --->  "Ограничение ожидания (секунда) : " 
+"Toggle Superseeding" --->  "Переключить супер-раздачу" 
 "Toolbar2k.bmp" --->  ??? 
-"Torrent %1% added." --->  ??? 
-"Torrent %1% completed." --->  ??? 
-"Torrent %1% file %2% completed." --->  ??? 
-"Torrent %1% file %2% renamed failed." --->  ??? 
-"Torrent %1% file %2% renamed to %3%." --->  ??? 
+"Torrent %1% added." --->  "Торрент %1% добавлен." 
+"Torrent %1% completed." --->  "Торрент %1% завершён." 
+"Torrent %1% file %2% completed." --->  "Файл %2% торрента %1% завершён." 
+"Torrent %1% file %2% renamed failed." --->  "Переименование файл %2% торрента %1% неудачно." 
+"Torrent %1% file %2% renamed to %3%." --->  "Файл %2% торрента %1% переименован." 
 "Torrent %1% finished." ---> "Торрент %1% завершен."
 "Torrent %1% metadata failed!" --->  ??? 
 "Torrent %1% metadata received." --->  ??? 
 "Torrent %1% paused." ---> "Торрент %1% в паузе."
-"Torrent %1% storage moved." --->  ??? 
-"Torrent (%1%) exception caught: %2% from %3%." ---> "Получено Торрент исключение (%1%): %2% от %3%."
-"Torrent Completed!" --->  ??? 
+"Torrent %1% storage moved." --->  "Хранилище торрента %1% перемещено." 
+"Torrent (%1%) exception caught: %2% from %3%." ---> "Получено исключение торрента (%1%): %2% от %3%."
+"Torrent Completed!" --->  "Torrent завершен!" 
 "Torrent Defaults" ---> "Установки торрента по умолчанию"
 "Torrent File" ---> "Торрент файл"
 "Torrent Root" ---> "Torrent Root"
 "Torrent and Data" ---> "Торрент файл и данные"
-"Torrent completed balloon" --->  ??? 
+"Torrent completed balloon" --->  "Оповещение завершения торрента" 
 "Torrent connection limits:" ---> "Лимит соединений торрента"
-"Torrent error: %1% (%2%)" --->  ??? 
+"Torrent error: %1% (%2%)" --->  "Ошибка торрента: %1% (%2%)" 
 "Torrent save folder:" ---> "Папка сохранения торрент файла:"
 "Torrent transfer rates (KB/s):" ---> "Скорость передачи торрента (KB/s):"
 "Torrent" ---> "Торрент"
@@ -364,34 +364,34 @@
 "Trackers" ---> "Трэкеры"
 "Transferred:" ---> "Передано:"
 "Type" ---> "Тип"
-"UPnP router model (if recognised)." --->  ??? 
-"UPnP" --->  ??? 
+"UPnP router model (if recognised)." --->  "Модель роутера UPnP (если определён)." 
+"UPnP" --->  "UPnP" 
 "URL Seed %2%, %3%. (%1%)" ---> "Адрес сида %2%, %3%. (%1%)"
-"URL seed" --->  ??? 
-"URL" ---> "Адрес"
-"URL: " --->  ??? 
+"URL seed" --->  "URL сида" 
+"URL" ---> "URL"
+"URL: " --->  "URL: "
 "UnPlug and Play" ---> "UnPlug and Play"
 "Unicode exception: %1%." ---> "Исключение юникода: %1%."
-"Unmanaged" --->  ??? 
+"Unmanaged" --->  "Неуправляемый" 
 "Up" ---> "Вверх"
 "Update in:" ---> "Обновление через:"
 "Upload Rate (KB/s) :" ---> "Скорость выкачки (KB/s) :"
-"Upload only" --->  ??? 
-"Upload" ---> "Выкачать"
+"Upload only" --->  "Только закачка" 
+"Upload" ---> "Закачать"
 "Uploaded" ---> "Выкачано"
 "Use a proxy." ---> "Использовать прокси."
-"Use this network interface" --->  ??? 
+"Use this network interface" --->  "Использовать этот интерфейс сети" 
 "User cancelled Torrent file creation" ---> "Пользователь отменил создание торрент файла"
 "Username : " ---> "Имя пользователя : "
-"Uuid" --->  ??? 
+"Uuid" --->  "Uuid" 
 "Warning" ---> "Предупреждение"
-"Web Seed" ---> "Сид"
-"Web Seeds and DHT Nodes" ---> "Сиды и DHT узлы"
-"Web Seeds" --->  ??? 
-"Write Cache Hit Ratio :" --->  ??? 
+"Web Seed" ---> "Веб сид"
+"Web Seeds and DHT Nodes" ---> "Веб сиды и DHT узлы"
+"Web Seeds" --->  "Веб сиды" 
+"Write Cache Hit Ratio :" --->  "Ограничение соотношения кеша записи :" 
 "Xml Exception (%1%) with %2%." ---> "XML исключение (%1%) с %2%."
 "\r\0" --->  ??? 
-"random up to" --->  ??? 
+"random up to" --->  "случайно до" 
 "resource.h\0" --->  ??? 
 "to" ---> "в"
 "uTorrent Metadata Plugin" --->  ??? 
