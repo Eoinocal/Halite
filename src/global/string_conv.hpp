@@ -8,6 +8,8 @@
 #define GLOBAL_STRING_CONV
 
 #include <string>
+#include <sstream>
+#include <iomanip>
 #include <boost/format.hpp>
 #include <boost/array.hpp>
 #include "unicode.hpp"
@@ -174,6 +176,26 @@ template<>
 inline const std::wstring to_wstr_shim<boost::format>(boost::format& f)
 {
 	return from_utf8_safe(f.str());
+}
+
+inline std::wstring to_bytes_size(size_t size, bool with_per_sec)
+{
+	std::wostringstream out;
+    out << std::fixed << std::showpoint << std::setprecision(2);
+
+	if (size < 512)
+		out << size << L" B";
+	else if (size < 512*1024)
+		out << (size / 1024.) << L" KB";
+	else if (size < 768*1024*1024)
+		out << (size / 1024. / 1024.) << L" MB";
+	else
+		out << (size / 1024. / 1024. / 1024.) << L" GB";
+
+	if (with_per_sec)
+		out << L"/s";
+
+	return out.str();
 }
 
 } // namespace aux

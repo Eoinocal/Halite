@@ -25,8 +25,7 @@ namespace hal
 peer_detail::peer_detail(libt::peer_info& peerInfo) :
 	ip_address(hal::from_utf8_safe(peerInfo.ip.address().to_string())),
 	port(peerInfo.ip.port()),
-	speed(std::pair<float,float>(boost::numeric_cast<float>(peerInfo.payload_down_speed), 
-		boost::numeric_cast<float>(peerInfo.payload_up_speed))),
+	speed(peerInfo.payload_down_speed, peerInfo.payload_up_speed),
 	client(hal::from_utf8_safe(peerInfo.client))
 {
 	std::vector<wstring> status_vec;
@@ -117,8 +116,8 @@ std::wstring peer_detail::to_wstring(size_t index) const
 
 	case country_e: return country;
 
-	case speed_down_e: return (wform(L"%1$.2fkb/s") % (speed.first/1024)).str(); 
-	case speed_up_e: return (wform(L"%1$.2fkb/s") % (speed.second/1024)).str();
+	case speed_down_e: return to_bytes_size(speed.first, true); 
+	case speed_up_e: return to_bytes_size(speed.second, true);
 
 	case seed_e: return seed ? L"Seed" : L"";
 	case client_e: return client; 

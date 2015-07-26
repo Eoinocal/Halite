@@ -91,7 +91,7 @@ std::wstring file_details::to_wstring(size_t index)
 
 	case type_e: return L"(Undefined)"; // ???
 
-	case size_e: return (wform(L"%1$.2fMB") % (static_cast<double>(size)/(1024*1024))).str();
+	case size_e: return to_bytes_size(size, false);
 	case progress_e: return (wform(L"%1$.2f%%") % (static_cast<double>(progress)/size*100)).str(); 
 
 	case priority_e: 		
@@ -223,8 +223,8 @@ std::wstring torrent_details::to_wstring(size_t index)
 	case state_e: return state_;
 
 	case progress_e: return (wform(L"%1$.2f%%") % (completion_*100)).str(); 
-	case speed_down_e: return (wform(L"%1$.2fkb/s") % (speed_.first/1024)).str(); 
-	case speed_up_e: return (wform(L"%1$.2fkb/s") % (speed_.second/1024)).str(); 
+	case speed_down_e: return to_bytes_size(speed_.first, true);
+	case speed_up_e: return to_bytes_size(speed_.second, true);
 
 	case distributed_copies_e: 
 		{
@@ -238,24 +238,24 @@ std::wstring torrent_details::to_wstring(size_t index)
 
 	case remaining_e: 
 		{
-		return (wform(L"%1$.2fMB") % (static_cast<float>(total_wanted_-total_wanted_done_)/(1024*1024))).str(); 
+		return to_bytes_size(total_wanted_-total_wanted_done_, false); //(wform(L"%1$.2fMB") % (static_cast<float>()/(1024*1024))).str(); 
 		}
 
-	case completed_e: return (wform(L"%1$.2fMB") % (static_cast<float>(total_wanted_done_)/(1024*1024))).str();
+	case completed_e: return to_bytes_size(total_wanted_done_, false); //(wform(L"%1$.2fMB") % (static_cast<float>(total_wanted_done_)/(1024*1024))).str();
 
 	case total_wanted_e: 
 		{
-		return (wform(L"%1$.2fMB") % (static_cast<float>(total_wanted_)/(1024*1024))).str(); 
+		return to_bytes_size(total_wanted_, false); //(wform(L"%1$.2fMB") % (static_cast<float>(total_wanted_)/(1024*1024))).str(); 
 		}
 
 	case uploaded_e: 
 		{
-		return (wform(L"%1$.2fMB") % (static_cast<float>(total_payload_uploaded_)/(1024*1024))).str(); 
+		return to_bytes_size(total_payload_uploaded_, false); //(wform(L"%1$.2fMB") % (static_cast<float>(total_payload_uploaded_)/(1024*1024))).str(); 
 		}
 
 	case downloaded_e: 
 		{
-		return (wform(L"%1$.2fMB") % (static_cast<float>(total_payload_downloaded_)/(1024*1024))).str(); 
+		return to_bytes_size(total_payload_downloaded_, false); //(wform(L"%1$.2fMB") % (static_cast<float>(total_payload_downloaded_)/(1024*1024))).str(); 
 		}
 
 	case peers_e: return (wform(L"%1% (%2%)") % connected_peers_ % peers_).str(); 
@@ -587,7 +587,7 @@ const SessionDetail bit::get_session_details()
 	
 	libt::session_status status = pimpl()->session_->status();
 	
-	details.speed = std::pair<double, double>(status.download_rate, status.upload_rate);
+	details.speed = std::make_pair(status.download_rate, status.upload_rate);
 	
 	details.dht_on = pimpl()->dht_on_;
 	details.dht_nodes = status.dht_nodes;

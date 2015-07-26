@@ -254,8 +254,8 @@ void HaliteWindow::updateWindow()
 		UISetText(0, hal::app().res_wstr(HAL_NOT_LISTENING).c_str());
 	
 	wstring downloadRates = (hal::wform(hal::app().res_wstr(HAL_DOWN_RATES)) 
-			% (details.speed.first/1024) 
-			% (details.speed.second/1024)).str();
+			% hal::to_bytes_size(details.speed.first, true) 
+			% hal::to_bytes_size(details.speed.second, true)).str();
 	
 	UISetText(3, downloadRates.c_str());	
 	trayIcon_.SetTooltipText(downloadRates.c_str());

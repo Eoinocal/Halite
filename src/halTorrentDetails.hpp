@@ -139,7 +139,7 @@ public:
 			const boost::uuids::uuid& id, 
 			const std::wstring& cT, 
 			const std::wstring& hh, 
-			const std::pair<float,float>& sp=std::make_pair(0.f,0.f),
+			const std::pair<int, int>& sp=std::make_pair(0, 0),
 			float c=0, float d=0, 
 			size_type tWD=0, size_type tW=0, 
 			size_type tU=0, size_type tpU=0, 
@@ -241,7 +241,7 @@ public:
 	const boost::uuids::uuid& uuid() const { return uuid_; }
 	const std::wstring& current_tracker() const { return currentTracker_; }
 	
-	std::pair<float,float> speed() const { return speed_; }
+	std::pair<int, int> speed() const { return speed_; }
 	const float& completion() const { return completion_; }
 	const float& distributed_copies() const { return distributed_copies_; }
 	
@@ -283,7 +283,7 @@ public:
 	std::wstring state_;
 	std::wstring currentTracker_;
 
-	std::pair<float,float> speed_;		
+	std::pair<int, int> speed_;		
 	float completion_;	
 	float distributed_copies_;
 	
@@ -447,7 +447,7 @@ struct SessionDetail
 {
 	int port;
 	
-	std::pair<double, double> speed;
+	std::pair<int, int> speed;
 	
 	bool dht_on;
 	size_t dht_nodes;

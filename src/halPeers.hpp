@@ -52,7 +52,7 @@ struct peer_detail
 	std::wstring ip_address;
 	unsigned short port;
 	std::wstring country;
-	std::pair<float,float> speed;
+	std::pair<int, int> speed;
 	bool seed;
 	std::wstring client;
 	std::wstring status;

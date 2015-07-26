@@ -527,9 +527,7 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 			id(l),
 			hal::from_utf8(status_cache(l).current_tracker), 
 			hash_str_,
-			std::pair<float, float>(
-				boost::numeric_cast<float>(status_cache(l).download_payload_rate), 
-				boost::numeric_cast<float>(status_cache(l).upload_payload_rate)),
+			std::make_pair(status_cache(l).download_payload_rate, status_cache(l).upload_payload_rate),
 			progress_, 
 			status_cache(l).distributed_copies, 
 			status_cache(l).total_wanted_done, 
