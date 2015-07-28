@@ -6,7 +6,7 @@
 
 #pragma once
 
-#define HALITE_VERSION						0, 4, 02, 1285
+#define HALITE_VERSION						0, 4, 02, 1293
 #define HALITE_VERSION_STRING				"v 0.4.0.2"
 #define HALITE_FINGERPRINT					"HL", 0, 4, 0, 2
 

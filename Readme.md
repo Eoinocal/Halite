@@ -1,6 +1,6 @@
 # Halite: A Free Open-Source BitTorrent client
 
-Version: 0.4.0.2 dev 1278 released 29th July 2015
+Version: 0.4.0.2 dev 1293 released 28th July 2015
 
 WWW: [http://www.binarynotions.com/halite-bittorrent-client]() 
 
