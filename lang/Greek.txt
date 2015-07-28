@@ -1,11 +1,10 @@
 "English" ---> "Ελληνικά"
 "English.rtf" ---> "../lang/Greek.rtf"
 " %2%" --->  ??? 
-"%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s λήψη - %2$.2fKB/s αποστολή"
-"%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB λήψη - %2$.2fMB αποστολή"
-"%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB of %2$.2fMB"
 "%1% DHT node(s)" ---> "%1% DHT κόμβος(οι)"
 "%1% active torrent(s)" ---> "%1% ενεργό(ά) torrent(s)"
+"%1% down - %2% up" --->  ??? 
+"%1% of %2%" --->  ??? 
 "%1% peers from DHT for %2%." --->  ??? 
 "%1% port %2% mapping succeeded." --->  ??? 
 "%1% port mapping request failed." --->  ??? 
@@ -14,8 +13,9 @@
 "&Pause All" ---> "Παύση όλων"
 "&Resume All" ---> "Συνέχιση όλων"
 "(C) Eoin O'Callaghan 2014" --->  ??? 
-"(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(Λ-Α) %1$.2fKB/s - %2$.2fKB/s"
+"(D-U) %1% - %2%" ---> "(Λ-Α) %1% - %2%"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(Λ-Α) 0000.000KB/s - 0000.000KB/s"
+"/s" --->  ??? 
 "About" ---> "Περί"
 "Above Normal" ---> "Πάνω από το κανονικό"
 "Active downloads :" --->  ??? 
@@ -43,6 +43,7 @@
 "Are you sure you wish to delete all downloaded data?" ---> "Είστε σίγουρος ότι θέλετε να διαγράψεται όλα τα στοιχεία?"
 "Auto Sort" ---> "Αυτόματη Ταξινόμηση"
 "Auto-managed" --->  ??? 
+"B" --->  ??? 
 "Binary Notions" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." ---> "Bittorrent συμβάν: %1%."
@@ -130,6 +131,7 @@
 "Force Close" ---> "Εξαναγκάστε κλείσιμο"
 "Forced" ---> "Εξαναγκασμένο"
 "Full Allocation" --->  ??? 
+"GB" --->  ??? 
 "General Settings" ---> "Γενικές Επιλογές"
 "General" ---> "Γενικά"
 "Generated Torrent Name (Cannot change)" ---> "Παραγόμενο όνομα Torrent (Αδυναμία αλλαγής)"
@@ -161,6 +163,7 @@
 "Invalid torrent (%1%) from %2%." ---> "Άκυρω torrent (%1%) από %2%."
 "Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Θα χρειαστεί λίγος χρόνος για να τερματίσουν οι συνδέσεις του BitTorrent. Αμέσως μετά, αυτό το μήνυμα θα εξαφανιστεί και το πρόγραμμα θα κλείσει."
+"KB" --->  ??? 
 "LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Γλώσσα (χρειάζεται επανεκκίνηση)"
 "Limit the no. of half-open connections" ---> "Περιορισμός των μισο-ανοιγμένων συνδέσεων"
@@ -171,6 +174,7 @@
 "Log off Windows" --->  ??? 
 "Log to file." ---> "Καταγραφή σε αρχείο."
 "Logging" ---> "Καταγραφή"
+"MB" --->  ??? 
 "Manage Torrent(s)" --->  ??? 
 "Managed Downloading" --->  ??? 
 "Managed Seeding" --->  ??? 
@@ -271,6 +275,7 @@
 "Review settings when adding torrent." ---> "Ανασκόπιση ρυθμίσεων όταν προστίθεται torrent"
 "Save" ---> "Αποθήκευση"
 "Saving Torrent" ---> "Αποθήκευση Torrent"
+"Scrape failed: %2%. (%1%)" --->  ??? 
 "Search branching : " --->  ??? 
 "Security" ---> "Ασφάλεια"
 "Seed URL" --->  ??? 
@@ -312,6 +317,7 @@
 "Super-seeding" --->  ??? 
 "Supports extensions" ---> "Υποστηρίζει επέκταση"
 "SysDateTimePick32" --->  ??? 
+"TB" --->  ??? 
 "Take no action" --->  ??? 
 "Test" ---> "Δοκιμή"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Δεν ήταν δυνατή η έναρξη του BitTorrent πρωτοκόλλου. Επιλέξετ άλλη θύρα στις ρυθμίσεις."

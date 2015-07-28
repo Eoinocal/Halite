@@ -34,7 +34,7 @@ bool PeerListView::SubclassWindow(HWND hwnd)
 		true,			true,			true,			true,			true,			true,			true,			true};
 
 	array<int, 8> formats = {
-		LVCFMT_CENTER,	LVCFMT_CENTER,	LVCFMT_CENTER,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_CENTER,	LVCFMT_CENTER,	LVCFMT_LEFT};
+		LVCFMT_CENTER,	LVCFMT_CENTER,	LVCFMT_CENTER,	LVCFMT_RIGHT,	LVCFMT_RIGHT,	LVCFMT_CENTER,	LVCFMT_LEFT,		LVCFMT_LEFT};
 
 	for (int i=0, e=8; i < e; ++i)
 		AddColumn(names[i].c_str(), i, visible[i], widths[i], formats[i]);

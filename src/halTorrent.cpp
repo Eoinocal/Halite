@@ -26,6 +26,28 @@
 namespace hal 
 {
 
+std::wstring to_bytes_size(size_t size, bool with_per_sec)
+{
+	std::wostringstream out;
+	out << std::fixed << std::showpoint << std::setprecision(2);
+
+	if (size < 512)
+		out << size << L" " << hal::app().res_wstr(HAL_BYTE);
+	else if (size < 512*1024)
+		out << (size / 1024.) << L" " << hal::app().res_wstr(HAL_KILOBYTE);
+	else if (size < 768*1024*1024)
+		out << (size / 1024. / 1024.) << L" " << hal::app().res_wstr(HAL_MEGABYTE);
+	else if (size < 768*1024*1024*1024)
+		out << (size / 1024. / 1024. / 1024.) << L" " << hal::app().res_wstr(HAL_GIGABYTE);
+	else
+		out << (size / 1024. / 1024. / 1024. / 1024.) << L" " << hal::app().res_wstr(HAL_TERABYTE);
+
+	if (with_per_sec)
+		out << hal::app().res_wstr(HAL_PER_SECOND);
+
+	return out.str();
+}
+
 bool remove_empty_directories_recur(const fs::path& p, std::vector<fs::path>& dirs)
 {
 	if (!fs::exists(p)) return false;

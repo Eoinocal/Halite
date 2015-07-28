@@ -1,11 +1,10 @@
 "English" ---> "Magyar"
 "English.rtf" ---> "../lang/Hungarian.rtf"
 " %2%" --->  ??? 
-"%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s le - %2$.2fKB/s fel"
-"%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB le - %2$.2fMB fel"
-"%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB a %2$.2fMB-ból"
 "%1% DHT node(s)" ---> "%1% DHT csomópont"
 "%1% active torrent(s)" ---> "%1% aktív torrent"
+"%1% down - %2% up" --->  ??? 
+"%1% of %2%" --->  ??? 
 "%1% peers from DHT for %2%." --->  ??? 
 "%1% port %2% mapping succeeded." --->  ??? 
 "%1% port mapping request failed." --->  ??? 
@@ -14,8 +13,9 @@
 "&Pause All" ---> "Összes &Leállítása"
 "&Resume All" ---> "Összes &Folytatása"
 "(C) Eoin O'Callaghan 2014" --->  ??? 
-"(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(L-F) %1$.2fKB/s - %2$.2fKB/s"
+"(D-U) %1% - %2%" ---> "(L-F) %1% - %2%"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(L-F) 0000.000KB/s - 0000.000KB/s"
+"/s" --->  ??? 
 "About" ---> "Névjegy"
 "Above Normal" ---> "Normál Feletti"
 "Active downloads :" --->  ??? 
@@ -43,6 +43,7 @@
 "Are you sure you wish to delete all downloaded data?" ---> "Biztosan törölni akarsz minden letöltött adatot?"
 "Auto Sort" ---> "Automatikus rendezés"
 "Auto-managed" --->  ??? 
+"B" --->  ??? 
 "Binary Notions" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." ---> "Bittorrent Event: %1%."
@@ -130,6 +131,7 @@
 "Force Close" ---> "Bezárás"
 "Forced" ---> "Kényszerített"
 "Full Allocation" --->  ??? 
+"GB" --->  ??? 
 "General Settings" ---> "Általános Beállítások"
 "General" ---> "Általános"
 "Generated Torrent Name (Cannot change)" ---> "Generált Torrent Név (Nem módosítható)"
@@ -161,6 +163,7 @@
 "Invalid torrent (%1%) from %2%." ---> "Invalid torrent (%1%) from %2%."
 "Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Kérlek várj, amíg a program szabályosan leáll. Ez pár pillanatig tart, utána ez az ablak is eltűnik."
+"KB" --->  ??? 
 "LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Nyelv (újraindítást igényel)"
 "Limit the no. of half-open connections" ---> "Félig nyitott kapcsolatok maximális száma"
@@ -171,6 +174,7 @@
 "Log off Windows" --->  ??? 
 "Log to file." ---> "Napló fájlba írása."
 "Logging" ---> "Naplózás"
+"MB" --->  ??? 
 "Manage Torrent(s)" --->  ??? 
 "Managed Downloading" --->  ??? 
 "Managed Seeding" --->  ??? 
@@ -271,6 +275,7 @@
 "Review settings when adding torrent." ---> "Beállítások megadása hozzáadásnál."
 "Save" ---> "Mentés"
 "Saving Torrent" ---> "Torrent Mentése"
+"Scrape failed: %2%. (%1%)" --->  ??? 
 "Search branching : " --->  ??? 
 "Security" ---> "Biztonság"
 "Seed URL" --->  ??? 
@@ -312,6 +317,7 @@
 "Super-seeding" --->  ??? 
 "Supports extensions" ---> "Supports extensions"
 "SysDateTimePick32" --->  ??? 
+"TB" --->  ??? 
 "Take no action" --->  ??? 
 "Test" ---> "Teszt"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "A BitTorrent folyamat nem tud elindulni. Próbálj meg más portot választani."

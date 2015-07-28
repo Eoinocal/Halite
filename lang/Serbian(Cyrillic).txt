@@ -1,11 +1,10 @@
 "English" ---> "Српски (ћирилица)"
 "English.rtf" ---> "../lang/Serbian(Cyrillic).rtf"
 " %2%" ---> " %2%"
-"%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s улазни - %2$.2fKB/s излазни"
-"%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB улазни - %2$.2fMB излазни"
-"%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB од %2$.2fMB"
 "%1% DHT node(s)" ---> "%1% ДХТ-чвора"
 "%1% active torrent(s)" ---> "Активни торенти"
+"%1% down - %2% up" --->  ??? 
+"%1% of %2%" --->  ??? 
 "%1% peers from DHT for %2%." ---> "%1% муштерије из ДХТ-а за %2%."
 "%1% port %2% mapping succeeded." ---> "%1% порт %2% успешно отворен."
 "%1% port mapping request failed." ---> "%1% порт није отворен."
@@ -14,8 +13,9 @@
 "&Pause All" ---> "Све паузирати"
 "&Resume All" ---> "Све наставити"
 "(C) Eoin O'Callaghan 2014" --->  ??? 
-"(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(У-И) %1$.2fKB/s - %2$.2fKB/s"
+"(D-U) %1% - %2%" ---> "(У-И) %1% - %2%"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(У-И) 0000.000KB/s - 0000.000KB/s"
+"/s" --->  ??? 
 "About" ---> "О нама"
 "Above Normal" ---> "Преко нормалног"
 "Active downloads :" ---> "Тренутно Преузимаш"
@@ -43,6 +43,7 @@
 "Are you sure you wish to delete all downloaded data?" ---> "Јесте ли сигурни, да желите све преузето избрисати?"
 "Auto Sort" ---> "Аутоматско сортирање"
 "Auto-managed" ---> "Аутоматско уређивање"
+"B" --->  ??? 
 "Binary Notions" --->  ??? 
 "BitTorrent" ---> "БитТорент"
 "Bittorrent Event: %1%." ---> "Битторент догађај: %1%."
@@ -130,6 +131,7 @@
 "Force Close" ---> "Насилно затварање"
 "Forced" ---> "Натеран"
 "Full Allocation" --->  ??? 
+"GB" --->  ??? 
 "General Settings" ---> "Опште"
 "General" ---> "Опште"
 "Generated Torrent Name (Cannot change)" ---> "Генерирано име торента (непроменљиво)"
@@ -161,6 +163,7 @@
 "Invalid torrent (%1%) from %2%." ---> "Неисправан торент (%1%) од (%2%)"
 "Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Сачекај мало док се халите затвори, Кад се ова порука склони, онда је и халите затворен."
+"KB" --->  ??? 
 "LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Језик (после промене, покрени халите наново)"
 "Limit the no. of half-open connections" ---> "Ограничи број полу отворених мрежних повеза"
@@ -171,6 +174,7 @@
 "Log off Windows" ---> "Одјави се са свог налога"
 "Log to file." ---> "Архивирај Дешавање"
 "Logging" ---> "Протокол"
+"MB" --->  ??? 
 "Manage Torrent(s)" ---> "Уређивај торенте"
 "Managed Downloading" ---> "Преузми уређене торенте"
 "Managed Seeding" ---> "Нуди уређене торенте"
@@ -271,6 +275,7 @@
 "Review settings when adding torrent." ---> "Питај ме увек дали желим улазну мапу променути кад уносим нове торенте"
 "Save" ---> "Архивирај"
 "Saving Torrent" ---> "Апхивирај фајл"
+"Scrape failed: %2%. (%1%)" --->  ??? 
 "Search branching : " ---> "Поделена претраг ДХТ-а : "
 "Security" ---> "Сигурности"
 "Seed URL" --->  ??? 
@@ -312,6 +317,7 @@
 "Super-seeding" --->  ??? 
 "Supports extensions" ---> "Подржава екстензију"
 "SysDateTimePick32" ---> "SysDateTimePick32"
+"TB" --->  ??? 
 "Take no action" ---> "Nikakva akcija"
 "Test" ---> "Провера"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Акција није могла почети, изабери други порт."

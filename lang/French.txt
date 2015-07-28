@@ -1,11 +1,10 @@
 "English" ---> "Français"
 "English.rtf" ---> "../lang/French.rtf"
 " %2%" --->  ??? 
-"%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKo/s R - %2$.2fKo/s E"
-"%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMo Récep. - %2$.2fMo Envoi"
-"%1$.2fMB of %2$.2fMB" ---> "%1$.2fMo sur %2$.2fMo"
 "%1% DHT node(s)" ---> "%1% Noeud(s) DHT"
 "%1% active torrent(s)" ---> "%1% torrent(s) actif(s)"
+"%1% down - %2% up" --->  ??? 
+"%1% of %2%" --->  ??? 
 "%1% peers from DHT for %2%." --->  ??? 
 "%1% port %2% mapping succeeded." --->  ??? 
 "%1% port mapping request failed." --->  ??? 
@@ -14,8 +13,9 @@
 "&Pause All" ---> "&Tout Suspendre"
 "&Resume All" ---> "&Tout Reprendre"
 "(C) Eoin O'Callaghan 2014" --->  ??? 
-"(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(R-E) %1$.2fKo/s - %2$.2fKo/s"
+"(D-U) %1% - %2%" --->  ??? 
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(R-E) 0000.000Ko/s - 0000.000Ko/s"
+"/s" --->  ??? 
 "About" ---> "A propos"
 "Above Normal" ---> "Supérieure à la normale"
 "Active downloads :" --->  ??? 
@@ -43,6 +43,7 @@
 "Are you sure you wish to delete all downloaded data?" ---> "Etes vous sûr de vouloir effacer toutes les données téléchargées ?"
 "Auto Sort" ---> "Tri Automatique"
 "Auto-managed" --->  ??? 
+"B" --->  ??? 
 "Binary Notions" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." ---> "Evènement Bitorrent: %1%."
@@ -130,6 +131,7 @@
 "Force Close" ---> "Forcer la Fermeture"
 "Forced" ---> "Forcé"
 "Full Allocation" --->  ??? 
+"GB" --->  ??? 
 "General Settings" ---> "Paramètres généraux"
 "General" ---> "Général"
 "Generated Torrent Name (Cannot change)" ---> "Nom généré pour le torrent (non editable)"
@@ -161,6 +163,7 @@
 "Invalid torrent (%1%) from %2%." ---> "Torrent invalide (%1%) de %2%."
 "Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Cela prendra un moment pour que la session BitTorrent se ferme proprement. Quand ce message disparaîtra, le programme se fermera."
+"KB" --->  ??? 
 "LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Langage (redémarrage nécessaire)"
 "Limit the no. of half-open connections" ---> "Limiter le nb. de connexion à moitié ouvertes"
@@ -171,6 +174,7 @@
 "Log off Windows" --->  ??? 
 "Log to file." ---> "Logguer dans un fichier"
 "Logging" ---> "Log"
+"MB" --->  ??? 
 "Manage Torrent(s)" --->  ??? 
 "Managed Downloading" --->  ??? 
 "Managed Seeding" --->  ??? 
@@ -271,6 +275,7 @@
 "Review settings when adding torrent." ---> "Vérifier les options à l'ajout d'un torrent."
 "Save" ---> "Enregister"
 "Saving Torrent" ---> "Enregistrement du Torrent"
+"Scrape failed: %2%. (%1%)" --->  ??? 
 "Search branching : " --->  ??? 
 "Security" ---> "Sécurité"
 "Seed URL" --->  ??? 
@@ -312,6 +317,7 @@
 "Super-seeding" --->  ??? 
 "Supports extensions" ---> "Extensions supportées"
 "SysDateTimePick32" --->  ??? 
+"TB" --->  ??? 
 "Take no action" --->  ??? 
 "Test" ---> "Test"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "La session BiTorrent ne peut pas démarer. Essayez de sélectionner un port différent dans les options."

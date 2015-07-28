@@ -1,11 +1,10 @@
 "English" ---> "Čeština (Czech)"
 "English.rtf" ---> "../lang/Czech.rtf"
 " %2%" ---> " %2"
-"%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fkB/s S - %2$.2fkB/s O"
-"%1$.2fMB down - %2$.2fMB up" ---> "Staženo %1$.2fMB - Odesláno %2$.2fMB"
-"%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB z %2$.2fMB"
 "%1% DHT node(s)" ---> "%1% DHT uzlů"
 "%1% active torrent(s)" ---> "%1% aktivních torentů"
+"%1% down - %2% up" --->  ??? 
+"%1% of %2%" --->  ??? 
 "%1% peers from DHT for %2%." ---> "%1% peerů z DHT pro %2%."
 "%1% port %2% mapping succeeded." ---> "%1% port %2% přiřazení úspěšné."
 "%1% port mapping request failed." ---> "%1% požadavek přiřazení portu selhal."
@@ -14,8 +13,9 @@
 "&Pause All" ---> "&Pozastavit vše"
 "&Resume All" ---> "&Obnovit vše"
 "(C) Eoin O'Callaghan 2014" --->  ??? 
-"(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(S-O) %1$.2fkB/s - %2$.2fkB/s"
+"(D-U) %1% - %2%" ---> "(S-O) %1% - %2%"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(S-O) 0000.000kB/s - 0000.000kB/s"
+"/s" --->  ??? 
 "About" ---> "O programu"
 "Above Normal" ---> "Nadprůměrná"
 "Active downloads :" ---> "Aktivní stahování:"
@@ -43,6 +43,7 @@
 "Are you sure you wish to delete all downloaded data?" ---> "Opravdu chcete smazat všechna stažená data?"
 "Auto Sort" ---> "Řadit automaticky"
 "Auto-managed" ---> "Automaticky spravované"
+"B" --->  ??? 
 "Binary Notions" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." ---> "Bittorrent: %1%."
@@ -130,6 +131,7 @@
 "Force Close" ---> "Vynutit zavření"
 "Forced" ---> "Vynucené"
 "Full Allocation" --->  ??? 
+"GB" --->  ??? 
 "General Settings" ---> "Obecná nastavení"
 "General" ---> "Obecné"
 "Generated Torrent Name (Cannot change)" ---> "Vygenerovaný název torrentu (nelze změnit)"
@@ -161,6 +163,7 @@
 "Invalid torrent (%1%) from %2%." ---> "Neplatný torrent (%1%) z %2%."
 "Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Program zůstane spuštěn a tato zpráva zobrazena, dokud nedojde k čistému ukončení BitTorrent relace, což může chvíli trvat."
+"KB" --->  ??? 
 "LT Trackers Plugin" ---> "LT Trackers"
 "Language (requires restart)" ---> "Language (requires restart)"
 "Limit the no. of half-open connections" ---> "Omezit počet polootevřených spojení na:"
@@ -171,6 +174,7 @@
 "Log off Windows" ---> "Odhlásit se"
 "Log to file." ---> "Zaznamenávat do souboru."
 "Logging" ---> "Protokol událostí"
+"MB" --->  ??? 
 "Manage Torrent(s)" ---> "Spravovat torrenty"
 "Managed Downloading" ---> "Spravovaná stahování"
 "Managed Seeding" ---> "Spravovaná sdílení"
@@ -271,6 +275,7 @@
 "Review settings when adding torrent." ---> "Při přidání torrentu zobrazit nastavení."
 "Save" ---> "Uložit"
 "Saving Torrent" ---> "Uložení torrentu"
+"Scrape failed: %2%. (%1%)" --->  ??? 
 "Search branching : " ---> "Větvení hledání:"
 "Security" ---> "Zabezpečení"
 "Seed URL" --->  ??? 
@@ -312,6 +317,7 @@
 "Super-seeding" ---> "Super-seeding"
 "Supports extensions" ---> "Podporuje rozšíření"
 "SysDateTimePick32" ---> "SysDateTimePick32"
+"TB" --->  ??? 
 "Take no action" ---> "Žádná akce"
 "Test" ---> "Test"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "BitTorrent relace nemohla být spuštěna. Zkuste v nastavení zvolit jiný port."

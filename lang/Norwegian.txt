@@ -1,11 +1,10 @@
 "English" ---> "Norwegian"
 "English.rtf" --->  ??? 
 " %2%" --->  ??? 
-"%1$.2fKB/s down - %2$.2fKB/s up" --->  ??? 
-"%1$.2fMB down - %2$.2fMB up" --->  ??? 
-"%1$.2fMB of %2$.2fMB" --->  ??? 
 "%1% DHT node(s)" ---> "%1% DHT node(r)"
 "%1% active torrent(s)" --->  ??? 
+"%1% down - %2% up" --->  ??? 
+"%1% of %2%" --->  ??? 
 "%1% peers from DHT for %2%." --->  ??? 
 "%1% port %2% mapping succeeded." --->  ??? 
 "%1% port mapping request failed." --->  ??? 
@@ -14,8 +13,9 @@
 "&Pause All" ---> "&Pause Alle"
 "&Resume All" ---> "&Fortsett Alle"
 "(C) Eoin O'Callaghan 2014" --->  ??? 
-"(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(N-O) %1$.2fKB/s - %2$.2fKB/s"
+"(D-U) %1% - %2%" ---> "(N-O) %1% - %2%"
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
+"/s" --->  ??? 
 "About" ---> "Om"
 "Above Normal" --->  ??? 
 "Active downloads :" --->  ??? 
@@ -43,6 +43,7 @@
 "Are you sure you wish to delete all downloaded data?" --->  ??? 
 "Auto Sort" --->  ??? 
 "Auto-managed" --->  ??? 
+"B" --->  ??? 
 "Binary Notions" --->  ??? 
 "BitTorrent" --->  ??? 
 "Bittorrent Event: %1%." ---> "Bittorrent Hendelse: %1%."
@@ -130,6 +131,7 @@
 "Force Close" --->  ??? 
 "Forced" --->  ??? 
 "Full Allocation" --->  ??? 
+"GB" --->  ??? 
 "General Settings" ---> "Generelle instillinger"
 "General" ---> "Generelt"
 "Generated Torrent Name (Cannot change)" --->  ??? 
@@ -161,6 +163,7 @@
 "Invalid torrent (%1%) from %2%." ---> "Ugyldig torrent (%1%) fra %2%."
 "Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Det vil ta BitTorrent sesjonen et øyeblikk å stenges korrekt. Denne meldingen vil da forsvinne og programmet vil lukkes."
+"KB" --->  ??? 
 "LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" --->  ??? 
 "Limit the no. of half-open connections" --->  ??? 
@@ -171,6 +174,7 @@
 "Log off Windows" --->  ??? 
 "Log to file." ---> "Logg til fil."
 "Logging" --->  ??? 
+"MB" --->  ??? 
 "Manage Torrent(s)" --->  ??? 
 "Managed Downloading" --->  ??? 
 "Managed Seeding" --->  ??? 
@@ -271,6 +275,7 @@
 "Review settings when adding torrent." --->  ??? 
 "Save" ---> "Lagre"
 "Saving Torrent" --->  ??? 
+"Scrape failed: %2%. (%1%)" --->  ??? 
 "Search branching : " --->  ??? 
 "Security" --->  ??? 
 "Seed URL" --->  ??? 
@@ -312,6 +317,7 @@
 "Super-seeding" --->  ??? 
 "Supports extensions" ---> "Supporterer utvidelser"
 "SysDateTimePick32" --->  ??? 
+"TB" --->  ??? 
 "Take no action" --->  ??? 
 "Test" --->  ??? 
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "BitTorrent sesjonen kunne ikke starte. Prøv en annen port i instillingene."

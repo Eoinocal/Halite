@@ -1,11 +1,10 @@
 "English" ---> "Romanian"
 "English.rtf" ---> "../lang/Romanian.rtf"
 " %2%" --->  ??? 
-"%1$.2fKB/s down - %2$.2fKB/s up" ---> "%1$.2fKB/s jos - %2$.2fKB/s sus"
-"%1$.2fMB down - %2$.2fMB up" ---> "%1$.2fMB jos - %2$.2fMB sus"
-"%1$.2fMB of %2$.2fMB" ---> "%1$.2fMB din %2$.2fMB"
 "%1% DHT node(s)" --->  ??? 
 "%1% active torrent(s)" ---> "%1% torrente active"
+"%1% down - %2% up" --->  ??? 
+"%1% of %2%" --->  ??? 
 "%1% peers from DHT for %2%." ---> "%1% parteneri din DHT pentru %2%."
 "%1% port %2% mapping succeeded." ---> "%1% port %2%  maparea reuşita."
 "%1% port mapping request failed." ---> "%1% cererea pentru maparea portului eşuat."
@@ -14,8 +13,9 @@
 "&Pause All" ---> "&Pauzează pe Toate"
 "&Resume All" ---> "&Reincepe-le pe Toate"
 "(C) Eoin O'Callaghan 2014" --->  ??? 
-"(D-U) %1$.2fKB/s - %2$.2fKB/s" ---> "(J-S) %1$.2fKB/s - %2$.2fKB/s"
+"(D-U) %1% - %2%" ---> "(J-S) %1% - %2%"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(J-S) 0000.000KB/s - 0000.000KB/s"
+"/s" --->  ??? 
 "About" ---> "Despre Halite"
 "Above Normal" ---> "Mai Mare"
 "Active downloads :" ---> "Descărcări active :"
@@ -43,6 +43,7 @@
 "Are you sure you wish to delete all downloaded data?" ---> "Sunteti siguri ca vreti să ştergeţi toate datele descărcate?"
 "Auto Sort" ---> "Ordine Automatică"
 "Auto-managed" ---> "Gestionare automatică"
+"B" --->  ??? 
 "Binary Notions" --->  ??? 
 "BitTorrent" ---> "BitTorrent"
 "Bittorrent Event: %1%." ---> "Eveniment Bittorrent: %1%."
@@ -130,6 +131,7 @@
 "Force Close" ---> "Forţează Închiderea"
 "Forced" ---> "Forţat"
 "Full Allocation" --->  ??? 
+"GB" --->  ??? 
 "General Settings" ---> "Opţiuni Generale"
 "General" ---> "General"
 "Generated Torrent Name (Cannot change)" ---> "Numele Torrentului Generat (nu se poate modifica)"
@@ -161,6 +163,7 @@
 "Invalid torrent (%1%) from %2%." ---> "Torrent invalid (%1%) de la %2%."
 "Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Vor trece câteva momente până la închiderea sesiunii Bittorrent după care acest mesaj va dispare şi programul se va închide."
+"KB" --->  ??? 
 "LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Limba (necesită restart)"
 "Limit the no. of half-open connections" ---> "Limitează numărul conexiunilor simultane"
@@ -171,6 +174,7 @@
 "Log off Windows" --->  ??? 
 "Log to file." ---> "Salvează Logfile."
 "Logging" ---> "Logare"
+"MB" --->  ??? 
 "Manage Torrent(s)" ---> "Gestionarea Torrentelor"
 "Managed Downloading" ---> "Descărcare Gestionată"
 "Managed Seeding" ---> "Încărcare Gestionată"
@@ -271,6 +275,7 @@
 "Review settings when adding torrent." ---> "Revizuiţi setările când adăugaţi un torrent."
 "Save" ---> "Salvează"
 "Saving Torrent" ---> "Salvează Torrentul"
+"Scrape failed: %2%. (%1%)" --->  ??? 
 "Search branching : " --->  ??? 
 "Security" ---> "Securitate"
 "Seed URL" --->  ??? 
@@ -312,6 +317,7 @@
 "Super-seeding" --->  ??? 
 "Supports extensions" ---> "Suportă extensii"
 "SysDateTimePick32" --->  ??? 
+"TB" --->  ??? 
 "Take no action" --->  ??? 
 "Test" ---> "Test"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "Sessiunea BitTorrent n-a putut porni. Încercaţi să alegeţi un alt port în Opţiuni."

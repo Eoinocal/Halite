@@ -77,5 +77,7 @@ namespace hal
 	inline wpath path_from_utf8(const path& p)
 	{
 		return wpath(p.string());
-	}
+	}	
+
+	std::wstring to_bytes_size(size_t size, bool with_per_sec);
 }

@@ -12,6 +12,9 @@
 #include "string_conv.hpp"
 #include "unicode.hpp"
 #include "logger.hpp"
+#include <sstream>
+#include <iomanip>
+#include "wtl_app.hpp"
 
 namespace hal
 {

@@ -1,6 +1,6 @@
 # Halite: A Free Open-Source BitTorrent client
 
-Version: 0.4.0.1 dev 1278 released 3rd February 2015
+Version: 0.4.0.2 dev 1278 released 29th July 2015
 
 WWW: [http://www.binarynotions.com/halite-bittorrent-client]() 
 
@@ -52,6 +52,14 @@ Old configuration files need to be reset. They will be backup by the
 installer, unless you choose not too.
 
 Changes:
+
+ + from v 0.4.0.1 to 0.4.0.2:
+
+   1. Updated to libtorrent 1.05
+   1. Fixed a bug with Unicode.
+   2. Displayed byte values auto format to KB, MB, etc.
+   3. Global setting for specifying defult allocation.
+   4. Big Russian translation update. Thanks maxdeepfield!
 
  + from v 0.4.0 to 0.4.0.1:
 
