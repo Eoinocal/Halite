@@ -49,7 +49,7 @@ class try_update_lock
 public:
 	try_update_lock(update_lockable<T>* window) :
 		window_(window),
-		lock_(window_->update_mutex_),
+		lock_{window_->update_mutex_},
 		locked_(false)
 	{
 		if (0 == window_->update_lock_)
@@ -61,6 +61,8 @@ public:
 		}
 	}
 	
+	try_update_lock(const hal::try_update_lock<T> &) = default;
+
 	~try_update_lock()
 	{
 		if (!--window_->update_lock_)

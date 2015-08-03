@@ -318,9 +318,9 @@ private:
 	mutable file_details_vec file_details_;
 };
 
-typedef boost::shared_ptr<torrent_details> torrent_details_ptr;
+typedef std::shared_ptr<torrent_details> torrent_details_ptr;
 typedef boost::scoped_ptr<torrent_details> torrent_details_sptr;
-typedef boost::weak_ptr<torrent_details> torrent_details_wptr;
+typedef std::weak_ptr<torrent_details> torrent_details_wptr;
 typedef std::vector<torrent_details_ptr> torrent_details_vec;
 
 typedef std::set<torrent_details_ptr> torrent_details_set;

@@ -89,7 +89,7 @@ LRESULT PeerListView::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 
 void PeerListView::uiUpdate(const hal::torrent_details_manager& tD)
 {
-	if (hal::try_update_lock<list_class_t> lock = hal::try_update_lock<list_class_t>(this)) 
+	if (hal::try_update_lock<list_class_t> lock{ this })
 	{		
 		selection_from_listview();
 		

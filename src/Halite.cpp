@@ -240,14 +240,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	catch (const access_violation& e)
 	{
 		wstring msg = (hal::wform(L"WinMain() access_violation (code %1$x) at %2$x. Bad address %3$x") 
-			% e.code() % (unsigned)e.where() % (unsigned)e.badAddress()).str();
+			% e.code() % e.where() % e.badAddress()).str();
 
 		MessageBox(0, msg.c_str(), L"Exception Thrown!", 0);
 	} 
 	catch (const win32_exception& e)
 	{
 		wstring msg = (hal::wform(L"WinMain() win32_exception (code %1$x) at %2$x") 
-			% e.code() % (unsigned)e.where()).str();
+			% e.code() % e.where()).str();
 
 		MessageBox(0, msg.c_str(), L"Exception Thrown!", 0);
 	}

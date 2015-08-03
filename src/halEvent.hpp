@@ -120,8 +120,8 @@
 			new hal::EventMsg(hal::wform(L"An access_violation %1% (code %2$x) at %3$x. Bad address %4$x") \
 					% FN_MSG \
 					% e.code() \
-					% (unsigned)e.where() \
-					% (unsigned)e.badAddress(), \
+					% e.where() \
+					% e.badAddress(), \
 				hal::event_logger::critical))); \
 	} \
 	catch (const win32_exception& e) \
@@ -130,7 +130,7 @@
 			new hal::EventMsg(hal::wform(L"A win32_exception %1% (code %2$x) at %3$x") \
 					% FN_MSG \
 					% e.code() \
-					% (unsigned)e.where(), \
+					% e.where(), \
 				hal::event_logger::critical))); \
 	} \
 	catch (const hal::invalid_torrent&) \

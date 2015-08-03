@@ -22,6 +22,8 @@
 
 #pragma warning (push)
 #pragma warning (disable : 4996)
+#pragma warning (disable : 4838)
+#pragma warning (disable : 4302)
 #	define _ATL_NO_AUTOMATIC_NAMESPACE
 #	define _WTL_NO_AUTOMATIC_NAMESPACE
 #	define _ATL_USE_DDX_FLOAT

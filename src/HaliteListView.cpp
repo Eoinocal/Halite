@@ -144,7 +144,7 @@ bool HaliteListViewCtrl::sort_list_comparison(list_class_data_t l, list_class_da
 
 LRESULT HaliteListViewCtrl::OnGetDispInfo(int, LPNMHDR pnmh, BOOL&)
 {	
-	if (hal::try_update_lock<list_class_t> lock = hal::try_update_lock<list_class_t>(this)) 
+	if (hal::try_update_lock<list_class_t> lock{ this })
 	{	
 
 	if (pnmh == 0)
@@ -206,7 +206,7 @@ LRESULT HaliteListViewCtrl::OnEndLabelEdit(int i, LPNMHDR pnmh, BOOL&)
 
 void HaliteListViewCtrl::uiUpdate(const hal::torrent_details_manager& tD)
 {
-	if (hal::try_update_lock<list_class_t> lock = hal::try_update_lock<list_class_t>(this)) 
+	if (hal::try_update_lock<list_class_t> lock{ this })
 	{		
 
 	selection_from_listview();
