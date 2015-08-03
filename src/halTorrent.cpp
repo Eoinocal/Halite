@@ -33,11 +33,11 @@ std::wstring to_bytes_size(size_t size, bool with_per_sec)
 
 	if (size < 512)
 		out << size << L" " << hal::app().res_wstr(HAL_BYTE);
-	else if (size < 512*1024)
+	else if (size < 512LL *1024LL)
 		out << (size / 1024.) << L" " << hal::app().res_wstr(HAL_KILOBYTE);
-	else if (size < 768*1024*1024)
+	else if (size < 768LL *1024LL*1024LL)
 		out << (size / 1024. / 1024.) << L" " << hal::app().res_wstr(HAL_MEGABYTE);
-	else if (size < 768*1024*1024*1024)
+	else if (size < 768LL*1024LL*1024LL*1024LL)
 		out << (size / 1024. / 1024. / 1024.) << L" " << hal::app().res_wstr(HAL_GIGABYTE);
 	else
 		out << (size / 1024. / 1024. / 1024. / 1024.) << L" " << hal::app().res_wstr(HAL_TERABYTE);
