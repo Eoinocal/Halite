@@ -2,9 +2,9 @@
 
 Version: 0.4.0.2 dev 1293 released 28th July 2015
 
-WWW: [http://www.binarynotions.com/halite-bittorrent-client]() 
+WWW: [http://www.binarynotions.com/halite-bittorrent-client](http://www.binarynotions.com/halite-bittorrent-client) 
 
-Forum: [http://www.binarynotions.com/forum.php]()
+Forum: [http://www.binarynotions.com/forum.php](http://www.binarynotions.com/forum.php)
 
 ## Developer: Eóin O'Callaghan
 
