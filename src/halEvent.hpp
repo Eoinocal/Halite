@@ -301,7 +301,10 @@ public:
 		boost::posix_time::ptime t=boost::posix_time::second_clock::universal_time(), event_logger::codes c=event_logger::noEvent) :
 		EventDetail(l, t, c),
 		msg_(hal::to_wstr_shim(m))
-	{}
+	{
+	
+		auto wm = hal::to_wstr_shim(m);
+	}
 	
 	virtual std::wstring msg()
 	{

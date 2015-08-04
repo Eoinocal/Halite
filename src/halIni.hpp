@@ -40,6 +40,10 @@ public:
 	void save_to_ini()
 	{
 		fs::wofstream ofs(directory_ / (name_ + L".xml"));
+
+		ofs.imbue(std::locale(ofs.getloc(),
+			new std::codecvt_utf16<wchar_t, 0x10ffff, std::little_endian>));
+
 		boost::archive::xml_woarchive woa(ofs);
 
 		T* pT = static_cast<T*>(this);	
@@ -53,6 +57,10 @@ public:
 		{
 
 		fs::wifstream ifs(directory_ / (name_ + L".xml"));
+
+		ifs.imbue(std::locale(ifs.getloc(),
+			new std::codecvt_utf16<wchar_t, 0x10ffff, std::little_endian>));
+
 		boost::archive::xml_wiarchive wia(ifs);
 
 		T* pT = static_cast<T*>(this);	

@@ -112,7 +112,6 @@ extern WTL::CAppModule _Module;
 #	include <boost/archive/basic_xml_archive.hpp>
 #	include <boost/archive/xml_woarchive.hpp>
 #	include <boost/archive/xml_wiarchive.hpp>
-#	include <boost/archive/xml_oarchive.hpp>
 #	include <boost/archive/xml_iarchive.hpp>
 
 #	include <boost/serialization/version.hpp>

@@ -452,6 +452,9 @@ void HaliteWindow::TryToCloseWithConfirmation()
 {
 	bool noTorrentsAreActive = !hal::bittorrent().is_any_torrent_active();
 	
+	auto a = hal::app().res_wstr(HAL_WINDOW_CLOSECONFRIM).c_str();
+	auto b = hal::app().res_wstr(HAL_HALITE).c_str();
+
 	if (noTorrentsAreActive || !confirmClose || (confirmClose && 
 		MessageBox(hal::app().res_wstr(HAL_WINDOW_CLOSECONFRIM).c_str(), 
 			hal::app().res_wstr(HAL_HALITE).c_str(), MB_YESNO) == IDYES))

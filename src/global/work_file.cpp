@@ -53,12 +53,19 @@ shared_wostream_ptr work_file::wostream()
 
 	shared_wostream_ptr owfs_p(new boost::filesystem::wofstream(working_file_));
 
+	owfs_p->imbue(std::locale(owfs_p->getloc(),
+		new std::codecvt_utf16<wchar_t, 0x10ffff, std::little_endian>));
+
 	return owfs_p;
 }
 
 shared_wistream_ptr work_file::wistream()
 {
 	shared_wistream_ptr iwfs_p(new boost::filesystem::wifstream(working_file_));
+
+
+	iwfs_p->imbue(std::locale(iwfs_p->getloc(),
+		new std::codecvt_utf16<wchar_t, 0x10ffff, std::little_endian>));
 
 	return iwfs_p;
 }
