@@ -26,6 +26,8 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <codecvt>
+#include <locale>
 
 #include <boost/regex.hpp>
 #include <boost/foreach.hpp>

@@ -34,8 +34,8 @@ public:
 		LPWSTR *szArglist; int nArgs;		
 		szArglist = CommandLineToArgvW(GetCommandLineW(), &nArgs);
 		
-		std::locale global_loc = std::locale();
-		std::locale loc(global_loc, new boost::filesystem::detail::utf8_codecvt_facet);
+//		std::locale global_loc = std::locale();
+//		std::locale loc(global_loc, new boost::filesystem::detail::utf8_codecvt_facet);
 //		boost::filesystem::wpath_traits::imbue(loc);
 		
 		if (NULL == szArglist)
@@ -115,7 +115,7 @@ boost::optional<boost::filesystem::wpath> get_special_directory(DWORD csidl)
 		::SHGetPathFromIDList(iil, &directory[0]);
 		::CoTaskMemFree(iil);
 		directory.resize(wcslen(directory.c_str()));
-		return directory;
+		return boost::filesystem::wpath(directory);
 	}
 }
 

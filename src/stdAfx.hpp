@@ -70,6 +70,8 @@ extern WTL::CAppModule _Module;
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <codecvt>
+#include <locale>
 
 #include <boost/regex.hpp>
 #include <boost/lambda/lambda.hpp>
