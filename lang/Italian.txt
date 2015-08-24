@@ -13,7 +13,7 @@
 "&Pause All" ---> "&Pausa Tutti"
 "&Resume All" ---> "&Riprendi Tutti"
 "(C) Eoin O'Callaghan 2014" ---> "(C) Eoin O'Callaghan 2014"
-"(D-U) %1% - %2%" ---> "(D-U) %1% - %2%" 
+"(D-U) %1% - %2%" ---> "(D-U) %1% - %2%"
 "(D-U) 0000.000KB/s - 0000.000KB/s" ---> "(D-U) 0000.000KB/s - 0000.000KB/s"
 "/s" ---> "/s"
 "About" ---> "A proposito di"
@@ -117,9 +117,9 @@
 "Encoding Level" ---> "Livello di codifica"
 "Enter any Web Seed URLs and DHT Nodes." ---> "Inserisci Indirizzi di Web Seed e Nodi DHT."
 "Enter the tracker URLs for the torrent." ---> "Inserisci gli indirizzi dei tracker per il torrent."
-"Error!" ---> "Errore!" 
+"Error!" ---> "Errore!"
 "Exception caught: %1%, from %2%." ---> "Rilevato errore: %1%, da %2%."
-"Exit Halite" ---> "Chiudi Halite" 
+"Exit Halite" ---> "Chiudi Halite"
 "Failed, %1%" --->  ??? 
 "Fast resume failed: %2%. (%1%)" --->  ??? 
 "File" ---> "File"
@@ -131,14 +131,14 @@
 "Force Close" ---> "Forza Chiusura"
 "Forced" ---> "Forzata"
 "Full Allocation" ---> "Allocazione completa"
-"GB" ---> "GB" 
+"GB" ---> "GB"
 "General Settings" ---> "Opzioni Generali"
 "General" ---> "Generale"
 "Generated Torrent Name (Cannot change)" ---> "Nome Torrent Generato (non modificabile)"
 "Global Limits" ---> "Limiti Globali"
 "Globals" ---> "Globali"
 "HTTP seed" --->  ??? 
-"HTTP" ---> "HTTP" 
+"HTTP" ---> "HTTP"
 "Halite BitTorrent Client based on libTorrrent" --->  ??? 
 "Halite BitTorrent Client" --->  ??? 
 "Halite Debug Dialog" ---> "Finestra di Debug di Halite"
@@ -163,7 +163,7 @@
 "Invalid torrent (%1%) from %2%." ---> "Torrent non valido (%1%) da %2%."
 "Invalid" --->  ??? 
 "It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "Ci vorrà qualche momento per la chiusura corretta della sessione BitTorrent, al termine della quale questo messaggio sparirà."
-"KB" ---> "KB" 
+"KB" ---> "KB"
 "LT Trackers Plugin" --->  ??? 
 "Language (requires restart)" ---> "Lingua (necessita riavvio)"
 "Limit the no. of half-open connections" ---> "Limita il n. di connessioni simultanee"
@@ -174,7 +174,7 @@
 "Log off Windows" ---> "Disconnetti da Windows"
 "Log to file." ---> "Salva Logfile."
 "Logging" --->  ??? 
-"MB" ---> "MB" 
+"MB" ---> "MB"
 "Manage Torrent(s)" ---> "Gestisci Torrent"
 "Managed Downloading" ---> "Download Gestito"
 "Managed Seeding" ---> "Seeding Gestito"
@@ -200,7 +200,7 @@
 "New" ---> "Nuovo"
 "None" ---> "Nessuno"
 "Normal" ---> "Normale"
-"Not Started" ---> "Non avviato" 
+"Not Started" ---> "Non avviato"
 "Not currently set to take any action" ---> "Attualmente impostato per non fare nulla"
 "Note. Compact Allocation is incompatible with File Selection" ---> "Nota: l'Allocazione Compatta è incompatibile con la Selezione File"
 "OK" ---> "OK"
@@ -222,7 +222,7 @@
 "Peer %2%: %1%." --->  ??? 
 "Peer Event: %1%." ---> "Evento Peer: %1%."
 "Peer banned %2%. (%1%)" ---> "Peer bannato %2%. (%1%)"
-"Peer" --->  ???
+"Peer" --->  ??? 
 "Peers" --->  ??? 
 "Peers:" --->  ??? 
 "Piece %2% finished. (%1%)" ---> "Pezzo %2% completato. (%1%)"
@@ -317,7 +317,7 @@
 "Super-seeding" --->  ??? 
 "Supports extensions" --->  ??? 
 "SysDateTimePick32" --->  ??? 
-"TB" ---> "TB" 
+"TB" ---> "TB"
 "Take no action" ---> "Non fare nulla"
 "Test" --->  ??? 
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "La sessione BitTorrent non si è avviata. Prova a selezionare un'altra porta nelle Opzioni."
@@ -355,7 +355,7 @@
 "Torrent error: %1% (%2%)" --->  ??? 
 "Torrent save folder:" ---> "Cartella di salvataggio:"
 "Torrent transfer rates (KB/s):" ---> "Velocità trasferimento torrent (KB/s):"
-"Torrent" ---> "Torrent" 
+"Torrent" ---> "Torrent"
 "Torrent:" --->  ??? 
 "Torrents" --->  ??? 
 "Total max connections :" ---> "Numero massimo di connessioni :"
@@ -365,16 +365,16 @@
 "Tracker Announce. (%1%)" --->  ??? 
 "Tracker Event: %1%." ---> "Evento Tracker: %1%."
 "Tracker warning: %2%! (%1%)" --->  ??? 
-"Tracker" ---> "Tracker" 
+"Tracker" ---> "Tracker"
 "Tracker:" --->  ??? 
 "Trackers" --->  ??? 
 "Transferred:" ---> "Trasferiti"
 "Type" ---> "Tipo"
 "UPnP router model (if recognised)." ---> "Modello router UPnP (se conosciuto)."
-"UPnP" ---> "UPnP" 
+"UPnP" ---> "UPnP"
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
 "URL seed" --->  ??? 
-"URL" ---> "URL" 
+"URL" ---> "URL"
 "URL: " --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." ---> "Errore Unicode: %1%."
