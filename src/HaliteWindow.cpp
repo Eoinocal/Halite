@@ -120,8 +120,6 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	
 	// Create the Splitter Control
 	m_Split.Create(m_hWnd, rc, NULL, WS_CHILD|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN);
-	m_Split.SetSplitterExtendedStyle(!SPLIT_PROPORTIONAL, SPLIT_PROPORTIONAL);
-	m_Split.SetSplitterPos(splitterPos);
 	
 	m_hWndClient = m_Split.m_hWnd;
 
@@ -200,6 +198,7 @@ LRESULT HaliteWindow::OnCreate(LPCREATESTRUCT lpcs)
 	UpdateLayout();
 	issueUiUpdate();
 
+	m_Split.SetSplitterPos(splitterPos);
 		
 	}
 	HAL_GENERIC_FN_EXCEPTION_CATCH(L"in HaliteWindow::OnCreate")
