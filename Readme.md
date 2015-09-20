@@ -1,6 +1,6 @@
 # Halite: A Free Open-Source BitTorrent client
 
-Version: 0.4.0.3 dev 1302 released 20th August 2015
+Version: 0.4.0.3 dev 1302 released 20th September 2015
 
 WWW: [http://www.binarynotions.com/halite-bittorrent-client](http://www.binarynotions.com/halite-bittorrent-client) 
 
@@ -56,6 +56,8 @@ Changes:
    1. Re-fixed Unicode.
    2. Fixed a bug with gigabyte sizes.
    3. Compiling with VS 2015 community.
+   4. Splitter proportional size functionality enabled.
+   5. Add torrent dialog box default size increased.
 
  + from v 0.4.0.1 to 0.4.0.2:
 
