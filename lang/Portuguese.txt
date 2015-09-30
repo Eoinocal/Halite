@@ -54,7 +54,7 @@
 "Cache Write Size :" --->  "Tamanho de Gravação do Cache :" 
 "Calculating Piece Hashes..." ---> "Calculando Partes dos Hashes..."
 "Cancel" ---> "Cancelar"
-"Checking Files" ---> "Verificando arquivos"
+"Checking Files" ---> "Verificando Arquivos"
 "Checking Resume Data" --->  "Verificando dados para Continuar" 
 "Choked" --->  "Recusado"
 "Clear IP database" ---> "Limpar lista de IPs"
@@ -87,7 +87,7 @@
 "Delete" ---> "Deletar"
 "Details" --->  "Detalhes" 
 "Dev Msg: %1%." --->  ??? 
-"Dir." --->  ??? 
+"Dir." --->  "Pasta"
 "Disabled" ---> "Desabilitado"
 "Distributed Hash Tables" --->  "Tabelas de Hash Distribuídas" 
 "Don't Manage Torrent(s)" --->  "Não Gerenciar Torrent(s)"
