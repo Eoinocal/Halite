@@ -258,7 +258,7 @@ leaving someone out. If I have done so let me know.
 
     - devGod – Nederlandse vertaling.
     - MaikelChan - maikelchan88@gmail.com - Traducción en Español de España.
-    - Otome - otome08@gmail.com - Translation to Portuguese and Japanese.
+    - Otome - otome08@gmail.com - Translation to Japanese.
     - Prome – prome.lwaku.info – Avtor slovenskega prevoda.
     - Tw@in 28 – twain_28@hotmail.com - Traduttore Italiano.
     - u!^DEV  - germanpg.hacker.to - deutsche Übersetzung.
@@ -269,3 +269,4 @@ leaving someone out. If I have done so let me know.
     - khagaroth - khronos@seznam.cz - Autor českého překladu.
     - TaperHarley – Traducere în limba Româna.
     - Aмбасадор - www.ambasadorforum.co.cc – превод на makedonski (ћирилицу).
+    - Alex Silva - contato@ialexsilva.com - Translation to Português (Brasil).
