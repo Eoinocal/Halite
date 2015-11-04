@@ -1,13 +1,13 @@
 "English" ---> "简体中文"
-"English.rtf" ---> "../lang/Template.rtf"
+"English.rtf" --->  ??? 
 " %2%" --->  ??? 
 "%1% DHT node(s)" ---> "%1% DHT 节点"
-"%1% active torrent(s)" --->  ??? 
-"%1% down - %2% up" --->  ??? 
+"%1% active torrent(s)" ---> "%1% 活动的 torrent"
+"%1% down - %2% up" ---> "%1% 下载 - %2% 上传"
 "%1% of %2%" --->  ??? 
 "%1% peers from DHT for %2%." --->  ??? 
-"%1% port %2% mapping succeeded." --->  ??? 
-"%1% port mapping request failed." --->  ??? 
+"%1% port %2% mapping succeeded." ---> "%1% 端口 %2% 映射成功."
+"%1% port mapping request failed." ---> "%1% 端口映射请求失败."
 "%1%, %2%." --->  ??? 
 "%2%. %3% Peers. (%1%)" --->  ??? 
 "&Pause All" ---> "全部暂停(&P)"
@@ -17,45 +17,45 @@
 "(D-U) 0000.000KB/s - 0000.000KB/s" --->  ??? 
 "/s" --->  ??? 
 "About" ---> "关于"
-"Above Normal" --->  ??? 
+"Above Normal" ---> "较高"
 "Active downloads :" ---> "活动的下载 :"
 "Active seeds :" ---> "活动的 seeds :"
 "Active seeds hard limit:" --->  ??? 
-"Active" --->  ??? 
+"Active" ---> "活动"
 "Add New Peer" --->  ??? 
 "Add New Tracker" ---> "添加新的 Tracker"
-"Add New Web Seed or DHT Node" --->  ??? 
+"Add New Web Seed or DHT Node" ---> "添加新的 Web 种子或 DHT 节点"
 "Add Torrent" ---> "添加 Torrent"
 "Add as " ---> "添加为 "
 "Add" ---> "添加"
 "Adjust Queue Position" ---> "修改队列位置"
 "Advanced GUI" ---> "高级用户界面"
-"Alert %2%, Status code: %4%, Times %3%. (%1%)" --->  ??? 
+"Alert %2%, Status code: %4%, Times %3%. (%1%)" ---> "告警 %2%, 状态玛: %4%, 次数 %3%. (%1%)"
 "Allocating" ---> "正在分配"
 "Allocation Mode:" ---> "分配模式:"
 "Allow only one instance to run" ---> "仅允许运行单个实例"
-"An invalid connection policy, %1%, was passed as an encryption setting." --->  ??? 
-"An invalid encoding level, %1%, was passed as an encryption setting." --->  ??? 
+"An invalid connection policy, %1%, was passed as an encryption setting." ---> "向加密设置传递了无效的链接策略 %1%."
+"An invalid encoding level, %1%, was passed as an encryption setting." ---> "向加密设置传递了无效的编码级别 %1%."
 "Announce on all tiers" --->  ??? 
 "Announce to all trackers" --->  ??? 
 "Apply" ---> "应用"
-"Are you sure you wish to close Halite? Doing so will stop any active torrents" --->  ??? 
-"Are you sure you wish to delete all downloaded data?" --->  ??? 
+"Are you sure you wish to close Halite? Doing so will stop any active torrents" ---> "您确定要关闭 Halite 吗? 这样将停止所有活动的 torrent"
+"Are you sure you wish to delete all downloaded data?" ---> "您确定要删除所有下载数据吗?"
 "Auto Sort" ---> "自动排序"
-"Auto-managed" --->  ??? 
+"Auto-managed" ---> "自动管理"
 "B" --->  ??? 
 "Binary Notions" --->  ??? 
 "BitTorrent" --->  ??? 
-"Bittorrent Event: %1%." --->  ??? 
-"Block %2% of piece %3% downloading. (%1%)" --->  ??? 
-"Block %2% of piece %3% finished. (%1%)" --->  ??? 
-"Both" --->  ??? 
+"Bittorrent Event: %1%." ---> "Bittorrent 事件: %1%."
+"Block %2% of piece %3% downloading. (%1%)" ---> "片段 %3% 的块 %2% 正在下载. (%1%)"
+"Block %2% of piece %3% finished. (%1%)" ---> "片段 %3% 的块 %2% 已完成. (%1%)"
+"Both" ---> "两者"
 "Cache Status, Current Total Size : %1.2f MiB" ---> "缓存状态, 当前总大小 : %1.2f MiB"
 "Cache Write Size :" ---> "缓存写入大小 :"
-"Calculating Piece Hashes..." --->  ??? 
+"Calculating Piece Hashes..." ---> "正在计算片段哈希..."
 "Cancel" ---> "取消"
-"Checking Files" --->  ??? 
-"Checking Resume Data" --->  ??? 
+"Checking Files" ---> "正在检查文件"
+"Checking Resume Data" ---> "正在检查续传数据"
 "Choked" --->  ??? 
 "Clear IP database" ---> "清除 IP 数据库"
 "Client" ---> "客户端"
@@ -65,70 +65,70 @@
 "Completed" ---> "已完成"
 "Completed:" ---> "已完成:"
 "Confirm on close" ---> "关闭时确认"
-"Connecting to Tracker" --->  ??? 
+"Connecting to Tracker" ---> "正在连接到 Tracker"
 "Connecting" ---> "正在连接"
 "Connection Policies" ---> "连接策略"
-"Construct a New Torrent" --->  ??? 
+"Construct a New Torrent" ---> "创建新的 Torrent"
 "Copies" ---> "副本数"
 "Country" ---> "国家"
 "Creating Torrent..." ---> "创建 Torrent..."
-"Creating a New Torrent File" --->  ??? 
+"Creating a New Torrent File" ---> "创建新 Torrent 文件"
 "Creator" ---> "创建者"
-"Critical" --->  ??? 
-"Current Cache Status" --->  ??? 
+"Critical" ---> "致命"
+"Current Cache Status" ---> "当前缓存状态"
 "Currently set to '%1%' at %2%" --->  ??? 
-"DHT Node" --->  ??? 
-"DHT disabled" --->  ??? 
-"DHT session could not start. Try selecting another port in the settings." --->  ??? 
+"DHT Node" ---> "DHT 节点"
+"DHT disabled" ---> "DHT 已禁用"
+"DHT session could not start. Try selecting another port in the settings." ---> "DHT 会话无法启动. 请在设置中尝试其他端口."
 "DHT" --->  ??? 
-"Debug Event: %1%." --->  ??? 
+"Debug Event: %1%." ---> "调试事件: %1%."
 "Debug" ---> "调试"
 "Default save folder :" ---> "默认下载文件夹 :"
 "Delete" ---> "删除"
 "Details" ---> "细节"
-"Dev Msg: %1%." --->  ??? 
+"Dev Msg: %1%." ---> "调试事件: %1%."
 "Dir." ---> "目录."
 "Disabled" ---> "禁用"
 "Distributed Hash Tables" ---> "分布式 Hash 表"
 "Don't Manage Torrent(s)" ---> "不管理 Torrent(s)"
 "Don't count slow torrents." ---> "不计算慢速 torrent."
-"Don't download" --->  ??? 
-"Down" --->  ??? 
+"Don't download" ---> "不下载"
+"Down" ---> "下"
 "Download Rate (KB/s) :" ---> "下载速度 (KB/s) :"
 "Download" ---> "下载"
-"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." --->  ??? 
+"Downloaded %1$.2fMB, Uploaded %2$.2fMB, Ratio %3$.2f." ---> "下载 %1$.2fMB, 上传 %2$.2fMB, 比率 %3$.2f."
 "Downloaded" ---> "已下载"
-"Downloading Metadata" --->  ??? 
-"Downloading" --->  ??? 
+"Downloading Metadata" ---> "正在下载元数据"
+"Downloading" ---> "正在下载"
 "E&xit" ---> "退出(&X)"
 "ETA" --->  ??? 
 "ETA:" --->  ??? 
 "Edit Download Folders" ---> "编辑下载文件夹"
 "Edit Peer" --->  ??? 
-"Edit Torrent Save Folders" --->  ??? 
-"Edit Tracker" --->  ??? 
+"Edit Torrent Save Folders" ---> "编辑 Torrent 保存文件夹"
+"Edit Tracker" ---> "编辑 Tracker"
 "Edit" ---> "编辑"
 "Enable DHT (will not apply to private torrents)" ---> "启用 DHT (对私有 torrents 无效)"
 "Enable IP filtering." ---> "启用 IP 过滤."
 "Enable Options or libtorrent Plugins" ---> "启用选项或 libtorrent 插件"
 "Enable Protocol Encryption." ---> "启用协议加密."
-"Enable Remote Control" --->  ??? 
+"Enable Remote Control" ---> "启用远程控制"
 "Enabled" ---> "已启用"
 "Encoding Level" ---> "编码级别"
-"Enter any Web Seed URLs and DHT Nodes." --->  ??? 
+"Enter any Web Seed URLs and DHT Nodes." ---> "输入任意网络种子 URL 和 DHT 节点."
 "Enter the tracker URLs for the torrent." ---> "输入 torrent 的 tracker 地址"
-"Error!" --->  ??? 
-"Exception caught: %1%, from %2%." --->  ??? 
-"Exit Halite" --->  ??? 
-"Failed, %1%" --->  ??? 
-"Fast resume failed: %2%. (%1%)" --->  ??? 
+"Error!" ---> "错误!"
+"Exception caught: %1%, from %2%." ---> "捕获到异常: %1%, 从 %2%."
+"Exit Halite" ---> "退出 Halite"
+"Failed, %1%" ---> "失败, %1%"
+"Fast resume failed: %2%. (%1%)" ---> "快速恢复失败: %2%. (%1%)"
 "File" ---> "文件"
 "Filename" ---> "文件名"
 "Files" ---> "文件"
 "Filtering %1% range(s)" --->  ??? 
-"Finish Time" --->  ??? 
-"Finished" --->  ??? 
-"Force Close" --->  ??? 
+"Finish Time" ---> "完成时间"
+"Finished" ---> "已完成"
+"Force Close" ---> "强制关闭"
 "Forced" ---> "强制"
 "Full Allocation" ---> "完整分配"
 "GB" --->  ??? 
@@ -137,55 +137,55 @@
 "Generated Torrent Name (Cannot change)" ---> "生成的 Torrent 名称 (无法改变)"
 "Global Limits" ---> "全局限制"
 "Globals" ---> "全局"
-"HTTP seed" --->  ??? 
+"HTTP seed" ---> "HTTP 种子"
 "HTTP" --->  ??? 
-"Halite BitTorrent Client based on libTorrrent" --->  ??? 
-"Halite BitTorrent Client" --->  ??? 
-"Halite Debug Dialog" --->  ??? 
-"Halite importing IP ranges..." --->  ??? 
-"Halite not listening!" --->  ??? 
-"Halite shutting down..." --->  ??? 
-"Handshake" --->  ??? 
+"Halite BitTorrent Client based on libTorrrent" ---> "Halite BitTorrent 客户端，基于 libTorrrent"
+"Halite BitTorrent Client" ---> "Halite BitTorrent 客户端"
+"Halite Debug Dialog" ---> "Halite 调试对话框"
+"Halite importing IP ranges..." ---> "Halite 导入 IP 段..."
+"Halite not listening!" ---> "Halite 没有在侦听!"
+"Halite shutting down..." ---> "Halite 正在关闭..."
+"Handshake" ---> "握手"
 "Has choked us" --->  ??? 
-"Hash failed for piece %2% of %1%." --->  ??? 
-"Hash" --->  ??? 
+"Hash failed for piece %2% of %1%." ---> "%1% 的片段 %2% 哈希失败."
+"Hash" ---> "哈希"
 "IP Filter blocked %1%, %2%." --->  ??? 
 "IP Filtering" ---> "IP 过滤"
 "IP filter disabled" ---> "IP 过滤器已禁用"
-"IP version 6 listen attempt failed. Not serious." --->  ??? 
+"IP version 6 listen attempt failed. Not serious." ---> "IPv6 侦听尝试失败. 不严重."
 "Import ipfilter.dat" ---> "导入 ipfilter.dat"
 "Importing IP Filters..." ---> "导入 IP 过滤器..."
 "Incoming" ---> "传入"
-"Info" --->  ??? 
+"Info" ---> "信息"
 "Informed of external IP address: %1%." --->  ??? 
 "Interested in us" --->  ??? 
 "Interesting" --->  ??? 
 "Invalid torrent (%1%) from %2%." --->  ??? 
-"Invalid" --->  ??? 
-"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." --->  ??? 
+"Invalid" ---> "无效"
+"It will take the BitTorrent session a moment to shutdown cleanly after which this message will disappear and the program will close." ---> "BitTorrent 会话需要一段时间来彻底关闭, 之后本消息将消失，程序会关闭."
 "KB" --->  ??? 
 "LT Trackers Plugin" ---> "LT Trackers 插件"
 "Language (requires restart)" ---> "语言 (需要重新运行)"
 "Limit the no. of half-open connections" ---> "限制半开连接数"
-"List of Trackers." --->  ??? 
-"Loading IP filters..." --->  ??? 
-"Local connection" --->  ??? 
-"Log debug events." --->  ??? 
-"Log off Windows" --->  ??? 
-"Log to file." --->  ??? 
-"Logging" --->  ??? 
+"List of Trackers." ---> "Trackers 列表."
+"Loading IP filters..." ---> "正在加载 IP 过滤器..."
+"Local connection" ---> "本地连接"
+"Log debug events." ---> "记录调试事件."
+"Log off Windows" ---> "从 Windows 注销"
+"Log to file." ---> "记录到文件."
+"Logging" ---> "日志"
 "MB" --->  ??? 
 "Manage Torrent(s)" ---> "管理 Torrent(s)"
 "Managed Downloading" --->  ??? 
 "Managed Seeding" --->  ??? 
 "Managed Torrent" --->  ??? 
-"Managed" --->  ??? 
-"Match the listen port (now mandatory)" --->  ??? 
+"Managed" ---> "受管理"
+"Match the listen port (now mandatory)" ---> "匹配侦听端口 (现在是强制的)"
 "Max Size (MiB) :" ---> "最大大小 (MiB) :"
 "Max failures : " ---> "最大失败数 : "
-"Max replies : " --->  ??? 
-"Maximum" --->  ??? 
-"Message" --->  ??? 
+"Max replies : " ---> "最大应答数 : "
+"Maximum" ---> "最高"
+"Message" ---> "消息"
 "Minimize to tray." ---> "最小化到系统栏."
 "Move Down" ---> "下移"
 "Move To Bottom" ---> "移到底部"
@@ -197,104 +197,104 @@
 "NAT-PMP" --->  ??? 
 "Name" ---> "名称"
 "Name:" ---> "名称:"
-"New" --->  ??? 
-"None" --->  ??? 
-"Normal" --->  ??? 
+"New" ---> "新建"
+"None" ---> "无"
+"Normal" ---> "普通"
 "Not Started" ---> "未启动"
 "Not currently set to take any action" ---> "当前未设置执行任何操作"
 "Note. Compact Allocation is incompatible with File Selection" ---> "注意. 紧凑分配和文件选择不兼容"
 "OK" ---> "确定"
-"OS reported error for file '%1%'" --->  ??? 
+"OS reported error for file '%1%'" ---> "操作系统报告了文件错误 '%1%'"
 "Ok" ---> "确定"
 "On parole" --->  ??? 
-"Open &Halite" ---> "打开(&H)"
+"Open &Halite" ---> "打开 (&H)alite"
 "Open Download Folder" ---> "打开下载文件夹"
 "Open a (single) port between : " ---> "打开范围内的 (单一) 端口 : "
 "Outgoing" ---> "传出"
 "Output File" ---> "输出文件"
 "Overhead:" --->  ??? 
-"Password : " --->  ??? 
+"Password : " ---> "密码 : "
 "Path" ---> "目录"
-"Pause all torrents" --->  ??? 
+"Pause all torrents" ---> "暂停所有 torrent"
 "Pause" ---> "暂停"
 "Paused" ---> "已暂停"
-"Pausing" --->  ??? 
+"Pausing" ---> "正在暂停"
 "Peer %2%: %1%." --->  ??? 
-"Peer Event: %1%." --->  ??? 
+"Peer Event: %1%." ---> "Peer 事件: %1%."
 "Peer banned %2%. (%1%)" --->  ??? 
 "Peer" --->  ??? 
 "Peers" --->  ??? 
 "Peers:" --->  ??? 
-"Piece %2% finished. (%1%)" --->  ??? 
+"Piece %2% finished. (%1%)" ---> "片段 %2% 已完成. (%1%)"
 "Piece Expiry (sec) :" ---> "片段过期时间 (秒) :"
 "Piece Size (KBs)" ---> "片段大小 (KB)"
-"Plaintext Encrypted" --->  ??? 
+"Plaintext Encrypted" ---> "加密纯文本"
 "Plaintext" ---> "纯文本"
 "Port %1% open" ---> "端口 %1% 打开"
 "Port (UDP)" ---> "端口 (UDP)"
-"Port : " --->  ??? 
+"Port : " ---> "端口 : "
 "Port Forwarding" ---> "端口重定向"
-"Port to listen on : " --->  ??? 
+"Port to listen on : " ---> "侦听端口 : "
 "Port" ---> "端口"
 "Ports" ---> "端口"
 "Prefer RC4" ---> "RC4 优先"
-"Preparing" --->  ??? 
-"Priority" --->  ??? 
+"Preparing" ---> "正在准备"
+"Priority" ---> "优先级"
 "Private" ---> "私有"
 "Progress" ---> "进度"
 "Protocol Encryption" ---> "协议加密"
-"Proxies" --->  ??? 
-"Proxy Host/IP : " --->  ??? 
-"Proxy Settings" --->  ??? 
-"Queue Position" --->  ??? 
+"Proxies" ---> "代理"
+"Proxy Host/IP : " ---> "代理主机/IP : "
+"Proxy Settings" ---> "代理设置"
+"Queue Position" ---> "队列位置"
 "Queue System" ---> "队列系统"
-"Queue View" --->  ??? 
-"Queued for Checking" --->  ??? 
-"Queued" --->  ??? 
-"RC4 Encrypted" --->  ??? 
+"Queue View" ---> "队列视图"
+"Queued for Checking" ---> "排队以检查"
+"Queued" ---> "已排队"
+"RC4 Encrypted" ---> "RC4 加密"
 "RC4" --->  ??? 
-"Rates:" --->  ??? 
-"Ratio (this session):" --->  ??? 
-"Ratio" --->  ??? 
-"Ratio:" --->  ??? 
+"Rates:" ---> "速度:"
+"Ratio (this session):" ---> "比率 (该回话):"
+"Ratio" ---> "比率"
+"Ratio:" ---> "比率:"
 "Read Cache Hit Ratio :" ---> "读缓存命中率 :"
 "Read Size :" ---> "读取大小 :"
 "Reannounce" ---> "Reannounce"
 "Recheck Files" ---> "重新检查文件"
 "Remaining" ---> "剩余"
 "Remaining:" ---> "剩余:"
-"Remote Control Options" --->  ??? 
-"Remote Control" --->  ??? 
+"Remote Control Options" ---> "远程控制选项"
+"Remote Control" ---> "远程控制"
 "Remove" ---> "移除"
 "Reset" ---> "重置"
-"Resolve Countries from IP" --->  ??? 
-"Resume data generated. (%1%)" --->  ??? 
-"Resume data generation failed. (%1%)" --->  ??? 
+"Resolve Countries from IP" ---> "从 IP 解析国家"
+"Resume data generated. (%1%)" ---> "已产生续传数据. (%1%)"
+"Resume data generation failed. (%1%)" ---> "续传数据生成失败. (%1%)"
 "Resume" ---> "继续"
-"Resuming torrent. (%1%)" --->  ??? 
+"Resuming torrent. (%1%)" ---> "正在续传 torrent. (%1%)"
 "Review settings when adding torrent." ---> "添加 torrent 时重新设置."
 "Save" ---> "保存"
 "Saving Torrent" ---> "保存 Torrent"
 "Scrape failed: %2%. (%1%)" --->  ??? 
-"Search branching : " --->  ??? 
+"Search branching : " ---> "搜索分支 : "
 "Security" ---> "安全"
-"Seed URL" --->  ??? 
+"Seed URL" ---> "种子 URL"
 "Seeding Limits" ---> "做种限制"
-"Seeding" --->  ??? 
-"Seeds" --->  ??? 
-"Seeds:" --->  ??? 
-"Select Timed Action" --->  ??? 
-"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." --->  ??? 
-"Select a directory to save the files to or cancel to not download torrent at all." --->  ??? 
+"Seeding" ---> "正在做种"
+"Seeds" ---> "种子"
+"Seeds:" ---> "种子数:"
+"Select Timed Action" ---> "选择定时操作"
+"Select a directory to save the downloads to. Select cancel to accept default 'incoming' location." ---> "选择一个目录以保存下载. 选择取消将使用默认的 '传入' 位置."
+"Select a directory to save the files to or cancel to not download torrent at all." ---> "选择一个目录以保存文件，或选择取消以完全不下载 torrent."
 "Select a file or directory from which to construct the torrent." ---> "选择要生成 torrent 的文件或目录."
 "Select a random port within this range." ---> "选择范围内的随机端口."
 "Select action to take :" ---> "选择要执行的操作 :"
 "Select the (TCP) port (or range) on which to listen for incoming connections." ---> "选择侦听传入连接的 (TCP) 端口 (或范围)."
-"Send login info to trackers." --->  ??? 
+"Send login info to trackers." ---> "发送登陆信息到 trackers."
 "Set Priority" ---> "设置优先级"
-"Set as Primary" --->  ??? 
+"Set as Primary" ---> "设为主导"
 "Set time :" ---> "设置时间 :"
-"Severity" --->  ??? 
+"Severity" ---> "级别"
 "Share ratio limit:" ---> "共享率限制:"
 "Show this message in future" ---> "将来仍显示此消息"
 "Shutdown Windows" ---> "结束 Windows"
@@ -303,22 +303,22 @@
 "Smart Ban Plugin" ---> "Smart Ban 插件"
 "Snubbed" --->  ??? 
 "Sparse Allocation" ---> "稀疏分配"
-"Standard exception (%1%) thrown from %2%." --->  ??? 
+"Standard exception (%1%) thrown from %2%." ---> "标准异常 (%1%) 抛出于 %2%."
 "Start Time" ---> "开始时间"
 "Status" ---> "状态"
 "Status:" ---> "状态:"
 "Stop" ---> "停止"
-"Stopped initially (Allows changing advanced setting)" --->  ??? 
+"Stopped initially (Allows changing advanced setting)" ---> "初始停止 (允许修改高级设置)"
 "Stopped" ---> "已停止"
 "Stopping Torrents" ---> "正在停止 Torrents"
 "Stopping" ---> "正在停止"
 "Subject to an optimistic unchoke" --->  ??? 
 "Successfully %1%." ---> "成功 %1%."
 "Super-seeding" --->  ??? 
-"Supports extensions" --->  ??? 
+"Supports extensions" ---> "支持扩展"
 "SysDateTimePick32" --->  ??? 
 "TB" --->  ??? 
-"Take no action" --->  ??? 
+"Take no action" ---> "无操作"
 "Test" ---> "测试"
 "The BitTorrent session could not start. Try selecting another port in the settings." ---> "该 BitTorrent 会话无法启动. 请在设置中尝试其他端口."
 "The socket infrastructure failed to start so Halite is forced to close. Please ensure no program is blocking Halites network access." ---> "由于 socket 接口启动失败, Halite 必须关闭. 请确保其他程序没有禁止 Halites 访问网络."
@@ -330,7 +330,7 @@
 "Time limit (sec):" ---> "时间限制 (秒):"
 "Time ratio limit:" ---> "时间比限制:"
 "Time remaining: %1% hour(s), %2% minute(s) and %3% second(s)" ---> "剩余时间: %1% 小时, %2% 分钟 %3% 秒"
-"Time" --->  ??? 
+"Time" ---> "时间"
 "Timeout (seconds) : " ---> "超时 (秒) : "
 "Toggle Superseeding" --->  ??? 
 "Toolbar2k.bmp" --->  ??? 
@@ -359,7 +359,7 @@
 "Torrent:" --->  ??? 
 "Torrents" --->  ??? 
 "Total max connections :" ---> "最大连接总数 :"
-"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." --->  ??? 
+"Total transfer including protocol overhead: %1$.2fMB down and %2$.2fMB up." ---> "Total 传输包含协议超载: %1$.2fMB 下载, %2$.2fMB 上传."
 "Total upload slots :" ---> "上传槽总数 :"
 "Total" ---> "总数"
 "Tracker Announce. (%1%)" --->  ??? 
@@ -373,13 +373,13 @@
 "UPnP router model (if recognised)." ---> "UPnP 路由模式 (如果已识别到)."
 "UPnP" --->  ??? 
 "URL Seed %2%, %3%. (%1%)" --->  ??? 
-"URL seed" --->  ??? 
+"URL seed" ---> "URL 种子"
 "URL" --->  ??? 
 "URL: " --->  ??? 
 "UnPlug and Play" --->  ??? 
 "Unicode exception: %1%." --->  ??? 
-"Unmanaged" --->  ??? 
-"Up" --->  ??? 
+"Unmanaged" ---> "未管理"
+"Up" ---> "上"
 "Update in:" --->  ??? 
 "Upload Rate (KB/s) :" ---> "上传速度 (KB/s) :"
 "Upload only" ---> "仅上传"
@@ -391,11 +391,11 @@
 "Username : " ---> "用户名 : "
 "Uuid" --->  ??? 
 "Warning" ---> "警告"
-"Web Seed" --->  ??? 
-"Web Seeds and DHT Nodes" --->  ??? 
-"Web Seeds" --->  ??? 
+"Web Seed" ---> "网络种子"
+"Web Seeds and DHT Nodes" ---> "网络种子和 DHT 节点"
+"Web Seeds" ---> "网络种子"
 "Write Cache Hit Ratio :" ---> "写缓存命中率 :"
-"Xml Exception (%1%) with %2%." --->  ??? 
+"Xml Exception (%1%) with %2%." ---> "Xml 异常 (%1%) 及 %2%."
 "\r\0" --->  ??? 
 "random up to" ---> "随机上限"
 "resource.h\0" --->  ??? 
