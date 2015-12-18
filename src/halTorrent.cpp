@@ -818,6 +818,7 @@ void bit::pause_all_torrents()
 {	
 	try {
 
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Pause all torrents.")));
 	pimpl()->session_->pause();
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uuid(), "pause_all_torrents")
@@ -827,6 +828,7 @@ void bit::unpause_all_torrents()
 {	
 	try {
 
+	event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Resume all torrents.")));
 	pimpl()->session_->resume();
 	
 	} HAL_GENERIC_TORRENT_EXCEPTION_CATCH(uuid(), "unpause_all_torrents")

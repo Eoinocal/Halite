@@ -63,7 +63,6 @@ struct pausing;
 struct paused;
 struct in_error;
 struct stopping;
-struct removing;
 struct resume_data_waiting;
 struct resume_data_idling;
 

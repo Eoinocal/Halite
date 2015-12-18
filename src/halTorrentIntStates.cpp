@@ -291,8 +291,8 @@ active::active(base_type::my_context ctx) :
 
 active::~active()
 {
-	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
-		tp->handle_.pause();
+//	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
+//		tp->handle_.pause();
 
 	TORRENT_STATE_LOG(L"Exiting ~active()");
 }
@@ -314,6 +314,7 @@ pausing::pausing(base_type::my_context ctx) :
 	
 	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
 	{
+		tp->handle_.pause();
 		torrent_internal& t_i = *tp.get();
 		upgrade_lock l(t_i.mutex_);
 
@@ -399,6 +400,7 @@ stopping::stopping(base_type::my_context ctx) :
 
 	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
 	{
+		tp->handle_.pause();
 		torrent_internal& t_i = *tp.get();
 		upgrade_lock l(t_i.mutex_);
 

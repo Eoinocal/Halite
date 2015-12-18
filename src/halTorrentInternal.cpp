@@ -157,7 +157,8 @@ void torrent_internal::set_managed(bool m)
 
 	managed_ = m;
 	
-	if (in_session(l)) handle_.auto_managed(managed_);
+	if (in_session(l))
+		handle_.auto_managed(managed_);
 }
 
 bool torrent_internal::is_finished() const
@@ -494,18 +495,20 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 		
 		{	upgrade_to_unique_lock up_l(l);
 				
-			total_uploaded_ += (status_cache(l).total_payload_upload - total_base_);
-			total_base_ = status_cache(l).total_payload_upload;
+			auto& sc = status_cache(l);
+
+			total_uploaded_ += (sc.total_payload_upload - total_base_);
+			total_base_ = sc.total_payload_upload;
 			
-			uploaded_.update(status_cache(l).total_upload);
-			payload_uploaded_.update(status_cache(l).total_payload_upload);
-			downloaded_.update(status_cache(l).total_download);
-			payload_downloaded_.update(status_cache(l).total_payload_download);
+			uploaded_.update(sc.total_upload);
+			payload_uploaded_.update(sc.total_payload_upload);
+			downloaded_.update(sc.total_download);
+			payload_downloaded_.update(sc.total_payload_download);
 
 			// just in case these were wrong
 
-			managed_ = status_cache(l).auto_managed;
-			superseeding_ = status_cache(l).super_seeding;
+//			managed_ = sc.auto_managed;
+//			superseeding_ = sc.super_seeding;
 		}
 		
 		if (is_active(l))
