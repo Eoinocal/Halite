@@ -39,9 +39,10 @@ void event_logger::init()
 	static boost::shared_ptr<event_impl> s_event_impl;
 
 	if (!s_event_impl)
+	{
 		s_event_impl.reset(new event_impl());
-
-	pimpl_ = s_event_impl;
+		pimpl_ = s_event_impl;
+	}
 }
 
 event_logger::~event_logger()

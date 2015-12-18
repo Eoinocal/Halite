@@ -20,13 +20,13 @@ catch (const invalid_torrent& t) \
 catch (const access_violation& e) \
 { \
 	hal::event_log().post(shared_ptr<hal::EventDetail>( \
-		new hal::EventMsg(hal::wform(L"Torrent property %1% access_violation (code %2$x) at %3$x. Bad address %4$x") % hal::from_utf8(FUNCTION) % e.code() % (unsigned)e.where() % (unsigned)e.badAddress(), \
+		new hal::EventMsg(hal::wform(L"Torrent property %1% access_violation (code %2$x) at %3$x. Bad address %4$x") % hal::from_utf8(FUNCTION) % e.code() % (size_t)e.where() % (size_t)e.badAddress(), \
 			hal::event_logger::critical))); \
 } \
 catch (const win32_exception& e) \
 { \
 	hal::event_log().post(shared_ptr<hal::EventDetail>( \
-		new hal::EventMsg(hal::wform(L"Torrent property %1% win32_exception (code %2$x) at %3$x") % hal::from_utf8(FUNCTION) % e.code() % (unsigned)e.where(), \
+		new hal::EventMsg(hal::wform(L"Torrent property %1% win32_exception (code %2$x) at %3$x") % hal::from_utf8(FUNCTION) % e.code() % (size_t)e.where(), \
 			hal::event_logger::critical))); \
 } \
 catch (const std::exception& e) \
@@ -55,13 +55,13 @@ catch (const invalid_torrent& t) \
 catch (const access_violation& e) \
 { \
 	hal::event_log().post(shared_ptr<hal::EventDetail>( \
-		new hal::EventMsg(hal::wform(L"Generic Torrent %1% access_violation (code %2$x) at %3$x. Bad address %4$x (%5%)") % hal::from_utf8(FUNCTION) % e.code() % (unsigned)e.where() % (unsigned)e.badAddress() % TORRENT, \
+		new hal::EventMsg(hal::wform(L"Generic Torrent %1% access_violation (code %2$x) at %3$x. Bad address %4$x (%5%)") % hal::from_utf8(FUNCTION) % e.code() % (size_t)e.where() % (size_t)e.badAddress() % TORRENT, \
 			hal::event_logger::critical))); \
 } \
 catch (const win32_exception& e) \
 { \
 	hal::event_log().post(shared_ptr<hal::EventDetail>( \
-		new hal::EventMsg(hal::wform(L"Generic Torrent %1% win32_exception (code %2$x) at %3$x (%4%)") % hal::from_utf8(FUNCTION) % e.code() % (unsigned)e.where() % TORRENT, \
+		new hal::EventMsg(hal::wform(L"Generic Torrent %1% win32_exception (code %2$x) at %3$x (%4%)") % hal::from_utf8(FUNCTION) % e.code() % (size_t)e.where() % TORRENT, \
 			hal::event_logger::critical))); \
 } \
 catch (const std::exception& e) \
@@ -103,13 +103,13 @@ catch (...) \
 catch (const access_violation& e) \
 { \
 	hal::event_log().post(shared_ptr<hal::EventDetail>( \
-		new hal::EventMsg(hal::wform(L"Generic Session Pimpl %1% access_violation (code %2$x) at %3$x. Bad address %4$x") % hal::from_utf8(FUNCTION) % e.code() % (unsigned)e.where() % (unsigned)e.badAddress(), \
+		new hal::EventMsg(hal::wform(L"Generic Session Pimpl %1% access_violation (code %2$x) at %3$x. Bad address %4$x") % hal::from_utf8(FUNCTION) % e.code() % (size_t)e.where() % (size_t)e.badAddress(), \
 			hal::event_logger::critical))); \
 } \
 catch (const win32_exception& e) \
 { \
 	hal::event_log().post(shared_ptr<hal::EventDetail>( \
-		new hal::EventMsg(hal::wform(L"Generic Session Pimpl %1% win32_exception (code %2$x) at %3$x") % hal::from_utf8(FUNCTION) % e.code() % (unsigned)e.where(), \
+		new hal::EventMsg(hal::wform(L"Generic Session Pimpl %1% win32_exception (code %2$x) at %3$x") % hal::from_utf8(FUNCTION) % e.code() % (size_t)e.where(), \
 			hal::event_logger::critical))); \
 } \
 catch (const std::exception& e) \

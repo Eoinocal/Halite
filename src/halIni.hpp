@@ -51,7 +51,7 @@ public:
 		
 	}
 		
-	bool load_from_ini()
+	bool load_from_ini(bool report_exception = true)
 	{
 		try 
 		{
@@ -69,8 +69,9 @@ public:
 		}
 		catch (const std::exception& e)
 		{			
-			hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
-				new hal::EventXmlException(hal::from_utf8(e.what()), name_))); 
+			if (report_exception)
+				hal::event_log().post(boost::shared_ptr<hal::EventDetail>(
+					new hal::EventXmlException(hal::from_utf8(e.what()), name_))); 
 
 			return false;
 		}

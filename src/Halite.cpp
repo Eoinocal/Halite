@@ -45,7 +45,7 @@ Halite::Halite() :
 	logListLen_(128)
 {
 	hal::event_log().init();
-	load_from_ini();
+	load_from_ini(false);
 }
 
 namespace fs = boost::filesystem;
@@ -128,6 +128,7 @@ void num_active(int) {}
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	win32_exception::install_handler();
+	halite_log_file_.connect();
 
 	int return_result = -1;
 
@@ -162,6 +163,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			new hal::EventMsg(L"No registry entry found, using portable mode", hal::event_logger::info)));
 	}
 	
+	auto wd = hal::app().get_working_directory();
+
 	if (!boost::filesystem::is_directory(hal::app().get_working_directory()))
 		boost::filesystem::create_directories(hal::app().get_working_directory());
 
@@ -172,7 +175,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	HRESULT hRes = _Module.Init(NULL, hInstance);
 	assert (SUCCEEDED(hRes));	
 	
-	halite_log_file_.connect();
 	
 	{ WinAPIMutex oneInstance(HALITE_GUID);
 	

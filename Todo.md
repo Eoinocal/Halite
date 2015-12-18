@@ -1,4 +1,5 @@
-#Todo
+# Todo
+
  + Files tab when no folders seems to be acting up.
  + When torrent has files with non-ANSI characters  
  
