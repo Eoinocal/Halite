@@ -334,7 +334,7 @@ public:
 	bool is_any_torrent_active();
 
 	void remove_torrent(const uuid& id);
-	void remove_torrent_wipe_files(const uuid& id, remove_files fn);
+	void remove_torrent_callback(const uuid& id, remove_files fn);
 
 	void start_event_receiver();
 	void stop_event_receiver();

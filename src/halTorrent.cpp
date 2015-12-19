@@ -809,7 +809,7 @@ void bit::remove_torrent(const uuid& id)
 	pimpl()->remove_torrent(id);
 }
 
-void bit::remove_torrent_wipe_files(const uuid& id, remove_files f)
+void bit::remove_torrent_callback(const uuid& id, remove_files f)
 {
 	pimpl()->remove_torrent_wipe_files(id, f);
 }

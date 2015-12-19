@@ -1,6 +1,6 @@
 # Halite: A Free Open-Source BitTorrent client
 
-Version: 0.4.0.3 dev 1302 released 20th September 2015
+Version: 0.4.0.4 dev 1302 released 18th December 2015
 
 WWW: [http://www.binarynotions.com/halite-bittorrent-client](http://www.binarynotions.com/halite-bittorrent-client) 
 
@@ -41,15 +41,11 @@ That said, it supports:
   + Shutdown scheduler.
   + Webseeds
 
-Requirements: 32 bit supports Windows XP and higher
-              64 bit supports Vista and higher
+Code Repository: <https://github.com/Eoinocal/Halite>
 
-Important note for people upgrading!
+Requirements: Vista and higher
 
-Old configuration files need to be reset. They will be backup by the 
-installer, unless you choose not too.
-
-Changes:
+## Changes:
 
  + from v 0.4.0.2 to 0.4.0.3:
 
@@ -223,11 +219,6 @@ Changes:
       active connections to shutdown down 'cleanly' an optional small
       dialog is displayed to alert the user that the program is still
       running.
-
-Subversion: svn://svn.geekisp.com/halite
-
-In addition you can check out the Trac site (trac.geekisp.com/halite)
-but I haven't really done much with it ...yet.
 
 ## Thanks
 

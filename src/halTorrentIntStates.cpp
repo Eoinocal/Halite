@@ -430,17 +430,19 @@ stopped::stopped(base_type::my_context ctx) :
 	if (torrent_internal_ptr tp = context<torrent_internal_sm>().ptr_.lock())
 	{
 		torrent_internal& t_i = *tp.get();
-		upgrade_lock l(t_i.mutex_);
+		boost::function<void()> callback;
 
-		t_i.state(l, torrent_details::torrent_stopped);
+		{	upgrade_lock l(t_i.mutex_);
 
-		if (!t_i.remove_callback(l).empty())
+			t_i.state(l, torrent_details::torrent_stopped);
+			callback = t_i.remove_callback(l);
+		}
+
+		if (!callback.empty())
 		{	
 			TORRENT_STATE_LOG(L"Calling removed_callback_");
-			thread_t t(t_i.remove_callback(l));
-
-			t_i.remove_callback(l).clear();
-	}
+			callback();
+		}
 	}
 }
 

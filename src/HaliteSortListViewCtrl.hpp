@@ -688,7 +688,7 @@ protected:
 		if (i != pair_container_.get<by_key>().end())
 		{
 			DeleteItem(numeric_cast<int>(std::distance(pair_container_.begin(), i_pos)));
-			pair_container_.erase(i_pos);
+			pair_container_.get<by_key>().erase(i);
 		}
 	}
 

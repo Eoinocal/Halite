@@ -452,7 +452,7 @@ public:
 
 		boost::shared_ptr<file_details_vec> files = boost::shared_ptr<file_details_vec>(new file_details_vec());		
 		torrent_internal_ptr pTI = the_torrents_.get(id);
-
+		
 		the_torrents_.remove_torrent(id);
 		
 		event_log().post(shared_ptr<EventDetail>(new EventMsg(L"Removed")));

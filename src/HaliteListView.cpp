@@ -293,20 +293,6 @@ LRESULT HaliteListViewCtrl::OnRemoveFocused(WORD wNotifyCode, WORD wID, HWND hWn
 	return 0;
 }
 
-LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-{
-	std::set<hal::uuid> torrent_ids;
-	
-	for (auto i = begin_selected(), e = end_selected(); i != e; ++i)
-		torrent_ids.insert(item_hash(i));
-	
-	erase_based_on_set(torrent_ids, false);
-
-	BOOST_FOREACH(const hal::uuid& id, torrent_ids)
-		hal::bittorrent().remove_torrent(id);
-
-	return 0;
-}
 
 LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
@@ -316,6 +302,25 @@ LRESULT HaliteListViewCtrl::OnRecheck(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 
 		hal::bittorrent().recheck_torrent(item_hash(i));
 	}
+
+	return 0;
+}
+
+LRESULT HaliteListViewCtrl::OnRemove(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	std::set<hal::uuid> torrent_ids;
+
+	for (auto i = begin_selected(), e = end_selected(); i != e; ++i)
+		torrent_ids.insert(item_hash(i));
+
+	BOOST_FOREACH(const hal::uuid& id, torrent_ids)
+		hal::bittorrent().remove_torrent_callback(
+			id, 			
+			[=](hal::fs::wpath active_directory, boost::shared_ptr<std::vector<std::wstring> > files) 
+			{
+				erase_from_list(id);
+				hal::bittorrent().remove_torrent(id);
+			});
 
 	return 0;
 }
@@ -337,22 +342,24 @@ void HaliteListViewCtrl::remove_to_bin(const hal::uuid& id, hal::fs::wpath activ
 	}
 	file_names_buffer.push_back(L'\0');
 
-	SHFILEOPSTRUCT shf;
+	boost::thread t([=]() {
+			SHFILEOPSTRUCT shf;
 
-	shf.hwnd = *this;
-	shf.wFunc = FO_DELETE;
-	shf.pFrom = &file_names_buffer[0];
-	shf.pTo = 0;
-	shf.fFlags = FOF_ALLOWUNDO;
+			shf.hwnd = *this;
+			shf.wFunc = FO_DELETE;
+			shf.pFrom = &file_names_buffer[0];
+			shf.pTo = 0;
+			shf.fFlags = FOF_ALLOWUNDO;
 
-	HAL_DEV_MSG(L"Calling SHFileOperation to remove files");
-	SHFileOperation(&shf);
-	
-	HAL_DEV_MSG(hal::wform(L"Clearing empty directories at %1%") % active_directory.wstring());
-	hal::remove_empty_directories(active_directory);
+			HAL_DEV_MSG(L"Calling SHFileOperation to remove files");
+			SHFileOperation(&shf);
 
-	hal::bittorrent().remove_torrent(id);
+			HAL_DEV_MSG(hal::wform(L"Clearing empty directories at %1%") % active_directory.wstring());
+			hal::remove_empty_directories(active_directory);
+		});
+
 	erase_from_list(id);
+	hal::bittorrent().remove_torrent(id);
 }
 
 LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
@@ -363,7 +370,7 @@ LRESULT HaliteListViewCtrl::OnRemoveWipeFiles(WORD wNotifyCode, WORD wID, HWND h
 		torrent_names.insert(item_hash(i));
 
 	BOOST_FOREACH(const hal::uuid& id, torrent_names)
-		hal::bittorrent().remove_torrent_wipe_files(id, boost::bind(&HaliteListViewCtrl::remove_to_bin, this, id, _1, _2));
+		hal::bittorrent().remove_torrent_callback(id, boost::bind(&HaliteListViewCtrl::remove_to_bin, this, id, _1, _2));
 
 	return 0;
 }
