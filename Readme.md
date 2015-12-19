@@ -1,6 +1,6 @@
 # Halite: A Free Open-Source BitTorrent client
 
-Version: 0.4.0.4 dev 1302 released 18th December 2015
+Version: 0.4.0.4 dev 1333 released 19th December 2015
 
 WWW: [http://www.binarynotions.com/halite-bittorrent-client](http://www.binarynotions.com/halite-bittorrent-client) 
 
@@ -47,6 +47,17 @@ Requirements: Vista and higher
 
 ## Changes:
 
+ + from v 0.4.0.3 to 0.4.0.4:
+
+   1. Updated to libtorrent 1.0.7
+   1. Fixed a bug with the portable version  
+      <https://github.com/Eoinocal/Halite/issues/35>
+   3. Fixed a bug related to removing torrent without stopping them first 
+      <https://github.com/Eoinocal/Halite/issues/19>
+   5. Fixed a bug torrent pausing and resume with the global session pause/resume 
+      <https://github.com/Eoinocal/Halite/issues/20>  
+      <https://github.com/Eoinocal/Halite/issues/21>
+  
  + from v 0.4.0.2 to 0.4.0.3:
 
    1. Re-fixed Unicode.

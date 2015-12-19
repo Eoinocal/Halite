@@ -290,10 +290,14 @@
 						<File Id='Swedish' KeyPath="yes"  Name='Swedish.dll' DiskId='1'
 						      Source='$(var.RootDirectory)lang\bin\Swedish.dll' />
 					</Component>
-					<Component Id='LanguageFiles.Turkish' Guid='*'>
-						<File Id='Turkish' KeyPath="yes"  Name='Turkish.dll' DiskId='1'
+          <Component Id='LanguageFiles.Turkish' Guid='*'>
+            <File Id='Turkish' KeyPath="yes"  Name='Turkish.dll' DiskId='1'
 						      Source='$(var.RootDirectory)lang\bin\Turkish.dll' />
-					</Component>
+          </Component>
+          <Component Id='LanguageFiles.ChineseSimplified' Guid='*'>
+            <File Id='ChineseSimplified' KeyPath="yes"  Name='Chinese(Simplified).dll' DiskId='1'
+						      Source='$(var.RootDirectory)lang\bin\Chinese(Simplified).dll' />
+          </Component>
 
 				</Directory>
 			</Directory>
@@ -426,11 +430,16 @@
 			>
 				<ComponentRef Id="LanguageFiles.Swedish" />
 			</Feature>
-			<Feature Id="HaliteLanguages.Turkish" Title="Turkish"
+      <Feature Id="HaliteLanguages.Turkish" Title="Turkish"
 				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
 			>
-				<ComponentRef Id="LanguageFiles.Turkish" />
-			</Feature>
+        <ComponentRef Id="LanguageFiles.Turkish" />
+      </Feature>
+      <Feature Id="HaliteLanguages.ChineseSimplified" Title="Chinese (Simplified)"
+				Level="1000" AllowAdvertise='no' ConfigurableDirectory="INSTALLDIR"
+			>
+        <ComponentRef Id="LanguageFiles.ChineseSimplified" />
+      </Feature>
 		</Feature>
 
 		<CustomAction Id="PreventDowngrading" Error="A more recent version of Halite is already installed." />
