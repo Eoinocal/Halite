@@ -16,6 +16,9 @@
 #define HAL_ADDT_DEFFLD_TEXT			HAL_ADJUST_DLG_BEGIN + 4
 #define HAL_ADDT_NOTE_TEXT				HAL_ADJUST_DLG_BEGIN + 5
 #define HAL_ADDT_TITLE					HAL_ADJUST_DLG_BEGIN + 6
+#define HAL_FREE_TEXT                   HAL_ADJUST_DLG_BEGIN + 7
+#define HAL_ADDT_DEFFLD_FREE   	        HAL_ADJUST_DLG_BEGIN + 8
+#define HAL_ADDT_MOVETO_FOLDER_FREE   	HAL_ADJUST_DLG_BEGIN + 9
 
 #ifndef RC_INVOKED
 
@@ -47,6 +50,8 @@ public:
 		COMMAND_ID_HANDLER_EX(HAL_ADDT_MOVETO_CHECK, OnMoveTo)
 		COMMAND_ID_HANDLER_EX(HAL_BC_SAVEBROWSE, OnBrowse)
 		COMMAND_ID_HANDLER_EX(HAL_ADDT_MOVETO_BROWSE, OnMoveBrowse)
+        COMMAND_ID_HANDLER_EX(HAL_BC_SAVEFOLDER, OnSaveFolderChange)
+        COMMAND_ID_HANDLER_EX(HAL_ADDT_MOVETO_FOLDER, OnMoveFolderChange)
 		}
 		HAL_ALL_EXCEPTION_CATCH(L"in HaliteSaveAndMoveToDlg MSG_MAP")
 
@@ -60,11 +65,11 @@ public:
 	END_DDX_MAP()	
 
 #define ADD_FOLDERS_LAYOUT \
-	WMB_HEAD(WMB_COLNOMAX(_exp), WMB_COL(_auto)), \
-		WMB_ROW(_auto,	HAL_ADDT_DEFFLD_TEXT, _r), \
-		WMB_ROW(_auto,	HAL_BC_SAVEFOLDER, HAL_BC_SAVEBROWSE), \
-		WMB_ROW(_auto,	HAL_ADDT_MOVETO_CHECK, _r), \
-		WMB_ROW(_auto,	HAL_ADDT_MOVETO_FOLDER, HAL_ADDT_MOVETO_BROWSE), \
+	WMB_HEAD(WMB_COLNOMAX(_exp), WMB_COL(60), WMB_COL(_auto)), \
+		WMB_ROW(_auto,	HAL_ADDT_DEFFLD_TEXT, HAL_ADDT_DEFFLD_FREE, _r), \
+		WMB_ROW(_auto,	HAL_BC_SAVEFOLDER, _r, HAL_BC_SAVEBROWSE), \
+		WMB_ROW(_auto,	HAL_ADDT_MOVETO_CHECK, HAL_ADDT_MOVETO_FOLDER_FREE, _r), \
+		WMB_ROW(_auto,	HAL_ADDT_MOVETO_FOLDER, _r, HAL_ADDT_MOVETO_BROWSE), \
 	WMB_END()
 
 	BEGIN_WINDOW_MAP(this_class_t, 0, 0, 3, 3)
@@ -144,7 +149,35 @@ public:
 			moveToDirectory_ = wstring(fldDlg.m_szFolderPath);
 			DoDataExchange(false);
 		}
-	}		
+	}
+
+    void UpdateDiskSpace(int iSrcId, int iDstId)
+    {
+        hal::win_c_str<std::wstring> str_buf(MAX_PATH);
+        GetDlgItem(iSrcId).GetWindowText(str_buf, numeric_cast<int>(str_buf.size()));
+
+        boost::system::error_code ec;
+        boost::filesystem::space_info si = boost::filesystem::space(str_buf.str(), ec);
+
+        wstring free_space(L"?");
+        if (!ec)
+        {
+            free_space = hal::to_bytes_size(si.free, false);
+        }
+
+        wstring free_space_string = (hal::wform(L"[%s: %s]") % hal::app().res_wstr(HAL_FREE_TEXT) % free_space).str();
+        GetDlgItem(iDstId).SetWindowText(free_space_string.c_str());
+    }
+
+    void OnSaveFolderChange(UINT, int, HWND hWnd)
+    {
+        UpdateDiskSpace(HAL_BC_SAVEFOLDER, HAL_ADDT_DEFFLD_FREE);
+    }
+
+    void OnMoveFolderChange(UINT, int, HWND hWnd)
+    {
+        UpdateDiskSpace(HAL_ADDT_MOVETO_FOLDER, HAL_ADDT_MOVETO_FOLDER_FREE);
+    }
 
 private:
 	wstring& saveDirectory_;
