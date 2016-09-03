@@ -129,6 +129,9 @@
 #	include <libtorrent/peer_info.hpp>
 #	include <libtorrent/peer_id.hpp>
 #	include <libtorrent/peer_connection.hpp>
+#	include <libtorrent/torrent_info.hpp>
+#	include <libtorrent/announce_entry.hpp>
+#	include <libtorrent/lazy_entry.hpp>
 
 #	include <libtorrent/extensions/metadata_transfer.hpp>
 #	include <libtorrent/extensions/ut_pex.hpp>

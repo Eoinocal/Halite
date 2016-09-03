@@ -12,6 +12,8 @@
 #	include "halTypes.hpp"
 #endif
 
+#include <boost/asio.hpp>
+
 namespace libtorrent
 {
 
@@ -21,7 +23,7 @@ bool operator==(const libtorrent::ip_range<Addr>& lhs, const int flags)
 	return (lhs.flags == flags);
 }
 
-inline std::ostream& operator<<(std::ostream& os, libtorrent::ip_range<asio::ip::address_v4>& ip)
+inline std::ostream& operator<<(std::ostream& os, libtorrent::ip_range<boost::asio::ip::address_v4>& ip)
 {
 	os << ip.first.to_ulong();
 	os << ip.last.to_ulong();

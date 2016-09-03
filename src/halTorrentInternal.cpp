@@ -7,7 +7,7 @@
 #include "halPch.hpp"
 
 #pragma warning (push, 1)
-#	include <libtorrent/escape_string.hpp>
+//#	include <libtorrent/escape_string.hpp>
 #	include <libtorrent/magnet_uri.hpp>
 #pragma warning (pop) 
 
