@@ -247,6 +247,7 @@
     <ClCompile Include="..\..\src\halTorrentIntStates.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\halAlertHandler.hpp" />
     <ClInclude Include="..\..\src\halCatchDefines.hpp" />
     <ClInclude Include="..\..\src\halConfig.hpp" />
     <ClInclude Include="..\..\src\halEvent.hpp" />

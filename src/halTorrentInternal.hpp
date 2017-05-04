@@ -246,7 +246,8 @@ private:
 	torrent_internal(const wstring& uri, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory=L"");
 			
 public:
-	using torrent_info_ptr = boost::intrusive_ptr<libt::torrent_info const>;
+	using torrent_info_wptr = boost::weak_ptr<libt::torrent_info const>;
+	using torrent_info_ptr = boost::shared_ptr<libt::torrent_info const>;
 
 	~torrent_internal() {}
 
@@ -803,7 +804,7 @@ private:
 	void output_torrent_debug_details(upgrade_lock& l) const;
 	wstring check_error(upgrade_lock& l) const;
 	
-	void set_info_cache(torrent_info_ptr info, upgrade_lock& l)
+	void set_info_cache(torrent_info_wptr info, upgrade_lock& l)
 	{
 		upgrade_to_unique_lock up_l(l);
 
@@ -843,8 +844,8 @@ private:
 	wstring tracker_username_;	
 	wstring tracker_password_;
 	
-	pt::ptime start_time_;
-	pt::ptime finish_time_;
+	libt::time_point start_time_;
+	libt::time_point finish_time_;
 	duration_tracker active_duration_;
 	duration_tracker seeding_duration_;
 	
@@ -881,7 +882,7 @@ private:
 	mutable bool managed_;
 	mutable bool superseeding_;
 	
-	mutable torrent_info_ptr info_memory_;
+	mutable torrent_info_wptr info_memory_;
 	mutable libt::torrent_status status_memory_;
 	file_details_vec file_details_memory_;
 };

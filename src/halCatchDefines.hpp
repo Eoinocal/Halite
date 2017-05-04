@@ -42,11 +42,11 @@ catch(...) \
 }
 
 #define HAL_GENERIC_TORRENT_EXCEPTION_CATCH(TORRENT, FUNCTION) \
-catch (const libt::invalid_handle&) \
-{\
+catch (const libtorrent::libtorrent_exception& e) \
+{ \
 	event_log().post(shared_ptr<EventDetail>( \
-		new EventInvalidTorrent(event_logger::info, event_logger::invalid_torrent, TORRENT, std::string(FUNCTION)))); \
-}\
+		new EventTorrentException(event_logger::critical, event_logger::torrentException, std::string(e.what()), TORRENT, std::string(FUNCTION)))); \
+} \
 catch (const invalid_torrent& t) \
 {\
 	event_log().post(shared_ptr<EventDetail>( \

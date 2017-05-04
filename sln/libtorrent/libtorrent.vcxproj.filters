@@ -90,9 +90,6 @@
     <ClCompile Include="..\..\lib\libtorrent\src\kademlia\traversal_algorithm.cpp">
       <Filter>Source Files\kademlia</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\libtorrent\src\mpi.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\lib\libtorrent\src\alert.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -118,6 +115,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\lib\libtorrent\src\bdecode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\libtorrent\src\bitfield.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\lib\libtorrent\src\block_cache.cpp">
@@ -192,6 +192,9 @@
     <ClCompile Include="..\..\lib\libtorrent\src\file_storage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\lib\libtorrent\src\fingerprint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\lib\libtorrent\src\gzip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -247,6 +250,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\lib\libtorrent\src\metadata_transfer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\libtorrent\src\mpi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\lib\libtorrent\src\natpmp.cpp">

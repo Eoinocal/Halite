@@ -45,7 +45,7 @@ void iterate_handle_files(const libt::torrent_handle& handle, F&& f)
 	total_base_(0), \
 	progress_(0), \
 	managed_(false), \
-	start_time_(boost::posix_time::second_clock::universal_time()), \
+	start_time_(libt::clock_type::now()), \
 	in_session_(false), \
 	queue_position_(-1), \
 	hash_(0), \
@@ -84,7 +84,7 @@ torrent_internal::torrent_internal(const wpath& filename, const wpath& save_dire
 	state(l, torrent_details::torrent_stopped);
 	assert(the_session_);
 
-	prepare(l, new libt::torrent_info(path_to_utf8(filename)));
+	prepare(l, boost::make_shared<libt::torrent_info>(path_to_utf8(filename)));
 }
 
 torrent_internal::torrent_internal(const wstring& uri, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory) :
@@ -546,7 +546,7 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 			status_cache(l).auto_managed));
 
 		}
-		catch (const libt::invalid_handle&)
+	/*	catch (const libt::invalid_handle&)
 		{
 			event_log().post(shared_ptr<EventDetail>(
 				new EventInvalidTorrent(event_logger::critical, 
@@ -560,7 +560,7 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 				app().res_wstr(HAL_NA),
 				hash_str_));
 		}
-		catch (const std::exception& e)
+	*/	catch (const std::exception& e)
 		{
 			event_log().post(shared_ptr<EventDetail>(
 				new EventTorrentException(event_logger::critical, 
@@ -601,7 +601,7 @@ void torrent_internal::get_file_details(upgrade_lock& l, file_details_vec& files
 	
 	if (in_session(l))
 	{	
-		std::vector<libt::size_type> file_progress;			
+		std::vector<float> file_progress;			
 		handle_.file_progress(file_progress, libt::torrent_handle::piece_granularity);
 		
 		{	upgrade_to_unique_lock up_l(l);
@@ -1124,7 +1124,7 @@ libt::torrent_status& torrent_internal::renew_status_cache(upgrade_lock& l) cons
 		status_memory_.upload_payload_rate = 0;
 		status_memory_.total_payload_download = 0;
 		status_memory_.total_payload_upload = 0;
-		status_memory_.next_announce = boost::posix_time::seconds(0);		
+		status_memory_.next_announce = libt::time_duration::zero();		
 	}
 
 	return status_memory_;
@@ -1208,14 +1208,14 @@ torrent_internal::torrent_info_ptr torrent_internal::info_memory(upgrade_lock& l
 	try 
 	{
 
-	if (!info_memory_ && in_session(l)) 
+	if (!info_memory_.lock() && in_session(l)) 
 	{	
 		// Yes I know how ugly this is!!!!
 		HAL_DEV_MSG(L"That ugly const_cast happened!!!");
 
-		torrent_info_ptr iptr;
+		torrent_info_wptr iptr;
 
-		if (auto ip = handle_.status(libt::torrent_handle::query_torrent_file).torrent_file)
+		if (auto ip = handle_.status(libt::torrent_handle::query_torrent_file).torrent_file.lock())
 			const_cast<torrent_internal*>(this)->info_memory_reset(ip, l);
 		else
 			return torrent_info_ptr();
@@ -1227,18 +1227,18 @@ torrent_internal::torrent_info_ptr torrent_internal::info_memory(upgrade_lock& l
 		HAL_DEV_MSG(L"No torrent info");
 	}
 
-	return info_memory_;
+	return info_memory_.lock();
 }
 
 void torrent_internal::info_memory_reset(torrent_info_ptr im, upgrade_lock& l)
 {	
-		upgrade_to_unique_lock up_l(l);
+	upgrade_to_unique_lock up_l(l);
 
-		info_memory_ = im;
+	info_memory_ = im;
 
-		// This informs the Files manager about names loaded from a fast resume file.
-		files_.set_hash(hash_str_);	
-		files_.set_libt_files(info_memory_->orig_files());
+	// This informs the Files manager about names loaded from a fast resume file.
+	files_.set_hash(hash_str_);	
+	files_.set_libt_files(im->orig_files());
 }
 
 void torrent_internal::output_torrent_debug_details() const

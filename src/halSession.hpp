@@ -107,6 +107,7 @@ class bit_impl :
 	public sc::state_machine<bit_impl, uninitialized>
 {
 	friend class bit;
+	friend class AlertHandler;
 
 private:
 	bit_impl();

@@ -46,6 +46,7 @@
     <ClCompile Include="..\..\lib\libtorrent\src\bandwidth_manager.cpp" />
     <ClCompile Include="..\..\lib\libtorrent\src\bandwidth_queue_entry.cpp" />
     <ClCompile Include="..\..\lib\libtorrent\src\bdecode.cpp" />
+    <ClCompile Include="..\..\lib\libtorrent\src\bitfield.cpp" />
     <ClCompile Include="..\..\lib\libtorrent\src\block_cache.cpp" />
     <ClCompile Include="..\..\lib\libtorrent\src\bloom_filter.cpp" />
     <ClCompile Include="..\..\lib\libtorrent\src\broadcast_socket.cpp" />
@@ -70,6 +71,7 @@
     <ClCompile Include="..\..\lib\libtorrent\src\file_pool.cpp" />
     <ClCompile Include="..\..\lib\libtorrent\src\file_progress.cpp" />
     <ClCompile Include="..\..\lib\libtorrent\src\file_storage.cpp" />
+    <ClCompile Include="..\..\lib\libtorrent\src\fingerprint.cpp" />
     <ClCompile Include="..\..\lib\libtorrent\src\gzip.cpp" />
     <ClCompile Include="..\..\lib\libtorrent\src\hasher.cpp" />
     <ClCompile Include="..\..\lib\libtorrent\src\hex.cpp" />
@@ -105,7 +107,7 @@
     <ClCompile Include="..\..\lib\libtorrent\src\magnet_uri.cpp" />
     <ClCompile Include="..\..\lib\libtorrent\src\merkle.cpp" />
     <ClCompile Include="..\..\lib\libtorrent\src\metadata_transfer.cpp" />
-    <ClCompile Include="..\..\lib\libtorrent\src\mpi.c" />
+    <ClCompile Include="..\..\lib\libtorrent\src\mpi.cpp" />
     <ClCompile Include="..\..\lib\libtorrent\src\natpmp.cpp" />
     <ClCompile Include="..\..\lib\libtorrent\src\packet_buffer.cpp" />
     <ClCompile Include="..\..\lib\libtorrent\src\parse_url.cpp" />
