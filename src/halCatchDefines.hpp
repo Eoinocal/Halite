@@ -7,11 +7,6 @@
 #pragma once
 
 #define HAL_GENERIC_TORRENT_PROP_EXCEPTION_CATCH(FUNCTION) \
-catch (const libt::invalid_handle&) \
-{\
-	event_log().post(shared_ptr<EventDetail>( \
-		new EventInvalidTorrent(event_logger::info, event_logger::invalid_torrent, uuid(), std::string(FUNCTION)))); \
-}\
 catch (const invalid_torrent& t) \
 { \
 	event_log().post(shared_ptr<EventDetail>( \

@@ -18,7 +18,7 @@ namespace hal
 {
 
 	
-boost::optional<libt::session>* torrent_internal::the_session_ = 0;	
+boost::scoped_ptr<libt::session>* torrent_internal::the_session_ = 0;	
 
 template<typename F>
 void iterate_info_files(const libt::torrent_info& info, F&& f)
@@ -45,7 +45,7 @@ void iterate_handle_files(const libt::torrent_handle& handle, F&& f)
 	total_base_(0), \
 	progress_(0), \
 	managed_(false), \
-	start_time_(libt::clock_type::now()), \
+	start_time_(boost::posix_time::second_clock::universal_time()), \
 	in_session_(false), \
 	queue_position_(-1), \
 	hash_(0), \
@@ -109,7 +109,7 @@ torrent_internal::torrent_internal(const wstring& uri, const wpath& save_directo
 #undef TORRENT_INTERNALS_DEFAULTS
 
 
-void torrent_internal::set_the_session(boost::optional<libt::session>* s)
+void torrent_internal::set_the_session(boost::scoped_ptr<libt::session>* s)
 {
 	the_session_ = s;
 }
@@ -191,7 +191,7 @@ void torrent_internal::alert_finished()
 
 		finish_time_ = boost::posix_time::second_clock::universal_time();
 	}
-
+	
 	if (is_finished(l))
 	{
 		if (!move_to_directory_.empty() && 
@@ -539,9 +539,10 @@ torrent_details_ptr torrent_internal::get_torrent_details_ptr() const
 			downloaded_, payload_downloaded_, 
 			connections, 
 			td, 
-			status_cache(l).next_announce, 
+			pt::microseconds(status_cache(l).next_announce.count() / 1000), 
 			active_duration_, seeding_duration_, 
-			start_time_, finish_time_, 
+			start_time_,
+			finish_time_,
 			queue_position_,
 			status_cache(l).auto_managed));
 
@@ -601,7 +602,7 @@ void torrent_internal::get_file_details(upgrade_lock& l, file_details_vec& files
 	
 	if (in_session(l))
 	{	
-		std::vector<float> file_progress;			
+		std::vector<boost::int64_t> file_progress;			
 		handle_.file_progress(file_progress, libt::torrent_handle::piece_granularity);
 		
 		{	upgrade_to_unique_lock up_l(l);
@@ -634,14 +635,24 @@ void torrent_internal::init_file_details(upgrade_lock& l)
 			file_details_memory_.reserve(info.num_files());
 			file_priorities_.reserve(info.num_files());
 
-			iterate_info_files(info, [&](libt::file_entry file, size_t i)
+			libt::file_storage const& st = info.files();
+			for (int i = 0; i < st.num_files(); ++i)
+			{
+				boost::int64_t size = static_cast<boost::int64_t>(st.file_size(i));
+				torrent_file::split_path_pair_t split = torrent_file::split_root(files_[i].completed_name());
+			
+				file_details_memory_.push_back(file_details(split.second, size, 0, files_[i].priority(), i));
+				file_priorities_.push_back(files_[i].priority());
+			}
+
+	/*		iterate_info_files(info, [&](libt::file_entry file, size_t i)
 			{
 				boost::int64_t size = static_cast<boost::int64_t>(file.size);
 				torrent_file::split_path_pair_t split = torrent_file::split_root(files_[i].completed_name());
 			
 				file_details_memory_.push_back(file_details(split.second, size, 0, files_[i].priority(), i));
 				file_priorities_.push_back(files_[i].priority());
-			});
+			});	*/
 		}
 }
 
@@ -767,26 +778,28 @@ void torrent_internal::extract_filenames(upgrade_lock& l)
 	if (auto info_ptr = info_memory(l))
 		if (files_.empty(l))
 		{
-			iterate_info_files(*info_ptr, [&](libt::file_entry file, size_t i)
+			libt::file_storage const& st = info_ptr->files();
+			for (int i = 0; i < st.num_files(); ++i)
 			{
-				fs::wpath p_orig = path_from_utf8(file.path);
+				fs::wpath p_orig = path_from_utf8(st.file_path(i));
 
 				int p = file_priorities_.empty() ? 1 : file_priorities_[i];
 
-				files_.push_back(torrent_file(path_from_utf8(file.path), false, p), l);
-			});
+				files_.push_back(torrent_file(path_from_utf8(st.file_path(i)), false, p), l);
+			}
 		
 			// Primes the Files manager with default names.
 			files_.set_libt_files(info_ptr->orig_files());
 		}
 		else
 		{
-			iterate_info_files(*info_ptr, [&](libt::file_entry file, size_t i)
+			libt::file_storage const& st = info_ptr->files();
+			for (int i = 0; i < st.num_files(); ++i)
 			{
-				fs::wpath p = path_from_utf8(file.path);
+				fs::wpath p = path_from_utf8(st.file_path(i));
 
 	//			assert(p == files_[std::distance(info_memory()->begin_files(), i)].original_name());
-			});
+			}
 		}
 }
 
@@ -952,8 +965,8 @@ void torrent_internal::apply_tracker_login(upgrade_lock& l)
 {
 	if (in_session(l))
 	{
-		if (!tracker_username_.empty())
-			handle_.set_tracker_login(hal::to_utf8(tracker_username_), hal::to_utf8(tracker_password_));
+//		if (!tracker_username_.empty())
+//			handle_.set_tracker_login(hal::to_utf8(tracker_username_), hal::to_utf8(tracker_password_));
 
 		HAL_DEV_MSG(hal::wform(L"Applying Tracker Login User: %1% with password") % tracker_username_);
 	}
@@ -1167,9 +1180,9 @@ wstring torrent_internal::state_string(upgrade_lock& l) const
 	default:
 		switch (status_cache(l).state)
 		{
-		case libt::torrent_status::queued_for_checking:
-			state_str = app().res_wstr(HAL_TORRENT_QUEUED_CHECKING);
-			break;
+//		case libt::torrent_status::queued_for_checking:
+//			state_str = app().res_wstr(HAL_TORRENT_QUEUED_CHECKING);
+//			break;
 		case libt::torrent_status::checking_files:
 			state_str = app().res_wstr(HAL_TORRENT_CHECKING_FILES);
 			break;

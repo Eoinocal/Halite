@@ -236,8 +236,8 @@ public:
 		{
 			torrent_file tmp_file = *(i);
 			tmp_file.change_root_name(root, 
-				path_from_utf8(libt_orig_files_.at(
-					static_cast<int>(std::distance(files_.get<by_random>().begin(), i))).path));
+				path_from_utf8(libt_orig_files_.file_path(
+					static_cast<int>(std::distance(files_.get<by_random>().begin(), i)))));
 
 			new_files.push_back(tmp_file);
 		}
@@ -271,7 +271,7 @@ public:
 		torrent_file_by_random::iterator file_i = files_.get<by_random>().begin() + i; 
 
 		torrent_file tmp_file = *(file_i);
-		tmp_file.set_finished(path_from_utf8(libt_orig_files_.at(static_cast<int>(i)).path));
+		tmp_file.set_finished(path_from_utf8(libt_orig_files_.file_path(static_cast<int>(i))));
 
 		{	upgrade_to_unique_lock up_l(l);
 			files_.get<by_random>().replace(file_i, tmp_file);
@@ -306,7 +306,7 @@ public:
 	//	HAL_DEV_MSG(hal::wform(L"Returning file proxy"));
 
 		return torrent_file_proxy(files_.get<by_random>()[n], hash_, 
-			path_from_utf8(libt_orig_files_.at(static_cast<int>(n)).path), path_from_utf8(libt_orig_files_.at(static_cast<int>(n)).path));
+			path_from_utf8(libt_orig_files_.file_path(static_cast<int>(n))), path_from_utf8(libt_orig_files_.file_path(static_cast<int>(n))));
 	}
 	
 	friend class boost::serialization::access;

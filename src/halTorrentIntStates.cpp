@@ -159,7 +159,7 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 		if (t_i.info_memory(l))
 		{
 			HAL_DEV_MSG(L" -- We have saved torrent info to use");
-			p.ti = boost::intrusive_ptr<libt::torrent_info>(new libt::torrent_info(*t_i.info_memory(l)));
+			p.ti = boost::make_shared<libt::torrent_info>(*t_i.info_memory(l));
 
 			(*t_i.the_session_)->async_add_torrent(p);
 		}
@@ -182,7 +182,7 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 		else if (!t_i.hash_.is_all_zeros())
 		{
 			HAL_DEV_MSG(L" -- We have a saved hash to use");
-			p.ti = boost::intrusive_ptr<libt::torrent_info>(new libt::torrent_info(t_i.hash_));		
+			p.ti = boost::make_shared<libt::torrent_info>(t_i.hash_);		
 
 			(*t_i.the_session_)->async_add_torrent(p);
 		}
@@ -492,7 +492,7 @@ sc::result not_started::react(const ev_start& evt)
 					try {
 
 					HAL_DEV_MSG(hal::wform(L"Using torrent info data file %1%") % torrent_info_file);
-					t_i.info_memory_reset(new libt::torrent_info(path_to_utf8(torrent_info_file)), l);
+					t_i.info_memory_reset(boost::make_shared<libt::torrent_info>(path_to_utf8(torrent_info_file)), l);
 
 					}
 					catch (const libt::libtorrent_exception&)
@@ -505,7 +505,7 @@ sc::result not_started::react(const ev_start& evt)
 					upgrade_to_unique_lock up_l(l);
 
 					HAL_DEV_MSG(L"Using torrent file");
-					t_i.info_memory_reset(new libt::torrent_info(path_to_utf8(torrent_file)), l);
+					t_i.info_memory_reset(boost::make_shared<libt::torrent_info>(path_to_utf8(torrent_file)), l);
 				}
 			}
 

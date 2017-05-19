@@ -26,6 +26,12 @@
 #include "HaliteWindow.hpp"
 #include "SplashDialog.hpp"
 
+	
+#include <libtorrent/session.hpp>
+
+#include <boost/asio/impl/src.hpp>
+#include <boost/asio/ssl/impl/src.hpp>
+
 Halite& halite()
 {
 	static Halite h;
@@ -174,6 +180,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
    
 	HRESULT hRes = _Module.Init(NULL, hInstance);
 	assert (SUCCEEDED(hRes));	
+
+	libtorrent::session the_session{libtorrent::fingerprint("HL", 0, 4, 0, 4)};
 	
 	
 	{ WinAPIMutex oneInstance(HALITE_GUID);

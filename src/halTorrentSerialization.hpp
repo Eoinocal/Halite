@@ -97,7 +97,7 @@ void serialize(Archive& ar, hal::tracker_detail& tracker, const unsigned int ver
 	ar & BOOST_SERIALIZATION_NVP(tracker.tier);
 }
 
-
+/**/
 template<class Archive>
 void save(Archive& ar, const libtorrent::big_number& num, const unsigned int version)
 {	

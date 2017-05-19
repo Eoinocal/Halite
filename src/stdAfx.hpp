@@ -73,6 +73,8 @@ extern WTL::CAppModule _Module;
 #include <codecvt>
 #include <locale>
 
+#include <boost/asio.hpp>
+
 #include <boost/regex.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/algorithm/string/find.hpp>

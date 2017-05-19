@@ -132,6 +132,7 @@
 #	include <libtorrent/torrent_info.hpp>
 #	include <libtorrent/announce_entry.hpp>
 #	include <libtorrent/lazy_entry.hpp>
+#	include <libtorrent/session_status.hpp>
 
 #	include <libtorrent/extensions/metadata_transfer.hpp>
 #	include <libtorrent/extensions/ut_pex.hpp>
@@ -141,3 +142,20 @@
 #pragma warning (pop) 
 
 #include "halTypes.hpp"
+
+inline boost::posix_time::ptime convert_to_ptime(const std::chrono::high_resolution_clock::time_point& from) 
+{ 
+    typedef std::chrono::high_resolution_clock time_point_t; 
+    typedef std::chrono::nanoseconds duration_t; 
+    typedef duration_t::rep rep_t; 
+    rep_t d = std::chrono::duration_cast<duration_t>(from.time_since_epoch()).count(); 
+    rep_t sec = d/1000000000; 
+    rep_t nsec = d%1000000000; 
+    return boost::posix_time::from_time_t(0)+ 
+    boost::posix_time::seconds(static_cast<long>(sec))+ 
+    #ifdef BOOST_DATE_TIME_HAS_NANOSECONDS 
+    boost::posix_time::nanoseconds(nsec); 
+    #else 
+    boost::posix_time::microseconds((nsec+500)/1000); 
+    #endif 
+} 

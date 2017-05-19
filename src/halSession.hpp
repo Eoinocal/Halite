@@ -644,7 +644,7 @@ private:
 	void schedual_callback(boost::posix_time::time_duration duration, action_callback_t action);	
 	void schedual_cancel();
 	
-	boost::optional<libt::session> session_;	
+	boost::scoped_ptr<libt::session> session_;	
 	SessionDetail session_details_;
 
 	mutable mutex_t mutex_;
@@ -690,6 +690,8 @@ private:
 
 	libt::upnp* upnp_;
 	libt::natpmp* natpmp_;
+
+	libt::session the_session_;
 };
 
 }

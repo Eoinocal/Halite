@@ -251,7 +251,7 @@ public:
 
 	~torrent_internal() {}
 
-	static void set_the_session(boost::optional<libt::session>*);
+	static void set_the_session(boost::scoped_ptr<libt::session>*);
 	bool in_session() const;
 	
 	torrent_details_ptr get_torrent_details_ptr() const;
@@ -768,7 +768,7 @@ private:
 	void extract_filenames(upgrade_lock& l);	
 	void init_file_details(upgrade_lock& l);
 	
-	static boost::optional<libt::session>* the_session_;
+	static boost::scoped_ptr<libt::session>* the_session_;
 	bool in_session(upgrade_lock& l) const;
 
 	torrent_info_ptr info_memory(upgrade_lock& l) const;	
@@ -844,8 +844,8 @@ private:
 	wstring tracker_username_;	
 	wstring tracker_password_;
 	
-	libt::time_point start_time_;
-	libt::time_point finish_time_;
+	pt::ptime start_time_;
+	pt::ptime finish_time_;
 	duration_tracker active_duration_;
 	duration_tracker seeding_duration_;
 	
