@@ -79,12 +79,22 @@ torrent_internal::torrent_internal(const wpath& filename, const wpath& save_dire
 {
 	upgrade_lock l(mutex_);
 		
-	HAL_DEV_MSG(hal::wform(L"torrent_internal filename = %1%") % filename);
+	HAL_DEV_MSG(hal::wform(L"Creating new torrent_internal filename = %1%") % filename);
 
 	state(l, torrent_details::torrent_stopped);
 	assert(the_session_);
 
-	prepare(l, boost::make_shared<libt::torrent_info>(path_to_utf8(filename)));
+	libt::error_code ec;
+	auto ti = boost::make_shared<libt::torrent_info>(path_to_utf8(filename), ec);
+
+	if (ec)
+	{
+		HAL_DEV_MSG(hal::wform(L"Error loading torrent info: %1%") % from_utf8(ec.message()));
+	}
+	else
+		HAL_DEV_MSG("***********************************");
+
+	prepare(l, ti);
 }
 
 torrent_internal::torrent_internal(const wstring& uri, const wpath& save_directory, bit::allocations alloc, const wpath& move_to_directory) :
@@ -99,6 +109,8 @@ torrent_internal::torrent_internal(const wstring& uri, const wpath& save_directo
 	magnet_uri_(to_utf8(uri))
 {
 	upgrade_lock l(mutex_);
+	
+	HAL_DEV_MSG(hal::wform(L"Creating new torrent_internal uri = %1%") % uri);
 
 	state(l, torrent_details::torrent_stopped);
 	assert(the_session_);
@@ -367,6 +379,7 @@ unsigned torrent_internal::state(upgrade_lock& l) const
 {
 	return state_;
 }
+
 void torrent_internal::set_superseeding(bool ss)
 {
 	upgrade_lock l(mutex_);
@@ -1221,7 +1234,7 @@ torrent_internal::torrent_info_ptr torrent_internal::info_memory(upgrade_lock& l
 	try 
 	{
 
-	if (!info_memory_.lock() && in_session(l)) 
+	if (!info_memory_ && in_session(l)) 
 	{	
 		// Yes I know how ugly this is!!!!
 		HAL_DEV_MSG(L"That ugly const_cast happened!!!");
@@ -1240,12 +1253,22 @@ torrent_internal::torrent_info_ptr torrent_internal::info_memory(upgrade_lock& l
 		HAL_DEV_MSG(L"No torrent info");
 	}
 
-	return info_memory_.lock();
+	return info_memory_;
 }
 
 void torrent_internal::info_memory_reset(torrent_info_ptr im, upgrade_lock& l)
 {	
 	upgrade_to_unique_lock up_l(l);
+	
+	if (im)
+	{
+		auto hash_str_ = from_utf8(libt::base32encode(std::string((char const*)&im->info_hash()[0], 20)));
+		HAL_DEV_MSG(wform(L"Updating info memory for %1%") % hash_str_);
+	}
+	else
+	{		
+		HAL_DEV_MSG("Clearing info memory");
+	}
 
 	info_memory_ = im;
 

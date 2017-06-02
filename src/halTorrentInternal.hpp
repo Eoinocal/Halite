@@ -804,7 +804,7 @@ private:
 	void output_torrent_debug_details(upgrade_lock& l) const;
 	wstring check_error(upgrade_lock& l) const;
 	
-	void set_info_cache(torrent_info_wptr info, upgrade_lock& l)
+	void set_info_cache(torrent_info_ptr info, upgrade_lock& l)
 	{
 		upgrade_to_unique_lock up_l(l);
 
@@ -882,7 +882,7 @@ private:
 	mutable bool managed_;
 	mutable bool superseeding_;
 	
-	mutable torrent_info_wptr info_memory_;
+	mutable torrent_info_ptr info_memory_;
 	mutable libt::torrent_status status_memory_;
 	file_details_vec file_details_memory_;
 };

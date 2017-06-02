@@ -29,7 +29,7 @@
 #ifndef NDEBUG
 #	define HAL_TORRENT_DEV_MSGES
 #	define HAL_TORRENT_STATE_LOGGING
-#	define HAL_SORT_LOGGING
+//#	define HAL_SORT_LOGGING
 #	define TXML_ARCHIVE_LOGGING
 #endif
 
@@ -297,7 +297,7 @@ class EventMsg : public EventDetail
 {
 public:
 	template<typename str_t>
-	EventMsg(str_t m, event_logger::eventLevel l=event_logger::debug, 
+	EventMsg(str_t m, event_logger::eventLevel l=event_logger::info, 
 		pt::ptime t = boost::posix_time::second_clock::universal_time(), event_logger::codes c=event_logger::noEvent) :
 		EventDetail(l, t, c),
 		msg_(hal::to_wstr_shim(m))

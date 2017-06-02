@@ -25,12 +25,9 @@
 
 #include "HaliteWindow.hpp"
 #include "SplashDialog.hpp"
-
 	
+#include "global/utf8.hpp"
 #include <libtorrent/session.hpp>
-
-#include <boost/asio/impl/src.hpp>
-#include <boost/asio/ssl/impl/src.hpp>
 
 Halite& halite()
 {
@@ -65,19 +62,19 @@ public:
 	{
 		if (halite().logToFile())
 		{
-			if (!wofs.is_open())
+			if (!ofs.is_open())
 			{
-				wofs.open(hal::app().get_working_directory() / L"HaliteLog.txt");
+				ofs.open(hal::app().get_working_directory() / L"HaliteLog.txt");
 
-				wofs.imbue(std::locale(wofs.getloc(),
+				ofs.imbue(std::locale(ofs.getloc(),
 					new std::codecvt_utf16<wchar_t, 0x10ffff, std::little_endian>));
 			}
 			
-			wofs << (hal::wform(L"%1% %2%, %3%\n") 
+			ofs << hal::wchar_utf8((hal::wform(L"%1% %2%, %3%\n") 
 				% event->timeStamp() % hal::event_logger::eventLevelToStr(event->level()) 
-				% event->msg()).str();
+				% event->msg()).str());
 			
-			wofs.flush();
+			ofs.flush();
 
 			std::wcout << event->msg() << std::endl;
 		}
@@ -93,7 +90,7 @@ public:
 	void disconnect() { conn_.disconnect(); }
 	
 private:
-	fs::wofstream wofs;
+	fs::ofstream ofs;
 	boost::signals2::connection conn_;
 	
 } halite_log_file_;
@@ -179,10 +176,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	ATLASSERT(hInstRich != NULL);
    
 	HRESULT hRes = _Module.Init(NULL, hInstance);
-	assert (SUCCEEDED(hRes));	
-
-	libtorrent::session the_session{libtorrent::fingerprint("HL", 0, 4, 0, 4)};
-	
+	assert (SUCCEEDED(hRes));		
 	
 	{ WinAPIMutex oneInstance(HALITE_GUID);
 	

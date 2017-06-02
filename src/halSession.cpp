@@ -42,7 +42,7 @@ bit_impl::bit_impl() :
 	alert_timer_(100, nullptr, &alert_caller_, 	true	),
 	the_session_{libt::fingerprint(HALITE_FINGERPRINT)}
 {
-	session_.reset(new libt::session(libt::fingerprint(HALITE_FINGERPRINT))); // , 0, libt::alert::all_categories));
+	session_.reset(new libt::session(libt::fingerprint(HALITE_FINGERPRINT), 0, libt::alert::all_categories));
 
 	try
 	{

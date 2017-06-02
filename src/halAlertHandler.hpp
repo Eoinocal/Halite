@@ -207,6 +207,7 @@ namespace hal
 	
 		else if (auto* p = libt::alert_cast<libt::torrent_resumed_alert>(a))
 		{
+
 			event_log().post(shared_ptr<EventDetail>(
 				new EventMsg((hal::wform(hal::app().res_wstr(HAL_TORRENT_RESUME_ALERT)) 
 						% get(p->handle)->name()), 
@@ -414,6 +415,27 @@ namespace hal
 			//bit_impl_.signals.successful_listen();
 		}
 	
+		else if (auto* p = libt::alert_cast<libt::portmap_log_alert>(a))
+		{ 
+		
+		}	
+		else if (auto* p = libt::alert_cast<libt::dht_pkt_alert>(a))
+		{ 
+		
+		}
+		else if (auto* p = libt::alert_cast<libt::dht_log_alert>(a))
+		{ 
+		
+		}
+		else if (auto* p = libt::alert_cast<libt::log_alert>(a))
+		{ 
+			event_log().post(shared_ptr<EventDetail>(
+				new EventGeneral(event_logger::debug, convert_to_ptime(a->timestamp()),
+					hal::wform(hal::app().res_wstr(HAL_LOG_ALERT))
+						% hal::from_utf8_safe(a->message()))
+			));	
+		
+		}
 		else if (auto* p = libt::alert_cast<libt::peer_blocked_alert>(a))
 		{
 			event_log().post(shared_ptr<EventDetail>(
@@ -424,7 +446,15 @@ namespace hal
 			)	);				
 		}	
 		else 
-			return false;
+		{
+			event_log().post(shared_ptr<EventDetail>(
+				new EventGeneral(event_logger::debug, convert_to_ptime(a->timestamp()),
+					hal::wform(hal::app().res_wstr(HAL_UNHANDLED_ALERT))
+						% hal::from_utf8_safe(a->message()))
+			));	
+
+			return true;
+		}
 
 		return true;
 	}

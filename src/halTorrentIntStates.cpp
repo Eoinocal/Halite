@@ -181,7 +181,9 @@ sc::result out_of_session::react(const ev_add_to_session& evt)
 		}
 		else if (!t_i.hash_.is_all_zeros())
 		{
-			HAL_DEV_MSG(L" -- We have a saved hash to use");
+			auto hash_str_ = from_utf8(libt::base32encode(std::string((char const*)&t_i.hash_[0], 20)));
+
+			HAL_DEV_MSG(wform(L" -- We have a saved hash (%1%) to use") % hash_str_);
 			p.ti = boost::make_shared<libt::torrent_info>(t_i.hash_);		
 
 			(*t_i.the_session_)->async_add_torrent(p);
@@ -206,11 +208,11 @@ sc::result out_of_session::react(const sc::exception_thrown& e)
 	}
 	catch (const torrent_state_exception& e)
 	{
-		event_log().post(shared_ptr<EventDetail>(new EventMsg(wform(L"Torrent State Exception: %1%") % e.what())));
+		event_log().post(shared_ptr<EventDetail>(new EventGeneral(event_logger::critical, wform(L"Torrent State Exception: %1%") % e.what())));
 	}
 	catch (const std::exception& e)
 	{
-		event_log().post(shared_ptr<EventDetail>(new EventMsg(wform(L"Torrent Std Exception: %1%") % e.what())));
+		event_log().post(shared_ptr<EventDetail>(new EventGeneral(event_logger::critical, wform(L"Torrent Std Exception: %1%") % e.what())));
 	}
 	
 	return transit<invalid>();
