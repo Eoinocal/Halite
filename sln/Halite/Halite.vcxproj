@@ -1,25 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release XP|Win32">
-      <Configuration>Release XP</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release XP|x64">
-      <Configuration>Release XP</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -27,436 +19,201 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{ED987C84-FFF9-4656-8F27-2A65FC0847FD}</ProjectGuid>
-    <RootNamespace>Halite</RootNamespace>
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{43385752-70D1-4409-8F62-99E14DCC8CDC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Halite</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v140</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release XP|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v140_xp</PlatformToolset>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v140</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release XP|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\Halite Dependencies.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release XP|Win32'" Label="PropertySheets">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\Halite Dependencies.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\Halite Dependencies.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\Halite Dependencies.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release XP|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\Halite Dependencies.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\Halite Dependencies.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release XP|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release XP|Win32'">$(Configuration)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release XP|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release XP|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release XP|x64'">$(Platform)\$(Configuration)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release XP|x64'">false</LinkIncremental>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release XP|Win32'">
-    <LibraryPath>C:\Craftwork\C++\Libraries\Boost\boost_1_57_0\libs-windows-xp-$(PlatformShortName)\lib;$(VC_LibraryPath_x86);$(WindowsSdk_71A_LibraryPath_x86)</LibraryPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalOptions>/Zm256 /bigobj</AdditionalOptions>
-      <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\WTLx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ExceptionHandling>Async</ExceptionHandling>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdAfx.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/Zm200 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\advtabs;$(SolutionDir)src\global;$(SolutionDir)src\WTLx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PrecompiledHeaderFile>stdAfx.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <DelayLoadDLLs>uxtheme.dll; dwmapi.dll; ws2_32.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention>
-      </DataExecutionPrevention>
-      <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>libeay32-vc140-mt-sgd.lib;libssleay32-vc140-mt-sgd.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Midl>
-      <TargetEnvironment>X64</TargetEnvironment>
-    </Midl>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalOptions>/Zm256 /bigobj</AdditionalOptions>
-      <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\WTLx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ExceptionHandling>Async</ExceptionHandling>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdAfx.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/Zm200 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\advtabs;$(SolutionDir)src\global;$(SolutionDir)src\WTLx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PrecompiledHeaderFile>stdAfx.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <DelayLoadDLLs>uxtheme.dll; dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention>
-      </DataExecutionPrevention>
-      <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalDependencies>libeay32-vc140-mt-sgd.lib;libssleay32-vc140-mt-sgd.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalOptions>/Zm256 /bigobj</AdditionalOptions>
-      <Optimization>MinSpace</Optimization>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\WTLx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdAfx.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/Zm200 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\advtabs;$(SolutionDir)src\global;$(SolutionDir)src\WTLx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PrecompiledHeaderFile>stdAfx.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <DelayLoadDLLs>uxtheme.dll; dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention>
-      </DataExecutionPrevention>
-      <TargetMachine>MachineX86</TargetMachine>
-      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalDependencies>libeay32-vc140-mt-s.lib;libssleay32-vc140-mt-s.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release XP|Win32'">
-    <ClCompile>
-      <AdditionalOptions>/Zm256 /bigobj</AdditionalOptions>
-      <Optimization>Full</Optimization>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\WTLx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdAfx.hpp</PrecompiledHeaderFile>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-    <Link>
-      <DelayLoadDLLs>uxtheme.dll; dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention>
-      </DataExecutionPrevention>
-      <TargetMachine>MachineX86</TargetMachine>
-      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalDependencies>libeay32-vc120-mt-s.lib;libssleay32-vc120-mt-s.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib\openssl\lib-windows-xp-$(PlatformShortName)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Midl>
-      <TargetEnvironment>X64</TargetEnvironment>
-    </Midl>
     <ClCompile>
-      <AdditionalOptions>/Zm256 /bigobj</AdditionalOptions>
-      <Optimization>MinSpace</Optimization>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\WTLx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <FloatingPointModel>Fast</FloatingPointModel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdAfx.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/Zm200 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\advtabs;$(SolutionDir)src\global;$(SolutionDir)src\WTLx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <PrecompiledHeaderFile>stdAfx.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <ShowProgress>LinkVerboseLib</ShowProgress>
-      <DelayLoadDLLs>uxtheme.dll; dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention>
-      </DataExecutionPrevention>
-      <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalDependencies>libeay32-vc140-mt-s.lib;libssleay32-vc140-mt-s.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release XP|x64'">
-    <Midl>
-      <TargetEnvironment>X64</TargetEnvironment>
-    </Midl>
-    <ClCompile>
-      <AdditionalOptions>/Zm256 /bigobj</AdditionalOptions>
-      <Optimization>Full</Optimization>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)src;$(SolutionDir)src\WTLx;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <FloatingPointModel>Fast</FloatingPointModel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdAfx.hpp</PrecompiledHeaderFile>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-    <Link>
-      <ShowProgress>LinkVerboseLib</ShowProgress>
-      <DelayLoadDLLs>uxtheme.dll; dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention>
-      </DataExecutionPrevention>
-      <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalLibraryDirectories>$(solutionDir)lib\openssl\libx64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libeay32-vc120-mt-s.lib;libssleay32-vc120-mt-s.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\AdvHaliteDialog.cpp" />
-    <ClCompile Include="..\..\src\advtabs\WebSeeds.cpp" />
-    <ClCompile Include="..\..\src\ConfigOptions.cpp" />
-    <ClCompile Include="..\..\src\Halite.cpp" />
-    <ClCompile Include="..\..\src\HaliteDialog.cpp" />
-    <ClCompile Include="..\..\src\HaliteListView.cpp" />
-    <ClCompile Include="..\..\src\HaliteWindow.cpp">
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/bigobj %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/bigobj %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/bigobj %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release XP|Win32'">/bigobj %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/bigobj %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release XP|x64'">/bigobj %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
-    <ClCompile Include="..\..\src\NewTorrentDialog.cpp" />
-    <ClCompile Include="..\..\src\NewTorrentPeers.cpp" />
-    <ClCompile Include="..\..\src\NewTorrentTracker.cpp" />
-    <ClCompile Include="..\..\src\stdAfx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release XP|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release XP|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\..\src\UxthemeWrapper.cpp" />
-    <ClCompile Include="..\..\src\win32_exception.cpp" />
     <ClCompile Include="..\..\src\advtabs\Debug.cpp" />
     <ClCompile Include="..\..\src\advtabs\Files.cpp" />
     <ClCompile Include="..\..\src\advtabs\Peers.cpp" />
     <ClCompile Include="..\..\src\advtabs\Torrent.cpp" />
     <ClCompile Include="..\..\src\advtabs\Tracker.cpp" />
     <ClCompile Include="..\..\src\advtabs\TrackerListView.cpp" />
+    <ClCompile Include="..\..\src\advtabs\WebSeeds.cpp" />
+    <ClCompile Include="..\..\src\ConfigOptions.cpp" />
     <ClCompile Include="..\..\src\global\logger.cpp" />
     <ClCompile Include="..\..\src\global\string_conv.cpp" />
     <ClCompile Include="..\..\src\global\work_file.cpp" />
     <ClCompile Include="..\..\src\global\wtl_app.cpp" />
-    <ClCompile Include="..\..\src\WTLx\NTray.cpp">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release XP|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release XP|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release XP|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release XP|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    <ClCompile Include="..\..\src\Halite.cpp" />
+    <ClCompile Include="..\..\src\HaliteDialog.cpp" />
+    <ClCompile Include="..\..\src\HaliteListView.cpp" />
+    <ClCompile Include="..\..\src\HaliteWindow.cpp" />
+    <ClCompile Include="..\..\src\NewTorrentDialog.cpp" />
+    <ClCompile Include="..\..\src\NewTorrentPeers.cpp" />
+    <ClCompile Include="..\..\src\NewTorrentTracker.cpp" />
+    <ClCompile Include="..\..\src\stdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\src\UxthemeWrapper.cpp" />
+    <ClCompile Include="..\..\src\win32_exception.cpp" />
+    <ClCompile Include="..\..\src\WTLx\NTray.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\AddTorrentDialog.hpp" />
-    <ClInclude Include="..\..\src\AdvHaliteDialog.hpp" />
-    <ClInclude Include="..\..\src\advtabs\WebSeeds.hpp" />
-    <ClInclude Include="..\..\src\ConfigOptions.hpp" />
-    <ClInclude Include="..\..\src\DebugDialog.hpp" />
-    <ClInclude Include="..\..\src\global\load_file.hpp" />
-    <ClInclude Include="..\..\src\Halite.hpp" />
-    <ClInclude Include="..\..\src\HaliteDialog.hpp" />
-    <ClInclude Include="..\..\src\HaliteDialogBase.hpp" />
-    <ClInclude Include="..\..\src\HaliteEditCtrl.hpp" />
-    <ClInclude Include="..\..\src\HaliteListManager.hpp" />
-    <ClInclude Include="..\..\src\HaliteListView.hpp" />
-    <ClInclude Include="..\..\src\HaliteListViewDlg.hpp" />
-    <ClInclude Include="..\..\src\HaliteSortListViewCtrl.hpp" />
-    <ClInclude Include="..\..\src\HaliteTabCtrl.hpp" />
-    <ClInclude Include="..\..\src\HaliteTabPage.hpp" />
-    <ClInclude Include="..\..\src\HaliteWindow.hpp" />
-    <ClInclude Include="..\..\src\NewTorrentDialog.hpp" />
-    <ClInclude Include="..\..\src\NewTorrentPeers.hpp" />
-    <ClInclude Include="..\..\src\NewTorrentTracker.hpp" />
-    <ClInclude Include="..\..\src\ProgressDialog.hpp" />
-    <ClInclude Include="..\..\src\SplashDialog.hpp" />
-    <ClInclude Include="..\..\src\stdAfx.hpp" />
-    <ClInclude Include="..\..\src\TimePickerDlg.hpp" />
-    <ClInclude Include="..\..\src\UxthemeWrapper.hpp" />
-    <ClInclude Include="..\..\src\win32_exception.hpp" />
-    <ClInclude Include="..\..\src\WinAPIMutex.hpp" />
-    <ClInclude Include="..\..\src\WinAPIWaitableTimer.hpp" />
-    <ClInclude Include="..\..\src\advtabs\Debug.hpp" />
-    <ClInclude Include="..\..\src\advtabs\Files.hpp" />
-    <ClInclude Include="..\..\src\advtabs\Peers.hpp" />
-    <ClInclude Include="..\..\src\advtabs\ThemeTestDialog.hpp" />
-    <ClInclude Include="..\..\src\advtabs\Torrent.hpp" />
-    <ClInclude Include="..\..\src\advtabs\Tracker.hpp" />
-    <ClInclude Include="..\..\src\advtabs\TrackerAddDialog.hpp" />
-    <ClInclude Include="..\..\src\advtabs\TrackerListView.hpp" />
-    <ClInclude Include="..\..\src\global\logger.hpp" />
-    <ClInclude Include="..\..\src\global\string_conv.hpp" />
-    <ClInclude Include="..\..\src\global\unicode.hpp" />
-    <ClInclude Include="..\..\src\global\utf8.hpp" />
-    <ClInclude Include="..\..\src\global\versioned_file.hpp" />
-    <ClInclude Include="..\..\src\global\work_file.hpp" />
-    <ClInclude Include="..\..\src\global\wtl_app.hpp" />
-    <ClInclude Include="..\..\src\WTLx\Aero.h" />
-    <ClInclude Include="..\..\src\WTLx\AtlAutosizeDlg.h" />
-    <ClInclude Include="..\..\src\WTLx\atldlgx.h" />
-    <ClInclude Include="..\..\src\WTLx\CSSFileDialog.hpp" />
-    <ClInclude Include="..\..\src\WTLx\DdxEx.hpp" />
-    <ClInclude Include="..\..\src\WTLx\DropFileTarget.h" />
-    <ClInclude Include="..\..\src\WTLx\EditHilight.hpp" />
-    <ClInclude Include="..\..\src\WTLx\GenericAddDialog.hpp" />
-    <ClInclude Include="..\..\src\WTLx\GenericAddListView.hpp" />
-    <ClInclude Include="..\..\src\WTLx\ListViewEdit.hpp" />
-    <ClInclude Include="..\..\src\WTLx\ListViewIterators.hpp" />
-    <ClInclude Include="..\..\src\WTLx\ListViewSortMixin.hpp" />
-    <ClInclude Include="..\..\src\WTLx\NTray.hpp" />
-    <ClInclude Include="..\..\src\WTLx\RadioPaneDlg.hpp" />
-    <ClInclude Include="..\..\src\WTLx\SelectionManager.hpp" />
-    <ClInclude Include="..\..\src\WTLx\SimpleHtml.h" />
-    <ClInclude Include="..\..\src\WTLx\SSFileDialog.hpp" />
-    <ClInclude Include="..\..\src\WTLx\UpdateLockable.hpp" />
-    <ClInclude Include="..\..\src\WTLx\UpdateLocks.hpp" />
+    <ProjectReference Include="..\halTorrent\halTorrent.vcxproj">
+      <Project>{a7d202bb-9362-40c7-82be-f448a2fae073}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libtorrent\libtorrent.vcxproj">
+      <Project>{333ecb6f-575b-4b11-bdda-3e7f7555bad8}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="..\..\res\afxres.h" />
     <ClInclude Include="..\..\res\resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Readme.md" />
-    <None Include="..\..\res\Halite.ico" />
-    <None Include="..\..\res\Manifest.xml" />
-    <None Include="..\..\res\toolbar.bmp" />
-    <None Include="..\..\Todo.md" />
+    <Image Include="..\..\res\Halite.ico" />
+    <Image Include="..\..\res\toolbar.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\..\res\Halite.rc">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release XP|Win32'">$(ProjectDir)\..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release XP|x64'">$(ProjectDir)\..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
+    <ResourceCompile Include="..\..\res\Halite.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\halTorrent\halTorrent.vcxproj">
-      <Project>{9ee1fb67-715d-406d-8777-1d54c29896ae}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\libtorrent\libtorrent.vcxproj">
-      <Project>{333ecb6f-575b-4b11-bdda-3e7f7555bad8}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
+    <Xml Include="..\..\res\Manifest.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
