@@ -568,7 +568,7 @@ public:
 					i->torrent->awaiting_resume_data()))
 				{
 #					ifdef HAL_TORRENT_DEV_MSGES
-//						(*i).torrent->output_torrent_debug_details();
+						(*i).torrent->output_torrent_debug_details();
 #					endif
 					num_active += 1;
 				}

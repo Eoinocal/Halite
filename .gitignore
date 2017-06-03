@@ -3,12 +3,14 @@
 *Release*
 *Debug*
 /ipch*
+/.vs
 
 *.user
 *.log
 *.sdf
 *.suo
 *.aps
+*.db
 *.opensdf
 /lang/bin/*.dll
 *.dll
