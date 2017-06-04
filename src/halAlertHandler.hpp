@@ -1,7 +1,26 @@
 #pragma once
 
+#define HAL_LIBTALERT_MSG(msg) \
+	hal::event_log().post(boost::make_shared<hal::EventGeneral>(lbt_category_to_event(p->category()), convert_to_ptime(p->timestamp()), (msg)));
+
+#define HAL_LIBTALERT_MSG(level, msg) \
+	hal::event_log().post(boost::make_shared<hal::EventGeneral>(level, convert_to_ptime(p->timestamp()), (msg)));
+
 namespace hal
 {
+
+	template<typename M>
+	void alert_msg(libt::alert* a, const M& msg)
+	{
+		hal::event_log().post(boost::make_shared<hal::EventGeneral>(lbt_category_to_event(a->category()), convert_to_ptime(a->timestamp()), msg));
+	}
+
+	template<typename M>
+	void alert_msg(libt::alert* a, event_logger::eventLevel level, const M& msg)
+	{
+		hal::event_log().post(boost::make_shared<hal::EventGeneral>(level, convert_to_ptime(a->timestamp()), msg));
+	}
+
 
 	class AlertHandler
 	{
@@ -10,12 +29,17 @@ namespace hal
 		bit_impl_(bit_impl)
 	{}
 
-	torrent_internal_ptr get(libt::torrent_handle h) const 
-	{ 
-	//			if (!h.is_valid())
-	//				throw bit::null_torrent();
+	torrent_internal_ptr get(libt::torrent_handle h) const
+	{
+		if (!h.is_valid())
+			throw bit::null_torrent();
 
-		torrent_internal_ptr p = bit_impl_.the_torrents_.get_by_hash(h.info_hash()); 
+		return get(h.info_hash());
+	}
+
+	torrent_internal_ptr get(libt::sha1_hash hash) const
+	{
+		torrent_internal_ptr p = bit_impl_.the_torrents_.get_by_hash(hash);
 
 		if (p)
 			return p;
@@ -23,14 +47,101 @@ namespace hal
 			throw bit::null_torrent();
 	}
 
+	bool handle_alert_alt(libtorrent::alert* a)
+	{
+		if (auto* p = libt::alert_cast<libt::add_torrent_alert>(a))
+		{
+			alert_msg(a, hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_ADDED)) % get(p->handle)->name());
+
+			get(p->handle)->set_handle(p->handle);
+			get(p->handle)->process_event(new ev_added_alert((p->params.flags & libt::add_torrent_params::flag_paused) != 0, p->error));
+		}
+		else if (auto* p = libt::alert_cast<libt::torrent_removed_alert>(a))
+		{
+			alert_msg(a, hal::wform(L"Torrent removed alert %1%") % get(p->info_hash)->name());
+
+	//		get(p->info_hash)->
+		}
+		else if (auto* p = libt::alert_cast<libt::save_resume_data_alert>(a))
+		{
+			alert_msg(a, hal::wform(hal::app().res_wstr(HAL_WRITE_RESUME_ALERT))
+				% get(p->handle)->name());
+
+			if (p->resume_data)
+				get(p->handle)->write_resume_data(*p->resume_data);
+
+			get(p->handle)->process_event(new ev_resume_data_alert());
+		}
+		else if (auto* p = libt::alert_cast<libt::torrent_paused_alert>(a))
+		{
+			wstring err = get(p->handle)->check_error();
+
+			if (err.empty())
+			{
+				alert_msg(a, hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_PAUSED)) % get(p->handle)->name());
+
+				HAL_DEV_MSG(hal::wform(L"Torrent Paused alert, %1%.") % get(p->handle)->name());
+
+				get(p->handle)->process_event(new ev_paused_alert());
+			}
+			else
+			{
+				alert_msg(a, event_logger::warning, hal::wform(hal::app().res_wstr(HAL_TORRENT_ERROR_PAUSE_ALERT))
+					% err
+					% get(p->handle)->name());
+
+				HAL_DEV_MSG(hal::wform(L"Torrent Error alert %2%, %1%.") % get(p->handle)->name() % err);
+
+				get(p->handle)->process_event(new ev_error_alert(err));
+			}
+		}
+		else if (auto* p = libt::alert_cast<libt::torrent_resumed_alert>(a))
+		{
+
+			alert_msg(a, hal::wform(hal::app().res_wstr(HAL_TORRENT_RESUME_ALERT)) % get(p->handle)->name());
+
+			HAL_DEV_MSG(hal::wform(L"Torrent Resumed alert, %1%.") % get(p->handle)->name());
+
+			get(p->handle)->process_event(new ev_resumed_alert());
+		}
+		else if (auto* p = libt::alert_cast<libt::torrent_finished_alert>(a))
+		{
+			HAL_DEV_MSG(hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_FINISHED))
+				% get(p->handle)->name());
+
+			get(p->handle)->alert_finished();
+
+			bit_impl_.signals.torrent_completed(get(p->handle)->name());
+		}
+		else if (auto* p = libt::alert_cast<libt::save_resume_data_failed_alert>(a))
+		{
+			alert_msg(a, hal::wform(hal::app().res_wstr(HAL_WRITE_RESUME_FAIL_ALERT))
+				% get(p->handle)->name());
+
+			get(p->handle)->process_event(new ev_resume_data_failed_alert());
+		}
+		else if (auto* p = libt::alert_cast<libt::state_changed_alert>(a))
+		{
+			HAL_DEV_MSG(hal::wform(L"Torrent state changed alert, %1%. From %2% -> %3%") % get(p->handle)->name() % p->prev_state % p->state);
+		}
+		else
+		{
+			alert_msg(a, event_logger::debug,
+				hal::wform(hal::app().res_wstr(HAL_UNHANDLED_ALERT))
+					% hal::from_utf8_safe(a->what())
+					% hal::from_utf8_safe(a->message()));
+
+			return false;
+		}
+
+		return true;
+	}
+		
 	bool handle_alert(libtorrent::alert* a)
 	{
 		if (auto* p = libt::alert_cast<libt::add_torrent_alert>(a))
 		{
-			event_log().post(shared_ptr<EventDetail>(
-				new EventMsg((hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_ADDED)) 
-						% get(p->handle)->name()), 
-					event_logger::debug, convert_to_ptime(p->timestamp()))));
+			alert_msg(a, hal::wform(hal::app().res_wstr(LBT_EVENT_TORRENT_ADDED)) % get(p->handle)->name());
 			
 			HAL_DEV_MSG(hal::wform(L"Torrent Added alert, %1%.") % get(p->handle)->name());
 

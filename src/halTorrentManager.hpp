@@ -470,7 +470,8 @@ private:
 		auto p = std::equal_range(torrents_.get<by_hash>().begin(), torrents_.get<by_hash>().end(), torrent_holder(hash));
 		auto d = std::distance(p.first, p.second);
 				
-		HAL_DEV_MSG(hal::wform(L"%1% matching torrents for hash %2%") 
+		if (d != 1)
+			HAL_DEV_MSG(hal::wform(L"%1% matching torrents for hash %2%") 
 				% d
 				% from_utf8(libt::base32encode(std::string((char const*)&hash[0], 20))));
 

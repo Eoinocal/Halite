@@ -42,7 +42,8 @@ bit_impl::bit_impl() :
 	alert_timer_(100, nullptr, &alert_caller_, 	true	),
 	the_session_{libt::fingerprint(HALITE_FINGERPRINT)}
 {
-	session_.reset(new libt::session(libt::fingerprint(HALITE_FINGERPRINT), 0, libt::alert::all_categories));
+	session_.reset(new libt::session(libt::fingerprint(HALITE_FINGERPRINT), 0, 
+		libt::alert::error_notification | libt::alert::status_notification));
 
 	try
 	{
@@ -827,7 +828,7 @@ void bit_impl::alert_handler()
 
 	for (auto i = alerts.begin(), end(alerts.end()); i != end; ++i)
 	{
-		if (handler.handle_alert(*i))
+		if (handler.handle_alert_alt(*i))
 		{
 		//	HAL_DEV_MSG(hal::wform(L"unhandled_alert() - %1%") % e.what());
 		}
